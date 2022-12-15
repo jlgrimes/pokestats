@@ -1,11 +1,11 @@
 import { Flex } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
-import PlayerInputForm from '../src/components/Admin/PlayerInputForm';
+import ResultInputForm from '../src/components/Admin/ResultInputForm';
 
 export default function Admin() {
   return (
     <Flex flexDirection={'column'}>
-      <PlayerInputForm />
+      <ResultInputForm />
     </Flex>
   );
 }
