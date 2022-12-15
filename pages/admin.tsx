@@ -1,11 +1,13 @@
 import { Flex } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 import ResultInputForm from '../src/components/Admin/ResultInputForm';
+import ResultsList from '../src/components/Results/ResultsList/ResultsList';
 
 export default function Admin() {
   return (
     <Flex flexDirection={'column'}>
       <ResultInputForm />
+      <ResultsList />
     </Flex>
   );
 }
