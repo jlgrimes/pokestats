@@ -17,7 +17,7 @@ export default async function handler(
   
     res.status(200).json({ url: sprite });
   } catch(err) {
-    return res.status(500).json({ err });
+    return res.status(500);
   } finally {
     res.end();
   }
