@@ -1,6 +1,7 @@
 import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
+import { getResultQueryKey } from '../../lib/fetch/query-keys';
 import supabase from '../../lib/supabase/client';
 
 interface ResultFormValues {
@@ -10,7 +11,7 @@ interface ResultFormValues {
 }
 
 export default function ResultForm() {
-  const tournamentName = 'Toronto 2019';
+  const queryClient = useQueryClient();
 
   const addResult = async (values: ResultFormValues) => {
     const result = await supabase.from('Tournament Results').insert([
@@ -18,12 +19,17 @@ export default function ResultForm() {
         place: values.place,
         player_name: values.player,
         deck_archetype: values.deck,
+        tournament_name: 'Toronto 2022'
       },
     ]);
 
     return result;
   };
-  const mutation = useMutation(addResult);
+  const mutation = useMutation(getResultQueryKey('Toronto 2022'), addResult, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(getResultQueryKey('Toronto 2022'))
+    }
+  });
 
   const handleSubmit = (values: ResultFormValues) => {
     formik.resetForm();
