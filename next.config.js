@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ['limitlesstcg.s3.us-east-2.amazonaws.com']
+  }
 }
 
 module.exports = nextConfig

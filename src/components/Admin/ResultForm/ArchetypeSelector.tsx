@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import supabase from '../../../lib/supabase/client';
+import SpriteDisplay from '../../common/SpriteDisplay';
 
 interface ArchetypeSelectorProps {
   value: string;
@@ -29,22 +30,21 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
 
   const fetchArchetypes = async () => {
     const res = await supabase.from('Deck Archetypes')
-    .select('defined_pokemon');
-    const data = res.data;
-    return data?.map(({ defined_pokemon }) => defined_pokemon);
+    .select('name,defined_pokemon');
+    return res.data;
   };
 
   const { data: decks } = useQuery('decks', fetchArchetypes);
-  console.log(decks)
+
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />} variant='outline'>
-        {selectedArchetype.length > 0 ? selectedArchetype : 'Select deck'}
+        {selectedArchetype.length > 0 ? <SpriteDisplay pokemonNames={selectedArchetype} /> : 'Select deck'}
       </MenuButton>
       <MenuList>
-        {decks?.map((deck, idx) => (
-          <MenuItem key={idx} onClick={() => handleMenuItemClick(deck)}>
-            {deck}
+        {decks?.map(({ defined_pokemon }, idx) => (
+          <MenuItem key={idx} onClick={() => handleMenuItemClick(defined_pokemon)}>
+            <SpriteDisplay pokemonNames={defined_pokemon} />
           </MenuItem>
         ))}
       </MenuList>
