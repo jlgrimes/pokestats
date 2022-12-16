@@ -15,7 +15,8 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
           key={idx}
           src={`${spritebaseUrl}/${name.toLowerCase()}.png`}
           alt={name}
-          maxWidth='30px'
+          maxHeight='30px'
+          width='auto'
         />
       ))}
     </Flex>
