@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useArchetypes } from '../../../hooks/deckArchetypes';
 import supabase from '../../../lib/supabase/client';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../common/SpriteDisplay';
@@ -37,14 +38,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     setSelectedArchetype(props.value);
   }, [props.value]);
 
-  const fetchArchetypes = async () => {
-    const res = await supabase
-      .from('Deck Archetypes')
-      .select('name,defined_pokemon');
-    return res.data;
-  };
-
-  const { data: decks } = useQuery('decks', fetchArchetypes);
+  const { data: decks } = useArchetypes();
 
   return (
     <Fragment>
