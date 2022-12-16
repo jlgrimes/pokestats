@@ -5,10 +5,12 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Stack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import supabase from '../../../lib/supabase/client';
+import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../common/SpriteDisplay';
 
 interface ArchetypeSelectorProps {
@@ -29,8 +31,9 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   }, [props.value]);
 
   const fetchArchetypes = async () => {
-    const res = await supabase.from('Deck Archetypes')
-    .select('name,defined_pokemon');
+    const res = await supabase
+      .from('Deck Archetypes')
+      .select('name,defined_pokemon');
     return res.data;
   };
 
@@ -39,12 +42,22 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />} variant='outline'>
-        {selectedArchetype.length > 0 ? <SpriteDisplay pokemonNames={selectedArchetype} /> : 'Select deck'}
+        {selectedArchetype.length > 0 ? (
+          <SpriteAndNameDisplay
+            archetypeName={selectedArchetype}
+            pokemonNames={decks?.find((deck) => deck.name === selectedArchetype)?.defined_pokemon ?? []}
+          />
+        ) : (
+          'Select deck'
+        )}
       </MenuButton>
       <MenuList>
-        {decks?.map(({ defined_pokemon }, idx) => (
-          <MenuItem key={idx} onClick={() => handleMenuItemClick(defined_pokemon)}>
-            <SpriteDisplay pokemonNames={defined_pokemon} />
+        {decks?.map(({ name, defined_pokemon }, idx) => (
+          <MenuItem key={idx} onClick={() => handleMenuItemClick(name)}>
+            <SpriteAndNameDisplay
+              archetypeName={name}
+              pokemonNames={defined_pokemon}
+            />
           </MenuItem>
         ))}
       </MenuList>
