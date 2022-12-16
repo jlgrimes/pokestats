@@ -1,23 +1,12 @@
-import { Editable, Stack } from '@chakra-ui/react';
+import { useQuery } from 'react-query';
+import supabase from '../../../lib/supabase/client';
 
 export default function ResultsList() {
-  // TODO: Replace with React query
-  const results = [
-    {
-      player: 'Jared',
-      deck: 'Lugia',
-    },
-  ];
-
-  return (
-    <Stack>
-      {results.map(
-        ({ player, deck }: { player: string; deck: string }, idx: number) => (
-          <Editable key={idx}>
-            {player} {deck}
-          </Editable>
-        )
-      )}
-    </Stack>
+  const tournamentName = 'Toronto 2022';
+  const { data: results } = useQuery(
+    `tournament-results-${tournamentName}`,
+    supabase.from('Tournament Results').select('*')
   );
+
+  return <div>{JSON.stringify(results)}</div>;
 }
