@@ -6,12 +6,14 @@ import {
   MenuItem,
   MenuList,
   Stack,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import supabase from '../../../lib/supabase/client';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../common/SpriteDisplay';
+import AddArchetypeModal from './AddArchetypeModal';
 
 interface ArchetypeSelectorProps {
   value: string;
@@ -20,6 +22,11 @@ interface ArchetypeSelectorProps {
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const [selectedArchetype, setSelectedArchetype] = useState<string>('');
+  const {
+    isOpen: isAddModalOpen,
+    onOpen: openAddModal,
+    onClose: closeAddModal,
+  } = useDisclosure();
 
   const handleMenuItemClick = (deck: string) => {
     props.onChange('deck', deck);
@@ -40,27 +47,38 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const { data: decks } = useQuery('decks', fetchArchetypes);
 
   return (
-    <Menu>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />} variant='outline'>
-        {selectedArchetype.length > 0 ? (
-          <SpriteAndNameDisplay
-            archetypeName={selectedArchetype}
-            pokemonNames={decks?.find((deck) => deck.name === selectedArchetype)?.defined_pokemon ?? []}
-          />
-        ) : (
-          'Select deck'
-        )}
-      </MenuButton>
-      <MenuList>
-        {decks?.map(({ name, defined_pokemon }, idx) => (
-          <MenuItem key={idx} onClick={() => handleMenuItemClick(name)}>
+    <Fragment>
+      <Menu>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          variant='outline'
+        >
+          {selectedArchetype.length > 0 ? (
             <SpriteAndNameDisplay
-              archetypeName={name}
-              pokemonNames={defined_pokemon}
+              archetypeName={selectedArchetype}
+              pokemonNames={
+                decks?.find(deck => deck.name === selectedArchetype)
+                  ?.defined_pokemon ?? []
+              }
             />
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
+          ) : (
+            'Select deck'
+          )}
+        </MenuButton>
+        <MenuList>
+          {decks?.map(({ name, defined_pokemon }, idx) => (
+            <MenuItem key={idx} onClick={() => handleMenuItemClick(name)}>
+              <SpriteAndNameDisplay
+                archetypeName={name}
+                pokemonNames={defined_pokemon}
+              />
+            </MenuItem>
+          ))}
+          <MenuItem onClick={openAddModal}>Add Archetype</MenuItem>
+        </MenuList>
+      </Menu>
+      <AddArchetypeModal isOpen={isAddModalOpen} onClose={closeAddModal} />
+    </Fragment>
   );
 }

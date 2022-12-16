@@ -9,8 +9,8 @@ interface SpriteAndNameDisplayProps {
 export default function SpriteAndNameDisplay(props: SpriteAndNameDisplayProps) {
   return (
     <Stack direction={'row'} alignItems={'center'}>
-      <div>{props.archetypeName}</div>
       <SpriteDisplay pokemonNames={props.pokemonNames} />
+      <div>{props.archetypeName}</div>
     </Stack>
   );
 }
