@@ -1,5 +1,4 @@
-import { Flex } from '@chakra-ui/react';
-import Image from 'next/image';
+import { Flex, Image } from '@chakra-ui/react';
 
 interface SpriteDisplayProps {
   pokemonNames: string[];
@@ -10,9 +9,14 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
     'https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen8-v3';
 
   return (
-    <Flex>
+    <Flex gap='4px'>
       {props.pokemonNames.map((name, idx) => (
-        <Image key={idx} src={`${spritebaseUrl}/${name.toLowerCase()}.png`} alt={name} width={30} height={30} />
+        <Image
+          key={idx}
+          src={`${spritebaseUrl}/${name.toLowerCase()}.png`}
+          alt={name}
+          maxWidth='30px'
+        />
       ))}
     </Flex>
   );

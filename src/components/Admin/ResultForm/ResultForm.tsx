@@ -48,7 +48,7 @@ export default function ResultForm() {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack direction={'row'} gap={'0.5rem'} alignItems={'end'}>
+      <Stack direction={{ base: 'column', sm: 'row' }} gap={'0.5rem'} alignItems={'end'}>
         <FormControl>
           <FormLabel>Place</FormLabel>
           <Input

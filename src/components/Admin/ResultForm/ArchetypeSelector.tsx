@@ -53,6 +53,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           as={Button}
           rightIcon={<ChevronDownIcon />}
           variant='outline'
+          width={'100%'}
         >
           {selectedArchetype.length > 0 ? (
             <SpriteAndNameDisplay
