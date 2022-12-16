@@ -10,22 +10,14 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import { getResultQueryKey } from '../../../lib/fetch/query-keys';
-import supabase from '../../../lib/supabase/client';
+import { useArchetypes } from '../../../hooks/deckArchetypes';
+import { useTournamentResults } from '../../../hooks/tournamentResults';
+import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
 
 export default function ResultsList() {
   const tournamentName = 'Toronto 2022';
-  const fetchResults = async () => {
-    const res = await supabase
-      .from('Tournament Results')
-      .select('*')
-      .eq('tournament_name', tournamentName);
-    return res.data;
-  };
-  const { data: results } = useQuery(
-    getResultQueryKey(tournamentName),
-    fetchResults
-  );
+  const { data: results } = useTournamentResults(tournamentName);
+  const { data: decks } = useArchetypes();
 
   return (
     <TableContainer>
@@ -42,7 +34,15 @@ export default function ResultsList() {
             <Tr key={idx}>
               <Td>{result.place}</Td>
               <Td>{result.player_name}</Td>
-              <Td>{result.deck_archetype}</Td>
+              <Td>
+                <SpriteAndNameDisplay
+                  archetypeName={result.deck_archetype}
+                  pokemonNames={
+                    decks?.find(deck => deck.name === result.deck_archetype)
+                      ?.defined_pokemon ?? []
+                  }
+                />
+              </Td>
             </Tr>
           ))}
         </Tbody>
