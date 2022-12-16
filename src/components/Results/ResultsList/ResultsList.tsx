@@ -21,7 +21,7 @@ export default function ResultsList() {
 
   return (
     <TableContainer>
-      <Table>
+      <Table size={'sm'}>
         <Thead>
           <Tr>
             <Th>Place</Th>
