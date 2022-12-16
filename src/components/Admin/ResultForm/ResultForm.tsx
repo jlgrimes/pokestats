@@ -1,8 +1,9 @@
 import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useMutation, useQueryClient } from 'react-query';
-import { getResultQueryKey } from '../../lib/fetch/query-keys';
-import supabase from '../../lib/supabase/client';
+import { getResultQueryKey } from '../../../lib/fetch/query-keys';
+import supabase from '../../../lib/supabase/client';
+import ArchetypeAutocomplete from './ArchetypeSelector';
 
 interface ResultFormValues {
   player: string;
@@ -19,7 +20,7 @@ export default function ResultForm() {
         place: values.place,
         player_name: values.player,
         deck_archetype: values.deck,
-        tournament_name: 'Toronto 2022'
+        tournament_name: 'Toronto 2022',
       },
     ]);
 
@@ -27,8 +28,8 @@ export default function ResultForm() {
   };
   const mutation = useMutation(getResultQueryKey('Toronto 2022'), addResult, {
     onSuccess: () => {
-      queryClient.invalidateQueries(getResultQueryKey('Toronto 2022'))
-    }
+      queryClient.invalidateQueries(getResultQueryKey('Toronto 2022'));
+    },
   });
 
   const handleSubmit = (values: ResultFormValues) => {
@@ -65,11 +66,10 @@ export default function ResultForm() {
           />
         </FormControl>
         <FormControl>
-          <FormLabel>Deck</FormLabel>
-          <Input
-            name='deck'
+          <FormLabel>Deck archetype</FormLabel>
+          <ArchetypeAutocomplete
             value={formik.values.deck}
-            onChange={formik.handleChange}
+            onChange={formik.setFieldValue}
           />
         </FormControl>
         <div>
