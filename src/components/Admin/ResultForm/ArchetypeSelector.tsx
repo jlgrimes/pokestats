@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ArchetypeSelectorProps {
   value: string;
@@ -8,12 +8,16 @@ interface ArchetypeSelectorProps {
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
-  const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null);
+  const [selectedArchetype, setSelectedArchetype] = useState<string>('');
 
   const handleMenuItemClick = (deck: string) => {
     props.onChange('deck', deck);
     setSelectedArchetype(deck);
   }
+
+  useEffect(() => {
+    setSelectedArchetype(props.value)
+  }, [props.value]);
 
   // TODO: replace with supabase
   const decks = ['Lugia', 'Lost box', 'Arceus Inteleon', 'Articuno Jelly'];
@@ -21,7 +25,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />} variant='outline'>
-        {selectedArchetype ?? 'Select deck'}
+        {selectedArchetype.length > 0 ? selectedArchetype : 'Select deck'}
       </MenuButton>
       <MenuList>
         {decks.map((deck, idx) => (
