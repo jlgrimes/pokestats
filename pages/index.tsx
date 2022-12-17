@@ -2,6 +2,7 @@ import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import NotablePlayers from '../src/components/NotablePlayers/NotablePlayers';
 import Results from '../src/components/Results/Results';
+import Tournament from '../src/components/Tournament/Tournament';
 import supabase from '../src/lib/supabase/client';
 import styles from '../styles/Home.module.css';
 
@@ -24,8 +25,7 @@ export default function Home({ userIsAdmin }: { userIsAdmin: boolean }) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <NotablePlayers tournament='Arlington 2022' allowEdits={userIsAdmin} />
-      <Results tournament='Arlington 2022' allowEdits={userIsAdmin} />
+      <Tournament tournament='Arlington 2022' allowEdits={userIsAdmin} />
     </div>
   );
 }
