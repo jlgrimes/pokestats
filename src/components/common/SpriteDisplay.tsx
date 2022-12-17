@@ -10,15 +10,19 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
 
   return (
     <Flex gap='4px'>
-      {props.pokemonNames.map((name, idx) => (
-        <Image
-          key={idx}
-          src={`${spritebaseUrl}/${name.toLowerCase()}.png`}
-          alt={name}
-          maxHeight='30px'
-          width='auto'
-        />
-      ))}
+      {props.pokemonNames.map((name, idx) => {
+        if (!name || name.length === 0) return;
+
+        return (
+          <Image
+            key={idx}
+            src={`${spritebaseUrl}/${name.toLowerCase()}.png`}
+            alt={name}
+            maxHeight='30px'
+            width='auto'
+          />
+        )
+      })}
     </Flex>
   );
 }
