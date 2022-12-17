@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useArchetypes } from '../../../hooks/deckArchetypes';
 import { useNotablePlayers } from '../../../hooks/notablePlayers';
-import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
+import SpriteDisplay from '../../common/SpriteDisplay';
 
 export default function NotablePlayersList({ tournament }: { tournament: string }) {
   const { data: notablePlayers } = useNotablePlayers(tournament);
@@ -31,8 +31,7 @@ export default function NotablePlayersList({ tournament }: { tournament: string 
             <Tr key={idx}>
               <Td>{player.player_name}</Td>
               <Td>
-                <SpriteAndNameDisplay
-                  archetypeName={player.deck_archetype}
+                <SpriteDisplay
                   pokemonNames={
                     decks?.find(deck => deck.name === player.deck_archetype)
                       ?.defined_pokemon ?? []
