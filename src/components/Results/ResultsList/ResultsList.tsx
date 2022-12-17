@@ -1,6 +1,4 @@
 import {
-  Editable,
-  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -9,14 +7,12 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
 import { useArchetypes } from '../../../hooks/deckArchetypes';
 import { useTournamentResults } from '../../../hooks/tournamentResults';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
 
-export default function ResultsList() {
-  const tournamentName = 'Toronto 2022';
-  const { data: results } = useTournamentResults(tournamentName);
+export default function ResultsList({ tournament }: { tournament: string }) {
+  const { data: results } = useTournamentResults(tournament);
   const { data: decks } = useArchetypes();
 
   return (

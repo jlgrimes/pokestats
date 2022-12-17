@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Flex, Heading, Highlight, Link, Text } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
-import ResultForm from '../src/components/Admin/ResultForm';
+import ResultForm from '../src/components/Results/ResultForm';
 import ResultsList from '../src/components/Results/ResultsList/ResultsList';
 import supabase from '../src/lib/supabase/client';
 

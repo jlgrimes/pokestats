@@ -11,7 +11,7 @@ interface ResultFormValues {
   place: number;
 }
 
-export default function ResultForm() {
+export default function ResultForm({ tournament }: { tournament: string }) {
   const queryClient = useQueryClient();
 
   const addResult = async (values: ResultFormValues) => {
@@ -20,15 +20,15 @@ export default function ResultForm() {
         place: values.place,
         player_name: values.player,
         deck_archetype: values.deck,
-        tournament_name: 'Toronto 2022',
+        tournament_name: tournament,
       },
     ]);
 
     return result;
   };
-  const mutation = useMutation(getResultQueryKey('Toronto 2022'), addResult, {
+  const mutation = useMutation(getResultQueryKey(tournament), addResult, {
     onSuccess: () => {
-      queryClient.invalidateQueries(getResultQueryKey('Toronto 2022'));
+      queryClient.invalidateQueries(getResultQueryKey(tournament));
     },
   });
 
