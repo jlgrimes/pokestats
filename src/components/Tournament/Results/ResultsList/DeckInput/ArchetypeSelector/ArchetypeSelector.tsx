@@ -8,9 +8,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useState } from 'react';
-import { useArchetypes } from '../../../hooks/deckArchetypes';
-import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
-import SpriteDisplay from '../../common/SpriteDisplay';
+import { useArchetypes } from '../../../../../../hooks/deckArchetypes';
+import SpriteAndNameDisplay from '../../../../../common/SpriteAndNameDisplay';
+import SpriteDisplay from '../../../../../common/SpriteDisplay';
 import AddArchetypeModal from './AddArchetypeModal';
 
 interface ArchetypeSelectorProps {

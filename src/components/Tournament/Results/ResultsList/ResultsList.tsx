@@ -13,13 +13,13 @@ import {
 import NextLink from 'next/link';
 import { Link } from '@chakra-ui/react';
 import { FaTwitter } from 'react-icons/fa';
-import { useArchetypes } from '../../../hooks/deckArchetypes';
+import { useArchetypes } from '../../../../hooks/deckArchetypes';
 import {
   useLiveTournamentResults,
   useTournamentResults,
-} from '../../../hooks/tournamentResults';
-import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
-import SpriteDisplay from '../../common/SpriteDisplay';
+} from '../../../../hooks/tournamentResults';
+import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
+import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
 

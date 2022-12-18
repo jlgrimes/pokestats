@@ -1,23 +1,21 @@
 import { Button, FormControl, FormLabel, Input, Stack, useDisclosure } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useMutation, useQueryClient } from 'react-query';
-import { getResultQueryKey } from '../../../lib/fetch/query-keys';
-import supabase from '../../../lib/supabase/client';
-import ArchetypeAutocomplete from './ArchetypeSelector';
+import { getNotablePlayersQueryKey } from '../../../../lib/fetch/query-keys';
+import supabase from '../../../../lib/supabase/client';
+import ArchetypeSelector from '../../Results/ResultsList/DeckInput/ArchetypeSelector/ArchetypeSelector';
 
-interface ResultFormValues {
+interface NotablePlayerFormValues {
   player: string;
   deck: string;
-  place: number;
 }
 
-export default function ResultForm({ tournament }: { tournament: string }) {
+export default function NotablePlayersForm({ tournament }: { tournament: string }) {
   const queryClient = useQueryClient();
 
-  const addResult = async (values: ResultFormValues) => {
-    const result = await supabase.from('Tournament Results').insert([
+  const addNotablePlayer = async (values: NotablePlayerFormValues) => {
+    const result = await supabase.from('Notable Players').insert([
       {
-        place: values.place,
         player_name: values.player,
         deck_archetype: values.deck,
         tournament_name: tournament,
@@ -26,13 +24,13 @@ export default function ResultForm({ tournament }: { tournament: string }) {
 
     return result;
   };
-  const mutation = useMutation(getResultQueryKey(tournament), addResult, {
+  const mutation = useMutation(getNotablePlayersQueryKey(tournament), addNotablePlayer, {
     onSuccess: () => {
-      queryClient.invalidateQueries(getResultQueryKey(tournament));
+      queryClient.invalidateQueries(getNotablePlayersQueryKey(tournament));
     },
   });
 
-  const handleSubmit = (values: ResultFormValues) => {
+  const handleSubmit = (values: NotablePlayerFormValues) => {
     formik.resetForm();
     mutation.mutate(values);
   };
@@ -41,7 +39,6 @@ export default function ResultForm({ tournament }: { tournament: string }) {
     initialValues: {
       player: '',
       deck: '',
-      place: 1,
     },
     onSubmit: handleSubmit,
   });
@@ -49,14 +46,6 @@ export default function ResultForm({ tournament }: { tournament: string }) {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack direction={{ base: 'column', sm: 'row' }} gap={'0.5rem'} alignItems={'end'}>
-        <FormControl>
-          <FormLabel>Place</FormLabel>
-          <Input
-            name='place'
-            value={formik.values.place}
-            onChange={formik.handleChange}
-          />
-        </FormControl>
         <FormControl>
           <FormLabel>Player name</FormLabel>
           <Input
@@ -67,7 +56,7 @@ export default function ResultForm({ tournament }: { tournament: string }) {
         </FormControl>
         <FormControl>
           <FormLabel>Deck archetype</FormLabel>
-          <ArchetypeAutocomplete
+          <ArchetypeSelector
             value={formik.values.deck}
             onChange={(value) => formik.setFieldValue('deck', value)}
           />

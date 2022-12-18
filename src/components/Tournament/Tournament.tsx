@@ -1,6 +1,6 @@
 import { Heading, Stack, Text } from '@chakra-ui/react';
-import NotablePlayers from '../NotablePlayers/NotablePlayers';
-import Results from '../Results/Results';
+import NotablePlayers from './NotablePlayers/NotablePlayers';
+import ResultsList from './Results/ResultsList/ResultsList';
 
 export default function Tournament({
   tournament,
@@ -16,7 +16,7 @@ export default function Tournament({
         <Text>Live Standings</Text>
       </Stack>
       {/* <NotablePlayers tournament={tournament.name} allowEdits={allowEdits} /> */}
-      <Results tournament={tournament} allowEdits={allowEdits} />
+      <ResultsList tournament={tournament} allowEdits={allowEdits} />
     </Stack>
   );
 }

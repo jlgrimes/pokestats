@@ -9,9 +9,9 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useArchetypes } from '../../../hooks/deckArchetypes';
-import { useNotablePlayers } from '../../../hooks/notablePlayers';
-import SpriteDisplay from '../../common/SpriteDisplay';
+import { useArchetypes } from '../../../../hooks/deckArchetypes';
+import { useNotablePlayers } from '../../../../hooks/notablePlayers';
+import SpriteDisplay from '../../../common/SpriteDisplay';
 
 export default function NotablePlayersList({ tournament }: { tournament: string }) {
   const { data: notablePlayers } = useNotablePlayers(tournament);

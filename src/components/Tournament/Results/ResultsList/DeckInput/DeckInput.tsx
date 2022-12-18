@@ -1,5 +1,5 @@
-import supabase from '../../../../lib/supabase/client';
-import ArchetypeSelector from '../../ResultForm/ArchetypeSelector';
+import supabase from '../../../../../lib/supabase/client';
+import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
 
 export default function DeckInput({
   playerName,
