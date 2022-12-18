@@ -64,7 +64,7 @@ export default function ResultsList({
                   <Td>{formatRecord(result.record)}</Td>
                   <Td>
                     {allowEdits ? (
-                      <DeckInput />
+                      <DeckInput deckName={result.deck?.name} />
                     ) : (
                       <SpriteDisplay
                         pokemonNames={result?.deck?.defined_pokemon ?? []}

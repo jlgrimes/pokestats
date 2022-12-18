@@ -14,12 +14,12 @@ import SpriteDisplay from '../../common/SpriteDisplay';
 import AddArchetypeModal from './AddArchetypeModal';
 
 interface ArchetypeSelectorProps {
-  value?: string;
+  value: string | undefined;
   onChange: (value: string) => void;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
-  const [selectedArchetype, setSelectedArchetype] = useState<string>('');
+  const [selectedArchetype, setSelectedArchetype] = useState<string | undefined>(props.value);
   const {
     isOpen: isAddModalOpen,
     onOpen: openAddModal,
@@ -50,7 +50,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
               variant='outline'
               width={'100%'}
             >
-              {selectedArchetype.length > 0 ? (
+              {(selectedArchetype && selectedArchetype.length > 0) ? (
                 <SpriteDisplay
                   pokemonNames={
                     decks?.find(deck => deck.name === selectedArchetype)
