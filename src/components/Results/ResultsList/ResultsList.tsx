@@ -1,12 +1,18 @@
 import {
+  Icon,
+  Stack,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { Link } from '@chakra-ui/react';
+import { FaTwitter } from 'react-icons/fa';
 import { useArchetypes } from '../../../hooks/deckArchetypes';
 import {
   useLiveTournamentResults,
@@ -50,6 +56,7 @@ export default function ResultsList({
               result: {
                 placing: string;
                 name: string;
+                twitter: string;
                 record: { wins: number; losses: number; ties: number };
                 deck: { name: string; defined_pokemon: string[] };
                 currentMatchResult: string;
@@ -68,7 +75,19 @@ export default function ResultsList({
                     padding={0}
                     paddingLeft={2}
                   >
-                    {result.name}
+                    <Stack direction={'row'}>
+                      <Text>{result.name}</Text>
+                      {result.twitter && (
+                        <Link
+                          color='twitter.500'
+                          as={NextLink}
+                          href={result.twitter}
+                          isExternal
+                        >
+                          <Icon as={FaTwitter} />
+                        </Link>
+                      )}
+                    </Stack>
                   </Td>
                   <Td
                     padding={0}
