@@ -22,7 +22,7 @@ import { Player } from './Player/Player';
 interface LiveResultType {
   placing: string;
   name: string;
-  twitter: string;
+  profile: { playerId: number, twitterUrl: string };
   record: { wins: number; losses: number; ties: number };
   deck: { name: string; defined_pokemon: string[] };
   currentMatchResult: string;
@@ -66,7 +66,11 @@ export default function ResultsList({
                   padding={0}
                   paddingLeft={2}
                 >
-                  <Player name={result.name} twitterUrl={result.twitter} />
+                  <Player
+                    name={result.name}
+                    profile={result.profile}
+                    isEditable={allowEdits}
+                  />
                 </Td>
                 <Td
                   padding={0}

@@ -17,16 +17,43 @@ const fetchDeckArchetypes = async () => {
   return res.data;
 };
 
-const fetchPlayerSocials = async () => {
+const fetchPlayerProfiles = async () => {
   const res = await supabase
     .from('Player Profiles')
-    .select('name,twitter_profile_url');
+    .select('id,name,twitter_profile_url');
   return res.data?.reduce((acc, playerProfile) => {
     return {
       ...acc,
-      [playerProfile.name]: playerProfile.twitter_profile_url,
+      [playerProfile.name]: {
+        playerId: playerProfile.id,
+        twitterUrl: playerProfile.twitter_profile_url,
+      },
     };
   }, {});
+};
+
+const uploadMissingPlayerProfiles = async (
+  parsedData: Record<string, any>[],
+  playerProfiles: Record<string, any> | undefined
+) => {
+  if (!parsedData || !playerProfiles) {
+    return;
+  }
+
+  const missingPlayerRows = parsedData.reduce(
+    (acc: Record<string, any>[], { name }) => {
+      if (!playerProfiles[name]) {
+        return [...acc, { name }];
+      }
+      return acc;
+    },
+    []
+  );
+  console.log(missingPlayerRows)
+
+  await supabase
+    .from('Player Profiles')
+    .insert(missingPlayerRows);
 };
 
 const getPlayerDeckObjects = async (tournamentId: string) => {
@@ -48,12 +75,18 @@ const getPlayerDeckObjects = async (tournamentId: string) => {
 
 async function mapResultsArray(
   resultsArray: any,
-  tournamentId: string,
   roundNumber: number,
-  playerSocials: Record<string, string> | undefined
+  loadedPlayerProfile: Record<string, string> | undefined,
+  playerDeckObjects:
+    | {
+        player_name: any;
+        deck: {
+          name: any;
+          defined_pokemon: any;
+        };
+      }[]
+    | undefined
 ): Promise<string[]> {
-  const playerDeckObjects = await getPlayerDeckObjects(tournamentId);
-
   return resultsArray.map(
     (player: {
       name: string;
@@ -63,7 +96,7 @@ async function mapResultsArray(
       rounds: Record<number, Record<string, any>>;
     }) => ({
       name: player.name,
-      twitter: playerSocials?.[player.name], 
+      profile: loadedPlayerProfile?.[player.name],
       placing: player.placing,
       record: player.record,
       currentMatchResult: player.rounds[roundNumber]?.result,
@@ -103,16 +136,22 @@ export default async function handler(
     let parsedData = JSON.parse(data);
     const roundNumber = getRoundNumber(parsedData[0]);
 
-    const playerSocials: Record<string, string> | undefined =
-      await fetchPlayerSocials();
+    const playerProfile: Record<string, string> | undefined =
+      await fetchPlayerProfiles();
+    const playerDeckObjects = await getPlayerDeckObjects(
+      req.query.id as string
+    );
+
     parsedData = await mapResultsArray(
       parsedData,
-      req.query.id as string,
       roundNumber,
-      playerSocials
+      playerProfile,
+      playerDeckObjects
     );
 
     res.status(200).json({ roundNumber, data: parsedData });
+
+    await uploadMissingPlayerProfiles(parsedData, playerProfile);
   } catch (err) {
     console.error(err);
     return res.status(500);
