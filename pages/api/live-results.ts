@@ -17,6 +17,18 @@ const fetchDeckArchetypes = async () => {
   return res.data;
 };
 
+const fetchPlayerSocials = async () => {
+  const res = await supabase
+    .from('Player Profiles')
+    .select('name,twitter_profile_url');
+  return res.data?.reduce((acc, playerProfile) => {
+    return {
+      ...acc,
+      [playerProfile.name]: playerProfile.twitter_profile_url,
+    };
+  }, {});
+};
+
 const getPlayerDeckObjects = async (tournamentId: string) => {
   const playerDecks = await fetchPlayerDecks(tournamentId);
   const deckArchetypes = await fetchDeckArchetypes();
@@ -34,27 +46,35 @@ const getPlayerDeckObjects = async (tournamentId: string) => {
   });
 };
 
-const adjustRecordForCurrentRound = (record: { wins: number, losses: number, ties: number }, result: string) => {
+const adjustRecordForCurrentRound = (
+  record: { wins: number; losses: number; ties: number },
+  result: string
+) => {
   if (result === 'W') {
     return {
       wins: record.wins + 1,
       ties: record.ties,
-      losses: record.losses
-    }
+      losses: record.losses,
+    };
   }
 
   if (result === 'L') {
     return {
       wins: record.wins,
       ties: record.ties,
-      losses: record.losses
-    }
+      losses: record.losses,
+    };
   }
 
   return record;
-}
+};
 
-async function mapResultsArray(resultsArray: any, tournamentId: string, roundNumber: number): Promise<string[]> {
+async function mapResultsArray(
+  resultsArray: any,
+  tournamentId: string,
+  roundNumber: number,
+  playerSocials: Record<string, string> | undefined
+): Promise<string[]> {
   const playerDeckObjects = await getPlayerDeckObjects(tournamentId);
 
   return resultsArray.map(
@@ -63,14 +83,20 @@ async function mapResultsArray(resultsArray: any, tournamentId: string, roundNum
       placing: number;
       record: { wins: number; losses: number; ties: number };
       result: string;
-      rounds: Record<number, Record<string, any>>
+      rounds: Record<number, Record<string, any>>;
     }) => ({
       name: player.name,
+      twitter: playerSocials?.[player.name], 
       placing: player.placing,
-      record: adjustRecordForCurrentRound(player.record, player.rounds[roundNumber]?.result),
+      record: adjustRecordForCurrentRound(
+        player.record,
+        player.rounds[roundNumber]?.result
+      ),
       currentMatchResult: player.rounds[roundNumber]?.result,
       day2: player.record.wins * 3 + player.record.ties >= 19,
-      deck: playerDeckObjects?.find((playerDeck) => playerDeck.player_name === player.name)?.deck
+      deck: playerDeckObjects?.find(
+        playerDeck => playerDeck.player_name === player.name
+      )?.deck,
     })
   );
 }
@@ -81,7 +107,7 @@ type Data = {
 };
 
 const getRoundNumber = (firstPlace: Record<string, any>) => {
-  let highestRound = 0
+  let highestRound = 0;
   for (const key of Object.keys(firstPlace.rounds)) {
     if (parseInt(key) > highestRound) {
       highestRound = parseInt(key);
@@ -89,7 +115,7 @@ const getRoundNumber = (firstPlace: Record<string, any>) => {
   }
 
   return highestRound;
-}
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -101,10 +127,18 @@ export default async function handler(
     );
     let data = await response.text();
     data = data.replaceAll('"rounds"', ',"rounds"');
-    data = data.replaceAll('"result":}', '"result": null }')
+    data = data.replaceAll('"result":}', '"result": null }');
     let parsedData = JSON.parse(data);
     const roundNumber = getRoundNumber(parsedData[0]);
-    parsedData = await mapResultsArray(parsedData, req.query.id as string, roundNumber)
+
+    const playerSocials: Record<string, string> | undefined =
+      await fetchPlayerSocials();
+    parsedData = await mapResultsArray(
+      parsedData,
+      req.query.id as string,
+      roundNumber,
+      playerSocials
+    );
 
     res.status(200).json({ roundNumber, data: parsedData });
   } catch (err) {
