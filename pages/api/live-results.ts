@@ -67,7 +67,7 @@ async function mapResultsArray(resultsArray: any, tournamentId: string, roundNum
     }) => ({
       name: player.name,
       placing: player.placing,
-      record: player.record,
+      record: adjustRecordForCurrentRound(player.record, player.rounds[roundNumber]?.result),
       currentMatchResult: player.rounds[roundNumber]?.result,
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: playerDeckObjects?.find((playerDeck) => playerDeck.player_name === player.name)?.deck
