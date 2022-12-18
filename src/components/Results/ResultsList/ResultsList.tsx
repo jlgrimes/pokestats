@@ -57,7 +57,7 @@ export default function ResultsList({
               idx: number
             ) => {
               return (
-                <Tr key={idx}>
+                <Tr key={idx} height='41px'>
                   <Td isNumeric padding={0}>
                     {result.placing}
                   </Td>
