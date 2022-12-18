@@ -42,36 +42,51 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   return (
     <Fragment>
       <Menu>
-        <MenuButton
-          as={Button}
-          rightIcon={<ChevronDownIcon />}
-          variant='outline'
-          width={'100%'}
-        >
-          {selectedArchetype.length > 0 ? (
-            <SpriteDisplay
-              pokemonNames={
-                decks?.find(deck => deck.name === selectedArchetype)
-                  ?.defined_pokemon ?? []
-              }
-            />
-          ) : (
-            'Select deck'
-          )}
-        </MenuButton>
-        <MenuList>
-          {decks?.map(({ name, defined_pokemon }, idx) => (
-            <MenuItem key={idx} onClick={() => handleArchetypeChange(name)}>
-              <SpriteAndNameDisplay
-                archetypeName={name}
-                pokemonNames={defined_pokemon}
-              />
-            </MenuItem>
-          ))}
-          <MenuItem onClick={openAddModal}>Add Archetype</MenuItem>
-        </MenuList>
+        {({ isOpen }) => (
+          <>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              variant='outline'
+              width={'100%'}
+            >
+              {selectedArchetype.length > 0 ? (
+                <SpriteDisplay
+                  pokemonNames={
+                    decks?.find(deck => deck.name === selectedArchetype)
+                      ?.defined_pokemon ?? []
+                  }
+                />
+              ) : (
+                'Select deck'
+              )}
+            </MenuButton>
+            {isOpen && (
+              <MenuList>
+                {decks?.map(({ name, defined_pokemon }, idx) => (
+                  <MenuItem
+                    key={idx}
+                    onClick={() => handleArchetypeChange(name)}
+                  >
+                    <SpriteAndNameDisplay
+                      archetypeName={name}
+                      pokemonNames={defined_pokemon}
+                    />
+                  </MenuItem>
+                ))}
+                <MenuItem onClick={openAddModal}>Add Archetype</MenuItem>
+              </MenuList>
+            )}
+          </>
+        )}
       </Menu>
-      <AddArchetypeModal isOpen={isAddModalOpen} onClose={closeAddModal} handleArchetypeChange={handleArchetypeChange} />
+      {isAddModalOpen && (
+        <AddArchetypeModal
+          isOpen={isAddModalOpen}
+          onClose={closeAddModal}
+          handleArchetypeChange={handleArchetypeChange}
+        />
+      )}
     </Fragment>
   );
 }
