@@ -5,19 +5,15 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Stack,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 import { useArchetypes } from '../../../hooks/deckArchetypes';
-import supabase from '../../../lib/supabase/client';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
-import SpriteDisplay from '../../common/SpriteDisplay';
 import AddArchetypeModal from './AddArchetypeModal';
 
 interface ArchetypeSelectorProps {
-  value: string;
+  value?: string;
   onChange: (field: string, value: string) => void;
 }
 
@@ -35,7 +31,9 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   };
 
   useEffect(() => {
-    setSelectedArchetype(props.value);
+    if (props.value) {
+      setSelectedArchetype(props.value);
+    }
   }, [props.value]);
 
   const { data: decks } = useArchetypes();
