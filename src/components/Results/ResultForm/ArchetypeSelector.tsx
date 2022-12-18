@@ -10,11 +10,12 @@ import {
 import { Fragment, useEffect, useState } from 'react';
 import { useArchetypes } from '../../../hooks/deckArchetypes';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
+import SpriteDisplay from '../../common/SpriteDisplay';
 import AddArchetypeModal from './AddArchetypeModal';
 
 interface ArchetypeSelectorProps {
   value?: string;
-  onChange: (field: string, value: string) => void;
+  onChange: (value: string) => void;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
@@ -26,7 +27,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   } = useDisclosure();
 
   const handleMenuItemClick = (deck: string) => {
-    props.onChange('deck', deck);
+    props.onChange(deck);
     setSelectedArchetype(deck);
   };
 
@@ -48,8 +49,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           width={'100%'}
         >
           {selectedArchetype.length > 0 ? (
-            <SpriteAndNameDisplay
-              archetypeName={selectedArchetype}
+            <SpriteDisplay
               pokemonNames={
                 decks?.find(deck => deck.name === selectedArchetype)
                   ?.defined_pokemon ?? []

@@ -69,7 +69,7 @@ export default function ResultForm({ tournament }: { tournament: string }) {
           <FormLabel>Deck archetype</FormLabel>
           <ArchetypeAutocomplete
             value={formik.values.deck}
-            onChange={formik.setFieldValue}
+            onChange={(value) => formik.setFieldValue('deck', value)}
           />
         </FormControl>
         <div>
