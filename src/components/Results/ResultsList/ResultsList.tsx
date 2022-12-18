@@ -8,11 +8,18 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useArchetypes } from '../../../hooks/deckArchetypes';
-import { useLiveTournamentResults, useTournamentResults } from '../../../hooks/tournamentResults';
+import {
+  useLiveTournamentResults,
+  useTournamentResults,
+} from '../../../hooks/tournamentResults';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
 import { formatRecord } from './helpers';
 
-export default function ResultsList({ tournament }: { tournament: { id: string, name: string } }) {
+export default function ResultsList({
+  tournament,
+}: {
+  tournament: { id: string; name: string };
+}) {
   const { data: liveResults } = useLiveTournamentResults(tournament.id);
   const { data: results } = useTournamentResults(tournament.name);
   const { data: decks } = useArchetypes();
@@ -32,10 +39,16 @@ export default function ResultsList({ tournament }: { tournament: { id: string, 
           {liveResults?.data?.map((result, idx) => {
             return (
               <Tr key={idx}>
-              <Td isNumeric>{result.placing}</Td>
-              <Td maxWidth={'12rem'}>{result.name}</Td>
-              <Td>{formatRecord(result.record)}</Td>
-              {/* <Td>
+                <Td isNumeric>{result.placing}</Td>
+                <Td
+                  maxWidth={'12rem'}
+                  overflow={'hidden'}
+                  textOverflow={'ellipsis'}
+                >
+                  {result.name}
+                </Td>
+                <Td>{formatRecord(result.record)}</Td>
+                {/* <Td>
                 <SpriteAndNameDisplay
                   archetypeName={result.deck_archetype}
                   pokemonNames={
@@ -44,8 +57,8 @@ export default function ResultsList({ tournament }: { tournament: { id: string, 
                   }
                 />
               </Td> */}
-            </Tr>
-            )
+              </Tr>
+            );
           })}
         </Tbody>
       </Table>
