@@ -14,6 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { useMutation, useQueryClient } from 'react-query';
 import supabase from '../../../lib/supabase/client';
 
 interface AddArchetypeModalProps {
@@ -23,6 +24,40 @@ interface AddArchetypeModalProps {
 
 export default function AddArchetypeModal(props: AddArchetypeModalProps) {
   const toast = useToast();
+  const queryClient = useQueryClient();
+
+  const addArchetype = async ({
+    name,
+    pokemon1,
+    pokemon2,
+  }: {
+    name: string;
+    pokemon1: string;
+    pokemon2: string;
+  }) => {
+    const result = await supabase
+      .from('Deck Archetypes')
+      .insert([{ name, defined_pokemon: [pokemon1, pokemon2] }]);
+    return result;
+  };
+
+  const mutation = useMutation('deck-archetypes', addArchetype, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('deck-archetypes');
+
+      toast({
+        title: 'Successfully created archetype!',
+        status: 'success',
+      });
+      props.onClose();
+    },
+    onError: () => {
+      toast({
+        title: 'Error creating archetype',
+        status: 'error',
+      });
+    },
+  });
 
   const handleSubmit = async ({
     name,
@@ -33,23 +68,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
     pokemon1: string;
     pokemon2: string;
   }) => {
-    const { data, error } = await supabase
-      .from('Deck Archetypes')
-      .insert([{ name, defined_pokemon: [pokemon1, pokemon2] }]);
-
-    if (error) {
-      toast({
-        title: 'Error creating archetype',
-        status: 'error',
-        description: error.message,
-      });
-    } else {
-      toast({
-        title: 'Successfully created archetype!',
-        status: 'success',
-      });
-      props.onClose();
-    }
+    mutation.mutate({ name, pokemon1, pokemon2 });
   };
 
   const formik = useFormik({

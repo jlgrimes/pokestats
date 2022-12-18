@@ -9,5 +9,5 @@ export const useArchetypes = () => {
     return res.data;
   };
 
-  return useQuery('decks', fetchArchetypes);
+  return useQuery('deck-archetypes', fetchArchetypes);
 }
