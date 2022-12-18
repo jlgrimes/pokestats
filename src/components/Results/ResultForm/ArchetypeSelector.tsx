@@ -71,7 +71,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           <MenuItem onClick={openAddModal}>Add Archetype</MenuItem>
         </MenuList>
       </Menu>
-      <AddArchetypeModal isOpen={isAddModalOpen} onClose={closeAddModal} />
+      <AddArchetypeModal isOpen={isAddModalOpen} onClose={closeAddModal} setSelectedArchetype={setSelectedArchetype} />
     </Fragment>
   );
 }
