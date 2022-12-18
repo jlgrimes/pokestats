@@ -13,15 +13,11 @@ import {
 import NextLink from 'next/link';
 import { Link } from '@chakra-ui/react';
 import { FaTwitter } from 'react-icons/fa';
-import { useArchetypes } from '../../../../hooks/deckArchetypes';
-import {
-  useLiveTournamentResults,
-  useTournamentResults,
-} from '../../../../hooks/tournamentResults';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
+import { Player } from './Player/Player';
 
 interface LiveResultType {
   placing: string;
@@ -57,63 +53,47 @@ export default function ResultsList({
           </Tr>
         </Thead>
         <Tbody>
-          {liveResults?.map(
-            (
-              result: LiveResultType,
-              idx: number
-            ) => {
-              return (
-                <Tr key={idx} height='41px'>
-                  <Td isNumeric padding={0}>
-                    {result.placing}
-                  </Td>
-                  <Td
-                    maxWidth={'12rem'}
-                    overflow={'hidden'}
-                    textOverflow={'ellipsis'}
-                    padding={0}
-                    paddingLeft={2}
-                  >
-                    <Stack direction={'row'}>
-                      <Text>{result.name}</Text>
-                      {result.twitter && (
-                        <Link
-                          color='twitter.500'
-                          as={NextLink}
-                          href={result.twitter}
-                          isExternal
-                        >
-                          <Icon as={FaTwitter} />
-                        </Link>
-                      )}
-                    </Stack>
-                  </Td>
-                  <Td
-                    padding={0}
-                    backgroundColor={
-                      result.currentMatchResult === 'W'
-                        ? 'green.100'
-                        : result.currentMatchResult === 'L'
-                        ? 'red.100'
-                        : ''
-                    }
-                  >
-                    {formatRecord(result.record)}
-                  </Td>
-                  <Td padding={0} paddingLeft={2}>
-                    {allowEdits ? (
-                      <DeckInput
-                        tournamentId={tournament.id}
-                        playerName={result.name}
-                        deckName={result.deck?.name}
-                      />
-                    ) : (
-                      <SpriteDisplay
-                        pokemonNames={result?.deck?.defined_pokemon ?? []}
-                      />
-                    )}
-                  </Td>
-                  {/* <Td>
+          {liveResults?.map((result: LiveResultType, idx: number) => {
+            return (
+              <Tr key={idx} height='41px'>
+                <Td isNumeric padding={0}>
+                  {result.placing}
+                </Td>
+                <Td
+                  maxWidth={'12rem'}
+                  overflow={'hidden'}
+                  textOverflow={'ellipsis'}
+                  padding={0}
+                  paddingLeft={2}
+                >
+                  <Player name={result.name} twitterUrl={result.twitter} />
+                </Td>
+                <Td
+                  padding={0}
+                  backgroundColor={
+                    result.currentMatchResult === 'W'
+                      ? 'green.100'
+                      : result.currentMatchResult === 'L'
+                      ? 'red.100'
+                      : ''
+                  }
+                >
+                  {formatRecord(result.record)}
+                </Td>
+                <Td padding={0} paddingLeft={2}>
+                  {allowEdits ? (
+                    <DeckInput
+                      tournamentId={tournament.id}
+                      playerName={result.name}
+                      deckName={result.deck?.name}
+                    />
+                  ) : (
+                    <SpriteDisplay
+                      pokemonNames={result?.deck?.defined_pokemon ?? []}
+                    />
+                  )}
+                </Td>
+                {/* <Td>
                 <SpriteAndNameDisplay
                   archetypeName={result.deck_archetype}
                   pokemonNames={
@@ -122,10 +102,9 @@ export default function ResultsList({
                   }
                 />
               </Td> */}
-                </Tr>
-              );
-            }
-          )}
+              </Tr>
+            );
+          })}
         </Tbody>
       </Table>
     </TableContainer>
