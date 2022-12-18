@@ -34,7 +34,7 @@ const getPlayerDeckObjects = async (tournamentId: string) => {
   });
 };
 
-async function mapResultsArray(resultsArray: any, tournamentId: string) {
+async function mapResultsArray(resultsArray: any, tournamentId: string): Promise<string[]> {
   const playerDeckObjects = await getPlayerDeckObjects(tournamentId);
 
   return resultsArray.map(
@@ -67,7 +67,7 @@ export default async function handler(
     let data = await response.text();
     data = data.replaceAll('"rounds"', ',"rounds"');
     let parsedData = JSON.parse(data);
-    parsedData = await mapResultsArray(parsedData, req.query.id)
+    parsedData = await mapResultsArray(parsedData, req.query.id as string)
 
     res.status(200).json({ data: parsedData });
   } catch (err) {
