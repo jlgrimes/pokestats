@@ -100,8 +100,6 @@ export default async function handler(
       `https://pokedata.ovh/standings/${req.query.id}/masters/${req.query.id}_Masters.json`
     );
     let data = await response.text();
-    data = data.replaceAll('"rounds"', ',"rounds"');
-    data = data.replaceAll('"result":}', '"result": null }');
     let parsedData = JSON.parse(data);
     const roundNumber = getRoundNumber(parsedData[0]);
 
