@@ -21,12 +21,13 @@ const fetchPlayerProfiles = async () => {
   const res = await supabase
     .from('Player Profiles')
     .select('id,name,twitter_profile_url');
-  return res.data?.reduce((acc, playerProfile) => {
+  return await res.data?.reduce((acc, player) => {
     return {
       ...acc,
-      [playerProfile.name]: {
-        playerId: playerProfile.id,
-        twitterUrl: playerProfile.twitter_profile_url,
+      [player.name]: {
+        id: player.id,
+        name: player.name,
+        twitterUrl: player.twitter_profile_url,
       },
     };
   }, {});
@@ -42,8 +43,10 @@ const uploadMissingPlayerProfiles = async (
     return;
   }
 
-  const missingPlayerRows = parsedData.reduce(
+  const missingPlayerRows = await parsedData.reduce(
     (acc: Record<string, any>[], { name }) => {
+      console.log(name);
+      console.log(playerProfiles[name])
       if (!playerProfiles[name]) {
         return [...acc, { name }];
       }
@@ -51,8 +54,8 @@ const uploadMissingPlayerProfiles = async (
     },
     []
   );
-
-  await supabase.from('Player Profiles').insert(missingPlayerRows);
+  console.log(missingPlayerRows)
+ await supabase.from('Player Profiles').insert(missingPlayerRows);
 };
 
 const getPlayerDeckObjects = async (tournamentId: string) => {
@@ -133,8 +136,7 @@ export default async function handler(
     const response = await fetch(
       `https://pokedata.ovh/standings/${req.query.id}/masters/${req.query.id}_Masters.json`
     );
-    let data = await response.text();
-    let parsedData = JSON.parse(data);
+    let parsedData = await response.json();
     const roundNumber = getRoundNumber(parsedData[0]);
 
     const playerDeckObjects = await getPlayerDeckObjects(

@@ -15,31 +15,41 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { memo } from 'react';
-import { useMutatePlayerProfiles } from '../../../../../hooks/playerProfiles';
-
+import supabase from '../../../../../lib/supabase/client';
 interface EditPlayerModalProps {
-  playerProfile: { playerId: number, twitterUrl: string } | undefined;
+  playerProfile: { id: number; twitterUrl: string } | undefined;
+  name: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
-  const mutatePlayerProfiles = useMutatePlayerProfiles(props.onClose, props.playerProfile?.playerId);
-
+  const toast = useToast();
+  console.log(props.playerProfile)
   const handleSubmit = async ({
     name,
-    twitter
+    twitter,
   }: {
     name: string;
-    twitter: string
+    twitter: string;
   }) => {
-    await mutatePlayerProfiles.mutate({ name, twitter });
+    const res = await supabase
+      .from('Player Profiles')
+      .update({ name, twitter_profile_url: twitter })
+      .eq('id', props.playerProfile?.id);
+
+    toast({
+      title: 'Successfully updated player!',
+      description: res.status,
+      status: 'success',
+    });
+    props.onClose();
   };
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      twitter: props.playerProfile?.twitterUrl ?? ''
+      name: props.name,
+      twitter: props.playerProfile?.twitterUrl ?? '',
     },
     onSubmit: handleSubmit,
   });
@@ -73,7 +83,7 @@ export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
           </ModalBody>
           <ModalFooter>
             <Button colorScheme='blue' mr={3} type='submit'>
-              Add archetype
+              Update player information
             </Button>
             <Button variant='ghost' onClick={props.onClose}>
               Close

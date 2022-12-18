@@ -10,10 +10,6 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import { Link } from '@chakra-ui/react';
-import { FaTwitter } from 'react-icons/fa';
-import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
@@ -22,7 +18,7 @@ import { Player } from './Player/Player';
 interface LiveResultType {
   placing: string;
   name: string;
-  profile: { playerId: number, twitterUrl: string };
+  profile: { id: number, twitterUrl: string };
   record: { wins: number; losses: number; ties: number };
   deck: { name: string; defined_pokemon: string[] };
   currentMatchResult: string;

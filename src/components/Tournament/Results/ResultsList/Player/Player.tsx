@@ -19,7 +19,7 @@ export const Player = memo(
     isEditable,
   }: {
     name: string;
-    profile: { playerId: number; twitterUrl: string };
+    profile: { id: number; twitterUrl: string };
     isEditable: boolean;
   }) => {
     const {
@@ -51,6 +51,7 @@ export const Player = memo(
             isOpen={isEditOpen}
             onClose={closeEdit}
             playerProfile={profile}
+            name={name}
           />
         )}
       </Stack>
