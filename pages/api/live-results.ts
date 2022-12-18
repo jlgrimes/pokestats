@@ -66,6 +66,7 @@ export default async function handler(
     );
     let data = await response.text();
     data = data.replaceAll('"rounds"', ',"rounds"');
+    data = data.replaceAll('"result":}', '"result": null }')
     let parsedData = JSON.parse(data);
     parsedData = await mapResultsArray(parsedData, req.query.id as string)
 
