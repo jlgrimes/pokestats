@@ -21,7 +21,7 @@ import supabase from '../../../lib/supabase/client';
 interface AddArchetypeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  setSelectedArchetype: (name: string) => void;
+  handleArchetypeChange: (name: string) => void;
 }
 
 export default function AddArchetypeModal(props: AddArchetypeModalProps) {
@@ -37,7 +37,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
     pokemon2: string;
   }) => {
     await mutateArchetypes.mutate({ name, pokemon1, pokemon2 });
-    props.setSelectedArchetype(name);
+    props.handleArchetypeChange(name);
   };
 
   const formik = useFormik({

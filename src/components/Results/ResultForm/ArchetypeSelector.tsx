@@ -26,7 +26,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     onClose: closeAddModal,
   } = useDisclosure();
 
-  const handleMenuItemClick = (deck: string) => {
+  const handleArchetypeChange = (deck: string) => {
     props.onChange(deck);
     setSelectedArchetype(deck);
   };
@@ -61,7 +61,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         </MenuButton>
         <MenuList>
           {decks?.map(({ name, defined_pokemon }, idx) => (
-            <MenuItem key={idx} onClick={() => handleMenuItemClick(name)}>
+            <MenuItem key={idx} onClick={() => handleArchetypeChange(name)}>
               <SpriteAndNameDisplay
                 archetypeName={name}
                 pokemonNames={defined_pokemon}
@@ -71,7 +71,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           <MenuItem onClick={openAddModal}>Add Archetype</MenuItem>
         </MenuList>
       </Menu>
-      <AddArchetypeModal isOpen={isAddModalOpen} onClose={closeAddModal} setSelectedArchetype={setSelectedArchetype} />
+      <AddArchetypeModal isOpen={isAddModalOpen} onClose={closeAddModal} handleArchetypeChange={handleArchetypeChange} />
     </Fragment>
   );
 }
