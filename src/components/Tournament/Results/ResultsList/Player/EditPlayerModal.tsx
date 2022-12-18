@@ -40,7 +40,7 @@ export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
 
     toast({
       title: 'Successfully updated player!',
-      description: res.status,
+      description: 'Refresh page to see updates',
       status: 'success',
     });
     props.onClose();
