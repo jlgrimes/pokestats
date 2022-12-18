@@ -8,12 +8,14 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useArchetypes } from '../../../hooks/deckArchetypes';
-import { useTournamentResults } from '../../../hooks/tournamentResults';
+import { useLiveTournamentResults, useTournamentResults } from '../../../hooks/tournamentResults';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
 
-export default function ResultsList({ tournament }: { tournament: string }) {
-  const { data: results } = useTournamentResults(tournament);
+export default function ResultsList({ tournament }: { tournament: { id: string, name: string } }) {
+  const { data: liveResults } = useLiveTournamentResults(tournament.id);
+  const { data: results } = useTournamentResults(tournament.name);
   const { data: decks } = useArchetypes();
+  console.log(liveResults)
 
   return (
     <TableContainer>

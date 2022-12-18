@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { getResultQueryKey } from "../lib/fetch/query-keys";
-import supabase from "../lib/supabase/client";
+import { useQuery } from 'react-query';
+import { getResultQueryKey } from '../lib/fetch/query-keys';
+import supabase from '../lib/supabase/client';
 
 export const useTournamentResults = (tournamentName: string) => {
   const fetchResults = async () => {
@@ -11,8 +11,15 @@ export const useTournamentResults = (tournamentName: string) => {
     return res.data;
   };
 
-  return useQuery(
-    getResultQueryKey(tournamentName),
-    fetchResults
-  );
-}
+  return useQuery(getResultQueryKey(tournamentName), fetchResults);
+};
+
+export const useLiveTournamentResults = (tournamentId: string) => {
+  const url = `https://pokedata.ovh/standings/${tournamentId}/masters/${tournamentId}_Masters.json`;
+  const fetchLiveResults = async () => {
+    const res = await fetch(url);
+    return res.json();
+  };
+
+  return useQuery(tournamentId, fetchLiveResults);
+};

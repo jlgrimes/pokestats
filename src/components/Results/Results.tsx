@@ -6,12 +6,12 @@ export default function Results({
   tournament,
   allowEdits,
 }: {
-  tournament: string;
+  tournament: { id: string, name: string };
   allowEdits: boolean;
 }) {
   return (
     <Flex flexDirection={'column'}>
-      {allowEdits && <ResultForm tournament={tournament} />}
+      {allowEdits && <ResultForm tournament={tournament.name} />}
       <ResultsList tournament={tournament} />
     </Flex>
   );

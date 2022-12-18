@@ -25,7 +25,7 @@ export default function Home({ userIsAdmin }: { userIsAdmin: boolean }) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Tournament tournament='Arlington 2022' allowEdits={userIsAdmin} />
+      <Tournament tournament={{ id: 'arlington20222023', name: 'Arlington 2022' }} allowEdits={userIsAdmin} />
     </div>
   );
 }
