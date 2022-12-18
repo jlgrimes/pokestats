@@ -54,7 +54,7 @@ const adjustRecordForCurrentRound = (record: { wins: number, losses: number, tie
   return record;
 }
 
-async function mapResultsArray(resultsArray: any, tournamentId: string): Promise<string[]> {
+async function mapResultsArray(resultsArray: any, tournamentId: string, roundNumber: number): Promise<string[]> {
   const playerDeckObjects = await getPlayerDeckObjects(tournamentId);
 
   return resultsArray.map(
@@ -63,11 +63,12 @@ async function mapResultsArray(resultsArray: any, tournamentId: string): Promise
       placing: number;
       record: { wins: number; losses: number; ties: number };
       result: string;
+      rounds: Record<number, Record<string, any>>
     }) => ({
       name: player.name,
       placing: player.placing,
       record: player.record,
-      matchResult: player.result,
+      currentMatchResult: player.rounds[roundNumber]?.result,
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: playerDeckObjects?.find((playerDeck) => playerDeck.player_name === player.name)?.deck
     })
@@ -103,7 +104,7 @@ export default async function handler(
     data = data.replaceAll('"result":}', '"result": null }')
     let parsedData = JSON.parse(data);
     const roundNumber = getRoundNumber(parsedData[0]);
-    parsedData = await mapResultsArray(parsedData, req.query.id as string)
+    parsedData = await mapResultsArray(parsedData, req.query.id as string, roundNumber)
 
     res.status(200).json({ roundNumber, data: parsedData });
   } catch (err) {

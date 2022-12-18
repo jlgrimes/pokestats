@@ -52,7 +52,7 @@ export default function ResultsList({
                 name: string;
                 record: { wins: number; losses: number; ties: number };
                 deck: { name: string; defined_pokemon: string[] };
-                matchResult: string;
+                currentMatchResult: string;
               },
               idx: number
             ) => {
@@ -73,9 +73,9 @@ export default function ResultsList({
                   <Td
                     padding={0}
                     backgroundColor={
-                      result.matchResult === 'W'
+                      result.currentMatchResult === 'W'
                         ? 'green.100'
-                        : result.matchResult === 'L'
+                        : result.currentMatchResult === 'L'
                         ? 'red.100'
                         : ''
                     }
