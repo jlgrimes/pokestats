@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Button,
   Menu,
@@ -46,8 +46,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           <>
             <MenuButton
               as={Button}
-              rightIcon={<ChevronDownIcon />}
-              variant='outline'
+              variant='ghost'
               width={'100%'}
             >
               {(selectedArchetype && selectedArchetype.length > 0) ? (
@@ -58,7 +57,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
                   }
                 />
               ) : (
-                'Select deck'
+                <EditIcon />
               )}
             </MenuButton>
             {isOpen && (

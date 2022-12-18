@@ -27,17 +27,19 @@ export default function ResultsList({
   const { data: liveResults } = useLiveTournamentResults(tournament.id);
   const { data: results } = useTournamentResults(tournament.name);
   const { data: decks } = useArchetypes();
-  console.log(liveResults)
+  console.log(liveResults);
 
   return (
     <TableContainer>
       <Table size={'sm'}>
         <Thead>
           <Tr>
-            <Th maxWidth={'0.5rem'}>Place</Th>
-            <Th>Name</Th>
-            <Th>Record</Th>
-            <Th>Deck</Th>
+            <Th></Th>
+            <Th padding={0} paddingLeft={2}>
+              Name
+            </Th>
+            <Th padding={0}>Record</Th>
+            <Th padding={0} paddingLeft={2}>Deck</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -53,18 +55,25 @@ export default function ResultsList({
             ) => {
               return (
                 <Tr key={idx}>
-                  <Td isNumeric>{result.placing}</Td>
+                  <Td isNumeric padding={0}>
+                    {result.placing}
+                  </Td>
                   <Td
                     maxWidth={'12rem'}
                     overflow={'hidden'}
                     textOverflow={'ellipsis'}
+                    padding={0}
+                    paddingLeft={2}
                   >
                     {result.name}
                   </Td>
-                  <Td>{formatRecord(result.record)}</Td>
-                  <Td>
+                  <Td padding={0}>{formatRecord(result.record)}</Td>
+                  <Td padding={0} paddingLeft={2}>
                     {allowEdits ? (
-                      <DeckInput playerName={result.name} deckName={result.deck?.name} />
+                      <DeckInput
+                        playerName={result.name}
+                        deckName={result.deck?.name}
+                      />
                     ) : (
                       <SpriteDisplay
                         pokemonNames={result?.deck?.defined_pokemon ?? []}
