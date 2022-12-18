@@ -34,6 +34,26 @@ const getPlayerDeckObjects = async (tournamentId: string) => {
   });
 };
 
+const adjustRecordForCurrentRound = (record: { wins: number, losses: number, ties: number }, result: string) => {
+  if (result === 'W') {
+    return {
+      wins: record.wins + 1,
+      ties: record.ties,
+      losses: record.losses
+    }
+  }
+
+  if (result === 'L') {
+    return {
+      wins: record.wins,
+      ties: record.ties,
+      losses: record.losses
+    }
+  }
+
+  return record;
+}
+
 async function mapResultsArray(resultsArray: any, tournamentId: string): Promise<string[]> {
   const playerDeckObjects = await getPlayerDeckObjects(tournamentId);
 
@@ -42,10 +62,12 @@ async function mapResultsArray(resultsArray: any, tournamentId: string): Promise
       name: string;
       placing: number;
       record: { wins: number; losses: number; ties: number };
+      result: string;
     }) => ({
       name: player.name,
       placing: player.placing,
-      record: player.record,
+      record: adjustRecordForCurrentRound(player.record, player.result),
+      matchResult: player.result,
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: playerDeckObjects?.find((playerDeck) => playerDeck.player_name === player.name)?.deck
     })
