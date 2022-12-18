@@ -73,6 +73,8 @@ export default function ResultsList({
                   backgroundColor={
                     result.currentMatchResult === 'W'
                       ? 'green.100'
+                      : result.currentMatchResult === 'T'
+                      ? 'yellow.100'
                       : result.currentMatchResult === 'L'
                       ? 'red.100'
                       : ''
