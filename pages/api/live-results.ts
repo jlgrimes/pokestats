@@ -66,7 +66,7 @@ async function mapResultsArray(resultsArray: any, tournamentId: string): Promise
     }) => ({
       name: player.name,
       placing: player.placing,
-      record: adjustRecordForCurrentRound(player.record, player.result),
+      record: player.record,
       matchResult: player.result,
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: playerDeckObjects?.find((playerDeck) => playerDeck.player_name === player.name)?.deck
@@ -75,8 +75,20 @@ async function mapResultsArray(resultsArray: any, tournamentId: string): Promise
 }
 
 type Data = {
+  roundNumber: number;
   data: string;
 };
+
+const getRoundNumber = (firstPlace: Record<string, any>) => {
+  let highestRound = 0
+  for (const key of Object.keys(firstPlace.rounds)) {
+    if (parseInt(key) > highestRound) {
+      highestRound = parseInt(key);
+    }
+  }
+
+  return highestRound;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -90,9 +102,10 @@ export default async function handler(
     data = data.replaceAll('"rounds"', ',"rounds"');
     data = data.replaceAll('"result":}', '"result": null }')
     let parsedData = JSON.parse(data);
+    const roundNumber = getRoundNumber(parsedData[0]);
     parsedData = await mapResultsArray(parsedData, req.query.id as string)
 
-    res.status(200).json({ data: parsedData });
+    res.status(200).json({ roundNumber, data: parsedData });
   } catch (err) {
     console.error(err);
     return res.status(500);
