@@ -39,7 +39,9 @@ export default function ResultsList({
               Name
             </Th>
             <Th padding={0}>Record</Th>
-            <Th padding={0} paddingLeft={2}>Deck</Th>
+            <Th padding={0} paddingLeft={2}>
+              Deck
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -50,6 +52,7 @@ export default function ResultsList({
                 name: string;
                 record: { wins: number; losses: number; ties: number };
                 deck: { name: string; defined_pokemon: string[] };
+                matchResult: string;
               },
               idx: number
             ) => {
@@ -67,7 +70,18 @@ export default function ResultsList({
                   >
                     {result.name}
                   </Td>
-                  <Td padding={0}>{formatRecord(result.record)}</Td>
+                  <Td
+                    padding={0}
+                    backgroundColor={
+                      result.matchResult === 'W'
+                        ? 'green.100'
+                        : result.matchResult === 'L'
+                        ? 'red.100'
+                        : ''
+                    }
+                  >
+                    {formatRecord(result.record)}
+                  </Td>
                   <Td padding={0} paddingLeft={2}>
                     {allowEdits ? (
                       <DeckInput
