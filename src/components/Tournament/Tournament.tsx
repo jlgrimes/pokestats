@@ -12,7 +12,7 @@ export default function Tournament({
   return (
     <Stack>
       <Heading>{tournament.name}</Heading>
-      <NotablePlayers tournament={tournament.name} allowEdits={allowEdits} />
+      {/* <NotablePlayers tournament={tournament.name} allowEdits={allowEdits} /> */}
       <Results tournament={tournament} allowEdits={allowEdits} />
     </Stack>
   );

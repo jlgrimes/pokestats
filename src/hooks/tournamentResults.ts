@@ -15,7 +15,7 @@ export const useTournamentResults = (tournamentName: string) => {
 };
 
 export const useLiveTournamentResults = (tournamentId: string) => {
-  const url = `https://pokedata.ovh/standings/${tournamentId}/masters/${tournamentId}_Masters.json`;
+  const url = `/api/live-results?id=${tournamentId}`;
   const fetchLiveResults = async () => {
     const res = await fetch(url);
     return res.json();

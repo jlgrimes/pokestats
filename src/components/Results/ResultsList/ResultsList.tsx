@@ -10,29 +10,32 @@ import {
 import { useArchetypes } from '../../../hooks/deckArchetypes';
 import { useLiveTournamentResults, useTournamentResults } from '../../../hooks/tournamentResults';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
+import { formatRecord } from './helpers';
 
 export default function ResultsList({ tournament }: { tournament: { id: string, name: string } }) {
   const { data: liveResults } = useLiveTournamentResults(tournament.id);
   const { data: results } = useTournamentResults(tournament.name);
   const { data: decks } = useArchetypes();
-  console.log(liveResults)
 
   return (
     <TableContainer>
       <Table size={'sm'}>
         <Thead>
           <Tr>
-            <Th>Place</Th>
+            <Th maxWidth={'0.5rem'}>Place</Th>
             <Th>Name</Th>
+            <Th>Record</Th>
             <Th>Deck</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {results?.map((result, idx) => (
-            <Tr key={idx}>
-              <Td>{result.place}</Td>
-              <Td>{result.player_name}</Td>
-              <Td>
+          {liveResults?.data?.map((result, idx) => {
+            return (
+              <Tr key={idx}>
+              <Td isNumeric>{result.placing}</Td>
+              <Td maxWidth={'12rem'}>{result.name}</Td>
+              <Td>{formatRecord(result.record)}</Td>
+              {/* <Td>
                 <SpriteAndNameDisplay
                   archetypeName={result.deck_archetype}
                   pokemonNames={
@@ -40,9 +43,10 @@ export default function ResultsList({ tournament }: { tournament: { id: string, 
                       ?.defined_pokemon ?? []
                   }
                 />
-              </Td>
+              </Td> */}
             </Tr>
-          ))}
+            )
+          })}
         </Tbody>
       </Table>
     </TableContainer>
