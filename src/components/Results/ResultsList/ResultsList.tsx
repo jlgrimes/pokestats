@@ -13,6 +13,7 @@ import {
   useTournamentResults,
 } from '../../../hooks/tournamentResults';
 import SpriteAndNameDisplay from '../../common/SpriteAndNameDisplay';
+import SpriteDisplay from '../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
 
@@ -26,6 +27,7 @@ export default function ResultsList({
   const { data: liveResults } = useLiveTournamentResults(tournament.id);
   const { data: results } = useTournamentResults(tournament.name);
   const { data: decks } = useArchetypes();
+  console.log(liveResults)
 
   return (
     <TableContainer>
@@ -45,6 +47,7 @@ export default function ResultsList({
                 placing: string;
                 name: string;
                 record: { wins: number; losses: number; ties: number };
+                deck: { name: string; defined_pokemon: string[] };
               },
               idx: number
             ) => {
@@ -59,7 +62,15 @@ export default function ResultsList({
                     {result.name}
                   </Td>
                   <Td>{formatRecord(result.record)}</Td>
-                  <Td>{allowEdits ? <DeckInput /> : null}</Td>
+                  <Td>
+                    {allowEdits ? (
+                      <DeckInput />
+                    ) : (
+                      <SpriteDisplay
+                        pokemonNames={result?.deck?.defined_pokemon ?? []}
+                      />
+                    )}
+                  </Td>
                   {/* <Td>
                 <SpriteAndNameDisplay
                   archetypeName={result.deck_archetype}
