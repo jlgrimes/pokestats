@@ -23,18 +23,24 @@ import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
 
+interface LiveResultType {
+  placing: string;
+  name: string;
+  twitter: string;
+  record: { wins: number; losses: number; ties: number };
+  deck: { name: string; defined_pokemon: string[] };
+  currentMatchResult: string;
+}
+
 export default function ResultsList({
+  liveResults,
   tournament,
   allowEdits,
 }: {
+  liveResults: LiveResultType[];
   tournament: { id: string; name: string };
   allowEdits: boolean;
 }) {
-  const { data: liveResults } = useLiveTournamentResults(tournament.id);
-  const { data: results } = useTournamentResults(tournament.name);
-  const { data: decks } = useArchetypes();
-  console.log(liveResults);
-
   return (
     <TableContainer>
       <Table size={'sm'}>
@@ -51,16 +57,9 @@ export default function ResultsList({
           </Tr>
         </Thead>
         <Tbody>
-          {liveResults?.data?.map(
+          {liveResults?.map(
             (
-              result: {
-                placing: string;
-                name: string;
-                twitter: string;
-                record: { wins: number; losses: number; ties: number };
-                deck: { name: string; defined_pokemon: string[] };
-                currentMatchResult: string;
-              },
+              result: LiveResultType,
               idx: number
             ) => {
               return (
