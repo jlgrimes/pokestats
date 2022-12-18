@@ -33,9 +33,11 @@ const fetchPlayerProfiles = async () => {
 };
 
 const uploadMissingPlayerProfiles = async (
-  parsedData: Record<string, any>[],
-  playerProfiles: Record<string, any> | undefined
+  parsedData: Record<string, any>[]
 ) => {
+  const playerProfiles: Record<string, string> | undefined =
+    await fetchPlayerProfiles();
+
   if (!parsedData || !playerProfiles) {
     return;
   }
@@ -49,11 +51,8 @@ const uploadMissingPlayerProfiles = async (
     },
     []
   );
-  console.log(missingPlayerRows)
 
-  await supabase
-    .from('Player Profiles')
-    .insert(missingPlayerRows);
+  await supabase.from('Player Profiles').insert(missingPlayerRows);
 };
 
 const getPlayerDeckObjects = async (tournamentId: string) => {
@@ -76,7 +75,6 @@ const getPlayerDeckObjects = async (tournamentId: string) => {
 async function mapResultsArray(
   resultsArray: any,
   roundNumber: number,
-  loadedPlayerProfile: Record<string, string> | undefined,
   playerDeckObjects:
     | {
         player_name: any;
@@ -87,6 +85,9 @@ async function mapResultsArray(
       }[]
     | undefined
 ): Promise<string[]> {
+  const playerProfiles: Record<string, string> | undefined =
+    await fetchPlayerProfiles();
+
   return resultsArray.map(
     (player: {
       name: string;
@@ -96,7 +97,7 @@ async function mapResultsArray(
       rounds: Record<number, Record<string, any>>;
     }) => ({
       name: player.name,
-      profile: loadedPlayerProfile?.[player.name],
+      profile: playerProfiles?.[player.name],
       placing: player.placing,
       record: player.record,
       currentMatchResult: player.rounds[roundNumber]?.result,
@@ -136,22 +137,19 @@ export default async function handler(
     let parsedData = JSON.parse(data);
     const roundNumber = getRoundNumber(parsedData[0]);
 
-    const playerProfile: Record<string, string> | undefined =
-      await fetchPlayerProfiles();
     const playerDeckObjects = await getPlayerDeckObjects(
       req.query.id as string
     );
 
+    await uploadMissingPlayerProfiles(parsedData);
+
     parsedData = await mapResultsArray(
       parsedData,
       roundNumber,
-      playerProfile,
       playerDeckObjects
     );
 
     res.status(200).json({ roundNumber, data: parsedData });
-
-    await uploadMissingPlayerProfiles(parsedData, playerProfile);
   } catch (err) {
     console.error(err);
     return res.status(500);
