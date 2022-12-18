@@ -4,15 +4,27 @@ import ArchetypeSelector from '../../ResultForm/ArchetypeSelector';
 export default function DeckInput({
   playerName,
   deckName,
+  tournamentId,
 }: {
   playerName: string;
   deckName: string | undefined;
+  tournamentId: string;
 }) {
   const handleArchetypeSelect = async (newValue: string) => {
-    const res = await supabase
-      .from('Player Decks')
-      .update({ deck_archetype: newValue })
-      .eq('player_name', playerName);
+    if (deckName) {
+      await supabase
+        .from('Player Decks')
+        .update({ deck_archetype: newValue })
+        .eq('player_name', playerName);
+    } else {
+      await supabase
+        .from('Player Decks')
+        .insert({
+          deck_archetype: newValue,
+          player_name: playerName,
+          tournament_id: tournamentId,
+        });
+    }
   };
 
   return (

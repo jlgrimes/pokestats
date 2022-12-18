@@ -71,6 +71,7 @@ export default function ResultsList({
                   <Td padding={0} paddingLeft={2}>
                     {allowEdits ? (
                       <DeckInput
+                        tournamentId={tournament.id}
                         playerName={result.name}
                         deckName={result.deck?.name}
                       />
