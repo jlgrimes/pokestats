@@ -13,7 +13,7 @@ const fetchPlayerDecks = async (tournamentId: string) => {
 const fetchDeckArchetypes = async () => {
   const res = await supabase
     .from('Deck Archetypes')
-    .select('name,defined_pokemon');
+    .select('name,defined_pokemon,identifiable_cards');
   return res.data;
 };
 
@@ -45,8 +45,6 @@ const uploadMissingPlayerProfiles = async (
 
   const missingPlayerRows = await parsedData.reduce(
     (acc: Record<string, any>[], { name }) => {
-      console.log(name);
-      console.log(playerProfiles[name])
       if (!playerProfiles[name]) {
         return [...acc, { name }];
       }
@@ -54,62 +52,92 @@ const uploadMissingPlayerProfiles = async (
     },
     []
   );
-  console.log(missingPlayerRows)
- await supabase.from('Player Profiles').insert(missingPlayerRows);
+  await supabase.from('Player Profiles').insert(missingPlayerRows);
 };
 
-const getPlayerDeckObjects = async (tournamentId: string) => {
+interface DeckArchetype {
+  name: string;
+  defined_pokemon: any;
+  identifiable_cards: any;
+}
+
+const getPlayerDeckObjects = async (tournamentId: string, deckArchetypes: DeckArchetype[] | null) => {
   const playerDecks = await fetchPlayerDecks(tournamentId);
-  const deckArchetypes = await fetchDeckArchetypes();
 
   return playerDecks?.map(({ player_name, deck_archetype }) => {
+    const deck: Record<string, any> | undefined = deckArchetypes?.find(
+      deck => deck.name === deck_archetype
+    );
+
     return {
       player_name,
       deck: {
         name: deck_archetype,
-        defined_pokemon: deckArchetypes?.find(
-          deck => deck.name === deck_archetype
-        )?.defined_pokemon,
+        defined_pokemon: deck?.defined_pokemon
       },
     };
   });
 };
 
+interface Player {
+  name: string;
+  placing: number;
+  record: { wins: number; losses: number; ties: number };
+  result: string;
+  rounds: Record<number, Record<string, any>>;
+  decklist: Record<any, any>;
+}
+
+interface PlayerDeckObject {
+  player_name: any;
+  deck: {
+    name: any;
+    defined_pokemon: any;
+  };
+}
+
+const getPlayerDeck = (
+  playerDeckObjects: PlayerDeckObject[] | undefined,
+  player: Player,
+  deckArchetypes: DeckArchetype[] | null
+) => {
+  const savedDeckInfo = playerDeckObjects?.find(
+    playerDeck => playerDeck.player_name === player.name
+  )?.deck;
+  const list = player.decklist;
+  let inferredArchetypeFromList;
+  
+  if (list) {
+    inferredArchetypeFromList = deckArchetypes?.find(({ identifiable_cards }) => {
+      return identifiable_cards?.every((identifiableCard: string) => list.pokemon.some((pokemon: Record<string, any>) => pokemon.name === identifiableCard))
+    });
+  }
+
+  return {
+    ...(savedDeckInfo ?? {}),
+    ...(list ? { list } : {}),
+    ...(inferredArchetypeFromList ?? {})
+  };
+};
+
 async function mapResultsArray(
   resultsArray: any,
   roundNumber: number,
-  playerDeckObjects:
-    | {
-        player_name: any;
-        deck: {
-          name: any;
-          defined_pokemon: any;
-        };
-      }[]
-    | undefined
+  playerDeckObjects: PlayerDeckObject[] | undefined,
+  deckArchetypes: DeckArchetype[] | null
 ): Promise<string[]> {
   const playerProfiles: Record<string, string> | undefined =
     await fetchPlayerProfiles();
 
-  return resultsArray.map(
-    (player: {
-      name: string;
-      placing: number;
-      record: { wins: number; losses: number; ties: number };
-      result: string;
-      rounds: Record<number, Record<string, any>>;
-    }) => ({
-      name: player.name,
-      profile: playerProfiles?.[player.name],
-      placing: player.placing,
-      record: player.record,
-      currentMatchResult: player.rounds[roundNumber]?.result,
-      day2: player.record.wins * 3 + player.record.ties >= 19,
-      deck: playerDeckObjects?.find(
-        playerDeck => playerDeck.player_name === player.name
-      )?.deck,
-    })
-  );
+  return resultsArray.map((player: Player) => ({
+    name: player.name,
+    profile: playerProfiles?.[player.name],
+    placing: player.placing,
+    record: player.record,
+    currentMatchResult: player.rounds[roundNumber]?.result,
+    day2: player.record.wins * 3 + player.record.ties >= 19,
+    deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
+  }));
 }
 
 type Data = {
@@ -139,8 +167,10 @@ export default async function handler(
     let parsedData = await response.json();
     const roundNumber = getRoundNumber(parsedData[0]);
 
+    const deckArchetypes = await fetchDeckArchetypes();
     const playerDeckObjects = await getPlayerDeckObjects(
-      req.query.id as string
+      req.query.id as string,
+      deckArchetypes
     );
 
     await uploadMissingPlayerProfiles(parsedData);
@@ -148,7 +178,8 @@ export default async function handler(
     parsedData = await mapResultsArray(
       parsedData,
       roundNumber,
-      playerDeckObjects
+      playerDeckObjects,
+      deckArchetypes
     );
 
     res.status(200).json({ roundNumber, data: parsedData });
