@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
 
@@ -15,11 +16,5 @@ export const useTournamentResults = (tournamentName: string) => {
 };
 
 export const useLiveTournamentResults = (tournamentId: string) => {
-  const url = `/api/live-results?id=${tournamentId}`;
-  const fetchLiveResults = async () => {
-    const res = await fetch(url);
-    return res.json();
-  };
-
-  return useQuery(`live-results-${tournamentId}`, fetchLiveResults);
+  return useQuery(`live-results-${tournamentId}`, () => fetchLiveResults(tournamentId));
 };

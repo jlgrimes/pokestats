@@ -4,7 +4,15 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['limitlesstcg.s3.us-east-2.amazonaws.com']
-  }
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/pokedata/:path*',
+        destination: 'https://pokedata.ovh/:path*',
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
