@@ -19,7 +19,9 @@ interface ArchetypeSelectorProps {
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
-  const [selectedArchetype, setSelectedArchetype] = useState<string | undefined>(props.value);
+  const [selectedArchetype, setSelectedArchetype] = useState<
+    string | undefined
+  >(props.value);
   const {
     isOpen: isAddModalOpen,
     onOpen: openAddModal,
@@ -42,42 +44,46 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   return (
     <Fragment>
       <Menu>
-        {({ isOpen }) => (
-          <>
-            <MenuButton
-              as={Button}
-              variant='ghost'
-              width={'100%'}
-            >
-              {(selectedArchetype && selectedArchetype.length > 0) ? (
-                <SpriteDisplay
-                  pokemonNames={
-                    decks?.find(deck => deck.name === selectedArchetype)
-                      ?.defined_pokemon ?? []
-                  }
-                />
-              ) : (
-                <EditIcon />
+        {({ isOpen }) => {
+          const isArchetypeSelected =
+            selectedArchetype && selectedArchetype.length > 0;
+          return (
+            <>
+              <MenuButton
+                as={Button}
+                variant={isArchetypeSelected ? 'outline' : 'ghost'}
+                width={'100%'}
+              >
+                {isArchetypeSelected ? (
+                  <SpriteDisplay
+                    pokemonNames={
+                      decks?.find(deck => deck.name === selectedArchetype)
+                        ?.defined_pokemon ?? []
+                    }
+                  />
+                ) : (
+                  <EditIcon />
+                )}
+              </MenuButton>
+              {isOpen && (
+                <MenuList>
+                  {decks?.map(({ name, defined_pokemon }, idx) => (
+                    <MenuItem
+                      key={idx}
+                      onClick={() => handleArchetypeChange(name)}
+                    >
+                      <SpriteAndNameDisplay
+                        archetypeName={name}
+                        pokemonNames={defined_pokemon}
+                      />
+                    </MenuItem>
+                  ))}
+                  <MenuItem onClick={openAddModal}>Add Archetype</MenuItem>
+                </MenuList>
               )}
-            </MenuButton>
-            {isOpen && (
-              <MenuList>
-                {decks?.map(({ name, defined_pokemon }, idx) => (
-                  <MenuItem
-                    key={idx}
-                    onClick={() => handleArchetypeChange(name)}
-                  >
-                    <SpriteAndNameDisplay
-                      archetypeName={name}
-                      pokemonNames={defined_pokemon}
-                    />
-                  </MenuItem>
-                ))}
-                <MenuItem onClick={openAddModal}>Add Archetype</MenuItem>
-              </MenuList>
-            )}
-          </>
-        )}
+            </>
+          );
+        }}
       </Menu>
       {isAddModalOpen && (
         <AddArchetypeModal

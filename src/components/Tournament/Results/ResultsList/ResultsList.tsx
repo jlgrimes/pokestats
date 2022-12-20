@@ -84,7 +84,7 @@ export default function ResultsList({
                   {formatRecord(result.record)}
                 </Td>
                 <Td padding={0} paddingLeft={2}>
-                  {allowEdits ? (
+                  {allowEdits && !result?.deck?.list ? (
                     <DeckInput
                       tournamentId={tournament.id}
                       playerName={result.name}
@@ -96,11 +96,11 @@ export default function ResultsList({
                     />
                   )}
                 </Td>
-                <Td padding={0}>
-                  {result.deck.list && (
+                {result.deck.list && (
+                  <Td padding={0}>
                     <ListViewerOpenButton result={result} />
-                  )}
-                </Td>
+                  </Td>
+                )}
                 {/* <Td>
                 <SpriteAndNameDisplay
                   archetypeName={result.deck_archetype}
