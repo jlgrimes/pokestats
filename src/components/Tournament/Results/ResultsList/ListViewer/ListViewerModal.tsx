@@ -20,7 +20,7 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='xl'>
       <ModalOverlay />
-      <ModalContent margin={0}>
+      <ModalContent marginTop={{ base: '0', sm: '16' }}>
         <ModalHeader>{`${props.result.name} - ${props.result.deck.name}`}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
