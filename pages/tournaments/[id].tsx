@@ -4,12 +4,8 @@ import supabase from '../../src/lib/supabase/client';
 export default function TournamentPage({
   tournament,
 }: {
-  tournament: { id: string; name: string } | null;
+  tournament: { id: string; name: string };
 }) {
-  if (!tournament) {
-    return <div>oopsies</div>;
-  }
-
   return <Tournament tournament={tournament} allowEdits={false} />;
 }
 
