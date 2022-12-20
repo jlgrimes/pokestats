@@ -21,5 +21,5 @@ export const useLiveTournamentResults = (tournamentId: string) => {
     return res.json();
   };
 
-  return useQuery(tournamentId, fetchLiveResults);
+  return useQuery(`live-results-${tournamentId}`, fetchLiveResults);
 };

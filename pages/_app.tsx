@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
 
@@ -13,9 +13,11 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <ChakraProvider>
-          <Component {...pageProps} />
-        </ChakraProvider>
+        <Hydrate state={pageProps.dehydratedState}>
+          <ChakraProvider>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </Hydrate>
       </QueryClientProvider>
     </SessionProvider>
   );
