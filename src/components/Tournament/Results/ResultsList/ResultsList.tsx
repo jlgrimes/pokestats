@@ -1,26 +1,27 @@
 import {
-  Icon,
+  IconButton,
   Stack,
   Table,
   TableContainer,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { FaList } from 'react-icons/fa';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
+import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 import { Player } from './Player/Player';
 
 interface LiveResultType {
   placing: string;
   name: string;
-  profile: { id: number, twitterUrl: string };
+  profile: { id: number; twitterUrl: string };
   record: { wins: number; losses: number; ties: number };
-  deck: { name: string; defined_pokemon: string[] };
+  deck: { name: string; defined_pokemon: string[]; list: Record<string, any> };
   currentMatchResult: string;
 }
 
@@ -93,6 +94,11 @@ export default function ResultsList({
                     <SpriteDisplay
                       pokemonNames={result?.deck?.defined_pokemon ?? []}
                     />
+                  )}
+                </Td>
+                <Td padding={0}>
+                  {result.deck.list && (
+                    <ListViewerOpenButton result={result} />
                   )}
                 </Td>
                 {/* <Td>
