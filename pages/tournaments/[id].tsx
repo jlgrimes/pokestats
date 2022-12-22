@@ -22,9 +22,16 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   await queryClient.prefetchQuery(`live-results-${params.id}`);
   await queryClient.prefetchQuery(`administrators`);
 
+  const { data: tournaments } = await supabase
+    .from('Tournaments')
+    .select('id,name');
+
   return {
     props: {
-      tournament: params,
+      tournament: {
+        id: params.id,
+        name: tournaments?.find(({ id }) => id === params.id)?.name
+      },
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,

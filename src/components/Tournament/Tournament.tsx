@@ -14,7 +14,7 @@ export default function Tournament({
   return (
     <Stack>
       <Stack padding={'1rem 3rem'} spacing={0}>
-        <Heading>{tournament.id}</Heading>
+        <Heading>{tournament.name}</Heading>
         <Text>Live Standings{!isLoading && ` - Round ${liveResults?.roundNumber}`}</Text>
       </Stack>
       {/* <NotablePlayers tournament={tournament.name} allowEdits={allowEdits} /> */}
