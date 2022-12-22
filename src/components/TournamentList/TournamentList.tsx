@@ -14,7 +14,7 @@ export const TournamentList = ({
             <Heading size='md'>{tournament.name}</Heading>
           </CardHeader>
           <CardFooter>
-            <Button as={NextLink} href={`/tournaments/${tournament.id}`}>View</Button>
+            <Button as={NextLink} href={`/tournaments/${tournament.id}/standings`}>View</Button>
           </CardFooter>
         </Card>
       ))}
