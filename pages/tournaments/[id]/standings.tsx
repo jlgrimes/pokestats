@@ -1,7 +1,9 @@
+import { Stack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from 'react';
 import { dehydrate, QueryClient } from 'react-query';
 import Tournament from '../../../src/components/Tournament/Tournament';
+import { TournamentTabs } from "../../../src/components/Tournament/TournamentTabs";
 import { useAdministrators } from '../../../src/hooks/administrators';
 import supabase from '../../../src/lib/supabase/client';
 
@@ -14,7 +16,12 @@ export default function TournamentPage({
   const administrators = useAdministrators();
   const userIsAdmin = administrators.data?.some(admin => admin.email === session?.user?.email) ?? false;
 
-  return <Tournament tournament={tournament} allowEdits={userIsAdmin} />;
+  return (
+    <Stack>
+      <TournamentTabs />
+      <Tournament tournament={tournament} allowEdits={userIsAdmin} />
+    </Stack>
+  );
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
