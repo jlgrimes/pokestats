@@ -14,7 +14,6 @@ export const TournamentTabs = () => {
       slug: 'stats',
     },
   ];
-  console.log(router.asPath.substring(router.asPath.lastIndexOf('/') + 1))
 
   return (
     <Tabs

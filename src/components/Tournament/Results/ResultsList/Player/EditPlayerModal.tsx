@@ -25,7 +25,6 @@ interface EditPlayerModalProps {
 
 export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
   const toast = useToast();
-  console.log(props.playerProfile)
   const handleSubmit = async ({
     name,
     twitter,
