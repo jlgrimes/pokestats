@@ -1,9 +1,9 @@
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from 'react';
 import { dehydrate, QueryClient } from 'react-query';
-import Tournament from '../../src/components/Tournament/Tournament';
-import { useAdministrators } from '../../src/hooks/administrators';
-import supabase from '../../src/lib/supabase/client';
+import Tournament from '../../../src/components/Tournament/Tournament';
+import { useAdministrators } from '../../../src/hooks/administrators';
+import supabase from '../../../src/lib/supabase/client';
 
 export default function TournamentPage({
   tournament,
