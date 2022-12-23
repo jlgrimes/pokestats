@@ -9,8 +9,7 @@ export const getArchetypeGraphData = (day2Decks: Record<string, any>[] | undefin
   }, {});
 
   return Object.entries(deckCounts ?? {}).map(([deck, count]) => ({
-    id: deck,
-    label: deck,
+    name: deck,
     value: count,
   }));
 };

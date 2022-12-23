@@ -1,42 +1,72 @@
-import { ResponsivePie } from '@nivo/pie';
-import { useDay2Decks } from '../../../hooks/day2decks';
-import { getArchetypeGraphData } from './helpers';
+import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from 'recharts';
 
-const MyResponsivePie = ({
-  data /* see data tab */,
-}: {
-  data: Record<string, any>[];
-}) => (
-  <ResponsivePie
-    data={data}
-    margin={{ top: 40, right: 0, bottom: 80, left: 0 }}
-    innerRadius={0.5}
-    padAngle={0.7}
-    cornerRadius={3}
-    activeOuterRadiusOffset={8}
-    borderWidth={1}
-    borderColor={{
-      from: 'color',
-      modifiers: [['darker', 0.2]],
-    }}
-    arcLabel={({ id, value }) => `${id}`}
-    arcLabelsTextColor="#333333"
-    arcLabelsSkipAngle={10}
-    enableArcLinkLabels={false}
-    arcLinkLabelsSkipAngle={10}
-    sortByValue
-  />
-);
+import { useDay2Decks } from '../../../hooks/day2decks';
+import { getSpriteUrl } from '../../common/helpers';
+import { getArchetypeGraphData } from './helpers';
 
 export const ArchetypeGraph = ({
   tournament,
 }: {
   tournament: { id: string; name: string };
 }) => {
-  const { data: day2Decks } = useDay2Decks(tournament.id);
+  const { data } = useDay2Decks(tournament.id);
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+    name,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const radiusScale = 1.25;
+    const x = cx + radius * radiusScale * Math.cos(-midAngle * RADIAN) - 20;
+    const y = cy + radius * radiusScale * Math.sin(-midAngle * RADIAN);
+    console.log(data[index]);
+
+    return (
+      <>
+        <image
+          href={getSpriteUrl(
+            data.find(deck => name === deck.name).defined_pokemon[0]
+          )}
+          x={x}
+          y={y}
+          fill='white'
+          textAnchor={x > cx ? 'start' : 'end'}
+          dominantBaseline='central'
+        />
+        <image
+          href={getSpriteUrl(
+            data.find(deck => name === deck.name).defined_pokemon[1]
+          )}
+          x={x + 40}
+          y={y}
+          fill='white'
+          textAnchor={x > cx ? 'start' : 'end'}
+          dominantBaseline='central'
+        />
+      </>
+    );
+  };
+
   return (
-    <div style={{ height: '450px' }}>
-      <MyResponsivePie data={getArchetypeGraphData(day2Decks)} />
-    </div>
+    <PieChart width={400} height={400}>
+      <Pie
+        dataKey='value'
+        isAnimationActive={false}
+        data={getArchetypeGraphData(data)}
+        cx='50%'
+        cy='50%'
+        labelLine={false}
+        label={renderCustomizedLabel}
+        fill='#8884d8'
+      />
+      <Tooltip />
+    </PieChart>
   );
 };
