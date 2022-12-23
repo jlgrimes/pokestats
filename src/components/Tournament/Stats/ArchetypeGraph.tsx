@@ -1,8 +1,5 @@
-import { AutoSizer } from 'react-virtualized'
 import { ResponsivePie } from '@nivo/pie';
 import { useDay2Decks } from '../../../hooks/day2decks';
-import { useArchetypes } from '../../../hooks/deckArchetypes';
-import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
 import { getArchetypeGraphData } from './helpers';
 
 const MyResponsivePie = ({
@@ -22,6 +19,7 @@ const MyResponsivePie = ({
       from: 'color',
       modifiers: [['darker', 0.2]],
     }}
+    enableArcLinkLabels={false}
     arcLinkLabelsSkipAngle={10}
     sortByValue
   />
