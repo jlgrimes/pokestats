@@ -23,7 +23,7 @@ export const TournamentTabs = () => {
         router.push(`/tournaments/${tournamentId}/${tabs[idx].slug}`)
       }
       defaultIndex={tabs.findIndex(({ slug }) => router.asPath.substring(router.asPath.lastIndexOf('/') + 1) === slug)}
-      padding={'1.5rem 1.5rem 0'}
+      padding={'0 1.5rem'}
     >
       <TabList>
         {tabs.map(({ name }, idx) => (

@@ -1,6 +1,7 @@
 import { Heading, Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from 'react-query';
 import { ArchetypeGraph } from '../../../src/components/Tournament/Stats/ArchetypeGraph';
+import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
 import supabase from '../../../src/lib/supabase/client';
 
@@ -10,10 +11,9 @@ export default function StatsPage({
   tournament: { id: string; name: string };
 }) {
   return (
-    <Stack>
-      <TournamentTabs />
+    <TournamentPageLayout tournament={tournament}>
       <ArchetypeGraph tournament={tournament} />
-    </Stack>
+    </TournamentPageLayout>
   );
 }
 
