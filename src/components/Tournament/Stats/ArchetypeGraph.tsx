@@ -1,4 +1,11 @@
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Legend,
+  Tooltip,
+  ResponsiveContainer,
+  PieLabelRenderProps,
+} from 'recharts';
 
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getSpriteUrl } from '../../common/helpers';
@@ -21,35 +28,24 @@ export const ArchetypeGraph = ({
     percent,
     index,
     name,
-  }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  }: PieLabelRenderProps) => {
+    const radius =
+      (innerRadius as number) +
+      ((outerRadius as number) - (innerRadius as number)) * 0.5;
     const radiusScale = 1.25;
-    const x = cx + radius * radiusScale * Math.cos(-midAngle * RADIAN) - 20;
-    const y = cy + radius * radiusScale * Math.sin(-midAngle * RADIAN);
-    console.log(data[index]);
+    const x =
+      (cx as number) + radius * radiusScale * Math.cos(-midAngle * RADIAN);
+    const y =
+      (cy as number) + radius * radiusScale * Math.sin(-midAngle * RADIAN);
+
+    const definedPokemon = data.find(
+      (deck: Record<string, any>) => name === deck.name
+    ).defined_pokemon;
 
     return (
       <>
-        <image
-          href={getSpriteUrl(
-            data.find(deck => name === deck.name).defined_pokemon[0]
-          )}
-          x={x}
-          y={y}
-          fill='white'
-          textAnchor={x > cx ? 'start' : 'end'}
-          dominantBaseline='central'
-        />
-        <image
-          href={getSpriteUrl(
-            data.find(deck => name === deck.name).defined_pokemon[1]
-          )}
-          x={x + 40}
-          y={y}
-          fill='white'
-          textAnchor={x > cx ? 'start' : 'end'}
-          dominantBaseline='central'
-        />
+        <image href={getSpriteUrl(definedPokemon[0])} x={x - 20} y={y} />
+        <image href={getSpriteUrl(definedPokemon[1])} x={x + 20} y={y} />
       </>
     );
   };
