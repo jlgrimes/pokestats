@@ -18,13 +18,23 @@ export const ArchetypeGraph = ({
 }) => {
   const { data } = useDay2Decks(tournament.id);
 
-  const getRadiusScale = (percent: number) => {
+  const getRadiusScale = (percent: number, index: number) => {
     if (percent > 0.1) {
       return 1.25;
-    } else if (percent > 0.05) {
+    } else if (percent > 0.03) {
       return 1.75
     } else {
-      return 2;
+      return index % 2 ? 2 : 1.6;
+    }
+  }
+
+  const getImageHeight = (percent: number) => {
+    if (percent > 0.1) {
+      return 50;
+    } else if (percent > 0.03) {
+      return 40;
+    } else {
+      return 30;
     }
   }
 
@@ -39,10 +49,14 @@ export const ArchetypeGraph = ({
     index,
     name,
   }: PieLabelRenderProps) => {
+    if (percent as number < 0.01) {
+      return;
+    }
+
     const radius =
       (innerRadius as number) +
       ((outerRadius as number) - (innerRadius as number)) * 0.5;
-    const radiusScale = getRadiusScale(percent as number);
+    const radiusScale = getRadiusScale(percent as number, index as number);
     const x =
       (cx as number) + radius * radiusScale * Math.cos(-midAngle * RADIAN) - 10;
     const y =
@@ -54,13 +68,16 @@ export const ArchetypeGraph = ({
 
     return (
       <>
-        <image width={(percent as number) > 0.1 ? 50 : 35} href={getSpriteUrl(definedPokemon[0])} x={x} y={y} />
+        <image height={getImageHeight(percent)} href={getSpriteUrl(definedPokemon[0])} x={x - 5} y={y} />
       </>
     );
   };
 
   return (
-    <PieChart width={400} height={400}>
+    <ResponsiveContainer width={'100%'} height={425}>
+    <PieChart
+
+    >
       <Pie
         dataKey='value'
         isAnimationActive={false}
@@ -70,8 +87,10 @@ export const ArchetypeGraph = ({
         labelLine={false}
         label={renderCustomizedLabel}
         fill='#8884d8'
+        outerRadius={'95%'}
       />
       <Tooltip />
     </PieChart>
+    </ResponsiveContainer>
   );
 };
