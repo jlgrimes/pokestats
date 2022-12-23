@@ -18,6 +18,16 @@ export const ArchetypeGraph = ({
 }) => {
   const { data } = useDay2Decks(tournament.id);
 
+  const getRadiusScale = (percent: number) => {
+    if (percent > 0.1) {
+      return 1.25;
+    } else if (percent > 0.05) {
+      return 1.75
+    } else {
+      return 2;
+    }
+  }
+
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx,
@@ -32,11 +42,11 @@ export const ArchetypeGraph = ({
     const radius =
       (innerRadius as number) +
       ((outerRadius as number) - (innerRadius as number)) * 0.5;
-    const radiusScale = 1.25;
+    const radiusScale = getRadiusScale(percent as number);
     const x =
-      (cx as number) + radius * radiusScale * Math.cos(-midAngle * RADIAN);
+      (cx as number) + radius * radiusScale * Math.cos(-midAngle * RADIAN) - 10;
     const y =
-      (cy as number) + radius * radiusScale * Math.sin(-midAngle * RADIAN);
+      (cy as number) + radius * radiusScale * Math.sin(-midAngle * RADIAN) - 20;
 
     const definedPokemon = data.find(
       (deck: Record<string, any>) => name === deck.name
@@ -44,8 +54,7 @@ export const ArchetypeGraph = ({
 
     return (
       <>
-        <image href={getSpriteUrl(definedPokemon[0])} x={x - 20} y={y} />
-        <image href={getSpriteUrl(definedPokemon[1])} x={x + 20} y={y} />
+        <image width={(percent as number) > 0.1 ? 50 : 35} href={getSpriteUrl(definedPokemon[0])} x={x} y={y} />
       </>
     );
   };

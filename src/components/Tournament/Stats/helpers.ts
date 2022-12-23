@@ -11,5 +11,10 @@ export const getArchetypeGraphData = (day2Decks: Record<string, any>[] | undefin
   return Object.entries(deckCounts ?? {}).map(([deck, count]) => ({
     name: deck,
     value: count,
-  }));
+  })).sort((a, b) => {
+    if (a.value > b.value) {
+      return -1;
+    }
+    return 1;
+  });
 };
