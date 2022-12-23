@@ -15,7 +15,7 @@ const fetchDeckArchetypes = async () => {
 
   const res = await supabase
     .from('Deck Archetypes')
-    .select('name,defined_pokemon,identifiable_cards');
+    .select('name,defined_pokemon,identifiable_cards,supertype');
 
   console.log('fetchDeckArchetypes:', (performance.now() - perfStart) / 1000, 'sec');
 
