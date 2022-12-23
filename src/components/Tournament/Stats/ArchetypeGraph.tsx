@@ -9,7 +9,7 @@ const MyResponsivePie = ({
 }) => (
   <ResponsivePie
     data={data}
-    margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+    margin={{ top: 40, right: 0, bottom: 80, left: 0 }}
     innerRadius={0.5}
     padAngle={0.7}
     cornerRadius={3}
@@ -19,6 +19,9 @@ const MyResponsivePie = ({
       from: 'color',
       modifiers: [['darker', 0.2]],
     }}
+    arcLabel={({ id, value }) => `${id}`}
+    arcLabelsTextColor="#333333"
+    arcLabelsSkipAngle={10}
     enableArcLinkLabels={false}
     arcLinkLabelsSkipAngle={10}
     sortByValue
@@ -32,7 +35,7 @@ export const ArchetypeGraph = ({
 }) => {
   const { data: day2Decks } = useDay2Decks(tournament.id);
   return (
-    <div style={{ height: '400px' }}>
+    <div style={{ height: '450px' }}>
       <MyResponsivePie data={getArchetypeGraphData(day2Decks)} />
     </div>
   );
