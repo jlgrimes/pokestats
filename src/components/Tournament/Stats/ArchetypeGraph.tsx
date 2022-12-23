@@ -68,7 +68,7 @@ export const ArchetypeGraph = ({
 
     return (
       <>
-        <image height={getImageHeight(percent)} href={getSpriteUrl(definedPokemon[0])} x={x - 5} y={y} />
+        <image height={getImageHeight(percent as number)} href={getSpriteUrl(definedPokemon[0])} x={x - 5} y={y} />
       </>
     );
   };
