@@ -6,10 +6,17 @@ import {
   ResponsiveContainer,
   PieLabelRenderProps,
 } from 'recharts';
-
+import {
+  FormControl,
+  FormLabel,
+  Heading,
+  Stack,
+  Switch,
+} from '@chakra-ui/react';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getSpriteUrl } from '../../common/helpers';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
+import { useState } from 'react';
 
 export const ArchetypeGraph = ({
   tournament,
@@ -17,7 +24,7 @@ export const ArchetypeGraph = ({
   tournament: { id: string; name: string };
 }) => {
   const { data } = useDay2Decks(tournament.id);
-  const shouldDrillDown = false;
+  const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
   const getRadiusScale = (percent: number, index: number) => {
     if (percent > 0.1) {
@@ -50,10 +57,6 @@ export const ArchetypeGraph = ({
     index,
     name,
   }: PieLabelRenderProps) => {
-    if (shouldDrillDown && ((percent as number) < 0.01)) {
-      return;
-    }
-
     const radius =
       (innerRadius as number) +
       ((outerRadius as number) - (innerRadius as number)) * 0.5;
@@ -64,7 +67,8 @@ export const ArchetypeGraph = ({
       (cy as number) + radius * radiusScale * Math.sin(-midAngle * RADIAN);
 
     const definedPokemon = data.find(
-      (deck: Record<string, any>) => name === getArchetypeKey(deck, false)
+      (deck: Record<string, any>) =>
+        name === getArchetypeKey(deck, shouldDrillDown)
     ).defined_pokemon;
 
     const height = getImageHeight(percent as number);
@@ -80,24 +84,41 @@ export const ArchetypeGraph = ({
       </>
     );
   };
-  console.log(getArchetypeGraphData(data, false))
 
   return (
-    <ResponsiveContainer width={'100%'} height={425}>
-      <PieChart>
-        <Pie
-          dataKey='value'
-          isAnimationActive={false}
-          data={getArchetypeGraphData(data, false)}
-          cx='50%'
-          cy='50%'
-          labelLine={false}
-          label={renderCustomizedLabel}
-          fill='#8884d8'
-          outerRadius={'95%'}
-        />
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
+    <Stack padding={'1rem 1.5rem'}>
+      <Heading color='gray.700' size={'md'}>
+        Day 2 Archetype Spread
+      </Heading>
+      <Stack alignItems={'center'}>
+        <ResponsiveContainer width={'100%'} height={425}>
+          <PieChart>
+            <Pie
+              dataKey='value'
+              isAnimationActive={false}
+              data={getArchetypeGraphData(data, shouldDrillDown)}
+              cx='50%'
+              cy='50%'
+              labelLine={false}
+              label={renderCustomizedLabel}
+              fill='#8884d8'
+              outerRadius={'95%'}
+            />
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+        <div>
+          <FormControl display='flex' alignItems='center'>
+            <FormLabel htmlFor='archetype-drill-down' mb='0'>
+              Drill down archetypes
+            </FormLabel>
+            <Switch
+              id='archetype-drill-down'
+              onChange={() => setShouldDrillDown(!shouldDrillDown)}
+            />
+          </FormControl>
+        </div>
+      </Stack>
+    </Stack>
   );
 };

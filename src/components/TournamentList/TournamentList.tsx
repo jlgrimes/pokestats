@@ -11,7 +11,7 @@ export const TournamentList = ({
       {tournaments?.map((tournament, idx) => (
         <Card key={idx}>
           <CardHeader>
-            <Heading size='md'>{tournament.name}</Heading>
+            <Heading size='md' color='gray.700'>{tournament.name}</Heading>
           </CardHeader>
           <CardFooter>
             <Button as={NextLink} href={`/tournaments/${tournament.id}/standings`}>View</Button>
