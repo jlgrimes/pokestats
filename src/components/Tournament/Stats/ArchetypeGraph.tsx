@@ -1,39 +1,15 @@
+import { AutoSizer } from 'react-virtualized'
 import { ResponsivePie } from '@nivo/pie';
+import { useDay2Decks } from '../../../hooks/day2decks';
+import { useArchetypes } from '../../../hooks/deckArchetypes';
+import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
+import { getArchetypeGraphData } from './helpers';
 
-const data = [
-  {
-    id: 'c',
-    label: 'c',
-    value: 137,
-    color: 'hsl(296, 70%, 50%)',
-  },
-  {
-    id: 'stylus',
-    label: 'stylus',
-    value: 110,
-    color: 'hsl(64, 70%, 50%)',
-  },
-  {
-    id: 'haskell',
-    label: 'haskell',
-    value: 345,
-    color: 'hsl(105, 70%, 50%)',
-  },
-  {
-    id: 'java',
-    label: 'java',
-    value: 95,
-    color: 'hsl(52, 70%, 50%)',
-  },
-  {
-    id: 'go',
-    label: 'go',
-    value: 176,
-    color: 'hsl(322, 70%, 50%)',
-  },
-];
-
-const MyResponsivePie = ({ data /* see data tab */ }: { data: Record<string, any>[]}) => (
+const MyResponsivePie = ({
+  data /* see data tab */,
+}: {
+  data: Record<string, any>[];
+}) => (
   <ResponsivePie
     data={data}
     margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -47,117 +23,19 @@ const MyResponsivePie = ({ data /* see data tab */ }: { data: Record<string, any
       modifiers: [['darker', 0.2]],
     }}
     arcLinkLabelsSkipAngle={10}
-    arcLinkLabelsTextColor='#333333'
-    arcLinkLabelsThickness={2}
-    arcLinkLabelsColor={{ from: 'color' }}
-    arcLabelsSkipAngle={10}
-    arcLabelsTextColor={{
-      from: 'color',
-      modifiers: [['darker', 2]],
-    }}
-    defs={[
-      {
-        id: 'dots',
-        type: 'patternDots',
-        background: 'inherit',
-        color: 'rgba(255, 255, 255, 0.3)',
-        size: 4,
-        padding: 1,
-        stagger: true,
-      },
-      {
-        id: 'lines',
-        type: 'patternLines',
-        background: 'inherit',
-        color: 'rgba(255, 255, 255, 0.3)',
-        rotation: -45,
-        lineWidth: 6,
-        spacing: 10,
-      },
-    ]}
-    fill={[
-      {
-        match: {
-          id: 'ruby',
-        },
-        id: 'dots',
-      },
-      {
-        match: {
-          id: 'c',
-        },
-        id: 'dots',
-      },
-      {
-        match: {
-          id: 'go',
-        },
-        id: 'dots',
-      },
-      {
-        match: {
-          id: 'python',
-        },
-        id: 'dots',
-      },
-      {
-        match: {
-          id: 'scala',
-        },
-        id: 'lines',
-      },
-      {
-        match: {
-          id: 'lisp',
-        },
-        id: 'lines',
-      },
-      {
-        match: {
-          id: 'elixir',
-        },
-        id: 'lines',
-      },
-      {
-        match: {
-          id: 'javascript',
-        },
-        id: 'lines',
-      },
-    ]}
-    legends={[
-      {
-        anchor: 'bottom',
-        direction: 'row',
-        justify: false,
-        translateX: 0,
-        translateY: 56,
-        itemsSpacing: 0,
-        itemWidth: 100,
-        itemHeight: 18,
-        itemTextColor: '#999',
-        itemDirection: 'left-to-right',
-        itemOpacity: 1,
-        symbolSize: 18,
-        symbolShape: 'circle',
-        effects: [
-          {
-            on: 'hover',
-            style: {
-              itemTextColor: '#000',
-            },
-          },
-        ],
-      },
-    ]}
+    sortByValue
   />
 );
 
-export const ArchetypeGraph = () => {
-
+export const ArchetypeGraph = ({
+  tournament,
+}: {
+  tournament: { id: string; name: string };
+}) => {
+  const { data: day2Decks } = useDay2Decks(tournament.id);
   return (
     <div style={{ height: '400px' }}>
-      <MyResponsivePie data={data} />
+      <MyResponsivePie data={getArchetypeGraphData(day2Decks)} />
     </div>
-  )
+  );
 };
