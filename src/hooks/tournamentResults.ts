@@ -24,3 +24,14 @@ export const useLiveTournamentResults = (tournamentId: string) => {
     queryFn: () => fetchLiveResults(tournamentId),
   });
 };
+
+export const useTopPerformingPlayers = (tournamentId: string) => {
+  const { data: liveTournamentResults } =
+    useLiveTournamentResults(tournamentId);
+  return liveTournamentResults?.data
+    .slice(0, 4)
+    .map(({ name, deck }: { name: string; deck: Record<string, any> }) => ({
+      name,
+      deck,
+    }));
+};
