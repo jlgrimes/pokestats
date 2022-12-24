@@ -32,9 +32,9 @@ export const useMutateArchetypes = (onClose: () => void) => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const mutation = useMutation('deck-archetypes', addArchetype, {
+  const mutation = useMutation(['deck-archetypes'], addArchetype, {
     onSuccess: () => {
-      queryClient.invalidateQueries('deck-archetypes');
+      queryClient.invalidateQueries(['deck-archetypes']);
 
       toast({
         title: 'Successfully created archetype!',
