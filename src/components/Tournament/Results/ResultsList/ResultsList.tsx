@@ -30,13 +30,15 @@ export default function ResultsList({
   liveResults,
   tournament,
   allowEdits,
+  tournamentFinished,
 }: {
   liveResults: LiveResultType[];
   tournament: { id: string; name: string };
   allowEdits: boolean;
+  tournamentFinished: boolean;
 }) {
   const getResultBackgroundColor = useCallback(
-    (matchResult: string, tournamentFinished: boolean) => {
+    (matchResult: string) => {
       if (tournamentFinished) {
         return '';
       }
@@ -49,7 +51,7 @@ export default function ResultsList({
         ? 'red.100'
         : '';
     },
-    []
+    [tournamentFinished]
   );
 
   return (
@@ -90,12 +92,7 @@ export default function ResultsList({
                 <Td
                   padding={0}
                   backgroundColor={getResultBackgroundColor(
-                    result.currentMatchResult,
-                    // The criteria of the tournament being completed is if there's a list published,
-                    // which is the case except in the few days before lists are published on RK9.
-                    // So, there are a few inaccurate days where 1 and 2 seed will be colored and the
-                    // tournament is finished.
-                    !!result.deck?.list
+                    result.currentMatchResult
                   )}
                 >
                   {formatRecord(result.record)}

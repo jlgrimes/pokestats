@@ -258,5 +258,9 @@ export const fetchLiveResults = async (
   const endTime = performance.now();
 
   console.log('Total time:', (endTime - startTime) / 1000, 'sec');
-  return { roundNumber, data: parsedData };
+  // The criteria of the tournament being completed is if there's a list published,
+  // which is the case except in the few days before lists are published on RK9.
+  // So, there are a few inaccurate days where 1 and 2 seed will be colored and the
+  // tournament is finished.
+  return { live: !parsedData[0]?.deck?.list, roundNumber, data: parsedData };
 };
