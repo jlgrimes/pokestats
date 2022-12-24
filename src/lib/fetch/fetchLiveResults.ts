@@ -181,7 +181,7 @@ function mapResultsArray(
       profile: playerProfiles?.[player.name],
       placing: player.placing,
       record: player.record,
-      ...(currentMatchResult ? { currentMatchResult} : {}),
+      ...(currentMatchResult ? { currentMatchResult } : {}),
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
     };
@@ -212,11 +212,13 @@ const getRoundNumber = (firstPlace: Record<string, any>) => {
   return highestRound;
 };
 
-const getPokedata = async (tournamentId: string) => {
+const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   const perfStart = performance.now();
 
   const response = await fetch(
-    `https://pokedata.ovh/standings/${tournamentId}/masters/${tournamentId}_Masters.json`
+    `${
+      prefetch ? 'https://pokedata.ovh' : '/pokedata'
+    }/standings/${tournamentId}/masters/${tournamentId}_Masters.json`
   );
   const data = await response.json();
 
@@ -225,10 +227,13 @@ const getPokedata = async (tournamentId: string) => {
   return data;
 };
 
-export const fetchLiveResults = async (tournamentId: string) => {
+export const fetchLiveResults = async (
+  tournamentId: string,
+  prefetch?: boolean
+) => {
   const startTime = performance.now();
 
-  let parsedData = await getPokedata(tournamentId as string);
+  let parsedData = await getPokedata(tournamentId as string, prefetch);
   const roundNumber = getRoundNumber(parsedData[0]);
 
   const deckArchetypes = await fetchDeckArchetypes();
@@ -253,6 +258,5 @@ export const fetchLiveResults = async (tournamentId: string) => {
   const endTime = performance.now();
 
   console.log('Total time:', (endTime - startTime) / 1000, 'sec');
-  console.log({ roundNumber, data: parsedData })
   return { roundNumber, data: parsedData };
 };

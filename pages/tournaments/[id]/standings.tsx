@@ -1,11 +1,7 @@
-import { Stack } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Tournament from '../../../src/components/Tournament/Tournament';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
-import { fetchAdministrators, useAdministrators } from '../../../src/hooks/administrators';
+import { fetchAdministrators, useUserIsAdmin } from '../../../src/hooks/administrators';
 import supabase from '../../../src/lib/supabase/client';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { fetchPokedex } from '../../../src/hooks/highResImages';
@@ -15,11 +11,7 @@ export default function TournamentPage({
 }: {
   tournament: { id: string; name: string };
 }) {
-  const { data: session } = useSession();
-  const administrators = useAdministrators();
-  const userIsAdmin =
-    administrators.data?.some(admin => admin.email === session?.user?.email) ??
-    false;
+  const userIsAdmin = useUserIsAdmin()
 
   return (
     <TournamentPageLayout tournament={tournament}>
@@ -31,7 +23,7 @@ export default function TournamentPage({
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery([`live-results-${params.id}`], () =>
-    fetchLiveResults(params.id)
+    fetchLiveResults(params.id, true)
   );
   await queryClient.prefetchQuery([`administrators`], fetchAdministrators);
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
