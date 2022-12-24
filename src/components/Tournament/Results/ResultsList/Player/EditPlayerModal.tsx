@@ -71,7 +71,7 @@ export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Twitter profile URL</FormLabel>
+                <FormLabel>Twitter username</FormLabel>
                 <Input
                   name='twitter'
                   value={formik.values.twitter}
