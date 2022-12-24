@@ -7,6 +7,7 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../hooks/administrators';
 
@@ -30,7 +31,7 @@ export const AppBar = () => {
           fontWeight={'black'}
           lineHeight={'taller'}
         >
-          pokéstats
+          <Link href='/'>pokéstats</Link>
         </Heading>
         <Stack direction={'row'} alignItems={'center'}>
           {session ? (

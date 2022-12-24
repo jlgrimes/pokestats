@@ -1,4 +1,12 @@
-import { Card, CardHeader, Stack, Heading, CardFooter, Button } from '@chakra-ui/react';
+import {
+  Card,
+  CardHeader,
+  Stack,
+  Heading,
+  CardFooter,
+  Button,
+  LinkOverlay,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 export const TournamentList = ({
@@ -9,14 +17,15 @@ export const TournamentList = ({
   return (
     <Stack>
       {tournaments?.map((tournament, idx) => (
-        <Card key={idx}>
-          <CardHeader>
-            <Heading size='md' color='gray.700'>{tournament.name}</Heading>
-          </CardHeader>
-          <CardFooter>
-            <Button as={NextLink} href={`/tournaments/${tournament.id}/standings`}>View</Button>
-          </CardFooter>
-        </Card>
+        <LinkOverlay key={idx} as={NextLink} href={`/tournaments/${tournament.id}/standings`}>
+          <Card>
+            <CardHeader>
+              <Heading size='md' color='gray.700'>
+                {tournament.name}
+              </Heading>
+            </CardHeader>
+          </Card>
+        </LinkOverlay>
       ))}
     </Stack>
   );
