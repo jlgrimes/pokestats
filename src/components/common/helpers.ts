@@ -1,1 +1,5 @@
-export const getSpriteUrl = (name: string) => `https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen8-v3/${name?.toLowerCase()}.png`
+export const getSpriteUrl = (pokedexNumber: string) =>
+  `https://www.serebii.net/pokedex-swsh/icon/${pokedexNumber}.png`;
+
+export const getHighResSpriteUrl = (pokedexNumber: string) =>
+  `https://www.serebii.net/swordshield/pokemon/${pokedexNumber}.png`;

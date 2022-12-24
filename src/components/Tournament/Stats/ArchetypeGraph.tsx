@@ -14,9 +14,9 @@ import {
   Switch,
 } from '@chakra-ui/react';
 import { useDay2Decks } from '../../../hooks/day2decks';
-import { getSpriteUrl } from '../../common/helpers';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useState } from 'react';
+import { useHighResImageUrls } from '../../../hooks/highResImages';
 
 export const ArchetypeGraph = ({
   tournament,
@@ -24,6 +24,7 @@ export const ArchetypeGraph = ({
   tournament: { id: string; name: string };
 }) => {
   const { data } = useDay2Decks(tournament.id);
+  const imageUrls = useHighResImageUrls(data?.map((deck) => deck.defined_pokemon[0]))
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
   const getRadiusScale = (percent: number, index: number) => {
@@ -38,9 +39,9 @@ export const ArchetypeGraph = ({
 
   const getImageHeight = (percent: number) => {
     if (percent > 0.1) {
-      return 50;
+      return 80;
     } else if (percent > 0.03) {
-      return 40;
+      return 50;
     } else {
       return 30;
     }
@@ -77,7 +78,7 @@ export const ArchetypeGraph = ({
       <>
         <image
           height={height}
-          href={getSpriteUrl(definedPokemon[0])}
+          href={imageUrls?.[definedPokemon[0]]}
           x={x - height / 2}
           y={y - height / 2}
         />
