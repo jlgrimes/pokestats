@@ -1,11 +1,16 @@
-import { getSession } from 'next-auth/react';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
-import Tournament from '../src/components/Tournament/Tournament';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
+import { fetchPokedex } from '../src/hooks/highResImages';
+import { fetchLiveResults } from '../src/lib/fetch/fetchLiveResults';
 import supabase from '../src/lib/supabase/client';
 import styles from '../styles/Home.module.css';
 
-export default function Home({ tournaments }: { tournaments: { id: string, name: string }[] }) {
+export default function Home({
+  tournaments,
+}: {
+  tournaments: { id: string; name: string }[];
+}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -33,7 +38,15 @@ export async function getStaticProps() {
     .from('Tournaments')
     .select('id,name');
 
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
+  for await (const tournament of tournaments ?? []) {
+    await queryClient.prefetchQuery([`live-results-${tournament.id}`], () =>
+      fetchLiveResults(tournament.id, true)
+    );
+  }
+
   return {
-    props: { tournaments },
+    props: { tournaments, dehydratedState: dehydrate(queryClient) },
   };
 }
