@@ -9,6 +9,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { useCallback } from 'react';
 import { FaList } from 'react-icons/fa';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
@@ -34,6 +35,23 @@ export default function ResultsList({
   tournament: { id: string; name: string };
   allowEdits: boolean;
 }) {
+  const getResultBackgroundColor = useCallback(
+    (matchResult: string, tournamentFinished: boolean) => {
+      if (tournamentFinished) {
+        return '';
+      }
+
+      return matchResult === 'W'
+        ? 'green.100'
+        : matchResult === 'T'
+        ? 'yellow.100'
+        : matchResult === 'L'
+        ? 'red.100'
+        : '';
+    },
+    []
+  );
+
   return (
     <TableContainer>
       <Table size={'sm'}>
@@ -71,15 +89,14 @@ export default function ResultsList({
                 </Td>
                 <Td
                   padding={0}
-                  backgroundColor={
-                    result.currentMatchResult === 'W'
-                      ? 'green.100'
-                      : result.currentMatchResult === 'T'
-                      ? 'yellow.100'
-                      : result.currentMatchResult === 'L'
-                      ? 'red.100'
-                      : ''
-                  }
+                  backgroundColor={getResultBackgroundColor(
+                    result.currentMatchResult,
+                    // The criteria of the tournament being completed is if there's a list published,
+                    // which is the case except in the few days before lists are published on RK9.
+                    // So, there are a few inaccurate days where 1 and 2 seed will be colored and the
+                    // tournament is finished.
+                    !!result.deck?.list
+                  )}
                 >
                   {formatRecord(result.record)}
                 </Td>
