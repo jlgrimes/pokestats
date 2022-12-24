@@ -5,8 +5,10 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Tournament from '../../../src/components/Tournament/Tournament';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
-import { useAdministrators } from '../../../src/hooks/administrators';
+import { fetchAdministrators, useAdministrators } from '../../../src/hooks/administrators';
 import supabase from '../../../src/lib/supabase/client';
+import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
+import { fetchPokedex } from '../../../src/hooks/highResImages';
 
 export default function TournamentPage({
   tournament,
@@ -28,9 +30,11 @@ export default function TournamentPage({
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(`live-results-${params.id}`);
-  await queryClient.prefetchQuery(`administrators`);
-  await queryClient.prefetchQuery(`pokedex`);
+  await queryClient.prefetchQuery([`live-results-${params.id}`], () =>
+    fetchLiveResults(params.id)
+  );
+  await queryClient.prefetchQuery([`administrators`], fetchAdministrators);
+  await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
   const { data: tournaments } = await supabase
     .from('Tournaments')

@@ -5,25 +5,25 @@ import {
   removeRegionFlag,
 } from '../components/common/helpers';
 
-export const usePokedex = () => {
-  const fetchPokedex = async () => {
-    const res = await fetch(
-      'https://pokeapi.co/api/v2/pokemon-species?limit=5000'
-    );
-    const data = await res.json();
-    return data.results.reduce(
-      (acc: Record<string, number>, pokemon: Record<string, string>) => {
-        return {
-          ...acc,
-          [pokemon.name]: pokemon.url
-            .split('https://pokeapi.co/api/v2/pokemon-species/')[1]
-            .split('/')[0],
-        };
-      },
-      {}
-    );
-  };
+export const fetchPokedex = async () => {
+  const res = await fetch(
+    'https://pokeapi.co/api/v2/pokemon-species?limit=5000'
+  );
+  const data = await res.json();
+  return data.results.reduce(
+    (acc: Record<string, number>, pokemon: Record<string, string>) => {
+      return {
+        ...acc,
+        [pokemon.name]: pokemon.url
+          .split('https://pokeapi.co/api/v2/pokemon-species/')[1]
+          .split('/')[0],
+      };
+    },
+    {}
+  );
+};
 
+export const usePokedex = () => {
   return useQuery({ queryKey: [`pokedex`], queryFn: fetchPokedex });
 };
 

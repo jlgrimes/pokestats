@@ -178,7 +178,7 @@ function mapResultsArray(
     profile: playerProfiles?.[player.name],
     placing: player.placing,
     record: player.record,
-    currentMatchResult: player.rounds[roundNumber]?.result,
+    currentMatchResult: player.rounds[roundNumber]?.result ?? null,
     day2: player.record.wins * 3 + player.record.ties >= 19,
     deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
   }));
@@ -212,7 +212,7 @@ const getPokedata = async (tournamentId: string) => {
   const perfStart = performance.now();
 
   const response = await fetch(
-    `/pokedata/standings/${tournamentId}/masters/${tournamentId}_Masters.json`
+    `https://pokedata.ovh/standings/${tournamentId}/masters/${tournamentId}_Masters.json`
   );
   const data = await response.json();
 
