@@ -8,9 +8,10 @@ import {
 } from '@chakra-ui/react';
 import { FaTwitter } from 'react-icons/fa';
 import NextLink from 'next/link';
-import { memo } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
 import { EditPlayerModal } from './EditPlayerModal';
+import { isMobileDevice } from '../../../../../lib/userAgent';
 
 export const Player = memo(
   ({
@@ -19,7 +20,7 @@ export const Player = memo(
     isEditable,
   }: {
     name: string;
-    profile: { id: number; twitterUrl: string };
+    profile: { id: number; twitterHandle: string };
     isEditable: boolean;
   }) => {
     const {
@@ -28,21 +29,35 @@ export const Player = memo(
       onClose: closeEdit,
     } = useDisclosure();
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      setIsMobile(isMobileDevice());
+    }, []);
+
+    const twitterLink = useMemo(
+      () =>
+        `${isMobile ? 'twitter://user?screen_name=' : 'https://twitter.com/'}${
+          profile?.twitterHandle
+        }`,
+      [profile?.twitterHandle, isMobile]
+    );
+
     return (
       <Stack direction={'row'} alignItems='center'>
         <Text>{name}</Text>
-        {profile?.twitterUrl && (
-          <Link
-            color='twitter.500'
-            as={NextLink}
-            href={profile.twitterUrl}
-            isExternal
-          >
+        {profile?.twitterHandle && (
+          <Link color='twitter.500' as={NextLink} href={twitterLink} isExternal>
             <Icon as={FaTwitter} />
           </Link>
         )}
         {isEditable && (
-          <IconButton aria-label='edit-player' variant={'ghost'} size='xs' onClick={openEdit}>
+          <IconButton
+            aria-label='edit-player'
+            variant={'ghost'}
+            size='xs'
+            onClick={openEdit}
+          >
             <EditIcon />
           </IconButton>
         )}

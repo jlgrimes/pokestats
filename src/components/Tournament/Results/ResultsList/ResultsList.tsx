@@ -10,7 +10,6 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useCallback } from 'react';
-import { FaList } from 'react-icons/fa';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
@@ -20,7 +19,7 @@ import { Player } from './Player/Player';
 interface LiveResultType {
   placing: string;
   name: string;
-  profile: { id: number; twitterUrl: string };
+  profile: { id: number; twitterHandle: string };
   record: { wins: number; losses: number; ties: number };
   deck: { name: string; defined_pokemon: string[]; list: Record<string, any> };
   currentMatchResult: string;

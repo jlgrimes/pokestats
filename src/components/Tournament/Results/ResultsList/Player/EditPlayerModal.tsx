@@ -17,7 +17,7 @@ import { useFormik } from 'formik';
 import { memo } from 'react';
 import supabase from '../../../../../lib/supabase/client';
 interface EditPlayerModalProps {
-  playerProfile: { id: number; twitterUrl: string } | undefined;
+  playerProfile: { id: number; twitterHandle: string } | undefined;
   name: string;
   isOpen: boolean;
   onClose: () => void;
@@ -34,7 +34,7 @@ export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
   }) => {
     const res = await supabase
       .from('Player Profiles')
-      .update({ name, twitter_profile_url: twitter })
+      .update({ name, twitter_handle: twitter })
       .eq('id', props.playerProfile?.id);
 
     toast({
@@ -48,7 +48,7 @@ export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
   const formik = useFormik({
     initialValues: {
       name: props.name,
-      twitter: props.playerProfile?.twitterUrl ?? '',
+      twitter: props.playerProfile?.twitterHandle ?? '',
     },
     onSubmit: handleSubmit,
   });

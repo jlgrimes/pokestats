@@ -29,14 +29,14 @@ const fetchPlayerProfiles = async () => {
 
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_profile_url');
+    .select('id,name,twitter_handle');
   const profiles = await res.data?.reduce((acc, player) => {
     return {
       ...acc,
       [player.name]: {
         id: player.id,
         name: player.name,
-        twitterUrl: player.twitter_profile_url,
+        twitterHandle: player.twitter_handle,
       },
     };
   }, {});
