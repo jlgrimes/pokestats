@@ -27,7 +27,7 @@ export const ArchetypeGraph = ({
     data?.reduce(
       (acc: string[], deck: Record<string, any>) => [
         ...acc,
-        ...deck.defined_pokemon,
+        ...(deck.defined_pokemon ?? []),
       ],
       []
     )
@@ -85,22 +85,26 @@ export const ArchetypeGraph = ({
     const definedPokemon = data.find(
       (deck: Record<string, any>) =>
         name === getArchetypeKey(deck, shouldDrillDown)
-    ).defined_pokemon;
+    )?.defined_pokemon;
 
     const height = getImageHeight(percent as number);
+    const substituteUrl =
+      'https://www.pokencyclopedia.info/sprites/misc/spr_substitute/art__substitute.png';
 
     return (
       <>
         <image
-          height={height}
-          href={imageUrls?.[definedPokemon[0]]}
+          height={definedPokemon ? height : 30}
+          href={definedPokemon ? imageUrls?.[definedPokemon[0]] : substituteUrl}
           x={x - height / 2}
           y={y - height / 2}
         />
         {shouldDrillDown && (
           <image
             height={height * 0.75}
-            href={imageUrls?.[definedPokemon[1]]}
+            href={
+              definedPokemon ? imageUrls?.[definedPokemon[1]] : ''
+            }
             x={x}
             y={y - height / 4}
           />

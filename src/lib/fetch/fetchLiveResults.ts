@@ -178,7 +178,7 @@ function mapResultsArray(
 
     return {
       name: player.name,
-      profile: playerProfiles?.[player.name],
+      profile: playerProfiles?.[player.name] ?? null,
       placing: player.placing,
       record: player.record,
       ...(currentMatchResult ? { currentMatchResult } : {}),

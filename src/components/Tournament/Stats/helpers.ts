@@ -1,7 +1,7 @@
 export const getArchetypeKey = (
   deck: Record<string, any>,
   shouldDrillDown: boolean
-) => (shouldDrillDown ? deck.name : (deck.supertype ?? deck.defined_pokemon[0]));
+) => (shouldDrillDown ? deck.name : (deck.supertype ?? deck.defined_pokemon?.[0]));
 
 export const getArchetypeGraphData = (
   day2Decks: Record<string, any>[] | undefined,
