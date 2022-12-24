@@ -1,5 +1,9 @@
 import { useQuery } from 'react-query';
-import { getHighResSpriteUrl } from '../components/common/helpers';
+import {
+  getHighResSpriteUrl,
+  getRegionFlag,
+  removeRegionFlag,
+} from '../components/common/helpers';
 
 export const usePokedex = () => {
   const fetchPokedex = async () => {
@@ -28,7 +32,10 @@ export const useHighResImageUrls = (pokemonNames: string[]) => {
   return pokemonNames?.reduce((acc, name) => {
     return {
       ...acc,
-      [name]: getHighResSpriteUrl(data?.[name.toLowerCase()])
+      [name]: getHighResSpriteUrl(
+        data?.[removeRegionFlag(name).toLowerCase()],
+        getRegionFlag(name)
+      ),
     };
   }, {});
 };
