@@ -173,15 +173,19 @@ function mapResultsArray(
 ): string[] {
   const perfStart = performance.now();
 
-  const mappedArray = resultsArray.map((player: Player) => ({
-    name: player.name,
-    profile: playerProfiles?.[player.name],
-    placing: player.placing,
-    record: player.record,
-    currentMatchResult: player.rounds[roundNumber]?.result ?? null,
-    day2: player.record.wins * 3 + player.record.ties >= 19,
-    deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
-  }));
+  const mappedArray = resultsArray.map((player: Player) => {
+    const currentMatchResult = player.rounds[roundNumber]?.result;
+
+    return {
+      name: player.name,
+      profile: playerProfiles?.[player.name],
+      placing: player.placing,
+      record: player.record,
+      ...(currentMatchResult ? { currentMatchResult} : {}),
+      day2: player.record.wins * 3 + player.record.ties >= 19,
+      deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
+    };
+  });
 
   console.log(
     'mapResultsArray:',
@@ -249,6 +253,6 @@ export const fetchLiveResults = async (tournamentId: string) => {
   const endTime = performance.now();
 
   console.log('Total time:', (endTime - startTime) / 1000, 'sec');
-
+  console.log({ roundNumber, data: parsedData })
   return { roundNumber, data: parsedData };
 };
