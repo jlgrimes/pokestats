@@ -160,7 +160,9 @@ const getPlayerDeck = (
   return {
     ...(savedDeckInfo ?? {}),
     ...(list ? { list } : {}),
-    ...(inferredArchetypeFromList ?? {}),
+    ...(inferredArchetypeFromList ?? {
+      defined_pokemon: ['substitute']
+    }),
   };
 };
 

@@ -16,6 +16,7 @@ import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useState } from 'react';
 import { useHighResImageUrls } from '../../../hooks/highResImages';
+import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
 
 export const ArchetypeGraph = ({
   tournament,
@@ -88,14 +89,12 @@ export const ArchetypeGraph = ({
     )?.defined_pokemon;
 
     const height = getImageHeight(percent as number);
-    const substituteUrl =
-      'https://www.pokencyclopedia.info/sprites/misc/spr_substitute/art__substitute.png';
 
     return (
       <>
         <image
           height={definedPokemon ? height : 30}
-          href={definedPokemon ? imageUrls?.[definedPokemon[0]] : substituteUrl}
+          href={definedPokemon ? imageUrls?.[definedPokemon[0]] : HIGH_RES_SUBSTITUTE_URL}
           x={x - height / 2}
           y={y - height / 2}
         />

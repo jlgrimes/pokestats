@@ -12,12 +12,27 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
   return (
     <Stack direction={'row'} spacing={1}>
       {props.pokemonNames.map((name, idx) => {
-        if (!name || name.length === 0) return;
+        if (name.length === 0) return;
+
+        if (name === 'substitute') {
+          return (
+            <Image
+              key={idx}
+              src='https://archives.bulbagarden.net/media/upload/a/a5/SubstituteG5f.png'
+              alt='Other'
+              height='40px'
+              width='auto'
+            />
+          );
+        }
 
         return (
           <Image
             key={idx}
-            src={getSpriteUrl(pokedex?.[removeRegionFlag(name).toLowerCase()], getRegionFlag(name))}
+            src={getSpriteUrl(
+              pokedex?.[removeRegionFlag(name).toLowerCase()],
+              getRegionFlag(name)
+            )}
             alt={name}
             maxHeight='30px'
             width='auto'
