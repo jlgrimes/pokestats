@@ -262,5 +262,10 @@ export const fetchLiveResults = async (
   // which is the case except in the few days before lists are published on RK9.
   // So, there are a few inaccurate days where 1 and 2 seed will be colored and the
   // tournament is finished.
-  return { live: !parsedData[0]?.deck?.list, roundNumber, data: parsedData };
+  return {
+    live: !parsedData[0]?.deck?.list,
+    numPlayers: parsedData.length,
+    roundNumber,
+    data: parsedData,
+  };
 };

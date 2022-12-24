@@ -1,6 +1,7 @@
 import { Heading, Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { ArchetypeGraph } from '../../../src/components/Tournament/Stats/ArchetypeGraph';
+import { TournamentDetails } from '../../../src/components/Tournament/Stats/TournamentDetails';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
@@ -18,6 +19,7 @@ export default function StatsPage({
 
   return (
     <TournamentPageLayout tournament={tournament}>
+      <TournamentDetails tournament={tournament} />
       {!liveResults?.live && <ArchetypeGraph tournament={tournament} />}
     </TournamentPageLayout>
   );

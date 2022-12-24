@@ -110,8 +110,8 @@ export const ArchetypeGraph = ({
   };
 
   return (
-    <Stack padding={'1rem 1.5rem'}>
-      <Heading color='gray.700' size={'md'}>
+    <Stack padding={'0 1.5rem'}>
+      <Heading color='gray.700' size={'sm'}>
         Day 2 Archetype Spread
       </Heading>
       <Stack alignItems={'center'}>
