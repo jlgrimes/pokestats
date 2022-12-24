@@ -24,13 +24,15 @@ export const ArchetypeGraph = ({
   tournament: { id: string; name: string };
 }) => {
   const { data } = useDay2Decks(tournament.id);
-  const imageUrls = useHighResImageUrls(data?.map((deck) => deck.defined_pokemon[0]))
+  const imageUrls = useHighResImageUrls(
+    data?.reduce((acc, deck) => [...acc, ...deck.defined_pokemon], [])
+  );
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
   const getRadiusScale = (percent: number, index: number) => {
     if (percent > 0.1) {
       return 1.25;
-    } else if (percent > 0.03) {
+    } else if (percent > 0.04) {
       return 1.5;
     } else {
       return index % 2 ? 2 : 1.6;
@@ -39,9 +41,17 @@ export const ArchetypeGraph = ({
 
   const getImageHeight = (percent: number) => {
     if (percent > 0.1) {
-      return 80;
+      if (shouldDrillDown) {
+        return 80;
+      } else {
+        return 100;
+      }
     } else if (percent > 0.03) {
-      return 50;
+      if (shouldDrillDown) {
+        return 50;
+      } else {
+        return 70;
+      }
     } else {
       return 30;
     }
@@ -82,6 +92,14 @@ export const ArchetypeGraph = ({
           x={x - height / 2}
           y={y - height / 2}
         />
+        {shouldDrillDown && (
+          <image
+            height={height * 0.75}
+            href={imageUrls?.[definedPokemon[1]]}
+            x={x}
+            y={y - height / 4}
+          />
+        )}
       </>
     );
   };
