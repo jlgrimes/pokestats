@@ -115,7 +115,7 @@ export const ArchetypeGraph = ({
         Day 2 Archetype Spread
       </Heading>
       <Stack alignItems={'center'}>
-        <ResponsiveContainer width={'100%'} height={425}>
+        <ResponsiveContainer width={'100%'} height={350}>
           <PieChart>
             <Pie
               dataKey='value'
@@ -126,7 +126,7 @@ export const ArchetypeGraph = ({
               labelLine={false}
               label={renderCustomizedLabel}
               fill='#8884d8'
-              outerRadius={'95%'}
+              outerRadius={'100%'}
             />
             <Tooltip />
           </PieChart>
