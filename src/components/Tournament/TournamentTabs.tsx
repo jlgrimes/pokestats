@@ -13,18 +13,12 @@ export const TournamentTabs = () => {
     {
       name: 'Standings',
       slug: 'standings',
-      badge: liveResults?.live
-        ? `Live - Round ${liveResults?.roundNumber}`
-        : false,
+      badge: liveResults?.live ? `Live - Round ${liveResults?.roundNumber}` : false,
     },
-    ...(!liveResults?.live
-      ? [
-          {
-            name: 'Stats',
-            slug: 'stats',
-          },
-        ]
-      : []),
+    {
+      name: 'Stats',
+      slug: 'stats',
+    },
   ];
 
   return (

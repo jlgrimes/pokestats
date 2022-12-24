@@ -3,6 +3,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { ArchetypeGraph } from '../../../src/components/Tournament/Stats/ArchetypeGraph';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
+import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import supabase from '../../../src/lib/supabase/client';
 
@@ -11,9 +12,13 @@ export default function StatsPage({
 }: {
   tournament: { id: string; name: string };
 }) {
+  const { data: liveResults } = useLiveTournamentResults(
+    tournament.id as string
+  );
+
   return (
     <TournamentPageLayout tournament={tournament}>
-      <ArchetypeGraph tournament={tournament} />
+      {!liveResults?.live && <ArchetypeGraph tournament={tournament} />}
     </TournamentPageLayout>
   );
 }
