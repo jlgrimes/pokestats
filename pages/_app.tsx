@@ -2,8 +2,13 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { useState } from 'react';
+import { AppLayout } from '../src/components/Layout/AppLayout';
 
 export default function App({
   Component,
@@ -16,7 +21,9 @@ export default function App({
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <ChakraProvider>
-            <Component {...pageProps} />
+            <AppLayout>
+              <Component {...pageProps} />
+            </AppLayout>
           </ChakraProvider>
         </Hydrate>
       </QueryClientProvider>

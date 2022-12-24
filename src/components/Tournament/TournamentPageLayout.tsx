@@ -11,7 +11,7 @@ export const TournamentPageLayout = ({
 }) => {
   return (
     <Stack spacing={1}>
-      <Heading color='gray.700' padding={'1rem 1.5rem 0'}>
+      <Heading color='gray.700' padding={'0 1.5rem 0'}>
         {tournament.name}
       </Heading>
       <TournamentTabs />
