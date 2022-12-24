@@ -1,7 +1,6 @@
 import {
   PieChart,
   Pie,
-  Legend,
   Tooltip,
   ResponsiveContainer,
   PieLabelRenderProps,
@@ -25,7 +24,13 @@ export const ArchetypeGraph = ({
 }) => {
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useHighResImageUrls(
-    data?.reduce((acc, deck) => [...acc, ...deck.defined_pokemon], [])
+    data?.reduce(
+      (acc: string[], deck: Record<string, any>) => [
+        ...acc,
+        ...deck.defined_pokemon,
+      ],
+      []
+    )
   );
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
 

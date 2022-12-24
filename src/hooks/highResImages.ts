@@ -27,7 +27,7 @@ export const usePokedex = () => {
   return useQuery({ queryKey: [`pokedex`], queryFn: fetchPokedex });
 };
 
-export const useHighResImageUrls = (pokemonNames: string[]) => {
+export const useHighResImageUrls = (pokemonNames: string[]): Record<string, string> => {
   const { data } = usePokedex();
   return pokemonNames?.reduce((acc, name) => {
     return {
