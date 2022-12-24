@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import supabase from '../lib/supabase/client';
 
 export const useAdministrators = () => {
@@ -7,5 +7,8 @@ export const useAdministrators = () => {
     return res.data;
   };
 
-  return useQuery('administrators', fetchAdministrators);
+  return useQuery({
+    queryKey: ['administrators'],
+    queryFn: fetchAdministrators,
+  });
 };

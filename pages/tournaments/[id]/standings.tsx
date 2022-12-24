@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { dehydrate, QueryClient } from 'react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Tournament from '../../../src/components/Tournament/Tournament';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
@@ -30,6 +30,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(`live-results-${params.id}`);
   await queryClient.prefetchQuery(`administrators`);
+  await queryClient.prefetchQuery(`pokedex`);
 
   const { data: tournaments } = await supabase
     .from('Tournaments')

@@ -1,5 +1,5 @@
-import { useQuery } from "react-query";
-import supabase from "../lib/supabase/client";
+import { useQuery } from '@tanstack/react-query';
+import supabase from '../lib/supabase/client';
 
 export const useNotablePlayers = (tournamentName: string) => {
   const fetchArchetypes = async () => {
@@ -10,5 +10,8 @@ export const useNotablePlayers = (tournamentName: string) => {
     return res.data;
   };
 
-  return useQuery(`notable-players-${tournamentName}`, fetchArchetypes);
-}
+  return useQuery({
+    queryKey: [`notable-players-${tournamentName}`],
+    queryFn: fetchArchetypes,
+  });
+};

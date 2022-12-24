@@ -14,9 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useMutation, useQueryClient } from 'react-query';
 import { useMutateArchetypes } from '../../../../../../hooks/deckArchetypes';
-import supabase from '../../../../../../lib/supabase/client';
 
 interface AddArchetypeModalProps {
   isOpen: boolean;

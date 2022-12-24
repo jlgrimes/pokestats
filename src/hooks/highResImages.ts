@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   getHighResSpriteUrl,
   getRegionFlag,
@@ -24,7 +24,7 @@ export const usePokedex = () => {
     );
   };
 
-  return useQuery(`pokedex`, fetchPokedex);
+  return useQuery({ queryKey: [`pokedex`], queryFn: fetchPokedex });
 };
 
 export const useHighResImageUrls = (pokemonNames: string[]) => {

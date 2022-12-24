@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from '../lib/supabase/client';
 
 export const useArchetypes = () => {
@@ -10,7 +10,7 @@ export const useArchetypes = () => {
     return res.data;
   };
 
-  return useQuery('deck-archetypes', fetchArchetypes);
+  return useQuery({ queryKey: ['deck-archetypes'], queryFn: fetchArchetypes });
 };
 
 const addArchetype = async ({

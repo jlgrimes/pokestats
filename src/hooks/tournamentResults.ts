@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
@@ -12,9 +12,15 @@ export const useTournamentResults = (tournamentName: string) => {
     return res.data;
   };
 
-  return useQuery(getResultQueryKey(tournamentName), fetchResults);
+  return useQuery({
+    queryKey: [getResultQueryKey(tournamentName)],
+    queryFn: fetchResults,
+  });
 };
 
 export const useLiveTournamentResults = (tournamentId: string) => {
-  return useQuery(`live-results-${tournamentId}`, () => fetchLiveResults(tournamentId));
+  return useQuery({
+    queryKey: [`live-results-${tournamentId}`],
+    queryFn: () => fetchLiveResults(tournamentId),
+  });
 };

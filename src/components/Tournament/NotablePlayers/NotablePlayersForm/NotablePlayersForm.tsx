@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Input, Stack, useDisclosure } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getNotablePlayersQueryKey } from '../../../../lib/fetch/query-keys';
 import supabase from '../../../../lib/supabase/client';
 import ArchetypeSelector from '../../Results/ResultsList/DeckInput/ArchetypeSelector/ArchetypeSelector';
@@ -24,9 +24,9 @@ export default function NotablePlayersForm({ tournament }: { tournament: string 
 
     return result;
   };
-  const mutation = useMutation(getNotablePlayersQueryKey(tournament), addNotablePlayer, {
+  const mutation = useMutation([getNotablePlayersQueryKey(tournament)], addNotablePlayer, {
     onSuccess: () => {
-      queryClient.invalidateQueries(getNotablePlayersQueryKey(tournament));
+      queryClient.invalidateQueries([getNotablePlayersQueryKey(tournament)]);
     },
   });
 

@@ -1,5 +1,5 @@
 import { Heading, Stack } from '@chakra-ui/react';
-import { dehydrate, QueryClient } from 'react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { ArchetypeGraph } from '../../../src/components/Tournament/Stats/ArchetypeGraph';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
