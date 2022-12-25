@@ -7,7 +7,10 @@ const twitterClient = new Client(process.env.TWITTER_BEARER_TOKEN as string);
 
 type Data = {
   id: string;
+  name: string;
   username: string;
+  profile_image_url: string;
+  description: string;
 };
 
 export const fetchTwitterProfile = async (query: { id?: string, username?: string }) => {
@@ -31,8 +34,11 @@ export const fetchTwitterProfile = async (query: { id?: string, username?: strin
   if (!response) return;
 
   return {
-    ...response.data,
-    profile_image_url: response.data?.profile_image_url?.replace('_normal', '')
+    id: response.data?.id as string,
+    name: response.data?.name as string,
+    username: response.data?.username as string,
+    description: response.data?.description as string,
+    profile_image_url: response.data?.profile_image_url?.replace('_normal', '') as string
   }
 }
 
