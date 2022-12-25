@@ -1,4 +1,11 @@
-import { Heading, Stack, Text } from '@chakra-ui/react';
+import {
+  Flex,
+  GridItem,
+  Heading,
+  SimpleGrid,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import Image from 'next/image';
 import { useCodeToSetMap } from '../../../../../hooks/deckList';
 
@@ -12,33 +19,37 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
   }) => {
     let set = codeToSetMap?.[card.set];
     if (card.number.includes('SWSH')) {
-      set = 'swshp'
+      set = 'swshp';
+    } else if (card.number.includes('TG')) {
+      set = set.replace('tg', '').concat('tg');
     }
 
     return `https://images.pokemontcg.io/${set}/${card?.number}.png`;
   };
 
   return (
-    <Stack direction={'row'}>
-      {['Pokemon', 'Trainer', 'Energy'].map((superclass, idx) => (
-        <Stack key={idx}>
-          <Heading size='sm'>{superclass}</Heading>
-          {deckList[superclass.toLowerCase()].map(
-            (
-              card: { name: string; number: string; set: string },
-              idx: number
-            ) => (
-              <Image
-                key={idx}
-                width={100}
-                height={150}
-                src={getCardImageUrl(card)}
-                alt={`${card.name} ${card.set}`}
-              />
-            )
-          )}
-        </Stack>
-      ))}
-    </Stack>
+    <Flex flexWrap={'wrap'} gap={1}>
+      {['Pokemon', 'Trainer', 'Energy'].map((superclass, idx) =>
+        deckList[superclass.toLowerCase()].map(
+          (
+            card: { name: string; number: string; set: string; count: number },
+            idx: number
+          ) => (
+            <SimpleGrid key={idx} gridAutoFlow='column'>
+              {[...Array(card.count)].map((_, idx) => (
+                <GridItem key={idx} gridColumn={1} gridRow={1} paddingLeft={idx * 2}>
+                  <Image
+                    width={60}
+                    height={180}
+                    src={getCardImageUrl(card)}
+                    alt={`${card.name} ${card.set}`}
+                  />
+                </GridItem>
+              ))}
+            </SimpleGrid>
+          )
+        )
+      )}
+    </Flex>
   );
 };

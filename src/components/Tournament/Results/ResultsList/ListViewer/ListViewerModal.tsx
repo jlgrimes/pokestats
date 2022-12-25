@@ -9,6 +9,7 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
+import { ordinalSuffixOf } from '../../../../../lib/strings';
 import { ListView } from './ListView';
 
 interface ListViewerModalProps {
@@ -22,9 +23,12 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='xl'>
       <ModalOverlay />
       <ModalContent marginTop={{ base: '0', sm: '16' }}>
-        <ModalHeader>{`${props.result.name} - ${props.result.deck.name}`}</ModalHeader>
+        <Stack spacing={0} padding={3}>
+          <Heading size='md'>{props.result.deck.name}</Heading>
+          <Text>{props.result.name} - {ordinalSuffixOf(props.result.placing)}</Text>
+        </Stack>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody padding={0}>
           <ListView deckList={props.result.deck.list} />
         </ModalBody>
       </ModalContent>
