@@ -1,14 +1,4 @@
 import {
-  PieChart,
-  Pie,
-  Tooltip,
-  ResponsiveContainer,
-  PieLabelRenderProps,
-  BarChart,
-  Bar,
-} from 'recharts';
-import {
-  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -16,8 +6,6 @@ import {
   Stack,
   Switch,
 } from '@chakra-ui/react';
-import { useDay2Decks } from '../../../hooks/day2decks';
-import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useState } from 'react';
 import { ArchetypeGraph } from './ArchetypeGraph';
 import { ArchetypeBarGraph } from './ArchetypeBarGraph';
@@ -51,6 +39,7 @@ export const ArchetypeGraphsContainer = ({
           as={SimpleGrid}
           columns={{ base: 2, lg: 4 }}
           alignItems='center'
+          maxWidth={'500px'}
         >
           <FormLabel htmlFor='show-pie-chart' mb='0'>
             Pie chart

@@ -6,12 +6,10 @@ import {
   YAxis,
   XAxis,
   LabelList,
-  CartesianGrid,
 } from 'recharts';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { useLowResImageUrls } from '../../../hooks/images';
 import { LOW_RES_SUBSTITUTE_URL } from '../../common/helpers';
-import SpriteDisplay from '../../common/SpriteDisplay';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 
 export const ArchetypeBarGraph = ({

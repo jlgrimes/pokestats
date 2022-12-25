@@ -1,4 +1,11 @@
-import { Button, FormControl, FormLabel, Input, Stack, useDisclosure } from '@chakra-ui/react';
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getNotablePlayersQueryKey } from '../../../../lib/fetch/query-keys';
@@ -10,7 +17,11 @@ interface NotablePlayerFormValues {
   deck: string;
 }
 
-export default function NotablePlayersForm({ tournament }: { tournament: string }) {
+export default function NotablePlayersForm({
+  tournament,
+}: {
+  tournament: string;
+}) {
   const queryClient = useQueryClient();
 
   const addNotablePlayer = async (values: NotablePlayerFormValues) => {
@@ -24,11 +35,15 @@ export default function NotablePlayersForm({ tournament }: { tournament: string 
 
     return result;
   };
-  const mutation = useMutation([getNotablePlayersQueryKey(tournament)], addNotablePlayer, {
-    onSuccess: () => {
-      queryClient.invalidateQueries([getNotablePlayersQueryKey(tournament)]);
-    },
-  });
+  const mutation = useMutation(
+    [getNotablePlayersQueryKey(tournament)],
+    addNotablePlayer,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([getNotablePlayersQueryKey(tournament)]);
+      },
+    }
+  );
 
   const handleSubmit = (values: NotablePlayerFormValues) => {
     formik.resetForm();
@@ -45,7 +60,11 @@ export default function NotablePlayersForm({ tournament }: { tournament: string 
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack direction={{ base: 'column', sm: 'row' }} gap={'0.5rem'} alignItems={'end'}>
+      <Stack
+        direction={{ base: 'column', sm: 'row' }}
+        gap={'0.5rem'}
+        alignItems={'end'}
+      >
         <FormControl>
           <FormLabel>Player name</FormLabel>
           <Input
@@ -58,11 +77,11 @@ export default function NotablePlayersForm({ tournament }: { tournament: string 
           <FormLabel>Deck archetype</FormLabel>
           <ArchetypeSelector
             value={formik.values.deck}
-            onChange={(value) => formik.setFieldValue('deck', value)}
+            onChange={value => formik.setFieldValue('deck', value)}
           />
         </FormControl>
         <div>
-          <Button colorScheme='teal' variant='solid' type='submit'>
+          <Button colorScheme='blue' variant='solid' type='submit'>
             Submit
           </Button>
         </div>

@@ -8,10 +8,11 @@ import {
   Avatar,
   LinkOverlay,
   LinkBox,
+  Button,
 } from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useTwitterUsername } from '../../hooks/twitter';
 
 export const AppBar = () => {
@@ -24,6 +25,7 @@ export const AppBar = () => {
         alignItems={'center'}
         padding={'0.25rem 1.5rem 0.25rem'}
         justifyContent={'space-between'}
+        boxShadow='sm'
       >
         <Heading
           color={'gray.700'}
@@ -58,14 +60,18 @@ export const AppBar = () => {
               </LinkBox>
             </>
           ) : (
-            <>
-              <Text>Log in</Text>
-              <Avatar size='sm' onClick={() => signIn('twitter')} />
-            </>
+            <Button
+              size={'sm'}
+              colorScheme='twitter'
+              variant='outline'
+              onClick={() => signIn('twitter')}
+              rightIcon={<FaTwitter />}
+            >
+              Log in
+            </Button>
           )}
         </Stack>
       </Stack>
-      <Divider />
     </>
   );
 };

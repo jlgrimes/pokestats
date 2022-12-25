@@ -24,7 +24,7 @@ function Profile({ user }: { user: Record<string, any> }) {
             </Heading>
             <Text>
               If you believe this to be wrong,{' '}
-              <Link href={'twitter.com/jgrimesey'} isExternal color={'teal'}>
+              <Link href={'twitter.com/jgrimesey'} isExternal color={'blue'}>
                 complain to me on Twitter.
               </Link>
             </Text>
