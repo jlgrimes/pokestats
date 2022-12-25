@@ -30,6 +30,7 @@ import {
 } from '../../types/player';
 import { usePlayerPerformance } from '../../src/hooks/tournamentResults';
 import { ResultsRow } from '../../src/components/Tournament/Results/ResultsList/ResultsRow';
+import { ResultsHeader } from '../../src/components/Tournament/Results/ResultsList/ResultsHeader';
 
 function PlayerPage({
   user,
@@ -52,7 +53,7 @@ function PlayerPage({
 
   return (
     <>
-      <Stack padding='1.5rem 1.5rem'>
+      <Stack padding='1.5rem 1.5rem' spacing={6}>
         <Stack>
           <Avatar
             size={'2xl'}
@@ -107,25 +108,26 @@ function PlayerPage({
             </Button>
           </Stack>
         )}
+        <TableContainer>
+          <Table>
+            <ResultsHeader isProfileView />
+            <Tbody>
+              {tournamentPerformance.map(({ performance, tournament }, idx) => (
+                <ResultsRow
+                  key={idx}
+                  result={performance}
+                  tournament={tournament}
+                  // TODO: Make this able to change current tournament in this view
+                  // Though, we'd probably want the API to say what tournaments are ongoing.
+                  allowEdits={false}
+                  tournamentFinished={true}
+                  isProfileView
+                />
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
       </Stack>
-      <TableContainer>
-        <Table>
-          <Tbody>
-            {tournamentPerformance.map(({ performance, tournament }, idx) => (
-              <ResultsRow
-                key={idx}
-                result={performance}
-                tournament={tournament}
-                // TODO: Make this able to change current tournament in this view
-                // Though, we'd probably want the API to say what tournaments are ongoing.
-                allowEdits={false}
-                tournamentFinished={true}
-                isProfileView
-              />
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
     </>
   );
 }

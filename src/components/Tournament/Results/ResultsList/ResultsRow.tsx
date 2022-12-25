@@ -39,7 +39,7 @@ export const ResultsRow = ({
   return (
     <Tr height='41px'>
       {isProfileView && (
-        <Td isNumeric padding={2}>
+        <Td padding={2}>
           {tournament.name}
         </Td>
       )}
