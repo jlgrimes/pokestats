@@ -10,10 +10,12 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../hooks/administrators';
+import { useTwitterUsernameFromId } from '../../hooks/twitter';
 
 export const AppBar = () => {
-  const userIsAdmin = useUserIsAdmin();
   const { data: session } = useSession();
+  const { data: username } = useTwitterUsernameFromId(session?.user?.id as string)
+  console.log(username)
 
   return (
     <>
@@ -58,7 +60,7 @@ export const AppBar = () => {
               size={'sm'}
               aria-label={'Log in'}
               icon={<FaSignInAlt />}
-              onClick={() => signIn('google')}
+              onClick={() => signIn('twitter')}
             />
           )}
         </Stack>
