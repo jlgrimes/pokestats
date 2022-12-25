@@ -118,7 +118,9 @@ const updatePlayerProfilesWithTournament = async (
     },
     []
   );
-  await supabase.from('Player Profiles').upsert(upsertingRows);
+  await supabase.from('Player Profiles').upsert(upsertingRows, {
+    onConflict: 'id'
+  });
 };
 
 const getPlayerDeckObjects = async (
