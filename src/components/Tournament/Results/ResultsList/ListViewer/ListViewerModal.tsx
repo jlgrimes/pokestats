@@ -9,6 +9,7 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
+import { ListView } from './ListView';
 
 interface ListViewerModalProps {
   isOpen: boolean;
@@ -24,20 +25,7 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
         <ModalHeader>{`${props.result.name} - ${props.result.deck.name}`}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Stack direction={'row'}>
-            {['Pokemon', 'Trainer', 'Energy'].map((superclass, idx) => (
-              <Stack key={idx}>
-                <Heading size='sm'>{superclass}</Heading>
-                {props.result.deck.list[superclass.toLowerCase()].map(
-                  (card: Record<string, any>, textIdx: number) => (
-                    <Text
-                      key={textIdx}
-                    >{`${card.count} ${card.name}`}</Text>
-                  )
-                )}
-              </Stack>
-            ))}
-          </Stack>
+          <ListView deckList={props.result.deck.list} />
         </ModalBody>
       </ModalContent>
     </Modal>
