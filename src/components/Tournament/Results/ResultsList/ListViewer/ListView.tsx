@@ -10,9 +10,12 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
     number: string;
     set: string;
   }) => {
-    return `https://images.pokemontcg.io/${codeToSetMap?.[card.set]}/${
-      card?.number
-    }.png`;
+    let set = codeToSetMap?.[card.set];
+    if (card.number.includes('SWSH')) {
+      set = 'swshp'
+    }
+
+    return `https://images.pokemontcg.io/${set}/${card?.number}.png`;
   };
 
   return (
