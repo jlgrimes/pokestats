@@ -15,9 +15,18 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    const response = await twitterClient.users.findUserById(
-      req.query.id as string
-    );
+    let response;
+    if (req.query.id) {
+      response = await twitterClient.users.findUserById(
+        req.query.id as string
+      );
+    } else if (req.query.username) {
+      response = await twitterClient.users.findUserByUsername(
+        req.query.id as string
+      );
+    } else {
+      return res.status(500);
+    }
 
     res.status(200).json({
       id: response.data?.id as string,
