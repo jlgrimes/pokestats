@@ -1,20 +1,12 @@
 import {
-  IconButton,
-  Stack,
   Table,
   TableContainer,
   Tbody,
-  Td,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useCallback } from 'react';
-import SpriteDisplay from '../../../common/SpriteDisplay';
-import DeckInput from './DeckInput/DeckInput';
-import { formatRecord } from './helpers';
-import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
-import { Player } from './Player/Player';
+import { ResultsRow } from './ResultsRow';
 
 interface LiveResultType {
   placing: string;
@@ -36,23 +28,6 @@ export default function ResultsList({
   allowEdits: boolean;
   tournamentFinished: boolean;
 }) {
-  const getResultBackgroundColor = useCallback(
-    (matchResult: string) => {
-      if (tournamentFinished) {
-        return '';
-      }
-
-      return matchResult === 'W'
-        ? 'green.100'
-        : matchResult === 'T'
-        ? 'yellow.100'
-        : matchResult === 'L'
-        ? 'red.100'
-        : '';
-    },
-    [tournamentFinished]
-  );
-
   return (
     <TableContainer>
       <Table size={'sm'}>
@@ -71,59 +46,13 @@ export default function ResultsList({
         <Tbody>
           {liveResults?.map((result: LiveResultType, idx: number) => {
             return (
-              <Tr key={idx} height='41px'>
-                <Td isNumeric padding={0}>
-                  {result.placing}
-                </Td>
-                <Td
-                  maxWidth={'12rem'}
-                  overflow={'hidden'}
-                  textOverflow={'ellipsis'}
-                  padding={0}
-                  paddingLeft={2}
-                >
-                  <Player
-                    name={result.name}
-                    profile={result.profile}
-                    isEditable={allowEdits}
-                  />
-                </Td>
-                <Td
-                  padding={0}
-                  backgroundColor={getResultBackgroundColor(
-                    result.currentMatchResult
-                  )}
-                >
-                  {formatRecord(result.record)}
-                </Td>
-                <Td padding={0} paddingLeft={2}>
-                  {allowEdits && !result?.deck?.list ? (
-                    <DeckInput
-                      tournamentId={tournament.id}
-                      playerName={result.name}
-                      deckName={result.deck?.name}
-                    />
-                  ) : (
-                    <SpriteDisplay
-                      pokemonNames={result?.deck?.defined_pokemon ?? []}
-                    />
-                  )}
-                </Td>
-                {result.deck.list && (
-                  <Td padding={0}>
-                    <ListViewerOpenButton result={result} />
-                  </Td>
-                )}
-                {/* <Td>
-                <SpriteAndNameDisplay
-                  archetypeName={result.deck_archetype}
-                  pokemonNames={
-                    decks?.find(deck => deck.name === result.deck_archetype)
-                      ?.defined_pokemon ?? []
-                  }
-                />
-              </Td> */}
-              </Tr>
+              <ResultsRow
+                key={idx}
+                result={result}
+                tournament={tournament}
+                allowEdits={allowEdits}
+                tournamentFinished={tournamentFinished}
+              />
             );
           })}
         </Tbody>

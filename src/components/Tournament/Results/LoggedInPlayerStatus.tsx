@@ -1,15 +1,23 @@
-import { useLiveTournamentResults } from "../../../hooks/tournamentResults";
-import { useTwitterUsername } from "../../../hooks/twitter";
+import { Table } from '@chakra-ui/react';
+import { useLoggedInPlayerLiveResults } from '../../../hooks/tournamentResults';
+import { ResultsRow } from './ResultsList/ResultsRow';
 
 export const LoggedInPlayerStatus = ({
   tournament,
+  tournamentFinished,
 }: {
   tournament: { id: string; name: string };
+  tournamentFinished: boolean;
 }) => {
-  const { data: liveResults } = useLiveTournamentResults(tournament.id);
-  const { data: username } = useTwitterUsername();
-
-  console.log(liveResults?.data.find((result) => result.profile?.twitterHandle === username))
-
-  return <></>
+  const loggedInPlayerLiveResults = useLoggedInPlayerLiveResults(tournament.id);
+  return loggedInPlayerLiveResults && (
+    <Table>
+      <ResultsRow
+        result={loggedInPlayerLiveResults}
+        tournament={tournament}
+        allowEdits={false}
+        tournamentFinished={tournamentFinished}
+      />
+    </Table>
+  );
 };

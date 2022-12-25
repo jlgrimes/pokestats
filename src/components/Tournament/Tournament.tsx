@@ -11,11 +11,14 @@ export default function Tournament({
   allowEdits: boolean;
 }) {
   const { data: liveResults } = useLiveTournamentResults(tournament.id);
-  console.log(liveResults?.data)
+
   return (
     <Stack>
       {/* <NotablePlayers tournament={tournament.name} allowEdits={allowEdits} /> */}
-      <LoggedInPlayerStatus tournament={tournament} />
+      <LoggedInPlayerStatus
+        tournament={tournament}
+        tournamentFinished={!liveResults?.live}
+      />
       <ResultsList
         tournament={tournament}
         allowEdits={allowEdits}
