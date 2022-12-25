@@ -132,18 +132,21 @@ function PlayerPage({
           <Table>
             <ResultsHeader isProfileView />
             <Tbody>
-              {tournamentPerformance.map(({ performance, tournament }, idx) => (
-                <ResultsRow
-                  key={idx}
-                  result={performance}
-                  tournament={tournament}
-                  // TODO: Make this able to change current tournament in this view
-                  // Though, we'd probably want the API to say what tournaments are ongoing.
-                  allowEdits={false}
-                  tournamentFinished={true}
-                  isProfileView
-                />
-              ))}
+              {tournamentPerformance.map(
+                ({ performance, tournament }, idx) =>
+                  tournament && (
+                    <ResultsRow
+                      key={idx}
+                      result={performance}
+                      tournament={tournament}
+                      // TODO: Make this able to change current tournament in this view
+                      // Though, we'd probably want the API to say what tournaments are ongoing.
+                      allowEdits={false}
+                      tournamentFinished={true}
+                      isProfileView
+                    />
+                  )
+              )}
             </Tbody>
           </Table>
         </TableContainer>
@@ -153,7 +156,7 @@ function PlayerPage({
 }
 
 export async function getStaticProps(context: any) {
-  const username = context.params?.id;
+  const username = context.params?.id.toLowerCase();
 
   const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
     await fetchPlayerProfiles('twitter_handle');
