@@ -26,6 +26,8 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
       set = 'swshp';
     } else if (card.number.includes('TG')) {
       set = set.replace('tg', '').concat('tg');
+    } else if (card.number.includes('SV')) {
+      set = set.replace('sv', '').concat('sv');
     }
 
     return `https://images.pokemontcg.io/${set}/${card?.number}.png`;
@@ -44,7 +46,7 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
                 <GridItem key={idx} gridColumn={1} gridRow={1} paddingLeft={idx * 2}>
                   <Image
                     width={65}
-                    height={195}
+                    height={90}
                     src={getCardImageUrl(card)}
                     alt={`${card.name} ${card.set}`}
                   />
