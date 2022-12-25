@@ -1,3 +1,5 @@
+import { Standing, Tournament } from "./tournament";
+
 export interface StoredPlayerProfile {
   // id stored in supabase
   id: string;
@@ -15,7 +17,7 @@ export interface TwitterPlayerProfile {
   profile_image_url: string;
 }
 
-export type CombinedPlayerProfile = {
+export interface CombinedPlayerProfile {
   id: string;
   name: string;
   tournamentHistory: string[],
@@ -23,3 +25,8 @@ export type CombinedPlayerProfile = {
   description: string;
   profile_image_url: string;
 };
+
+export interface PlayerTournamentPerformance {
+  tournament: Tournament;
+  performance: Standing;
+}

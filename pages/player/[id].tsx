@@ -25,6 +25,7 @@ import {
   StoredPlayerProfile,
   TwitterPlayerProfile,
 } from '../../types/player';
+import { usePlayerPerformance } from '../../src/hooks/tournamentResults';
 
 function PlayerPage({
   user,
@@ -35,6 +36,8 @@ function PlayerPage({
 }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
+  const tournamentPerformance = usePlayerPerformance(user.name, user.tournamentHistory)
+  console.log(tournamentPerformance)
 
   if (!user) {
     return <div>We could not find that player. Typo?</div>;

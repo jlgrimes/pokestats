@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import { PlayerTournamentPerformance } from '../../types/player';
+import { Standing } from '../../types/tournament';
 import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
@@ -32,11 +34,21 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
     useLiveTournamentResults(tournamentId);
   return liveTournamentResults?.data
     .slice(0, 4)
-    .map(({ name, deck, profile }: { name: string; deck: Record<string, any>, profile: Record<string, any> }) => ({
-      name,
-      deck,
-      twitterHandle: profile.twitterHandle
-    }));
+    .map(
+      ({
+        name,
+        deck,
+        profile,
+      }: {
+        name: string;
+        deck: Record<string, any>;
+        profile: Record<string, any>;
+      }) => ({
+        name,
+        deck,
+        twitterHandle: profile.twitterHandle,
+      })
+    );
 };
 
 export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
@@ -48,6 +60,39 @@ export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
   );
 };
 
-export const usePlayerTournamentHistory = () => {
+export const usePlayerPerformance = (
+  playerName: string,
+  tournamentHistory: string[]
+): PlayerTournamentPerformance[] => {
   const { data: tournaments } = useTournaments();
-}
+  const allTournamentDataRelevantToPlayer = useQueries({
+    queries: tournamentHistory.map(tournamentId => {
+      return {
+        queryKey: [`live-results-${tournamentId}`],
+        queryFn: () => fetchLiveResults(tournamentId),
+      };
+    }),
+  });
+  const playerTournamentPerformance: PlayerTournamentPerformance[] =
+    allTournamentDataRelevantToPlayer.reduce((acc: any[], result, tournamentIdx) => {
+      if (!result.data) {
+        return acc;
+      }
+
+      // We run into the duplicate player name thing here
+      const perf: Standing = result.data.data.find(
+        (standing: Standing) => standing.name === playerName
+      );
+
+      return [
+        ...acc,
+        {
+          tournament: tournaments?.find(
+            ({ id }) => id === tournamentHistory[tournamentIdx]
+          ),
+          performance: perf,
+        },
+      ];
+    }, []);
+  return playerTournamentPerformance;
+};

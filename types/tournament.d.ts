@@ -29,3 +29,8 @@ export interface Standing {
   day2: boolean;
   deck: Deck;
 }
+
+export interface Tournament {
+  id: string;
+  name: string;
+}
