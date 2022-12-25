@@ -36,14 +36,14 @@ function PlayerPage({
   user,
   userIsOwnerOfPage,
 }: {
-  user: CombinedPlayerProfile;
+  user: CombinedPlayerProfile | null;
   userIsOwnerOfPage: boolean;
 }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
   const tournamentPerformance = usePlayerPerformance(
-    user.name,
-    user.tournamentHistory
+    user?.name,
+    user?.tournamentHistory
   );
   console.log(tournamentPerformance);
 
@@ -143,14 +143,18 @@ export async function getServerSideProps(context: any) {
     await fetchTwitterProfile({ username });
   const playerProfile = playerProfiles?.[username];
 
-  const combinedProfile: CombinedPlayerProfile = {
-    id: playerProfile?.id as string,
-    name: playerProfile?.name as string,
-    tournamentHistory: playerProfile?.tournamentHistory as string[],
-    username: twitterProfile?.username as string,
-    description: twitterProfile?.description as string,
-    profile_image_url: twitterProfile?.profile_image_url as string,
-  };
+  let combinedProfile: CombinedPlayerProfile | null = null;
+
+  if (playerProfile && twitterProfile) {
+    combinedProfile = {
+      id: playerProfile?.id as string,
+      name: playerProfile?.name as string,
+      tournamentHistory: playerProfile?.tournamentHistory as string[],
+      username: twitterProfile?.username as string,
+      description: twitterProfile?.description as string,
+      profile_image_url: twitterProfile?.profile_image_url as string,
+    };
+  }
 
   return {
     props: {

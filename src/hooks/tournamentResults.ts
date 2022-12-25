@@ -61,38 +61,49 @@ export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
 };
 
 export const usePlayerPerformance = (
-  playerName: string,
-  tournamentHistory: string[]
+  playerName: string | undefined,
+  tournamentHistory: string[] | undefined
 ): PlayerTournamentPerformance[] => {
   const { data: tournaments } = useTournaments();
-  const allTournamentDataRelevantToPlayer = useQueries({
-    queries: tournamentHistory.map(tournamentId => {
+  const queries =
+    tournamentHistory?.map(tournamentId => {
       return {
         queryKey: [`live-results-${tournamentId}`],
         queryFn: () => fetchLiveResults(tournamentId),
       };
-    }),
+    }) ?? [];
+
+  const allTournamentDataRelevantToPlayer = useQueries({
+    queries,
   });
+
+  if (playerName === undefined || tournamentHistory === undefined) {
+    return [];
+  }
+
   const playerTournamentPerformance: PlayerTournamentPerformance[] =
-    allTournamentDataRelevantToPlayer.reduce((acc: any[], result, tournamentIdx) => {
-      if (!result.data) {
-        return acc;
-      }
+    allTournamentDataRelevantToPlayer.reduce(
+      (acc: any[], result, tournamentIdx) => {
+        if (!result.data) {
+          return acc;
+        }
 
-      // We run into the duplicate player name thing here
-      const perf: Standing = result.data.data.find(
-        (standing: Standing) => standing.name === playerName
-      );
+        // We run into the duplicate player name thing here
+        const perf: Standing = result.data.data.find(
+          (standing: Standing) => standing.name === playerName
+        );
 
-      return [
-        ...acc,
-        {
-          tournament: tournaments?.find(
-            ({ id }) => id === tournamentHistory[tournamentIdx]
-          ),
-          performance: perf,
-        },
-      ];
-    }, []);
+        return [
+          ...acc,
+          {
+            tournament: tournaments?.find(
+              ({ id }) => id === tournamentHistory[tournamentIdx]
+            ),
+            performance: perf,
+          },
+        ];
+      },
+      []
+    );
   return playerTournamentPerformance;
 };

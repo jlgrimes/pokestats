@@ -28,7 +28,7 @@ export const useTwitterUsername = () => {
   })
 }
 
-export const useTwitterLink = (twitterHandle: string) => {
+export const useTwitterLink = (twitterHandle: string | undefined) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
