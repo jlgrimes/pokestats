@@ -58,13 +58,16 @@ export const AppBar = () => {
               </LinkBox>
             </>
           ) : (
-            <IconButton
-              variant='outline'
-              size={'sm'}
-              aria-label={'Log in'}
-              icon={<FaSignInAlt />}
-              onClick={() => signIn('twitter')}
-            />
+            <>
+              <Text>Log in</Text>
+              <IconButton
+                variant='outline'
+                size={'sm'}
+                aria-label={'Log in'}
+                icon={<FaSignInAlt />}
+                onClick={() => signIn('twitter')}
+              />
+            </>
           )}
         </Stack>
       </Stack>

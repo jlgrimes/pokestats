@@ -247,7 +247,6 @@ export const fetchLiveResults = async (
     tournamentId,
     deckArchetypes
   );
-  console.log(playerDeckObjects)
 
   const playerProfiles: Record<string, string> | undefined =
     await fetchPlayerProfiles();
