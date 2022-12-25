@@ -4,14 +4,27 @@ import { FcGoogle } from 'react-icons/fc';
 
 export default function Login() {
   return (
-    <Button variant={'outline'} leftIcon={<FcGoogle />} onClick={() => signIn('google')}>
-      Sign In
-    </Button>
+    <>
+      <Button
+        variant={'outline'}
+        leftIcon={<FcGoogle />}
+        onClick={() => signIn('google')}
+      >
+        Sign In
+      </Button>{' '}
+      <Button
+        variant={'outline'}
+        leftIcon={<FcGoogle />}
+        onClick={() => signIn('twitter')}
+      >
+        Sign In
+      </Button>
+    </>
   );
 }
 
 export async function getServerSideProps(context: any) {
-  const session = await getSession(context)
+  const session = await getSession(context);
 
   if (session) {
     return {
@@ -19,10 +32,10 @@ export async function getServerSideProps(context: any) {
         destination: '/',
         permanent: false,
       },
-    }
+    };
   }
 
   return {
-    props: { session }
-  }
+    props: { session },
+  };
 }

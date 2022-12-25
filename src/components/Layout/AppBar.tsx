@@ -60,14 +60,7 @@ export const AppBar = () => {
           ) : (
             <>
               <Text>Log in</Text>
-              <LinkBox>
-                <LinkOverlay href='/profile'>
-                  <Avatar
-                    size='sm'
-                    onClick={() => signIn('twitter')}
-                  />
-                </LinkOverlay>
-              </LinkBox>
+              <Avatar size='sm' onClick={() => signIn('twitter')} />
             </>
           )}
         </Stack>
