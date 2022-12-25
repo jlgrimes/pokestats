@@ -35,21 +35,18 @@ export const Player = memo(
       setIsMobile(isMobileDevice());
     }, []);
 
-    const twitterLink = useMemo(
-      () =>
-        `${isMobile ? 'twitter://user?screen_name=' : 'https://twitter.com/'}${
-          profile?.twitterHandle
-        }`,
-      [profile?.twitterHandle, isMobile]
-    );
-
     return (
       <Stack direction={'row'} alignItems='center'>
-        <Text>{name}</Text>
-        {profile?.twitterHandle && (
-          <Link color='twitter.500' as={NextLink} href={twitterLink} isExternal>
-            <Icon as={FaTwitter} />
+        {profile?.twitterHandle ? (
+          <Link
+            color='blue.500'
+            as={NextLink}
+            href={`/player/${profile.twitterHandle}`}
+          >
+            <Text>{name}</Text>
           </Link>
+        ) : (
+          <Text>{name}</Text>
         )}
         {isEditable && (
           <IconButton
