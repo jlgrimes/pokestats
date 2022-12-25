@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
+import { useTournaments } from './tournaments';
 import { useTwitterUsername } from './twitter';
 
 export const useTournamentResults = (tournamentName: string) => {
@@ -46,3 +47,7 @@ export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
     (result: Record<string, any>) => result.profile?.twitterHandle === username
   );
 };
+
+export const usePlayerTournamentHistory = (playerId: string) => {
+  const { data: tournaments } = useTournaments();
+}

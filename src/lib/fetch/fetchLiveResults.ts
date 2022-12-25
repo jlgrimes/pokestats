@@ -25,13 +25,13 @@ const fetchDeckArchetypes = async () => {
 };
 
 export const fetchPlayerProfiles = async (
-  key: 'name' | 'twitter_handle' = 'name'
+  key: 'name' | 'twitter_handle' | 'id' = 'name'
 ) => {
   const perfStart = performance.now();
 
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_handle');
+    .select('id,name,twitter_handle,tournament_history');
   const profiles = await res.data?.reduce((acc, player) => {
     return {
       ...acc,
@@ -39,6 +39,7 @@ export const fetchPlayerProfiles = async (
         id: player.id,
         name: player.name,
         twitterHandle: player.twitter_handle,
+        tournamentHistory: player.tournament_history,
       },
     };
   }, {});
@@ -55,8 +56,6 @@ const uploadMissingPlayerProfiles = async (
   parsedData: Record<string, any>[],
   playerProfiles: Record<string, string> | undefined
 ) => {
-  const perfStart = performance.now();
-
   if (!parsedData || !playerProfiles) {
     return;
   }
@@ -73,13 +72,46 @@ const uploadMissingPlayerProfiles = async (
 
   if (missingPlayerRows.length > 0) {
     await supabase.from('Player Profiles').insert(missingPlayerRows);
+    return true;
   }
 
-  console.log(
-    'uploadMissingPlayerProfiles:',
-    (performance.now() - perfStart) / 1000,
-    'sec'
+  return false;
+};
+
+const updatePlayerProfilesWithTournament = async (
+  parsedData: Record<string, any>[],
+  playerProfiles: Record<string, any>,
+  tournamentId: string
+) => {
+  const upsertingRows = parsedData.reduce(
+    (acc: Record<string, any>[], profile) => {
+      const player = playerProfiles[profile.name];
+      const shouldUpdatePlayerProfile = !player.tournamentHistory.includes(tournamentId) ;
+      // This is part of a much bigger issue, where people with the same name are getting put into the database as one person.
+      // This only affects like 4 people per regional, but this problem is going to have to eventually be solved.
+      // If we run into this in the real world, I'll just hard code a fix for now I guess. Though it's hard.
+      // Easiest thing to do would be to just scrape the POP ID but that's not possible.
+      const hasDuplicateName = acc.some(({ id }) => id === player.id);
+
+      if (!shouldUpdatePlayerProfile || hasDuplicateName) {
+        return acc;
+      }
+
+      return [
+        ...acc,
+        {
+          id: player.id,
+          name: player.name,
+          twitter_handle: player.twitterHandle,
+          tournament_history: [
+            ...(playerProfiles[profile.name].tournamentHistory ?? []), tournamentId,
+          ],
+        },
+      ];
+    },
+    []
   );
+  await supabase.from('Player Profiles').upsert(upsertingRows);
 };
 
 interface DeckArchetype {
@@ -250,10 +282,17 @@ export const fetchLiveResults = async (
     deckArchetypes
   );
 
-  const playerProfiles: Record<string, string> | undefined =
+  let playerProfiles: Record<string, string> | undefined =
     await fetchPlayerProfiles();
 
-  await uploadMissingPlayerProfiles(parsedData, playerProfiles);
+  const uploadedMissingPlayers = await uploadMissingPlayerProfiles(
+    parsedData,
+    playerProfiles
+  );
+  if (uploadedMissingPlayers) {
+    playerProfiles = await fetchPlayerProfiles();
+  }
+  await updatePlayerProfilesWithTournament(parsedData, playerProfiles ?? {}, tournamentId);
 
   parsedData = await mapResultsArray(
     parsedData,
