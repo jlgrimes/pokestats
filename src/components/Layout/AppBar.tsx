@@ -60,13 +60,14 @@ export const AppBar = () => {
           ) : (
             <>
               <Text>Log in</Text>
-              <IconButton
-                variant='outline'
-                size={'sm'}
-                aria-label={'Log in'}
-                icon={<FaSignInAlt />}
-                onClick={() => signIn('twitter')}
-              />
+              <LinkBox>
+                <LinkOverlay href='/profile'>
+                  <Avatar
+                    size='sm'
+                    onClick={() => signIn('twitter')}
+                  />
+                </LinkOverlay>
+              </LinkBox>
             </>
           )}
         </Stack>
