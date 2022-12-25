@@ -157,12 +157,15 @@ const getPlayerDeck = (
     );
   }
 
-  return {
+  const playerDeck = {
     ...(savedDeckInfo ?? {}),
     ...(list ? { list } : {}),
-    ...(inferredArchetypeFromList ?? {
-      defined_pokemon: ['substitute']
-    }),
+    ...(inferredArchetypeFromList ?? {}),
+  };
+
+  return {
+    ...playerDeck,
+    defined_pokemon: playerDeck.defined_pokemon ?? ['substitute']
   };
 };
 
@@ -244,6 +247,7 @@ export const fetchLiveResults = async (
     tournamentId,
     deckArchetypes
   );
+  console.log(playerDeckObjects)
 
   const playerProfiles: Record<string, string> | undefined =
     await fetchPlayerProfiles();
