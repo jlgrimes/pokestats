@@ -11,6 +11,7 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
 import { EditPlayerModal } from './EditPlayerModal';
 import { isMobileDevice } from '../../../../../lib/userAgent';
+import { PlayerNameLink } from '../../../../Player/PlayerNameLink';
 
 export const Player = memo(
   ({
@@ -30,17 +31,7 @@ export const Player = memo(
 
     return (
       <Stack direction={'row'} alignItems='center'>
-        {profile?.twitterHandle ? (
-          <Link
-            color='blue.500'
-            as={NextLink}
-            href={`/player/${profile.twitterHandle}`}
-          >
-            <Text>{name}</Text>
-          </Link>
-        ) : (
-          <Text>{name}</Text>
-        )}
+        <PlayerNameLink name={name} twitterHandle={profile.twitterHandle} />
         {isEditable && (
           <IconButton
             aria-label='edit-player'
