@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
-import { useHighResImageUrls } from '../../../hooks/highResImages';
+import { useHighResImageUrls } from '../../../hooks/images';
 import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
 
 export const ArchetypeGraph = ({
@@ -107,11 +107,10 @@ export const ArchetypeGraph = ({
   };
 
   return (
-    <ResponsiveContainer width={'100%'} height={350}>
+    <ResponsiveContainer width={'100%'} height={400}>
       <PieChart>
         <Pie
           dataKey='value'
-          isAnimationActive={false}
           data={getArchetypeGraphData(data, shouldDrillDown)}
           cx='50%'
           cy='50%'

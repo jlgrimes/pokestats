@@ -46,6 +46,15 @@ export const ArchetypeGraphsContainer = ({
           />
         )}
         <div>
+        <FormControl display='flex' alignItems='center'>
+            <FormLabel htmlFor='archetype-drill-down' mb='0'>
+              Show pie chart
+            </FormLabel>
+            <Switch
+              id='archetype-drill-down'
+              onChange={() => setShouldShowPieChart(!shouldShowPieChart)}
+            />
+          </FormControl>
           <FormControl display='flex' alignItems='center'>
             <FormLabel htmlFor='archetype-drill-down' mb='0'>
               Drill down archetypes

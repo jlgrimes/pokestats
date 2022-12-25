@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   getHighResSpriteUrl,
   getRegionFlag,
+  getSpriteUrl,
   removeRegionFlag,
 } from '../components/common/helpers';
 
@@ -33,6 +34,19 @@ export const useHighResImageUrls = (pokemonNames: string[]): Record<string, stri
     return {
       ...acc,
       [name]: getHighResSpriteUrl(
+        data?.[removeRegionFlag(name).toLowerCase()],
+        getRegionFlag(name)
+      ),
+    };
+  }, {});
+};
+
+export const useLowResImageUrls = (pokemonNames: string[]): Record<string, string> => {
+  const { data } = usePokedex();
+  return pokemonNames?.reduce((acc, name) => {
+    return {
+      ...acc,
+      [name]: getSpriteUrl(
         data?.[removeRegionFlag(name).toLowerCase()],
         getRegionFlag(name)
       ),

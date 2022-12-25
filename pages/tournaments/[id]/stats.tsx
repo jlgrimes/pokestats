@@ -20,7 +20,7 @@ export default function StatsPage({
 
   return (
     <TournamentPageLayout tournament={tournament}>
-      <TournamentDetails tournament={tournament} />
+      {/* <TournamentDetails tournament={tournament} /> */}
       {!liveResults?.live && (
         <ArchetypeGraphsContainer tournament={tournament} />
       )}

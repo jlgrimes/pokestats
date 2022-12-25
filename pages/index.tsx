@@ -1,7 +1,7 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
-import { fetchPokedex } from '../src/hooks/highResImages';
+import { fetchPokedex } from '../src/hooks/images';
 import { fetchLiveResults } from '../src/lib/fetch/fetchLiveResults';
 import supabase from '../src/lib/supabase/client';
 import styles from '../styles/Home.module.css';

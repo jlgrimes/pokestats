@@ -4,7 +4,7 @@ import { TournamentPageLayout } from '../../../src/components/Tournament/Tournam
 import { fetchAdministrators, useUserIsAdmin } from '../../../src/hooks/administrators';
 import supabase from '../../../src/lib/supabase/client';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
-import { fetchPokedex } from '../../../src/hooks/highResImages';
+import { fetchPokedex } from '../../../src/hooks/images';
 
 export default function TournamentPage({
   tournament,

@@ -1,19 +1,18 @@
 import {
-  PieChart,
-  Pie,
   Tooltip,
   ResponsiveContainer,
-  PieLabelRenderProps,
   BarChart,
   Bar,
   YAxis,
   XAxis,
+  LabelList,
+  CartesianGrid,
 } from 'recharts';
 import { useDay2Decks } from '../../../hooks/day2decks';
+import { useLowResImageUrls } from '../../../hooks/images';
+import { LOW_RES_SUBSTITUTE_URL } from '../../common/helpers';
+import SpriteDisplay from '../../common/SpriteDisplay';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
-import { useState } from 'react';
-import { useHighResImageUrls } from '../../../hooks/highResImages';
-import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
 
 export const ArchetypeBarGraph = ({
   tournament,
@@ -23,7 +22,7 @@ export const ArchetypeBarGraph = ({
   shouldDrillDown: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);
-  const imageUrls = useHighResImageUrls(
+  const imageUrls = useLowResImageUrls(
     data?.reduce(
       (acc: string[], deck: Record<string, any>) => [
         ...acc,
@@ -33,83 +32,47 @@ export const ArchetypeBarGraph = ({
     )
   );
 
-  const getRadiusScale = (percent: number, index: number) => {
-    if (percent > 0.1) {
-      return 1.25;
-    } else if (percent > 0.04) {
-      return 1.5;
-    } else {
-      return index % 2 ? 2 : 1.6;
-    }
-  };
-
-  const getImageHeight = (percent: number) => {
-    if (percent > 0.1) {
-      if (shouldDrillDown) {
-        return 80;
-      } else {
-        return 100;
-      }
-    } else if (percent > 0.03) {
-      if (shouldDrillDown) {
-        return 50;
-      } else {
-        return 70;
-      }
-    } else {
-      return 30;
-    }
-  };
-
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({
-    percent,
-    index,
-    name,
-  }: PieLabelRenderProps) => {
-    const x = 0;
-    const y = index * 10;
+  const renderCustomizedLabel = (props: Record<string, any>) => {
+    const { x, y, width, height, value } = props;
+    const radius = 10;
 
     const definedPokemon = data.find(
       (deck: Record<string, any>) =>
-        name === getArchetypeKey(deck, shouldDrillDown)
+        value === getArchetypeKey(deck, shouldDrillDown)
     )?.defined_pokemon;
 
-    const height = getImageHeight(percent as number);
-
     return (
-      <>
+      <g>
         <image
-          height={definedPokemon ? height : 30}
+          height={shouldDrillDown ? 20 : 30}
           href={
             definedPokemon
               ? imageUrls?.[definedPokemon[0]]
-              : HIGH_RES_SUBSTITUTE_URL
+              : LOW_RES_SUBSTITUTE_URL
           }
-          x={x - height / 2}
+          x={width + 10}
           y={y - height / 2}
         />
-        {shouldDrillDown && (
-          <image
-            height={height * 0.75}
-            href={definedPokemon ? imageUrls?.[definedPokemon[1]] : ''}
-            x={x}
-            y={y - height / 4}
-          />
-        )}
-      </>
+      </g>
     );
   };
 
   return (
-    <ResponsiveContainer width={350}>
+    <ResponsiveContainer width={'100%'} height={400}>
       <BarChart
+        width={300}
+        height={300}
         data={getArchetypeGraphData(data, shouldDrillDown)}
         layout='vertical'
         reverseStackOrder
       >
-        <Bar dataKey='value' fill='#8884d8' />
+        <Bar dataKey='value' fill='#8884d8'>
+          <LabelList dataKey={'name'} content={renderCustomizedLabel} />
+        </Bar>
+
         <XAxis type='number' dataKey='value' />
+        <YAxis type='category' dataKey={'name'} hide />
+        <Tooltip />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -1,5 +1,5 @@
 import { Flex, Image, Stack } from '@chakra-ui/react';
-import { usePokedex } from '../../hooks/highResImages';
+import { usePokedex } from '../../hooks/images';
 import { getRegionFlag, getSpriteUrl, removeRegionFlag } from './helpers';
 
 interface SpriteDisplayProps {
