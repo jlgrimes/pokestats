@@ -8,6 +8,9 @@ import {
   Icon,
   IconButton,
   useDisclosure,
+  TableContainer,
+  Table,
+  Tbody,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { getSession, signOut } from 'next-auth/react';
@@ -26,6 +29,7 @@ import {
   TwitterPlayerProfile,
 } from '../../types/player';
 import { usePlayerPerformance } from '../../src/hooks/tournamentResults';
+import { ResultsRow } from '../../src/components/Tournament/Results/ResultsList/ResultsRow';
 
 function PlayerPage({
   user,
@@ -36,66 +40,93 @@ function PlayerPage({
 }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
-  const tournamentPerformance = usePlayerPerformance(user.name, user.tournamentHistory)
-  console.log(tournamentPerformance)
+  const tournamentPerformance = usePlayerPerformance(
+    user.name,
+    user.tournamentHistory
+  );
+  console.log(tournamentPerformance);
 
   if (!user) {
     return <div>We could not find that player. Typo?</div>;
   }
 
   return (
-    <Stack padding='1.5rem 1.5rem'>
-      <Stack>
-        <Avatar
-          size={'2xl'}
-          name={user?.name ?? undefined}
-          src={user?.profile_image_url ?? undefined}
-        />
-        <Stack spacing={0}>
-          <Stack direction={'row'} alignItems='center'>
-            <Heading color='gray.700'>{user?.name}</Heading>
-            <Link
-              color='twitter.500'
-              as={NextLink}
-              href={twitterLink}
-              isExternal
-            >
-              <Icon as={FaTwitter} />
-            </Link>
-          </Stack>
-          <Text>{user.description}</Text>
-        </Stack>
-      </Stack>
-      {userIsOwnerOfPage && (
+    <>
+      <Stack padding='1.5rem 1.5rem'>
         <Stack>
-          {userIsAdmin ? (
-            <Heading size={'sm'} fontWeight='semibold'>
-              You are a site admin!
-            </Heading>
-          ) : (
-            <>
-              <Heading size={'sm'} fontWeight='semibold'>
-                You are not a site admin.
-              </Heading>
-              <Text>
-                If you believe this to be wrong,{' '}
-                <Link href={'twitter.com/jgrimesey'} isExternal color={'blue'}>
-                  complain to me on Twitter.
-                </Link>
-              </Text>
-            </>
-          )}
-          <Button
-            variant='outline'
-            aria-label={'Log out'}
-            rightIcon={<FaSignOutAlt />}
-            onClick={() => signOut()}
-          >
-            Log out
-          </Button>
+          <Avatar
+            size={'2xl'}
+            name={user?.name ?? undefined}
+            src={user?.profile_image_url ?? undefined}
+          />
+          <Stack spacing={0}>
+            <Stack direction={'row'} alignItems='center'>
+              <Heading color='gray.700'>{user?.name}</Heading>
+              <Link
+                color='twitter.500'
+                as={NextLink}
+                href={twitterLink}
+                isExternal
+              >
+                <Icon as={FaTwitter} />
+              </Link>
+            </Stack>
+            <Text>{user.description}</Text>
+          </Stack>
         </Stack>
-      )}
-    </Stack>
+        {userIsOwnerOfPage && (
+          <Stack>
+            {userIsAdmin ? (
+              <Heading size={'sm'} fontWeight='semibold'>
+                You are a site admin!
+              </Heading>
+            ) : (
+              <>
+                <Heading size={'sm'} fontWeight='semibold'>
+                  You are not a site admin.
+                </Heading>
+                <Text>
+                  If you believe this to be wrong,{' '}
+                  <Link
+                    href={'twitter.com/jgrimesey'}
+                    isExternal
+                    color={'blue'}
+                  >
+                    complain to me on Twitter.
+                  </Link>
+                </Text>
+              </>
+            )}
+            <Button
+              variant='outline'
+              aria-label={'Log out'}
+              rightIcon={<FaSignOutAlt />}
+              onClick={() => signOut()}
+            >
+              Log out
+            </Button>
+          </Stack>
+        )}
+      </Stack>
+      <TableContainer>
+        <Table>
+          <Tbody>
+            {tournamentPerformance.map(({ performance, tournament }, idx) => (
+              <ResultsRow
+                key={idx}
+                result={performance}
+                tournament={tournament}
+                // TODO: Make this able to change current tournament in this view
+                // Though, we'd probably want the API to say what tournaments are ongoing.
+                allowEdits={false}
+                tournamentFinished={true}
+                isProfileView
+              />
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 
