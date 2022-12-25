@@ -23,7 +23,7 @@ export const authOptions = {
       const profile = await fetchTwitterProfile({ id });
       // Send properties to the client, like an access_token and user id from a provider.
       if (session.user) {
-        session.user = profile.data;
+        session.user = profile;
       }
 
       return session;

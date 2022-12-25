@@ -1,9 +1,25 @@
-import { Avatar, Heading, Stack, Text, Link, Button } from '@chakra-ui/react';
+import {
+  Avatar,
+  Heading,
+  Stack,
+  Text,
+  Link,
+  Button,
+  Icon,
+  IconButton,
+  useDisclosure,
+} from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { getSession, signOut } from 'next-auth/react';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { useMemo } from 'react';
+import { FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { fetchPlayerProfiles } from '../../src/lib/fetch/fetchLiveResults';
+import { isMobileDevice } from '../../src/lib/userAgent';
 import { fetchTwitterProfile } from '../api/get-twitter-profile';
+import { useTwitterLink } from '../../src/hooks/twitter';
+import { EditIcon } from '@chakra-ui/icons';
+import { EditPlayerModal } from '../../src/components/Tournament/Results/ResultsList/Player/EditPlayerModal';
 
 function PlayerPage({
   user,
@@ -13,15 +29,46 @@ function PlayerPage({
   userIsOwnerOfPage: boolean;
 }) {
   const userIsAdmin = useUserIsAdmin();
+  const twitterLink = useTwitterLink(user.username);
+
+  const {
+    isOpen: isEditOpen,
+    onOpen: openEdit,
+    onClose: closeEdit,
+  } = useDisclosure();
 
   return (
     <Stack padding='1.5rem 1.5rem'>
       <Stack>
         <Avatar
+          size={'2xl'}
           name={user?.name ?? undefined}
           src={user?.profile_image_url ?? undefined}
         />
-        <Heading color='gray.700'>{user?.name}</Heading>
+        <Stack spacing={0}>
+          <Stack direction={'row'} alignItems='center'>
+            <Heading color='gray.700'>{user?.name}</Heading>
+            <Link
+              color='twitter.500'
+              as={NextLink}
+              href={twitterLink}
+              isExternal
+            >
+              <Icon as={FaTwitter} />
+            </Link>
+            {userIsAdmin && (
+              <IconButton
+                aria-label='edit-player'
+                variant={'ghost'}
+                size='xs'
+                onClick={openEdit}
+              >
+                <EditIcon />
+              </IconButton>
+            )}
+          </Stack>
+          <Text>{user.description}</Text>
+        </Stack>
       </Stack>
       {userIsOwnerOfPage && (
         <Stack>
@@ -52,6 +99,14 @@ function PlayerPage({
           </Button>
         </Stack>
       )}
+      {isEditOpen && (
+        <EditPlayerModal
+          isOpen={isEditOpen}
+          onClose={closeEdit}
+          playerProfile={{ id: user.id, twitterHandle: user.twitterHandle }}
+          name={user.name}
+        />
+      )}
     </Stack>
   );
 }
@@ -68,7 +123,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       user: {
-        ...(twitterProfile?.data ?? {}),
+        ...(twitterProfile ?? {}),
       },
       userIsOwnerOfPage,
     },

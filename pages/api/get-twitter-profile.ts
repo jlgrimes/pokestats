@@ -16,19 +16,24 @@ export const fetchTwitterProfile = async (query: { id?: string, username?: strin
     response = await twitterClient.users.findUserById(
       query.id as string,
       {
-        'user.fields': ['profile_image_url'],
+        'user.fields': ['profile_image_url', 'description'],
       }
     );
   } else if (query.username) {
     response = await twitterClient.users.findUserByUsername(
       query.username as string,
       {
-        'user.fields': ['profile_image_url'],
+        'user.fields': ['profile_image_url', 'description'],
       }
     );
   }
 
-  return response;
+  if (!response) return;
+
+  return {
+    ...response.data,
+    profile_image_url: response.data?.profile_image_url?.replace('_normal', '')
+  }
 }
 
 export default async function handler(

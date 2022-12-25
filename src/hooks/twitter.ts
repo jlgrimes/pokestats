@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react";
+import { useEffect, useMemo, useState } from "react";
+import { isMobileDevice } from "../lib/userAgent";
 
 export const fetchTwitterProfile = async ({ id, username }: { id?: string, username?: string}) => {
   let queryParam = '';
@@ -24,4 +26,22 @@ export const useTwitterUsername = () => {
     queryKey: [`twitter-username-for${id}`],
     queryFn: () => fetchTwitterProfile({ id })
   })
+}
+
+export const useTwitterLink = (twitterHandle: string) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(isMobileDevice());
+  }, []);
+
+  const twitterLink = useMemo(
+    () =>
+      `${isMobile ? 'twitter://user?screen_name=' : 'https://twitter.com/'}${
+        twitterHandle
+      }`,
+    [twitterHandle, isMobile]
+  );
+
+  return twitterLink;
 }

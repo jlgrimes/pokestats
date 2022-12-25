@@ -1,19 +1,15 @@
 import {
   Heading,
-  IconButton,
   Stack,
   Text,
-  Highlight,
-  Divider,
   Avatar,
   LinkOverlay,
   LinkBox,
   Button,
 } from '@chakra-ui/react';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { FaSignInAlt, FaSignOutAlt, FaTwitter } from 'react-icons/fa';
-import { useTwitterUsername } from '../../hooks/twitter';
+import { FaTwitter } from 'react-icons/fa';
 
 export const AppBar = () => {
   const { data: session } = useSession();
