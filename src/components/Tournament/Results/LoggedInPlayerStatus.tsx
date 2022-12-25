@@ -15,7 +15,8 @@ export const LoggedInPlayerStatus = ({
       <ResultsRow
         result={loggedInPlayerLiveResults}
         tournament={tournament}
-        allowEdits={false}
+        // Always allow player to edit their own deck
+        allowEdits={true}
         tournamentFinished={tournamentFinished}
       />
     </Table>
