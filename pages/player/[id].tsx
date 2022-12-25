@@ -13,9 +13,9 @@ import {
   Tbody,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { getSession, signOut } from 'next-auth/react';
+import { getSession, signOut, useSession } from 'next-auth/react';
 import { useMemo } from 'react';
-import { FaSignOutAlt, FaTwitter } from 'react-icons/fa';
+import { FaArrowRight, FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { fetchPlayerProfiles } from '../../src/lib/fetch/fetchLiveResults';
 import { isMobileDevice } from '../../src/lib/userAgent';
@@ -32,6 +32,8 @@ import { usePlayerPerformance } from '../../src/hooks/tournamentResults';
 import { ResultsRow } from '../../src/components/Tournament/Results/ResultsList/ResultsRow';
 import { ResultsHeader } from '../../src/components/Tournament/Results/ResultsList/ResultsHeader';
 import supabase from '../../src/lib/supabase/client';
+import { ComplainLink } from '../../src/components/common/ComplainLink';
+import { useRouter } from 'next/router';
 
 function PlayerPage({
   user,
@@ -47,8 +49,25 @@ function PlayerPage({
     user?.tournamentHistory
   );
 
+  const session = useSession();
+  const { query } = useRouter();
+
   if (!user) {
-    return <div>We could not find that player. Typo?</div>;
+    if (session.data?.user.username === query.id) {
+      return (
+        <Stack padding='1.5rem' spacing={4}>
+          <Stack>
+            <Heading color='gray.700'>Welcome to Stats!</Heading>
+            <Text>{`Unfortunately we don't have an account set up for you yet. We want to make this right.`}</Text>
+          </Stack>
+          <div>
+            <ComplainLink />
+          </div>
+        </Stack>
+      );
+    } else {
+      return <div>We could not find that player. Typo?</div>;
+    }
   }
 
   return (
@@ -86,16 +105,7 @@ function PlayerPage({
                 <Heading size={'sm'} fontWeight='semibold'>
                   You are not a site admin.
                 </Heading>
-                <Text>
-                  If you believe this to be wrong,{' '}
-                  <Link
-                    href={'twitter.com/jgrimesey'}
-                    isExternal
-                    color={'blue'}
-                  >
-                    complain to me on Twitter.
-                  </Link>
-                </Text>
+                <ComplainLink />
               </>
             )}
             <Button

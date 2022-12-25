@@ -1,16 +1,11 @@
 import {
-  Icon,
   IconButton,
-  Link,
   Stack,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
 import { EditPlayerModal } from './EditPlayerModal';
-import { isMobileDevice } from '../../../../../lib/userAgent';
 import { PlayerNameLink } from '../../../../Player/PlayerNameLink';
 
 export const Player = memo(
