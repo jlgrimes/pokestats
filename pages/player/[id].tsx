@@ -45,7 +45,6 @@ function PlayerPage({
     user?.name,
     user?.tournamentHistory
   );
-  console.log(tournamentPerformance);
 
   if (!user) {
     return <div>We could not find that player. Typo?</div>;

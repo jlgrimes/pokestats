@@ -34,9 +34,14 @@ export const fetchPlayerProfiles = async (
     .from('Player Profiles')
     .select('id,name,twitter_handle,tournament_history');
   const profiles = await res.data?.reduce((acc, player) => {
+    let playerKey = player[key];
+    if (key === 'twitter_handle') {
+      playerKey = playerKey?.toLowerCase();
+    }
+
     return {
       ...acc,
-      [player[key]]: {
+      [playerKey]: {
         id: player.id,
         name: player.name,
         twitterHandle: player.twitter_handle,
