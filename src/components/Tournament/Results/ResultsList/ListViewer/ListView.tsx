@@ -32,7 +32,7 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
   };
 
   return (
-    <Flex flexWrap={'wrap'} gap={1}>
+    <Flex flexWrap={'wrap'} gap={0}>
       {['Pokemon', 'Trainer', 'Energy'].map((superclass, idx) =>
         deckList[superclass.toLowerCase()].map(
           (
@@ -43,10 +43,12 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
               {[...Array(card.count)].map((_, idx) => (
                 <GridItem key={idx} gridColumn={1} gridRow={1} paddingLeft={idx * 2}>
                   <Image
-                    width={60}
-                    height={180}
+                    width={65}
+                    height={195}
                     src={getCardImageUrl(card)}
                     alt={`${card.name} ${card.set}`}
+                    placeholder='blur'
+                    blurDataURL="data:..."
                   />
                 </GridItem>
               ))}
