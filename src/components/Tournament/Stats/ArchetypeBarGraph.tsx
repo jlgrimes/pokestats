@@ -53,6 +53,18 @@ export const ArchetypeBarGraph = ({
           x={width + 10}
           y={y - height / 2}
         />
+        {shouldDrillDown && (
+          <image
+            height={20}
+            href={
+              definedPokemon
+                ? imageUrls?.[definedPokemon[1]]
+                : LOW_RES_SUBSTITUTE_URL
+            }
+            x={width + 30}
+            y={y - height / 2}
+          />
+        )}
       </g>
     );
   };

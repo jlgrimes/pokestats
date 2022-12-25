@@ -8,9 +8,11 @@ import {
   Bar,
 } from 'recharts';
 import {
+  Flex,
   FormControl,
   FormLabel,
   Heading,
+  SimpleGrid,
   Stack,
   Switch,
 } from '@chakra-ui/react';
@@ -45,26 +47,26 @@ export const ArchetypeGraphsContainer = ({
             shouldDrillDown={shouldDrillDown}
           />
         )}
-        <div>
-        <FormControl display='flex' alignItems='center'>
-            <FormLabel htmlFor='archetype-drill-down' mb='0'>
-              Show pie chart
-            </FormLabel>
-            <Switch
-              id='archetype-drill-down'
-              onChange={() => setShouldShowPieChart(!shouldShowPieChart)}
-            />
-          </FormControl>
-          <FormControl display='flex' alignItems='center'>
-            <FormLabel htmlFor='archetype-drill-down' mb='0'>
-              Drill down archetypes
-            </FormLabel>
-            <Switch
-              id='archetype-drill-down'
-              onChange={() => setShouldDrillDown(!shouldDrillDown)}
-            />
-          </FormControl>
-        </div>
+        <FormControl
+          as={SimpleGrid}
+          columns={{ base: 2, lg: 4 }}
+          alignItems='center'
+        >
+          <FormLabel htmlFor='show-pie-chart' mb='0'>
+            Pie chart
+          </FormLabel>
+          <Switch
+            id='show-pie-chart'
+            onChange={() => setShouldShowPieChart(!shouldShowPieChart)}
+          />
+          <FormLabel htmlFor='archetype-drill-down' mb='0'>
+            Drill down
+          </FormLabel>
+          <Switch
+            id='archetype-drill-down'
+            onChange={() => setShouldDrillDown(!shouldDrillDown)}
+          />
+        </FormControl>
       </Stack>
     </Stack>
   );
