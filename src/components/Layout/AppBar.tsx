@@ -5,6 +5,9 @@ import {
   Text,
   Highlight,
   Divider,
+  Avatar,
+  LinkOverlay,
+  LinkBox,
 } from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -13,7 +16,9 @@ import { useTwitterUsernameFromId } from '../../hooks/twitter';
 
 export const AppBar = () => {
   const { data: session } = useSession();
-  const { data: username } = useTwitterUsernameFromId(session?.user?.email as string)
+  const { data: username } = useTwitterUsernameFromId(
+    session?.user?.email as string
+  );
 
   return (
     <>
@@ -44,13 +49,16 @@ export const AppBar = () => {
                 )}
                 !
               </Text>
-              <IconButton
-                variant='outline'
-                size={'sm'}
-                aria-label={'Log out'}
-                icon={<FaSignOutAlt />}
-                onClick={() => signOut()}
-              />
+
+              <LinkBox>
+                <LinkOverlay href='/profile'>
+                  <Avatar
+                    size='sm'
+                    name={session.user?.name as string}
+                    src={session.user?.image as string}
+                  />
+                </LinkOverlay>
+              </LinkBox>
             </>
           ) : (
             <IconButton
