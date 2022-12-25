@@ -4,18 +4,26 @@ import {
   Tooltip,
   ResponsiveContainer,
   PieLabelRenderProps,
+  BarChart,
+  Bar,
 } from 'recharts';
+import {
+  FormControl,
+  FormLabel,
+  Heading,
+  Stack,
+  Switch,
+} from '@chakra-ui/react';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
+import { useState } from 'react';
 import { useHighResImageUrls } from '../../../hooks/highResImages';
 import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
 
 export const ArchetypeGraph = ({
   tournament,
-  shouldDrillDown,
 }: {
   tournament: { id: string; name: string };
-  shouldDrillDown: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useHighResImageUrls(
@@ -27,6 +35,8 @@ export const ArchetypeGraph = ({
       []
     )
   );
+  const [shouldDrillDown, setShouldDrillDown] = useState(false);
+
   const getRadiusScale = (percent: number, index: number) => {
     if (percent > 0.1) {
       return 1.25;
@@ -86,18 +96,16 @@ export const ArchetypeGraph = ({
       <>
         <image
           height={definedPokemon ? height : 30}
-          href={
-            definedPokemon
-              ? imageUrls?.[definedPokemon[0]]
-              : HIGH_RES_SUBSTITUTE_URL
-          }
+          href={definedPokemon ? imageUrls?.[definedPokemon[0]] : HIGH_RES_SUBSTITUTE_URL}
           x={x - height / 2}
           y={y - height / 2}
         />
         {shouldDrillDown && (
           <image
             height={height * 0.75}
-            href={definedPokemon ? imageUrls?.[definedPokemon[1]] : ''}
+            href={
+              definedPokemon ? imageUrls?.[definedPokemon[1]] : ''
+            }
             x={x}
             y={y - height / 4}
           />
@@ -107,21 +115,30 @@ export const ArchetypeGraph = ({
   };
 
   return (
-    <ResponsiveContainer width={'100%'} height={350}>
-      <PieChart>
-        <Pie
-          dataKey='value'
-          isAnimationActive={false}
-          data={getArchetypeGraphData(data, shouldDrillDown)}
-          cx='50%'
-          cy='50%'
-          labelLine={false}
-          label={renderCustomizedLabel}
-          fill='#8884d8'
-          outerRadius={'100%'}
-        />
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
+    <Stack padding={'0 1.5rem'}>
+      <Heading color='gray.700' size={'sm'}>
+        Day 2 Archetype Spread
+      </Heading>
+      <Stack alignItems={'center'}>
+        <ResponsiveContainer width={'100%'} height={350}>
+          <BarChart>
+            <Bar
+              dataKey="pv" fill="#8884d8"
+            />
+          </BarChart>
+        </ResponsiveContainer>
+        <div>
+          <FormControl display='flex' alignItems='center'>
+            <FormLabel htmlFor='archetype-drill-down' mb='0'>
+              Drill down archetypes
+            </FormLabel>
+            <Switch
+              id='archetype-drill-down'
+              onChange={() => setShouldDrillDown(!shouldDrillDown)}
+            />
+          </FormControl>
+        </div>
+      </Stack>
+    </Stack>
   );
 };
