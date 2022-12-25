@@ -1,3 +1,4 @@
+import { DeckArchetype, Standing } from '../../../types/tournament';
 import supabase from '../supabase/client';
 
 const fetchPlayerDecks = async (tournamentId: string) => {
@@ -115,12 +116,6 @@ const updatePlayerProfilesWithTournament = async (
   await supabase.from('Player Profiles').upsert(upsertingRows);
 };
 
-interface DeckArchetype {
-  name: string;
-  defined_pokemon: any;
-  identifiable_cards: any;
-}
-
 const getPlayerDeckObjects = async (
   tournamentId: string,
   deckArchetypes: DeckArchetype[] | null
@@ -210,10 +205,10 @@ function mapResultsArray(
   playerDeckObjects: PlayerDeckObject[] | undefined,
   deckArchetypes: DeckArchetype[] | null,
   playerProfiles: Record<string, string> | undefined
-): string[] {
+): Standing[] {
   const perfStart = performance.now();
 
-  const mappedArray = resultsArray.map((player: Player) => {
+  const mappedArray: Standing[] = resultsArray.map((player: Player) => {
     const currentMatchResult = player.rounds[roundNumber]?.result;
 
     return {

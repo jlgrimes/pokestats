@@ -35,7 +35,6 @@ function PlayerPage({
 }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
-  console.log(user)
 
   if (!user) {
     return <div>We could not find that player. Typo?</div>;
