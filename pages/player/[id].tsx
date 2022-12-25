@@ -20,21 +20,25 @@ import { fetchTwitterProfile } from '../api/get-twitter-profile';
 import { useTwitterLink } from '../../src/hooks/twitter';
 import { EditIcon } from '@chakra-ui/icons';
 import { EditPlayerModal } from '../../src/components/Tournament/Results/ResultsList/Player/EditPlayerModal';
+import {
+  CombinedPlayerProfile,
+  StoredPlayerProfile,
+  TwitterPlayerProfile,
+} from '../../types/player';
 
 function PlayerPage({
   user,
   userIsOwnerOfPage,
 }: {
-  user?: Record<string, any>;
+  user: CombinedPlayerProfile;
   userIsOwnerOfPage: boolean;
 }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
+  console.log(user)
 
   if (!user) {
-    return (
-      <div>We could not find that player. Typo?</div>
-    )
+    return <div>We could not find that player. Typo?</div>;
   }
 
   return (
@@ -98,17 +102,24 @@ export async function getServerSideProps(context: any) {
   const username = context.params?.id;
   let userIsOwnerOfPage = false;
 
-  const playerProfiles: Record<string, any> =
-    (await fetchPlayerProfiles('twitter_handle')) ?? {};
-  const twitterProfile = await fetchTwitterProfile({ username });
+  const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
+    await fetchPlayerProfiles('twitter_handle');
+  const twitterProfile: TwitterPlayerProfile | undefined =
+    await fetchTwitterProfile({ username });
+  const playerProfile = playerProfiles?.[username];
 
-  const user = playerProfiles[username] ? {
-    ...(twitterProfile ?? {})
-  }: null
+  const combinedProfile: CombinedPlayerProfile = {
+    id: playerProfile?.id as string,
+    name: playerProfile?.name as string,
+    tournamentHistory: playerProfile?.tournamentHistory as string[],
+    username: twitterProfile?.username as string,
+    description: twitterProfile?.description as string,
+    profile_image_url: twitterProfile?.profile_image_url as string,
+  };
 
   return {
     props: {
-      user,
+      user: combinedProfile,
       userIsOwnerOfPage,
     },
   };

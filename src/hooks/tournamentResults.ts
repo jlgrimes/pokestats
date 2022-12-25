@@ -48,6 +48,6 @@ export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
   );
 };
 
-export const usePlayerTournamentHistory = (playerId: string) => {
+export const usePlayerTournamentHistory = () => {
   const { data: tournaments } = useTournaments();
 }

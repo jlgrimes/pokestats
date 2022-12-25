@@ -49,6 +49,7 @@ export const fetchPlayerProfiles = async (
     (performance.now() - perfStart) / 1000,
     'sec'
   );
+
   return profiles;
 };
 
