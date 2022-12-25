@@ -24,7 +24,9 @@ const fetchDeckArchetypes = async () => {
   return res.data;
 };
 
-const fetchPlayerProfiles = async () => {
+export const fetchPlayerProfiles = async (
+  key: 'name' | 'twitter_handle' = 'name'
+) => {
   const perfStart = performance.now();
 
   const res = await supabase
@@ -33,7 +35,7 @@ const fetchPlayerProfiles = async () => {
   const profiles = await res.data?.reduce((acc, player) => {
     return {
       ...acc,
-      [player.name]: {
+      [player[key]]: {
         id: player.id,
         name: player.name,
         twitterHandle: player.twitter_handle,
@@ -165,7 +167,7 @@ const getPlayerDeck = (
 
   return {
     ...playerDeck,
-    defined_pokemon: playerDeck.defined_pokemon ?? ['substitute']
+    defined_pokemon: playerDeck.defined_pokemon ?? ['substitute'],
   };
 };
 
