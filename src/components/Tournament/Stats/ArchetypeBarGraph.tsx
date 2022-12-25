@@ -6,24 +6,21 @@ import {
   PieLabelRenderProps,
   BarChart,
   Bar,
+  YAxis,
+  XAxis,
 } from 'recharts';
-import {
-  FormControl,
-  FormLabel,
-  Heading,
-  Stack,
-  Switch,
-} from '@chakra-ui/react';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useState } from 'react';
 import { useHighResImageUrls } from '../../../hooks/highResImages';
 import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
 
-export const ArchetypeGraph = ({
+export const ArchetypeBarGraph = ({
   tournament,
+  shouldDrillDown,
 }: {
   tournament: { id: string; name: string };
+  shouldDrillDown: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useHighResImageUrls(
@@ -35,7 +32,6 @@ export const ArchetypeGraph = ({
       []
     )
   );
-  const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
   const getRadiusScale = (percent: number, index: number) => {
     if (percent > 0.1) {
@@ -67,23 +63,12 @@ export const ArchetypeGraph = ({
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
     percent,
     index,
     name,
   }: PieLabelRenderProps) => {
-    const radius =
-      (innerRadius as number) +
-      ((outerRadius as number) - (innerRadius as number)) * 0.5;
-    const radiusScale = getRadiusScale(percent as number, index as number);
-    const x =
-      (cx as number) + radius * radiusScale * Math.cos(-midAngle * RADIAN);
-    const y =
-      (cy as number) + radius * radiusScale * Math.sin(-midAngle * RADIAN);
+    const x = 0;
+    const y = index * 10;
 
     const definedPokemon = data.find(
       (deck: Record<string, any>) =>
@@ -96,16 +81,18 @@ export const ArchetypeGraph = ({
       <>
         <image
           height={definedPokemon ? height : 30}
-          href={definedPokemon ? imageUrls?.[definedPokemon[0]] : HIGH_RES_SUBSTITUTE_URL}
+          href={
+            definedPokemon
+              ? imageUrls?.[definedPokemon[0]]
+              : HIGH_RES_SUBSTITUTE_URL
+          }
           x={x - height / 2}
           y={y - height / 2}
         />
         {shouldDrillDown && (
           <image
             height={height * 0.75}
-            href={
-              definedPokemon ? imageUrls?.[definedPokemon[1]] : ''
-            }
+            href={definedPokemon ? imageUrls?.[definedPokemon[1]] : ''}
             x={x}
             y={y - height / 4}
           />
@@ -115,30 +102,15 @@ export const ArchetypeGraph = ({
   };
 
   return (
-    <Stack padding={'0 1.5rem'}>
-      <Heading color='gray.700' size={'sm'}>
-        Day 2 Archetype Spread
-      </Heading>
-      <Stack alignItems={'center'}>
-        <ResponsiveContainer width={'100%'} height={350}>
-          <BarChart>
-            <Bar
-              dataKey="pv" fill="#8884d8"
-            />
-          </BarChart>
-        </ResponsiveContainer>
-        <div>
-          <FormControl display='flex' alignItems='center'>
-            <FormLabel htmlFor='archetype-drill-down' mb='0'>
-              Drill down archetypes
-            </FormLabel>
-            <Switch
-              id='archetype-drill-down'
-              onChange={() => setShouldDrillDown(!shouldDrillDown)}
-            />
-          </FormControl>
-        </div>
-      </Stack>
-    </Stack>
+    <ResponsiveContainer width={350}>
+      <BarChart
+        data={getArchetypeGraphData(data, shouldDrillDown)}
+        layout='vertical'
+        reverseStackOrder
+      >
+        <Bar dataKey='value' fill='#8884d8' />
+        <XAxis type='number' dataKey='value' />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };

@@ -18,6 +18,7 @@ import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useState } from 'react';
 import { ArchetypeGraph } from './ArchetypeGraph';
+import { ArchetypeBarGraph } from './ArchetypeBarGraph';
 
 export const ArchetypeGraphsContainer = ({
   tournament,
@@ -25,6 +26,7 @@ export const ArchetypeGraphsContainer = ({
   tournament: { id: string; name: string };
 }) => {
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
+  const [shouldShowPieChart, setShouldShowPieChart] = useState(false);
 
   return (
     <Stack padding={'0 1.5rem'}>
@@ -32,7 +34,17 @@ export const ArchetypeGraphsContainer = ({
         Day 2 Archetype Spread
       </Heading>
       <Stack alignItems={'center'}>
-          <ArchetypeGraph tournament={tournament} shouldDrillDown={shouldDrillDown} />
+        {shouldShowPieChart ? (
+          <ArchetypeGraph
+            tournament={tournament}
+            shouldDrillDown={shouldDrillDown}
+          />
+        ) : (
+          <ArchetypeBarGraph
+            tournament={tournament}
+            shouldDrillDown={shouldDrillDown}
+          />
+        )}
         <div>
           <FormControl display='flex' alignItems='center'>
             <FormLabel htmlFor='archetype-drill-down' mb='0'>
