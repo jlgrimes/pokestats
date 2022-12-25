@@ -50,11 +50,11 @@ export const AppBar = () => {
               </Text>
 
               <LinkBox>
-                <LinkOverlay href='/profile'>
+                <LinkOverlay href={`/player/${session.user.username}`}>
                   <Avatar
                     size='sm'
                     name={session.user?.name as string}
-                    src={session.user?.image as string}
+                    src={session.user?.profile_image_url as string}
                   />
                 </LinkOverlay>
               </LinkBox>

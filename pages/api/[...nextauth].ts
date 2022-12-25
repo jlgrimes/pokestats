@@ -1,6 +1,7 @@
 import NextAuth, { Session, TokenSet } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
+import { fetchTwitterProfile } from './get-twitter-profile';
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -17,9 +18,12 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, token }: { session: Session, token: TokenSet}) {
+      const id = token.sub as string;
+
+      const profile = await fetchTwitterProfile({ id });
       // Send properties to the client, like an access_token and user id from a provider.
       if (session.user) {
-        session.user.email = token.sub as string;
+        session.user = profile.data;
       }
 
       return session;

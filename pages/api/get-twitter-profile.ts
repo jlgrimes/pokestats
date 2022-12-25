@@ -10,28 +10,39 @@ type Data = {
   username: string;
 };
 
+export const fetchTwitterProfile = async (query: { id?: string, username?: string }) => {
+  let response;
+  if (query.id) {
+    response = await twitterClient.users.findUserById(
+      query.id as string,
+      {
+        'user.fields': ['profile_image_url'],
+      }
+    );
+  } else if (query.username) {
+    response = await twitterClient.users.findUserByUsername(
+      query.username as string,
+      {
+        'user.fields': ['profile_image_url'],
+      }
+    );
+  }
+
+  return response;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
   try {
-    let response;
-    if (req.query.id) {
-      response = await twitterClient.users.findUserById(
-        req.query.id as string
-      );
-    } else if (req.query.username) {
-      response = await twitterClient.users.findUserByUsername(
-        req.query.id as string
-      );
-    } else {
+    let response = await fetchTwitterProfile(req.query)
+
+    if (!response?.data) {
       return res.status(500);
     }
 
-    res.status(200).json({
-      id: response.data?.id as string,
-      username: response.data?.username as string,
-    });
+    res.status(200).json(response.data);
   } catch (err) {
     return res.status(500);
   } finally {
