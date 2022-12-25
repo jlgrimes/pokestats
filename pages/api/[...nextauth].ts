@@ -24,6 +24,7 @@ export const authOptions = {
       // Send properties to the client, like an access_token and user id from a provider.
       if (session.user) {
         session.user = {
+          id: id,
           name: profile?.name as string,
           username: profile?.username as string,
           profile_image_url: profile?.profile_image_url as string
