@@ -47,8 +47,6 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
                     height={195}
                     src={getCardImageUrl(card)}
                     alt={`${card.name} ${card.set}`}
-                    placeholder='blur'
-                    blurDataURL="data:..."
                   />
                 </GridItem>
               ))}
