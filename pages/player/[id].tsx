@@ -103,7 +103,7 @@ function PlayerPage({
         <EditPlayerModal
           isOpen={isEditOpen}
           onClose={closeEdit}
-          playerProfile={{ id: user.id, twitterHandle: user.twitterHandle }}
+          playerProfile={{ id: user.id, twitterHandle: user.username }}
           name={user.name}
         />
       )}

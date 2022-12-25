@@ -20,7 +20,7 @@ export const fetchTwitterProfile = async ({ id, username }: { id?: string, usern
 
 export const useTwitterUsername = () => {
   const { data: session } = useSession();
-  const id = session?.user?.email as string;
+  const id = session?.user?.id as string;
 
   return useQuery({
     queryKey: [`twitter-username-for${id}`],

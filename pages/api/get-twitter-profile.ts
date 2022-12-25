@@ -41,13 +41,13 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    let response = await fetchTwitterProfile(req.query)
+    let data = await fetchTwitterProfile(req.query)
 
-    if (!response?.data) {
+    if (!data) {
       return res.status(500);
     }
 
-    res.status(200).json(response.data);
+    res.status(200).json(data);
   } catch (err) {
     return res.status(500);
   } finally {
