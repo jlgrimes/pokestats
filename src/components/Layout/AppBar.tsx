@@ -9,13 +9,11 @@ import {
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
-import { useUserIsAdmin } from '../../hooks/administrators';
 import { useTwitterUsernameFromId } from '../../hooks/twitter';
 
 export const AppBar = () => {
   const { data: session } = useSession();
-  const { data: username } = useTwitterUsernameFromId(session?.user?.id as string)
-  console.log(username)
+  const { data: username } = useTwitterUsernameFromId(session?.user?.email as string)
 
   return (
     <>

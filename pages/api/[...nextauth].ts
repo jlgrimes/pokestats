@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { Session, TokenSet } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 export const authOptions = {
@@ -16,10 +16,11 @@ export const authOptions = {
     // ...add more providers here
   ],
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, token }: { session: Session, token: TokenSet}) {
       // Send properties to the client, like an access_token and user id from a provider.
-      session.accessToken = token.accessToken;
-      session.user.id = token.sub;
+      if (session.user) {
+        session.user.email = token.sub as string;
+      }
 
       return session;
     },
