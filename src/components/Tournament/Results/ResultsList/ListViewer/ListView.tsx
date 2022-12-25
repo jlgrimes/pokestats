@@ -18,6 +18,10 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
     set: string;
   }) => {
     let set = codeToSetMap?.[card.set];
+    if (!set) {
+      return '';
+    }
+
     if (card.number.includes('SWSH')) {
       set = 'swshp';
     } else if (card.number.includes('TG')) {
