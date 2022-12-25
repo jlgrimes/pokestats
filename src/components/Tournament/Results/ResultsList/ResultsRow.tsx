@@ -43,7 +43,7 @@ export const ResultsRow = ({
           {tournament.name}
         </Td>
       )}
-      <Td isNumeric padding={isProfileView ? 2 : 0}>
+      <Td isNumeric={!isProfileView} padding={0}>
         {result.placing}
       </Td>
       {!isProfileView && (
