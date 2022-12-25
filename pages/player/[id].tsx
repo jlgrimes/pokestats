@@ -25,17 +25,17 @@ function PlayerPage({
   user,
   userIsOwnerOfPage,
 }: {
-  user: Record<string, any>;
+  user?: Record<string, any>;
   userIsOwnerOfPage: boolean;
 }) {
   const userIsAdmin = useUserIsAdmin();
-  const twitterLink = useTwitterLink(user.username);
+  const twitterLink = useTwitterLink(user?.username);
 
-  const {
-    isOpen: isEditOpen,
-    onOpen: openEdit,
-    onClose: closeEdit,
-  } = useDisclosure();
+  if (!user) {
+    return (
+      <div>We could not find that player. Typo?</div>
+    )
+  }
 
   return (
     <Stack padding='1.5rem 1.5rem'>
@@ -56,16 +56,6 @@ function PlayerPage({
             >
               <Icon as={FaTwitter} />
             </Link>
-            {userIsAdmin && (
-              <IconButton
-                aria-label='edit-player'
-                variant={'ghost'}
-                size='xs'
-                onClick={openEdit}
-              >
-                <EditIcon />
-              </IconButton>
-            )}
           </Stack>
           <Text>{user.description}</Text>
         </Stack>
@@ -99,14 +89,6 @@ function PlayerPage({
           </Button>
         </Stack>
       )}
-      {isEditOpen && (
-        <EditPlayerModal
-          isOpen={isEditOpen}
-          onClose={closeEdit}
-          playerProfile={{ id: user.id, twitterHandle: user.username }}
-          name={user.name}
-        />
-      )}
     </Stack>
   );
 }
@@ -120,11 +102,13 @@ export async function getServerSideProps(context: any) {
     (await fetchPlayerProfiles('twitter_handle')) ?? {};
   const twitterProfile = await fetchTwitterProfile({ username });
 
+  const user = playerProfiles[username] ? {
+    ...(twitterProfile ?? {})
+  }: null
+
   return {
     props: {
-      user: {
-        ...(twitterProfile ?? {}),
-      },
+      user,
       userIsOwnerOfPage,
     },
   };

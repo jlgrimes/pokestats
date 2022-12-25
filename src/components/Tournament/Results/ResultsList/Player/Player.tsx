@@ -6,7 +6,6 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FaTwitter } from 'react-icons/fa';
 import NextLink from 'next/link';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
@@ -23,6 +22,12 @@ export const Player = memo(
     profile: { id: number; twitterHandle: string };
     isEditable: boolean;
   }) => {
+    const {
+      isOpen: isEditOpen,
+      onOpen: openEdit,
+      onClose: closeEdit,
+    } = useDisclosure();
+
     return (
       <Stack direction={'row'} alignItems='center'>
         {profile?.twitterHandle ? (
@@ -35,6 +40,24 @@ export const Player = memo(
           </Link>
         ) : (
           <Text>{name}</Text>
+        )}
+        {isEditable && (
+          <IconButton
+            aria-label='edit-player'
+            variant={'ghost'}
+            size='xs'
+            onClick={openEdit}
+          >
+            <EditIcon />
+          </IconButton>
+        )}
+        {isEditOpen && (
+          <EditPlayerModal
+            isOpen={isEditOpen}
+            onClose={closeEdit}
+            playerProfile={profile}
+            name={name}
+          />
         )}
       </Stack>
     );
