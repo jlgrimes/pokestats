@@ -31,6 +31,7 @@ import {
 import { usePlayerPerformance } from '../../src/hooks/tournamentResults';
 import { ResultsRow } from '../../src/components/Tournament/Results/ResultsList/ResultsRow';
 import { ResultsHeader } from '../../src/components/Tournament/Results/ResultsList/ResultsHeader';
+import supabase from '../../src/lib/supabase/client';
 
 function PlayerPage({
   user,
@@ -131,10 +132,8 @@ function PlayerPage({
   );
 }
 
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
+export async function getStaticProps(context: any) {
   const username = context.params?.id;
-  let userIsOwnerOfPage = false;
 
   const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
     await fetchPlayerProfiles('twitter_handle');
@@ -158,8 +157,34 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       user: combinedProfile,
-      userIsOwnerOfPage,
     },
+    revalidate: 60,
+  };
+}
+
+export async function getStaticPaths(id: string) {
+  const { data: playerProfiles } = await supabase
+    .from('Player Profiles')
+    .select('id,name,twitter_handle,tournament_history');
+
+  const paths = playerProfiles?.reduce((acc: any[], player) => {
+    if (player.twitter_handle) {
+      return [
+        ...acc,
+        {
+          params: {
+            id: player.twitter_handle,
+          },
+        },
+      ];
+    }
+
+    return acc;
+  }, []);
+
+  return {
+    paths,
+    fallback: 'blocking',
   };
 }
 
