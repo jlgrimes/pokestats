@@ -6,6 +6,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { ResultsHeader } from './ResultsHeader';
 import { ResultsRow } from './ResultsRow';
 
 interface LiveResultType {
@@ -31,18 +32,9 @@ export default function ResultsList({
   return (
     <TableContainer>
       <Table size={'sm'}>
-        <Thead>
-          <Tr>
-            <Th></Th>
-            <Th padding={0} paddingLeft={2}>
-              Name
-            </Th>
-            <Th padding={0}>Record</Th>
-            <Th padding={0} paddingLeft={2}>
-              Deck
-            </Th>
-          </Tr>
-        </Thead>
+        <ResultsHeader
+          view='standings'
+        />
         <Tbody>
           {liveResults?.map((result: LiveResultType, idx: number) => {
             return (
@@ -52,6 +44,7 @@ export default function ResultsList({
                 tournament={tournament}
                 allowEdits={allowEdits}
                 tournamentFinished={tournamentFinished}
+                view='standings'
               />
             );
           })}

@@ -18,6 +18,7 @@ export const LoggedInPlayerStatus = ({
         // Always allow player to edit their own deck
         allowEdits={true}
         tournamentFinished={tournamentFinished}
+        view='standings'
       />
     </Table>
   );

@@ -1,19 +1,20 @@
 import { Th, Thead, Tr } from '@chakra-ui/react';
 
 export const ResultsHeader = ({
-  isProfileView,
+  view,
 }: {
-  isProfileView: boolean;
+  view: 'profile' | 'standings' | 'matchups';
 }) => {
   return (
     <Thead>
       <Tr>
-        {isProfileView && (
+        {view === 'profile' && (
           <Th padding={0} paddingLeft={2}>
             Tournament
           </Th>
         )}
-        {isProfileView ? (
+        {view === 'standings' && <Th></Th>}
+        {view === 'profile' ? (
           <Th padding={0}>Seed</Th>
         ) : (
           <Th padding={0} paddingLeft={2}>

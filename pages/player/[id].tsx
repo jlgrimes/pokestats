@@ -130,7 +130,7 @@ function PlayerPage({
         )}
         <TableContainer>
           <Table>
-            <ResultsHeader isProfileView />
+            <ResultsHeader view='profile' />
             <Tbody>
               {tournamentPerformance.map(
                 ({ performance, tournament }, idx) =>
@@ -143,7 +143,7 @@ function PlayerPage({
                       // Though, we'd probably want the API to say what tournaments are ongoing.
                       allowEdits={false}
                       tournamentFinished={true}
-                      isProfileView
+                      view='profile'
                     />
                   )
               )}

@@ -11,13 +11,13 @@ export const ResultsRow = ({
   tournament,
   allowEdits,
   tournamentFinished,
-  isProfileView,
+  view,
 }: {
   result: Record<string, any>;
   tournament: { id: string; name: string };
   allowEdits: boolean;
   tournamentFinished: boolean;
-  isProfileView?: boolean;
+  view: 'profile' | 'standings' | 'matchups';
 }) => {
   const getResultBackgroundColor = useCallback(
     (matchResult: string) => {
@@ -38,15 +38,11 @@ export const ResultsRow = ({
 
   return (
     <Tr height='41px'>
-      {isProfileView && (
-        <Td padding={2}>
-          {tournament.name}
-        </Td>
-      )}
-      <Td isNumeric={!isProfileView} padding={0}>
+      {view === 'profile' && <Td padding={2}>{tournament.name}</Td>}
+      <Td isNumeric={view === 'standings'} padding={0}>
         {result.placing}
       </Td>
-      {!isProfileView && (
+      {(view === 'standings' || view === 'matchups') && (
         <Td
           maxWidth={'12rem'}
           overflow={'hidden'}
