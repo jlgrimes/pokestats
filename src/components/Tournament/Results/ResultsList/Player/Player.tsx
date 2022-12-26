@@ -7,6 +7,7 @@ import { memo } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
 import { EditPlayerModal } from './EditPlayerModal';
 import { PlayerNameLink } from '../../../../Player/PlayerNameLink';
+import { StoredPlayerProfile } from '../../../../../../types/player';
 
 export const Player = memo(
   ({
@@ -15,7 +16,7 @@ export const Player = memo(
     isEditable,
   }: {
     name: string;
-    profile: { id: number; twitterHandle: string };
+    profile: StoredPlayerProfile;
     isEditable: boolean;
   }) => {
     const {

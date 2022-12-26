@@ -1,5 +1,6 @@
 import { Td, Tr } from '@chakra-ui/react';
 import { useCallback } from 'react';
+import { Standing } from '../../../../../types/tournament';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
@@ -13,14 +14,14 @@ export const ResultsRow = ({
   tournamentFinished,
   view,
 }: {
-  result: Record<string, any>;
+  result: Standing;
   tournament: { id: string; name: string };
   allowEdits: boolean;
   tournamentFinished: boolean;
   view: 'profile' | 'standings' | 'matchups';
 }) => {
   const getResultBackgroundColor = useCallback(
-    (matchResult: string) => {
+    (matchResult: string | undefined) => {
       if (tournamentFinished) {
         return '';
       }
@@ -39,9 +40,11 @@ export const ResultsRow = ({
   return (
     <Tr height='41px'>
       {view === 'profile' && <Td padding={2}>{tournament.name}</Td>}
-      <Td isNumeric={view === 'standings'} padding={0}>
-        {result.placing}
-      </Td>
+      {(view === 'standings' || view === 'profile') && (
+        <Td isNumeric={view === 'standings'} padding={0}>
+          {result.placing}
+        </Td>
+      )}
       {(view === 'standings' || view === 'matchups') && (
         <Td
           maxWidth={'12rem'}

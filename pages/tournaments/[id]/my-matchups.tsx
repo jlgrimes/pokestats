@@ -6,6 +6,7 @@ import { ResultsRow } from '../../../src/components/Tournament/Results/ResultsLi
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import supabase from '../../../src/lib/supabase/client';
+import { Standing } from '../../../types/tournament';
 
 export default function MyMatchups({
   tournament,
@@ -19,31 +20,39 @@ export default function MyMatchups({
   const player = liveResults?.data?.find(
     player => player.name === session.data?.user.name
   );
-  const opponents = Object.values(player?.rounds ?? {})?.map(opponent => {
+  const opponents: (Standing | undefined)[] = Object.values(
+    player?.rounds ?? {}
+  )?.map(opponent => {
     const opponentResult = liveResults?.data.find(
       player => player.name === opponent.name
     );
+    return opponentResult;
   });
+
+  const roundsArr = Object.values(player?.rounds ?? {});
 
   return (
     <Stack padding='1.5rem'>
-      <Table>
-        <TableContainer>
-          <ResultsHeader view='matchups' />
-          {Object.values(player?.rounds ?? {})?.map((round, idx) => (
-            <ResultsRow
-              key={idx}
-              view='matchups'
-              result={{
-                currentMatchResult: round?.result,
-              }}
-              tournament={tournament}
-              allowEdits={true}
-              tournamentFinished={!liveResults?.live}
-            />
-          ))}
-        </TableContainer>
-      </Table>
+      {roundsArr.length > 0 && (
+        <Table size={'sm'}>
+          <TableContainer>
+            <ResultsHeader view='matchups' />
+            {opponents.map(
+              (opponent, idx) =>
+                opponent && (
+                  <ResultsRow
+                    key={idx}
+                    view='matchups'
+                    result={opponent}
+                    tournament={tournament}
+                    allowEdits={true}
+                    tournamentFinished={!liveResults?.live}
+                  />
+                )
+            )}
+          </TableContainer>
+        </Table>
+      )}
     </Stack>
   );
 }
