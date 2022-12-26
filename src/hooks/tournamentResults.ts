@@ -1,7 +1,10 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { PlayerTournamentPerformance } from '../../types/player';
 import { Standing } from '../../types/tournament';
-import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
+import {
+  fetchLiveResults,
+  FetchLiveResultsOptions,
+} from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
 import { useTournaments } from './tournaments';
@@ -22,10 +25,16 @@ export const useTournamentResults = (tournamentName: string) => {
   });
 };
 
-export const useLiveTournamentResults = (tournamentId: string) => {
+export const useLiveTournamentResults = (
+  tournamentId: string,
+  options?: FetchLiveResultsOptions
+) => {
   return useQuery({
-    queryKey: [`live-results-${tournamentId}`],
-    queryFn: () => fetchLiveResults(tournamentId),
+    queryKey: [
+      `live-results-${tournamentId}`,
+      ...Object.keys(options?.load ?? {}),
+    ],
+    queryFn: () => fetchLiveResults(tournamentId, options),
   });
 };
 

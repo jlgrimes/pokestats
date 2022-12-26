@@ -211,7 +211,8 @@ function mapResultsArray(
   roundNumber: number,
   playerDeckObjects: PlayerDeckObject[] | undefined,
   deckArchetypes: DeckArchetype[] | null,
-  playerProfiles: Record<string, string> | undefined
+  playerProfiles: Record<string, string> | undefined,
+  shouldLoad?: LoadOptions
 ): Standing[] {
   const perfStart = performance.now();
 
@@ -223,6 +224,7 @@ function mapResultsArray(
       profile: playerProfiles?.[player.name] ?? null,
       placing: player.placing,
       record: player.record,
+      ...(shouldLoad?.roundData ? { rounds: player.rounds } : {}),
       ...(currentMatchResult ? { currentMatchResult } : {}),
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
@@ -269,13 +271,22 @@ const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   return data;
 };
 
+export interface FetchLiveResultsOptions {
+  prefetch?: boolean,
+  load?: LoadOptions
+}
+
+export interface LoadOptions {
+  roundData?: boolean
+}
+
 export const fetchLiveResults = async (
   tournamentId: string,
-  prefetch?: boolean
+  options?: FetchLiveResultsOptions
 ) => {
   const startTime = performance.now();
 
-  let parsedData = await getPokedata(tournamentId as string, prefetch);
+  let parsedData = await getPokedata(tournamentId as string, options?.prefetch);
   const roundNumber = getRoundNumber(parsedData[0]);
 
   const deckArchetypes = await fetchDeckArchetypes();
@@ -302,7 +313,8 @@ export const fetchLiveResults = async (
     roundNumber,
     playerDeckObjects,
     deckArchetypes,
-    playerProfiles
+    playerProfiles,
+    options?.load
   );
   const endTime = performance.now();
 

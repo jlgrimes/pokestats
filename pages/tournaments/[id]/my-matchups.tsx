@@ -1,32 +1,33 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import Tournament from '../../../src/components/Tournament/Tournament';
-import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { fetchAdministrators, useUserIsAdmin } from '../../../src/hooks/administrators';
-import supabase from '../../../src/lib/supabase/client';
+import { useSession } from 'next-auth/react';
+import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
-import { fetchPokedex } from '../../../src/hooks/images';
+import supabase from '../../../src/lib/supabase/client';
 
-export default function TournamentPage({
+export default function MyMatchups({
   tournament,
 }: {
   tournament: { id: string; name: string };
 }) {
-  const userIsAdmin = useUserIsAdmin()
-
-  return (
-    <TournamentPageLayout tournament={tournament}>
-      <Tournament tournament={tournament} allowEdits={userIsAdmin} />
-    </TournamentPageLayout>
+  const session = useSession();
+  const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
+    load: { roundData: true },
+  });
+  console.log(
+    liveResults?.data?.find(
+      ({ name }: { name: string }) => name === session.data?.user.name
+    )
   );
+  return <div>hi</div>;
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([`live-results-${params.id}`], () =>
-    fetchLiveResults(params.id, { prefetch: true })
+  await queryClient.prefetchQuery(
+    [`live-results-${params.id}`, 'roundData'],
+    () =>
+      fetchLiveResults(params.id, { prefetch: true, load: { roundData: true } })
   );
-  await queryClient.prefetchQuery([`administrators`], fetchAdministrators);
-  await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
   const { data: tournaments } = await supabase
     .from('Tournaments')
