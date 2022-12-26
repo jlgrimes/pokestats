@@ -13,6 +13,7 @@ export const ResultsHeader = ({
             Tournament
           </Th>
         )}
+        {view === 'matchups' && <Th></Th>}
         {view === 'standings' && <Th></Th>}
         {view === 'profile' ? (
           <Th padding={0}>Seed</Th>

@@ -25,10 +25,14 @@ export interface Standing {
   profile: StoredPlayerProfile;
   placing: string;
   record: { wins: number; ties: number; losses: number };
-  rounds?: Record<number, { name: string, result: string }>;
   currentMatchResult?: 'W' | 'L' | 'T';
+  rounds?: Record<number, { name: string, result: string }>;
   day2: boolean;
   deck: Deck;
+}
+
+export interface MatchupResult extends Standing {
+  result: string;
 }
 
 export interface Tournament {

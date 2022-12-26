@@ -8,7 +8,7 @@ import { useUserIsAdmin } from '../../../src/hooks/administrators';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import supabase from '../../../src/lib/supabase/client';
-import { Standing } from '../../../types/tournament';
+import { MatchupResult } from '../../../types/tournament';
 
 export default function MyMatchups({
   tournament,
@@ -19,18 +19,25 @@ export default function MyMatchups({
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
     load: { roundData: true },
   });
-  const userIsAdmin = useUserIsAdmin();
 
   const player = liveResults?.data?.find(
     player => player.name === session.data?.user.name
   );
-  const opponents: (Standing | undefined)[] = Object.values(
+  const opponents: (MatchupResult | undefined)[] = Object.values(
     player?.rounds ?? {}
   )?.map(opponent => {
     const opponentResult = liveResults?.data.find(
       player => player.name === opponent.name
     );
-    return opponentResult;
+    
+    if (opponentResult) {
+      return {
+        ...opponentResult,
+        result: opponent.result
+      };
+    }
+
+    return;
   });
 
   const roundsArr = Object.values(player?.rounds ?? {});
@@ -52,7 +59,7 @@ export default function MyMatchups({
                         result={opponent}
                         tournament={tournament}
                         allowEdits={{
-                          player: userIsAdmin,
+                          player: false,
                           deck: true,
                         }}
                         tournamentFinished={!liveResults?.live}

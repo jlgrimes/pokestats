@@ -1,6 +1,6 @@
 import { Td, Tr } from '@chakra-ui/react';
 import { useCallback } from 'react';
-import { Standing } from '../../../../../types/tournament';
+import { MatchupResult } from '../../../../../types/tournament';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { formatRecord } from './helpers';
@@ -14,21 +14,17 @@ export const ResultsRow = ({
   tournamentFinished,
   view,
 }: {
-  result: Standing;
+  result: MatchupResult;
   tournament: { id: string; name: string };
   allowEdits: {
-    player: boolean
-    deck: boolean
+    player: boolean;
+    deck: boolean;
   };
   tournamentFinished: boolean;
   view: 'profile' | 'standings' | 'matchups';
 }) => {
   const getResultBackgroundColor = useCallback(
     (matchResult: string | undefined) => {
-      if (tournamentFinished) {
-        return '';
-      }
-
       return matchResult === 'W'
         ? 'green.100'
         : matchResult === 'T'
@@ -37,7 +33,7 @@ export const ResultsRow = ({
         ? 'red.100'
         : '';
     },
-    [tournamentFinished]
+    []
   );
 
   return (
@@ -46,6 +42,15 @@ export const ResultsRow = ({
       {(view === 'standings' || view === 'profile') && (
         <Td isNumeric={view === 'standings'} padding={0}>
           {result.placing}
+        </Td>
+      )}
+      {view === 'matchups' && (
+        <Td
+          padding={0}
+          backgroundColor={getResultBackgroundColor(result.result)}
+          textAlign='center'
+        >
+          {result.result}
         </Td>
       )}
       {(view === 'standings' || view === 'matchups') && (
@@ -66,7 +71,11 @@ export const ResultsRow = ({
 
       <Td
         padding={0}
-        backgroundColor={getResultBackgroundColor(result.currentMatchResult)}
+        backgroundColor={
+          tournamentFinished
+            ? getResultBackgroundColor(result.currentMatchResult)
+            : ''
+        }
       >
         {formatRecord(result.record)}
       </Td>
