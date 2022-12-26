@@ -17,7 +17,7 @@ import DeckInput from '../Tournament/Results/ResultsList/DeckInput/DeckInput';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { ListViewerOpenButton } from '../Tournament/Results/ResultsList/ListViewer/ListViewerOpenButton';
 
-export const PlayerPerformance = ({
+export const PlayerPerformanceList = ({
   user,
 }: {
   user: CombinedPlayerProfile;

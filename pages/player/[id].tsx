@@ -22,7 +22,7 @@ import {
 import supabase from '../../src/lib/supabase/client';
 import { ComplainLink } from '../../src/components/common/ComplainLink';
 import { useRouter } from 'next/router';
-import { PlayerPerformance } from '../../src/components/DataDisplay/PlayerPerformance';
+import { PlayerPerformanceList } from '../../src/components/DataDisplay/PlayerPerformanceList';
 
 function PlayerPage({
   user,
@@ -113,7 +113,7 @@ function PlayerPage({
             </Button>
           </Stack>
         )}
-      <PlayerPerformance user={user} />
+        <PlayerPerformanceList user={user} />
       </Stack>
     </>
   );
