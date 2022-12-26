@@ -6,34 +6,23 @@ import {
   Link,
   Button,
   Icon,
-  IconButton,
-  useDisclosure,
-  TableContainer,
-  Table,
-  Tbody,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { getSession, signOut, useSession } from 'next-auth/react';
-import { useMemo } from 'react';
-import { FaArrowRight, FaSignOutAlt, FaTwitter } from 'react-icons/fa';
+import { signOut, useSession } from 'next-auth/react';
+import { FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { fetchPlayerProfiles } from '../../src/lib/fetch/fetchLiveResults';
-import { isMobileDevice } from '../../src/lib/userAgent';
 import { fetchTwitterProfile } from '../api/get-twitter-profile';
 import { useTwitterLink } from '../../src/hooks/twitter';
-import { EditIcon } from '@chakra-ui/icons';
-import { EditPlayerModal } from '../../src/components/Tournament/Results/ResultsList/Player/EditPlayerModal';
 import {
   CombinedPlayerProfile,
   StoredPlayerProfile,
   TwitterPlayerProfile,
 } from '../../types/player';
-import { usePlayerPerformance } from '../../src/hooks/tournamentResults';
-import { ResultsRow } from '../../src/components/Tournament/Results/ResultsList/ResultsRow';
-import { ResultsHeader } from '../../src/components/Tournament/Results/ResultsList/ResultsHeader';
 import supabase from '../../src/lib/supabase/client';
 import { ComplainLink } from '../../src/components/common/ComplainLink';
 import { useRouter } from 'next/router';
+import { PlayerPerformance } from '../../src/components/DataDisplay/PlayerPerformance';
 
 function PlayerPage({
   user,
@@ -44,10 +33,6 @@ function PlayerPage({
 }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
-  const tournamentPerformance = usePlayerPerformance(
-    user?.name,
-    user?.tournamentHistory
-  );
 
   const session = useSession();
   const { query } = useRouter();
@@ -128,31 +113,7 @@ function PlayerPage({
             </Button>
           </Stack>
         )}
-        <TableContainer>
-          <Table>
-            <ResultsHeader view='profile' />
-            <Tbody>
-              {tournamentPerformance.map(
-                ({ performance, tournament }, idx) =>
-                  tournament && (
-                    <ResultsRow
-                      key={idx}
-                      result={performance}
-                      tournament={tournament}
-                      // TODO: Make this able to change current tournament in this view
-                      // Though, we'd probably want the API to say what tournaments are ongoing.
-                      allowEdits={{
-                        player: false,
-                        deck: false
-                      }}
-                      tournamentFinished={true}
-                      view='profile'
-                    />
-                  )
-              )}
-            </Tbody>
-          </Table>
-        </TableContainer>
+      <PlayerPerformance user={user} />
       </Stack>
     </>
   );
