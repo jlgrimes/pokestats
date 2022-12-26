@@ -31,7 +31,7 @@ export default function StatsPage({
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery([`live-results-${params.id}`], () =>
-    fetchLiveResults(params.id, true)
+    fetchLiveResults(params.id, { prefetch: true })
   );
 
   const { data: tournaments } = await supabase

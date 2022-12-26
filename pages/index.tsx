@@ -42,7 +42,7 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
   for await (const tournament of tournaments ?? []) {
     await queryClient.prefetchQuery([`live-results-${tournament.id}`], () =>
-      fetchLiveResults(tournament.id, true)
+      fetchLiveResults(tournament.id, { prefetch: true })
     );
   }
 

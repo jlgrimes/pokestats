@@ -7,6 +7,7 @@ import {
   XAxis,
   LabelList,
 } from 'recharts';
+import { DeckArchetype } from '../../../../types/tournament';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { useLowResImageUrls } from '../../../hooks/images';
 import { LOW_RES_SUBSTITUTE_URL } from '../../common/helpers';
@@ -22,19 +23,17 @@ export const ArchetypeBarGraph = ({
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useLowResImageUrls(
     data?.reduce(
-      (acc: string[], deck: Record<string, any>) => [
+      (acc: string[], deck: DeckArchetype) => [
         ...acc,
         ...(deck.defined_pokemon ?? []),
       ],
       []
-    )
+    ) ?? []
   );
 
   const renderCustomizedLabel = (props: Record<string, any>) => {
-    const { x, y, width, height, value } = props;
-    const radius = 10;
-
-    const definedPokemon = data.find(
+    const { y, width, height, value } = props;
+    const definedPokemon = data?.find(
       (deck: Record<string, any>) =>
         value === getArchetypeKey(deck, shouldDrillDown)
     )?.defined_pokemon;

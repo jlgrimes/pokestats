@@ -9,8 +9,8 @@ export interface Card {
 
 export interface DeckArchetype {
   name: string;
-  defined_pokemon: any;
-  identifiable_cards: any;
+  defined_pokemon: string[];
+  identifiable_cards: string[];
 }
 
 export interface Deck {
@@ -32,7 +32,7 @@ export interface Standing {
 }
 
 export interface MatchupResult extends Standing {
-  result: string;
+  result?: string;
 }
 
 export interface Tournament {

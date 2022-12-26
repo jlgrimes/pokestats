@@ -9,6 +9,7 @@ import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useHighResImageUrls } from '../../../hooks/images';
 import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
+import { DeckArchetype } from '../../../../types/tournament';
 
 export const ArchetypeGraph = ({
   tournament,
@@ -20,12 +21,12 @@ export const ArchetypeGraph = ({
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useHighResImageUrls(
     data?.reduce(
-      (acc: string[], deck: Record<string, any>) => [
+      (acc: string[], deck: DeckArchetype) => [
         ...acc,
         ...(deck.defined_pokemon ?? []),
       ],
       []
-    )
+    ) ?? []
   );
   const getRadiusScale = (percent: number, index: number) => {
     if (percent > 0.1) {
@@ -75,7 +76,7 @@ export const ArchetypeGraph = ({
     const y =
       (cy as number) + radius * radiusScale * Math.sin(-midAngle * RADIAN);
 
-    const definedPokemon = data.find(
+    const definedPokemon = data?.find(
       (deck: Record<string, any>) =>
         name === getArchetypeKey(deck, shouldDrillDown)
     )?.defined_pokemon;

@@ -15,9 +15,10 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { memo } from 'react';
+import { StoredPlayerProfile } from '../../../../../../types/player';
 import supabase from '../../../../../lib/supabase/client';
 interface EditPlayerModalProps {
-  playerProfile: { id: number; twitterHandle: string } | undefined;
+  playerProfile: StoredPlayerProfile;
   name: string;
   isOpen: boolean;
   onClose: () => void;
