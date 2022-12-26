@@ -1,20 +1,32 @@
 import { Tabs, TabList, Tab, Badge, Stack, Text } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 
 export const TournamentTabs = () => {
   const router = useRouter();
+  const session = useSession();
+
   const tournamentId = router.query.id;
   const { data: liveResults } = useLiveTournamentResults(
     tournamentId as string
+  );
+  const userIsInTournament = liveResults?.data.some(
+    ({ name }: { name: string }) => name === session.data?.user.name
   );
 
   const tabs = [
     {
       name: 'Standings',
       slug: 'standings',
-      badge: liveResults?.live ? `Live - Round ${liveResults?.roundNumber}` : false,
+      badge: liveResults?.live
+        ? `Live - Round ${liveResults?.roundNumber}`
+        : false,
     },
+    ...(userIsInTournament ? [{
+      name: 'My matchups',
+      slug: 'my-matchups'
+    }] : []),
     {
       name: 'Stats',
       slug: 'stats',
