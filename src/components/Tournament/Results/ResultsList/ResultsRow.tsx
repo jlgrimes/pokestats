@@ -1,4 +1,6 @@
-import { Td, Tr } from '@chakra-ui/react';
+import { Td, Tr, Link } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import NextLink from 'next/link';
 import { useCallback } from 'react';
 import { MatchupResult } from '../../../../../types/tournament';
 import SpriteDisplay from '../../../common/SpriteDisplay';
@@ -35,10 +37,21 @@ export const ResultsRow = ({
     },
     []
   );
+  const session = useSession();
 
   return (
     <Tr height='41px'>
-      {view === 'profile' && <Td padding={2}>{tournament.name}</Td>}
+      {view === 'profile' && (
+        <Td padding={2}>
+          <Link
+            as={NextLink}
+            color='blue.500'
+            href={`${tournament.id}/my-results`}
+          >
+            {tournament.name}
+          </Link>
+        </Td>
+      )}
       {(view === 'standings' || view === 'profile') && (
         <Td isNumeric={view === 'standings'} padding={0}>
           {result.placing}
