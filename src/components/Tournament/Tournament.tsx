@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
+import { StandingsList } from '../DataDisplay/StandingsList';
 import { LoggedInPlayerStatus } from './Results/LoggedInPlayerStatus';
-import ResultsList from './Results/ResultsList/ResultsList';
 
 export default function Tournament({
   tournament,
@@ -18,9 +18,9 @@ export default function Tournament({
         tournamentFinished={!liveResults?.live}
       />
       {liveResults && (
-        <ResultsList
+        <StandingsList
+          results={liveResults.data}
           tournament={tournament}
-          liveResults={liveResults.data}
           tournamentFinished={!liveResults.live}
         />
       )}
