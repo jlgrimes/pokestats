@@ -8,6 +8,8 @@ export const TournamentTabs = () => {
   const session = useSession();
 
   const tournamentId = router.query.id;
+  const routerSlug = router.asPath.split(`${tournamentId}/`)[1];
+
   const { data: liveResults } = useLiveTournamentResults(
     tournamentId as string
   );
@@ -50,7 +52,7 @@ export const TournamentTabs = () => {
       padding={'0 1.5rem'}
     >
       <TabList>
-        {tabs.map(({ name, badge }, idx) => (
+        {tabs.map(({ name, badge, slug }, idx) => (
           <Tab key={idx}>
             <Stack direction={'row'} alignItems={'center'}>
               <Text>{name}</Text>

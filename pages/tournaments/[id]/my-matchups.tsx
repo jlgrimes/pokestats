@@ -1,8 +1,9 @@
-import { Stack, Table, TableContainer } from '@chakra-ui/react';
+import { Stack, Table, TableContainer, Tbody } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { ResultsHeader } from '../../../src/components/Tournament/Results/ResultsList/ResultsHeader';
 import { ResultsRow } from '../../../src/components/Tournament/Results/ResultsList/ResultsRow';
+import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { useUserIsAdmin } from '../../../src/hooks/administrators';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
@@ -35,31 +36,35 @@ export default function MyMatchups({
   const roundsArr = Object.values(player?.rounds ?? {});
 
   return (
-    <Stack padding='1.5rem'>
-      {roundsArr.length > 0 && (
-        <Table size={'sm'}>
-          <TableContainer>
-            <ResultsHeader view='matchups' />
-            {opponents.map(
-              (opponent, idx) =>
-                opponent && (
-                  <ResultsRow
-                    key={idx}
-                    view='matchups'
-                    result={opponent}
-                    tournament={tournament}
-                    allowEdits={{
-                      player: userIsAdmin,
-                      deck: true
-                    }}
-                    tournamentFinished={!liveResults?.live}
-                  />
-                )
-            )}
-          </TableContainer>
-        </Table>
-      )}
-    </Stack>
+    <TournamentPageLayout tournament={tournament}>
+      <Stack padding='1rem 1.5rem'>
+        {roundsArr.length > 0 && (
+          <Table size={'sm'}>
+            <TableContainer>
+              <ResultsHeader view='matchups' />
+              <Tbody>
+                {opponents.map(
+                  (opponent, idx) =>
+                    opponent && (
+                      <ResultsRow
+                        key={idx}
+                        view='matchups'
+                        result={opponent}
+                        tournament={tournament}
+                        allowEdits={{
+                          player: userIsAdmin,
+                          deck: true,
+                        }}
+                        tournamentFinished={!liveResults?.live}
+                      />
+                    )
+                )}
+              </Tbody>
+            </TableContainer>
+          </Table>
+        )}
+      </Stack>
+    </TournamentPageLayout>
   );
 }
 
