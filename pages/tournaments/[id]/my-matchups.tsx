@@ -1,5 +1,8 @@
+import { Stack, Table, TableContainer } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { ResultsHeader } from '../../../src/components/Tournament/Results/ResultsList/ResultsHeader';
+import { ResultsRow } from '../../../src/components/Tournament/Results/ResultsList/ResultsRow';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import supabase from '../../../src/lib/supabase/client';
@@ -13,12 +16,36 @@ export default function MyMatchups({
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
     load: { roundData: true },
   });
-  console.log(
-    liveResults?.data?.find(
-      ({ name }: { name: string }) => name === session.data?.user.name
-    )
+  const player = liveResults?.data?.find(
+    player => player.name === session.data?.user.name
   );
-  return <div>hi</div>;
+  const opponents = Object.values(player?.rounds ?? {})?.map(opponent => {
+    const opponentResult = liveResults?.data.find(
+      player => player.name === opponent.name
+    );
+  });
+
+  return (
+    <Stack padding='1.5rem'>
+      <Table>
+        <TableContainer>
+          <ResultsHeader view='matchups' />
+          {Object.values(player?.rounds ?? {})?.map((round, idx) => (
+            <ResultsRow
+              key={idx}
+              view='matchups'
+              result={{
+                currentMatchResult: round?.result,
+              }}
+              tournament={tournament}
+              allowEdits={true}
+              tournamentFinished={!liveResults?.live}
+            />
+          ))}
+        </TableContainer>
+      </Table>
+    </Stack>
+  );
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {

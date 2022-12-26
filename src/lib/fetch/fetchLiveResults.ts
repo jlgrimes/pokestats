@@ -286,7 +286,7 @@ export const fetchLiveResults = async (
 ) => {
   const startTime = performance.now();
 
-  let parsedData = await getPokedata(tournamentId as string, options?.prefetch);
+  let parsedData: Standing[] = await getPokedata(tournamentId as string, options?.prefetch);
   const roundNumber = getRoundNumber(parsedData[0]);
 
   const deckArchetypes = await fetchDeckArchetypes();

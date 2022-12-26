@@ -12,7 +12,7 @@ export const TournamentTabs = () => {
     tournamentId as string
   );
   const userIsInTournament = liveResults?.data.some(
-    ({ name }: { name: string }) => name === session.data?.user.name
+    player => player.name === session.data?.user.name
   );
 
   const tabs = [
@@ -23,10 +23,14 @@ export const TournamentTabs = () => {
         ? `Live - Round ${liveResults?.roundNumber}`
         : false,
     },
-    ...(userIsInTournament ? [{
-      name: 'My matchups',
-      slug: 'my-matchups'
-    }] : []),
+    ...(userIsInTournament
+      ? [
+          {
+            name: 'My matchups',
+            slug: 'my-matchups',
+          },
+        ]
+      : []),
     {
       name: 'Stats',
       slug: 'stats',

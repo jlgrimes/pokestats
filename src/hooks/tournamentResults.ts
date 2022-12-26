@@ -41,23 +41,11 @@ export const useLiveTournamentResults = (
 export const useTopPerformingPlayers = (tournamentId: string) => {
   const { data: liveTournamentResults } =
     useLiveTournamentResults(tournamentId);
-  return liveTournamentResults?.data
-    .slice(0, 4)
-    .map(
-      ({
-        name,
-        deck,
-        profile,
-      }: {
-        name: string;
-        deck: Record<string, any>;
-        profile: Record<string, any>;
-      }) => ({
-        name,
-        deck,
-        twitterHandle: profile.twitterHandle,
-      })
-    );
+  return liveTournamentResults?.data.slice(0, 4).map(player => ({
+    name: player.name,
+    deck: player.deck,
+    twitterHandle: player.profile.twitterHandle,
+  }));
 };
 
 export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
@@ -98,8 +86,8 @@ export const usePlayerPerformance = (
         }
 
         // We run into the duplicate player name thing here
-        const perf: Standing = result.data.data.find(
-          (standing: Standing) => standing.name === playerName
+        const perf = result.data.data.find(
+          standing => standing.name === playerName
         );
 
         return [
