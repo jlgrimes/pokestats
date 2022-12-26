@@ -5,10 +5,8 @@ import ResultsList from './Results/ResultsList/ResultsList';
 
 export default function Tournament({
   tournament,
-  allowEdits,
 }: {
   tournament: { id: string; name: string };
-  allowEdits: boolean;
 }) {
   const { data: liveResults } = useLiveTournamentResults(tournament.id);
 
@@ -19,12 +17,13 @@ export default function Tournament({
         tournament={tournament}
         tournamentFinished={!liveResults?.live}
       />
-      <ResultsList
-        tournament={tournament}
-        allowEdits={allowEdits}
-        liveResults={liveResults?.data}
-        tournamentFinished={!liveResults?.live}
-      />
+      {liveResults && (
+        <ResultsList
+          tournament={tournament}
+          liveResults={liveResults.data}
+          tournamentFinished={!liveResults.live}
+        />
+      )}
     </Stack>
   );
 }

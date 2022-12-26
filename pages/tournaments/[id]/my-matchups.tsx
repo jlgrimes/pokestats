@@ -3,6 +3,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { ResultsHeader } from '../../../src/components/Tournament/Results/ResultsList/ResultsHeader';
 import { ResultsRow } from '../../../src/components/Tournament/Results/ResultsList/ResultsRow';
+import { useUserIsAdmin } from '../../../src/hooks/administrators';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import supabase from '../../../src/lib/supabase/client';
@@ -17,6 +18,8 @@ export default function MyMatchups({
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
     load: { roundData: true },
   });
+  const userIsAdmin = useUserIsAdmin();
+
   const player = liveResults?.data?.find(
     player => player.name === session.data?.user.name
   );
@@ -45,7 +48,10 @@ export default function MyMatchups({
                     view='matchups'
                     result={opponent}
                     tournament={tournament}
-                    allowEdits={true}
+                    allowEdits={{
+                      player: userIsAdmin,
+                      deck: true
+                    }}
                     tournamentFinished={!liveResults?.live}
                   />
                 )

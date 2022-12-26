@@ -11,11 +11,9 @@ export default function TournamentPage({
 }: {
   tournament: { id: string; name: string };
 }) {
-  const userIsAdmin = useUserIsAdmin()
-
   return (
     <TournamentPageLayout tournament={tournament}>
-      <Tournament tournament={tournament} allowEdits={userIsAdmin} />
+      <Tournament tournament={tournament} />
     </TournamentPageLayout>
   );
 }

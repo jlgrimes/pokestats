@@ -6,29 +6,22 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { Standing } from '../../../../../types/tournament';
+import { useUserIsAdmin } from '../../../../hooks/administrators';
 import { ResultsHeader } from './ResultsHeader';
 import { ResultsRow } from './ResultsRow';
-
-interface LiveResultType {
-  placing: string;
-  name: string;
-  profile: { id: number; twitterHandle: string };
-  record: { wins: number; losses: number; ties: number };
-  deck: { name: string; defined_pokemon: string[]; list: Record<string, any> };
-  currentMatchResult: string;
-}
 
 export default function ResultsList({
   liveResults,
   tournament,
-  allowEdits,
   tournamentFinished,
 }: {
-  liveResults: LiveResultType[];
+  liveResults: Standing[];
   tournament: { id: string; name: string };
-  allowEdits: boolean;
   tournamentFinished: boolean;
 }) {
+  const userIsAdmin = useUserIsAdmin();
+
   return (
     <TableContainer>
       <Table size={'sm'}>
@@ -36,13 +29,16 @@ export default function ResultsList({
           view='standings'
         />
         <Tbody>
-          {liveResults?.map((result: LiveResultType, idx: number) => {
+          {liveResults?.map((result: Standing, idx: number) => {
             return (
               <ResultsRow
                 key={idx}
                 result={result}
                 tournament={tournament}
-                allowEdits={allowEdits}
+                allowEdits={{
+                  deck: userIsAdmin,
+                  player: userIsAdmin
+                }}
                 tournamentFinished={tournamentFinished}
                 view='standings'
               />

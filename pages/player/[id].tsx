@@ -141,7 +141,10 @@ function PlayerPage({
                       tournament={tournament}
                       // TODO: Make this able to change current tournament in this view
                       // Though, we'd probably want the API to say what tournaments are ongoing.
-                      allowEdits={false}
+                      allowEdits={{
+                        player: false,
+                        deck: false
+                      }}
                       tournamentFinished={true}
                       view='profile'
                     />

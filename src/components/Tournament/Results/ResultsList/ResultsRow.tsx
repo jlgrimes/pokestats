@@ -16,7 +16,10 @@ export const ResultsRow = ({
 }: {
   result: Standing;
   tournament: { id: string; name: string };
-  allowEdits: boolean;
+  allowEdits: {
+    player: boolean
+    deck: boolean
+  };
   tournamentFinished: boolean;
   view: 'profile' | 'standings' | 'matchups';
 }) => {
@@ -56,7 +59,7 @@ export const ResultsRow = ({
           <Player
             name={result.name}
             profile={result.profile}
-            isEditable={allowEdits}
+            isEditable={allowEdits.player}
           />
         </Td>
       )}

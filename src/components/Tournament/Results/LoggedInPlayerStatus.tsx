@@ -10,16 +10,19 @@ export const LoggedInPlayerStatus = ({
   tournamentFinished: boolean;
 }) => {
   const loggedInPlayerLiveResults = useLoggedInPlayerLiveResults(tournament.id);
-  return loggedInPlayerLiveResults && (
+  return loggedInPlayerLiveResults ? (
     <Table>
       <ResultsRow
         result={loggedInPlayerLiveResults}
         tournament={tournament}
         // Always allow player to edit their own deck
-        allowEdits={true}
+        allowEdits={{
+          player: false,
+          deck: true
+        }}
         tournamentFinished={tournamentFinished}
         view='standings'
       />
     </Table>
-  );
+  ) : <></>;
 };
