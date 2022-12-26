@@ -16,7 +16,7 @@ import {
   Stack,
   Input,
 } from '@chakra-ui/react';
-import { ChangeEvent, Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useArchetypes } from '../../../../../../hooks/deckArchetypes';
 import SpriteAndNameDisplay from '../../../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../../../common/SpriteDisplay';
@@ -40,6 +40,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const handleArchetypeChange = (deck: string) => {
     props.onChange(deck);
     setSelectedArchetype(deck);
+    onClose();
   };
 
   const handleFilterChange = (e: Record<string, any>) => {
@@ -54,7 +55,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
 
   const filteredDecks = useMemo(() => decks?.filter(({ name }) => {
     return name.toLowerCase().includes(filterQuery.toLowerCase())
-  }), [decks, filterQuery])
+  }), [decks, filterQuery]);
 
   return (
     <Fragment>
@@ -78,7 +79,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Add archetype</ModalHeader>
+            <ModalHeader>Select deck</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Input placeholder='Filter archetype' onChange={handleFilterChange} />
@@ -93,14 +94,6 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
                 ))}
               </Stack>
             </ModalBody>
-            <ModalFooter>
-              <Button colorScheme='blue' mr={3} type='submit'>
-                Select deck
-              </Button>
-              <Button variant='ghost' onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
       )}
