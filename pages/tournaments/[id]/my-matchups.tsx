@@ -1,6 +1,7 @@
 import { Stack, Table, TableContainer, Tbody } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
 import { ResultsHeader } from '../../../src/components/Tournament/Results/ResultsList/ResultsHeader';
 import { ResultsRow } from '../../../src/components/Tournament/Results/ResultsList/ResultsRow';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
@@ -46,29 +47,7 @@ export default function MyMatchups({
     <TournamentPageLayout tournament={tournament}>
       <Stack padding='1rem 1.5rem'>
         {roundsArr.length > 0 && (
-          <Table size={'sm'}>
-            <TableContainer>
-              <ResultsHeader view='matchups' />
-              <Tbody>
-                {opponents.map(
-                  (opponent, idx) =>
-                    opponent && (
-                      <ResultsRow
-                        key={idx}
-                        view='matchups'
-                        result={opponent}
-                        tournament={tournament}
-                        allowEdits={{
-                          player: false,
-                          deck: true,
-                        }}
-                        tournamentFinished={!liveResults?.live}
-                      />
-                    )
-                )}
-              </Tbody>
-            </TableContainer>
-          </Table>
+          <MyMatchupsList tournament={tournament} />
         )}
       </Stack>
     </TournamentPageLayout>
