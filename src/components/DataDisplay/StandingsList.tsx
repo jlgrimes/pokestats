@@ -16,6 +16,7 @@ import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
+import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 
 export const StandingsList = ({
   results,
@@ -74,24 +75,13 @@ export const StandingsList = ({
                 {formatRecord(result.record)}
               </Td>
               <Td padding={0} paddingLeft={2}>
-                {userIsAdmin && !result?.deck?.list ? (
-                  <DeckInput
-                    tournamentId={tournament.id}
-                    playerName={result.name}
-                    deckName={result.deck?.name}
-                    quickEdit={true}
-                  />
-                ) : (
-                  <SpriteDisplay
-                    pokemonNames={result?.deck?.defined_pokemon ?? []}
-                  />
-                )}
+                <DeckInfoDisplay
+                  tournament={tournament}
+                  player={result}
+                  enableEdits={userIsAdmin && !result.deck.list}
+                  quickEdits={true}
+                />
               </Td>
-              {result.deck.list && (
-                <Td padding={0}>
-                  <ListViewerOpenButton result={result} />
-                </Td>
-              )}
             </Tr>
           ))}
         </Tbody>

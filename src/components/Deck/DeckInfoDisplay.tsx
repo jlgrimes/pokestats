@@ -18,13 +18,13 @@ export const DeckInfoDisplay = ({
 }) => {
   const { onOpen } = useDisclosure();
   return (
-    <Stack direction={'row'}>
-      <StackItem>
+    <Stack direction={'row'} padding={0} alignItems='center'>
+      <StackItem width={'60px'}>
         <DeckInput
           tournamentId={tournament.id}
           playerName={player.name}
           deckName={player.deck?.name}
-          quickEdit={!!quickEdits}
+          quickEdit={enableEdits && !!quickEdits}
           openArchetypeSelectorModal={onOpen}
         />
       </StackItem>
@@ -37,6 +37,7 @@ export const DeckInfoDisplay = ({
           aria-label='edit'
           variant={'ghost'}
           width={'100%'}
+          size='xs'
           onClick={onOpen}
         />
       ) : null}

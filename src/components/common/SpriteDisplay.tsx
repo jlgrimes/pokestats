@@ -1,4 +1,4 @@
-import { Flex, Image, Stack } from '@chakra-ui/react';
+import { Flex, Image, Stack, StackItem } from '@chakra-ui/react';
 import { usePokedex } from '../../hooks/images';
 import { getRegionFlag, getSpriteUrl, removeRegionFlag } from './helpers';
 
@@ -10,7 +10,7 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
   const { data: pokedex } = usePokedex();
 
   return (
-    <Stack direction={'row'} spacing={1} minWidth='4.5rem'>
+    <Stack direction={'row'} spacing={1} minWidth='4.5rem' alignItems={'center'}>
       {props.pokemonNames.map((name, idx) => {
         if (name.length === 0) return;
 
@@ -20,23 +20,25 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
               key={idx}
               src='https://archives.bulbagarden.net/media/upload/a/a5/SubstituteG5f.png'
               alt='Other'
-              height='40px'
-              width='auto'
+              height='auto'
+              width='40px'
             />
           );
         }
 
         return (
-          <Image
-            key={idx}
-            src={getSpriteUrl(
-              pokedex?.[removeRegionFlag(name).toLowerCase()],
-              getRegionFlag(name)
-            )}
-            alt={name}
-            maxHeight='30px'
-            width='auto'
-          />
+          <StackItem width='30px' key={idx} display='flex' justifyContent={'center'}>
+            <Image
+              maxHeight='30px'
+              height='auto'
+              width='auto'
+              src={getSpriteUrl(
+                pokedex?.[removeRegionFlag(name).toLowerCase()],
+                getRegionFlag(name)
+              )}
+              alt={name}
+            />
+          </StackItem>
         );
       })}
     </Stack>

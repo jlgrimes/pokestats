@@ -15,10 +15,17 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         aria-label='view-list'
         variant={'ghost'}
         onClick={onOpen}
+        size='xs'
       >
         <FaList />
       </IconButton>
-      {isOpen && <ListViewerModal isOpen={isOpen} onClose={onClose} result={props.result} />}
+      {isOpen && (
+        <ListViewerModal
+          isOpen={isOpen}
+          onClose={onClose}
+          result={props.result}
+        />
+      )}
     </>
   );
 };

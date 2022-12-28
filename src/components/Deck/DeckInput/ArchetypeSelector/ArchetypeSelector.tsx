@@ -81,7 +81,6 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     return (
       <Stack direction={'row'}>
         <SpriteDisplay pokemonNames={displayedPokemonNames} />
-
       </Stack>
     );
   };

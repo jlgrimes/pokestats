@@ -16,6 +16,7 @@ import SpriteDisplay from '../common/SpriteDisplay';
 import DeckInput from '../Deck/DeckInput/DeckInput';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
+import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 
 export const PlayerPerformanceList = ({
   user,
@@ -64,24 +65,13 @@ export const PlayerPerformanceList = ({
                   <Td padding={0}>{performance.placing}</Td>
                   <Td padding={0} paddingLeft={2}>{formatRecord(performance.record)}</Td>
                   <Td padding={0} paddingLeft={2}>
-                    {userMatchesLoggedInUser && !performance?.deck?.list ? (
-                      <DeckInput
-                        tournamentId={tournament.id}
-                        playerName={performance.name}
-                        deckName={performance.deck?.name}
-                        quickEdit={true}
-                      />
-                    ) : (
-                      <SpriteDisplay
-                        pokemonNames={performance?.deck?.defined_pokemon ?? []}
-                      />
-                    )}
+                    <DeckInfoDisplay
+                      tournament={tournament}
+                      player={performance}
+                      enableEdits={userMatchesLoggedInUser}
+                      quickEdits={false}
+                    />
                   </Td>
-                  {performance.deck.list && (
-                    <Td padding={0}>
-                      <ListViewerOpenButton result={performance} />
-                    </Td>
-                  )}
                 </Tr>
               )
           )}

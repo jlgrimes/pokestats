@@ -35,7 +35,7 @@ export const Player = memo(
             size='xs'
             onClick={openEdit}
           >
-            <EditIcon />
+            {/* <EditIcon /> */}
           </IconButton>
         )}
         {isEditOpen && (
