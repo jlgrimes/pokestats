@@ -1,4 +1,3 @@
-import { ChevronDownIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Button,
   useDisclosure,
@@ -11,6 +10,7 @@ import {
   Stack,
   Input,
   Image,
+  UseDisclosureProps,
 } from '@chakra-ui/react';
 import { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import { useArchetypes } from '../../../../hooks/deckArchetypes';
@@ -20,7 +20,7 @@ import SpriteDisplay from '../../../common/SpriteDisplay';
 interface ArchetypeSelectorProps {
   value: string | undefined;
   onChange: (value: string) => void;
-  openArchetypeSelectorModal: () => void;
+  modalControls: UseDisclosureProps
   quickEdit: boolean;
 }
 
@@ -28,16 +28,16 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const [selectedArchetype, setSelectedArchetype] = useState<
     string | undefined
   >(props.value);
-  const { isOpen, onClose } = useDisclosure();
   const { data: decks } = useArchetypes();
   const [filterQuery, setFilterQuery] = useState<string>('');
+  const modalControls = props.modalControls ?? {};
 
   const isArchetypeSelected = selectedArchetype && selectedArchetype.length > 0;
 
   const handleArchetypeChange = (deck: string) => {
     props.onChange(deck);
     setSelectedArchetype(deck);
-    onClose();
+    modalControls.onClose && modalControls.onClose();
   };
 
   const handleFilterChange = (e: Record<string, any>) => {
@@ -68,7 +68,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         <Button
           variant={isArchetypeSelected ? 'outline' : 'ghost'}
           width={'100%'}
-          onClick={props.openArchetypeSelectorModal}
+          onClick={modalControls.onOpen}
         >
           {isArchetypeSelected ? (
             <SpriteDisplay pokemonNames={displayedPokemonNames} />
@@ -92,8 +92,8 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   return (
     <Fragment>
       {renderButtonDisplay()}
-      {isOpen && (
-        <Modal isOpen={isOpen} onClose={onClose}>
+      {modalControls.isOpen && (
+        <Modal isOpen={modalControls.isOpen} onClose={modalControls.onClose ?? (() => {})}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Select deck</ModalHeader>

@@ -16,7 +16,7 @@ export const DeckInfoDisplay = ({
   enableEdits: boolean;
   quickEdits?: boolean;
 }) => {
-  const { onOpen } = useDisclosure();
+  const archetypeModal = useDisclosure();
   return (
     <Stack direction={'row'} padding={0} alignItems='center'>
       <StackItem width={'60px'}>
@@ -25,7 +25,7 @@ export const DeckInfoDisplay = ({
           playerName={player.name}
           deckName={player.deck?.name}
           quickEdit={enableEdits && !!quickEdits}
-          openArchetypeSelectorModal={onOpen}
+          archetypeModal={archetypeModal}
         />
       </StackItem>
       {player?.deck?.list ? (
@@ -38,7 +38,7 @@ export const DeckInfoDisplay = ({
           variant={'ghost'}
           width={'100%'}
           size='xs'
-          onClick={onOpen}
+          onClick={archetypeModal.onOpen}
         />
       ) : null}
     </Stack>

@@ -1,3 +1,4 @@
+import { UseDisclosureProps } from '@chakra-ui/react';
 import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
 
@@ -6,13 +7,13 @@ export default function DeckInput({
   deckName,
   tournamentId,
   quickEdit,
-  openArchetypeSelectorModal
+  archetypeModal
 }: {
   playerName: string;
   deckName: string | undefined;
   tournamentId: string;
   quickEdit: boolean;
-  openArchetypeSelectorModal: () => void
+  archetypeModal: UseDisclosureProps
 }) {
   const handleArchetypeSelect = async (newValue: string) => {
     if (deckName) {
@@ -34,7 +35,7 @@ export default function DeckInput({
       value={deckName}
       onChange={handleArchetypeSelect}
       quickEdit={quickEdit}
-      openArchetypeSelectorModal={openArchetypeSelectorModal}
+      modalControls={archetypeModal}
     />
   );
 }
