@@ -53,7 +53,7 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
 export const useLoggedInPlayerLiveResults = (
   tournamentId: string,
   options?: FetchLoggedInPlayerOptions
-) => {
+): Standing | undefined => {
   const { data: liveResults } = useLiveTournamentResults(tournamentId, {
     load: { roundData: true },
   });
@@ -78,7 +78,7 @@ export const useLoggedInPlayerLiveResults = (
             };
           }
 
-          return opponent;
+          return roundResult;
       }),
     };
   }
