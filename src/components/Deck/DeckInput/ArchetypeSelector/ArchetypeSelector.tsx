@@ -11,6 +11,7 @@ import {
   Input,
   Image,
   UseDisclosureProps,
+  Text,
 } from '@chakra-ui/react';
 import { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import { useArchetypes } from '../../../../hooks/deckArchetypes';
@@ -20,8 +21,9 @@ import SpriteDisplay from '../../../common/SpriteDisplay';
 interface ArchetypeSelectorProps {
   value: string | undefined;
   onChange: (value: string) => void;
-  modalControls: UseDisclosureProps
+  modalControls: UseDisclosureProps;
   quickEdit: boolean;
+  shouldShowAsText?: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
@@ -58,11 +60,28 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     [decks, filterQuery]
   );
 
-  const renderButtonDisplay = () => {
-    const displayedPokemonNames =
-      decks?.find(deck => deck.name === selectedArchetype)?.defined_pokemon ??
-      [];
+  const renderDeckName = () => {
+    if (props.shouldShowAsText) {
+      return <Text fontSize='sm'>{selectedArchetype}</Text>;
+    } else {
+      if (isArchetypeSelected) {
+        const displayedPokemonNames =
+          decks?.find(deck => deck.name === selectedArchetype)
+            ?.defined_pokemon ?? [];
 
+        return <SpriteDisplay pokemonNames={displayedPokemonNames} />;
+      } else {
+        return (
+          <Image
+            src='https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-qm.png'
+            alt='Unown'
+          />
+        );
+      }
+    }
+  };
+
+  const renderButtonDisplay = () => {
     if (props.quickEdit) {
       return (
         <Button
@@ -70,30 +89,22 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           width={'100%'}
           onClick={modalControls.onOpen}
         >
-          {isArchetypeSelected ? (
-            <SpriteDisplay pokemonNames={displayedPokemonNames} />
-          ) : (
-            <Image
-              src='https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-qm.png'
-              alt='Unown'
-            />
-          )}
+          {renderDeckName()}
         </Button>
       );
     }
 
-    return (
-      <Stack direction={'row'}>
-        <SpriteDisplay pokemonNames={displayedPokemonNames} />
-      </Stack>
-    );
+    return renderDeckName();
   };
 
   return (
     <Fragment>
       {renderButtonDisplay()}
       {modalControls.isOpen && (
-        <Modal isOpen={modalControls.isOpen} onClose={modalControls.onClose ?? (() => {})}>
+        <Modal
+          isOpen={modalControls.isOpen}
+          onClose={modalControls.onClose ?? (() => {})}
+        >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Select deck</ModalHeader>

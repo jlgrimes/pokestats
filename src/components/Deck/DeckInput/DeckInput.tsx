@@ -7,13 +7,15 @@ export default function DeckInput({
   deckName,
   tournamentId,
   quickEdit,
-  archetypeModal
+  archetypeModal,
+  shouldShowAsText,
 }: {
   playerName: string;
   deckName: string | undefined;
   tournamentId: string;
   quickEdit: boolean;
-  archetypeModal: UseDisclosureProps
+  archetypeModal: UseDisclosureProps;
+  shouldShowAsText?: boolean
 }) {
   const handleArchetypeSelect = async (newValue: string) => {
     if (deckName) {
@@ -36,6 +38,7 @@ export default function DeckInput({
       onChange={handleArchetypeSelect}
       quickEdit={quickEdit}
       modalControls={archetypeModal}
+      shouldShowAsText={shouldShowAsText}
     />
   );
 }

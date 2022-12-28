@@ -9,22 +9,25 @@ export const DeckInfoDisplay = ({
   tournament,
   enableEdits,
   quickEdits,
+  shouldShowAsText
 }: {
   player: Standing;
   tournament: { id: string; name: string };
   enableEdits: boolean;
   quickEdits?: boolean;
+  shouldShowAsText?: boolean
 }) => {
   const archetypeModal = useDisclosure();
   return (
     <Stack direction={'row'} padding={0} alignItems='center'>
-      <StackItem width={'60px'}>
+      <StackItem width={shouldShowAsText ? 'auto' : '60px'}>
         <DeckInput
           tournamentId={tournament.id}
           playerName={player.name}
           deckName={player.deck?.name}
           quickEdit={enableEdits && !!quickEdits}
           archetypeModal={archetypeModal}
+          shouldShowAsText={shouldShowAsText}
         />
       </StackItem>
       {player?.deck?.list ? (

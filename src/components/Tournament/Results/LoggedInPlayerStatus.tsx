@@ -57,31 +57,40 @@ export const LoggedInPlayerStatus = ({
 }) => {
   const playerResults = useLoggedInPlayerLiveResults(tournament.id);
   return playerResults ? (
-    <Stack alignItems={'center'} spacing={2}>
-      <Stack direction={'row'} alignItems='baseline'>
-        <Text fontSize={'sm'}>You are</Text>
-        <Stack direction='row' alignItems={'baseline'} spacing={1}>
-          <Heading color={'gray.700'}>
-            {formatRecord(playerResults.record)}
-          </Heading>
-          <Heading size='xs' color='gray.500'>
-            {ordinalSuffixOf(parseInt(playerResults.placing))}
-          </Heading>
+    <Stack alignItems={'center'} spacing={4}>
+      <Stack spacing={0} alignItems='center'>
+        <Stack direction={'row'} alignItems='baseline'>
+          <Text fontSize={'sm'}>
+            {tournamentFinished ? 'You went' : 'You are'}
+          </Text>
+          <Stack direction='row' alignItems={'baseline'} spacing={1}>
+            <Heading color={'gray.700'}>
+              {formatRecord(playerResults.record)}
+            </Heading>
+            <Heading size='xs' color='gray.500'>
+              {ordinalSuffixOf(parseInt(playerResults.placing))}
+            </Heading>
+          </Stack>
         </Stack>
-        <Text fontSize={'sm'}>with</Text>
-        <DeckInfoDisplay
-          tournament={tournament}
-          player={playerResults}
-          enableEdits={true}
-          quickEdits={false}
-        />
+        <Stack direction={'row'} alignItems='baseline' spacing={1}>
+          <Text fontSize={'sm'}>with</Text>
+          <DeckInfoDisplay
+            tournament={tournament}
+            player={playerResults}
+            enableEdits={true}
+            quickEdits={false}
+            shouldShowAsText
+          />
+        </Stack>
       </Stack>
-      <RecordNeeded
-        record={playerResults.record}
-        objective='day 2'
-        matchPointsNeeded={19}
-        roundsLeft={1}
-      />
+      {!tournamentFinished && (
+        <RecordNeeded
+          record={playerResults.record}
+          objective='day 2'
+          matchPointsNeeded={19}
+          roundsLeft={9 - Object.keys(playerResults?.rounds ?? {})?.length}
+        />
+      )}
     </Stack>
   ) : (
     <></>

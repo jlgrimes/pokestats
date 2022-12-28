@@ -1,4 +1,5 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { PlayerTournamentPerformance } from '../../types/player';
 import { Standing } from '../../types/tournament';
 import {
@@ -49,11 +50,11 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
 };
 
 export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
-  const { data: liveResults } = useLiveTournamentResults(tournamentId);
-  const { data: username } = useTwitterUsername();
+  const { data: liveResults } = useLiveTournamentResults(tournamentId, { load: { roundData: true }});
+  const session = useSession();
 
   return liveResults?.data.find(
-    (result: Record<string, any>) => result.profile?.twitterHandle === username
+    (result: Standing) => result.profile?.twitterHandle === session.data?.user.username
   );
 };
 
