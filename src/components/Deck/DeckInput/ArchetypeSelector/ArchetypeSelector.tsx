@@ -12,6 +12,7 @@ import {
   Image,
   UseDisclosureProps,
   Text,
+  Flex,
 } from '@chakra-ui/react';
 import { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import { useArchetypes } from '../../../../hooks/deckArchetypes';
@@ -72,10 +73,13 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         return <SpriteDisplay pokemonNames={displayedPokemonNames} />;
       } else {
         return (
-          <Image
-            src='https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-qm.png'
-            alt='Unown'
-          />
+          <Flex justifyContent={'center'}>
+            <Image
+              height='30px'
+              src='https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-qm.png'
+              alt='Unown'
+            />
+          </Flex>
         );
       }
     }
