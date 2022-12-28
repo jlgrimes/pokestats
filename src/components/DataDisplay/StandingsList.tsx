@@ -39,7 +39,7 @@ export const StandingsList = ({
               Name
             </Th>
             <Th padding={0}>Record</Th>
-            <Th padding={0} paddingLeft={2}>
+            <Th padding={0} paddingLeft={4}>
               Deck
             </Th>
           </Tr>
@@ -74,7 +74,7 @@ export const StandingsList = ({
               >
                 {formatRecord(result.record)}
               </Td>
-              <Td padding={0} paddingLeft={2}>
+              <Td padding={0} paddingLeft={4}>
                 <DeckInfoDisplay
                   tournament={tournament}
                   player={result}

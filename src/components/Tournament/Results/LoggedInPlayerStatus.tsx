@@ -60,20 +60,18 @@ export const LoggedInPlayerStatus = ({
     <Stack alignItems={'center'} spacing={4}>
       <Stack spacing={0} alignItems='center'>
         <Stack direction={'row'} alignItems='baseline'>
-          <Text fontSize={'sm'}>
-            {tournamentFinished ? 'You finished' : 'You are'}
-          </Text>
+          <Text>{tournamentFinished ? 'You finished' : 'You are'}</Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Heading color={'gray.700'}>
               {formatRecord(playerResults.record)}
             </Heading>
-            <Heading size='xs' color='gray.500'>
+            <Heading size='sm' color='gray.500'>
               {ordinalSuffixOf(parseInt(playerResults.placing))}
             </Heading>
           </Stack>
         </Stack>
         <Stack direction={'row'} alignItems='baseline' spacing={1}>
-          <Text fontSize={'sm'}>with</Text>
+          <Text>with</Text>
           <DeckInfoDisplay
             tournament={tournament}
             player={playerResults}

@@ -1,5 +1,5 @@
 import { IconButton, useDisclosure } from '@chakra-ui/react';
-import { FaList } from 'react-icons/fa';
+import { FaListUl } from 'react-icons/fa';
 import { ListViewerModal } from './ListViewerModal';
 
 interface ListViewerOpenButtonProps {
@@ -16,8 +16,9 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         variant={'ghost'}
         onClick={onOpen}
         size='sm'
+
       >
-        <FaList />
+        <FaListUl />
       </IconButton>
       {isOpen && (
         <ListViewerModal

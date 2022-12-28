@@ -63,7 +63,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
 
   const renderDeckName = () => {
     if (props.shouldShowAsText) {
-      return <Text fontSize='sm'>{selectedArchetype}</Text>;
+      return <Text>{selectedArchetype}</Text>;
     } else {
       if (isArchetypeSelected) {
         const displayedPokemonNames =
