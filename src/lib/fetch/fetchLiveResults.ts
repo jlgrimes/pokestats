@@ -93,7 +93,8 @@ const updatePlayerProfilesWithTournament = async (
   const upsertingRows = parsedData.reduce(
     (acc: Record<string, any>[], profile) => {
       const player = playerProfiles[profile.name];
-      const shouldUpdatePlayerProfile = !player.tournamentHistory.includes(tournamentId) ;
+      const shouldUpdatePlayerProfile =
+        !player.tournamentHistory.includes(tournamentId);
       // This is part of a much bigger issue, where people with the same name are getting put into the database as one person.
       // This only affects like 4 people per regional, but this problem is going to have to eventually be solved.
       // If we run into this in the real world, I'll just hard code a fix for now I guess. Though it's hard.
@@ -111,7 +112,8 @@ const updatePlayerProfilesWithTournament = async (
           name: player.name,
           twitter_handle: player.twitterHandle,
           tournament_history: [
-            ...(playerProfiles[profile.name].tournamentHistory ?? []), tournamentId,
+            ...(playerProfiles[profile.name].tournamentHistory ?? []),
+            tournamentId,
           ],
         },
       ];
@@ -119,7 +121,7 @@ const updatePlayerProfilesWithTournament = async (
     []
   );
   await supabase.from('Player Profiles').upsert(upsertingRows, {
-    onConflict: 'id'
+    onConflict: 'id',
   });
 };
 
@@ -212,7 +214,7 @@ function mapResultsArray(
   playerDeckObjects: PlayerDeckObject[] | undefined,
   deckArchetypes: DeckArchetype[] | null,
   playerProfiles: Record<string, string> | undefined,
-  shouldLoad?: LoadOptions
+  shouldLoad?: LiveResultsLoadOptions
 ): Standing[] {
   const perfStart = performance.now();
 
@@ -224,7 +226,7 @@ function mapResultsArray(
       profile: playerProfiles?.[player.name] ?? null,
       placing: player.placing,
       record: player.record,
-      ...(shouldLoad?.roundData ? { rounds: player.rounds } : {}),
+      ...(shouldLoad?.roundData ? { rounds: Object.values(player?.rounds ?? {}) } : {}),
       ...(currentMatchResult ? { currentMatchResult } : {}),
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
@@ -272,12 +274,20 @@ const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
 };
 
 export interface FetchLiveResultsOptions {
-  prefetch?: boolean,
-  load?: LoadOptions
+  prefetch?: boolean;
+  load?: LiveResultsLoadOptions;
 }
 
-export interface LoadOptions {
-  roundData?: boolean
+export interface LiveResultsLoadOptions {
+  roundData?: boolean;
+}
+
+export interface FetchLoggedInPlayerOptions {
+  load?: LoggedInPlayerLoadOptions;
+}
+
+export interface LoggedInPlayerLoadOptions {
+  opponentRoundData?: boolean;
 }
 
 export const fetchLiveResults = async (
@@ -286,7 +296,10 @@ export const fetchLiveResults = async (
 ) => {
   const startTime = performance.now();
 
-  let parsedData: Standing[] = await getPokedata(tournamentId as string, options?.prefetch);
+  let parsedData: Standing[] = await getPokedata(
+    tournamentId as string,
+    options?.prefetch
+  );
   const roundNumber = getRoundNumber(parsedData[0]);
 
   const deckArchetypes = await fetchDeckArchetypes();
@@ -306,7 +319,11 @@ export const fetchLiveResults = async (
   if (uploadedMissingPlayers) {
     playerProfiles = await fetchPlayerProfiles();
   }
-  await updatePlayerProfilesWithTournament(parsedData, playerProfiles ?? {}, tournamentId);
+  await updatePlayerProfilesWithTournament(
+    parsedData,
+    playerProfiles ?? {},
+    tournamentId
+  );
 
   parsedData = await mapResultsArray(
     parsedData,

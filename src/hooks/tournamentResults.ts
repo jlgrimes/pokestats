@@ -1,15 +1,16 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { useMemo } from 'react';
 import { PlayerTournamentPerformance } from '../../types/player';
-import { Standing } from '../../types/tournament';
+import { MatchupResult, Standing } from '../../types/tournament';
 import {
   fetchLiveResults,
   FetchLiveResultsOptions,
+  FetchLoggedInPlayerOptions,
 } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
 import { useTournaments } from './tournaments';
-import { useTwitterUsername } from './twitter';
 
 export const useTournamentResults = (tournamentName: string) => {
   const fetchResults = async () => {
@@ -49,13 +50,40 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
   }));
 };
 
-export const useLoggedInPlayerLiveResults = (tournamentId: string) => {
-  const { data: liveResults } = useLiveTournamentResults(tournamentId, { load: { roundData: true }});
+export const useLoggedInPlayerLiveResults = (
+  tournamentId: string,
+  options?: FetchLoggedInPlayerOptions
+) => {
+  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
+    load: { roundData: true },
+  });
   const session = useSession();
-
-  return liveResults?.data.find(
-    (result: Standing) => result.profile?.twitterHandle === session.data?.user.username
+  const player = liveResults?.data.find(
+    (result: Standing) =>
+      result.profile?.twitterHandle === session.data?.user.username
   );
+
+  if (options?.load?.opponentRoundData && player?.rounds) {
+    return {
+      ...player,
+      rounds: player.rounds.map(roundResult => {
+          const opponent = liveResults?.data.find(
+            player => player.name === roundResult.name
+          );
+
+          if (opponent) {
+            return {
+              ...roundResult,
+              opponent,
+            };
+          }
+
+          return opponent;
+      }),
+    };
+  }
+
+  return player;
 };
 
 export const usePlayerPerformance = (

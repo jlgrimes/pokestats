@@ -7,14 +7,8 @@ import {
   Thead,
   Th,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import { useMemo } from 'react';
-import { MatchupResult } from '../../../types/tournament';
-import { useLiveTournamentResults } from '../../hooks/tournamentResults';
-import SpriteDisplay from '../common/SpriteDisplay';
-import DeckInput from '../Deck/DeckInput/DeckInput';
+import { useLoggedInPlayerLiveResults } from '../../hooks/tournamentResults';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
-import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
@@ -24,36 +18,10 @@ export const MyMatchupsList = ({
 }: {
   tournament: { id: string; name: string };
 }) => {
-  const session = useSession();
-  const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
-    load: { roundData: true },
+  const player = useLoggedInPlayerLiveResults(tournament.id, {
+    load: { opponentRoundData: true },
   });
-  const player = useMemo(
-    () =>
-      liveResults?.data?.find(
-        player => player.name === session.data?.user.name
-      ),
-    [liveResults?.data, session.data?.user.name]
-  );
 
-  const opponents: (MatchupResult | undefined)[] = useMemo(
-    () =>
-      Object.values(player?.rounds ?? {})?.map(opponent => {
-        const opponentResult = liveResults?.data.find(
-          player => player.name === opponent.name
-        );
-
-        if (opponentResult) {
-          return {
-            ...opponentResult,
-            result: opponent.result,
-          };
-        }
-
-        return;
-      }),
-    [liveResults?.data, player?.rounds]
-  );
   return (
     <TableContainer>
       <Table size={'sm'}>
@@ -70,16 +38,16 @@ export const MyMatchupsList = ({
           </Tr>
         </Thead>
         <Tbody>
-          {opponents.map(
-            (opponent, idx) =>
-              opponent && (
+          {player?.rounds?.map(
+            (round, idx) =>
+              round?.opponent && (
                 <Tr height='41px' key={idx}>
                   <Td
                     padding={0}
-                    backgroundColor={getResultBackgroundColor(opponent.result)}
+                    backgroundColor={getResultBackgroundColor(round.result)}
                     textAlign='center'
                   >
-                    {opponent.result}
+                    {round.result}
                   </Td>
                   <Td
                     maxWidth={'12rem'}
@@ -89,17 +57,17 @@ export const MyMatchupsList = ({
                     paddingLeft={2}
                   >
                     <Player
-                      name={opponent.name}
-                      profile={opponent.profile}
+                      name={round.opponent.name}
+                      profile={round.opponent.profile}
                       isEditable={false}
                     />
                   </Td>
 
-                  <Td padding={0}>{formatRecord(opponent.record)}</Td>
+                  <Td padding={0}>{formatRecord(round.opponent.record)}</Td>
                   <Td padding={0}>
                     <DeckInfoDisplay
                       tournament={tournament}
-                      player={opponent}
+                      player={round.opponent}
                       enableEdits={true}
                       quickEdits={false}
                     />

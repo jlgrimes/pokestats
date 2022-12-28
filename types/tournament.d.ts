@@ -26,7 +26,7 @@ export interface Standing {
   placing: string;
   record: { wins: number; ties: number; losses: number };
   currentMatchResult?: 'W' | 'L' | 'T';
-  rounds?: Record<number, { name: string, result: string }>;
+  rounds?: { name: string, result: string, opponent: Standing }[];
   day2: boolean;
   deck: Deck;
 }
