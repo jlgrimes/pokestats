@@ -11,11 +11,9 @@ export const TournamentPageLayout = ({
   children: ReactNode;
   tournament: { id: string; name: string };
 }) => {
-  const { data: liveResults } = useLiveTournamentResults(tournament.id);
-
   return (
     <Stack spacing={1}>
-      <Heading color='gray.700' padding={'0 1.5rem 0'}>
+      <Heading size='lg' color='gray.700' padding={'0 1.5rem 0'}>
         {tournament.name}
       </Heading>
       <TournamentTabs />

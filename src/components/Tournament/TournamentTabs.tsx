@@ -41,7 +41,8 @@ export const TournamentTabs = () => {
 
   return (
     <Tabs
-      variant='enclosed'
+      size='sm'
+      variant='soft-rounded'
       onChange={idx =>
         router.push(`/tournaments/${tournamentId}/${tabs[idx].slug}`)
       }
