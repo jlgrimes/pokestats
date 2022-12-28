@@ -17,6 +17,7 @@ import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
+import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 
 export const MyMatchupsList = ({
   tournament,
@@ -95,25 +96,14 @@ export const MyMatchupsList = ({
                   </Td>
 
                   <Td padding={0}>{formatRecord(opponent.record)}</Td>
-                  {!opponent?.deck?.list ? (
-                    <DeckInput
-                      tournamentId={tournament.id}
-                      playerName={opponent.name}
-                      deckName={opponent.deck?.name}
-                      quickEdit={false}
+                  <Td padding={0}>
+                    <DeckInfoDisplay
+                      tournament={tournament}
+                      player={opponent}
+                      enableEdits={true}
+                      quickEdits={false}
                     />
-                  ) : (
-                    <Td padding={0} paddingLeft={2}>
-                      <SpriteDisplay
-                        pokemonNames={opponent?.deck?.defined_pokemon ?? []}
-                      />
-                    </Td>
-                  )}
-                  {opponent.deck.list && (
-                    <Td padding={0}>
-                      <ListViewerOpenButton result={opponent} />
-                    </Td>
-                  )}
+                  </Td>
                 </Tr>
               )
           )}

@@ -67,7 +67,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         <Button
           variant={isArchetypeSelected ? 'outline' : 'ghost'}
           width={'100%'}
-          onClick={props.openSelectorModal}
+          onClick={props.openArchetypeSelectorModal}
         >
           {isArchetypeSelected ? (
             <SpriteDisplay pokemonNames={displayedPokemonNames} />
