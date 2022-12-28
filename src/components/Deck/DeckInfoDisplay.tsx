@@ -1,23 +1,29 @@
-import DeckInput from "./DeckInput/DeckInput";
+import { Stack } from '@chakra-ui/react';
+import { Standing } from '../../../types/tournament';
+import SpriteDisplay from '../common/SpriteDisplay';
+import DeckInput from './DeckInput/DeckInput';
+import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 
-export const DeckInfoDisplay = () => {
+export const DeckInfoDisplay = ({
+  player,
+  tournament,
+}: {
+  player: Standing;
+  tournament: { id: string; name: string };
+}) => {
   return (
-    <>
-      {!opponent?.deck?.list ? (
+    <Stack direction={'row'}>
+      {!player?.deck?.list ? (
         <DeckInput
           tournamentId={tournament.id}
-          playerName={opponent.name}
-          deckName={opponent.deck?.name}
+          playerName={player.name}
+          deckName={player.deck?.name}
           quickEdit={false}
         />
       ) : (
-        <SpriteDisplay pokemonNames={opponent?.deck?.defined_pokemon ?? []} />
+        <SpriteDisplay pokemonNames={player?.deck?.defined_pokemon ?? []} />
       )}
-      {opponent.deck.list && (
-        <Td padding={0}>
-          <ListViewerOpenButton result={opponent} />
-        </Td>
-      )}
-    </>
+      {player.deck.list && <ListViewerOpenButton result={player} />}
+    </Stack>
   );
 };
