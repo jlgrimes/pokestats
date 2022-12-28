@@ -1,17 +1,10 @@
 import {
   Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Tr,
 } from '@chakra-ui/react';
 import { useLoggedInPlayerLiveResults } from '../../../hooks/tournamentResults';
-import DeckInput from '../../Deck/DeckInput/DeckInput';
+import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecord } from './ResultsList/helpers';
-import { Player } from './ResultsList/Player/Player';
-import { ResultsRow } from './ResultsList/ResultsRow';
 
 export const LoggedInPlayerStatus = ({
   tournament,
@@ -25,11 +18,11 @@ export const LoggedInPlayerStatus = ({
     <Stack>
       <Text>{playerResults.placing}</Text>
       <Text>{formatRecord(playerResults.record)}</Text>
-      <DeckInput
-        tournamentId={tournament.id}
-        playerName={playerResults.name}
-        deckName={playerResults.deck?.name}
-        quickEdit={false}
+      <DeckInfoDisplay
+        tournament={tournament}
+        player={playerResults}
+        enableEdits={true}
+        quickEdits={false}
       />
     </Stack>
   ) : (
