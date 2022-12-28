@@ -27,7 +27,7 @@ export const MyMatchupsList = ({
       <Table size={'sm'}>
         <Thead>
           <Tr>
-            <Th></Th>
+            <Th padding={0}>Round</Th>
             <Th padding={0} paddingLeft={2}>
               Name
             </Th>
@@ -38,7 +38,7 @@ export const MyMatchupsList = ({
           </Tr>
         </Thead>
         <Tbody>
-          {player?.rounds?.map(
+          {player?.rounds?.reverse().map(
             (round, idx) =>
               round?.opponent && (
                 <Tr height='41px' key={idx}>
@@ -47,7 +47,7 @@ export const MyMatchupsList = ({
                     backgroundColor={getResultBackgroundColor(round.result)}
                     textAlign='center'
                   >
-                    {round.result}
+                    {(player.rounds?.length ?? 0)- idx}
                   </Td>
                   <Td
                     maxWidth={'12rem'}

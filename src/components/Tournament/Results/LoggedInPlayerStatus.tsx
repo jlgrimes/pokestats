@@ -88,7 +88,7 @@ export const LoggedInPlayerStatus = ({
           record={playerResults.record}
           objective='day 2'
           matchPointsNeeded={19}
-          roundsLeft={9 - Object.keys(playerResults?.rounds ?? {})?.length}
+          roundsLeft={9 - (playerResults.rounds?.length ?? 0)}
         />
       )}
     </Stack>
