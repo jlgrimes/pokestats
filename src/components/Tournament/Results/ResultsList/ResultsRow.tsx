@@ -4,9 +4,9 @@ import NextLink from 'next/link';
 import { useCallback } from 'react';
 import { MatchupResult } from '../../../../../types/tournament';
 import SpriteDisplay from '../../../common/SpriteDisplay';
-import DeckInput from './DeckInput/DeckInput';
+import DeckInput from '../../../Deck/DeckInput/DeckInput';
 import { formatRecord } from './helpers';
-import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
+import { ListViewerOpenButton } from '../../../Deck/ListViewer/ListViewerOpenButton';
 import { Player } from './Player/Player';
 
 export const ResultsRow = ({

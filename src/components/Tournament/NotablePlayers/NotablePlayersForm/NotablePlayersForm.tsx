@@ -10,7 +10,7 @@ import { useFormik } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getNotablePlayersQueryKey } from '../../../../lib/fetch/query-keys';
 import supabase from '../../../../lib/supabase/client';
-import ArchetypeSelector from '../../Results/ResultsList/DeckInput/ArchetypeSelector/ArchetypeSelector';
+import ArchetypeSelector from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelector';
 
 interface NotablePlayerFormValues {
   player: string;

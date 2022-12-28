@@ -11,9 +11,9 @@ import {
 import { Standing } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import SpriteDisplay from '../common/SpriteDisplay';
-import DeckInput from '../Tournament/Results/ResultsList/DeckInput/DeckInput';
+import DeckInput from '../Deck/DeckInput/DeckInput';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
-import { ListViewerOpenButton } from '../Tournament/Results/ResultsList/ListViewer/ListViewerOpenButton';
+import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
 

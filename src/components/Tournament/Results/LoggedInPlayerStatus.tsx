@@ -8,7 +8,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useLoggedInPlayerLiveResults } from '../../../hooks/tournamentResults';
-import DeckInput from './ResultsList/DeckInput/DeckInput';
+import DeckInput from '../../Deck/DeckInput/DeckInput';
 import { formatRecord } from './ResultsList/helpers';
 import { Player } from './ResultsList/Player/Player';
 import { ResultsRow } from './ResultsList/ResultsRow';

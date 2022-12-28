@@ -7,7 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-import { useCodeToSetMap } from '../../../../../hooks/deckList';
+import { useCodeToSetMap } from '../../../hooks/deckList';
 
 export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
   const codeToSetMap = useCodeToSetMap();

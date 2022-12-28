@@ -9,7 +9,7 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
-import { ordinalSuffixOf } from '../../../../../lib/strings';
+import { ordinalSuffixOf } from '../../../lib/strings';
 import { ListView } from './ListView';
 
 interface ListViewerModalProps {

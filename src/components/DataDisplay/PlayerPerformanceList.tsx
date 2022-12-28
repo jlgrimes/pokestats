@@ -13,9 +13,9 @@ import { CombinedPlayerProfile } from '../../../types/player';
 import { usePlayerPerformance } from '../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import SpriteDisplay from '../common/SpriteDisplay';
-import DeckInput from '../Tournament/Results/ResultsList/DeckInput/DeckInput';
+import DeckInput from '../Deck/DeckInput/DeckInput';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
-import { ListViewerOpenButton } from '../Tournament/Results/ResultsList/ListViewer/ListViewerOpenButton';
+import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 
 export const PlayerPerformanceList = ({
   user,

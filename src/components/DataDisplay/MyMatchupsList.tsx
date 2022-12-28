@@ -11,11 +11,10 @@ import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 import { MatchupResult } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
-import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import SpriteDisplay from '../common/SpriteDisplay';
-import DeckInput from '../Tournament/Results/ResultsList/DeckInput/DeckInput';
+import DeckInput from '../Deck/DeckInput/DeckInput';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
-import { ListViewerOpenButton } from '../Tournament/Results/ResultsList/ListViewer/ListViewerOpenButton';
+import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
 

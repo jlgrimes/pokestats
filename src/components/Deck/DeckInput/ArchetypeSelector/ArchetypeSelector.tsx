@@ -17,9 +17,9 @@ import {
 } from '@chakra-ui/react';
 import { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
-import { useArchetypes } from '../../../../../../hooks/deckArchetypes';
-import SpriteAndNameDisplay from '../../../../../common/SpriteAndNameDisplay';
-import SpriteDisplay from '../../../../../common/SpriteDisplay';
+import { useArchetypes } from '../../../../hooks/deckArchetypes';
+import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
+import SpriteDisplay from '../../../common/SpriteDisplay';
 import AddArchetypeModal from './AddArchetypeModal';
 
 interface ArchetypeSelectorProps {

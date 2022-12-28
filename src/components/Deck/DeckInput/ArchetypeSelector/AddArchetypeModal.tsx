@@ -14,7 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useMutateArchetypes } from '../../../../../../hooks/deckArchetypes';
+import { useMutateArchetypes } from '../../../../hooks/deckArchetypes';
 
 interface AddArchetypeModalProps {
   isOpen: boolean;
