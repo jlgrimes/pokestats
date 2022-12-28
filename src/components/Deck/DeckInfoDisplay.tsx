@@ -1,4 +1,5 @@
-import { Stack } from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
+import { IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import { Standing } from '../../../types/tournament';
 import SpriteDisplay from '../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
@@ -7,23 +8,36 @@ import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 export const DeckInfoDisplay = ({
   player,
   tournament,
+  enableEdits,
+  quickEdits,
 }: {
   player: Standing;
   tournament: { id: string; name: string };
+  enableEdits: boolean;
+  quickEdits?: boolean;
 }) => {
+  const { onOpen } = useDisclosure();
   return (
     <Stack direction={'row'}>
+      <DeckInput
+        tournamentId={tournament.id}
+        playerName={player.name}
+        deckName={player.deck?.name}
+        quickEdit={!!quickEdits}
+        openArchetypeSelectorModal={onOpen}
+      />
       {!player?.deck?.list ? (
-        <DeckInput
-          tournamentId={tournament.id}
-          playerName={player.name}
-          deckName={player.deck?.name}
-          quickEdit={false}
+        <ListViewerOpenButton result={player} />
+      ) : enableEdits ? (
+        <IconButton
+          maxWidth={'2'}
+          icon={<EditIcon />}
+          aria-label='edit'
+          variant={'ghost'}
+          width={'100%'}
+          onClick={onOpen}
         />
-      ) : (
-        <SpriteDisplay pokemonNames={player?.deck?.defined_pokemon ?? []} />
-      )}
-      {player.deck.list && <ListViewerOpenButton result={player} />}
+      ) : null}
     </Stack>
   );
 };

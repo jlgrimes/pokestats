@@ -6,25 +6,20 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Stack,
   Input,
-  IconButton,
-  SimpleGrid,
-  Td,
 } from '@chakra-ui/react';
 import { Fragment, memo, useEffect, useMemo, useState } from 'react';
-import { FaEdit } from 'react-icons/fa';
 import { useArchetypes } from '../../../../hooks/deckArchetypes';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
-import AddArchetypeModal from './AddArchetypeModal';
 
 interface ArchetypeSelectorProps {
   value: string | undefined;
   onChange: (value: string) => void;
+  openArchetypeSelectorModal: () => void;
   quickEdit: boolean;
 }
 
@@ -32,7 +27,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const [selectedArchetype, setSelectedArchetype] = useState<
     string | undefined
   >(props.value);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   const { data: decks } = useArchetypes();
   const [filterQuery, setFilterQuery] = useState<string>('');
 
@@ -72,7 +67,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         <Button
           variant={isArchetypeSelected ? 'outline' : 'ghost'}
           width={'100%'}
-          onClick={onOpen}
+          onClick={props.openSelectorModal}
         >
           {isArchetypeSelected ? (
             <SpriteDisplay pokemonNames={displayedPokemonNames} />
@@ -86,14 +81,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     return (
       <Stack direction={'row'}>
         <SpriteDisplay pokemonNames={displayedPokemonNames} />
-        <IconButton
-          maxWidth={'2'}
-          icon={<EditIcon />}
-          aria-label='edit'
-          variant={'ghost'}
-          width={'100%'}
-          onClick={onOpen}
-        />
+
       </Stack>
     );
   };

@@ -6,11 +6,13 @@ export default function DeckInput({
   deckName,
   tournamentId,
   quickEdit,
+  openArchetypeSelectorModal
 }: {
   playerName: string;
   deckName: string | undefined;
   tournamentId: string;
   quickEdit: boolean;
+  openArchetypeSelectorModal: () => void
 }) {
   const handleArchetypeSelect = async (newValue: string) => {
     if (deckName) {
@@ -32,6 +34,7 @@ export default function DeckInput({
       value={deckName}
       onChange={handleArchetypeSelect}
       quickEdit={quickEdit}
+      openArchetypeSelectorModal={openArchetypeSelectorModal}
     />
   );
 }

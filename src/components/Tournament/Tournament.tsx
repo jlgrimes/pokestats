@@ -1,7 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { StandingsList } from '../DataDisplay/StandingsList';
-import { LoggedInPlayerStatus } from './Results/LoggedInPlayerStatus';
 
 export default function Tournament({
   tournament,
