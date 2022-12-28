@@ -78,6 +78,7 @@ export default function NotablePlayersForm({
           <ArchetypeSelector
             value={formik.values.deck}
             onChange={value => formik.setFieldValue('deck', value)}
+            quickEdit={true}
           />
         </FormControl>
         <div>
