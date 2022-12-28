@@ -1,7 +1,6 @@
 import { EditIcon } from '@chakra-ui/icons';
 import { IconButton, Stack, StackItem, useDisclosure } from '@chakra-ui/react';
 import { Standing } from '../../../types/tournament';
-import SpriteDisplay from '../common/SpriteDisplay';
 import DeckInput from './DeckInput/DeckInput';
 import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 

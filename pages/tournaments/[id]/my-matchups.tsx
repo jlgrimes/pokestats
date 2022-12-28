@@ -19,7 +19,7 @@ export default function MyMatchups({
 
   return (
     <TournamentPageLayout tournament={tournament}>
-      <Stack padding='1rem 1.5rem'>
+      <Stack padding='0.5rem 1.5rem' spacing={4}>
         <LoggedInPlayerStatus
           tournament={tournament}
           tournamentFinished={!liveResults?.live}
