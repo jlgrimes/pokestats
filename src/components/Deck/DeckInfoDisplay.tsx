@@ -32,7 +32,7 @@ export const DeckInfoDisplay = ({
       </StackItem>
       {player?.deck?.list ? (
         <ListViewerOpenButton result={player} />
-      ) : enableEdits ? (
+      ) : (enableEdits && !player.deck.name) ? (
         <IconButton
           maxWidth={'2'}
           icon={<FaRegEdit />}
