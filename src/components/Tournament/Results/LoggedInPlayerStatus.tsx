@@ -61,7 +61,7 @@ export const LoggedInPlayerStatus = ({
       <Stack spacing={0} alignItems='center'>
         <Stack direction={'row'} alignItems='baseline'>
           <Text fontSize={'sm'}>
-            {tournamentFinished ? 'You went' : 'You are'}
+            {tournamentFinished ? 'You finished' : 'You are'}
           </Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Heading color={'gray.700'}>
