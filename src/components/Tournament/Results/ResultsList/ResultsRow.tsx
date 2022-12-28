@@ -98,6 +98,7 @@ export const ResultsRow = ({
             tournamentId={tournament.id}
             playerName={result.name}
             deckName={result.deck?.name}
+            quickEdit={true}
           />
         ) : (
           <SpriteDisplay pokemonNames={result?.deck?.defined_pokemon ?? []} />

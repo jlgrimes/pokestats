@@ -79,6 +79,7 @@ export const StandingsList = ({
                     tournamentId={tournament.id}
                     playerName={result.name}
                     deckName={result.deck?.name}
+                    quickEdit={true}
                   />
                 ) : (
                   <SpriteDisplay

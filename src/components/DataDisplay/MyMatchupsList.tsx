@@ -96,19 +96,20 @@ export const MyMatchupsList = ({
                   </Td>
 
                   <Td padding={0}>{formatRecord(opponent.record)}</Td>
-                  <Td padding={0} paddingLeft={2}>
-                    {!opponent?.deck?.list ? (
-                      <DeckInput
-                        tournamentId={tournament.id}
-                        playerName={opponent.name}
-                        deckName={opponent.deck?.name}
-                      />
-                    ) : (
+                  {!opponent?.deck?.list ? (
+                    <DeckInput
+                      tournamentId={tournament.id}
+                      playerName={opponent.name}
+                      deckName={opponent.deck?.name}
+                      quickEdit={false}
+                    />
+                  ) : (
+                    <Td padding={0} paddingLeft={2}>
                       <SpriteDisplay
                         pokemonNames={opponent?.deck?.defined_pokemon ?? []}
                       />
-                    )}
-                  </Td>
+                    </Td>
+                  )}
                   {opponent.deck.list && (
                     <Td padding={0}>
                       <ListViewerOpenButton result={opponent} />

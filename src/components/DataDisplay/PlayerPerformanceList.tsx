@@ -69,6 +69,7 @@ export const PlayerPerformanceList = ({
                         tournamentId={tournament.id}
                         playerName={performance.name}
                         deckName={performance.deck?.name}
+                        quickEdit={true}
                       />
                     ) : (
                       <SpriteDisplay

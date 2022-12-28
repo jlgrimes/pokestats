@@ -1,10 +1,6 @@
 import { ChevronDownIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Button,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -15,8 +11,12 @@ import {
   ModalCloseButton,
   Stack,
   Input,
+  IconButton,
+  SimpleGrid,
+  Td,
 } from '@chakra-ui/react';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, memo, useEffect, useMemo, useState } from 'react';
+import { FaEdit } from 'react-icons/fa';
 import { useArchetypes } from '../../../../../../hooks/deckArchetypes';
 import SpriteAndNameDisplay from '../../../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../../../common/SpriteDisplay';
@@ -25,6 +25,7 @@ import AddArchetypeModal from './AddArchetypeModal';
 interface ArchetypeSelectorProps {
   value: string | undefined;
   onChange: (value: string) => void;
+  quickEdit: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
@@ -45,7 +46,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
 
   const handleFilterChange = (e: Record<string, any>) => {
     setFilterQuery(e.target.value);
-  }
+  };
 
   useEffect(() => {
     if (props.value) {
@@ -53,28 +54,57 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     }
   }, [props.value]);
 
-  const filteredDecks = useMemo(() => decks?.filter(({ name }) => {
-    return name.toLowerCase().includes(filterQuery.toLowerCase())
-  }), [decks, filterQuery]);
+  const filteredDecks = useMemo(
+    () =>
+      decks?.filter(({ name }) => {
+        return name.toLowerCase().includes(filterQuery.toLowerCase());
+      }),
+    [decks, filterQuery]
+  );
+
+  const renderButtonDisplay = () => {
+    const displayedPokemonNames =
+      decks?.find(deck => deck.name === selectedArchetype)?.defined_pokemon ??
+      [];
+
+    if (props.quickEdit) {
+      return (
+        <Button
+          variant={isArchetypeSelected ? 'outline' : 'ghost'}
+          width={'100%'}
+          onClick={onOpen}
+        >
+          {isArchetypeSelected ? (
+            <SpriteDisplay pokemonNames={displayedPokemonNames} />
+          ) : (
+            <EditIcon />
+          )}
+        </Button>
+      );
+    }
+
+    return (
+      <>
+        <Td padding={0} paddingLeft={2}>
+          <SpriteDisplay pokemonNames={displayedPokemonNames} />
+        </Td>
+        <Td padding={0}>
+          <IconButton
+            maxWidth={'2'}
+            icon={<EditIcon />}
+            aria-label='edit'
+            variant={'ghost'}
+            width={'100%'}
+            onClick={onOpen}
+          />
+        </Td>
+      </>
+    );
+  };
 
   return (
     <Fragment>
-      <Button
-        variant={isArchetypeSelected ? 'outline' : 'ghost'}
-        width={'100%'}
-        onClick={onOpen}
-      >
-        {isArchetypeSelected ? (
-          <SpriteDisplay
-            pokemonNames={
-              decks?.find(deck => deck.name === selectedArchetype)
-                ?.defined_pokemon ?? []
-            }
-          />
-        ) : (
-          <EditIcon />
-        )}
-      </Button>
+      {renderButtonDisplay()}
       {isOpen && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -82,7 +112,10 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
             <ModalHeader>Select deck</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Input placeholder='Filter archetype' onChange={handleFilterChange} />
+              <Input
+                placeholder='Filter archetype'
+                onChange={handleFilterChange}
+              />
               <Stack height={'300px'} overflowY={'scroll'} padding={4}>
                 {filteredDecks?.map(({ name, defined_pokemon }, idx) => (
                   <div key={idx} onClick={() => handleArchetypeChange(name)}>

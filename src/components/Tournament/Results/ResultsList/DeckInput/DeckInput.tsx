@@ -5,10 +5,12 @@ export default function DeckInput({
   playerName,
   deckName,
   tournamentId,
+  quickEdit
 }: {
   playerName: string;
   deckName: string | undefined;
   tournamentId: string;
+  quickEdit: boolean;
 }) {
   const handleArchetypeSelect = async (newValue: string) => {
     if (deckName) {
@@ -28,6 +30,6 @@ export default function DeckInput({
   };
 
   return (
-    <ArchetypeSelector value={deckName} onChange={handleArchetypeSelect} />
+    <ArchetypeSelector value={deckName} onChange={handleArchetypeSelect} quickEdit={quickEdit} />
   );
 }
