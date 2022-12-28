@@ -31,7 +31,9 @@ export const MyMatchupsList = ({
             <Th padding={0} paddingLeft={2}>
               Name
             </Th>
-            <Th padding={0}>Record</Th>
+            <Th padding={0} paddingLeft={2}>
+              Record
+            </Th>
             <Th padding={0} paddingLeft={2}>
               Deck
             </Th>
@@ -47,7 +49,7 @@ export const MyMatchupsList = ({
                     backgroundColor={getResultBackgroundColor(round.result)}
                     textAlign='center'
                   >
-                    {(player.rounds?.length ?? 0)- idx}
+                    {(player.rounds?.length ?? 0) - idx}
                   </Td>
                   <Td
                     maxWidth={'12rem'}
@@ -63,8 +65,10 @@ export const MyMatchupsList = ({
                     />
                   </Td>
 
-                  <Td padding={0}>{formatRecord(round.opponent.record)}</Td>
-                  <Td padding={0}>
+                  <Td padding={0} paddingLeft={2}>
+                    {formatRecord(round.opponent.record)}
+                  </Td>
+                  <Td padding={0} paddingLeft={2}>
                     <DeckInfoDisplay
                       tournament={tournament}
                       player={round.opponent}

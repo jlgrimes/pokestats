@@ -15,7 +15,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         aria-label='view-list'
         variant={'ghost'}
         onClick={onOpen}
-        size='xs'
+        size='sm'
       >
         <FaList />
       </IconButton>

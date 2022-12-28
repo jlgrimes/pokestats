@@ -39,7 +39,7 @@ export const DeckInfoDisplay = ({
           aria-label='edit'
           variant={'ghost'}
           width={'100%'}
-          size='xs'
+          size='sm'
           onClick={archetypeModal.onOpen}
         />
       ) : null}
