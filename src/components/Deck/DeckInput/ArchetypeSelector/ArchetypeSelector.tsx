@@ -10,6 +10,7 @@ import {
   ModalCloseButton,
   Stack,
   Input,
+  Image,
 } from '@chakra-ui/react';
 import { Fragment, memo, useEffect, useMemo, useState } from 'react';
 import { useArchetypes } from '../../../../hooks/deckArchetypes';
@@ -72,7 +73,10 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           {isArchetypeSelected ? (
             <SpriteDisplay pokemonNames={displayedPokemonNames} />
           ) : (
-            <EditIcon />
+            <Image
+              src='https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-qm.png'
+              alt='Unown'
+            />
           )}
         </Button>
       );
