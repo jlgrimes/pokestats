@@ -13,10 +13,6 @@ export default function Tournament({
   return (
     <Stack>
       {/* <NotablePlayers tournament={tournament.name} allowEdits={allowEdits} /> */}
-      <LoggedInPlayerStatus
-        tournament={tournament}
-        tournamentFinished={!liveResults?.live}
-      />
       {liveResults && (
         <StandingsList
           results={liveResults.data}
