@@ -18,10 +18,6 @@ export const TournamentPageLayout = ({
       <Heading color='gray.700' padding={'0 1.5rem 0'}>
         {tournament.name}
       </Heading>
-      <LoggedInPlayerStatus
-        tournament={tournament}
-        tournamentFinished={!liveResults?.live}
-      />
       <TournamentTabs />
       {children}
     </Stack>

@@ -22,31 +22,16 @@ export const LoggedInPlayerStatus = ({
 }) => {
   const playerResults = useLoggedInPlayerLiveResults(tournament.id);
   return playerResults ? (
-    <TableContainer padding={'0 0.5rem'}>
-      <Table size='sm' variant={'unstyled'}>
-        <Tr>
-          <Td>
-            <Text>{playerResults.placing}</Text>
-          </Td>
-          <Td>
-            <Player
-              name={playerResults.name}
-              profile={playerResults.profile}
-              isEditable={false}
-            />
-          </Td>
-          <Td>
-            <Text>{formatRecord(playerResults.record)}</Text>
-          </Td>
-          <DeckInput
-            tournamentId={tournament.id}
-            playerName={playerResults.name}
-            deckName={playerResults.deck?.name}
-            quickEdit={false}
-          />
-        </Tr>
-      </Table>
-    </TableContainer>
+    <Stack>
+      <Text>{playerResults.placing}</Text>
+      <Text>{formatRecord(playerResults.record)}</Text>
+      <DeckInput
+        tournamentId={tournament.id}
+        playerName={playerResults.name}
+        deckName={playerResults.deck?.name}
+        quickEdit={false}
+      />
+    </Stack>
   ) : (
     <></>
   );

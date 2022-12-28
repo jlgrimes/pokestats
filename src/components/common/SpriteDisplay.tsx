@@ -10,7 +10,7 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
   const { data: pokedex } = usePokedex();
 
   return (
-    <Stack direction={'row'} spacing={1}>
+    <Stack direction={'row'} spacing={1} minWidth='4.5rem'>
       {props.pokemonNames.map((name, idx) => {
         if (name.length === 0) return;
 

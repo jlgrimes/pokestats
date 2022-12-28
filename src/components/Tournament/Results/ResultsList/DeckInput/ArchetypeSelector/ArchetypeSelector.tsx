@@ -84,21 +84,17 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     }
 
     return (
-      <>
-        <Td padding={0} paddingLeft={2}>
-          <SpriteDisplay pokemonNames={displayedPokemonNames} />
-        </Td>
-        <Td padding={0}>
-          <IconButton
-            maxWidth={'2'}
-            icon={<EditIcon />}
-            aria-label='edit'
-            variant={'ghost'}
-            width={'100%'}
-            onClick={onOpen}
-          />
-        </Td>
-      </>
+      <Stack direction={'row'}>
+        <SpriteDisplay pokemonNames={displayedPokemonNames} />
+        <IconButton
+          maxWidth={'2'}
+          icon={<EditIcon />}
+          aria-label='edit'
+          variant={'ghost'}
+          width={'100%'}
+          onClick={onOpen}
+        />
+      </Stack>
     );
   };
 

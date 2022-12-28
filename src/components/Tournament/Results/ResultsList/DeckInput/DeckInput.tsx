@@ -5,7 +5,7 @@ export default function DeckInput({
   playerName,
   deckName,
   tournamentId,
-  quickEdit
+  quickEdit,
 }: {
   playerName: string;
   deckName: string | undefined;
@@ -19,17 +19,19 @@ export default function DeckInput({
         .update({ deck_archetype: newValue })
         .eq('player_name', playerName);
     } else {
-      await supabase
-        .from('Player Decks')
-        .insert({
-          deck_archetype: newValue,
-          player_name: playerName,
-          tournament_id: tournamentId,
-        });
+      await supabase.from('Player Decks').insert({
+        deck_archetype: newValue,
+        player_name: playerName,
+        tournament_id: tournamentId,
+      });
     }
   };
 
   return (
-    <ArchetypeSelector value={deckName} onChange={handleArchetypeSelect} quickEdit={quickEdit} />
+    <ArchetypeSelector
+      value={deckName}
+      onChange={handleArchetypeSelect}
+      quickEdit={quickEdit}
+    />
   );
 }
