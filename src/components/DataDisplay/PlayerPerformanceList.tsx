@@ -68,7 +68,7 @@ export const PlayerPerformanceList = ({
                     <DeckInfoDisplay
                       tournament={tournament}
                       player={performance}
-                      enableEdits={userMatchesLoggedInUser}
+                      enableEdits={false}
                     />
                   </Td>
                 </Tr>
