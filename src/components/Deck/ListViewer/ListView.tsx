@@ -45,6 +45,7 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
               {[...Array(card.count)].map((_, idx) => (
                 <GridItem key={idx} gridColumn={1} gridRow={1} paddingLeft={idx * 3}>
                   <Image
+                    background='black'
                     outline='3px solid'
                     width={`${width}px`}
                     height={`${heightWidthRatio * width}px`}
