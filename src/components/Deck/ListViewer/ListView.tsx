@@ -37,18 +37,18 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
   const width = 92;
 
   return (
-    <Flex flexWrap={'wrap'} gap={0} marginLeft='6' marginTop='55px' padding={2}>
+    <Flex flexWrap={'wrap'} gap={0} marginLeft='8' marginTop='55px' padding={2}>
       {['Pokemon', 'Trainer', 'Energy'].map((superclass, idx) =>
         deckList[superclass.toLowerCase()].map(
           (
             card: { name: string; number: string; set: string; count: number },
             idx: number
           ) => (
-            <SimpleGrid key={idx} gridAutoFlow='column' marginLeft={'-6'} marginTop='-55px'>
+            <SimpleGrid key={idx} gridAutoFlow='column' marginLeft={'-8'} marginTop='-55px'>
               {[...Array(card.count)].map((_, idx) => (
-                <GridItem key={idx} gridColumn={1} gridRow={1} paddingLeft={idx * 2}>
+                <GridItem key={idx} gridColumn={1} gridRow={1} paddingLeft={idx * 3}>
                   <Image
-                    outline='4px solid'
+                    outline='3px solid'
                     width={`${width}px`}
                     height={`${heightWidthRatio * width}px`}
                     src={getCardImageUrl(card)}
