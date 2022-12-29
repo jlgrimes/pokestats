@@ -1,4 +1,6 @@
 import { UseDisclosureProps } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import { useUserIsAdmin } from '../../../hooks/administrators';
 import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
 
@@ -17,6 +19,9 @@ export default function DeckInput({
   archetypeModal: UseDisclosureProps;
   shouldShowAsText?: boolean
 }) {
+  const userIsAdmin = useUserIsAdmin();
+  const session = useSession();
+
   const handleArchetypeSelect = async (newValue: string) => {
     if (deckName) {
       await supabase
@@ -28,6 +33,8 @@ export default function DeckInput({
         deck_archetype: newValue,
         player_name: playerName,
         tournament_id: tournamentId,
+        user_who_submitted: session.data?.user.username,
+        user_submitted_was_admin: userIsAdmin
       });
     }
   };
