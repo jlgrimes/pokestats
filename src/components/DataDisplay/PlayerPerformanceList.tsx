@@ -54,7 +54,7 @@ export const PlayerPerformanceList = ({
                       <Link
                         as={NextLink}
                         color='blue.500'
-                        href={`${tournament.id}/my-results`}
+                        href={`/tournaments/${tournament.id}/my-results`}
                       >
                         {tournament.name}
                       </Link>

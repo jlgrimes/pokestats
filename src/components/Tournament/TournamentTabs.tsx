@@ -28,8 +28,8 @@ export const TournamentTabs = () => {
     ...(userIsInTournament
       ? [
           {
-            name: 'My matchups',
-            slug: 'my-matchups',
+            name: 'My results',
+            slug: 'my-results',
           },
         ]
       : []),

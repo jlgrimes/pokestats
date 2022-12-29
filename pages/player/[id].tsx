@@ -70,7 +70,7 @@ function PlayerPage({
       <Stack padding='1.5rem 1.5rem' spacing={6}>
         <Stack>
           <Avatar
-            size={'2xl'}
+            size={'xl'}
             name={user?.name ?? undefined}
             src={user?.profile_image_url ?? undefined}
           />
