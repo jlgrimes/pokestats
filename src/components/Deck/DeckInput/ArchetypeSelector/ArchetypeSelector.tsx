@@ -15,7 +15,10 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { Fragment, memo, useEffect, useMemo, useState } from 'react';
-import { useArchetypes } from '../../../../hooks/deckArchetypes';
+import {
+  useArchetypes,
+  useMostPopularArchetypes,
+} from '../../../../hooks/deckArchetypes';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 
@@ -25,13 +28,14 @@ interface ArchetypeSelectorProps {
   modalControls: UseDisclosureProps;
   quickEdit: boolean;
   shouldShowAsText?: boolean;
+  tournamentId: string;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const [selectedArchetype, setSelectedArchetype] = useState<
     string | undefined
   >(props.value);
-  const { data: decks } = useArchetypes();
+  const mostPopularDecks = useMostPopularArchetypes(props.tournamentId);
   const [filterQuery, setFilterQuery] = useState<string>('');
   const modalControls = props.modalControls ?? {};
 
@@ -55,10 +59,10 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
 
   const filteredDecks = useMemo(
     () =>
-      decks?.filter(({ name }) => {
+      mostPopularDecks?.filter(({ name }) => {
         return name.toLowerCase().includes(filterQuery.toLowerCase());
       }),
-    [decks, filterQuery]
+    [mostPopularDecks, filterQuery]
   );
 
   const renderDeckName = () => {
@@ -67,7 +71,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     } else {
       if (isArchetypeSelected) {
         const displayedPokemonNames =
-          decks?.find(deck => deck.name === selectedArchetype)
+          mostPopularDecks?.find(deck => deck.name === selectedArchetype)
             ?.defined_pokemon ?? [];
 
         return <SpriteDisplay pokemonNames={displayedPokemonNames} />;
@@ -118,7 +122,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
                 placeholder='Filter archetype'
                 onChange={handleFilterChange}
               />
-              <Stack height={'300px'} overflowY={'scroll'} padding={4}>
+              <Stack height={'220px'} overflowY={'scroll'} padding={4}>
                 {filteredDecks?.map(({ name, defined_pokemon }, idx) => (
                   <div key={idx} onClick={() => handleArchetypeChange(name)}>
                     <SpriteAndNameDisplay

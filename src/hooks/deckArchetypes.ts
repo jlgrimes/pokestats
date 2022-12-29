@@ -1,5 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchPlayerDecks } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 
 export const useArchetypes = () => {
@@ -51,4 +52,43 @@ export const useMutateArchetypes = (onClose: () => void) => {
   });
 
   return mutation;
+};
+
+export const useMostPopularArchetypes = (tournamentId: string) => {
+  const { data: deckArchetypes } = useArchetypes();
+
+  const playerDecks = useQuery({
+    queryKey: ['player-decks', tournamentId],
+    queryFn: () => fetchPlayerDecks(tournamentId),
+  });
+
+  const playerDeckCounts: Record<string, number> | undefined =
+    playerDecks.data?.reduce((acc: Record<string, number>, playerDeck) => {
+      if (acc[playerDeck.deck_archetype]) {
+        return {
+          ...acc,
+          [playerDeck.deck_archetype]: acc[playerDeck.deck_archetype] + 1,
+        };
+      }
+      return {
+        ...acc,
+        [playerDeck.deck_archetype]: 1,
+      };
+    }, {});
+
+  if (!playerDeckCounts) {
+    return deckArchetypes;
+  }
+
+  return deckArchetypes?.sort((a, b) => {
+    if (playerDeckCounts[a.name] > playerDeckCounts[b.name] || !playerDeckCounts[b.name]) {
+      return -1;
+    }
+
+    if (playerDeckCounts[a.name] < playerDeckCounts[b.name] || !playerDeckCounts[a.name]) {
+      return 1;
+    }
+
+    return 0;
+  });
 };

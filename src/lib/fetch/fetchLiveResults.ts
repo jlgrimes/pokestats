@@ -1,7 +1,7 @@
 import { DeckArchetype, Standing } from '../../../types/tournament';
 import supabase from '../supabase/client';
 
-const fetchPlayerDecks = async (tournamentId: string) => {
+export const fetchPlayerDecks = async (tournamentId: string) => {
   const res = await supabase
     .from('Player Decks')
     .select('player_name,deck_archetype')

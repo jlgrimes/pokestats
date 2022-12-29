@@ -46,6 +46,7 @@ export default function DeckInput({
       quickEdit={quickEdit}
       modalControls={archetypeModal}
       shouldShowAsText={shouldShowAsText}
+      tournamentId={tournamentId}
     />
   );
 }
