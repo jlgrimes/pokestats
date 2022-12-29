@@ -8,13 +8,11 @@ export const DeckInfoDisplay = ({
   player,
   tournament,
   enableEdits,
-  quickEdits,
   shouldShowAsText,
 }: {
   player: Standing;
   tournament: { id: string; name: string };
   enableEdits: boolean;
-  quickEdits?: boolean;
   shouldShowAsText?: boolean;
 }) => {
   const archetypeModal = useDisclosure();

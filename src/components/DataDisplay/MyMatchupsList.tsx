@@ -72,8 +72,8 @@ export const MyMatchupsList = ({
                     <DeckInfoDisplay
                       tournament={tournament}
                       player={round.opponent}
-                      enableEdits={true}
-                      quickEdits={false}
+                      // We don't want player to edit something they already edited
+                      enableEdits={!round.opponent.deck.name}
                     />
                   </Td>
                 </Tr>

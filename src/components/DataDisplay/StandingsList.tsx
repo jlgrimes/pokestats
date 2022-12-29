@@ -79,7 +79,6 @@ export const StandingsList = ({
                   tournament={tournament}
                   player={result}
                   enableEdits={userIsAdmin && !result.deck.list}
-                  quickEdits={true}
                 />
               </Td>
             </Tr>

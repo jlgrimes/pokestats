@@ -69,7 +69,6 @@ export const PlayerPerformanceList = ({
                       tournament={tournament}
                       player={performance}
                       enableEdits={userMatchesLoggedInUser}
-                      quickEdits={false}
                     />
                   </Td>
                 </Tr>

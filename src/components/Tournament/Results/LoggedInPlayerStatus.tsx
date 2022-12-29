@@ -76,7 +76,6 @@ export const LoggedInPlayerStatus = ({
             tournament={tournament}
             player={playerResults}
             enableEdits={true}
-            quickEdits={false}
             shouldShowAsText
           />
         </Stack>
