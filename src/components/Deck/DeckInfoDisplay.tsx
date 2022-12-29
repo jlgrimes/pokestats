@@ -9,13 +9,13 @@ export const DeckInfoDisplay = ({
   tournament,
   enableEdits,
   quickEdits,
-  shouldShowAsText
+  shouldShowAsText,
 }: {
   player: Standing;
   tournament: { id: string; name: string };
   enableEdits: boolean;
   quickEdits?: boolean;
-  shouldShowAsText?: boolean
+  shouldShowAsText?: boolean;
 }) => {
   const archetypeModal = useDisclosure();
   return (
@@ -25,14 +25,14 @@ export const DeckInfoDisplay = ({
           tournamentId={tournament.id}
           playerName={player.name}
           deckName={player.deck?.name}
-          quickEdit={enableEdits && !!quickEdits}
+          quickEdit={false}
           archetypeModal={archetypeModal}
           shouldShowAsText={shouldShowAsText}
         />
       </StackItem>
       {player?.deck?.list ? (
         <ListViewerOpenButton result={player} />
-      ) : (enableEdits && !player.deck.name) ? (
+      ) : enableEdits ? (
         <IconButton
           maxWidth={'2'}
           icon={<FaRegEdit />}
