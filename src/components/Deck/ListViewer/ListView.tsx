@@ -38,7 +38,7 @@ export const ListView = ({
 
   const flattenOutEnergies = (card: Card) => {
     const numPiles = Math.ceil(card.count / 4);
-    const lastPileCount = card.count % 4;
+    const lastPileCount = card.count % 4 === 0 ? 4 : card.count % 4;
 
     return [...Array(numPiles)].map((_, idx) => ({
       ...card,
