@@ -23,7 +23,6 @@ interface ListViewerModalProps {
 
 const ListModalBody = ({ list }: {list:  Record<string, Card[]> }) => {
   const [listGridHeight, setListGridHeight] = useState(0);
-  console.log(listGridHeight)
 
   useEffect(() => {
     setListGridHeight(

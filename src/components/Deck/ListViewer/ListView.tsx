@@ -42,8 +42,8 @@ export const ListView = ({
   );
   const numberOfColumns = 4;
   const numberOfRows = Math.ceil(flatDeckList.length / numberOfColumns);
-  const rowStackMargin = (height * numberOfRows - containerHeight) / (numberOfRows);
-
+  const rowStackMargin = (height * numberOfRows - containerHeight) / (numberOfRows - 1);
+    
   return (
     <SimpleGrid
       id='list-grid-view'
