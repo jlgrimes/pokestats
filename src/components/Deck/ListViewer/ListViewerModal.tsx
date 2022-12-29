@@ -31,7 +31,7 @@ const ListModalBody = ({ list }: { list: Record<string, Card[]> }) => {
   }, []);
 
   return (
-    <ModalBody padding={0} height='100%' id='list-view-modal-body'>
+    <ModalBody padding={'3px 0 0'} height='100%' id='list-view-modal-body'>
       <ListView deckList={list} containerHeight={listGridHeight} />
     </ModalBody>
   );
@@ -41,7 +41,7 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='full'>
       <ModalOverlay />
-      <ModalContent margin={{ base: '0', sm: '16' }}>
+      <ModalContent>
         <ListModalBody list={props.result.deck.list} />
         <Stack direction='row' justifyContent='space-between' alignItems={'center'}>
           <Stack spacing={0} padding={3}>
