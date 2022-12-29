@@ -1,10 +1,7 @@
 import {
   Flex,
   GridItem,
-  Heading,
   SimpleGrid,
-  Stack,
-  Text,
   Image
 } from '@chakra-ui/react';
 import { useCodeToSetMap } from '../../../hooks/deckList';

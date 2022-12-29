@@ -12,10 +12,7 @@ import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
 import { usePlayerPerformance } from '../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../hooks/user';
-import SpriteDisplay from '../common/SpriteDisplay';
-import DeckInput from '../Deck/DeckInput/DeckInput';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
-import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 
 export const PlayerPerformanceList = ({

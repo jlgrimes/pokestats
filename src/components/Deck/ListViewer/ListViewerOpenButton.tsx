@@ -4,6 +4,7 @@ import { ListViewerModal } from './ListViewerModal';
 
 interface ListViewerOpenButtonProps {
   result: Record<string, any>;
+  tournamentName: string;
 }
 
 export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
@@ -25,6 +26,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
           isOpen={isOpen}
           onClose={onClose}
           result={props.result}
+          tournamentName={props.tournamentName}
         />
       )}
     </>

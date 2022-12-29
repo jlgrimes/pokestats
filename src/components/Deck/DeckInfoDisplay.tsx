@@ -29,7 +29,10 @@ export const DeckInfoDisplay = ({
         />
       </StackItem>
       {player?.deck?.list ? (
-        <ListViewerOpenButton result={player} />
+        <ListViewerOpenButton
+          result={player}
+          tournamentName={tournament.name}
+        />
       ) : enableEdits ? (
         <IconButton
           maxWidth={'2'}

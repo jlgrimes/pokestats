@@ -10,10 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { Standing } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
-import SpriteDisplay from '../common/SpriteDisplay';
-import DeckInput from '../Deck/DeckInput/DeckInput';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
-import { ListViewerOpenButton } from '../Deck/ListViewer/ListViewerOpenButton';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
