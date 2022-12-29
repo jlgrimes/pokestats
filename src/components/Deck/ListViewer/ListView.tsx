@@ -36,14 +36,34 @@ export const ListView = ({
   const width = 92;
   const height = width * heightWidthRatio;
 
+  const flattenOutEnergies = (card: Card) => {
+    const numPiles = Math.ceil(card.count / 4);
+    const lastPileCount = card.count % 4;
+
+    return [...Array(numPiles)].map((_, idx) => ({
+      ...card,
+      count: idx === numPiles - 1 ? lastPileCount : 4,
+    }));
+  };
+
   const flatDeckList = ['pokemon', 'trainer', 'energy'].reduce(
-    (acc: Card[], superclass) => [...acc, ...deckList[superclass]],
+    (acc: Card[], superclass) => [
+      ...acc,
+      ...deckList[superclass].reduce(
+        (acc: Card[], card: Card) =>
+          card.count > 4
+            ? [...acc, ...flattenOutEnergies(card)]
+            : [...acc, card],
+        []
+      ),
+    ],
     []
   );
   const numberOfColumns = 4;
   const numberOfRows = Math.ceil(flatDeckList.length / numberOfColumns);
-  const rowStackMargin = (height * numberOfRows - containerHeight) / (numberOfRows - 1);
-    
+  const rowStackMargin =
+    (height * numberOfRows - containerHeight) / (numberOfRows - 1);
+
   return (
     <SimpleGrid
       id='list-grid-view'
