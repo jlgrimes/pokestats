@@ -5,8 +5,8 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  Image
 } from '@chakra-ui/react';
-import Image from 'next/image';
 import { useCodeToSetMap } from '../../../hooks/deckList';
 
 export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
@@ -33,20 +33,24 @@ export const ListView = ({ deckList }: { deckList: Record<string, any> }) => {
     return `https://images.pokemontcg.io/${set}/${card?.number}.png`;
   };
 
+  const heightWidthRatio = 1.396;
+  const width = 92;
+
   return (
-    <Flex flexWrap={'wrap'} gap={0}>
+    <Flex flexWrap={'wrap'} gap={0} marginLeft='6' marginTop='55px' padding={2}>
       {['Pokemon', 'Trainer', 'Energy'].map((superclass, idx) =>
         deckList[superclass.toLowerCase()].map(
           (
             card: { name: string; number: string; set: string; count: number },
             idx: number
           ) => (
-            <SimpleGrid key={idx} gridAutoFlow='column'>
+            <SimpleGrid key={idx} gridAutoFlow='column' marginLeft={'-6'} marginTop='-55px'>
               {[...Array(card.count)].map((_, idx) => (
                 <GridItem key={idx} gridColumn={1} gridRow={1} paddingLeft={idx * 2}>
                   <Image
-                    width={65}
-                    height={90}
+                    outline='4px solid'
+                    width={`${width}px`}
+                    height={`${heightWidthRatio * width}px`}
                     src={getCardImageUrl(card)}
                     alt={`${card.name} ${card.set}`}
                   />
