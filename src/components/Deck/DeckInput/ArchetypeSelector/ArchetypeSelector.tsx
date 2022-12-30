@@ -58,10 +58,12 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   }, [props.value]);
 
   const filteredDecks = useMemo(
-    () =>
-      mostPopularDecks?.filter(({ name }) => {
+    () => [
+      ...(mostPopularDecks?.filter(({ name }) => {
         return name.toLowerCase().includes(filterQuery.toLowerCase());
-      }),
+      }) ?? []),
+      { name: 'Other', defined_pokemon: ['substitute'] },
+    ],
     [mostPopularDecks, filterQuery]
   );
 
