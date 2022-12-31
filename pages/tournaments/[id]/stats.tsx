@@ -6,6 +6,7 @@ import { TournamentDetails } from '../../../src/components/Tournament/Stats/Tour
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
+import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import supabase from '../../../src/lib/supabase/client';
 
@@ -34,9 +35,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     fetchLiveResults(params.id, { prefetch: true })
   );
 
-  const { data: tournaments } = await supabase
-    .from('Tournaments')
-    .select('id,name');
+  const { data: tournaments } = await fetchTournaments();
 
   return {
     props: {
@@ -51,9 +50,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 }
 
 export async function getStaticPaths() {
-  const { data: tournaments } = await supabase
-    .from('Tournaments')
-    .select('id,name');
+  const { data: tournaments } = await fetchTournaments();
   const paths = tournaments?.map(tournament => ({
     params: {
       id: tournament.id,

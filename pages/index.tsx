@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
 import { fetchPokedex } from '../src/hooks/images';
 import { fetchLiveResults } from '../src/lib/fetch/fetchLiveResults';
+import { LOCAL_TOURNAMENTS } from '../src/lib/sample-data';
 import supabase from '../src/lib/supabase/client';
 import styles from '../styles/Home.module.css';
 
@@ -34,10 +35,7 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const { data: tournaments } = await supabase
-    .from('Tournaments')
-    .select('id,name');
-
+  const tournaments = LOCAL_TOURNAMENTS.reverse();
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
   for await (const tournament of tournaments ?? []) {

@@ -5,6 +5,7 @@ import { fetchAdministrators, useUserIsAdmin } from '../../../src/hooks/administ
 import supabase from '../../../src/lib/supabase/client';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { fetchPokedex } from '../../../src/hooks/images';
+import { fetchTournaments } from '../../../src/hooks/tournaments';
 
 export default function TournamentPage({
   tournament,
@@ -26,9 +27,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   await queryClient.prefetchQuery([`administrators`], fetchAdministrators);
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
-  const { data: tournaments } = await supabase
-    .from('Tournaments')
-    .select('id,name');
+  const { data: tournaments } = await fetchTournaments();
 
   return {
     props: {
@@ -43,9 +42,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 }
 
 export async function getStaticPaths() {
-  const { data: tournaments } = await supabase
-    .from('Tournaments')
-    .select('id,name');
+  const { data: tournaments } = await fetchTournaments();
   const paths = tournaments?.map(tournament => ({
     params: {
       id: tournament.id,
