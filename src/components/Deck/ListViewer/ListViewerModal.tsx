@@ -45,7 +45,7 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
         <ListModalBody list={props.result.deck.list} />
         <Stack direction='row' justifyContent='space-between' alignItems={'center'}>
           <Stack spacing={0} padding={3}>
-            <Heading size='md'>{props.result.deck.name}</Heading>
+            <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
             <Text>
               {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
               {props.tournamentName}
