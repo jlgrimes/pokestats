@@ -3,6 +3,10 @@
  */
 export const LOCAL_TOURNAMENTS = [
   {
+    id: '0000032',
+    name: 'Brisbane 2022'
+  },
+  {
     id: '0000033',
     name: 'Stuttgart 2022'
   },
