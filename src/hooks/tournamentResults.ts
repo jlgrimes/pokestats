@@ -122,7 +122,7 @@ export const usePlayerPerformance = (
         return [
           ...acc,
           {
-            tournament: tournaments?.find(
+            tournament: tournaments?.data?.find(
               ({ id }) => id === tournamentHistory[tournamentIdx]
             ),
             performance: perf,
