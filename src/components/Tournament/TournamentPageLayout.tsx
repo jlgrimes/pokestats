@@ -1,7 +1,5 @@
 import { Heading, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { useLiveTournamentResults } from '../../hooks/tournamentResults';
-import { LoggedInPlayerStatus } from './Results/LoggedInPlayerStatus';
 import { TournamentTabs } from './TournamentTabs';
 
 export const TournamentPageLayout = ({

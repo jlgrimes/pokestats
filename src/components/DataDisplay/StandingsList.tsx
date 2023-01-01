@@ -4,7 +4,6 @@ import {
   Tbody,
   Td,
   Tr,
-  Link,
   Thead,
   Th,
 } from '@chakra-ui/react';
