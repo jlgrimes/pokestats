@@ -31,7 +31,7 @@ const RecordNeeded = ({
     );
   }
 
-  if (matchPointsRemaining > roundsLeft) {
+  if ((matchPointsRemaining / 3) > roundsLeft) {
     return (
       <Text fontSize='sm'>{`You're out of contention for ${objective} 😓`}</Text>
     );
