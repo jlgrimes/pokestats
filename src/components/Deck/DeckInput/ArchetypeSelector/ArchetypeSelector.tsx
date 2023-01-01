@@ -69,7 +69,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
 
   const renderDeckName = () => {
     if (props.shouldShowAsText) {
-      return <Text>{selectedArchetype}</Text>;
+      return <Text>{isArchetypeSelected ? selectedArchetype : 'Unknown deck'}</Text>;
     } else {
       if (isArchetypeSelected) {
         const displayedPokemonNames =
