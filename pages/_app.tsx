@@ -14,19 +14,9 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient());
-
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <ChakraProvider>
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-          </ChakraProvider>
-        </Hydrate>
-      </QueryClientProvider>
-    </SessionProvider>
+    <AppLayout session={session} dehydratedState={pageProps.dehydratedState}>
+      <Component {...pageProps} />
+    </AppLayout>
   );
 }
