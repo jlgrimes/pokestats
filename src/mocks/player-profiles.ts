@@ -2004,7 +2004,7 @@ export const MOCK_PLAYER_PROFILES = [{"id":116306,"name":"Jared Grimes","twitter
 {"id":115166,"name":"Collin Merli-Matthews","twitter_handle":null,"tournament_history":["0000035","0000034"]}, 
 {"id":115976,"name":"Giancarlo Bortolon","twitter_handle":null,"tournament_history":["0000034"]}, 
 {"id":114772,"name":"Isaiah Williams","twitter_handle":null,"tournament_history":["0000035","0000034"]}, 
-{"id":114759,"name":"Rahul Reddy","twitter_handle":null,"tournament_history":["0000035","0000034"]}, 
+{"id":114759,"name":"Rahul Reddy","twitter_handle":"thefleeee","tournament_history":["0000035","0000034"]}, 
 {"id":114769,"name":"Alex Schemanske","twitter_handle":null,"tournament_history":["0000035","0000034"]}, 
 {"id":114974,"name":"Gabriel Smart","twitter_handle":null,"tournament_history":["0000035","0000034"]}, 
 {"id":114968,"name":"Daniel Altavilla","twitter_handle":null,"tournament_history":["0000035","0000034"]}, 

@@ -54,9 +54,9 @@ export const MyResultsPage = () => (
     session={{
       expires: '1',
       user: {
-        id: 'pokelover',
-        username: 'jgrimesey',
-        name: 'Jared Grimes',
+        id: 'thefleeee',
+        username: 'thefleeee',
+        name: 'Rahul Reddy',
         profile_image_url:
           'https://i.kym-cdn.com/entries/icons/original/000/026/152/gigachad.jpg',
       },
