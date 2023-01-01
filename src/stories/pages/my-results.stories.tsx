@@ -4,6 +4,7 @@ import { AppLayout } from '../../components/Layout/AppLayout';
 import { MOCK_AFTER_DAY_1_STANDINGS } from '../../mocks/after-day-1-standings';
 import { MOCK_DECK_ARCHETYPES } from '../../mocks/deck-archetypes';
 import { MOCK_FINAL_STANDINGS } from '../../mocks/final-standings';
+import { MOCK_PLAYER_DECKS } from '../../mocks/player-decks';
 import { MOCK_PLAYER_PROFILES } from '../../mocks/player-profiles';
 
 const commonMockData = [
@@ -17,17 +18,7 @@ const commonMockData = [
     url: 'https://keujidcnlmekgfajgnjq.supabase.co/rest/v1/Player Decks?select=player_name,deck_archetype&tournament_id=eq.0000034',
     method: 'GET',
     status: 200,
-    response: [{"player_name":"Stephen Palombo","deck_archetype":"Lugia VSTAR/Archeops"}, 
-      {"player_name":"Ryan Shore","deck_archetype":"Lost Box (Kyogre)"}, 
-      {"player_name":"Solomon Shurge","deck_archetype":"Lost Box (Rayquaza)"}, 
-      {"player_name":"Jared Grimes","deck_archetype":"Lost Box (Kyogre)"}, 
-      {"player_name":"Tim Tipton","deck_archetype":"Eternatus Weezing"}, 
-      {"player_name":"Noah Spinale","deck_archetype":"Lost Box (Charizard)"}, 
-      {"player_name":"Anthony Salomone","deck_archetype":"Lugia VSTAR/Archeops"}, 
-      {"player_name":"Tyler Mathews","deck_archetype":"Lost Box (Rayquaza)"}, 
-      {"player_name":"Ian Morgan","deck_archetype":"Lugia VSTAR/Archeops"}, 
-      {"player_name":"Lorenzo Menendez","deck_archetype":"Lost Box (Kyogre)"}, 
-      {"player_name":"Jordan de Souza","deck_archetype":"Fusion Mew"}],
+    response: MOCK_PLAYER_DECKS,
   },
   {
     url: 'https://keujidcnlmekgfajgnjq.supabase.co/rest/v1/Player Profiles?select=id,name,twitter_handle,tournament_history',
