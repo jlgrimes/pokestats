@@ -2,8 +2,8 @@ import { Stack } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import { AppBar } from './AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
-import { SessionProvider } from 'next-auth/react';
 import {
+  DehydratedState,
   Hydrate,
   QueryClient,
   QueryClientProvider,
@@ -15,7 +15,7 @@ export const AppLayout = ({
   dehydratedState,
 }: {
   children: ReactNode;
-  dehydratedState;
+  dehydratedState?: DehydratedState;
 }) => {
   const [queryClient] = useState(() => new QueryClient());
 
