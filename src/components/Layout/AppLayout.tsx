@@ -12,17 +12,14 @@ import { useState } from 'react';
 
 export const AppLayout = ({
   children,
-  session,
   dehydratedState,
 }: {
   children: ReactNode;
-  session;
   dehydratedState;
 }) => {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={dehydratedState}>
           <ChakraProvider>
@@ -33,6 +30,5 @@ export const AppLayout = ({
           </ChakraProvider>
         </Hydrate>
       </QueryClientProvider>
-    </SessionProvider>
   );
 };

@@ -1,13 +1,11 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
 import { LoggedInPlayerStatus } from '../../../src/components/Tournament/Results/LoggedInPlayerStatus';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
-import supabase from '../../../src/lib/supabase/client';
 
 export default function MyMatchups({
   tournament,
