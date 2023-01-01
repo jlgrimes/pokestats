@@ -3,6 +3,7 @@ import MyResults from '../../../pages/tournaments/[id]/my-results';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { MOCK_AFTER_DAY_1_STANDINGS } from '../../mocks/after-day-1-standings';
 import { MOCK_DECK_ARCHETYPES } from '../../mocks/deck-archetypes';
+import { MOCK_DURING_DAY_1_STANDINGS } from '../../mocks/during-day-1-standings';
 import { MOCK_FINAL_STANDINGS } from '../../mocks/final-standings';
 import { MOCK_PLAYER_DECKS } from '../../mocks/player-decks';
 import { MOCK_PLAYER_PROFILES } from '../../mocks/player-profiles';
@@ -51,7 +52,7 @@ export const FinalMyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: '0000034', name: 'Mock Regionals 2022' }}
+        tournament={{ id: '0000034', name: 'Toronto 2022' }}
       />
     </AppLayout>
   </SessionProvider>
@@ -75,7 +76,7 @@ export const AfterDay1MyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: '0000034', name: 'Mock Regionals 2022' }}
+        tournament={{ id: '0000034', name: 'Toronto 2022' }}
       />
     </AppLayout>
   </SessionProvider>
@@ -89,6 +90,30 @@ AfterDay1MyResultsPage.parameters = {
       method: 'GET',
       status: 200,
       response: MOCK_AFTER_DAY_1_STANDINGS,
+    },
+  ]
+}
+
+export const DuringDay1MyResultsPage = () => (
+  <SessionProvider
+    session={session}
+  >
+    <AppLayout>
+      <MyResults
+        tournament={{ id: '0000034', name: 'Toronto 2022' }}
+      />
+    </AppLayout>
+  </SessionProvider>
+);
+
+DuringDay1MyResultsPage.parameters = {
+  mockData: [
+    ...commonMockData,
+    {
+      url: '/pokedata/standings/0000034/masters/0000034_Masters.json',
+      method: 'GET',
+      status: 200,
+      response: MOCK_DURING_DAY_1_STANDINGS,
     },
   ]
 }
