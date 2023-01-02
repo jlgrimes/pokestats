@@ -23,7 +23,7 @@ export const AppLayout = ({
       <QueryClientProvider client={queryClient}>
         <Hydrate state={dehydratedState}>
           <ChakraProvider>
-            <Stack spacing={1}>
+            <Stack spacing={1} height='100%'>
               <AppBar />
               {children}
             </Stack>

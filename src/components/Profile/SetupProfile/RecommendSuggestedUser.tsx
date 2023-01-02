@@ -20,8 +20,6 @@ export const RecommendedSuggestedUser = ({ session }: { session: Session }) => {
   const { data: suggestedUser } = useSuggestedUserProfile();
   const { data: tournaments } = useTournaments();
 
-  const firstName = useMemo(() => getFirstName(session), [session]);
-
   const attendedTournaments = useMemo(
     () =>
       suggestedUser?.tournamentHistory.map(
@@ -41,14 +39,26 @@ export const RecommendedSuggestedUser = ({ session }: { session: Session }) => {
   }, []);
 
   return (
-    <Stack padding='1.5rem' spacing={8} justifyContent='center'>
+    <Stack
+      padding='1.5rem'
+      spacing={10}
+      justifyContent='space-between'
+      height='100%'
+    >
       <Fade in={elementFadedIn >= 0}>
-        <Heading color='gray.700'>{`Let's set up your profile, ${firstName}`}</Heading>
+        <Heading color='gray.700'>{`Complete account setup`}</Heading>
       </Fade>
       <Fade in={elementFadedIn >= 1}>
-        <Text fontSize={'lg'}>{`Did you attend ${attendedTournaments?.join(
-          ', '
-        )}?`}</Text>
+        <Stack>
+          <Heading
+            size='lg'
+            color='gray.700'
+          >{`Did you attend ${attendedTournaments?.join(', ')}?`}</Heading>
+          <Text>
+            We found someone with your name that has attended these tournaments.
+            If this is you, your account setup is done!
+          </Text>
+        </Stack>
       </Fade>
       <Fade in={elementFadedIn >= 1}>
         <Stack direction={{ base: 'column', sm: 'row' }}>
