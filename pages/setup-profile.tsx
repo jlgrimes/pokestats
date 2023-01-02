@@ -7,7 +7,7 @@ import {
   Button,
   Icon,
 } from '@chakra-ui/react';
-import { QueryClient } from '@tanstack/react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
@@ -46,8 +46,12 @@ export default function SetupPage() {
     [suggestedUser?.tournamentHistory, tournaments?.data]
   );
 
+  if (!session.data?.user) {
+    return null;
+  }
+
   return (
-    <Stack padding='1.5rem' spacing={8}>
+    <Stack padding='1.5rem' spacing={8} justifyContent='center'>
       <Heading color='gray.700'>{`Let's set up your profile, ${firstName}`}</Heading>
       <Text fontSize={'lg'}>{`Did you attend ${attendedTournaments?.join(
         ', '
@@ -75,7 +79,6 @@ export default function SetupPage() {
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
-  console.log(session)
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery([`session-user-profile`], () =>
@@ -87,6 +90,8 @@ export async function getServerSideProps(context: any) {
   );
 
   return {
-    props: {},
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
 }
