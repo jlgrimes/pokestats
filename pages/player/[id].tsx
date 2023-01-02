@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
-import { FaSignOutAlt, FaTwitter } from 'react-icons/fa';
+import { FaCheck, FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { fetchPlayerProfiles } from '../../src/lib/fetch/fetchLiveResults';
 import { fetchTwitterProfile } from '../api/get-twitter-profile';
@@ -24,11 +24,12 @@ import { ComplainLink } from '../../src/components/common/ComplainLink';
 import { useRouter } from 'next/router';
 import { PlayerPerformanceList } from '../../src/components/DataDisplay/PlayerPerformanceList';
 import { useTournaments } from '../../src/hooks/tournaments';
+import { useEffect } from 'react';
 
 function PlayerPage({
   user,
   userIsOwnerOfPage,
-  suggestedUser
+  suggestedUser,
 }: {
   user: CombinedPlayerProfile | null;
   suggestedUser: StoredPlayerProfile | null;
@@ -39,32 +40,25 @@ function PlayerPage({
   const { data: tournaments } = useTournaments();
 
   const session = useSession();
-  const { query } = useRouter();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session.data?.user.username && !user) {
+      console.log('HHH');
+      router.push('/profile-setup');
+    }
+  }, [session.data?.user.username, router, user]);
 
   if (!user) {
-    if (session.data?.user.username === query.id) {
+    if (session.data?.user.username === router.query.id) {
       const firstName = session.data?.user.name?.split(' ')?.[0];
-
-      if (suggestedUser) {
-        const attendedTournaments = suggestedUser?.tournamentHistory.map((id) => tournaments?.data?.find((tournament) => tournament.id === id)?.name);
-        return (
-          <Stack padding='1.5rem' spacing={4}>
-            <Stack>
-              <Heading color='gray.700'>{`Welcome to Stats${firstName ? `, ${firstName}` : ''}!`}</Heading>
-              <Text>{`Did you attend ${attendedTournaments.join(', ')}?`}</Text>
-              <Text>{`Wow that's crazy too bad I haven't coded this yet.`}</Text>
-            </Stack>
-            <div>
-              <ComplainLink />
-            </div>
-          </Stack>
-        );
-      }
 
       return (
         <Stack padding='1.5rem' spacing={4}>
           <Stack>
-            <Heading color='gray.700'>{`Welcome to Stats${firstName ? `, ${firstName}` : ''}!`}</Heading>
+            <Heading color='gray.700'>{`Welcome to Stats${
+              firstName ? `, ${firstName}` : ''
+            }!`}</Heading>
             <Text>{`Unfortunately we don't have an account set up for you yet. We want to make this right.`}</Text>
           </Stack>
           <div>
@@ -151,7 +145,6 @@ export async function getStaticProps(context: any) {
   const playerProfile = playerProfiles?.[username];
 
   let combinedProfile: CombinedPlayerProfile | null = null;
-  let suggestedProfile: StoredPlayerProfile | null = null;
 
   if (playerProfile && twitterProfile) {
     combinedProfile = {
@@ -162,15 +155,11 @@ export async function getStaticProps(context: any) {
       description: twitterProfile?.description as string,
       profile_image_url: twitterProfile?.profile_image_url as string,
     };
-  } else if (twitterProfile) {
-    const profilesByName: Record<string, StoredPlayerProfile> | undefined = await fetchPlayerProfiles('name');
-    suggestedProfile = profilesByName?.[twitterProfile.name] ?? null;
   }
 
   return {
     props: {
       user: combinedProfile,
-      suggestedUser: suggestedProfile
     },
     revalidate: 60,
   };

@@ -10,9 +10,11 @@ import {
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { FaTwitter } from 'react-icons/fa';
+import { useSessionUserProfile } from '../../hooks/user';
 
 export const AppBar = () => {
   const { data: session } = useSession();
+  const { data: userProfile } = useSessionUserProfile();
 
   return (
     <>
@@ -46,7 +48,7 @@ export const AppBar = () => {
               </Text>
 
               <LinkBox>
-                <LinkOverlay href={`/player/${session.user.username}`}>
+                <LinkOverlay href={userProfile ? `/player/${session.user.username}` : `/setup-profile`}>
                   <Avatar
                     size='sm'
                     name={session.user?.name as string}
