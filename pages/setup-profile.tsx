@@ -2,7 +2,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { SetupProfileController } from '../src/components/SetupProfile/SetupProfileController';
+import { SetupProfileController } from '../src/components/Profile/SetupProfile/SetupProfileController';
 import {
   fetchSessionUserProfile,
   useSessionUserProfile,

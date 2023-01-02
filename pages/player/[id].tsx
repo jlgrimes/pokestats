@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
-import { FaCheck, FaSignOutAlt, FaTwitter } from 'react-icons/fa';
+import { FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { fetchPlayerProfiles } from '../../src/lib/fetch/fetchLiveResults';
 import { fetchServerSideTwitterProfile } from '../api/get-twitter-profile';
@@ -23,61 +23,31 @@ import supabase from '../../src/lib/supabase/client';
 import { ComplainLink } from '../../src/components/common/ComplainLink';
 import { useRouter } from 'next/router';
 import { PlayerPerformanceList } from '../../src/components/DataDisplay/PlayerPerformanceList';
-import { useTournaments } from '../../src/hooks/tournaments';
 import { useEffect } from 'react';
+import { ProfileNotFound } from '../../src/components/Profile/ProfileNotFound';
 
 function PlayerPage({
   user,
   userIsOwnerOfPage,
-  suggestedUser,
 }: {
   user: CombinedPlayerProfile | null;
-  suggestedUser: StoredPlayerProfile | null;
   userIsOwnerOfPage: boolean;
 }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
-  const { data: tournaments } = useTournaments();
 
   const session = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (session.data?.user.username && !user) {
+    // If user is on the page with their profile, and there is not a profile stored
+    if (session.data?.user.username === router.query.id && !user) {
       router.push('/profile-setup');
     }
   }, [session.data?.user.username, router, user]);
 
   if (!user) {
-    if (session.data?.user.username === router.query.id) {
-      const firstName = session.data?.user.name?.split(' ')?.[0];
-
-      return (
-        <Stack padding='1.5rem' spacing={4}>
-          <Stack>
-            <Heading color='gray.700'>{`Welcome to Stats${
-              firstName ? `, ${firstName}` : ''
-            }!`}</Heading>
-            <Text>{`Unfortunately we don't have an account set up for you yet. We want to make this right.`}</Text>
-          </Stack>
-          <div>
-            <ComplainLink />
-          </div>
-        </Stack>
-      );
-    } else {
-      return (
-        <Stack padding='1.5rem' spacing={4}>
-          <Stack>
-            <Heading color='gray.700'>{`Couldn't find player`}</Heading>
-            <Text>{`Make sure you spelled their name right. If you did, it's probably my fault - oops`}</Text>
-          </Stack>
-          <div>
-            <ComplainLink />
-          </div>
-        </Stack>
-      );
-    }
+    return <ProfileNotFound />;
   }
 
   return (

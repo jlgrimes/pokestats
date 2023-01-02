@@ -8,22 +8,19 @@ import {
   Icon,
   Fade,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 import { useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
-import { useTournaments } from '../../hooks/tournaments';
-import { useSuggestedUserProfile } from '../../hooks/user';
+import { useTournaments } from '../../../hooks/tournaments';
+import { useSuggestedUserProfile } from '../../../hooks/user';
+import { getFirstName } from '../helpers';
 
-export const RecommendedSuggestedUser = () => {
+export const RecommendedSuggestedUser = ({ session }: { session: Session }) => {
   const [elementFadedIn, setElementFadedIn] = useState(0);
-  const session = useSession();
   const { data: suggestedUser } = useSuggestedUserProfile();
   const { data: tournaments } = useTournaments();
 
-  const firstName = useMemo(
-    () => session.data?.user.name?.split(' ')?.[0],
-    [session.data?.user.name]
-  );
+  const firstName = useMemo(() => getFirstName(session), [session]);
 
   const attendedTournaments = useMemo(
     () =>
