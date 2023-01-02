@@ -7,8 +7,8 @@ export const ComplainLink = () => {
   return (
     <Button
       as={Link}
-      variant={'link'}
-      color={'twitter.500'}
+      variant={'solid'}
+      colorScheme='twitter'
       rightIcon={<FaArrowRight />}
       href={
         isMobile
