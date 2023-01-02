@@ -6,6 +6,7 @@ import {
   LinkOverlay,
   LinkBox,
   Button,
+  SkeletonCircle,
 } from '@chakra-ui/react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -14,7 +15,8 @@ import { useSessionUserProfile } from '../../hooks/user';
 
 export const AppBar = () => {
   const { data: session } = useSession();
-  const { data: userProfile } = useSessionUserProfile();
+  const { data: userProfile, isLoading: isUserProfileLoading } =
+    useSessionUserProfile();
 
   return (
     <>
@@ -46,11 +48,15 @@ export const AppBar = () => {
                       : `/setup-profile`
                   }
                 >
-                  <Avatar
-                    size='sm'
-                    name={session.user?.name as string}
-                    src={session.user?.profile_image_url as string}
-                  />
+                  {isUserProfileLoading ? (
+                    <SkeletonCircle size='10' />
+                  ) : (
+                    <Avatar
+                      size='sm'
+                      name={session.user?.name as string}
+                      src={session.user?.profile_image_url as string}
+                    />
+                  )}
                 </LinkOverlay>
               </LinkBox>
             </>

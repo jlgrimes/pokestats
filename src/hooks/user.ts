@@ -19,10 +19,13 @@ export const fetchSessionUserProfile = async (
 
   const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
     await fetchPlayerProfiles('twitter_handle');
-  const twitterProfile: TwitterPlayerProfile | undefined =
-    await (options?.prefetch
-      ? fetchServerSideTwitterProfile({ username })
-      : fetchTwitterProfile({ username }));
+  let twitterProfile: TwitterPlayerProfile | undefined;
+  
+  if (options?.prefetch) {
+    twitterProfile = await fetchServerSideTwitterProfile({ username });
+  } else {
+    twitterProfile = await fetchTwitterProfile({ username });
+  }
   const playerProfile = playerProfiles?.[username];
 
   if (playerProfile && twitterProfile) {

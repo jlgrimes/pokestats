@@ -25,16 +25,12 @@ import { useRouter } from 'next/router';
 import { PlayerPerformanceList } from '../../src/components/DataDisplay/PlayerPerformanceList';
 import { useEffect } from 'react';
 import { ProfileNotFound } from '../../src/components/Profile/ProfileNotFound';
+import { useUserMatchesLoggedInUser } from '../../src/hooks/user';
 
-function PlayerPage({
-  user,
-  userIsOwnerOfPage,
-}: {
-  user: CombinedPlayerProfile | null;
-  userIsOwnerOfPage: boolean;
-}) {
+function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
   const userIsAdmin = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
+  const userOwnsPage = useUserMatchesLoggedInUser(user?.name ?? '');
 
   const session = useSession();
   const router = useRouter();
@@ -53,13 +49,13 @@ function PlayerPage({
   return (
     <>
       <Stack padding='1.5rem 1.5rem' spacing={6}>
-        <Stack>
+        <Stack spacing={4} alignItems={'center'}>
           <Avatar
             size={'xl'}
             name={user?.name ?? undefined}
             src={user?.profile_image_url ?? undefined}
           />
-          <Stack spacing={0}>
+          <Stack spacing={0} alignItems={'center'}>
             <Stack direction={'row'} alignItems='center'>
               <Heading color='gray.700'>{user?.name}</Heading>
               <Link
@@ -74,19 +70,12 @@ function PlayerPage({
             <Text>{user.description}</Text>
           </Stack>
         </Stack>
-        {userIsOwnerOfPage && (
+        {userOwnsPage && (
           <Stack>
-            {userIsAdmin ? (
+            {userIsAdmin && (
               <Heading size={'sm'} fontWeight='semibold'>
                 You are a site admin!
               </Heading>
-            ) : (
-              <>
-                <Heading size={'sm'} fontWeight='semibold'>
-                  You are not a site admin.
-                </Heading>
-                <ComplainLink />
-              </>
             )}
             <Button
               variant='outline'
