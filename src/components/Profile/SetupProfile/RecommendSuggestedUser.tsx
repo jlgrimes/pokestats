@@ -15,7 +15,13 @@ import { useTournaments } from '../../../hooks/tournaments';
 import { useSuggestedUserProfile } from '../../../hooks/user';
 import { getFirstName } from '../helpers';
 
-export const RecommendedSuggestedUser = ({ session }: { session: Session }) => {
+export const RecommendedSuggestedUser = ({
+  session,
+  didNotAttendCallback,
+}: {
+  session: Session;
+  didNotAttendCallback: () => void;
+}) => {
   const [elementFadedIn, setElementFadedIn] = useState(0);
   const { data: suggestedUser } = useSuggestedUserProfile();
   const { data: tournaments } = useTournaments();
@@ -73,7 +79,7 @@ export const RecommendedSuggestedUser = ({ session }: { session: Session }) => {
           <Button
             variant='outline'
             colorScheme='gray'
-            onClick={() => console.log('hi')}
+            onClick={didNotAttendCallback}
           >
             {`No I did not`}
           </Button>

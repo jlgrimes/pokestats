@@ -7,12 +7,10 @@ import {
   Button,
   Icon,
 } from '@chakra-ui/react';
-import { Session } from 'next-auth';
-import { useMemo } from 'react';
+import { Session } from 'next-auth';;
 import { ComplainLink } from '../../common/ComplainLink';
-import { getFirstName } from '../helpers';
 
-export const SuggestedNotFound = ({ session }: { session: Session }) => {
+export const RequestToComplete = ({ session }: { session: Session }) => {
   return (
     <Stack
       padding='1.5rem'
