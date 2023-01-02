@@ -13,7 +13,7 @@ type Data = {
   description: string;
 };
 
-export const fetchTwitterProfile = async (query: { id?: string, username?: string }) => {
+export const fetchServerSideTwitterProfile = async (query: { id?: string, username?: string }) => {
   let response;
   if (query.id) {
     response = await twitterClient.users.findUserById(
@@ -47,7 +47,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    let data = await fetchTwitterProfile(req.query)
+    let data = await fetchServerSideTwitterProfile(req.query)
 
     if (!data) {
       return res.status(500);

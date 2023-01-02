@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
+import { fetchServerSideTwitterProfile } from '../../pages/api/get-twitter-profile';
 import { StoredPlayerProfile, TwitterPlayerProfile } from '../../types/player';
 import { fetchPlayerProfiles } from '../lib/fetch/fetchLiveResults';
 import { fetchTwitterProfile } from './twitter';
@@ -10,13 +11,18 @@ export const useUserMatchesLoggedInUser = (name: string) => {
   return session.data?.user.name === name;
 };
 
-const fetchSessionUserProfile = async (session: Session | null) => {
+export const fetchSessionUserProfile = async (
+  session: Session | null,
+  options?: { prefetch: boolean }
+) => {
   const username = session?.user.username ?? '';
 
   const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
     await fetchPlayerProfiles('twitter_handle');
   const twitterProfile: TwitterPlayerProfile | undefined =
-    await fetchTwitterProfile({ username });
+    await (options?.prefetch
+      ? fetchServerSideTwitterProfile({ username })
+      : fetchTwitterProfile({ username }));
   const playerProfile = playerProfiles?.[username];
 
   if (playerProfile && twitterProfile) {
@@ -33,11 +39,30 @@ const fetchSessionUserProfile = async (session: Session | null) => {
   return null;
 };
 
-export const useSessionUserProfile = () => {
+export const useSessionUserProfile = (options?: { prefetch: boolean }) => {
   const session = useSession();
 
   return useQuery({
     queryKey: [`session-user-profile`],
-    queryFn: () => fetchSessionUserProfile(session.data),
+    queryFn: () => fetchSessionUserProfile(session.data, options),
+  });
+};
+
+export const fetchSuggestedUserProfile = async (name: string) => {
+  const profilesByName: Record<string, StoredPlayerProfile> | undefined =
+    await fetchPlayerProfiles('name');
+  return profilesByName?.[name] ?? null;
+};
+
+/**
+ * Suggested user profile based on name
+ */
+export const useSuggestedUserProfile = () => {
+  const session = useSession();
+  const name = session.data?.user.name ?? '';
+
+  return useQuery({
+    queryKey: [`suggested-user-profile`, name],
+    queryFn: () => fetchSuggestedUserProfile(name),
   });
 };

@@ -7,40 +7,43 @@ import {
   Button,
   Icon,
 } from '@chakra-ui/react';
+import { QueryClient } from '@tanstack/react-query';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { useTournaments } from '../src/hooks/tournaments';
-import { fetchPlayerProfiles } from '../src/lib/fetch/fetchLiveResults';
 import {
-  CombinedPlayerProfile,
-  StoredPlayerProfile,
-  TwitterPlayerProfile,
-} from '../types/player';
-import { fetchTwitterProfile } from './api/get-twitter-profile';
+  fetchSessionUserProfile,
+  fetchSuggestedUserProfile,
+  useSessionUserProfile,
+  useSuggestedUserProfile,
+} from '../src/hooks/user';
 
-export default function SetupPage({
-  user,
-  suggestedUser,
-}: {
-  user: CombinedPlayerProfile | null;
-  suggestedUser: StoredPlayerProfile | null;
-  userIsOwnerOfPage: boolean;
-}) {
+export default function SetupPage() {
   const session = useSession();
   const router = useRouter();
   const { data: tournaments } = useTournaments();
+  const { data: user } = useSessionUserProfile();
+  const { data: suggestedUser } = useSuggestedUserProfile();
 
   useEffect(() => {
     if (user) {
       router.push(`/player/${user.username}`);
     }
-  }, []);
+  }, [router, user]);
 
-  const firstName = session.data?.user.name?.split(' ')?.[0];
-  const attendedTournaments = suggestedUser?.tournamentHistory.map(
-    id => tournaments?.data?.find(tournament => tournament.id === id)?.name
+  const firstName = useMemo(
+    () => session.data?.user.name?.split(' ')?.[0],
+    [session.data?.user.name]
+  );
+
+  const attendedTournaments = useMemo(
+    () =>
+      suggestedUser?.tournamentHistory.map(
+        id => tournaments?.data?.find(tournament => tournament.id === id)?.name
+      ),
+    [suggestedUser?.tournamentHistory, tournaments?.data]
   );
 
   return (
@@ -72,36 +75,18 @@ export default function SetupPage({
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
-  const username = session?.user.username ?? '';
+  console.log(session)
 
-  const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
-    await fetchPlayerProfiles('twitter_handle');
-  const twitterProfile: TwitterPlayerProfile | undefined =
-    await fetchTwitterProfile({ username });
-  const playerProfile = playerProfiles?.[username];
-
-  let combinedProfile: CombinedPlayerProfile | null = null;
-  let suggestedProfile: StoredPlayerProfile | null = null;
-
-  if (playerProfile && twitterProfile) {
-    combinedProfile = {
-      id: playerProfile?.id as string,
-      name: playerProfile?.name as string,
-      tournamentHistory: playerProfile?.tournamentHistory as string[],
-      username: twitterProfile?.username as string,
-      description: twitterProfile?.description as string,
-      profile_image_url: twitterProfile?.profile_image_url as string,
-    };
-  } else if (twitterProfile) {
-    const profilesByName: Record<string, StoredPlayerProfile> | undefined =
-      await fetchPlayerProfiles('name');
-    suggestedProfile = profilesByName?.[twitterProfile.name] ?? null;
-  }
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery([`session-user-profile`], () =>
+    fetchSessionUserProfile(session, { prefetch: true })
+  );
+  await queryClient.prefetchQuery(
+    [`suggested-user-profile`, session?.user.name],
+    () => fetchSuggestedUserProfile(session?.user.name ?? '')
+  );
 
   return {
-    props: {
-      user: combinedProfile,
-      suggestedUser: suggestedProfile,
-    }
+    props: {},
   };
 }

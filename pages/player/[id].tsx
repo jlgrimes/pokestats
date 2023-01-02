@@ -12,7 +12,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { FaCheck, FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { fetchPlayerProfiles } from '../../src/lib/fetch/fetchLiveResults';
-import { fetchTwitterProfile } from '../api/get-twitter-profile';
+import { fetchServerSideTwitterProfile } from '../api/get-twitter-profile';
 import { useTwitterLink } from '../../src/hooks/twitter';
 import {
   CombinedPlayerProfile,
@@ -44,7 +44,6 @@ function PlayerPage({
 
   useEffect(() => {
     if (session.data?.user.username && !user) {
-      console.log('HHH');
       router.push('/profile-setup');
     }
   }, [session.data?.user.username, router, user]);
@@ -141,7 +140,7 @@ export async function getStaticProps(context: any) {
   const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
     await fetchPlayerProfiles('twitter_handle');
   const twitterProfile: TwitterPlayerProfile | undefined =
-    await fetchTwitterProfile({ username });
+    await fetchServerSideTwitterProfile({ username });
   const playerProfile = playerProfiles?.[username];
 
   let combinedProfile: CombinedPlayerProfile | null = null;
