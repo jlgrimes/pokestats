@@ -1,27 +1,23 @@
-import {
-  Avatar,
-  Heading,
-  Stack,
-  Text,
-  Link,
-  Button,
-  Icon,
-  Fade,
-} from '@chakra-ui/react';
+import { Heading, Stack, Text, Button, Fade } from '@chakra-ui/react';
 import { Session } from 'next-auth';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { useTournaments } from '../../../hooks/tournaments';
 import { useSuggestedUserProfile } from '../../../hooks/user';
+import supabase from '../../../lib/supabase/client';
 
 export const RecommendedSuggestedUser = ({
   session,
   didNotAttendCallback,
+  accountMadeSuccessfullyCallback,
 }: {
   session: Session;
   didNotAttendCallback: () => void;
+  accountMadeSuccessfullyCallback: () => void;
 }) => {
   const [elementFadedIn, setElementFadedIn] = useState(0);
+  const [identityConfirmationLoading, setIdentityConfirmationLoading] =
+    useState(false);
   const { data: suggestedUser } = useSuggestedUserProfile();
   const { data: tournaments } = useTournaments();
 
@@ -32,6 +28,19 @@ export const RecommendedSuggestedUser = ({
       ),
     [suggestedUser?.tournamentHistory, tournaments?.data]
   );
+
+  const onIdentityConfirmClick = useCallback(async () => {
+    setIdentityConfirmationLoading(true);
+    await supabase
+      .from('Player Profiles')
+      .update({
+        twitter_handle: session.user.username,
+      })
+      .eq('name', session.user.name);
+
+    accountMadeSuccessfullyCallback();
+    setIdentityConfirmationLoading(false);
+  }, []);
 
   useEffect(() => {
     const firstFade = setTimeout(() => {
@@ -71,7 +80,9 @@ export const RecommendedSuggestedUser = ({
             variant='solid'
             colorScheme='green'
             leftIcon={<FaCheck />}
-            onClick={() => console.log('hi')}
+            isLoading={identityConfirmationLoading}
+            loadingText='Yes I did'
+            onClick={onIdentityConfirmClick}
           >
             {`Yes I did`}
           </Button>
