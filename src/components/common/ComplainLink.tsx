@@ -12,8 +12,8 @@ export const ComplainLink = () => {
       rightIcon={<FaArrowRight />}
       href={
         isMobile
-          ? 'twitter.com/jgrimesey'
-          : 'twitter://user?screen_name=jgrimesey'
+          ? 'twitter://user?screen_name=jgrimesey'
+          : 'http://twitter.com/jgrimesey'
       }
       isExternal
     >
