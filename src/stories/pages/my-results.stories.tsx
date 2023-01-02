@@ -8,7 +8,7 @@ import { MOCK_FINAL_STANDINGS } from '../../mocks/final-standings';
 import { MOCK_PLAYER_DECKS } from '../../mocks/player-decks';
 import { MOCK_PLAYER_PROFILES } from '../../mocks/player-profiles';
 
-const tournamentId = '0000034999';
+const tournamentId = '0000034';
 
 const commonMockData = [
   {
