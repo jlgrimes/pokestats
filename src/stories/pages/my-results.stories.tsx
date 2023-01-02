@@ -8,6 +8,8 @@ import { MOCK_FINAL_STANDINGS } from '../../mocks/final-standings';
 import { MOCK_PLAYER_DECKS } from '../../mocks/player-decks';
 import { MOCK_PLAYER_PROFILES } from '../../mocks/player-profiles';
 
+const tournamentId = '0000034999';
+
 const commonMockData = [
   {
     url: 'https://keujidcnlmekgfajgnjq.supabase.co/rest/v1/Deck%20Archetypes?select=name%2Cdefined_pokemon%2Cidentifiable_cards%2Csupertype',
@@ -16,7 +18,7 @@ const commonMockData = [
     response: MOCK_DECK_ARCHETYPES,
   },
   {
-    url: 'https://keujidcnlmekgfajgnjq.supabase.co/rest/v1/Player Decks?select=player_name,deck_archetype&tournament_id=eq.0000034',
+    url: `https://keujidcnlmekgfajgnjq.supabase.co/rest/v1/Player Decks?select=player_name,deck_archetype&tournament_id=eq.${tournamentId}`,
     method: 'GET',
     status: 200,
     response: MOCK_PLAYER_DECKS,
@@ -52,7 +54,7 @@ export const FinalMyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: '0000034', name: 'Toronto 2022' }}
+        tournament={{ id: tournamentId, name: 'Toronto 2022' }}
       />
     </AppLayout>
   </SessionProvider>
@@ -62,7 +64,7 @@ FinalMyResultsPage.parameters = {
   mockData: [
     ...commonMockData,
     {
-      url: '/pokedata/standings/0000034/masters/0000034_Masters.json',
+      url: `/pokedata/standings/${tournamentId}/masters/${tournamentId}_Masters.json`,
       method: 'GET',
       status: 200,
       response: MOCK_FINAL_STANDINGS,
@@ -76,7 +78,7 @@ export const AfterDay1MyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: '0000034', name: 'Toronto 2022' }}
+        tournament={{ id: tournamentId, name: 'Toronto 2022' }}
       />
     </AppLayout>
   </SessionProvider>
@@ -86,7 +88,7 @@ AfterDay1MyResultsPage.parameters = {
   mockData: [
     ...commonMockData,
     {
-      url: '/pokedata/standings/0000034/masters/0000034_Masters.json',
+      url: `/pokedata/standings/${tournamentId}/masters/${tournamentId}_Masters.json`,
       method: 'GET',
       status: 200,
       response: MOCK_AFTER_DAY_1_STANDINGS,
@@ -100,7 +102,7 @@ export const DuringDay1MyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: '0000034', name: 'Toronto 2022' }}
+        tournament={{ id: tournamentId, name: 'Toronto 2022' }}
       />
     </AppLayout>
   </SessionProvider>
@@ -110,7 +112,7 @@ DuringDay1MyResultsPage.parameters = {
   mockData: [
     ...commonMockData,
     {
-      url: '/pokedata/standings/0000034/masters/0000034_Masters.json',
+      url: `/pokedata/standings/${tournamentId}/masters/${tournamentId}_Masters.json`,
       method: 'GET',
       status: 200,
       response: MOCK_DURING_DAY_1_STANDINGS,
