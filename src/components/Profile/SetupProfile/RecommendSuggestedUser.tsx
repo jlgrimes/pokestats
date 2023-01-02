@@ -13,7 +13,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { useTournaments } from '../../../hooks/tournaments';
 import { useSuggestedUserProfile } from '../../../hooks/user';
-import { getFirstName } from '../helpers';
 
 export const RecommendedSuggestedUser = ({
   session,
