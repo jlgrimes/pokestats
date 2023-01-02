@@ -38,17 +38,14 @@ export const AppBar = () => {
         <Stack direction={'row'} alignItems={'center'}>
           {session ? (
             <>
-              <Text>
-                Hi,{' '}
-                {session.user?.name?.substring(
-                  0,
-                  session.user?.name?.indexOf(' ')
-                )}
-                !
-              </Text>
-
               <LinkBox>
-                <LinkOverlay href={userProfile ? `/player/${session.user.username}` : `/setup-profile`}>
+                <LinkOverlay
+                  href={
+                    userProfile
+                      ? `/player/${session.user.username}`
+                      : `/setup-profile`
+                  }
+                >
                   <Avatar
                     size='sm'
                     name={session.user?.name as string}
