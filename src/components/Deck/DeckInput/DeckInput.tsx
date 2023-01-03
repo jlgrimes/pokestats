@@ -47,6 +47,7 @@ export default function DeckInput({
       modalControls={archetypeModal}
       shouldShowAsText={shouldShowAsText}
       tournamentId={tournamentId}
+      unownOverride={playerName === 'Isaiah Cheville' ? 'z' : undefined}
     />
   );
 }

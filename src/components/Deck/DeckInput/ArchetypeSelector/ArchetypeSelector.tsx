@@ -27,6 +27,7 @@ interface ArchetypeSelectorProps {
   quickEdit: boolean;
   shouldShowAsText?: boolean;
   tournamentId: string;
+  unownOverride?: string;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
@@ -80,7 +81,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           <Flex justifyContent={'center'}>
             <Image
               height='30px'
-              src='https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-qm.png'
+              src={`https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-${props.unownOverride ?? 'qm'}.png`}
               alt='Unown'
             />
           </Flex>
