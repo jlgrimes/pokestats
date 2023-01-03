@@ -1,4 +1,12 @@
-import { Heading, Stack, Text, Button, Fade } from '@chakra-ui/react';
+import {
+  Heading,
+  Stack,
+  Text,
+  Button,
+  Fade,
+  List,
+  ListItem,
+} from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -73,11 +81,13 @@ export const RecommendedSuggestedUser = ({
         <Heading color='gray.700'>{`Complete account setup`}</Heading>
       </Fade>
       <Fade in={elementFadedIn >= 1}>
-        <Stack>
-          <Heading
-            size='lg'
-            color='gray.700'
-          >{`Did you attend ${attendedTournaments?.join(', ')}?`}</Heading>
+        <Stack spacing={8}>
+          <Heading size='md'>Did you attend the following tournaments?</Heading>
+          <List size='xl' color='gray.700'>
+            {attendedTournaments?.map((tournament, idx) => (
+              <ListItem key={idx}>{tournament}</ListItem>
+            ))}
+          </List>
           <Text>
             We found someone with your name that has attended these tournaments.
             If this is you, your account setup is done!
