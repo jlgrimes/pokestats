@@ -1,7 +1,6 @@
 import { Tabs, TabList, Tab, Badge, Stack, Text } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { useSessionUserProfile } from '../../hooks/user';
 
 export const TournamentTabs = () => {
@@ -11,7 +10,7 @@ export const TournamentTabs = () => {
 
   const { data: userProfile } = useSessionUserProfile();
   const userIsInTournament =
-    userProfile?.tournamentHistory.includes(tournamentId as string);
+    userProfile?.tournamentHistory?.includes(tournamentId as string);
 
   const tabs = [
     {
