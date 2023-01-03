@@ -36,28 +36,29 @@ export const fetchPlayerProfiles = async (
   const res = await supabase
     .from('Player Profiles')
     .select('id,name,twitter_handle,tournament_history');
-  const profiles : Record<string, StoredPlayerProfile> | undefined = await res.data?.reduce((acc, player) => {
-    let playerKey: string = player[key];
-    if (key === 'twitter_handle') {
-      playerKey = playerKey?.toLowerCase();
-    }
-    if (
-      !playersUpdatedWithTournament &&
-      player.tournament_history.includes(tournamentId)
-    ) {
-      playersUpdatedWithTournament = true;
-    }
+  const profiles: Record<string, StoredPlayerProfile> | undefined =
+    await res.data?.reduce((acc, player) => {
+      let playerKey: string = player[key];
+      if (key === 'twitter_handle') {
+        playerKey = playerKey?.toLowerCase();
+      }
+      if (
+        !playersUpdatedWithTournament &&
+        player.tournament_history.includes(tournamentId)
+      ) {
+        playersUpdatedWithTournament = true;
+      }
 
-    return {
-      ...acc,
-      [playerKey]: {
-        id: player.id,
-        name: player.name,
-        twitterHandle: player.twitter_handle,
-        tournamentHistory: player.tournament_history,
-      },
-    };
-  }, {});
+      return {
+        ...acc,
+        [playerKey]: {
+          id: player.id,
+          name: player.name,
+          twitterHandle: player.twitter_handle,
+          tournamentHistory: player.tournament_history,
+        },
+      };
+    }, {});
 
   console.log(
     'fetchPlayerProfiles:',
@@ -73,21 +74,34 @@ export const fetchPlayerProfiles = async (
 
 const updatePlayerProfilesWithTournament = async (
   parsedData: Record<string, any>[],
-  playerProfiles: Record<string, any>,
   tournamentId: string
 ) => {
+  const tournamentPlayerNames: string[] = parsedData.map(({ name }) => name);
+  const { data: playerProfiles } = await supabase
+    .from('Player Profiles')
+    .select('id,name,twitter_handle,tournament_history')
+    .filter(
+      'name',
+      'in',
+      JSON.stringify(tournamentPlayerNames).replace('[', '(').replace(']', ')')
+    );
+
   const perfStart = performance.now();
-  console.log('updating players for tournament', tournamentId);
   const upsertingRows = parsedData.reduce(
     (acc: Record<string, any>[], standing, idx) => {
-      const player = playerProfiles[standing.name] ?? {
+      const player: {
+        id: string;
+        name: string;
+        tournament_history: string[];
+        twitter_handle: string | null;
+      } = playerProfiles?.[standing.name] ?? {
         id: `${tournamentId}${idx}`,
         name: standing.name,
-        tournamentHistory: [],
-        twitterHandle: null,
+        tournament_history: [],
+        twitter_handle: null,
       };
       const shouldUpdatePlayerProfile =
-        !player.tournamentHistory.includes(tournamentId);
+        !player.tournament_history.includes(tournamentId);
       const duplicateName =
         parsedData.filter(dataStanding => dataStanding.name === standing.name)
           ?.length > 1;
@@ -101,9 +115,9 @@ const updatePlayerProfilesWithTournament = async (
         {
           id: player.id,
           name: player.name,
-          twitter_handle: player.twitterHandle,
+          twitter_handle: player.twitter_handle,
           tournament_history: [
-            ...(player.tournamentHistory ?? []),
+            ...(player.tournament_history ?? []),
             tournamentId,
           ],
         },
@@ -209,7 +223,6 @@ function mapResultsArray(
   roundNumber: number,
   playerDeckObjects: PlayerDeckObject[] | undefined,
   deckArchetypes: DeckArchetype[] | null,
-  playerProfiles: Record<string, StoredPlayerProfile> | undefined,
   shouldLoad?: LiveResultsLoadOptions
 ): Standing[] {
   const perfStart = performance.now();
@@ -219,7 +232,6 @@ function mapResultsArray(
 
     return {
       name: player.name,
-      profile: playerProfiles?.[player.name] ?? null,
       placing: player.placing,
       record: player.record,
       ...(shouldLoad?.roundData
@@ -296,7 +308,6 @@ export const fetchLiveResults = async (
   tournamentId: string,
   options?: FetchLiveResultsOptions
 ) => {
-  console.log('starting fetch live results for', tournamentId);
   const startTime = performance.now();
 
   let parsedData: Standing[] = await getPokedata(
@@ -312,23 +323,13 @@ export const fetchLiveResults = async (
     deckArchetypes
   );
 
-  let { playerProfiles, playersUpdatedWithTournament } =
-    await fetchPlayerProfiles('name');
-
-  if (!playersUpdatedWithTournament) {
-    await updatePlayerProfilesWithTournament(
-      parsedData,
-      playerProfiles ?? {},
-      tournamentId
-    );
-  }
+  await updatePlayerProfilesWithTournament(parsedData, tournamentId);
 
   parsedData = await mapResultsArray(
     parsedData,
     roundNumber,
     playerDeckObjects,
     deckArchetypes,
-    playerProfiles,
     options?.load
   );
   const endTime = performance.now();
