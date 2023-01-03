@@ -38,18 +38,20 @@ export const AppBar = () => {
         justifyContent={'space-between'}
         boxShadow='sm'
       >
-        <Heading
-          color={'gray.700'}
-          letterSpacing={'wider'}
-          textTransform={'uppercase'}
-          size={'md'}
-          fontWeight={'black'}
-          lineHeight={'taller'}
-        >
-          <Link href='/'>pokéstats</Link>
-        </Heading>
-        <Stack direction={'row'} alignItems={'center'}>
+        <Stack direction='row'>
+          <Heading
+            color={'gray.700'}
+            letterSpacing={'wider'}
+            textTransform={'uppercase'}
+            size={'md'}
+            fontWeight={'black'}
+            lineHeight={'taller'}
+          >
+            <Link href='/'>pokéstats</Link>
+          </Heading>
           {userIsAdmin && <AdminLinks />}
+        </Stack>
+        <Stack direction={'row'} alignItems={'center'}>
           {session ? (
             <>
               <LinkBox>
