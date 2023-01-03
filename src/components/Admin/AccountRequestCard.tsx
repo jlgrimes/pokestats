@@ -75,7 +75,7 @@ export const AccountRequestCard = ({
   };
 
   return (
-    !shouldHideCard && (
+    !shouldHideCard ? (
       <Card>
         <CardHeader>
           <Heading size={'md'}>{request.twitter_handle}</Heading>
@@ -106,6 +106,6 @@ export const AccountRequestCard = ({
           />
         )}
       </Card>
-    )
+    ) : null
   );
 };

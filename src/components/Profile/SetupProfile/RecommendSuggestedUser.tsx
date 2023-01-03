@@ -1,4 +1,5 @@
 import { Heading, Stack, Text, Button, Fade } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
@@ -15,6 +16,8 @@ export const RecommendedSuggestedUser = ({
   didNotAttendCallback: () => void;
   accountMadeSuccessfullyCallback: () => void;
 }) => {
+  const queryClient = useQueryClient()
+
   const [elementFadedIn, setElementFadedIn] = useState(0);
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
@@ -37,7 +40,11 @@ export const RecommendedSuggestedUser = ({
         twitter_handle: session.user.username,
       })
       .eq('name', session.user.name);
-
+      
+    queryClient.setQueryData([`session-user-profile`, session.user.username], () => ({
+      name: session.user.name,
+      username: session.user.username,
+    }));
     accountMadeSuccessfullyCallback();
     setIdentityConfirmationLoading(false);
   }, []);
