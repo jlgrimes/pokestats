@@ -17,7 +17,6 @@ export const AdminLinks = () => {
         variant={'ghost'}
         aria-label='Manage access requests'
         icon={<FaUsersCog />}
-        margin='-1'
         as={Link}
         href='/admin/account-requests'
       />

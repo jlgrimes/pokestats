@@ -46,25 +46,20 @@ export const AppBar = () => {
                 <Heading
                   color={'gray.700'}
                   letterSpacing={'wider'}
-                  textTransform={'uppercase'}
-                  size={'sm'}
+                  size={'md'}
                   fontWeight={'black'}
                   lineHeight={'taller'}
                 >
                   pokéstats
                 </Heading>
-                <div>
-                  <Badge colorScheme={'pink'} fontSize='md'>
-                    {' '}
-                    <Heading
-                      letterSpacing={'wider'}
-                      size={'xs'}
-                      fontWeight={'black'}
-                    >
-                      live
-                    </Heading>
-                  </Badge>
-                </div>
+                <Heading
+                  letterSpacing={'wider'}
+                  size={'md'}
+                  fontWeight={'black'}
+                  color='pink.600'
+                >
+                  live
+                </Heading>
               </Stack>
             </LinkOverlay>
           </LinkBox>
