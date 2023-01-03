@@ -26,19 +26,17 @@ const fetchDeckArchetypes = async () => {
   return res.data;
 };
 
-const updatePlayerProfilesWithTournament = async (
+export const updatePlayerProfilesWithTournament = async (
   parsedData: Record<string, any>[],
-  tournamentId: string
+  tournamentId: string,
+  playerProfiles?: any[] | null
 ) => {
-  const tournamentPlayerNames: string[] = parsedData.map(({ name }) => name);
-  const { data: playerProfiles } = await supabase
-    .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history')
-    .filter(
-      'name',
-      'in',
-      JSON.stringify(tournamentPlayerNames).replace('[', '(').replace(']', ')')
-    );
+  if (!playerProfiles) {
+    const { data } = await supabase
+      .from('Player Profiles')
+      .select('id,name,twitter_handle,tournament_history');
+    playerProfiles = data;
+  }
 
   const perfStart = performance.now();
   const upsertingRows = parsedData.reduce(
@@ -48,7 +46,7 @@ const updatePlayerProfilesWithTournament = async (
         name: string;
         tournament_history: string[];
         twitter_handle: string | null;
-      } = playerProfiles?.[standing.name] ?? {
+      } = playerProfiles?.find(({ name }) => name === standing.name) ?? {
         id: `${tournamentId}${idx}`,
         name: standing.name,
         tournament_history: [],
@@ -79,14 +77,19 @@ const updatePlayerProfilesWithTournament = async (
     },
     []
   );
-  await supabase.from('Player Profiles').upsert(upsertingRows, {
-    onConflict: 'name',
-  });
+  const { error } = await supabase
+    .from('Player Profiles')
+    .upsert(upsertingRows, {
+      onConflict: 'name',
+    });
+  
   console.log(
     'done updating players:',
     (performance.now() - perfStart) / 1000,
     'sec'
   );
+
+  return { error };
 };
 
 const getPlayerDeckObjects = async (
@@ -222,7 +225,7 @@ const getRoundNumber = (firstPlace: Record<string, any>) => {
   return highestRound;
 };
 
-const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
+export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   const perfStart = performance.now();
 
   const response = await fetch(
