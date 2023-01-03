@@ -1,7 +1,10 @@
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useSuggestedUserProfile } from '../../../hooks/user';
+import {
+  useSuggestedUserProfile,
+  useUserSentAccountRequest,
+} from '../../../hooks/user';
 import { AccountMadeSuccessfully } from './AccountMadeSuccessfully';
 import { RecommendedSuggestedUser } from './RecommendSuggestedUser';
 import { RequestToComplete } from './RequestToComplete';
@@ -9,6 +12,9 @@ import { RequestToComplete } from './RequestToComplete';
 export const SetupProfileController = () => {
   const session = useSession();
   const { data: suggestedUser, isLoading } = useSuggestedUserProfile();
+  const { data: userSentRequest } = useUserSentAccountRequest(
+    session.data?.user.username
+  );
   const [screenState, setScreenState] =
     useState<
       | null
@@ -19,10 +25,12 @@ export const SetupProfileController = () => {
     >(null);
 
   useEffect(() => {
-    if (suggestedUser) {
+    if (userSentRequest) {
+      setScreenState('request-to-complete');
+    } else if (suggestedUser) {
       setScreenState('recommended-suggested-user');
     }
-  }, [suggestedUser]);
+  }, [suggestedUser, userSentRequest]);
 
   if (isLoading) return null;
   // TODO: replace with redirect back to something

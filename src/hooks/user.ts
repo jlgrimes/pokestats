@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { fetchServerSideTwitterProfile } from '../../pages/api/get-twitter-profile';
 import { StoredPlayerProfile, TwitterPlayerProfile } from '../../types/player';
 import { fetchPlayerProfiles } from '../lib/fetch/fetchLiveResults';
+import supabase from '../lib/supabase/client';
 import { fetchTwitterProfile } from './twitter';
 
 export const useUserMatchesLoggedInUser = (name: string) => {
@@ -20,7 +21,7 @@ export const fetchSessionUserProfile = async (
   const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
     await fetchPlayerProfiles('twitter_handle');
   let twitterProfile: TwitterPlayerProfile | undefined;
-  
+
   if (options?.prefetch) {
     twitterProfile = await fetchServerSideTwitterProfile({ username });
   } else {
@@ -67,5 +68,23 @@ export const useSuggestedUserProfile = () => {
   return useQuery({
     queryKey: [`suggested-user-profile`, name],
     queryFn: () => fetchSuggestedUserProfile(name),
+  });
+};
+
+export const useUserSentAccountRequest = (username: string | undefined) => {
+  const fetchUserSentAccountRequest = async (username: string) => {
+    const { data } = await supabase
+      .from('Account Requests')
+      .select('*')
+      .eq('twitter_handle', username);
+    if (data?.length && data.length > 0) {
+      return true;
+    }
+    return false;
+  };
+
+  return useQuery({
+    queryKey: [`user-sent-account-request`],
+    queryFn: () => (username ? fetchUserSentAccountRequest(username) : {}),
   });
 };
