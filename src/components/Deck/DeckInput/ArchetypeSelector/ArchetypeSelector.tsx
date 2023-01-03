@@ -1,6 +1,5 @@
 import {
   Button,
-  useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -14,9 +13,8 @@ import {
   Text,
   Flex,
 } from '@chakra-ui/react';
-import { Fragment, memo, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
-  useArchetypes,
   useMostPopularArchetypes,
 } from '../../../../hooks/deckArchetypes';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';

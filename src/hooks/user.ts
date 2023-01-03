@@ -100,3 +100,19 @@ export const useUserSentAccountRequest = (username: string | undefined) => {
     queryFn: () => (username ? fetchUserSentAccountRequest(username) : {}),
   });
 };
+
+// For admin view
+export const useNotSetupProfiles = () => {
+  const fetchAllPlayerProfiles = async () => {
+    const res = await supabase
+      .from('Player Profiles')
+      .select('id,name,twitter_handle,tournament_history')
+      .is('twitter_handle', null);
+    return res.data;
+  };
+
+  return useQuery({
+    queryKey: [`all-player-profiles`],
+    queryFn: fetchAllPlayerProfiles,
+  });
+};

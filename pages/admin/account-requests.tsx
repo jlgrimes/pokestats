@@ -1,6 +1,16 @@
-import { Card, CardHeader, Heading, Stack, Text } from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
+import {
+  Button,
+  Card,
+  CardHeader,
+  Heading,
+  Stack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { AccountRequestCard } from '../../src/components/Admin/AccountRequestCard';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { useAccountRequests } from '../../src/hooks/user';
 
@@ -17,14 +27,11 @@ export default function AccountRequestsPage() {
 
   return (
     <Stack padding='0.5rem 1.5rem'>
-      <Heading size='sm'>{accountRequests?.length} request{accountRequests?.length !== 1 && 's'}</Heading>
+      <Heading size='sm'>
+        {accountRequests?.length} request{accountRequests?.length !== 1 && 's'}
+      </Heading>
       {accountRequests?.map((request, idx) => (
-        <Card key={idx}>
-          <CardHeader>
-            <Heading size={'md'}>{request.twitter_handle}</Heading>
-            <Text>Name on Twitter: {request.twitter_full_name}</Text>
-          </CardHeader>
-        </Card>
+        <AccountRequestCard request={request} key={idx} />
       ))}
     </Stack>
   );
