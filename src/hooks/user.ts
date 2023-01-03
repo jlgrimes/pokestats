@@ -71,6 +71,18 @@ export const useSuggestedUserProfile = () => {
   });
 };
 
+export const useAccountRequests = () => {
+  const fetchUserAccountRequests = async () => {
+    const { data } = await supabase.from('Account Requests').select('*');
+    return data;
+  };
+
+  return useQuery({
+    queryKey: [`fetch-user-account-requests`],
+    queryFn: fetchUserAccountRequests,
+  });
+};
+
 export const useUserSentAccountRequest = (username: string | undefined) => {
   const fetchUserSentAccountRequest = async (username: string) => {
     const { data } = await supabase

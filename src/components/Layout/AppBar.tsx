@@ -8,10 +8,17 @@ import {
   Button,
   SkeletonCircle,
   Icon,
+  IconButton,
 } from '@chakra-ui/react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { FaCheckCircle, FaTimesCircle, FaTwitter } from 'react-icons/fa';
+import {
+  FaCheckCircle,
+  FaIdBadge,
+  FaTimesCircle,
+  FaTwitter,
+} from 'react-icons/fa';
+import { useUserIsAdmin } from '../../hooks/administrators';
 import { useSessionUserProfile } from '../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../Player/Icons';
 
@@ -19,6 +26,7 @@ export const AppBar = () => {
   const { data: session } = useSession();
   const { data: userProfile, isLoading: isUserProfileLoading } =
     useSessionUserProfile();
+  const userIsAdmin = useUserIsAdmin();
 
   return (
     <>
@@ -40,6 +48,15 @@ export const AppBar = () => {
           <Link href='/'>pokéstats</Link>
         </Heading>
         <Stack direction={'row'} alignItems={'center'}>
+          {userIsAdmin && (
+            <IconButton
+              variant={'ghost'}
+              aria-label='Manage access requests'
+              icon={<FaIdBadge />}
+              as={Link}
+              href='/admin/account-requests'
+            />
+          )}
           {session ? (
             <>
               <LinkBox>

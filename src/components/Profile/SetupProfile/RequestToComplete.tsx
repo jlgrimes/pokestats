@@ -41,7 +41,7 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
       .insert([
         {
           twitter_handle: session.user.username,
-          twitter_full_name: session.user.username,
+          twitter_full_name: session.user.name,
         },
       ]);
     if (error) {
