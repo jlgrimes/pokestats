@@ -2,28 +2,21 @@ import { Tabs, TabList, Tab, Badge, Stack, Text } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
+import { useSessionUserProfile } from '../../hooks/user';
 
 export const TournamentTabs = () => {
   const router = useRouter();
-  const session = useSession();
 
   const tournamentId = router.query.id;
-  const routerSlug = router.asPath.split(`${tournamentId}/`)[1];
 
-  const { data: liveResults } = useLiveTournamentResults(
-    tournamentId as string
-  );
-  const userIsInTournament = liveResults?.data.some(
-    player => player.name === session.data?.user.name
-  );
+  const { data: userProfile } = useSessionUserProfile();
+  const userIsInTournament =
+    userProfile?.tournamentHistory.includes(tournamentId as string);
 
   const tabs = [
     {
       name: 'Standings',
       slug: 'standings',
-      badge: liveResults?.live
-        ? `Live - Round ${liveResults?.roundNumber}`
-        : false,
     },
     ...(userIsInTournament
       ? [
@@ -53,15 +46,15 @@ export const TournamentTabs = () => {
       padding={'0 1.5rem'}
     >
       <TabList>
-        {tabs.map(({ name, badge, slug }, idx) => (
+        {tabs.map(({ name, slug }, idx) => (
           <Tab key={idx}>
             <Stack direction={'row'} alignItems={'center'}>
               <Text>{name}</Text>
-              {badge && (
+              {/* {badge && (
                 <Badge variant='subtle' colorScheme='green'>
                   {badge}
                 </Badge>
-              )}
+              )} */}
             </Stack>
           </Tab>
         ))}

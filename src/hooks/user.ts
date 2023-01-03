@@ -18,7 +18,12 @@ export const fetchSessionUserProfile = async (
 ) => {
   const username = session?.user.username ?? '';
 
-  const { playerProfiles } = await fetchPlayerProfiles('twitter_handle');
+  const { data } = await supabase
+    .from('Player Profiles')
+    .select('id,name,twitter_handle,tournament_history')
+    .eq('twitter_handle', username);
+  const playerProfile = data?.[0];
+
   let twitterProfile: TwitterPlayerProfile | undefined;
 
   if (options?.prefetch) {
@@ -26,13 +31,12 @@ export const fetchSessionUserProfile = async (
   } else {
     twitterProfile = await fetchTwitterProfile({ username });
   }
-  const playerProfile = playerProfiles?.[username];
 
   if (playerProfile && twitterProfile) {
     return {
       id: playerProfile?.id as string,
       name: playerProfile?.name as string,
-      tournamentHistory: playerProfile?.tournamentHistory as string[],
+      tournamentHistory: playerProfile?.tournament_history as string[],
       username: twitterProfile?.username as string,
       description: twitterProfile?.description as string,
       profile_image_url: twitterProfile?.profile_image_url as string,
