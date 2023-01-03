@@ -48,7 +48,7 @@ export const SetupProfileController = () => {
   else if (screenState === 'request-to-complete')
     return <RequestToComplete session={session.data as Session} />;
   else if (screenState === 'account-made-successfully')
-    return <AccountMadeSuccessfully session={session.data as Session} />;
+    return <AccountMadeSuccessfully />;
 
   return null;
 };

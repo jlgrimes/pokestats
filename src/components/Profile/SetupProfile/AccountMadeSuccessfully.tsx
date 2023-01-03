@@ -3,17 +3,7 @@ import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 
-export const AccountMadeSuccessfully = ({
-  session,
-}: {
-  session: Session | null;
-}) => {
-  const [fadeIn, setFadeIn] = useState(false);
-
-  useEffect(() => {
-    setFadeIn(true);
-  }, []);
-
+export const AccountMadeSuccessfully = () => {
   return (
     <Stack
       padding='1.5rem'
@@ -22,9 +12,7 @@ export const AccountMadeSuccessfully = ({
       height='100%'
     >
       <Heading color='gray.700'>Account setup completed</Heading>
-      <Text size='2xl'>
-        Redirecting you to your profile...
-      </Text>
+      <Text size='2xl'>Redirecting you to your profile...</Text>
       <div></div>
     </Stack>
   );
