@@ -21,6 +21,7 @@ import {
 import { useUserIsAdmin } from '../../hooks/administrators';
 import { useSessionUserProfile } from '../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../Player/Icons';
+import { AdminLinks } from './AdminLinks';
 
 export const AppBar = () => {
   const { data: session } = useSession();
@@ -48,15 +49,7 @@ export const AppBar = () => {
           <Link href='/'>pokéstats</Link>
         </Heading>
         <Stack direction={'row'} alignItems={'center'}>
-          {userIsAdmin && (
-            <IconButton
-              variant={'ghost'}
-              aria-label='Manage access requests'
-              icon={<FaIdBadge />}
-              as={Link}
-              href='/admin/account-requests'
-            />
-          )}
+          {userIsAdmin && <AdminLinks />}
           {session ? (
             <>
               <LinkBox>
