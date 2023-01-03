@@ -67,6 +67,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
             <Text>{user.description}</Text>
           </Stack>
         </Stack>
+        <PlayerPerformanceList user={user} />
         {userOwnsPage && (
           <Stack alignItems={'center'}>
             {userIsAdmin && (
@@ -84,7 +85,6 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
             </Button>
           </Stack>
         )}
-        <PlayerPerformanceList user={user} />
       </Stack>
     </>
   );

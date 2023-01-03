@@ -89,8 +89,19 @@ export const usePlayerPerformance = (
   tournamentHistory: string[] | undefined
 ): PlayerTournamentPerformance[] => {
   const { data: tournaments } = useTournaments();
+  const sortedTournamentHistory = tournamentHistory?.sort((a: string, b: string) => {
+    if (parseInt(a) < parseInt(b)) {
+      return 1;
+    }
+    if (parseInt(a) > parseInt(b)) {
+      return -1;
+    }
+
+    return 0;
+  })
+
   const queries =
-    tournamentHistory?.map(tournamentId => {
+    sortedTournamentHistory?.map(tournamentId => {
       return {
         queryKey: [`live-results-${tournamentId}`],
         queryFn: () => fetchLiveResults(tournamentId),
