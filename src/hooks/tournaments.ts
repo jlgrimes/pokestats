@@ -11,7 +11,7 @@ export const fetchTournaments = async (options?: {
   );
   const data: Tournament[] = await res.json();
 
-  return data;
+  return data.reverse();
 };
 
 export const useTournaments = (options?: { prefetch?: boolean }) => {
