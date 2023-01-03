@@ -3,10 +3,7 @@ import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { SetupProfileController } from '../src/components/Profile/SetupProfile/SetupProfileController';
-import {
-  fetchSessionUserProfile,
-  useSessionUserProfile,
-} from '../src/hooks/user';
+import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
 
 export default function SetupPage() {
   const session = useSession();
@@ -31,7 +28,7 @@ export async function getServerSideProps(context: any) {
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery([`session-user-profile`], () =>
-    fetchSessionUserProfile(session, { prefetch: true })
+    fetchUserProfile(session?.user.username, { prefetch: true })
   );
 
   return {

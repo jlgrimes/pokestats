@@ -49,7 +49,7 @@ export const EditPlayerModal = memo((props: EditPlayerModalProps) => {
   const formik = useFormik({
     initialValues: {
       name: props.name,
-      twitter: props.playerProfile?.twitterHandle ?? '',
+      twitter: props.playerProfile?.twitter_handle ?? '',
     },
     onSubmit: handleSubmit,
   });

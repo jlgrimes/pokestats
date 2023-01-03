@@ -24,7 +24,7 @@ export const TopPerformingPlayers = ({ tournamentId }: { tournamentId: string}) 
                   <Text>{idx + 1}.</Text>{' '}
                   <PlayerNameLink
                     name={player.name}
-                    twitterHandle={player.twitterHandle}
+                    twitterHandle={player.twitter_handle}
                   />
                 </Stack>
               </Td>

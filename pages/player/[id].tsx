@@ -11,21 +11,18 @@ import NextLink from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaSignOutAlt, FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
-import { fetchPlayerProfiles } from '../../src/lib/fetch/fetchLiveResults';
-import { fetchServerSideTwitterProfile } from '../api/get-twitter-profile';
 import { useTwitterLink } from '../../src/hooks/twitter';
-import {
-  CombinedPlayerProfile,
-  StoredPlayerProfile,
-  TwitterPlayerProfile,
-} from '../../types/player';
+import { CombinedPlayerProfile } from '../../types/player';
 import supabase from '../../src/lib/supabase/client';
 import { ComplainLink } from '../../src/components/common/ComplainLink';
 import { useRouter } from 'next/router';
 import { PlayerPerformanceList } from '../../src/components/DataDisplay/PlayerPerformanceList';
 import { useEffect } from 'react';
 import { ProfileNotFound } from '../../src/components/Profile/ProfileNotFound';
-import { useUserMatchesLoggedInUser } from '../../src/hooks/user';
+import {
+  fetchUserProfile,
+  useUserMatchesLoggedInUser,
+} from '../../src/hooks/user';
 
 function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
   const { data: userIsAdmin } = useUserIsAdmin();
@@ -95,24 +92,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
 export async function getStaticProps(context: any) {
   const username = context.params?.id.toLowerCase();
-
-  const { playerProfiles } = await fetchPlayerProfiles('twitter_handle');
-  const twitterProfile: TwitterPlayerProfile | undefined =
-    await fetchServerSideTwitterProfile({ username });
-  const playerProfile = playerProfiles?.[username];
-
-  let combinedProfile: CombinedPlayerProfile | null = null;
-
-  if (playerProfile && twitterProfile) {
-    combinedProfile = {
-      id: playerProfile?.id as string,
-      name: playerProfile?.name as string,
-      tournamentHistory: playerProfile?.tournamentHistory as string[],
-      username: twitterProfile?.username as string,
-      description: twitterProfile?.description as string,
-      profile_image_url: twitterProfile?.profile_image_url as string,
-    };
-  }
+  const combinedProfile = await fetchUserProfile(username);
 
   return {
     props: {

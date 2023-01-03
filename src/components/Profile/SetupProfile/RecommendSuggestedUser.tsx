@@ -26,10 +26,10 @@ export const RecommendedSuggestedUser = ({
 
   const attendedTournaments = useMemo(
     () =>
-      suggestedUser?.tournamentHistory.map(
+      suggestedUser?.tournament_history.map(
         id => tournaments?.find(tournament => tournament.id === id)?.name
       ),
-    [suggestedUser?.tournamentHistory, tournaments]
+    [suggestedUser?.tournament_history, tournaments]
   );
 
   const onIdentityConfirmClick = useCallback(async () => {

@@ -4,8 +4,8 @@ export interface StoredPlayerProfile {
   // id stored in supabase
   id: string;
   name: string;
-  twitterHandle: string;
-  tournamentHistory: string[]
+  twitter_handle: string;
+  tournament_history: string[]
 }
 
 export interface TwitterPlayerProfile {

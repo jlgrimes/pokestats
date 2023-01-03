@@ -26,52 +26,6 @@ const fetchDeckArchetypes = async () => {
   return res.data;
 };
 
-export const fetchPlayerProfiles = async (
-  key: 'name' | 'twitter_handle' | 'id' | 'name',
-  tournamentId?: string
-) => {
-  const perfStart = performance.now();
-  let playersUpdatedWithTournament: boolean = false;
-
-  const res = await supabase
-    .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history');
-  const profiles: Record<string, StoredPlayerProfile> | undefined =
-    await res.data?.reduce((acc, player) => {
-      let playerKey: string = player[key];
-      if (key === 'twitter_handle') {
-        playerKey = playerKey?.toLowerCase();
-      }
-      if (
-        !playersUpdatedWithTournament &&
-        player.tournament_history.includes(tournamentId)
-      ) {
-        playersUpdatedWithTournament = true;
-      }
-
-      return {
-        ...acc,
-        [playerKey]: {
-          id: player.id,
-          name: player.name,
-          twitterHandle: player.twitter_handle,
-          tournamentHistory: player.tournament_history,
-        },
-      };
-    }, {});
-
-  console.log(
-    'fetchPlayerProfiles:',
-    (performance.now() - perfStart) / 1000,
-    'sec'
-  );
-
-  return {
-    playerProfiles: profiles,
-    playersUpdatedWithTournament,
-  };
-};
-
 const updatePlayerProfilesWithTournament = async (
   parsedData: Record<string, any>[],
   tournamentId: string

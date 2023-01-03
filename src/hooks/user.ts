@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { fetchServerSideTwitterProfile } from '../../pages/api/get-twitter-profile';
 import { StoredPlayerProfile, TwitterPlayerProfile } from '../../types/player';
-import { fetchPlayerProfiles } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 import { fetchTwitterProfile } from './twitter';
 
@@ -12,12 +10,10 @@ export const useUserMatchesLoggedInUser = (name: string) => {
   return session.data?.user.name === name;
 };
 
-export const fetchSessionUserProfile = async (
-  session: Session | null,
+export const fetchUserProfile = async (
+  username: string | undefined,
   options?: { prefetch: boolean }
 ) => {
-  const username = session?.user.username ?? '';
-
   const { data } = await supabase
     .from('Player Profiles')
     .select('id,name,twitter_handle,tournament_history')
@@ -51,13 +47,17 @@ export const useSessionUserProfile = (options?: { prefetch: boolean }) => {
 
   return useQuery({
     queryKey: [`session-user-profile`, session.data?.user.username],
-    queryFn: () => fetchSessionUserProfile(session.data, options),
+    queryFn: () => fetchUserProfile(session.data?.user.username, options),
   });
 };
 
 export const fetchSuggestedUserProfile = async (name: string) => {
-  const { playerProfiles: profilesByName } = await fetchPlayerProfiles('name');
-  return profilesByName?.[name] ?? null;
+  const { data } = await supabase
+    .from('Player Profiles')
+    .select('id,name,twitter_handle,tournament_history')
+    .eq('name', name);
+  const playerProfile: StoredPlayerProfile | undefined = data?.[0];
+  return playerProfile;
 };
 
 /**

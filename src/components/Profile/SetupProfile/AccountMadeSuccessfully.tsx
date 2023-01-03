@@ -1,7 +1,4 @@
 import { Heading, Stack, Text, Fade, Button, Link } from '@chakra-ui/react';
-import { Session } from 'next-auth';
-import { useEffect, useState } from 'react';
-import { FaArrowRight } from 'react-icons/fa';
 
 export const AccountMadeSuccessfully = () => {
   return (
