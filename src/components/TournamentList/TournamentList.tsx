@@ -8,7 +8,7 @@ export const TournamentList = ({
 }) => {
   return (
     <Stack>
-      {tournaments?.map((tournament, idx) => (
+      {tournaments.reverse()?.map((tournament, idx) => (
         <TournamentCard tournament={tournament} key={idx} />
       ))}
     </Stack>

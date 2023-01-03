@@ -69,21 +69,25 @@ const updatePlayerProfilesWithTournament = async (
   const upsertingRows = parsedData.reduce(
     (acc: Record<string, any>[], standing, idx) => {
       const player = playerProfiles[standing.name] ?? {
+        id: `${tournamentId}${idx}`,
         name: standing.name,
         tournamentHistory: [],
         twitterHandle: null,
       };
       const shouldUpdatePlayerProfile =
         !player.tournamentHistory.includes(tournamentId);
+      const duplicateName =
+        parsedData.filter(dataStanding => dataStanding.name === standing.name)
+          ?.length > 1;
 
-      if (!shouldUpdatePlayerProfile) {
+      if (!shouldUpdatePlayerProfile || duplicateName) {
         return acc;
       }
 
       return [
         ...acc,
         {
-          id: idx,
+          id: player.id,
           name: player.name,
           twitter_handle: player.twitterHandle,
           tournament_history: [
@@ -96,7 +100,7 @@ const updatePlayerProfilesWithTournament = async (
     []
   );
   await supabase.from('Player Profiles').upsert(upsertingRows, {
-    ignoreDuplicates: false,
+    onConflict: 'name',
   });
   console.log(
     'done updating players:',
@@ -251,7 +255,7 @@ const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   let data = await response.json();
   data = data.map((player: Standing) => ({
     ...player,
-    name: player.name.split('[')[0],
+    name: player.name.split('[')[0].trim(),
   }));
 
   console.log('getPokedata:', (performance.now() - perfStart) / 1000, 'sec');

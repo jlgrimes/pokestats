@@ -27,7 +27,7 @@ export const Player = memo(
 
     return (
       <Stack direction={'row'} alignItems='center'>
-        <PlayerNameLink name={name} twitterHandle={profile.twitterHandle} />
+        <PlayerNameLink name={name} twitterHandle={profile?.twitterHandle} />
         {isEditable && (
           <IconButton
             aria-label='edit-player'
