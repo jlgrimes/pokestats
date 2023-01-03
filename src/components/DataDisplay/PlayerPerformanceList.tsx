@@ -15,6 +15,7 @@ import { usePlayerPerformance } from '../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
+import { useUserIsAdmin } from '../../hooks/administrators';
 
 export const PlayerPerformanceList = ({
   user,
@@ -26,6 +27,7 @@ export const PlayerPerformanceList = ({
     user?.name,
     user?.tournamentHistory
   );
+  const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
     <TableContainer>
@@ -82,7 +84,7 @@ export const PlayerPerformanceList = ({
                     <DeckInfoDisplay
                       tournament={tournament}
                       player={performance}
-                      enableEdits={false}
+                      enableEdits={userMatchesLoggedInUser || userIsAdmin}
                     />
                   </Td>
                 </Tr>
