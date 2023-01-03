@@ -92,7 +92,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
 export async function getStaticProps(context: any) {
   const username = context.params?.id.toLowerCase();
-  const combinedProfile = await fetchUserProfile(username);
+  const combinedProfile = await fetchUserProfile(username, { prefetch: true });
 
   return {
     props: {
