@@ -96,8 +96,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 export async function getStaticProps(context: any) {
   const username = context.params?.id.toLowerCase();
 
-  const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
-    await fetchPlayerProfiles('twitter_handle');
+  const { playerProfiles } = await fetchPlayerProfiles('twitter_handle');
   const twitterProfile: TwitterPlayerProfile | undefined =
     await fetchServerSideTwitterProfile({ username });
   const playerProfile = playerProfiles?.[username];

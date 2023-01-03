@@ -1,3 +1,4 @@
+import { StoredPlayerProfile } from '../../../types/player';
 import { DeckArchetype, Standing } from '../../../types/tournament';
 import supabase from '../supabase/client';
 
@@ -26,17 +27,25 @@ const fetchDeckArchetypes = async () => {
 };
 
 export const fetchPlayerProfiles = async (
-  key: 'name' | 'twitter_handle' | 'id' = 'name'
+  key: 'name' | 'twitter_handle' | 'id' | 'name',
+  tournamentId?: string
 ) => {
   const perfStart = performance.now();
+  let playersUpdatedWithTournament: boolean = false;
 
   const res = await supabase
     .from('Player Profiles')
     .select('id,name,twitter_handle,tournament_history');
-  const profiles = await res.data?.reduce((acc, player) => {
+  const profiles : Record<string, StoredPlayerProfile> | undefined = await res.data?.reduce((acc, player) => {
     let playerKey: string = player[key];
     if (key === 'twitter_handle') {
       playerKey = playerKey?.toLowerCase();
+    }
+    if (
+      !playersUpdatedWithTournament &&
+      player.tournament_history.includes(tournamentId)
+    ) {
+      playersUpdatedWithTournament = true;
     }
 
     return {
@@ -56,7 +65,10 @@ export const fetchPlayerProfiles = async (
     'sec'
   );
 
-  return profiles;
+  return {
+    playerProfiles: profiles,
+    playersUpdatedWithTournament,
+  };
 };
 
 const updatePlayerProfilesWithTournament = async (
@@ -197,7 +209,7 @@ function mapResultsArray(
   roundNumber: number,
   playerDeckObjects: PlayerDeckObject[] | undefined,
   deckArchetypes: DeckArchetype[] | null,
-  playerProfiles: Record<string, string> | undefined,
+  playerProfiles: Record<string, StoredPlayerProfile> | undefined,
   shouldLoad?: LiveResultsLoadOptions
 ): Standing[] {
   const perfStart = performance.now();
@@ -300,14 +312,16 @@ export const fetchLiveResults = async (
     deckArchetypes
   );
 
-  let playerProfiles: Record<string, string> | undefined =
-    await fetchPlayerProfiles();
+  let { playerProfiles, playersUpdatedWithTournament } =
+    await fetchPlayerProfiles('name');
 
-  await updatePlayerProfilesWithTournament(
-    parsedData,
-    playerProfiles ?? {},
-    tournamentId
-  );
+  if (!playersUpdatedWithTournament) {
+    await updatePlayerProfilesWithTournament(
+      parsedData,
+      playerProfiles ?? {},
+      tournamentId
+    );
+  }
 
   parsedData = await mapResultsArray(
     parsedData,

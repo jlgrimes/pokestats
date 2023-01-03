@@ -1,7 +1,6 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import TournamentView from '../../../src/components/Tournament/TournamentView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { fetchAdministrators } from '../../../src/hooks/administrators';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { fetchPokedex } from '../../../src/hooks/images';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
@@ -24,7 +23,6 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   await queryClient.prefetchQuery([`live-results-${params.id}`], () =>
     fetchLiveResults(params.id, { prefetch: true })
   );
-  await queryClient.prefetchQuery([`administrators`], fetchAdministrators);
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
   const tournaments = await fetchTournaments({ prefetch: true });

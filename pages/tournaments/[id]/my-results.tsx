@@ -32,12 +32,6 @@ export default function MyMatchups({
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(
-    [`live-results-${params.id}`, 'roundData'],
-    () =>
-      fetchLiveResults(params.id, { prefetch: true, load: { roundData: true } })
-  );
-
   const tournaments = await fetchTournaments({ prefetch: true })
 
   return {

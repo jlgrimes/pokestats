@@ -18,8 +18,7 @@ export const fetchSessionUserProfile = async (
 ) => {
   const username = session?.user.username ?? '';
 
-  const playerProfiles: Record<string, StoredPlayerProfile> | undefined =
-    await fetchPlayerProfiles('twitter_handle');
+  const { playerProfiles } = await fetchPlayerProfiles('twitter_handle');
   let twitterProfile: TwitterPlayerProfile | undefined;
 
   if (options?.prefetch) {
@@ -53,8 +52,7 @@ export const useSessionUserProfile = (options?: { prefetch: boolean }) => {
 };
 
 export const fetchSuggestedUserProfile = async (name: string) => {
-  const profilesByName: Record<string, StoredPlayerProfile> | undefined =
-    await fetchPlayerProfiles('name');
+  const { playerProfiles: profilesByName } = await fetchPlayerProfiles('name');
   return profilesByName?.[name] ?? null;
 };
 
