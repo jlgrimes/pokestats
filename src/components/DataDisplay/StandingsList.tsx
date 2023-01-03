@@ -7,7 +7,7 @@ import {
   Thead,
   Th,
 } from '@chakra-ui/react';
-import { Standing } from '../../../types/tournament';
+import { Standing, Tournament } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
@@ -20,7 +20,7 @@ export const StandingsList = ({
   tournamentFinished,
 }: {
   results: Standing[];
-  tournament: { id: string; name: string };
+  tournament: Tournament;
   tournamentFinished: boolean;
 }) => {
   const { data: userIsAdmin } = useUserIsAdmin();

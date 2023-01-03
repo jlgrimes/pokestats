@@ -9,11 +9,12 @@ import {
 import { useState } from 'react';
 import { ArchetypeGraph } from './ArchetypeGraph';
 import { ArchetypeBarGraph } from './ArchetypeBarGraph';
+import { Tournament } from '../../../../types/tournament';
 
 export const ArchetypeGraphsContainer = ({
   tournament,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
 }) => {
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
   const [shouldShowPieChart, setShouldShowPieChart] = useState(false);

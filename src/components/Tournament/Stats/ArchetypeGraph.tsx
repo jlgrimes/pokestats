@@ -9,13 +9,13 @@ import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useHighResImageUrls } from '../../../hooks/images';
 import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
-import { DeckArchetype } from '../../../../types/tournament';
+import { DeckArchetype, Tournament } from '../../../../types/tournament';
 
 export const ArchetypeGraph = ({
   tournament,
   shouldDrillDown,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament
   shouldDrillDown: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);

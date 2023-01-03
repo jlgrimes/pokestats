@@ -3,6 +3,7 @@ import { useLoggedInPlayerLiveResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
 import { ordinalSuffixOf } from '../../../lib/strings';
+import { Tournament } from '../../../../types/tournament';
 
 const RecordNeeded = ({
   record,
@@ -52,7 +53,7 @@ export const LoggedInPlayerStatus = ({
   tournament,
   tournamentFinished,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
   tournamentFinished: boolean;
 }) => {
   const playerResults = useLoggedInPlayerLiveResults(tournament.id);

@@ -12,11 +12,12 @@ import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
+import { Tournament } from '../../../types/tournament';
 
 export const MyMatchupsList = ({
   tournament,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
 }) => {
   const player = useLoggedInPlayerLiveResults(tournament.id, {
     load: { opponentRoundData: true },

@@ -3,15 +3,13 @@ import Head from 'next/head';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
 import { fetchPokedex } from '../src/hooks/images';
 import { fetchTournaments } from '../src/hooks/tournaments';
-import { fetchLiveResults } from '../src/lib/fetch/fetchLiveResults';
-import { LOCAL_TOURNAMENTS } from '../src/lib/sample-data';
-import supabase from '../src/lib/supabase/client';
 import styles from '../styles/Home.module.css';
+import { Tournament } from '../types/tournament';
 
 export default function Home({
   tournaments,
 }: {
-  tournaments: { id: string; name: string }[];
+  tournaments: Tournament[];
 }) {
   return (
     <div className={styles.container}>

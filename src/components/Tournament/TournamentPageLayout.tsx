@@ -1,5 +1,6 @@
 import { Heading, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
+import { Tournament } from '../../../types/tournament';
 import { TournamentTabs } from './TournamentTabs';
 
 export const TournamentPageLayout = ({
@@ -7,7 +8,7 @@ export const TournamentPageLayout = ({
   tournament,
 }: {
   children: ReactNode;
-  tournament: { id: string; name: string };
+  tournament: Tournament;
 }) => {
   return (
     <Stack spacing={0}>

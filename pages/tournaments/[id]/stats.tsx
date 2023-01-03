@@ -1,19 +1,15 @@
-import { Heading, Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { ArchetypeGraph } from '../../../src/components/Tournament/Stats/ArchetypeGraph';
 import { ArchetypeGraphsContainer } from '../../../src/components/Tournament/Stats/ArchetypeGraphsContainer';
-import { TournamentDetails } from '../../../src/components/Tournament/Stats/TournamentDetails';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { TournamentTabs } from '../../../src/components/Tournament/TournamentTabs';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
-import supabase from '../../../src/lib/supabase/client';
+import { Tournament } from '../../../types/tournament';
 
 export default function StatsPage({
   tournament,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
 }) {
   const { data: liveResults } = useLiveTournamentResults(
     tournament.id as string

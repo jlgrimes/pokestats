@@ -7,7 +7,7 @@ import {
   XAxis,
   LabelList,
 } from 'recharts';
-import { DeckArchetype } from '../../../../types/tournament';
+import { DeckArchetype, Tournament } from '../../../../types/tournament';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { useLowResImageUrls } from '../../../hooks/images';
 import { LOW_RES_SUBSTITUTE_URL } from '../../common/helpers';
@@ -17,7 +17,7 @@ export const ArchetypeBarGraph = ({
   tournament,
   shouldDrillDown,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
   shouldDrillDown: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);

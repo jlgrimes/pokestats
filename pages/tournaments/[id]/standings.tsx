@@ -1,19 +1,20 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import Tournament from '../../../src/components/Tournament/Tournament';
+import TournamentView from '../../../src/components/Tournament/TournamentView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { fetchAdministrators } from '../../../src/hooks/administrators';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { fetchPokedex } from '../../../src/hooks/images';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
+import { Tournament } from '../../../types/tournament';
 
 export default function TournamentPage({
   tournament,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
 }) {
   return (
     <TournamentPageLayout tournament={tournament}>
-      <Tournament tournament={tournament} />
+      <TournamentView tournament={tournament} />
     </TournamentPageLayout>
   );
 }

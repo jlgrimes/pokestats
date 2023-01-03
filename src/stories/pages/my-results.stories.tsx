@@ -1,5 +1,6 @@
 import { SessionProvider } from 'next-auth/react';
 import MyResults from '../../../pages/tournaments/[id]/my-results';
+import { Tournament } from '../../../types/tournament';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { MOCK_AFTER_DAY_1_STANDINGS } from '../../mocks/after-day-1-standings';
 import { MOCK_DECK_ARCHETYPES } from '../../mocks/deck-archetypes';
@@ -54,7 +55,7 @@ export const FinalMyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: tournamentId, name: 'Toronto 2022' }}
+        tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
       />
     </AppLayout>
   </SessionProvider>
@@ -78,7 +79,7 @@ export const AfterDay1MyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: tournamentId, name: 'Toronto 2022' }}
+        tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
       />
     </AppLayout>
   </SessionProvider>
@@ -102,7 +103,7 @@ export const DuringDay1MyResultsPage = () => (
   >
     <AppLayout>
       <MyResults
-        tournament={{ id: tournamentId, name: 'Toronto 2022' }}
+        tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
       />
     </AppLayout>
   </SessionProvider>

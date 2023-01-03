@@ -6,11 +6,12 @@ import { TournamentPageLayout } from '../../../src/components/Tournament/Tournam
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
+import { Tournament } from '../../../types/tournament';
 
 export default function MyMatchups({
   tournament,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
 }) {
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
     load: { roundData: true },

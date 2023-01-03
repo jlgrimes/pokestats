@@ -1,11 +1,12 @@
 import { Stack } from '@chakra-ui/react';
+import { Tournament } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { StandingsList } from '../DataDisplay/StandingsList';
 
-export default function Tournament({
+export default function TournamentView({
   tournament,
 }: {
-  tournament: { id: string; name: string };
+  tournament: Tournament;
 }) {
   const { data: liveResults } = useLiveTournamentResults(tournament.id);
 

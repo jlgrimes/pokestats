@@ -1,6 +1,6 @@
 import { IconButton, Stack, StackItem, useDisclosure } from '@chakra-ui/react';
 import { FaRegEdit } from 'react-icons/fa';
-import { Standing } from '../../../types/tournament';
+import { Standing, Tournament } from '../../../types/tournament';
 import DeckInput from './DeckInput/DeckInput';
 import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 
@@ -11,7 +11,7 @@ export const DeckInfoDisplay = ({
   shouldShowAsText,
 }: {
   player: Standing;
-  tournament: { id: string; name: string };
+  tournament: Tournament;
   enableEdits: boolean;
   shouldShowAsText?: boolean;
 }) => {

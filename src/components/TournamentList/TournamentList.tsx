@@ -1,10 +1,11 @@
 import { Stack } from '@chakra-ui/react';
+import { Tournament } from '../../../types/tournament';
 import { TournamentCard } from './TournamentCard';
 
 export const TournamentList = ({
   tournaments,
 }: {
-  tournaments: { id: string; name: string }[];
+  tournaments: Tournament[];
 }) => {
   return (
     <Stack>
