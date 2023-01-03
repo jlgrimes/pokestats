@@ -12,6 +12,7 @@ export default function TournamentView({
 
   return (
     <Stack>
+      
       {liveResults && (
         <StandingsList
           results={liveResults.data}

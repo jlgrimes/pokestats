@@ -3,7 +3,10 @@ import TournamentView from '../../../src/components/Tournament/TournamentView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { fetchPokedex } from '../../../src/hooks/images';
-import { fetchTournaments } from '../../../src/hooks/tournaments';
+import {
+  fetchCurrentTournamentInfo,
+  fetchTournaments,
+} from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
 
 export default function TournamentPage({
@@ -25,14 +28,13 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   );
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
-  const tournaments = await fetchTournaments({ prefetch: true });
+  const tournament = await fetchCurrentTournamentInfo(params.id, {
+    prefetch: true,
+  });
 
   return {
     props: {
-      tournament: {
-        id: params.id,
-        name: tournaments?.find(({ id }) => id === params.id)?.name,
-      },
+      tournament,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,

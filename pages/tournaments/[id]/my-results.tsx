@@ -4,15 +4,14 @@ import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsLi
 import { LoggedInPlayerStatus } from '../../../src/components/Tournament/Results/LoggedInPlayerStatus';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
-import { fetchTournaments } from '../../../src/hooks/tournaments';
+import {
+  fetchCurrentTournamentInfo,
+  fetchTournaments,
+} from '../../../src/hooks/tournaments';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../types/tournament';
 
-export default function MyMatchups({
-  tournament,
-}: {
-  tournament: Tournament;
-}) {
+export default function MyMatchups({ tournament }: { tournament: Tournament }) {
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
     load: { roundData: true },
   });
@@ -32,14 +31,11 @@ export default function MyMatchups({
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  const tournaments = await fetchTournaments({ prefetch: true })
+  const tournament = fetchCurrentTournamentInfo(params.id, { prefetch: true });
 
   return {
     props: {
-      tournament: {
-        id: params.id,
-        name: tournaments?.find(({ id }) => id === params.id)?.name,
-      },
+      tournament,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,

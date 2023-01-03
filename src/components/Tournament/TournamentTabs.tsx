@@ -1,21 +1,23 @@
 import { Tabs, TabList, Tab, Badge, Stack, Text } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { Tournament } from '../../../types/tournament';
 import { useSessionUserProfile } from '../../hooks/user';
+import { getStandingsBadgeProps } from './helpers';
 
-export const TournamentTabs = () => {
+export const TournamentTabs = ({ tournament }: { tournament: Tournament }) => {
   const router = useRouter();
 
-  const tournamentId = router.query.id;
-
   const { data: userProfile } = useSessionUserProfile();
-  const userIsInTournament =
-    userProfile?.tournamentHistory?.includes(tournamentId as string);
+  const userIsInTournament = userProfile?.tournamentHistory?.includes(
+    tournament.id as string
+  );
 
   const tabs = [
     {
       name: 'Standings',
       slug: 'standings',
+      badge: getStandingsBadgeProps(tournament),
     },
     ...(userIsInTournament
       ? [
@@ -34,9 +36,10 @@ export const TournamentTabs = () => {
   return (
     <Tabs
       size='sm'
-      variant='soft-rounded'
+      variant='enclosed'
+      colorScheme='black'
       onChange={idx =>
-        router.push(`/tournaments/${tournamentId}/${tabs[idx].slug}`)
+        router.push(`/tournaments/${tournament.id}/${tabs[idx].slug}`)
       }
       defaultIndex={tabs.findIndex(
         ({ slug }) =>
@@ -45,15 +48,11 @@ export const TournamentTabs = () => {
       padding={'0 1.5rem'}
     >
       <TabList>
-        {tabs.map(({ name, slug }, idx) => (
+        {tabs.map(({ name, badge }, idx) => (
           <Tab key={idx}>
-            <Stack direction={'row'} alignItems={'center'}>
+            <Stack direction={'row'} alignItems={'center'} spacing={1}>
               <Text>{name}</Text>
-              {/* {badge && (
-                <Badge variant='subtle' colorScheme='green'>
-                  {badge}
-                </Badge>
-              )} */}
+              {badge && <Badge variant='subtle' {...badge} />}
             </Stack>
           </Tab>
         ))}
