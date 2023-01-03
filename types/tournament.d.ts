@@ -16,7 +16,7 @@ export interface DeckArchetype {
 export interface Deck {
   name?: string;
   defined_pokemon?: string[];
-  identifiable_cards?: string[]
+  identifiable_cards?: string[];
   list?: { pokemon: Card[]; trainer: Card[]; energy: Card[] };
 }
 
@@ -26,7 +26,7 @@ export interface Standing {
   placing: string;
   record: { wins: number; ties: number; losses: number };
   currentMatchResult?: 'W' | 'L' | 'T';
-  rounds?: { name: string, result: string, opponent: Standing }[];
+  rounds?: { name: string; result: string; opponent: Standing }[];
   day2: boolean;
   deck: Deck;
 }
@@ -38,4 +38,16 @@ export interface MatchupResult extends Standing {
 export interface Tournament {
   id: string;
   name: string;
+  date: {
+    start: string;
+    end: string;
+  };
+  tournamentStatus: 'not-started' | 'running' | 'finished';
+  roundNumbers: {
+    juniors: number | null;
+    seniors: number | null;
+    masters: number | null;
+  };
+  lastUpdated: string | null;
+  rk9link: string;
 }

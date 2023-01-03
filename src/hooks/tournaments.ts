@@ -1,11 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
+import { Tournament } from '../../types/tournament';
 
-export const fetchTournaments = async (options?: { prefetch?: boolean }) => {
-  const data = await fetch(
+export const fetchTournaments = async (options?: {
+  prefetch?: boolean;
+}) => {
+  const res: Response = await fetch(
     `${
       options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
     }/standings/tournaments.json`
-  ).then(res => res.json());
+  );
+  const data: Tournament[] = await res.json();
 
   return data;
 };

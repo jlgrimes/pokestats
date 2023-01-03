@@ -67,18 +67,18 @@ export const useLoggedInPlayerLiveResults = (
     return {
       ...player,
       rounds: player.rounds.map(roundResult => {
-          const opponent = liveResults?.data.find(
-            player => player.name === roundResult.name
-          );
+        const opponent = liveResults?.data.find(
+          player => player.name === roundResult.name
+        );
 
-          if (opponent) {
-            return {
-              ...roundResult,
-              opponent,
-            };
-          }
+        if (opponent) {
+          return {
+            ...roundResult,
+            opponent,
+          };
+        }
 
-          return roundResult;
+        return roundResult;
       }),
     };
   }
@@ -122,7 +122,7 @@ export const usePlayerPerformance = (
         return [
           ...acc,
           {
-            tournament: tournaments?.data?.find(
+            tournament: tournaments?.find(
               ({ id }) => id === tournamentHistory[tournamentIdx]
             ),
             performance: perf,

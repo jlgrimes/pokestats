@@ -16,7 +16,7 @@ export const RecommendedSuggestedUser = ({
   didNotAttendCallback: () => void;
   accountMadeSuccessfullyCallback: () => void;
 }) => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const [elementFadedIn, setElementFadedIn] = useState(0);
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
@@ -27,9 +27,9 @@ export const RecommendedSuggestedUser = ({
   const attendedTournaments = useMemo(
     () =>
       suggestedUser?.tournamentHistory.map(
-        id => tournaments?.data?.find(tournament => tournament.id === id)?.name
+        id => tournaments?.find(tournament => tournament.id === id)?.name
       ),
-    [suggestedUser?.tournamentHistory, tournaments?.data]
+    [suggestedUser?.tournamentHistory, tournaments]
   );
 
   const onIdentityConfirmClick = useCallback(async () => {
@@ -40,11 +40,14 @@ export const RecommendedSuggestedUser = ({
         twitter_handle: session.user.username,
       })
       .eq('name', session.user.name);
-      
-    queryClient.setQueryData([`session-user-profile`, session.user.username], () => ({
-      name: session.user.name,
-      username: session.user.username,
-    }));
+
+    queryClient.setQueryData(
+      [`session-user-profile`, session.user.username],
+      () => ({
+        name: session.user.name,
+        username: session.user.username,
+      })
+    );
     accountMadeSuccessfullyCallback();
     setIdentityConfirmationLoading(false);
   }, []);
