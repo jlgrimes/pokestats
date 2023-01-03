@@ -62,7 +62,7 @@ export const AppBar = () => {
                 >
                   <Stack direction={'row'} alignItems='baseline' spacing={0}>
                     {isUserProfileLoading ? (
-                      <SkeletonCircle size='10' />
+                      <SkeletonCircle size='8' />
                     ) : (
                       <Avatar
                         size='sm'
@@ -70,7 +70,13 @@ export const AppBar = () => {
                         src={session.user?.profile_image_url as string}
                       />
                     )}
-                    {userProfile ? <VerifiedIcon /> : <NotVerifiedIcon />}
+                    {userProfile ? (
+                      <VerifiedIcon />
+                    ) : isUserProfileLoading ? (
+                      <SkeletonCircle size='4' />
+                    ) : (
+                      <NotVerifiedIcon />
+                    )}
                   </Stack>
                 </LinkOverlay>
               </LinkBox>

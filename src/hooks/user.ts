@@ -47,7 +47,7 @@ export const useSessionUserProfile = (options?: { prefetch: boolean }) => {
   const session = useSession();
 
   return useQuery({
-    queryKey: [`session-user-profile`],
+    queryKey: [`session-user-profile`, session.data?.user.username],
     queryFn: () => fetchSessionUserProfile(session.data, options),
   });
 };
