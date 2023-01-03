@@ -7,6 +7,7 @@ import {
   Link,
   Thead,
   Th,
+  Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
@@ -35,7 +36,9 @@ export const PlayerPerformanceList = ({
               Tournament
             </Th>
             <Th padding={0}>Seed</Th>
-            <Th padding={0} paddingLeft={2}>Record</Th>
+            <Th padding={0} paddingLeft={2}>
+              Record
+            </Th>
             <Th padding={0} paddingLeft={2}>
               Deck
             </Th>
@@ -53,15 +56,23 @@ export const PlayerPerformanceList = ({
                         color='blue.500'
                         href={`/tournaments/${tournament.id}/my-results`}
                       >
-                        {tournament.name}
+                        <Text
+                          fontSize='sm'
+                          whiteSpace={'pre-wrap'}
+                          overflowWrap={'break-word'}
+                        >
+                          {tournament.name}
+                        </Text>
                       </Link>
                     ) : (
-                      tournament.name
+                      <Text fontSize='sm'>{tournament.name}</Text>
                     )}
                   </Td>
                   <Td padding={0}>{performance.placing}</Td>
-                  <Td padding={0} paddingLeft={2}>{formatRecord(performance.record)}</Td>
                   <Td padding={0} paddingLeft={2}>
+                    {formatRecord(performance.record)}
+                  </Td>
+                  <Td padding={0} paddingLeft={2} width='80px'>
                     <DeckInfoDisplay
                       tournament={tournament}
                       player={performance}

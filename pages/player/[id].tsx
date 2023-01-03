@@ -45,7 +45,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
   return (
     <>
-      <Stack padding='1.5rem 1.5rem' spacing={6}>
+      <Stack padding='1.5rem 0' spacing={6}>
         <Stack spacing={4} alignItems={'center'}>
           <Avatar
             size={'xl'}
@@ -68,7 +68,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
           </Stack>
         </Stack>
         {userOwnsPage && (
-          <Stack>
+          <Stack alignItems={'center'}>
             {userIsAdmin && (
               <Heading size={'sm'} fontWeight='semibold'>
                 You are a site admin!
