@@ -1,5 +1,5 @@
-import { StoredPlayerProfile } from '../../../types/player';
 import { DeckArchetype, Standing } from '../../../types/tournament';
+import { fetchCurrentTournamentInfo } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
 
 export const fetchPlayerDecks = async (tournamentId: string) => {
@@ -82,7 +82,7 @@ export const updatePlayerProfilesWithTournament = async (
     .upsert(upsertingRows, {
       onConflict: 'name',
     });
-  
+
   console.log(
     'done updating players:',
     (performance.now() - perfStart) / 1000,
@@ -209,22 +209,6 @@ function mapResultsArray(
   return mappedArray;
 }
 
-type Data = {
-  roundNumber: number;
-  data: string;
-};
-
-const getRoundNumber = (firstPlace: Record<string, any>) => {
-  let highestRound = 0;
-  for (const key of Object.keys(firstPlace.rounds)) {
-    if (parseInt(key) > highestRound) {
-      highestRound = parseInt(key);
-    }
-  }
-
-  return highestRound;
-};
-
 export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   const perfStart = performance.now();
 
@@ -271,8 +255,9 @@ export const fetchLiveResults = async (
     tournamentId as string,
     options?.prefetch
   );
-  const roundNumber = getRoundNumber(parsedData[0]);
 
+  const tournament = await fetchCurrentTournamentInfo(tournamentId, options);
+  const roundNumber = tournament?.roundNumbers.masters as number;
   const deckArchetypes = await fetchDeckArchetypes();
 
   const playerDeckObjects = await getPlayerDeckObjects(
