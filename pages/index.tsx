@@ -39,11 +39,6 @@ export async function getStaticProps() {
   const tournaments = await fetchTournaments({ prefetch: true });
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
-  for await (const tournament of tournaments ?? []) {
-    await queryClient.prefetchQuery([`live-results-${tournament.id}`], () =>
-      fetchLiveResults(tournament.id, { prefetch: true })
-    );
-  }
 
   return {
     props: { tournaments, dehydratedState: dehydrate(queryClient) },
