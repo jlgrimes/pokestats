@@ -68,10 +68,9 @@ export const AppBar = () => {
               </Stack>
             </LinkOverlay>
           </LinkBox>
-
-          {userIsAdmin && <AdminLinks />}
         </Stack>
-        <Stack direction={'row'} alignItems={'center'}>
+        <Stack direction={'row'} alignItems={'center'} spacing={6}>
+          {userIsAdmin && <AdminLinks />}
           {session ? (
             <>
               <LinkBox>

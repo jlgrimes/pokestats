@@ -1,5 +1,5 @@
 import { Badge, IconButton, Link, Stack } from '@chakra-ui/react';
-import { FaIdBadge } from 'react-icons/fa';
+import { FaRegIdBadge, FaUsersCog } from 'react-icons/fa';
 import { useAccountRequests } from '../../hooks/user';
 
 export const AdminLinks = () => {
@@ -13,9 +13,11 @@ export const AdminLinks = () => {
       paddingRight={2}
     >
       <IconButton
+        color='gray.700'
         variant={'ghost'}
         aria-label='Manage access requests'
-        icon={<FaIdBadge />}
+        icon={<FaUsersCog />}
+        margin='-1'
         as={Link}
         href='/admin/account-requests'
       />
