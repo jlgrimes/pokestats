@@ -34,7 +34,7 @@ export const fetchPlayerProfiles = async (
     .from('Player Profiles')
     .select('id,name,twitter_handle,tournament_history');
   const profiles = await res.data?.reduce((acc, player) => {
-    let playerKey = player[key];
+    let playerKey: string = player[key];
     if (key === 'twitter_handle') {
       playerKey = playerKey?.toLowerCase();
     }
@@ -59,49 +59,24 @@ export const fetchPlayerProfiles = async (
   return profiles;
 };
 
-const uploadMissingPlayerProfiles = async (
-  parsedData: Record<string, any>[],
-  playerProfiles: Record<string, string> | undefined
-) => {
-  if (!parsedData || !playerProfiles) {
-    return;
-  }
-
-  const missingPlayerRows = await parsedData.reduce(
-    (acc: Record<string, any>[], { name }) => {
-      if (!playerProfiles[name]) {
-        return [...acc, { name }];
-      }
-      return acc;
-    },
-    []
-  );
-
-  if (missingPlayerRows.length > 0) {
-    await supabase.from('Player Profiles').insert(missingPlayerRows);
-    return true;
-  }
-
-  return false;
-};
-
 const updatePlayerProfilesWithTournament = async (
   parsedData: Record<string, any>[],
   playerProfiles: Record<string, any>,
   tournamentId: string
 ) => {
+  const perfStart = performance.now();
+  console.log('updating players for tournament', tournamentId);
   const upsertingRows = parsedData.reduce(
-    (acc: Record<string, any>[], profile) => {
-      const player = playerProfiles[profile.name];
+    (acc: Record<string, any>[], standing) => {
+      const player = playerProfiles[standing.name] ?? {
+        name: standing.name,
+        tournamentHistory: [],
+        twitterHandle: null
+      };
       const shouldUpdatePlayerProfile =
         !player.tournamentHistory.includes(tournamentId);
-      // This is part of a much bigger issue, where people with the same name are getting put into the database as one person.
-      // This only affects like 4 people per regional, but this problem is going to have to eventually be solved.
-      // If we run into this in the real world, I'll just hard code a fix for now I guess. Though it's hard.
-      // Easiest thing to do would be to just scrape the POP ID but that's not possible.
-      const hasDuplicateName = acc.some(({ id }) => id === player.id);
 
-      if (!shouldUpdatePlayerProfile || hasDuplicateName) {
+      if (!shouldUpdatePlayerProfile) {
         return acc;
       }
 
@@ -112,7 +87,7 @@ const updatePlayerProfilesWithTournament = async (
           name: player.name,
           twitter_handle: player.twitterHandle,
           tournament_history: [
-            ...(playerProfiles[profile.name].tournamentHistory ?? []),
+            ...(player.tournamentHistory ?? []),
             tournamentId,
           ],
         },
@@ -123,6 +98,11 @@ const updatePlayerProfilesWithTournament = async (
   await supabase.from('Player Profiles').upsert(upsertingRows, {
     onConflict: 'id',
   });
+  console.log(
+    'done updating players:',
+    (performance.now() - perfStart) / 1000,
+    'sec'
+  );
 };
 
 const getPlayerDeckObjects = async (
@@ -226,7 +206,9 @@ function mapResultsArray(
       profile: playerProfiles?.[player.name] ?? null,
       placing: player.placing,
       record: player.record,
-      ...(shouldLoad?.roundData ? { rounds: Object.values(player?.rounds ?? {}) } : {}),
+      ...(shouldLoad?.roundData
+        ? { rounds: Object.values(player?.rounds ?? {}) }
+        : {}),
       ...(currentMatchResult ? { currentMatchResult } : {}),
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
@@ -266,7 +248,11 @@ const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
       prefetch ? 'https://pokedata.ovh' : '/pokedata'
     }/standings/${tournamentId}/masters/${tournamentId}_Masters.json`
   );
-  const data = await response.json();
+  let data = await response.json();
+  data = data.map((player: Standing) => ({
+    ...player,
+    name: player.name.split('[')[0],
+  }));
 
   console.log('getPokedata:', (performance.now() - perfStart) / 1000, 'sec');
 
@@ -312,13 +298,6 @@ export const fetchLiveResults = async (
   let playerProfiles: Record<string, string> | undefined =
     await fetchPlayerProfiles();
 
-  const uploadedMissingPlayers = await uploadMissingPlayerProfiles(
-    parsedData,
-    playerProfiles
-  );
-  if (uploadedMissingPlayers) {
-    playerProfiles = await fetchPlayerProfiles();
-  }
   await updatePlayerProfilesWithTournament(
     parsedData,
     playerProfiles ?? {},
