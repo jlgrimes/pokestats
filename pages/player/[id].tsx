@@ -52,7 +52,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
             name={user?.name ?? undefined}
             src={user?.profile_image_url ?? undefined}
           />
-          <Stack spacing={0} alignItems={'center'}>
+          <Stack alignItems={'center'}>
             <Stack direction={'row'} alignItems='center'>
               <Heading color='gray.700'>{user?.name}</Heading>
               <Link
@@ -105,22 +105,17 @@ export async function getStaticProps(context: any) {
 export async function getStaticPaths(id: string) {
   const { data: playerProfiles } = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history');
+    .select('id,name,twitter_handle,tournament_history')
+    .neq('twitter_handle', null);
 
-  const paths = playerProfiles?.reduce((acc: any[], player) => {
-    if (player.twitter_handle) {
-      return [
-        ...acc,
-        {
-          params: {
-            id: player.twitter_handle,
-          },
-        },
-      ];
-    }
-
-    return acc;
-  }, []);
+  const paths = playerProfiles?.map(
+    player => ({
+      params: {
+        id: player.twitter_handle,
+      },
+    }),
+    []
+  );
 
   return {
     paths,
