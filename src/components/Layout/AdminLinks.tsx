@@ -6,7 +6,12 @@ export const AdminLinks = () => {
   const { data: accountRequests } = useAccountRequests();
 
   return (
-    <Stack direction='row' alignItems={'baseline'} spacing={-4} paddingRight={2}>
+    <Stack
+      direction='row'
+      alignItems={'baseline'}
+      spacing={-4}
+      paddingRight={2}
+    >
       <IconButton
         variant={'ghost'}
         aria-label='Manage access requests'
@@ -15,9 +20,11 @@ export const AdminLinks = () => {
         href='/admin/account-requests'
       />
       <div>
-        <Badge ml='1' colorScheme={'red'}>
-          {accountRequests?.length}
-        </Badge>
+        {accountRequests && accountRequests?.length > 0 && (
+          <Badge ml='1' colorScheme={'red'}>
+            {accountRequests?.length}
+          </Badge>
+        )}
       </div>
     </Stack>
   );
