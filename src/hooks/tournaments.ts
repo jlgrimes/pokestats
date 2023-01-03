@@ -1,15 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import { LOCAL_TOURNAMENTS } from '../lib/sample-data';
-import supabase from '../lib/supabase/client';
 
-export const fetchTournaments = async () => {
-  const data = await LOCAL_TOURNAMENTS.reverse();
-  return { data };
+export const fetchTournaments = async (options?: { prefetch?: boolean }) => {
+  const data = await fetch(
+    `${
+      options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
+    }/standings/tournaments.json`
+  ).then(res => res.json());
+
+  return data;
 };
 
-export const useTournaments = () => {
+export const useTournaments = (options?: { prefetch?: boolean }) => {
   return useQuery({
     queryKey: ['tournaments'],
-    queryFn: fetchTournaments,
+    queryFn: () => fetchTournaments(options),
   });
 };

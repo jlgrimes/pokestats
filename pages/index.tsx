@@ -2,6 +2,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
 import { fetchPokedex } from '../src/hooks/images';
+import { fetchTournaments } from '../src/hooks/tournaments';
 import { fetchLiveResults } from '../src/lib/fetch/fetchLiveResults';
 import { LOCAL_TOURNAMENTS } from '../src/lib/sample-data';
 import supabase from '../src/lib/supabase/client';
@@ -35,7 +36,7 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const tournaments = LOCAL_TOURNAMENTS.reverse();
+  const tournaments = await fetchTournaments({ prefetch: true });
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
   for await (const tournament of tournaments ?? []) {

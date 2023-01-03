@@ -42,7 +42,7 @@ export const AppBar = () => {
         <Stack direction='row' alignItems='baseline'>
           <LinkBox>
             <LinkOverlay href={`/`}>
-              <Stack direction={'row'} alignItems='center' spacing={1}>
+              <Stack direction={'row'} alignItems='center' spacing={0}>
                 <Heading
                   color={'gray.700'}
                   letterSpacing={'wider'}
@@ -56,9 +56,9 @@ export const AppBar = () => {
                   letterSpacing={'wider'}
                   size={'md'}
                   fontWeight={'black'}
-                  color='pink.600'
+                  color='red.600'
                 >
-                  live
+                  .live
                 </Heading>
               </Stack>
             </LinkOverlay>
