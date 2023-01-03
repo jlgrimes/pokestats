@@ -26,7 +26,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   await queryClient.prefetchQuery([`administrators`], fetchAdministrators);
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
-  const { data: tournaments } = await fetchTournaments();
+  const tournaments = await fetchTournaments({ prefetch: true });
 
   return {
     props: {
@@ -41,13 +41,15 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 }
 
 export async function getStaticPaths() {
-  const { data: tournaments } = await fetchTournaments();
-  const paths = tournaments?.map(tournament => ({
-    params: {
-      id: tournament.id,
-      displayName: tournament.name,
-    },
-  }));
+  const tournaments = await fetchTournaments({ prefetch: true });
+  const paths = tournaments?.map(tournament => {
+    return {
+      params: {
+        id: tournament.id,
+        displayName: tournament.name,
+      },
+    };
+  });
 
   return {
     paths,

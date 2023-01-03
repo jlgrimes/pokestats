@@ -67,11 +67,11 @@ const updatePlayerProfilesWithTournament = async (
   const perfStart = performance.now();
   console.log('updating players for tournament', tournamentId);
   const upsertingRows = parsedData.reduce(
-    (acc: Record<string, any>[], standing) => {
+    (acc: Record<string, any>[], standing, idx) => {
       const player = playerProfiles[standing.name] ?? {
         name: standing.name,
         tournamentHistory: [],
-        twitterHandle: null
+        twitterHandle: null,
       };
       const shouldUpdatePlayerProfile =
         !player.tournamentHistory.includes(tournamentId);
@@ -83,7 +83,7 @@ const updatePlayerProfilesWithTournament = async (
       return [
         ...acc,
         {
-          id: player.id,
+          id: idx,
           name: player.name,
           twitter_handle: player.twitterHandle,
           tournament_history: [
@@ -96,7 +96,7 @@ const updatePlayerProfilesWithTournament = async (
     []
   );
   await supabase.from('Player Profiles').upsert(upsertingRows, {
-    onConflict: 'id',
+    ignoreDuplicates: false,
   });
   console.log(
     'done updating players:',
@@ -280,6 +280,7 @@ export const fetchLiveResults = async (
   tournamentId: string,
   options?: FetchLiveResultsOptions
 ) => {
+  console.log('starting fetch live results for', tournamentId);
   const startTime = performance.now();
 
   let parsedData: Standing[] = await getPokedata(
@@ -314,7 +315,13 @@ export const fetchLiveResults = async (
   );
   const endTime = performance.now();
 
-  console.log('Total time:', (endTime - startTime) / 1000, 'sec');
+  console.log(
+    'Finished for',
+    tournamentId,
+    '. Total time:',
+    (endTime - startTime) / 1000,
+    'sec'
+  );
   // The criteria of the tournament being completed is if there's a list published,
   // which is the case except in the few days before lists are published on RK9.
   // So, there are a few inaccurate days where 1 and 2 seed will be colored and the

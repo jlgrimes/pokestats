@@ -37,7 +37,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
       fetchLiveResults(params.id, { prefetch: true, load: { roundData: true } })
   );
 
-  const { data: tournaments } = await fetchTournaments()
+  const tournaments = await fetchTournaments({ prefetch: true })
 
   return {
     props: {
@@ -52,7 +52,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 }
 
 export async function getStaticPaths() {
-  const { data: tournaments } = await fetchTournaments();
+  const tournaments = await fetchTournaments({ prefetch: true });
   const paths = tournaments?.map(tournament => ({
     params: {
       id: tournament.id,
