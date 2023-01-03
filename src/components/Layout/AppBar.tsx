@@ -9,6 +9,7 @@ import {
   SkeletonCircle,
   Icon,
   IconButton,
+  Badge,
 } from '@chakra-ui/react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -38,17 +39,36 @@ export const AppBar = () => {
         justifyContent={'space-between'}
         boxShadow='sm'
       >
-        <Stack direction='row'>
-          <Heading
-            color={'gray.700'}
-            letterSpacing={'wider'}
-            textTransform={'uppercase'}
-            size={'md'}
-            fontWeight={'black'}
-            lineHeight={'taller'}
-          >
-            <Link href='/'>pokéstats</Link>
-          </Heading>
+        <Stack direction='row' alignItems='baseline'>
+          <LinkBox>
+            <LinkOverlay href={`/`}>
+              <Stack direction={'row'} alignItems='center' spacing={1}>
+                <Heading
+                  color={'gray.700'}
+                  letterSpacing={'wider'}
+                  textTransform={'uppercase'}
+                  size={'sm'}
+                  fontWeight={'black'}
+                  lineHeight={'taller'}
+                >
+                  pokéstats
+                </Heading>
+                <div>
+                  <Badge colorScheme={'pink'} fontSize='md'>
+                    {' '}
+                    <Heading
+                      letterSpacing={'wider'}
+                      size={'xs'}
+                      fontWeight={'black'}
+                    >
+                      live
+                    </Heading>
+                  </Badge>
+                </div>
+              </Stack>
+            </LinkOverlay>
+          </LinkBox>
+
           {userIsAdmin && <AdminLinks />}
         </Stack>
         <Stack direction={'row'} alignItems={'center'}>

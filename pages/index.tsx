@@ -15,7 +15,7 @@ export default function Home({
   return (
     <div className={styles.container}>
       <Head>
-        <title>Pokestats</title>
+        <title>Pokestats Live</title>
         <meta name='description' content='Pokestats' />
         <meta
           name='google-signin-client_id'
