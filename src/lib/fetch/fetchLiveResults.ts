@@ -5,7 +5,7 @@ import supabase from '../supabase/client';
 export const fetchPlayerDecks = async (tournamentId: string) => {
   const res = await supabase
     .from('Player Decks')
-    .select('player_name,deck_archetype')
+    .select('id,player_name,deck_archetype')
     .eq('tournament_id', tournamentId);
   return res.data;
 };
@@ -15,7 +15,7 @@ const fetchDeckArchetypes = async () => {
 
   const res = await supabase
     .from('Deck Archetypes')
-    .select('name,defined_pokemon,identifiable_cards,supertype');
+    .select('id,name,defined_pokemon,identifiable_cards,supertype');
 
   console.log(
     'fetchDeckArchetypes:',
@@ -100,15 +100,16 @@ const getPlayerDeckObjects = async (
 
   const playerDecks = await fetchPlayerDecks(tournamentId);
 
-  const mappedDecks = playerDecks?.map(({ player_name, deck_archetype }) => {
+  const mappedDecks = playerDecks?.map(({ id, player_name, deck_archetype }) => {
     const deck: Record<string, any> | undefined = deckArchetypes?.find(
-      deck => deck.name === deck_archetype
+      deck => deck.id === id
     );
 
     return {
       player_name,
       deck: {
-        name: deck_archetype,
+        id: deck_archetype,
+        name: deck?.name,
         defined_pokemon: deck?.defined_pokemon,
       },
     };
@@ -135,8 +136,9 @@ interface Player {
 interface PlayerDeckObject {
   player_name: any;
   deck: {
-    name: any;
-    defined_pokemon: any;
+    id: number;
+    name: string;
+    defined_pokemon: string[];
   };
 }
 

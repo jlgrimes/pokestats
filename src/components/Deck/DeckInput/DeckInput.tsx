@@ -6,28 +6,26 @@ import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
 
 export default function DeckInput({
   playerName,
-  deckName,
+  deckId,
   tournamentId,
-  quickEdit,
   archetypeModal,
   shouldShowAsText,
 }: {
   playerName: string;
-  deckName: string | undefined;
+  deckId: number | undefined;
   tournamentId: string;
-  quickEdit: boolean;
   archetypeModal: UseDisclosureProps;
   shouldShowAsText?: boolean
 }) {
   const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
 
-  const handleArchetypeSelect = async (newValue: string) => {
-    if (deckName) {
+  const handleArchetypeSelect = async (newValue: number) => {
+    if (deckId) {
       await supabase
         .from('Player Decks')
         .update({ deck_archetype: newValue })
-        .eq('player_name', playerName);
+        .match({ player_name: playerName, tournament_id: tournamentId })
     } else {
       await supabase.from('Player Decks').insert({
         deck_archetype: newValue,
@@ -41,9 +39,8 @@ export default function DeckInput({
 
   return (
     <ArchetypeSelector
-      value={deckName}
+      selectedArchetype={deckId}
       onChange={handleArchetypeSelect}
-      quickEdit={quickEdit}
       modalControls={archetypeModal}
       shouldShowAsText={shouldShowAsText}
       tournamentId={tournamentId}

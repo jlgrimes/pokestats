@@ -7,7 +7,7 @@ export const useArchetypes = () => {
   const fetchArchetypes = async () => {
     const res = await supabase
       .from('Deck Archetypes')
-      .select('name,defined_pokemon');
+      .select('id,name,defined_pokemon');
     return res.data;
   };
 
@@ -64,15 +64,15 @@ export const useMostPopularArchetypes = (tournamentId: string) => {
 
   const playerDeckCounts: Record<string, number> | undefined =
     playerDecks.data?.reduce((acc: Record<string, number>, playerDeck) => {
-      if (acc[playerDeck.deck_archetype]) {
+      if (acc[playerDeck.id]) {
         return {
           ...acc,
-          [playerDeck.deck_archetype]: acc[playerDeck.deck_archetype] + 1,
+          [playerDeck.id]: acc[playerDeck.id] + 1,
         };
       }
       return {
         ...acc,
-        [playerDeck.deck_archetype]: 1,
+        [playerDeck.id]: 1,
       };
     }, {});
 

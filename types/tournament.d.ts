@@ -8,12 +8,14 @@ export interface Card {
 }
 
 export interface DeckArchetype {
+  id: number;
   name: string;
   defined_pokemon: string[];
-  identifiable_cards: string[];
+  identifiable_cards?: string[];
 }
 
 export interface Deck {
+  id?: number;
   name?: string;
   defined_pokemon?: string[];
   identifiable_cards?: string[];

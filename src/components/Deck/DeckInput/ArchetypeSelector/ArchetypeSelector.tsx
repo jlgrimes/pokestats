@@ -13,36 +13,28 @@ import {
   Text,
   Flex,
 } from '@chakra-ui/react';
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import {
-  useMostPopularArchetypes,
-} from '../../../../hooks/deckArchetypes';
+import { Fragment, useMemo, useState } from 'react';
+import { DeckArchetype } from '../../../../../types/tournament';
+import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 
 interface ArchetypeSelectorProps {
-  value: string | undefined;
-  onChange: (value: string) => void;
+  selectedArchetype: number | undefined;
+  onChange: (value: number) => void;
   modalControls: UseDisclosureProps;
-  quickEdit: boolean;
   shouldShowAsText?: boolean;
   tournamentId: string;
   unownOverride?: string;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
-  const [selectedArchetype, setSelectedArchetype] = useState<
-    string | undefined
-  >(props.value);
   const mostPopularDecks = useMostPopularArchetypes(props.tournamentId);
   const [filterQuery, setFilterQuery] = useState<string>('');
   const modalControls = props.modalControls ?? {};
 
-  const isArchetypeSelected = selectedArchetype && selectedArchetype.length > 0;
-
-  const handleArchetypeChange = (deck: string) => {
-    props.onChange(deck);
-    setSelectedArchetype(deck);
+  const handleArchetypeChange = (deckId: number) => {
+    props.onChange(deckId);
     modalControls.onClose && modalControls.onClose();
   };
 
@@ -50,29 +42,36 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     setFilterQuery(e.target.value);
   };
 
-  useEffect(() => {
-    if (props.value) {
-      setSelectedArchetype(props.value);
-    }
-  }, [props.value]);
-
-  const filteredDecks = useMemo(
+  const filteredDecks: DeckArchetype[] = useMemo(
     () => [
       ...(mostPopularDecks?.filter(({ name }) => {
         return name.toLowerCase().includes(filterQuery.toLowerCase());
       }) ?? []),
-      { name: 'Other', defined_pokemon: ['substitute'] },
+      {
+        id: -1,
+        name: 'Other',
+        defined_pokemon: ['substitute'],
+        identifiable_cards: [],
+      },
     ],
     [mostPopularDecks, filterQuery]
   );
 
   const renderDeckName = () => {
     if (props.shouldShowAsText) {
-      return <Text>{isArchetypeSelected ? selectedArchetype : 'Unknown deck'}</Text>;
+      return (
+        <Text>
+          {props.selectedArchetype
+            ? mostPopularDecks?.find(
+                deck => deck.id === props.selectedArchetype
+              )?.name
+            : 'Unknown deck'}
+        </Text>
+      );
     } else {
-      if (isArchetypeSelected) {
+      if (props.selectedArchetype) {
         const displayedPokemonNames =
-          mostPopularDecks?.find(deck => deck.name === selectedArchetype)
+          mostPopularDecks?.find(deck => deck.id === props.selectedArchetype)
             ?.defined_pokemon ?? [];
 
         return <SpriteDisplay pokemonNames={displayedPokemonNames} />;
@@ -81,7 +80,9 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           <Flex justifyContent={'center'}>
             <Image
               height='30px'
-              src={`https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-${props.unownOverride ?? 'qm'}.png`}
+              src={`https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-${
+                props.unownOverride ?? 'qm'
+              }.png`}
               alt='Unown'
             />
           </Flex>
@@ -90,25 +91,9 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     }
   };
 
-  const renderButtonDisplay = () => {
-    if (props.quickEdit) {
-      return (
-        <Button
-          variant={isArchetypeSelected ? 'outline' : 'ghost'}
-          width={'100%'}
-          onClick={modalControls.onOpen}
-        >
-          {renderDeckName()}
-        </Button>
-      );
-    }
-
-    return renderDeckName();
-  };
-
   return (
     <Fragment>
-      {renderButtonDisplay()}
+      {renderDeckName()}
       {modalControls.isOpen && (
         <Modal
           isOpen={modalControls.isOpen}
@@ -124,8 +109,8 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
                 onChange={handleFilterChange}
               />
               <Stack height={'220px'} overflowY={'scroll'} padding={4}>
-                {filteredDecks?.map(({ name, defined_pokemon }, idx) => (
-                  <div key={idx} onClick={() => handleArchetypeChange(name)}>
+                {filteredDecks?.map(({ id, name, defined_pokemon }, idx) => (
+                  <div key={idx} onClick={() => handleArchetypeChange(id)}>
                     <SpriteAndNameDisplay
                       archetypeName={name}
                       pokemonNames={defined_pokemon}

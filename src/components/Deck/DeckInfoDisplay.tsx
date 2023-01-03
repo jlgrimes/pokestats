@@ -22,8 +22,7 @@ export const DeckInfoDisplay = ({
         <DeckInput
           tournamentId={tournament.id}
           playerName={player.name}
-          deckName={player.deck?.name}
-          quickEdit={false}
+          deckId={player.deck?.id}
           archetypeModal={archetypeModal}
           shouldShowAsText={shouldShowAsText}
         />
