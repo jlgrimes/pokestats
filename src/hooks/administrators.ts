@@ -18,8 +18,10 @@ export const useUserIsAdmin = () => {
   const { data: username } = useTwitterUsername();
   const { data: administrators } = useAdministrators();
 
-  return (
-    administrators?.some(admin => admin.twitter_username === username) ??
-    false
-  );
+  return {
+    isLoading: !username || username.length === 0 || !administrators,
+    data:
+      administrators?.some(admin => admin.twitter_username === username) ??
+      false,
+  };
 };

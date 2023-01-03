@@ -19,7 +19,7 @@ export default function DeckInput({
   archetypeModal: UseDisclosureProps;
   shouldShowAsText?: boolean
 }) {
-  const userIsAdmin = useUserIsAdmin();
+  const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
 
   const handleArchetypeSelect = async (newValue: string) => {

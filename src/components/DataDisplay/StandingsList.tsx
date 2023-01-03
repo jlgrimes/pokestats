@@ -23,7 +23,7 @@ export const StandingsList = ({
   tournament: { id: string; name: string };
   tournamentFinished: boolean;
 }) => {
-  const userIsAdmin = useUserIsAdmin();
+  const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
     <TableContainer>

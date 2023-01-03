@@ -27,7 +27,7 @@ export const AppBar = () => {
   const { data: session } = useSession();
   const { data: userProfile, isLoading: isUserProfileLoading } =
     useSessionUserProfile();
-  const userIsAdmin = useUserIsAdmin();
+  const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
     <>

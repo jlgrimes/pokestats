@@ -28,7 +28,7 @@ import { ProfileNotFound } from '../../src/components/Profile/ProfileNotFound';
 import { useUserMatchesLoggedInUser } from '../../src/hooks/user';
 
 function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
-  const userIsAdmin = useUserIsAdmin();
+  const { data: userIsAdmin } = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
   const userOwnsPage = useUserMatchesLoggedInUser(user?.name ?? '');
 

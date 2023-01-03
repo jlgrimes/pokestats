@@ -15,15 +15,16 @@ import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { useAccountRequests } from '../../src/hooks/user';
 
 export default function AccountRequestsPage() {
-  const userIsAdmin = useUserIsAdmin();
+  const { data: userIsAdmin, isLoading: userIsAdminLoading} = useUserIsAdmin();
   const router = useRouter();
   const { data: accountRequests } = useAccountRequests();
 
   useEffect(() => {
-    if (!userIsAdmin) {
+    console.log(userIsAdminLoading, userIsAdmin)
+    if (!userIsAdmin && !userIsAdminLoading) {
       router.push('/');
     }
-  }, []);
+  }, [userIsAdmin, userIsAdminLoading]);
 
   return (
     <Stack padding='0.5rem 1.5rem'>
