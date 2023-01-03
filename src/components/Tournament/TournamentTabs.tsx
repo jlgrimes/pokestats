@@ -52,7 +52,7 @@ export const TournamentTabs = ({ tournament }: { tournament: Tournament }) => {
           <Tab key={idx}>
             <Stack direction={'row'} alignItems={'center'} spacing={1}>
               <Text>{name}</Text>
-              {badge && <Badge variant='subtle' {...badge} />}
+              {badge?.children && <Badge variant='subtle' {...badge} />}
             </Stack>
           </Tab>
         ))}
