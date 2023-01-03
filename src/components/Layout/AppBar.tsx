@@ -7,11 +7,13 @@ import {
   LinkBox,
   Button,
   SkeletonCircle,
+  Icon,
 } from '@chakra-ui/react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { FaTwitter } from 'react-icons/fa';
+import { FaCheckCircle, FaTimesCircle, FaTwitter } from 'react-icons/fa';
 import { useSessionUserProfile } from '../../hooks/user';
+import { NotVerifiedIcon, VerifiedIcon } from '../Player/Icons';
 
 export const AppBar = () => {
   const { data: session } = useSession();
@@ -48,15 +50,18 @@ export const AppBar = () => {
                       : `/setup-profile`
                   }
                 >
-                  {isUserProfileLoading ? (
-                    <SkeletonCircle size='10' />
-                  ) : (
-                    <Avatar
-                      size='sm'
-                      name={session.user?.name as string}
-                      src={session.user?.profile_image_url as string}
-                    />
-                  )}
+                  <Stack direction={'row'} alignItems='baseline' spacing={0}>
+                    {isUserProfileLoading ? (
+                      <SkeletonCircle size='10' />
+                    ) : (
+                      <Avatar
+                        size='sm'
+                        name={session.user?.name as string}
+                        src={session.user?.profile_image_url as string}
+                      />
+                    )}
+                    {userProfile ? <VerifiedIcon /> : <NotVerifiedIcon />}
+                  </Stack>
                 </LinkOverlay>
               </LinkBox>
             </>

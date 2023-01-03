@@ -7,16 +7,20 @@ import {
   Button,
   Icon,
   Fade,
+  Flex,
 } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { FaCheck, FaEnvelope, FaSkull } from 'react-icons/fa';
 import { useUserSentAccountRequest } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
+import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 
 export const RequestToComplete = ({ session }: { session: Session }) => {
   const [fadeIn, setFadeIn] = useState(false);
-  const { data: userSentRequest } = useUserSentAccountRequest(session.user.username);
+  const { data: userSentRequest } = useUserSentAccountRequest(
+    session.user.username
+  );
   const [requestSentStatus, setRequestSentStatus] =
     useState<'before' | 'sending' | 'sent' | 'sent-error'>('before');
 
@@ -34,7 +38,12 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
     setRequestSentStatus('sending');
     const { data, error } = await supabase
       .from('Account Requests')
-      .insert([{ twitter_handle: session.user.username }]);
+      .insert([
+        {
+          twitter_handle: session.user.username,
+          twitter_full_name: session.user.username,
+        },
+      ]);
     if (error) {
       setRequestSentStatus('sent-error');
     } else {
@@ -51,7 +60,15 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
     >
       <Heading color='gray.700'>Complete account setup</Heading>
       <Fade in={fadeIn}>
-        <Text>{`Send us a request to complete account setup. If you've already sent a request, hang tight!`}</Text>
+        <Stack>
+          <Text>{`Send us a request to complete account setup. If you've already sent a request, hang tight!`}</Text>
+          <Flex flexWrap='wrap' gap={2} alignItems='baseline'>
+            <Text>{`Once your request is approved, you'll see the badge next to your name changed from`}</Text>
+            <NotVerifiedIcon />
+            <Text>to</Text>
+            <VerifiedIcon />
+          </Flex>
+        </Stack>
       </Fade>
       <Fade in={fadeIn}>
         <Stack direction={{ base: 'column', sm: 'row' }}>
