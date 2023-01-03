@@ -1,5 +1,6 @@
 import { UseDisclosureProps } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
@@ -19,6 +20,7 @@ export default function DeckInput({
 }) {
   const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
+  const [selectedDeck, setSelectedDeck] = useState(deckId)
 
   const handleArchetypeSelect = async (newValue: number) => {
     if (deckId) {
@@ -35,11 +37,12 @@ export default function DeckInput({
         user_submitted_was_admin: userIsAdmin
       });
     }
+    setSelectedDeck(newValue);
   };
 
   return (
     <ArchetypeSelector
-      selectedArchetype={deckId}
+      selectedArchetype={selectedDeck}
       onChange={handleArchetypeSelect}
       modalControls={archetypeModal}
       shouldShowAsText={shouldShowAsText}
