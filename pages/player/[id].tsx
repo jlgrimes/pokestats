@@ -38,7 +38,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
   useEffect(() => {
     // If user is on the page with their profile, and there is not a profile stored
     if (session.data?.user.username === router.query.id && !user) {
-      router.push('/profile-setup');
+      router.push('/setup-profile');
     }
   }, [session.data?.user.username, router, user]);
 

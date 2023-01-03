@@ -22,22 +22,10 @@ export const AccountMadeSuccessfully = ({
       height='100%'
     >
       <Heading color='gray.700'>Account setup completed</Heading>
-      <Fade in={fadeIn}>
-        <Heading
-          size='lg'
-          color='gray.700'
-        >{`Your account was set up successfully!`}</Heading>
-      </Fade>
-      <Fade in={fadeIn}>
-        <Button
-          as={Link}
-          variant='solid'
-          rightIcon={<FaArrowRight />}
-          href={`/player/${session?.user.username}`}
-        >
-          {`Go to my profile`}
-        </Button>
-      </Fade>
+      <Text size='2xl'>
+        Redirecting you to your profile...
+      </Text>
+      <div></div>
     </Stack>
   );
 };
