@@ -65,7 +65,13 @@ export const PlayerPerformanceList = ({
                         </Text>
                       </Link>
                     ) : (
-                      <Text fontSize='sm'>{tournament.name}</Text>
+                      <Text
+                        fontSize='sm'
+                        whiteSpace={'pre-wrap'}
+                        overflowWrap={'break-word'}
+                      >
+                        {tournament.name}
+                      </Text>
                     )}
                   </Td>
                   <Td padding={0}>{performance.placing}</Td>

@@ -31,7 +31,7 @@ export default function MyMatchups({ tournament }: { tournament: Tournament }) {
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  const tournament = fetchCurrentTournamentInfo(params.id, { prefetch: true });
+  const tournament = await fetchCurrentTournamentInfo(params.id, { prefetch: true });
 
   return {
     props: {

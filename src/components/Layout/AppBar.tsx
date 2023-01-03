@@ -76,7 +76,7 @@ export const AppBar = () => {
                       : `/setup-profile`
                   }
                 >
-                  <Stack direction={'row'} alignItems='baseline' spacing={0}>
+                  <Stack direction={'row'} alignItems='baseline' spacing={-1.5}>
                     {isUserProfileLoading ? (
                       <SkeletonCircle size='8' />
                     ) : (
