@@ -7,7 +7,7 @@ import NextLink from 'next/link';
 export const PlayerNameLink = ({ name, twitterHandle }: { name: string, twitterHandle?: string}) => {
   return twitterHandle ? (
     <Link
-      color='blue.500'
+      color='blue.600'
       as={NextLink}
       href={`/player/${twitterHandle}`}
     >

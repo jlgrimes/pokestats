@@ -13,9 +13,9 @@ import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
 import { usePlayerPerformance } from '../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../hooks/user';
-import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 import { useUserIsAdmin } from '../../hooks/administrators';
+import { Record } from '../Tournament/Results/ResultsList/Record';
 
 export const PlayerPerformanceList = ({
   user,
@@ -54,7 +54,7 @@ export const PlayerPerformanceList = ({
                   <Td padding={2}>
                     <Link
                       as={NextLink}
-                      color='blue.500'
+                      color='blue.600'
                       href={`/tournaments/${tournament.id}/standings`}
                     >
                       <Text
@@ -68,17 +68,14 @@ export const PlayerPerformanceList = ({
                   </Td>
                   <Td padding={0}>{performance.placing}</Td>
                   <Td padding={0} paddingLeft={2}>
-                    {userMatchesLoggedInUser ? (
-                      <Link
-                        as={NextLink}
-                        color='blue.500'
-                        href={`/tournaments/${tournament.id}/my-results`}
-                      >
-                        <Text>{formatRecord(performance.record)}</Text>
-                      </Link>
-                    ) : (
-                      <Text>{formatRecord(performance.record)}</Text>
-                    )}
+                    <Record
+                      standing={performance}
+                      href={
+                        userMatchesLoggedInUser
+                          ? `/tournaments/${tournament.id}/my-results`
+                          : undefined
+                      }
+                    />
                   </Td>
                   <Td padding={0} paddingLeft={2} width='80px'>
                     <DeckInfoDisplay

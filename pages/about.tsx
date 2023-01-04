@@ -37,7 +37,7 @@ export default function AboutPage() {
               isExternal
               href={'https://pokedata.ovh/'}
               as={NextLink}
-              color='blue.500'
+              color='blue.600'
             >
               pokedata.ovh
             </Link>
