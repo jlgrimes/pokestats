@@ -1,4 +1,4 @@
-import { UseDisclosureProps } from '@chakra-ui/react';
+import { UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useUserIsAdmin } from '../../../hooks/administrators';
@@ -16,28 +16,58 @@ export default function DeckInput({
   deckId: number | undefined;
   tournamentId: string;
   archetypeModal: UseDisclosureProps;
-  shouldShowAsText?: boolean
+  shouldShowAsText?: boolean;
 }) {
   const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
-  const [selectedDeck, setSelectedDeck] = useState(deckId)
+  const [selectedDeck, setSelectedDeck] = useState(deckId);
+  const toast = useToast();
 
   const handleArchetypeSelect = async (newValue: number) => {
     if (deckId) {
-      await supabase
+      const { error } = await supabase
         .from('Player Decks')
         .update({ deck_archetype: newValue })
-        .match({ player_name: playerName, tournament_id: tournamentId })
+        .match({ player_name: playerName, tournament_id: tournamentId });
+
+      if (error) {
+        toast({
+          status: 'error',
+          title: error.message,
+          description: error.details,
+        });
+      } else {
+        toast({
+          status: 'success',
+          title: 'Player deck reported successfully!',
+          description: 'Thanks for contributing!',
+        });
+        setSelectedDeck(newValue);
+      }
     } else {
-      await supabase.from('Player Decks').insert({
+      const { error } = await supabase.from('Player Decks').insert({
         deck_archetype: newValue,
         player_name: playerName,
         tournament_id: tournamentId,
         user_who_submitted: session.data?.user.username,
-        user_submitted_was_admin: userIsAdmin
+        user_submitted_was_admin: userIsAdmin,
       });
+
+      if (error) {
+        toast({
+          status: 'error',
+          title: error.message,
+          description: error.details,
+        });
+      } else {
+        toast({
+          status: 'success',
+          title: 'Player deck reported successfully!',
+          description: 'Thanks for contributing!',
+        });
+        setSelectedDeck(newValue);
+      }
     }
-    setSelectedDeck(newValue);
   };
 
   return (

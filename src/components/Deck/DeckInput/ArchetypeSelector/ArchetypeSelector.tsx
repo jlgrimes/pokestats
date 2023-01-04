@@ -101,7 +101,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Select deck</ModalHeader>
+            <ModalHeader>Report deck</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Input
