@@ -4,6 +4,7 @@ import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { Tournament } from '../../../../types/tournament';
+import { Record } from './ResultsList/Record';
 
 const RecordNeeded = ({
   record,
@@ -63,9 +64,7 @@ export const LoggedInPlayerStatus = ({
         <Stack direction={'row'} alignItems='baseline'>
           <Text>{tournamentFinished ? 'You finished' : 'You are'}</Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
-            <Heading color={'gray.700'}>
-              {formatRecord(playerResults.record)}
-            </Heading>
+            <Record standing={playerResults} big />
             <Heading size='sm' color='gray.500'>
               {ordinalSuffixOf(parseInt(playerResults.placing))}
             </Heading>
