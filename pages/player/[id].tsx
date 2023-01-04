@@ -8,8 +8,8 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
-import { FaSignOutAlt, FaTwitter } from 'react-icons/fa';
+import { useSession } from 'next-auth/react';
+import { FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
 import { useTwitterLink } from '../../src/hooks/twitter';
 import { CombinedPlayerProfile } from '../../types/player';
@@ -25,7 +25,6 @@ import {
 } from '../../src/hooks/user';
 
 function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
-  const { data: userIsAdmin } = useUserIsAdmin();
   const twitterLink = useTwitterLink(user?.username);
   const userOwnsPage = useUserMatchesLoggedInUser(user?.name ?? '');
 
@@ -68,23 +67,6 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
           </Stack>
         </Stack>
         <PlayerPerformanceList user={user} />
-        {userOwnsPage && (
-          <Stack alignItems={'center'}>
-            {userIsAdmin && (
-              <Heading size={'sm'} fontWeight='semibold'>
-                You are a site admin!
-              </Heading>
-            )}
-            <Button
-              variant='outline'
-              aria-label={'Log out'}
-              rightIcon={<FaSignOutAlt />}
-              onClick={() => signOut()}
-            >
-              Log out
-            </Button>
-          </Stack>
-        )}
       </Stack>
     </>
   );
