@@ -14,11 +14,19 @@ import {
   Link,
   Heading,
   Divider,
+  Grid,
+  Icon,
 } from '@chakra-ui/react';
 import { signOut } from 'next-auth/react';
 import NextLink from 'next/link';
 import { useRef } from 'react';
-import { FaBars, FaSignOutAlt } from 'react-icons/fa';
+import {
+  FaBars,
+  FaRegListAlt,
+  FaRegStickyNote,
+  FaRegUser,
+  FaSignOutAlt,
+} from 'react-icons/fa';
 import { CombinedPlayerProfile } from '../../../../types/player';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AccountRequestLink } from '../AccountRequestsLink';
@@ -51,12 +59,19 @@ export const AppDrawerButton = ({
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
-          <Stack padding='2rem' justifyContent='space-between' height='100%'>
-            <Stack>
+          <Stack justifyContent='space-between' height='100%'>
+            <Grid
+              templateColumns='repeat(2, 1fr)'
+              rowGap={'1.5rem'}
+              padding='4.5rem 3.5rem'
+              alignItems={'center'}
+            >
+              <Icon as={FaRegListAlt} />
               <Link as={NextLink} href='/' onClick={onClose}>
                 <Heading size='lg'>Tournaments</Heading>
               </Link>
+
+              <Icon as={FaRegUser} />
               <Link
                 as={NextLink}
                 href={
@@ -70,11 +85,13 @@ export const AppDrawerButton = ({
                   {userProfile ? 'My profile' : 'Setup profile'}
                 </Heading>
               </Link>
+
+              <Icon as={FaRegStickyNote} />
               <Link as={NextLink} href={'/about'} onClick={onClose}>
                 <Heading size='lg'>About</Heading>
               </Link>
-            </Stack>
-            <Stack spacing={4}>
+            </Grid>
+            <Stack spacing={4} padding='4.5rem 3.5rem'>
               {userIsAdmin && (
                 <Stack>
                   <Heading size='lg'>Admin tools</Heading>
