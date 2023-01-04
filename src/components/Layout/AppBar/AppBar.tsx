@@ -5,10 +5,11 @@ import {
   LinkBox,
   Button,
   SkeletonCircle,
+  IconButton,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
-import { FaTwitter } from 'react-icons/fa';
+import { FaSign, FaSignInAlt, FaTwitter } from 'react-icons/fa';
 import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 import { AppDrawerButton } from './AppDrawerButton';
@@ -63,15 +64,13 @@ export const AppBar = () => {
             </LinkBox>
           </>
         ) : (
-          <Button
-            size={'sm'}
-            colorScheme='twitter'
+          <IconButton
+            size={'xs'}
             variant='outline'
             onClick={() => signIn('twitter')}
-            rightIcon={<FaTwitter />}
-          >
-            Log in
-          </Button>
+            aria-label='log in'
+            icon={<FaSignInAlt />}
+          />
         )}
       </Stack>
     </>

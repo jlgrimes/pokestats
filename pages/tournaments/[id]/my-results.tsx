@@ -1,5 +1,8 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
 import { LoggedInPlayerStatus } from '../../../src/components/Tournament/Results/LoggedInPlayerStatus';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
@@ -11,9 +14,18 @@ import {
 import { Tournament } from '../../../types/tournament';
 
 export default function MyMatchups({ tournament }: { tournament: Tournament }) {
+  const session = useSession();
+  const router = useRouter();
+
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
     load: { roundData: true },
   });
+
+  useEffect(() => {
+    if (session.status === 'unauthenticated') {
+      router.push(`/tournaments/${tournament.id}/standings`);
+    }
+  }, [session]);
 
   return (
     <TournamentPageLayout tournament={tournament}>
@@ -30,7 +42,9 @@ export default function MyMatchups({ tournament }: { tournament: Tournament }) {
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  const tournament = await fetchCurrentTournamentInfo(params.id, { prefetch: true });
+  const tournament = await fetchCurrentTournamentInfo(params.id, {
+    prefetch: true,
+  });
 
   return {
     props: {
