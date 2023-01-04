@@ -28,7 +28,7 @@ export const MyMatchupsList = ({
       <Table size={'sm'}>
         <Thead>
           <Tr>
-            <Th padding={0}>Round</Th>
+            <Th padding={0} paddingLeft={2}>Round</Th>
             <Th padding={0} paddingLeft={2}>
               Name
             </Th>
@@ -47,6 +47,7 @@ export const MyMatchupsList = ({
                 <Tr height='41px' key={idx}>
                   <Td
                     padding={0}
+                    paddingLeft={2}
                     backgroundColor={getResultBackgroundColor(round.result)}
                     textAlign='center'
                   >
