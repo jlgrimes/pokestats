@@ -70,6 +70,9 @@ export const AppDrawerButton = ({
                   {userProfile ? 'My profile' : 'Setup profile'}
                 </Heading>
               </Link>
+              <Link as={NextLink} href={'/about'} onClick={onClose}>
+                <Heading size='lg'>About</Heading>
+              </Link>
             </Stack>
             <Stack spacing={4}>
               {userIsAdmin && (
