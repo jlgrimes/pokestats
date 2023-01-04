@@ -25,9 +25,10 @@ const ListModalBody = ({ list }: { list: Record<string, Card[]> }) => {
   const [listGridHeight, setListGridHeight] = useState(0);
 
   useEffect(() => {
-    setListGridHeight(
-      document.getElementById('list-view-modal-body')?.clientHeight ?? 0
-    );
+    const height = document.getElementById(
+      'list-view-modal-body'
+    )?.clientHeight;
+    setListGridHeight(height ? height - 4 : 0);
   }, []);
 
   return (
@@ -43,7 +44,11 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
       <ModalOverlay />
       <ModalContent>
         <ListModalBody list={props.result.deck.list} />
-        <Stack direction='row' justifyContent='space-between' alignItems={'center'}>
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          alignItems={'center'}
+        >
           <Stack spacing={0} padding={3}>
             <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
             <Text>
