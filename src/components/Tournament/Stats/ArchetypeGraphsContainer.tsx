@@ -17,7 +17,7 @@ export const ArchetypeGraphsContainer = ({
   tournament: Tournament;
 }) => {
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
-  const [shouldShowPieChart, setShouldShowPieChart] = useState(false);
+  const [shouldShowPieChart, setShouldShowPieChart] = useState(true);
 
   return (
     <Stack padding={'0 1.5rem'}>
@@ -48,6 +48,7 @@ export const ArchetypeGraphsContainer = ({
           <Switch
             id='show-pie-chart'
             onChange={() => setShouldShowPieChart(!shouldShowPieChart)}
+            defaultChecked
           />
           <FormLabel htmlFor='archetype-drill-down' mb='0'>
             Drill down
