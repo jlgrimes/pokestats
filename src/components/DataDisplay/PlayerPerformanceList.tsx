@@ -52,21 +52,11 @@ export const PlayerPerformanceList = ({
               tournament && (
                 <Tr height='41px' key={idx}>
                   <Td padding={2}>
-                    {userMatchesLoggedInUser ? (
-                      <Link
-                        as={NextLink}
-                        color='blue.500'
-                        href={`/tournaments/${tournament.id}/my-results`}
-                      >
-                        <Text
-                          fontSize='sm'
-                          whiteSpace={'pre-wrap'}
-                          overflowWrap={'break-word'}
-                        >
-                          {tournament.name}
-                        </Text>
-                      </Link>
-                    ) : (
+                    <Link
+                      as={NextLink}
+                      color='blue.500'
+                      href={`/tournaments/${tournament.id}/standings`}
+                    >
                       <Text
                         fontSize='sm'
                         whiteSpace={'pre-wrap'}
@@ -74,11 +64,21 @@ export const PlayerPerformanceList = ({
                       >
                         {tournament.name}
                       </Text>
-                    )}
+                    </Link>
                   </Td>
                   <Td padding={0}>{performance.placing}</Td>
                   <Td padding={0} paddingLeft={2}>
-                    {formatRecord(performance.record)}
+                    {userMatchesLoggedInUser ? (
+                      <Link
+                        as={NextLink}
+                        color='blue.500'
+                        href={`/tournaments/${tournament.id}/my-results`}
+                      >
+                        <Text>{formatRecord(performance.record)}</Text>
+                      </Link>
+                    ) : (
+                      <Text>{formatRecord(performance.record)}</Text>
+                    )}
                   </Td>
                   <Td padding={0} paddingLeft={2} width='80px'>
                     <DeckInfoDisplay
