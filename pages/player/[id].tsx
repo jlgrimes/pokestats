@@ -52,7 +52,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
             name={user?.name ?? undefined}
             src={user?.profile_image_url ?? undefined}
           />
-          <Stack alignItems={'center'}>
+          <Stack alignItems={'center'} spacing={1}>
             <Stack direction={'row'} alignItems='center'>
               <Heading color='gray.700'>{user?.name}</Heading>
               <Link
@@ -64,7 +64,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
                 <Icon as={FaTwitter} />
               </Link>
             </Stack>
-            <Text textAlign={'center'}>{user.description}</Text>
+            <Text textAlign={'center'} fontSize='sm'>{user.description}</Text>
           </Stack>
         </Stack>
         <PlayerPerformanceList user={user} />
