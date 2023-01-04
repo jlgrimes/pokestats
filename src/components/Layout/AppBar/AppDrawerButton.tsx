@@ -9,11 +9,20 @@ import {
   Button,
   useDisclosure,
   IconButton,
+  Stack,
+  Text,
+  Link,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useRef } from 'react';
-import { FaHamburger } from 'react-icons/fa';
+import { FaBars } from 'react-icons/fa';
+import { CombinedPlayerProfile } from '../../../../types/player';
 
-export const AppDrawerButton = () => {
+export const AppDrawerButton = ({
+  userProfile,
+}: {
+  userProfile: CombinedPlayerProfile | null | undefined;
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
 
@@ -21,29 +30,37 @@ export const AppDrawerButton = () => {
     <>
       <IconButton
         ref={btnRef.current}
-        icon={<FaHamburger />}
+        icon={<FaBars />}
         aria-label='Open drawer'
         onClick={onOpen}
+        variant='ghost'
       />
       <Drawer
         isOpen={isOpen}
-        placement='right'
+        placement='left'
+        size='xs'
         onClose={onClose}
         finalFocusRef={btnRef.current}
       >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
-
-          <DrawerBody>Hi</DrawerBody>
-
-          <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='blue'>Save</Button>
-          </DrawerFooter>
+          <Stack padding='1.5rem 1.5rem'>
+            <Link as={NextLink} href='/' onClick={onClose}>
+              Home
+            </Link>
+            <Link
+              as={NextLink}
+              href={
+                userProfile
+                  ? `/player/${userProfile.username}`
+                  : `/setup-profile`
+              }
+              onClick={onClose}
+            >
+              {userProfile ? 'My Profile' : 'Setup Profile'}
+            </Link>
+          </Stack>
         </DrawerContent>
       </Drawer>
     </>

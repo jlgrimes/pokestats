@@ -11,7 +11,7 @@ import { FaTwitter } from 'react-icons/fa';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
-import { AdminLinks } from '../AdminLinks';
+import { AppDrawerButton } from './AppDrawerButton';
 import { AppLogo } from './AppLogo';
 
 export const AppBar = () => {
@@ -29,8 +29,9 @@ export const AppBar = () => {
         justifyContent={'space-between'}
         boxShadow='sm'
       >
+        <AppDrawerButton userProfile={userProfile} />
         <AppLogo />
-        {userIsAdmin && <AdminLinks />}
+        {/* {userIsAdmin && <AdminLinks />} */}
         {session ? (
           <>
             <LinkBox>

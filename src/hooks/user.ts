@@ -33,7 +33,7 @@ export const fetchUserProfile = async (
       id: playerProfile?.id as string,
       name: playerProfile?.name as string,
       tournamentHistory: playerProfile?.tournament_history as string[],
-      username: twitterProfile?.username as string,
+      username: username as string,
       description: twitterProfile?.description as string,
       profile_image_url: twitterProfile?.profile_image_url as string,
     };
