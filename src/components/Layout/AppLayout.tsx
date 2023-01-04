@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
-import { AppBar } from './AppBar';
+import { AppBar } from './AppBar/AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
 import {
   DehydratedState,
