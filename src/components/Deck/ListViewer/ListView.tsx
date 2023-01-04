@@ -49,25 +49,25 @@ export const ListView = ({
   const flatDeckList = ['pokemon', 'trainer', 'energy'].reduce(
     (acc: Card[], superclass) => [
       ...acc,
-      ...deckList[superclass].reduce(
-        (acc: Card[], card: Card) => {
-          if (card.count > 4) {
-              return [...acc, ...flattenOutEnergies(card)]
-          }
+      ...deckList[superclass].reduce((acc: Card[], card: Card) => {
+        if (card.count > 4) {
+          return [...acc, ...flattenOutEnergies(card)];
+        }
 
-          const sameCardIdx = acc.findIndex((pushedCard) => pushedCard.name === card.name && pushedCard.set && card.set);
-          if (sameCardIdx >= 0) {
-            acc[sameCardIdx] = {
-              ...acc[sameCardIdx],
-              count: acc[sameCardIdx].count + card.count
-            }
-            return acc;
-          }
+        const sameCardIdx = acc.findIndex(
+          pushedCard =>
+            pushedCard.name === card.name && pushedCard.set === card.set
+        );
+        if (sameCardIdx >= 0) {
+          acc[sameCardIdx] = {
+            ...acc[sameCardIdx],
+            count: acc[sameCardIdx].count + card.count,
+          };
+          return acc;
+        }
 
-          return [...acc, card];
-        },
-        []
-      ),
+        return [...acc, card];
+      }, []),
     ],
     []
   );
