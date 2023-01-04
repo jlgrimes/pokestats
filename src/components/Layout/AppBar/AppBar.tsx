@@ -18,7 +18,6 @@ export const AppBar = () => {
   const { data: session } = useSession();
   const { data: userProfile, isLoading: isUserProfileLoading } =
     useSessionUserProfile();
-  const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
     <>
@@ -31,7 +30,6 @@ export const AppBar = () => {
       >
         <AppDrawerButton userProfile={userProfile} />
         <AppLogo />
-        {/* {userIsAdmin && <AdminLinks />} */}
         {session ? (
           <>
             <LinkBox>
