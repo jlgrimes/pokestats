@@ -26,7 +26,7 @@ export default function StatsPage({ tournament }: { tournament: Tournament }) {
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([`live-results-${params.id}`], () =>
+  await queryClient.prefetchQuery([`live-results`, params.id], () =>
     fetchLiveResults(params.id, { prefetch: true })
   );
 

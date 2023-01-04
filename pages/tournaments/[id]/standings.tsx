@@ -23,7 +23,7 @@ export default function TournamentPage({
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([`live-results-${params.id}`], () =>
+  await queryClient.prefetchQuery([`live-results`, params.id], () =>
     fetchLiveResults(params.id, { prefetch: true })
   );
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);

@@ -32,7 +32,8 @@ export const useLiveTournamentResults = (
 ) => {
   return useQuery({
     queryKey: [
-      `live-results-${tournamentId}`,
+      `live-results`,
+      tournamentId,
       ...Object.keys(options?.load ?? {}),
     ],
     queryFn: () => fetchLiveResults(tournamentId, options),
@@ -89,21 +90,23 @@ export const usePlayerPerformance = (
   tournamentHistory: string[] | undefined
 ): PlayerTournamentPerformance[] => {
   const { data: tournaments } = useTournaments();
-  const sortedTournamentHistory = tournamentHistory?.sort((a: string, b: string) => {
-    if (parseInt(a) < parseInt(b)) {
-      return 1;
-    }
-    if (parseInt(a) > parseInt(b)) {
-      return -1;
-    }
+  const sortedTournamentHistory = tournamentHistory?.sort(
+    (a: string, b: string) => {
+      if (parseInt(a) < parseInt(b)) {
+        return 1;
+      }
+      if (parseInt(a) > parseInt(b)) {
+        return -1;
+      }
 
-    return 0;
-  })
+      return 0;
+    }
+  );
 
   const queries =
     sortedTournamentHistory?.map(tournamentId => {
       return {
-        queryKey: [`live-results-${tournamentId}`],
+        queryKey: [`live-results`, tournamentId],
         queryFn: () => fetchLiveResults(tournamentId),
       };
     }) ?? [];
