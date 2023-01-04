@@ -1,10 +1,11 @@
 import { Heading, Stack, LinkOverlay, LinkBox, Badge } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 export const AppLogo = () => {
   return (
     <Stack direction='row' alignItems='center'>
       <LinkBox>
-        <LinkOverlay href={`/`}>
+        <LinkOverlay href={`/`} as={NextLink}>
           <Stack direction={'row'} alignItems='center' spacing={0}>
             <Heading
               color={'gray.700'}

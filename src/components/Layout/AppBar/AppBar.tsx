@@ -6,9 +6,9 @@ import {
   Button,
   SkeletonCircle,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import { FaTwitter } from 'react-icons/fa';
-import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 import { AppDrawerButton } from './AppDrawerButton';
@@ -34,6 +34,7 @@ export const AppBar = () => {
           <>
             <LinkBox>
               <LinkOverlay
+                as={NextLink}
                 href={
                   userProfile
                     ? `/player/${session.user.username}`
