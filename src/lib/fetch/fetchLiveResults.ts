@@ -100,20 +100,22 @@ const getPlayerDeckObjects = async (
 
   const playerDecks = await fetchPlayerDecks(tournamentId);
 
-  const mappedDecks = playerDecks?.map(({ id, player_name, deck_archetype }) => {
-    const deck: Record<string, any> | undefined = deckArchetypes?.find(
-      deck => deck.id === id
-    );
+  const mappedDecks = playerDecks?.map(
+    ({ player_name, deck_archetype }) => {
+      const deck: Record<string, any> | undefined = deckArchetypes?.find(
+        deck => deck.id === deck_archetype
+      );
 
-    return {
-      player_name,
-      deck: {
-        id: deck_archetype,
-        name: deck?.name,
-        defined_pokemon: deck?.defined_pokemon,
-      },
-    };
-  });
+      return {
+        player_name,
+        deck: {
+          id: deck_archetype,
+          name: deck?.name ?? null,
+          defined_pokemon: deck?.defined_pokemon ?? null,
+        },
+      };
+    }
+  );
 
   console.log(
     'getPlayerDeckObjects:',
