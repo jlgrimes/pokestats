@@ -133,6 +133,7 @@ interface Player {
   result: string;
   rounds: Record<number, Record<string, any>>;
   decklist: Record<any, any>;
+  drop: number;
 }
 
 interface PlayerDeckObject {
@@ -201,6 +202,7 @@ function mapResultsArray(
       ...(currentMatchResult ? { currentMatchResult } : {}),
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
+      ...((player.drop > 0) ? { drop: player.drop } : {})
     };
   });
 

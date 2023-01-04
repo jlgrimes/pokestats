@@ -31,6 +31,7 @@ export interface Standing {
   rounds?: { name: string; result: string; opponent: Standing }[];
   day2: boolean;
   deck: Deck;
+  drop?: number;
 }
 
 export interface MatchupResult extends Standing {

@@ -13,6 +13,7 @@ import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from './helpers';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
+import { Record } from '../Tournament/Results/ResultsList/Record';
 
 export const StandingsList = ({
   results,
@@ -68,7 +69,7 @@ export const StandingsList = ({
                     : ''
                 }
               >
-                {formatRecord(result.record)}
+                <Record standing={result} />
               </Td>
               <Td padding={0} paddingLeft={4}>
                 <DeckInfoDisplay
