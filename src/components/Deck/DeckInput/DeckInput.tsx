@@ -1,6 +1,6 @@
 import { UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
@@ -22,6 +22,10 @@ export default function DeckInput({
   const session = useSession();
   const [selectedDeck, setSelectedDeck] = useState(deckId);
   const toast = useToast();
+
+  useEffect(() => {
+    setSelectedDeck(deckId);
+  }, [deckId]);
 
   const handleArchetypeSelect = async (newValue: number) => {
     if (deckId) {
