@@ -36,7 +36,7 @@ export const Record = ({
     }
 
     return <Text>{formatRecord(standing.record)}</Text>;
-  }, [href, standing.record, standing.drop]);
+  }, [href, standing.record, standing.drop, big]);
 
   if (standing.drop) {
     return (
