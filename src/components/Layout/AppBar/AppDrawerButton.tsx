@@ -15,12 +15,14 @@ import {
   Heading,
   Divider,
 } from '@chakra-ui/react';
+import { signOut } from 'next-auth/react';
 import NextLink from 'next/link';
 import { useRef } from 'react';
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaSignOutAlt } from 'react-icons/fa';
 import { CombinedPlayerProfile } from '../../../../types/player';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AccountRequestLink } from '../AccountRequestsLink';
+import { LogInOutButton } from './LogInOutButton';
 
 export const AppDrawerButton = ({
   userProfile,
@@ -69,12 +71,15 @@ export const AppDrawerButton = ({
                 </Heading>
               </Link>
             </Stack>
-            {userIsAdmin && (
-              <Stack>
-                <Heading size='lg'>Admin tools</Heading>
-                <AccountRequestLink onClose={onClose} />
-              </Stack>
-            )}
+            <Stack spacing={4}>
+              {userIsAdmin && (
+                <Stack>
+                  <Heading size='lg'>Admin tools</Heading>
+                  <AccountRequestLink onClose={onClose} />
+                </Stack>
+              )}
+              <LogInOutButton />
+            </Stack>
           </Stack>
         </DrawerContent>
       </Drawer>
