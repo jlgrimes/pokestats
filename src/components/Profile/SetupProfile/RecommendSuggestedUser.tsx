@@ -58,7 +58,12 @@ export const RecommendedSuggestedUser = ({
     );
     accountMadeSuccessfullyCallback();
     setIdentityConfirmationLoading(false);
-  }, []);
+  }, [
+    accountMadeSuccessfullyCallback,
+    queryClient,
+    session.user.name,
+    session.user.username,
+  ]);
 
   useEffect(() => {
     const firstFade = setTimeout(() => {

@@ -38,6 +38,15 @@ const meta = {
 };
 export default meta;
 
+const user = {
+  id: 'thefleeee',
+  twitter_handle: 'thefleeee',
+  name: 'Rahul Reddy',
+  profile_image_url:
+    'https://i.kym-cdn.com/entries/icons/original/000/026/152/gigachad.jpg',
+  tournament_history: []
+}
+
 const session = {
   expires: '1',
   user: {
@@ -46,7 +55,7 @@ const session = {
     name: 'Rahul Reddy',
     profile_image_url:
       'https://i.kym-cdn.com/entries/icons/original/000/026/152/gigachad.jpg',
-  },
+  }
 }
 
 export const FinalMyResultsPage = () => (
@@ -56,7 +65,7 @@ export const FinalMyResultsPage = () => (
     <AppLayout>
       <MyResults
         tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
-        session={{ data: session, status: 'loaded'}}
+        user={user}
       />
     </AppLayout>
   </SessionProvider>
@@ -81,7 +90,7 @@ export const AfterDay1MyResultsPage = () => (
     <AppLayout>
       <MyResults
         tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
-        session={{ data: session, status: 'loaded'}}
+        user={user}
       />
     </AppLayout>
   </SessionProvider>
@@ -106,7 +115,7 @@ export const DuringDay1MyResultsPage = () => (
     <AppLayout>
       <MyResults
         tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
-        session={{ data: session, status: 'loaded'}}
+        user={user}
       />
     </AppLayout>
   </SessionProvider>
