@@ -1,6 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
+import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
@@ -11,10 +12,16 @@ import {
   fetchCurrentTournamentInfo,
   fetchTournaments,
 } from '../../../src/hooks/tournaments';
+import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../types/tournament';
 
-export default function MyMatchups({ tournament }: { tournament: Tournament }) {
-  const session = useSession();
+export default function MyMatchups({
+  tournament,
+  session,
+}: {
+  tournament: Tournament;
+  session: { data: Session; status: string };
+}) {
   const router = useRouter();
 
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
@@ -22,7 +29,7 @@ export default function MyMatchups({ tournament }: { tournament: Tournament }) {
   });
 
   useEffect(() => {
-    if (session.status === 'unauthenticated') {
+    if (session?.status === 'unauthenticated') {
       router.push(`/tournaments/${tournament.id}/standings`);
     }
   }, [session]);
@@ -40,32 +47,26 @@ export default function MyMatchups({ tournament }: { tournament: Tournament }) {
   );
 }
 
-export async function getStaticProps({ params }: { params: { id: string } }) {
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
   const queryClient = new QueryClient();
-  const tournament = await fetchCurrentTournamentInfo(params.id, {
+  const tournament = await fetchCurrentTournamentInfo(context.query.id, {
     prefetch: true,
   });
+  await queryClient.prefetchQuery(
+    [`live-results`, context.query.id, 'roundData'],
+    () =>
+      fetchLiveResults(context.query.id, {
+        prefetch: true,
+        load: { roundData: true },
+      })
+  );
 
   return {
     props: {
       tournament,
+      session,
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 10,
-  };
-}
-
-export async function getStaticPaths() {
-  const tournaments = await fetchTournaments({ prefetch: true });
-  const paths = tournaments?.map(tournament => ({
-    params: {
-      id: tournament.id,
-      displayName: tournament.name,
-    },
-  }));
-
-  return {
-    paths,
-    fallback: 'blocking',
   };
 }
