@@ -1,10 +1,11 @@
 import { IconButton, Stack, StackItem, useDisclosure } from '@chakra-ui/react';
+import { memo } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
 import DeckInput from './DeckInput/DeckInput';
 import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 
-export const DeckInfoDisplay = ({
+export const DeckInfoDisplay = memo(({
   player,
   tournament,
   enableEdits,
@@ -46,4 +47,6 @@ export const DeckInfoDisplay = ({
       ) : null}
     </Stack>
   );
-};
+});
+
+DeckInfoDisplay.displayName = 'DeckInfoDisplay'
