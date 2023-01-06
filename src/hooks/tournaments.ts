@@ -9,7 +9,7 @@ export const fetchTournaments = async (options?: { prefetch?: boolean }) => {
   );
   const data: Tournament[] = await res.json();
 
-  return data.reverse();
+  return data;
 };
 
 export const fetchCurrentTournamentInfo = async (tournamentId: string, options?: {
