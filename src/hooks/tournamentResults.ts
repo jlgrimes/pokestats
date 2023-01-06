@@ -34,7 +34,9 @@ export const useLiveTournamentResults = (
     queryKey: [
       `live-results`,
       tournamentId,
-      ...(Object.entries(options?.load ?? {}) ?? [[]])[0],
+      ...(Object.entries(options?.load ?? {}).length > 0
+        ? Object.entries(options?.load ?? {})
+        : [[]])[0],
     ],
     queryFn: () => fetchLiveResults(tournamentId, options),
   });
