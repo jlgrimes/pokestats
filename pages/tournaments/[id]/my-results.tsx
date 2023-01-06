@@ -66,11 +66,6 @@ export async function getServerSideProps(context: any) {
         load: { roundData: true },
       })
   );
-  await queryClient.prefetchQuery(['deck-archetypes'], () => fetchArchetypes());
-  await queryClient.prefetchQuery(['player-decks', context.query.id], () =>
-    fetchPlayerDecks(context.query.id)
-  );
-  await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
   return {
     props: {
