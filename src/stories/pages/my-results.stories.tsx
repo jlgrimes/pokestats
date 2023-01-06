@@ -56,6 +56,7 @@ export const FinalMyResultsPage = () => (
     <AppLayout>
       <MyResults
         tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
+        session={{ data: session, status: 'loaded'}}
       />
     </AppLayout>
   </SessionProvider>
@@ -80,6 +81,7 @@ export const AfterDay1MyResultsPage = () => (
     <AppLayout>
       <MyResults
         tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
+        session={{ data: session, status: 'loaded'}}
       />
     </AppLayout>
   </SessionProvider>
@@ -104,6 +106,7 @@ export const DuringDay1MyResultsPage = () => (
     <AppLayout>
       <MyResults
         tournament={{ id: tournamentId, name: 'Toronto 2022' } as unknown as Tournament}
+        session={{ data: session, status: 'loaded'}}
       />
     </AppLayout>
   </SessionProvider>
