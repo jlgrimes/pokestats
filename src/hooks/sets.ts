@@ -46,7 +46,6 @@ export const useTournamentRender = (tournaments: Tournament[]) => {
   const startingSet = 'Astral Radiance';
 
   let setIdx = parsedSets?.findIndex(({ name }) => name === startingSet);
-  console.log(setIdx);
 
   const result = tournaments.reduce((acc: TournamentOrSet[], tournament) => {
     const releaseDate = new Date(parsedSets[setIdx]?.releaseDate);
