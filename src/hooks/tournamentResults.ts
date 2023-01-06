@@ -34,7 +34,7 @@ export const useLiveTournamentResults = (
     queryKey: [
       `live-results`,
       tournamentId,
-      ...Object.keys(options?.load ?? {}),
+      ...Object.entries(options?.load ?? {})?.[0],
     ],
     queryFn: () => fetchLiveResults(tournamentId, options),
   });
@@ -54,10 +54,10 @@ export const useLoggedInPlayerLiveResults = (
   tournamentId: string,
   options?: FetchLoggedInPlayerOptions
 ): Standing | undefined => {
-  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
-    load: { roundData: true },
-  });
   const session = useSession();
+  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
+    load: { roundData: session.data?.user.name },
+  });
   const player = liveResults?.data.find(
     (result: Standing) => result.name === session.data?.user.name
   );

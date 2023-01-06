@@ -25,12 +25,12 @@ export default function MyMatchups({
   session,
 }: {
   tournament: Tournament;
-  session: { data: Session; status: string };
+  session?: { data: Session; status: string };
 }) {
   const router = useRouter();
 
   const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
-    load: { roundData: true },
+    load: { roundData: session?.data.user.name },
   });
 
   useEffect(() => {
@@ -59,11 +59,11 @@ export async function getServerSideProps(context: any) {
     prefetch: true,
   });
   await queryClient.prefetchQuery(
-    [`live-results`, context.query.id, 'roundData'],
+    [`live-results`, context.query.id, 'roundData', session?.user.name],
     () =>
       fetchLiveResults(context.query.id, {
         prefetch: true,
-        load: { roundData: true },
+        load: { roundData: session?.user.name },
       })
   );
   await queryClient.prefetchQuery(['deck-archetypes'], () => fetchArchetypes());
