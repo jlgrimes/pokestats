@@ -1,9 +1,7 @@
 import {
-  Avatar,
   Heading,
   Stack,
   Text,
-  Link,
   Button,
   Icon,
   Fade,
@@ -11,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
-import { FaCheck, FaEnvelope, FaSkull } from 'react-icons/fa';
+import { FaBars, FaCheck, FaEnvelope, FaSkull } from 'react-icons/fa';
 import { useUserSentAccountRequest } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
@@ -36,14 +34,12 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
 
   const handleSendRequest = async () => {
     setRequestSentStatus('sending');
-    const { data, error } = await supabase
-      .from('Account Requests')
-      .insert([
-        {
-          twitter_handle: session.user.username,
-          twitter_full_name: session.user.name,
-        },
-      ]);
+    const { data, error } = await supabase.from('Account Requests').insert([
+      {
+        twitter_handle: session.user.username,
+        twitter_full_name: session.user.name,
+      },
+    ]);
     if (error) {
       setRequestSentStatus('sent-error');
     } else {
@@ -63,7 +59,7 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
         <Stack>
           <Text>{`Send us a request to complete account setup. If you've already sent a request, hang tight!`}</Text>
           <Flex flexWrap='wrap' gap={2} alignItems='baseline'>
-            <Text>{`Once your request is approved, you'll see the badge next to your name changed from`}</Text>
+            <Text>{`Once your request is approved, you'll see the badge next to your profile pic changed from`}</Text>
             <NotVerifiedIcon />
             <Text>to</Text>
             <VerifiedIcon />

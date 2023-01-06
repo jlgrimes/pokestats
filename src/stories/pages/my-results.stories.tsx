@@ -1,5 +1,5 @@
 import { SessionProvider } from 'next-auth/react';
-import MyResults from '../../../pages/tournaments/[id]/my-results';
+import MyResults from '../../../pages/tournaments/[id]/[userId]';
 import { Tournament } from '../../../types/tournament';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { MOCK_AFTER_DAY_1_STANDINGS } from '../../mocks/after-day-1-standings';
