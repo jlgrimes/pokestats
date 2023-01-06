@@ -1,11 +1,11 @@
 import { Tabs, TabList, Tab, Badge, Stack, Text } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { memo } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useSessionUserProfile } from '../../hooks/user';
 import { getStandingsBadgeProps } from './helpers';
 
-export const TournamentTabs = ({ tournament }: { tournament: Tournament }) => {
+export const TournamentTabs = memo(({ tournament }: { tournament: Tournament }) => {
   const router = useRouter();
   const { data: userProfile } = useSessionUserProfile();
   const userIsInTournament = userProfile?.tournamentHistory?.includes(
@@ -59,4 +59,6 @@ export const TournamentTabs = ({ tournament }: { tournament: Tournament }) => {
       </TabList>
     </Tabs>
   );
-};
+});
+
+TournamentTabs.displayName = 'TournamentTabs';
