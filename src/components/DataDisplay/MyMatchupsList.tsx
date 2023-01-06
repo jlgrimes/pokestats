@@ -6,16 +6,21 @@ import {
   Thead,
   Th,
 } from '@chakra-ui/react';
-import { useLoggedInPlayerLiveResults } from '../../hooks/tournamentResults';
+import { usePlayerLiveResults } from '../../hooks/tournamentResults';
 import { Tournament } from '../../../types/tournament';
 import { memo } from 'react';
 import { MyMatchupRow } from './MyMatchupRow';
 
-export const MyMatchupsList = memo(
-  ({ tournament }: { tournament: Tournament }) => {
-    const player = useLoggedInPlayerLiveResults(tournament.id, {
-      load: { opponentRoundData: true },
-    });
+export const MyMatchupsList = memo(({
+  tournament,
+  user,
+}: {
+  tournament: Tournament;
+  user: Record<string, any>;
+}) => {
+  const player = usePlayerLiveResults(tournament.id, user.name, {
+    load: { opponentRoundData: true },
+  });
 
     return (
       <TableContainer>

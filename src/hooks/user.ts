@@ -118,3 +118,19 @@ export const useNotSetupProfiles = () => {
     queryFn: fetchAllPlayerProfiles,
   });
 };
+
+export const fetchAllVerifiedUsers = async () => {
+  const res = await supabase
+    .from('Player Profiles')
+    .select('id,name,twitter_handle,tournament_history')
+    .neq('twitter_handle', null);
+  return res.data;
+};
+
+export const fetchUser = async (username: string) => {
+  const res = await supabase
+    .from('Player Profiles')
+    .select('id,name,twitter_handle,tournament_history')
+    .eq('twitter_handle', username)
+  return res.data?.[0];
+};

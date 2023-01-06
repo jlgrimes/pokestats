@@ -1,0 +1,100 @@
+import { Stack, Text } from '@chakra-ui/react';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
+import { PlayerMatchupStatus } from '../../../src/components/Tournament/Results/PlayerMatchupStatus';
+import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
+import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
+import { fetchCurrentTournamentInfo } from '../../../src/hooks/tournaments';
+import { fetchAllVerifiedUsers, fetchUser } from '../../../src/hooks/user';
+import { fetchLiveResults, fetchPlayerDecks } from '../../../src/lib/fetch/fetchLiveResults';
+import { Tournament } from '../../../types/tournament';
+import { StoredPlayerProfile } from '../../../types/player';
+import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
+import { fetchPokedex } from '../../../src/hooks/images';
+
+export default function UserMatchups({
+  tournament,
+  user,
+}: {
+  tournament: Tournament;
+  user: StoredPlayerProfile;
+}) {
+  const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
+    load: { roundData: user.name },
+  });
+
+  return (
+    <TournamentPageLayout tournament={tournament}>
+      <Stack spacing={6}>
+        <PlayerMatchupStatus
+          tournament={tournament}
+          user={user}
+          tournamentFinished={!liveResults?.live}
+        />
+        <MyMatchupsList tournament={tournament} user={user} />
+      </Stack>
+    </TournamentPageLayout>
+  );
+}
+
+export async function getStaticProps({
+  params,
+}: {
+  params: {
+    id: string;
+    userId: string;
+  };
+}) {
+  const user = await fetchUser(params.userId) ?? null;
+  const queryClient = new QueryClient();
+  const tournament = await fetchCurrentTournamentInfo(params.id, {
+    prefetch: true,
+  });
+  await queryClient.prefetchQuery(
+    [`live-results`, params.id, 'roundData', user?.name],
+    () =>
+      fetchLiveResults(params.id, { prefetch: true, load: { roundData: user?.name } })
+  );
+  await queryClient.prefetchQuery(['deck-archetypes'], () => fetchArchetypes());
+  await queryClient.prefetchQuery(['player-decks', params.id], () =>
+    fetchPlayerDecks(params.id)
+  );
+  await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
+
+
+  return {
+    props: {
+      tournament,
+      user: user,
+      dehydratedState: dehydrate(queryClient),
+    },
+    revalidate: 10,
+  };
+}
+
+export async function getStaticPaths() {
+  const users = await fetchAllVerifiedUsers();
+
+  const paths = users?.reduce(
+    (
+      acc: { params: { id: string; userId: string } }[],
+      user: StoredPlayerProfile
+    ) => {
+      return [
+        ...acc,
+        ...user.tournament_history.map((tournamentId: string) => ({
+          params: {
+            id: tournamentId,
+            userId: user.twitter_handle,
+          },
+        })),
+      ];
+    },
+    []
+  );
+
+  return {
+    paths,
+    fallback: false,
+  };
+}

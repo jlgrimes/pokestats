@@ -1,10 +1,12 @@
 import { Heading, Stack, Text } from '@chakra-ui/react';
-import { useLoggedInPlayerLiveResults } from '../../../hooks/tournamentResults';
+import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { Tournament } from '../../../../types/tournament';
 import { Record } from './ResultsList/Record';
+import { StoredPlayerProfile } from '../../../../types/player';
+import { useSession } from 'next-auth/react';
 
 const RecordNeeded = ({
   record,
@@ -50,19 +52,24 @@ const RecordNeeded = ({
   );
 };
 
-export const LoggedInPlayerStatus = ({
+export const PlayerMatchupStatus = ({
   tournament,
+  user,
   tournamentFinished,
 }: {
   tournament: Tournament;
+  user: StoredPlayerProfile;
   tournamentFinished: boolean;
 }) => {
-  const playerResults = useLoggedInPlayerLiveResults(tournament.id);
+  const session = useSession();
+  const getPlayerText = session.data?.user.username === user.twitter_handle ? 'You' : user.name;
+
+  const playerResults = usePlayerLiveResults(tournament.id, user.name);
   return playerResults ? (
     <Stack alignItems={'center'} spacing={4}>
       <Stack spacing={0} alignItems='center'>
         <Stack direction={'row'} alignItems='baseline'>
-          <Text>{tournamentFinished ? 'You finished' : 'You are'}</Text>
+          <Text>{tournamentFinished ? `${getPlayerText} finished` : `You are`}</Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Record standing={playerResults} big />
             <Heading size='sm' color='gray.500'>

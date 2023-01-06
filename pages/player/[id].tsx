@@ -84,7 +84,7 @@ export async function getStaticProps(context: any) {
   };
 }
 
-export async function getStaticPaths(id: string) {
+export async function getStaticPaths() {
   const { data: playerProfiles } = await supabase
     .from('Player Profiles')
     .select('id,name,twitter_handle,tournament_history')

@@ -52,6 +52,42 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
   }));
 };
 
+export const usePlayerLiveResults = (
+  tournamentId: string,
+  name: string,
+  options?: FetchLoggedInPlayerOptions
+): Standing | undefined => {
+  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
+    load: { roundData: name },
+  });
+  const player = liveResults?.data.find(
+    (result: Standing) => result.name === name
+  );
+
+  if (options?.load?.opponentRoundData && player?.rounds) {
+    return {
+      ...player,
+      rounds: player.rounds.map(roundResult => {
+        const opponent = liveResults?.data.find(
+          player => player.name === roundResult.name
+        );
+
+        if (opponent) {
+          return {
+            ...roundResult,
+            opponent,
+          };
+        }
+
+        return roundResult;
+      }),
+    };
+  }
+
+  return player;
+};
+
+// TODO: Deprecate
 export const useLoggedInPlayerLiveResults = (
   tournamentId: string,
   options?: FetchLoggedInPlayerOptions
