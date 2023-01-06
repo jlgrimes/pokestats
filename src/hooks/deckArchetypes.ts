@@ -3,14 +3,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchPlayerDecks } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 
-export const useArchetypes = () => {
-  const fetchArchetypes = async () => {
-    const res = await supabase
-      .from('Deck Archetypes')
-      .select('id,name,defined_pokemon');
-    return res.data;
-  };
+export const fetchArchetypes = async () => {
+  const res = await supabase
+    .from('Deck Archetypes')
+    .select('id,name,defined_pokemon');
+  return res.data;
+};
 
+export const useArchetypes = () => {
   return useQuery({ queryKey: ['deck-archetypes'], queryFn: fetchArchetypes });
 };
 
@@ -81,11 +81,17 @@ export const useMostPopularArchetypes = (tournamentId: string) => {
   }
 
   return deckArchetypes?.sort((a, b) => {
-    if (playerDeckCounts[a.name] > playerDeckCounts[b.name] || !playerDeckCounts[b.name]) {
+    if (
+      playerDeckCounts[a.name] > playerDeckCounts[b.name] ||
+      !playerDeckCounts[b.name]
+    ) {
       return -1;
     }
 
-    if (playerDeckCounts[a.name] < playerDeckCounts[b.name] || !playerDeckCounts[a.name]) {
+    if (
+      playerDeckCounts[a.name] < playerDeckCounts[b.name] ||
+      !playerDeckCounts[a.name]
+    ) {
       return 1;
     }
 

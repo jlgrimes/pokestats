@@ -7,12 +7,17 @@ import { useEffect } from 'react';
 import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
 import { LoggedInPlayerStatus } from '../../../src/components/Tournament/Results/LoggedInPlayerStatus';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
+import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
+import { fetchPokedex } from '../../../src/hooks/images';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import {
   fetchCurrentTournamentInfo,
   fetchTournaments,
 } from '../../../src/hooks/tournaments';
-import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
+import {
+  fetchLiveResults,
+  fetchPlayerDecks,
+} from '../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../types/tournament';
 
 export default function MyMatchups({
@@ -61,6 +66,11 @@ export async function getServerSideProps(context: any) {
         load: { roundData: true },
       })
   );
+  await queryClient.prefetchQuery(['deck-archetypes'], () => fetchArchetypes());
+  await queryClient.prefetchQuery(['player-decks', context.query.id], () =>
+    fetchPlayerDecks(context.query.id)
+  );
+  await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
   return {
     props: {
