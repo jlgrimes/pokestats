@@ -47,7 +47,7 @@ export default function AboutPage() {
           <Heading size='md'>What if I have any questions?</Heading>
           <Text>
             If you have any additional questions or encounter any problems with
-            the site, please contact{' '}
+            the site, shoot me a message{' '}
             <Link isExternal href={myTwitter} as={NextLink} color='twitter.500'>
               @jgrimesey
             </Link>
@@ -70,7 +70,7 @@ export default function AboutPage() {
             >
               @simeydotme
             </Link>
-            {` for the stellar card previews, and the entirety of the `}
+            {` for the stellar card previews, Ryan Shore for some dope ideas, and the entirety of the `}
             <Link
               isExternal
               href={statsTwitter}
