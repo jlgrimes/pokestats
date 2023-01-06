@@ -15,6 +15,7 @@ import {
   LinkBox,
   Flex,
   Badge,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Tournament } from '../../../types/tournament';
@@ -34,17 +35,13 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
             href={`/tournaments/${tournament.id}/standings`}
           >
             <Heading size='sm' color='gray.700'>
-              {tournament.name}
+              {tournament.name}{' '}
+              <Badge {...getTournamentStatusBadgeProps(tournament)}>
+                {formatTournamentStatus(tournament)}
+              </Badge>
             </Heading>
-            <Text fontSize={'sm'}>
-              {formatTournamentDate(tournament)}
-            </Text>
+            <Text fontSize={'sm'}>{formatTournamentDate(tournament)}</Text>
           </LinkOverlay>
-          <div>
-            <Badge {...getTournamentStatusBadgeProps(tournament)}>
-              {formatTournamentStatus(tournament)}
-            </Badge>
-          </div>
         </Stack>
       </Card>
     </LinkBox>
