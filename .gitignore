@@ -38,3 +38,6 @@ next-env.d.ts
 .VSCodeCounter
 # Sentry
 .sentryclirc
+
+# Sentry
+.sentryclirc
