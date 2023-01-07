@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import { ProfileNotFound } from '../../src/components/Profile/ProfileNotFound';
 import {
   fetchUserProfile,
+  fetchUserProfileFromEmail,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
 import { parseUsername } from '../../src/lib/strings';
@@ -47,11 +48,11 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
     <>
       <Stack padding='1.5rem 0' spacing={6}>
         <Stack spacing={4} alignItems={'center'} padding='0 1.5rem'>
-          <Avatar
+          {/* <Avatar
             size={'xl'}
             name={user?.name ?? undefined}
             src={user?.image ?? undefined}
-          />
+          /> */}
           <Stack alignItems={'center'} spacing={1}>
             <Stack direction={'row'} alignItems='center'>
               <Heading color='gray.700'>{user?.name}</Heading>
@@ -74,9 +75,11 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
 export async function getStaticProps(context: any) {
   const username = context.params?.id.toLowerCase();
+  const combinedProfile = await fetchUserProfileFromEmail(`${username}@gmail.com`)
+
   return {
     props: {
-      user: {},
+      user: combinedProfile,
     },
     revalidate: 60,
   };

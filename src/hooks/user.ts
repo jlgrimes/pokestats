@@ -1,15 +1,32 @@
 import { useQuery } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { fetchServerSideTwitterProfile } from '../../pages/api/get-twitter-profile';
-import { StoredPlayerProfile, TwitterPlayerProfile } from '../../types/player';
+import { StoredPlayerProfile } from '../../types/player';
 import supabase from '../lib/supabase/client';
-import { fetchTwitterProfile } from './twitter';
 
 export const useUserMatchesLoggedInUser = (name: string) => {
   const session = useSession();
   return session.data?.user.name === name;
 };
+
+export const fetchUserProfileFromEmail = async (email: string) => {
+  const { data } = await supabase
+    .from('Player Profiles')
+    .select('id,name,email,tournament_history')
+    .eq('email', email);
+  const playerProfile = data?.[0];
+
+  if (playerProfile) {
+    return {
+      id: playerProfile?.id as string,
+      name: playerProfile?.name as string,
+      tournamentHistory: playerProfile?.tournament_history as string[],
+      email: email,
+    };
+  }
+
+  return null;
+}
 
 export const fetchUserProfile = async (session: Session) => {
   const { data } = await supabase
@@ -18,9 +35,7 @@ export const fetchUserProfile = async (session: Session) => {
     .eq('email', session.user.email);
   const playerProfile = data?.[0];
 
-  let twitterProfile: TwitterPlayerProfile | undefined;
-
-  if (playerProfile && twitterProfile) {
+  if (playerProfile) {
     return {
       id: playerProfile?.id as string,
       name: playerProfile?.name as string,

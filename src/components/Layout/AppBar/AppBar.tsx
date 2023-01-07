@@ -14,6 +14,7 @@ import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 import { AppDrawerButton } from './AppDrawerButton';
 import { AppLogo } from './AppLogo';
+import { parseUsername } from '../../../lib/strings';
 
 export const AppBar = () => {
   const { data: session } = useSession();
@@ -39,7 +40,7 @@ export const AppBar = () => {
                 as={NextLink}
                 href={
                   userProfile
-                    ? `/player/${session.user.username}`
+                    ? `/player/${parseUsername(session.user.email)}`
                     : `/setup-profile`
                 }
               >
