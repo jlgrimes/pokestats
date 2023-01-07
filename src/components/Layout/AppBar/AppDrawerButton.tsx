@@ -29,6 +29,7 @@ import {
 } from 'react-icons/fa';
 import { CombinedPlayerProfile } from '../../../../types/player';
 import { useUserIsAdmin } from '../../../hooks/administrators';
+import { parseUsername } from '../../../lib/strings';
 import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
 
@@ -76,7 +77,7 @@ export const AppDrawerButton = ({
                 as={NextLink}
                 href={
                   userProfile
-                    ? `/player/${userProfile.username}`
+                    ? `/player/${parseUsername(userProfile.email)}`
                     : `/setup-profile`
                 }
                 onClick={onClose}

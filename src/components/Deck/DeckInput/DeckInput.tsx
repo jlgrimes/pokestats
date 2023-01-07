@@ -53,7 +53,7 @@ export default function DeckInput({
         deck_archetype: newValue,
         player_name: playerName,
         tournament_id: tournamentId,
-        user_who_submitted: session.data?.user.username,
+        user_who_submitted: session.data?.user.email,
         user_submitted_was_admin: userIsAdmin,
       });
 
