@@ -26,7 +26,7 @@ export const fetchUserProfileFromEmail = async (email: string) => {
   }
 
   return null;
-}
+};
 
 export const fetchUserProfile = async (session: Session) => {
   const { data } = await supabase
@@ -53,7 +53,13 @@ export const useSessionUserProfile = () => {
 
   return useQuery({
     queryKey: [`session-user-profile`, session.data?.user.email],
-    queryFn: () => fetchUserProfile(session.data as Session),
+    queryFn: () => {
+      if (session.data) {
+        return fetchUserProfile(session.data);
+      }
+      
+      return null;
+    },
   });
 };
 

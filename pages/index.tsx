@@ -17,16 +17,6 @@ export default function Home({
       <Head>
         <title>Pokestats Live</title>
         <meta name='description' content='Pokestats' />
-        <meta
-          name='google-signin-client_id'
-          content='308312836672-mpph1meqftrivs6qavnechv75fttp3g5.apps.googleusercontent.com'
-        ></meta>
-        <script
-          src='https://apis.google.com/js/platform.js'
-          async
-          defer
-        ></script>
-
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <TournamentList tournaments={tournaments} />
