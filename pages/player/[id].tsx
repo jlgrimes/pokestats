@@ -7,20 +7,14 @@ import {
   Button,
   Icon,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import { useSession } from 'next-auth/react';
-import { FaTwitter } from 'react-icons/fa';
-import { useUserIsAdmin } from '../../src/hooks/administrators';
-import { useTwitterLink } from '../../src/hooks/twitter';
 import { CombinedPlayerProfile } from '../../types/player';
 import supabase from '../../src/lib/supabase/client';
-import { ComplainLink } from '../../src/components/common/ComplainLink';
 import { useRouter } from 'next/router';
 import { PlayerPerformanceList } from '../../src/components/DataDisplay/PlayerPerformanceList';
 import { useEffect } from 'react';
 import { ProfileNotFound } from '../../src/components/Profile/ProfileNotFound';
 import {
-  fetchUserProfile,
   fetchUserProfileFromEmail,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
@@ -75,7 +69,9 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
 export async function getStaticProps(context: any) {
   const username = context.params?.id.toLowerCase();
-  const combinedProfile = await fetchUserProfileFromEmail(`${username}@gmail.com`)
+  const combinedProfile = await fetchUserProfileFromEmail(
+    `${username}@gmail.com`
+  );
 
   return {
     props: {
@@ -94,7 +90,7 @@ export async function getStaticPaths() {
   const paths = playerProfiles?.map(
     player => ({
       params: {
-        id: parseUsername(player.email)
+        id: parseUsername(player.email),
       },
     }),
     []

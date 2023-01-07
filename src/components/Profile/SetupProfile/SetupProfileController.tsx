@@ -13,7 +13,7 @@ export const SetupProfileController = () => {
   const session = useSession();
   const { data: suggestedUser, isLoading } = useSuggestedUserProfile();
   const { data: userSentRequest } = useUserSentAccountRequest(
-    session.data?.user.username
+    session.data?.user.email
   );
   const [screenState, setScreenState] =
     useState<

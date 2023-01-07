@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { memo } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useSessionUserProfile } from '../../hooks/user';
+import { parseUsername } from '../../lib/strings';
 import { getStandingsBadgeProps } from './helpers';
 
 export const TournamentTabs = memo(
@@ -27,7 +28,7 @@ export const TournamentTabs = memo(
         ? [
             {
               name: 'My results',
-              slug: userProfile?.username as string,
+              slug: parseUsername(userProfile?.email as string),
             },
           ]
         : []),

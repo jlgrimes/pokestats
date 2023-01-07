@@ -20,7 +20,6 @@ export const AppBar = () => {
   const { data: session } = useSession();
   const { data: userProfile, isLoading: isUserProfileLoading } =
     useSessionUserProfile();
-  console.log(session)
 
   return (
     <>

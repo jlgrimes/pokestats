@@ -16,6 +16,7 @@ import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import { Record } from '../Tournament/Results/ResultsList/Record';
+import { parseUsername } from '../../lib/strings';
 
 export const PlayerPerformanceList = ({
   user,
@@ -72,7 +73,7 @@ export const PlayerPerformanceList = ({
                       standing={performance}
                       href={
                         userMatchesLoggedInUser
-                          ? `/tournaments/${tournament.id}/my-results`
+                          ? `/tournaments/${tournament.id}/${parseUsername(performance.profile?.email)}`
                           : undefined
                       }
                     />

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import supabase from '../lib/supabase/client';
-import { useTwitterUsername } from './twitter';
 
 export const fetchAdministrators = async () => {
-  const res = await supabase.from('Administrators').select('twitter_username');
+  const res = await supabase.from('Administrators').select('email');
   return res.data;
 };
 
@@ -15,13 +15,14 @@ export const useAdministrators = () => {
 };
 
 export const useUserIsAdmin = () => {
-  const { data: username } = useTwitterUsername();
+  const session = useSession();
+  const email = session.data?.user.email;
   const { data: administrators } = useAdministrators();
 
   return {
-    isLoading: !username || username.length === 0 || !administrators,
+    isLoading: !email || email.length === 0 || !administrators,
     data:
-      administrators?.some(admin => admin.twitter_username === username) ??
+      administrators?.some(admin => admin.email === email) ??
       false,
   };
 };

@@ -11,6 +11,7 @@ import { Tournament } from '../../../types/tournament';
 import { StoredPlayerProfile } from '../../../types/player';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
 import { fetchPokedex } from '../../../src/hooks/images';
+import { parseUsername } from '../../../src/lib/strings';
 
 export default function UserMatchups({
   tournament,
@@ -45,7 +46,7 @@ export async function getStaticProps({
     userId: string;
   };
 }) {
-  const user = await fetchUser(params.userId) ?? null;
+  const user = await fetchUser(`${params.userId}@gmail.com`) ?? null;
   const queryClient = new QueryClient();
   const tournament = await fetchCurrentTournamentInfo(params.id, {
     prefetch: true,
@@ -60,7 +61,6 @@ export async function getStaticProps({
     fetchPlayerDecks(params.id)
   );
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
-
 
   return {
     props: {
@@ -85,7 +85,7 @@ export async function getStaticPaths() {
         ...user.tournament_history.map((tournamentId: string) => ({
           params: {
             id: tournamentId,
-            userId: user.twitter_handle,
+            userId: parseUsername(user.email),
           },
         })),
       ];

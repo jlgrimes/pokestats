@@ -91,21 +91,21 @@ export const useAccountRequests = () => {
   });
 };
 
-export const useUserSentAccountRequest = (username: string | undefined) => {
-  const fetchUserSentAccountRequest = async (username: string) => {
-    const { data } = await supabase
-      .from('Account Requests')
-      .select('*')
-      .eq('email', username);
-    if (data?.length && data.length > 0) {
-      return true;
-    }
-    return false;
-  };
+const fetchUserSentAccountRequest = async (email: string) => {
+  const { data } = await supabase
+    .from('Account Requests')
+    .select('*')
+    .eq('email', email);
+  if (data?.length && data.length > 0) {
+    return true;
+  }
+  return false;
+};
 
+export const useUserSentAccountRequest = (email: string | undefined) => {
   return useQuery({
     queryKey: [`user-sent-account-request`],
-    queryFn: () => (username ? fetchUserSentAccountRequest(username) : {}),
+    queryFn: () => (email ? fetchUserSentAccountRequest(email) : {}),
   });
 };
 
@@ -133,10 +133,10 @@ export const fetchAllVerifiedUsers = async () => {
   return res.data;
 };
 
-export const fetchUser = async (username: string) => {
+export const fetchUser = async (email: string) => {
   const res = await supabase
     .from('Player Profiles')
     .select('id,name,email,tournament_history')
-    .eq('email', username);
+    .eq('email', email);
   return res.data?.[0];
 };
