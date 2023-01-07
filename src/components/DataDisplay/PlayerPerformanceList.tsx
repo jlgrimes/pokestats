@@ -73,7 +73,7 @@ export const PlayerPerformanceList = ({
                       standing={performance}
                       href={
                         userMatchesLoggedInUser
-                          ? `/tournaments/${tournament.id}/${parseUsername(performance.profile?.email)}`
+                          ? `/tournaments/${tournament.id}/${parseUsername(user.email)}`
                           : undefined
                       }
                     />
