@@ -4,26 +4,23 @@ export interface StoredPlayerProfile {
   // id stored in supabase
   id: string;
   name: string;
-  twitter_handle: string;
+  email: string;
   tournament_history: string[]
 }
 
-export interface TwitterPlayerProfile {
-  // Twitter id
-  id: string;
+export interface GooglePlayerProfile {
   name: string;
-  username: string;
+  email: string;
   description: string;
-  profile_image_url: string;
+  image: string;
 }
 
 export interface CombinedPlayerProfile {
   id: string;
   name: string;
   tournamentHistory: string[],
-  username: string;
-  description: string;
-  profile_image_url: string;
+  email: string;
+  image: string;
 };
 
 export interface PlayerTournamentPerformance {

@@ -23,9 +23,10 @@ import {
   fetchUserProfile,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
+import { parseUsername } from '../../src/lib/strings';
 
 function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
-  const twitterLink = useTwitterLink(user?.username);
+  // const twitterLink = useTwitterLink(user?.email);
   const userOwnsPage = useUserMatchesLoggedInUser(user?.name ?? '');
 
   const session = useSession();
@@ -33,10 +34,10 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
   useEffect(() => {
     // If user is on the page with their profile, and there is not a profile stored
-    if (session.data?.user.username === router.query.id && !user) {
+    if (session.data?.user.email === router.query.id && !user) {
       router.push('/setup-profile');
     }
-  }, [session.data?.user.username, router, user]);
+  }, [session.data?.user.email, router, user]);
 
   if (!user) {
     return <ProfileNotFound />;
@@ -49,21 +50,20 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
           <Avatar
             size={'xl'}
             name={user?.name ?? undefined}
-            src={user?.profile_image_url ?? undefined}
+            src={user?.image ?? undefined}
           />
           <Stack alignItems={'center'} spacing={1}>
             <Stack direction={'row'} alignItems='center'>
               <Heading color='gray.700'>{user?.name}</Heading>
-              <Link
+              {/* <Link
                 color='twitter.500'
                 as={NextLink}
                 href={twitterLink}
                 isExternal
               >
                 <Icon as={FaTwitter} />
-              </Link>
+              </Link> */}
             </Stack>
-            <Text textAlign={'center'} fontSize='sm'>{user.description}</Text>
           </Stack>
         </Stack>
         <PlayerPerformanceList user={user} />
@@ -74,11 +74,9 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
 export async function getStaticProps(context: any) {
   const username = context.params?.id.toLowerCase();
-  const combinedProfile = await fetchUserProfile(username, { prefetch: true });
-
   return {
     props: {
-      user: combinedProfile,
+      user: {},
     },
     revalidate: 60,
   };
@@ -87,13 +85,13 @@ export async function getStaticProps(context: any) {
 export async function getStaticPaths() {
   const { data: playerProfiles } = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history')
-    .neq('twitter_handle', null);
+    .select('id,name,email,tournament_history')
+    .neq('email', null);
 
   const paths = playerProfiles?.map(
     player => ({
       params: {
-        id: player.twitter_handle,
+        id: parseUsername(player.email)
       },
     }),
     []

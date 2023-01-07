@@ -45,15 +45,15 @@ export const RecommendedSuggestedUser = ({
     await supabase
       .from('Player Profiles')
       .update({
-        twitter_handle: session.user.username,
+        email: session.user.email,
       })
       .eq('name', session.user.name);
 
     queryClient.setQueryData(
-      [`session-user-profile`, session.user.username],
+      [`session-user-profile`, session.user.email],
       () => ({
         name: session.user.name,
-        username: session.user.username,
+        email: session.user.email,
       })
     );
     accountMadeSuccessfullyCallback();
@@ -62,7 +62,7 @@ export const RecommendedSuggestedUser = ({
     accountMadeSuccessfullyCallback,
     queryClient,
     session.user.name,
-    session.user.username,
+    session.user.email,
   ]);
 
   useEffect(() => {

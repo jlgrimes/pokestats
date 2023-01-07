@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { fetchServerSideTwitterProfile } from '../../pages/api/get-twitter-profile';
 import { StoredPlayerProfile, TwitterPlayerProfile } from '../../types/player';
@@ -10,51 +11,41 @@ export const useUserMatchesLoggedInUser = (name: string) => {
   return session.data?.user.name === name;
 };
 
-export const fetchUserProfile = async (
-  username: string | undefined,
-  options?: { prefetch: boolean }
-) => {
+export const fetchUserProfile = async (session: Session) => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history')
-    .eq('twitter_handle', username);
+    .select('id,name,email,tournament_history')
+    .eq('email', session.user.email);
   const playerProfile = data?.[0];
 
   let twitterProfile: TwitterPlayerProfile | undefined;
-
-  if (options?.prefetch) {
-    twitterProfile = await fetchServerSideTwitterProfile({ username });
-  } else {
-    twitterProfile = await fetchTwitterProfile({ username });
-  }
 
   if (playerProfile && twitterProfile) {
     return {
       id: playerProfile?.id as string,
       name: playerProfile?.name as string,
       tournamentHistory: playerProfile?.tournament_history as string[],
-      username: username as string,
-      description: twitterProfile?.description as string,
-      profile_image_url: twitterProfile?.profile_image_url as string,
+      email: session.user.email,
+      image: session.user.image,
     };
   }
 
   return null;
 };
 
-export const useSessionUserProfile = (options?: { prefetch: boolean }) => {
+export const useSessionUserProfile = () => {
   const session = useSession();
 
   return useQuery({
-    queryKey: [`session-user-profile`, session.data?.user.username],
-    queryFn: () => fetchUserProfile(session.data?.user.username, options),
+    queryKey: [`session-user-profile`, session.data?.user.email],
+    queryFn: () => fetchUserProfile(session.data as Session),
   });
 };
 
 export const fetchSuggestedUserProfile = async (name: string) => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history')
+    .select('id,name,email,tournament_history')
     .eq('name', name);
   const playerProfile: StoredPlayerProfile | undefined = data?.[0];
   return playerProfile;
@@ -90,7 +81,7 @@ export const useUserSentAccountRequest = (username: string | undefined) => {
     const { data } = await supabase
       .from('Account Requests')
       .select('*')
-      .eq('twitter_handle', username);
+      .eq('email', username);
     if (data?.length && data.length > 0) {
       return true;
     }
@@ -108,8 +99,8 @@ export const useNotSetupProfiles = () => {
   const fetchAllPlayerProfiles = async () => {
     const res = await supabase
       .from('Player Profiles')
-      .select('id,name,twitter_handle,tournament_history')
-      .is('twitter_handle', null);
+      .select('id,name,email,tournament_history')
+      .is('email', null);
     return res.data;
   };
 
@@ -122,15 +113,15 @@ export const useNotSetupProfiles = () => {
 export const fetchAllVerifiedUsers = async () => {
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history')
-    .neq('twitter_handle', null);
+    .select('id,name,email,tournament_history')
+    .neq('email', null);
   return res.data;
 };
 
 export const fetchUser = async (username: string) => {
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,twitter_handle,tournament_history')
-    .eq('twitter_handle', username)
+    .select('id,name,email,tournament_history')
+    .eq('email', username);
   return res.data?.[0];
 };

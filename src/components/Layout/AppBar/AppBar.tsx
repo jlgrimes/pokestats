@@ -19,6 +19,7 @@ export const AppBar = () => {
   const { data: session } = useSession();
   const { data: userProfile, isLoading: isUserProfileLoading } =
     useSessionUserProfile();
+  console.log(session)
 
   return (
     <>
@@ -49,7 +50,7 @@ export const AppBar = () => {
                     <Avatar
                       size='sm'
                       name={session.user?.name as string}
-                      src={session.user?.profile_image_url as string}
+                      src={session.user?.image as string}
                     />
                   )}
                   {userProfile ? (
@@ -67,7 +68,7 @@ export const AppBar = () => {
           <IconButton
             size={'xs'}
             variant='outline'
-            onClick={() => signIn('twitter')}
+            onClick={() => signIn('google')}
             aria-label='log in'
             icon={<FaSignInAlt />}
           />

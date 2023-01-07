@@ -5,7 +5,6 @@ import {
 } from '@chakra-ui/react';
 import { memo } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
-import { EditPlayerModal } from './EditPlayerModal';
 import { PlayerNameLink } from '../../../../Player/PlayerNameLink';
 import { StoredPlayerProfile } from '../../../../../../types/player';
 
@@ -27,7 +26,7 @@ export const Player = memo(
 
     return (
       <Stack direction={'row'} alignItems='center'>
-        <PlayerNameLink name={name} twitterHandle={profile?.twitter_handle} />
+        <PlayerNameLink name={name} email={profile?.email} />
         {isEditable && (
           <IconButton
             aria-label='edit-player'
@@ -37,14 +36,6 @@ export const Player = memo(
           >
             {/* <EditIcon /> */}
           </IconButton>
-        )}
-        {isEditOpen && (
-          <EditPlayerModal
-            isOpen={isEditOpen}
-            onClose={closeEdit}
-            playerProfile={profile}
-            name={name}
-          />
         )}
       </Stack>
     );

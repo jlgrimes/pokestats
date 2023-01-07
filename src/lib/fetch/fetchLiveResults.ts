@@ -34,7 +34,7 @@ export const updatePlayerProfilesWithTournament = async (
   if (!playerProfiles) {
     const { data } = await supabase
       .from('Player Profiles')
-      .select('id,name,twitter_handle,tournament_history');
+      .select('id,name,email,tournament_history');
     playerProfiles = data;
   }
 
@@ -45,12 +45,12 @@ export const updatePlayerProfilesWithTournament = async (
         id: string;
         name: string;
         tournament_history: string[];
-        twitter_handle: string | null;
+        email: string | null;
       } = playerProfiles?.find(({ name }) => name === standing.name) ?? {
         id: `${tournamentId}${idx}`,
         name: standing.name,
         tournament_history: [],
-        twitter_handle: null,
+        email: null,
       };
       const shouldUpdatePlayerProfile =
         !player.tournament_history.includes(tournamentId);
@@ -67,7 +67,7 @@ export const updatePlayerProfilesWithTournament = async (
         {
           id: player.id,
           name: player.name,
-          twitter_handle: player.twitter_handle,
+          email: player.email,
           tournament_history: [
             ...(player.tournament_history ?? []),
             tournamentId,

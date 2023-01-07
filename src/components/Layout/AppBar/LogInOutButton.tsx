@@ -18,7 +18,7 @@ export const LogInOutButton = () => {
     <Button
       variant='outline'
       aria-label={'Log in'}
-      onClick={() => signIn('twitter')}
+      onClick={() => signIn('google')}
       rightIcon={<FaSignInAlt />}
     >
       Log in

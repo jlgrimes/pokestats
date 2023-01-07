@@ -36,7 +36,7 @@ export const AccountRequestCard = ({
     const { error: deleteError } = await supabase
       .from('Account Requests')
       .delete()
-      .eq('twitter_handle', request.twitter_handle);
+      .eq('email', request.email);
 
     if (deleteError) {
       setLinkUsersInProgress(false);
@@ -51,7 +51,7 @@ export const AccountRequestCard = ({
     const { error: updateError } = await supabase
       .from('Player Profiles')
       .update({
-        twitter_handle: request.twitter_handle,
+        email: request.email,
       })
       .eq('name', associatedName);
 
@@ -70,7 +70,7 @@ export const AccountRequestCard = ({
     toast({
       status: 'success',
       title: 'User linked successfully!',
-      description: `${request.twitter_handle} + ${associatedName}`,
+      description: `${request.email} + ${associatedName}`,
     });
   };
 
@@ -78,7 +78,7 @@ export const AccountRequestCard = ({
     !shouldHideCard ? (
       <Card>
         <CardHeader>
-          <Heading size={'md'}>{request.twitter_handle}</Heading>
+          <Heading size={'md'}>{request.email}</Heading>
           <Text>Name on Twitter: {request.twitter_full_name}</Text>
         </CardHeader>
         <Button

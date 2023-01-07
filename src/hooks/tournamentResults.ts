@@ -48,7 +48,7 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
   return liveTournamentResults?.data.slice(0, 4).map(player => ({
     name: player.name,
     deck: player.deck,
-    twitter_handle: player.profile?.twitter_handle,
+    email: player.profile?.email,
   }));
 };
 

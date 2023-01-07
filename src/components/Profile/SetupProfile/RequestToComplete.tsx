@@ -17,7 +17,7 @@ import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 export const RequestToComplete = ({ session }: { session: Session }) => {
   const [fadeIn, setFadeIn] = useState(false);
   const { data: userSentRequest } = useUserSentAccountRequest(
-    session.user.username
+    session.user.email
   );
   const [requestSentStatus, setRequestSentStatus] =
     useState<'before' | 'sending' | 'sent' | 'sent-error'>('before');
@@ -36,7 +36,7 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
     setRequestSentStatus('sending');
     const { data, error } = await supabase.from('Account Requests').insert([
       {
-        twitter_handle: session.user.username,
+        email: session.user.email,
         twitter_full_name: session.user.name,
       },
     ]);

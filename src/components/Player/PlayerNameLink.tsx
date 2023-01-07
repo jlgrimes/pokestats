@@ -3,13 +3,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { parseUsername } from '../../lib/strings';
 
-export const PlayerNameLink = ({ name, twitterHandle }: { name: string, twitterHandle?: string}) => {
-  return twitterHandle ? (
+export const PlayerNameLink = ({ name, email }: { name: string, email?: string}) => {
+  return email ? (
     <Link
       color='blue.600'
       as={NextLink}
-      href={`/player/${twitterHandle}`}
+      href={`/player/${parseUsername(email)}`}
     >
       <Text>{name}</Text>
     </Link>

@@ -18,19 +18,6 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, token }: { session: Session, token: TokenSet}) {
-      const id = token.sub as string;
-
-      const profile = await fetchServerSideTwitterProfile({ id });
-      // Send properties to the client, like an access_token and user id from a provider.
-      if (session.user) {
-        session.user = {
-          id: id,
-          name: profile?.name as string,
-          username: profile?.username as string,
-          profile_image_url: profile?.profile_image_url as string
-        };
-      }
-
       return session;
     },
   },

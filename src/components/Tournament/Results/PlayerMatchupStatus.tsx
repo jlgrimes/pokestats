@@ -62,7 +62,7 @@ export const PlayerMatchupStatus = ({
   tournamentFinished: boolean;
 }) => {
   const session = useSession();
-  const getPlayerText = session.data?.user.username === user.twitter_handle ? 'You' : user.name;
+  const getPlayerText = session.data?.user.email === user.email ? 'You' : user.name;
 
   const playerResults = usePlayerLiveResults(tournament.id, user.name);
   return playerResults ? (

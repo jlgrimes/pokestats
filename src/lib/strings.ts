@@ -14,3 +14,7 @@ export function ordinalSuffixOf(i: number) {
   }
   return i + "th";
 }
+
+export function parseUsername(email: string) {
+    return email.split('@gmail.com')[0];
+}
