@@ -39,7 +39,6 @@ export const MyMatchupRow = memo(
         <Player
           name={round.opponent.name}
           profile={round.opponent.profile}
-          isEditable={false}
         />
       </Td>
 
