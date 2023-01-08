@@ -1,5 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 import { memo, useState } from 'react';
+import { OpponentRoundList } from './OpponentRoundList';
 import { StandingsRow, StandingsRowProps } from './StandingsRow';
 
 export const StandingsRowExpandable = memo((props: StandingsRowProps) => {
@@ -11,7 +12,12 @@ export const StandingsRowExpandable = memo((props: StandingsRowProps) => {
         rowExpanded={showOpponentRecords}
         toggleRowExpanded={() => setShowOpponentRecords(!showOpponentRecords)}
       />
-      {showOpponentRecords && <div>hi</div>}
+      {showOpponentRecords && props.result.rounds && (
+        <OpponentRoundList
+          opponents={props.result.rounds}
+          tournament={props.tournament}
+        />
+      )}
     </>
   );
 });

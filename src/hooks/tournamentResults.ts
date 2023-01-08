@@ -164,7 +164,6 @@ export const usePlayerPerformance = (
           return acc;
         }
 
-        // We run into the duplicate player name thing here
         const perf = result.data.data.find(
           standing => standing.name === playerName
         );
