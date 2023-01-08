@@ -7,11 +7,7 @@ import { fetchTournaments } from '../src/hooks/tournaments';
 import styles from '../styles/Home.module.css';
 import { Tournament } from '../types/tournament';
 
-export default function Home({
-  tournaments,
-}: {
-  tournaments: Tournament[];
-}) {
+export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -31,6 +27,10 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery([`sets`], fetchSets);
 
   return {
-    props: { tournaments, dehydratedState: dehydrate(queryClient) },
+    props: {
+      tournaments,
+      dehydratedState: dehydrate(queryClient),
+      revalidate: 60,
+    },
   };
 }
