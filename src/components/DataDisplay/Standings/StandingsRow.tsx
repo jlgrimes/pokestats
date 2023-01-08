@@ -32,9 +32,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   ]);
 
   return (
-    <
-      // backgroundColor={props.opponentRoundNumber ? 'gray.200' : 'auto'}
-    >
+    <>
       <GridItem padding={2} paddingLeft={0}>
         <Text fontSize='sm' textAlign='right'>
           {props.opponentRoundNumber ?? props.result.placing}

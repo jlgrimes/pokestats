@@ -9,9 +9,8 @@ export default function TournamentView({
 }: {
   tournament: Tournament;
 }) {
-  const { data: userIsAdmin } = useUserIsAdmin();
   const { data: liveResults } = useLiveTournamentResults(tournament.id, {
-    load: { allRoundData: userIsAdmin },
+    load: { allRoundData: true },
   });
 
   return (

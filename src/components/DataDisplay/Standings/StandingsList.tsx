@@ -26,23 +26,14 @@ export const StandingsList = memo(
         <Text fontSize='sm'>Name</Text>
         <Text fontSize='sm'>Record</Text>
         <Text fontSize='sm'>Deck</Text>
-        {results.map((result: Standing, idx: number) =>
-          userIsAdmin ? (
-            <StandingsRowExpandable
-              key={idx}
-              result={result}
-              tournament={tournament}
-              canEditDecks={!result.deck.list}
-            />
-          ) : (
-            <StandingsRow
-              key={idx}
-              result={result}
-              tournament={tournament}
-              canEditDecks={false}
-            />
-          )
-        )}
+        {results.map((result: Standing, idx: number) => (
+          <StandingsRowExpandable
+            key={idx}
+            result={result}
+            tournament={tournament}
+            canEditDecks={userIsAdmin && !result.deck.list}
+          />
+        ))}
       </Grid>
     );
   }
