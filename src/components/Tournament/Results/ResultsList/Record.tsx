@@ -1,7 +1,7 @@
-import { Icon, Stack, Text, Link, Heading } from '@chakra-ui/react';
+import { Icon, Stack, Text, Link, Heading, Flex } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
-import { FaRunning } from 'react-icons/fa';
+import { FaLock, FaRegHandPeace, FaRunning } from 'react-icons/fa';
 import { Standing } from '../../../../../types/tournament';
 import { formatRecord } from './helpers';
 
@@ -38,21 +38,21 @@ export const Record = ({
     return <Text>{formatRecord(standing.record)}</Text>;
   }, [href, standing.record, standing.drop, big]);
 
-  if (standing.drop) {
-    return (
-      <Stack
-        direction='row'
-        color={'red.600'}
-        spacing={1}
-        alignItems={big ? 'baseline' : 'center'}
-      >
-        {renderRecordText()}
-        <Icon as={FaRunning} />
-      </Stack>
-    );
-  }
-
-  return renderRecordText();
+  return (
+    <Stack
+      direction='row'
+      color={standing.drop ? 'red.600' : 'auto'}
+      spacing={1}
+      alignItems={big ? 'baseline' : 'center'}
+    >
+      {renderRecordText()}
+      {standing.drop && <Icon as={FaRunning} />}
+      {standing.record.wins * 3 + standing.record.ties >= 19 &&
+        !standing.drop && (
+          <Icon color='gray.600' boxSize={3} as={FaRegHandPeace} />
+        )}
+    </Stack>
+  );
 };
 
 Record.displayName = 'Record';
