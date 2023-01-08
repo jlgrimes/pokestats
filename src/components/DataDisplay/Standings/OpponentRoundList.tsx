@@ -1,3 +1,4 @@
+import { Th, Thead, Tr } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
@@ -21,6 +22,16 @@ export const OpponentRoundList = ({
 
   return (
     <>
+      <Tr backgroundColor={'gray.200'}>
+        <Th padding={0}>Rnd</Th>
+        <Th padding={0} paddingLeft={2}>
+          Name
+        </Th>
+        <Th padding={0}>record</Th>
+        <Th padding={0} paddingLeft={4}>
+          Deck
+        </Th>
+      </Tr>
       {opponents
         .map(({ name, result }) => ({
           standing: liveResults?.data.find(standing => standing.name === name),
