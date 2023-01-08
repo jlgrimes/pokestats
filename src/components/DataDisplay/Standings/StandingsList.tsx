@@ -16,6 +16,7 @@ import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { Record } from '../../Tournament/Results/ResultsList/Record';
 import { FaChevronDown } from 'react-icons/fa';
 import { StandingsRow } from './StandingsRow';
+import { StandingsRowExpandable } from './StandingsRowExpandable';
 
 export const StandingsList = ({
   results,
@@ -42,15 +43,23 @@ export const StandingsList = ({
           </Tr>
         </Thead>
         <Tbody>
-          {results.map((result: Standing, idx: number) => (
-            <StandingsRow
-              key={idx}
-              result={result}
-              tournament={tournament}
-              canExpandRow={userIsAdmin}
-              canEditDecks={userIsAdmin && !result.deck.list}
-            />
-          ))}
+          {results.map((result: Standing, idx: number) =>
+            userIsAdmin ? (
+              <StandingsRowExpandable
+                key={idx}
+                result={result}
+                tournament={tournament}
+                canEditDecks={!result.deck.list}
+              />
+            ) : (
+              <StandingsRow
+                key={idx}
+                result={result}
+                tournament={tournament}
+                canEditDecks={false}
+              />
+            )
+          )}
         </Tbody>
       </Table>
     </TableContainer>

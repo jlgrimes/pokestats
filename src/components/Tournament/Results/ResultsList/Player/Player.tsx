@@ -1,34 +1,32 @@
-import {
-  Icon,
-  IconButton,
-  Stack,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Icon, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import { memo } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
 import { PlayerNameLink } from '../../../../Player/PlayerNameLink';
 import { StoredPlayerProfile } from '../../../../../../types/player';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 export const Player = memo(
   ({
     name,
     profile,
-    isExpandable,
+    rowExpanded,
+    toggleRowExpanded,
   }: {
     name: string;
     profile: StoredPlayerProfile;
-    isExpandable: boolean;
+    rowExpanded?: boolean;
+    toggleRowExpanded?: () => void;
   }) => {
     return (
       <Stack direction={'row'} alignItems='center'>
         <PlayerNameLink name={name} email={profile?.email} />
-        {isExpandable && (
+        {toggleRowExpanded && (
           <Icon
             color='gray.500'
-            as={FaChevronDown}
+            as={!!rowExpanded ? FaChevronUp : FaChevronDown}
             aria-label='edit-player'
             boxSize={3}
+            onClick={toggleRowExpanded}
           />
         )}
       </Stack>
