@@ -29,7 +29,6 @@ export const Player = memo(
             as={FaChevronDown}
             aria-label='edit-player'
             boxSize={3}
-            onClick={openEdit}
           />
         )}
       </Stack>
