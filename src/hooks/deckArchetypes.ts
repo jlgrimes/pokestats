@@ -64,15 +64,15 @@ export const useMostPopularArchetypes = (tournamentId: string) => {
 
   const playerDeckCounts: Record<string, number> | undefined =
     playerDecks.data?.reduce((acc: Record<string, number>, playerDeck) => {
-      if (acc[playerDeck.id]) {
+      if (acc[playerDeck.deck_archetype]) {
         return {
           ...acc,
-          [playerDeck.id]: acc[playerDeck.id] + 1,
+          [playerDeck.deck_archetype]: acc[playerDeck.deck_archetype] + 1,
         };
       }
       return {
         ...acc,
-        [playerDeck.id]: 1,
+        [playerDeck.deck_archetype]: 1,
       };
     }, {});
 
@@ -82,15 +82,15 @@ export const useMostPopularArchetypes = (tournamentId: string) => {
 
   return deckArchetypes?.sort((a, b) => {
     if (
-      playerDeckCounts[a.name] > playerDeckCounts[b.name] ||
-      !playerDeckCounts[b.name]
+      playerDeckCounts[a.id] > playerDeckCounts[b.id] ||
+      !playerDeckCounts[b.id]
     ) {
       return -1;
     }
 
     if (
-      playerDeckCounts[a.name] < playerDeckCounts[b.name] ||
-      !playerDeckCounts[a.name]
+      playerDeckCounts[a.id] < playerDeckCounts[b.id] ||
+      !playerDeckCounts[a.id]
     ) {
       return 1;
     }
