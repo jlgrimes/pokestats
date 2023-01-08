@@ -33,7 +33,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
 
   return (
     <>
-      <GridItem padding={2} paddingLeft={0}>
+      <GridItem padding={1} paddingLeft={0} paddingRight={2}>
         <Text fontSize='sm' textAlign='right'>
           {props.opponentRoundNumber ?? props.result.placing}
         </Text>
@@ -50,7 +50,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         height='100%'
         display='flex'
         alignItems={'center'}
-        padding={2}
+        padding={1}
       >
         <Record standing={props.result} />
       </GridItem>

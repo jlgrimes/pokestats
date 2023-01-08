@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text } from '@chakra-ui/react';
+import { Divider, Grid, GridItem, Text } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { StandingsRow } from './StandingsRow';
@@ -23,16 +23,48 @@ export const StandingsList = memo(
         alignItems='center'
       >
         <GridItem></GridItem>
-        <Text fontSize='sm'>Name</Text>
-        <Text fontSize='sm'>Record</Text>
-        <Text fontSize='sm'>Deck</Text>
+        <Text
+          fontSize='xs'
+          color={'gray.700'}
+          fontFamily='heading'
+          fontWeight='bold'
+          textTransform={'uppercase'}
+          letterSpacing='wider'
+        >
+          Name
+        </Text>
+        <Text
+          fontSize='xs'
+          color={'gray.700'}
+          fontFamily='heading'
+          fontWeight='bold'
+          textTransform={'uppercase'}
+          letterSpacing='wider'
+          paddingLeft={1}
+        >
+          Record
+        </Text>
+        <Text
+          fontSize='xs'
+          color={'gray.700'}
+          fontFamily='heading'
+          fontWeight='bold'
+          textTransform={'uppercase'}
+          letterSpacing='wider'
+          paddingLeft={2}
+        >
+          Deck
+        </Text>
         {results.map((result: Standing, idx: number) => (
-          <StandingsRowExpandable
-            key={idx}
-            result={result}
-            tournament={tournament}
-            canEditDecks={userIsAdmin && !result.deck.list}
-          />
+          <>
+            <Divider gridColumn='1/-1' />
+            <StandingsRowExpandable
+              key={idx}
+              result={result}
+              tournament={tournament}
+              canEditDecks={userIsAdmin && !result.deck.list}
+            />
+          </>
         ))}
       </Grid>
     );
