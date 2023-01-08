@@ -12,9 +12,9 @@ export const PlayerNameLink = ({ name, email }: { name: string, email?: string})
       as={NextLink}
       href={`/player/${parseUsername(email)}`}
     >
-      <Text>{name}</Text>
+      <Text fontSize='sm'>{name}</Text>
     </Link>
   ) : (
-    <Text>{name}</Text>
+    <Text fontSize='sm'>{name}</Text>
   )
 }

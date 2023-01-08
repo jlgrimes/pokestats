@@ -1,4 +1,4 @@
-import { Td, Tr } from '@chakra-ui/react';
+import { GridItem, Td, Text, Tr } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from '../helpers';
@@ -13,7 +13,7 @@ export interface StandingsRowProps {
   rowExpanded?: boolean;
   toggleRowExpanded?: () => void;
   opponentRoundNumber?: number;
-  opponentResult?: string
+  opponentResult?: string;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -32,39 +32,38 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   ]);
 
   return (
-    <Tr
-      height='41px'
-      backgroundColor={props.opponentRoundNumber ? 'gray.200' : 'auto'}
+    <
+      // backgroundColor={props.opponentRoundNumber ? 'gray.200' : 'auto'}
     >
-      <Td isNumeric padding={0}>
-        {props.opponentRoundNumber ?? props.result.placing}
-      </Td>
-      <Td
-        maxWidth={'12rem'}
-        overflow={'hidden'}
-        textOverflow={'ellipsis'}
-        padding={0}
-        paddingLeft={2}
-      >
-        <Player
-          name={props.result.name}
-          profile={props.result.profile}
-          rowExpanded={props.rowExpanded}
-          toggleRowExpanded={props.toggleRowExpanded}
-        />
-      </Td>
+      <GridItem padding={2} paddingLeft={0}>
+        <Text fontSize='sm' textAlign='right'>
+          {props.opponentRoundNumber ?? props.result.placing}
+        </Text>
+      </GridItem>
+      <Player
+        name={props.result.name}
+        profile={props.result.profile}
+        rowExpanded={props.rowExpanded}
+        toggleRowExpanded={props.toggleRowExpanded}
+      />
 
-      <Td padding={0} backgroundColor={getStandingsCellResultBackgroundColor()}>
+      <GridItem
+        backgroundColor={getStandingsCellResultBackgroundColor()}
+        height='100%'
+        display='flex'
+        alignItems={'center'}
+        padding={2}
+      >
         <Record standing={props.result} />
-      </Td>
-      <Td padding={0} paddingLeft={4}>
+      </GridItem>
+      <GridItem paddingLeft={2}>
         <DeckInfoDisplay
           tournament={props.tournament}
           player={props.result}
           enableEdits={props.canEditDecks}
         />
-      </Td>
-    </Tr>
+      </GridItem>
+    </>
   );
 });
 

@@ -1,4 +1,3 @@
-import { Stack } from '@chakra-ui/react';
 import { memo, useState } from 'react';
 import { OpponentRoundList } from './OpponentRoundList';
 import { StandingsRow, StandingsRowProps } from './StandingsRow';
@@ -14,6 +13,7 @@ export const StandingsRowExpandable = memo((props: StandingsRowProps) => {
       />
       {showOpponentRecords && props.result.rounds && (
         <OpponentRoundList
+          playerName={props.result.name}
           opponents={props.result.rounds}
           tournament={props.tournament}
         />
