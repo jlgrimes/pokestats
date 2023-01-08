@@ -196,7 +196,7 @@ function mapResultsArray(
       name: player.name,
       placing: player.placing,
       record: player.record,
-      ...(shouldLoad?.roundData === player.name
+      ...(shouldLoad?.roundData === player.name || shouldLoad?.allRoundData
         ? { rounds: Object.values(player?.rounds ?? {}) }
         : {}),
       ...(currentMatchResult ? { currentMatchResult } : {}),
@@ -242,6 +242,8 @@ export interface FetchLiveResultsOptions {
 export interface LiveResultsLoadOptions {
   // Name of the player you want to load round data for
   roundData?: string;
+  // If you just want to load every single player's round data (warning: slow)
+  allRoundData?: boolean;
 }
 
 export interface FetchLoggedInPlayerOptions {
