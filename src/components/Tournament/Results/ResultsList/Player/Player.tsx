@@ -18,7 +18,12 @@ export const Player = memo(
     toggleRowExpanded?: () => void;
   }) => {
     return (
-      <Stack direction={'row'} alignItems='center'>
+      <Stack
+        direction={'row'}
+        alignItems='center'
+        onClick={toggleRowExpanded}
+        cursor={toggleRowExpanded ? 'pointer' : 'auto'}
+      >
         <PlayerNameLink name={name} email={profile?.email} />
         {toggleRowExpanded && (
           <Icon
@@ -26,7 +31,6 @@ export const Player = memo(
             as={!!rowExpanded ? FaChevronUp : FaChevronDown}
             aria-label='edit-player'
             boxSize={3}
-            onClick={toggleRowExpanded}
           />
         )}
       </Stack>
