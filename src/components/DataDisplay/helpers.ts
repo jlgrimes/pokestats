@@ -5,5 +5,5 @@ export const getResultBackgroundColor = (matchResult: string | undefined) => {
     ? 'yellow.100'
     : matchResult === 'L'
     ? 'red.100'
-    : '';
+    : 'white';
 };

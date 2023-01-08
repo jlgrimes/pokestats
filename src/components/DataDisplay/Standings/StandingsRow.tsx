@@ -4,7 +4,7 @@ import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from '../helpers';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { Record } from '../../Tournament/Results/ResultsList/Record';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 export interface StandingsRowProps {
   result: Standing;
@@ -12,13 +12,32 @@ export interface StandingsRowProps {
   canEditDecks: boolean;
   rowExpanded?: boolean;
   toggleRowExpanded?: () => void;
+  opponentRoundNumber?: number;
+  opponentResult?: string
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
+  const getStandingsCellResultBackgroundColor = useCallback(() => {
+    if (props.opponentResult) {
+      return getResultBackgroundColor(props.opponentResult);
+    }
+
+    if (props.tournament.tournamentStatus !== 'finished') {
+      return getResultBackgroundColor(props.result.currentMatchResult);
+    }
+  }, [
+    props.opponentResult,
+    props.result.currentMatchResult,
+    props.tournament.tournamentStatus,
+  ]);
+
   return (
-    <Tr height='41px'>
+    <Tr
+      height='41px'
+      backgroundColor={props.opponentRoundNumber ? 'gray.200' : 'auto'}
+    >
       <Td isNumeric padding={0}>
-        {props.result.placing}
+        {props.opponentRoundNumber ?? props.result.placing}
       </Td>
       <Td
         maxWidth={'12rem'}
@@ -35,14 +54,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         />
       </Td>
 
-      <Td
-        padding={0}
-        backgroundColor={
-          props.tournament.tournamentStatus !== 'finished'
-            ? getResultBackgroundColor(props.result.currentMatchResult)
-            : ''
-        }
-      >
+      <Td padding={0} backgroundColor={getStandingsCellResultBackgroundColor()}>
         <Record standing={props.result} />
       </Td>
       <Td padding={0} paddingLeft={4}>

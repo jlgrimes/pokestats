@@ -22,17 +22,21 @@ export const OpponentRoundList = ({
   return (
     <>
       {opponents
-        .map(({ name }) =>
-          liveResults?.data.find(standing => standing.name === name)
-        )
+        .map(({ name, result }) => ({
+          standing: liveResults?.data.find(standing => standing.name === name),
+          name,
+          result,
+        }))
         .map(
-          (standing, idx) =>
+          ({ standing, name, result }, idx) =>
             standing && (
               <StandingsRow
                 key={idx}
                 result={standing}
                 tournament={tournament}
                 canEditDecks={userIsAdmin}
+                opponentRoundNumber={idx + 1}
+                opponentResult={result}
               />
             )
         )}
