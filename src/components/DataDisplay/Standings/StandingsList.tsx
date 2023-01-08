@@ -9,16 +9,11 @@ import {
 } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
-import { formatRecord } from '../../Tournament/Results/ResultsList/helpers';
-import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
-import { getResultBackgroundColor } from '../helpers';
-import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
-import { Record } from '../../Tournament/Results/ResultsList/Record';
-import { FaChevronDown } from 'react-icons/fa';
 import { StandingsRow } from './StandingsRow';
 import { StandingsRowExpandable } from './StandingsRowExpandable';
+import { memo } from 'react';
 
-export const StandingsList = ({
+export const StandingsList = memo(({
   results,
   tournament,
 }: {
@@ -64,4 +59,6 @@ export const StandingsList = ({
       </Table>
     </TableContainer>
   );
-};
+});
+
+StandingsList.displayName = 'StandingsList';
