@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
-import { StandingsList } from '../DataDisplay/StandingsList';
+import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 
 export default function TournamentView({
   tournament,
