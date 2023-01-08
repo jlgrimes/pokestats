@@ -51,10 +51,9 @@ export const Record = ({
     >
       {renderRecordText()}
       {standing.drop && <Icon as={FaRunning} />}
-      {standing.record.wins * 3 + standing.record.ties >= 19 &&
-        !standing.drop && (
-          <Icon color='gray.600' boxSize={3} as={FaRegHandPeace} />
-        )}
+      {madeDayTwo(standing.record) && !standing.drop && (
+        <Icon color='gray.600' boxSize={3} as={FaRegHandPeace} />
+      )}
     </Stack>
   );
 };
