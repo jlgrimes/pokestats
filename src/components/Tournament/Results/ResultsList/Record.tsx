@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { useCallback } from 'react';
 import { FaLock, FaRegHandPeace, FaRunning } from 'react-icons/fa';
 import { Standing } from '../../../../../types/tournament';
-import { formatRecord } from './helpers';
+import { formatRecord, madeDayTwo } from './helpers';
 
 export const Record = ({
   standing,
@@ -41,7 +41,11 @@ export const Record = ({
   return (
     <Stack
       direction='row'
-      color={standing.drop ? 'red.600' : 'auto'}
+      color={
+        standing.drop || madeDayTwo(standing.record) === false
+          ? 'red.600'
+          : 'auto'
+      }
       spacing={1}
       alignItems={big ? 'baseline' : 'center'}
     >
