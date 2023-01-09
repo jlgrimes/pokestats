@@ -1,7 +1,7 @@
 import { Icon, Stack, Text, Link, Heading, Flex } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
-import { FaLock, FaRegHandPeace, FaRunning } from 'react-icons/fa';
+import { FaHandPeace, FaLock, FaRegHandPeace, FaRunning } from 'react-icons/fa';
 import { Standing } from '../../../../../types/tournament';
 import { formatRecord, madeDayTwo } from './helpers';
 
@@ -43,7 +43,7 @@ export const Record = ({
       direction='row'
       color={
         standing.drop || madeDayTwo(standing.record) === false
-          ? 'red.600'
+          ? 'gray.400'
           : 'auto'
       }
       spacing={1}
@@ -52,7 +52,7 @@ export const Record = ({
       {renderRecordText()}
       {standing.drop && <Icon as={FaRunning} />}
       {madeDayTwo(standing.record) && !standing.drop && (
-        <Icon color='gray.600' boxSize={3} as={FaRegHandPeace} />
+        <Icon color='gray.500' boxSize={3} as={FaHandPeace} />
       )}
     </Stack>
   );
