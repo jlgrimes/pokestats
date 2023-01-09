@@ -5,6 +5,7 @@ import { getResultBackgroundColor } from '../helpers';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { Record } from '../../Tournament/Results/ResultsList/Record';
 import { memo, useCallback } from 'react';
+import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
 
 export interface StandingsRowProps {
   result: Standing;
@@ -38,12 +39,22 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           {props.opponentRoundNumber ?? props.result.placing}
         </Text>
       </GridItem>
-      <Player
-        name={props.result.name}
-        profile={props.result.profile}
-        rowExpanded={props.rowExpanded}
-        toggleRowExpanded={props.toggleRowExpanded}
-      />
+      <GridItem
+        display={'flex'}
+        justifyContent='space-between'
+        alignItems={'center'}
+      >
+        <Player
+          name={props.result.name}
+          profile={props.result.profile}
+          rowExpanded={props.rowExpanded}
+          toggleRowExpanded={props.toggleRowExpanded}
+        />
+        <RecordIcon
+          standing={props.result}
+          tournamentFinished={props.tournament.tournamentStatus === 'finished'}
+        />
+      </GridItem>
 
       <GridItem
         backgroundColor={getStandingsCellResultBackgroundColor()}

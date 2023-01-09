@@ -30,7 +30,7 @@ export const Player = memo(
             color='gray.500'
             as={!!rowExpanded ? FaChevronUp : FaChevronDown}
             aria-label='edit-player'
-            boxSize={3}
+            boxSize={2}
           />
         )}
       </Stack>

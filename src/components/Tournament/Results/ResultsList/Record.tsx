@@ -2,6 +2,9 @@ import { Icon, Stack, Text, Link, Heading, Flex } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
 import {
+  FaChessBishop,
+  FaChessKing,
+  FaChessQueen,
   FaCrown,
   FaHandPeace,
   FaLock,
@@ -46,46 +49,22 @@ export const Record = ({
 
     return <Text fontSize='sm'>{formatRecord(standing.record)}</Text>;
   }, [href, standing.record, standing.drop, big]);
-
-  const getCrownIcon = useCallback(() => {
-    if (!tournamentFinished) {
-      return null;
-    }
-
-    if (standing.placing === 1) {
-      return <Icon as={FaCrown} color='yellow.500'/>;
-    }
-
-    if (standing.placing === 2) {
-      return <Icon as={FaCrown} color='gray.500' />;
-    }
-
-    if (standing.placing <= 8) {
-      return <Icon as={FaCrown} color='yellow.700' />;
-    }
-  }, [tournamentFinished, standing.placing]);
-
-  const showTrashIcon = standing.name === 'Noah Spinale';
-
+  
   return (
     <Stack
       direction='row'
       color={
-        standing.drop || madeDayTwo(standing.record) === false
-          ? 'gray.400'
-          : 'auto'
+        standing.drop
+          ? 'red.600'
+          : madeDayTwo(standing.record)
+          ? 'auto'
+          : 'gray.400'
       }
       spacing={1}
       alignItems={big ? 'baseline' : 'center'}
       justifyContent='space-between'
     >
       {renderRecordText()}
-      {getCrownIcon()}
-      {standing.drop && showTrashIcon && <Icon as={FaTrash} />}
-      {standing.drop && !showTrashIcon && <Icon as={FaRunning} />}
-      {!getCrownIcon() && madeDayTwo(standing.record) && !standing.drop && (
-        <Icon color='gray.500' boxSize={3} as={FaHandPeace} />
-      )}
     </Stack>
   );
 };
