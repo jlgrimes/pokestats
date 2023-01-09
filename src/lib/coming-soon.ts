@@ -1,1 +1,1 @@
-export const SHOULD_SHOW_COMING_SOON = process.env.NODE_ENV === 'production';
+export const SHOULD_SHOW_COMING_SOON = process.env.NEXT_PUBLIC_ENV === 'production';
