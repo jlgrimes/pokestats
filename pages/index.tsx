@@ -36,7 +36,7 @@ export async function getStaticProps() {
     props: {
       tournaments,
       dehydratedState: dehydrate(queryClient),
-      revalidate: 60,
     },
+    revalidate: 60,
   };
 }
