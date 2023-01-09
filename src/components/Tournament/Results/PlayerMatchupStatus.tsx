@@ -35,7 +35,7 @@ const RecordNeeded = ({
     );
   }
 
-  if ((matchPointsRemaining / 3) > roundsLeft) {
+  if (matchPointsRemaining / 3 > roundsLeft) {
     return (
       <Text fontSize='sm'>{`You're out of contention for ${objective} 😓`}</Text>
     );
@@ -62,18 +62,25 @@ export const PlayerMatchupStatus = ({
   tournamentFinished: boolean;
 }) => {
   const session = useSession();
-  const getPlayerText = session.data?.user.email === user.email ? 'You' : user.name;
+  const getPlayerText =
+    session.data?.user.email === user.email ? 'You' : user.name;
 
   const playerResults = usePlayerLiveResults(tournament.id, user.name);
   return playerResults ? (
     <Stack alignItems={'center'} spacing={4}>
       <Stack spacing={0} alignItems='center'>
         <Stack direction={'row'} alignItems='baseline'>
-          <Text>{tournamentFinished ? `${getPlayerText} finished` : `You are`}</Text>
+          <Text>
+            {tournamentFinished ? `${getPlayerText} finished` : `You are`}
+          </Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
-            <Record standing={playerResults} big />
+            <Record
+              standing={playerResults}
+              tournamentFinished={tournamentFinished}
+              big
+            />
             <Heading size='sm' color='gray.500'>
-              {ordinalSuffixOf(parseInt(playerResults.placing))}
+              {ordinalSuffixOf(playerResults.placing)}
             </Heading>
           </Stack>
         </Stack>

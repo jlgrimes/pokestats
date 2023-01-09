@@ -25,7 +25,7 @@ export interface Deck {
 export interface Standing {
   name: string;
   profile: StoredPlayerProfile;
-  placing: string;
+  placing: number;
   record: { wins: number; ties: number; losses: number };
   currentMatchResult?: 'W' | 'L' | 'T';
   rounds?: { name: string; result: string; opponent: Standing }[];

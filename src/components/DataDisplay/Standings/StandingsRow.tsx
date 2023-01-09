@@ -48,11 +48,14 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       <GridItem
         backgroundColor={getStandingsCellResultBackgroundColor()}
         height='100%'
-        display='flex'
         alignItems={'center'}
+        display='contents'
         padding={1}
       >
-        <Record standing={props.result} />
+        <Record
+          standing={props.result}
+          tournamentFinished={props.tournament.tournamentStatus === 'finished'}
+        />
       </GridItem>
       <GridItem paddingLeft={2}>
         <DeckInfoDisplay

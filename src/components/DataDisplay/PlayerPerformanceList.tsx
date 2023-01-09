@@ -71,6 +71,7 @@ export const PlayerPerformanceList = ({
                   <Td padding={0} paddingLeft={2}>
                     <Record
                       standing={performance}
+                      tournamentFinished={tournament.tournamentStatus === 'finished'}
                       href={
                         userMatchesLoggedInUser
                           ? `/tournaments/${tournament.id}/${parseUsername(user.email)}`
