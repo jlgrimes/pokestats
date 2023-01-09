@@ -1,4 +1,4 @@
-import { GridItem, Td, Text, Tr } from '@chakra-ui/react';
+import { GridItem, Stack, Td, Text, Tr } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from '../helpers';
@@ -56,18 +56,18 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         />
       </GridItem>
 
-      <GridItem
+      <Stack
         backgroundColor={getStandingsCellResultBackgroundColor()}
         height='100%'
-        alignItems={'center'}
-        display='contents'
+        alignItems={'baseline'}
+        justifyContent='center'
         padding={1}
       >
         <Record
           standing={props.result}
           tournamentFinished={props.tournament.tournamentStatus === 'finished'}
         />
-      </GridItem>
+      </Stack>
       <GridItem paddingLeft={2}>
         <DeckInfoDisplay
           tournament={props.tournament}
