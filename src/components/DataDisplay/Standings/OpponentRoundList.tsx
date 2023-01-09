@@ -3,6 +3,7 @@ import {
   CardBody,
   Grid,
   GridItem,
+  Stack,
   Text,
   Th,
   Thead,
@@ -43,6 +44,8 @@ export const OpponentRoundList = ({
             >{`${playerName}'s match history`}</Text>
           </GridItem>
           {opponents
+            .slice(0)
+            .reverse()
             .map(({ name, result }) => ({
               standing: liveResults?.data.find(
                 standing => standing.name === name
