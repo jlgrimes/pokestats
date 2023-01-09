@@ -12,10 +12,15 @@ import {
   UseDisclosureProps,
   Text,
   Flex,
+  Link,
+  ModalFooter,
+  StackItem,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { Fragment, useMemo, useState } from 'react';
 import { DeckArchetype } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
+import { useTwitterLink } from '../../../../hooks/twitter';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 
@@ -26,20 +31,35 @@ interface ArchetypeSelectorProps {
   shouldShowAsText?: boolean;
   tournamentId: string;
   unownOverride?: string;
+  userIsAdmin: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
+  const myTwitter = useTwitterLink('jgrimesey');
+
   const mostPopularDecks = useMostPopularArchetypes(props.tournamentId);
   const [filterQuery, setFilterQuery] = useState<string>('');
+  const [selectedArchetype, setSelectedArchetype] =
+    useState<number | null>(null);
+
   const modalControls = props.modalControls ?? {};
 
   const handleArchetypeChange = (deckId: number) => {
+    setSelectedArchetype(deckId);
+  };
+
+  const handleArchetypeSubmit = (deckId: number) => {
     props.onChange(deckId);
     modalControls.onClose && modalControls.onClose();
   };
 
   const handleFilterChange = (e: Record<string, any>) => {
     setFilterQuery(e.target.value);
+  };
+
+  const handleModalClose = () => {
+    modalControls.onClose && modalControls.onClose();
+    setSelectedArchetype(null);
   };
 
   const filteredDecks: DeckArchetype[] = useMemo(
@@ -95,30 +115,73 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     <Fragment>
       {renderDeckName()}
       {modalControls.isOpen && (
-        <Modal
-          isOpen={modalControls.isOpen}
-          onClose={modalControls.onClose ?? (() => {})}
-        >
+        <Modal isOpen={modalControls.isOpen} onClose={handleModalClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Report deck</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Input
-                placeholder='Filter archetype'
-                onChange={handleFilterChange}
-              />
-              <Stack height={'220px'} overflowY={'scroll'} padding={4}>
-                {filteredDecks?.map(({ id, name, defined_pokemon }, idx) => (
-                  <div key={idx} onClick={() => handleArchetypeChange(id)}>
-                    <SpriteAndNameDisplay
-                      archetypeName={name}
-                      pokemonNames={defined_pokemon}
-                    />
-                  </div>
-                ))}
+              <Stack spacing={4}>
+                {!props.userIsAdmin && (
+                  <Text>
+                    You can only report a deck once. If you accidentally
+                    misreport, you can contact{' '}
+                    <Link
+                      isExternal
+                      href={myTwitter}
+                      as={NextLink}
+                      color='twitter.500'
+                    >
+                      @jgrimesey
+                    </Link>{' '}
+                    to modify your submission.
+                  </Text>
+                )}
+                <Stack spacing={0}>
+                  <Input
+                    placeholder='Filter archetype'
+                    onChange={handleFilterChange}
+                  />
+                  <Stack height={'220px'} overflowY={'scroll'} padding={4}>
+                    {filteredDecks?.map(
+                      ({ id, name, defined_pokemon }, idx) => (
+                        <StackItem
+                          key={idx}
+                          p={1}
+                          boxShadow={
+                            selectedArchetype === id ? 'outline' : 'none'
+                          }
+                          rounded='md'
+                          onClick={() =>
+                            props.userIsAdmin
+                              ? handleArchetypeSubmit(id)
+                              : handleArchetypeChange(id)
+                          }
+                        >
+                          <SpriteAndNameDisplay
+                            archetypeName={name}
+                            pokemonNames={defined_pokemon}
+                          />
+                        </StackItem>
+                      )
+                    )}
+                  </Stack>
+                </Stack>
               </Stack>
             </ModalBody>
+            {!props.userIsAdmin && (
+              <ModalFooter>
+                <Button
+                  colorScheme='blue'
+                  disabled={!selectedArchetype}
+                  onClick={() =>
+                    handleArchetypeSubmit(selectedArchetype as number)
+                  }
+                >
+                  Submit
+                </Button>
+              </ModalFooter>
+            )}
           </ModalContent>
         </Modal>
       )}

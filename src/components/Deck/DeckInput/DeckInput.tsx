@@ -82,6 +82,7 @@ export default function DeckInput({
       shouldShowAsText={shouldShowAsText}
       tournamentId={tournamentId}
       unownOverride={playerName === 'Isaiah Cheville' ? 'z' : undefined}
+      userIsAdmin={userIsAdmin}
     />
   );
 }
