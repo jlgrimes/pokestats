@@ -1,13 +1,19 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
+import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
 import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
 import { fetchTournaments } from '../src/hooks/tournaments';
+import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
 import styles from '../styles/Home.module.css';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
+  if (SHOULD_SHOW_COMING_SOON) {
+    return <ComingSoonPage />;
+  }
+
   return (
     <div className={styles.container}>
       <Head>
