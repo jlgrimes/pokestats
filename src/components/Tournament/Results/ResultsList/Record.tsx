@@ -1,7 +1,13 @@
 import { Icon, Stack, Text, Link, Heading, Flex } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
-import { FaHandPeace, FaLock, FaRegHandPeace, FaRunning } from 'react-icons/fa';
+import {
+  FaHandPeace,
+  FaLock,
+  FaRegHandPeace,
+  FaRunning,
+  FaTrash,
+} from 'react-icons/fa';
 import { Standing } from '../../../../../types/tournament';
 import { formatRecord, madeDayTwo } from './helpers';
 
@@ -38,6 +44,8 @@ export const Record = ({
     return <Text fontSize='sm'>{formatRecord(standing.record)}</Text>;
   }, [href, standing.record, standing.drop, big]);
 
+  const showTrashIcon = standing.name === 'Noah Spinale';
+
   return (
     <Stack
       direction='row'
@@ -50,7 +58,8 @@ export const Record = ({
       alignItems={big ? 'baseline' : 'center'}
     >
       {renderRecordText()}
-      {standing.drop && <Icon as={FaRunning} />}
+      {showTrashIcon && <Icon as={FaTrash} />}
+      {standing.drop && !showTrashIcon && <Icon as={FaRunning} />}
       {madeDayTwo(standing.record) && !standing.drop && (
         <Icon color='gray.500' boxSize={3} as={FaHandPeace} />
       )}
