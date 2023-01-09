@@ -58,7 +58,7 @@ export const Record = ({
       alignItems={big ? 'baseline' : 'center'}
     >
       {renderRecordText()}
-      {standing.drop && showTrashIcon && <Icon color='gray.500' as={FaTrash} />}
+      {standing.drop && showTrashIcon && <Icon as={FaTrash} />}
       {standing.drop && !showTrashIcon && <Icon as={FaRunning} />}
       {madeDayTwo(standing.record) && !standing.drop && (
         <Icon color='gray.500' boxSize={3} as={FaHandPeace} />
