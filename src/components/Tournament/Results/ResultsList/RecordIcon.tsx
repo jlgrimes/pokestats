@@ -1,19 +1,16 @@
-import { Icon, Stack, Text, Link, Heading, Flex } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Icon } from '@chakra-ui/react';
 import { useCallback } from 'react';
 import {
   FaChessBishop,
   FaChessKing,
   FaChessQueen,
-  FaCrown,
+  FaChessRook,
   FaHandPeace,
-  FaLock,
-  FaRegHandPeace,
   FaRunning,
   FaTrash,
 } from 'react-icons/fa';
 import { Standing } from '../../../../../types/tournament';
-import { formatRecord, madeDayTwo } from './helpers';
+import { madeDayTwo } from './helpers';
 
 export const RecordIcon = ({
   standing,
@@ -39,12 +36,18 @@ export const RecordIcon = ({
       return <Icon {...commonIconProps} as={FaChessQueen} color='gray.400' />;
     }
 
+    if (standing.placing <= 4) {
+      return (
+        <Icon {...commonIconProps} as={FaChessRook} color='yellow.600' />
+      );
+    }
+
     if (standing.placing <= 8) {
       return (
         <Icon {...commonIconProps} as={FaChessBishop} color='yellow.600' />
       );
     }
-  }, [tournamentFinished, standing.placing]);
+  }, [tournamentFinished, standing.placing, commonIconProps]);
 
   const showTrashIcon = standing.name === 'Noah Spinale';
 
