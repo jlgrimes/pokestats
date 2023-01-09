@@ -20,7 +20,6 @@ export default function AccountRequestsPage() {
   const { data: accountRequests } = useAccountRequests();
 
   useEffect(() => {
-    console.log(userIsAdminLoading, userIsAdmin);
     if (!userIsAdmin && !userIsAdminLoading) {
       router.push('/');
     }

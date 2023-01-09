@@ -51,7 +51,6 @@ export const Record = ({
     if (!tournamentFinished) {
       return null;
     }
-    console.log(standing)
 
     if (standing.placing === 1) {
       return <Icon as={FaCrown} color='yellow.500'/>;
