@@ -8,7 +8,7 @@ export const ComingSoonPage = () => {
           query='live them.'
           styles={{ px: '2', py: '1', rounded: 'full', bg: 'red.100' }}
         >
-          {`You've been to Regionals. Now, prepare to live them.`}
+          {`You've watched Regionals. Now, prepare to live them.`}
         </Highlight>
       </Heading>
       <Stack spacing={6}>
