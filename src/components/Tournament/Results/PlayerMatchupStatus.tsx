@@ -94,7 +94,7 @@ export const PlayerMatchupStatus = ({
           <DeckInfoDisplay
             tournament={tournament}
             player={playerResults}
-            enableEdits={true}
+            enableEdits={!playerResults.deck.name}
             shouldShowAsText
           />
         </Stack>
