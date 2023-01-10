@@ -76,7 +76,7 @@ export const RecordIcon = ({
       return (
         <Icon
           {...commonIconProps}
-          color='gray.500'
+          color='gray.400'
           boxSize={3}
           as={FaHandPeace}
         />
