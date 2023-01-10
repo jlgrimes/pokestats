@@ -19,9 +19,11 @@ import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 export const ArchetypeBarGraph = ({
   tournament,
   shouldDrillDown,
+  shouldShowUnreported,
 }: {
   tournament: Tournament;
   shouldDrillDown: boolean;
+  shouldShowUnreported: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useLowResImageUrls(
@@ -70,11 +72,11 @@ export const ArchetypeBarGraph = ({
   };
 
   return (
-    <ResponsiveContainer width={'100%'} height={400}>
+    <ResponsiveContainer width={'100%'} height={350}>
       <BarChart
         width={300}
         height={300}
-        data={getArchetypeGraphData(data, shouldDrillDown)}
+        data={getArchetypeGraphData(data, shouldDrillDown, shouldShowUnreported)}
         layout='vertical'
         reverseStackOrder
       >

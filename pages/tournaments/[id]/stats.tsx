@@ -1,4 +1,5 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { ArchetypeGraphsContainer } from '../../../src/components/Tournament/Stats/ArchetypeGraphsContainer';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
@@ -13,12 +14,24 @@ export default function StatsPage({ tournament }: { tournament: Tournament }) {
   const { data: liveResults } = useLiveTournamentResults(
     tournament.id as string
   );
+  const allDay2DecksSubmitted = useMemo(() => {
+    return (
+      (liveResults?.data.every(
+        player => !player.day2 || (player.day2 && player.deck.name)
+      ) ||
+        liveResults?.data.some(player => player.deck.list)) ??
+      false
+    );
+  }, [liveResults]);
 
   return (
     <TournamentPageLayout tournament={tournament}>
       {/* <TournamentDetails tournament={tournament} /> */}
       {!liveResults?.live && (
-        <ArchetypeGraphsContainer tournament={tournament} />
+        <ArchetypeGraphsContainer
+          tournament={tournament}
+          allDay2DecksSubmitted={allDay2DecksSubmitted}
+        />
       )}
     </TournamentPageLayout>
   );

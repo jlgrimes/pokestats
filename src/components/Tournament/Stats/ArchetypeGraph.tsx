@@ -8,15 +8,20 @@ import {
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useHighResImageUrls } from '../../../hooks/images';
-import { getLowResUnownUrl, HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
+import {
+  getLowResUnownUrl,
+  HIGH_RES_SUBSTITUTE_URL,
+} from '../../common/helpers';
 import { DeckArchetype, Tournament } from '../../../../types/tournament';
 
 export const ArchetypeGraph = ({
   tournament,
   shouldDrillDown,
+  shouldShowUnreported,
 }: {
-  tournament: Tournament
+  tournament: Tournament;
   shouldDrillDown: boolean;
+  shouldShowUnreported: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useHighResImageUrls(
@@ -108,11 +113,15 @@ export const ArchetypeGraph = ({
   };
 
   return (
-    <ResponsiveContainer width={'100%'} height={400}>
+    <ResponsiveContainer width={'100%'} height={350}>
       <PieChart>
         <Pie
           dataKey='value'
-          data={getArchetypeGraphData(data, shouldDrillDown)}
+          data={getArchetypeGraphData(
+            data,
+            shouldDrillDown,
+            shouldShowUnreported
+          )}
           cx='50%'
           cy='50%'
           labelLine={false}
