@@ -42,8 +42,8 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='full'>
       <ModalOverlay />
+      <ModalCloseButton />
       <ModalContent>
-        <ListModalBody list={props.result.deck.list} />
         <Stack
           direction='row'
           justifyContent='space-between'
@@ -58,6 +58,7 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
           </Stack>
           <CloseButton onClick={props.onClose} paddingRight={4} />
         </Stack>
+        <ListModalBody list={props.result.deck.list} />
       </ModalContent>
     </Modal>
   );
