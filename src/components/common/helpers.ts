@@ -25,3 +25,8 @@ export const LOW_RES_SUBSTITUTE_URL =
 
 export const HIGH_RES_SUBSTITUTE_URL =
   'https://www.pokencyclopedia.info/sprites/misc/spr_substitute/art__substitute.png';
+
+export const getLowResUnownUrl = (unownOverride?: string) =>
+  `https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-${
+    unownOverride ?? 'qm'
+  }.png`;

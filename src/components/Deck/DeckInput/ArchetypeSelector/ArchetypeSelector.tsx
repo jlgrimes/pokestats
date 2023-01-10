@@ -21,6 +21,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { DeckArchetype } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import { useTwitterLink } from '../../../../hooks/twitter';
+import { getLowResUnownUrl } from '../../../common/helpers';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 
@@ -65,14 +66,11 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const filteredDecks: DeckArchetype[] = useMemo(
     () => [
       ...(mostPopularDecks?.filter(({ name }) => {
-        return name.toLowerCase().includes(filterQuery.toLowerCase());
+        return (
+          name.toLowerCase().includes(filterQuery.toLowerCase()) ||
+          name === 'Other'
+        );
       }) ?? []),
-      {
-        id: -1,
-        name: 'Other',
-        defined_pokemon: ['substitute'],
-        identifiable_cards: [],
-      },
     ],
     [mostPopularDecks, filterQuery]
   );
@@ -100,9 +98,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           <Flex justifyContent={'center'}>
             <Image
               height='30px'
-              src={`https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-${
-                props.unownOverride ?? 'qm'
-              }.png`}
+              src={getLowResUnownUrl(props.unownOverride)}
               alt='Unown'
             />
           </Flex>

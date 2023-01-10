@@ -10,7 +10,10 @@ import {
 import { DeckArchetype, Tournament } from '../../../../types/tournament';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { useLowResImageUrls } from '../../../hooks/images';
-import { LOW_RES_SUBSTITUTE_URL } from '../../common/helpers';
+import {
+  getLowResUnownUrl,
+  LOW_RES_SUBSTITUTE_URL,
+} from '../../common/helpers';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 
 export const ArchetypeBarGraph = ({
@@ -45,7 +48,7 @@ export const ArchetypeBarGraph = ({
           href={
             definedPokemon
               ? imageUrls?.[definedPokemon[0]]
-              : LOW_RES_SUBSTITUTE_URL
+              : getLowResUnownUrl()
           }
           x={width + 10}
           y={y - height / 2}
@@ -56,7 +59,7 @@ export const ArchetypeBarGraph = ({
             href={
               definedPokemon
                 ? imageUrls?.[definedPokemon[1]]
-                : LOW_RES_SUBSTITUTE_URL
+                : getLowResUnownUrl()
             }
             x={width + 30}
             y={y - height / 2}

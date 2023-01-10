@@ -100,22 +100,20 @@ const getPlayerDeckObjects = async (
 
   const playerDecks = await fetchPlayerDecks(tournamentId);
 
-  const mappedDecks = playerDecks?.map(
-    ({ player_name, deck_archetype }) => {
-      const deck: Record<string, any> | undefined = deckArchetypes?.find(
-        deck => deck.id === deck_archetype
-      );
+  const mappedDecks = playerDecks?.map(({ player_name, deck_archetype }) => {
+    const deck: Record<string, any> | undefined = deckArchetypes?.find(
+      deck => deck.id === deck_archetype
+    );
 
-      return {
-        player_name,
-        deck: {
-          id: deck_archetype,
-          name: deck?.name ?? null,
-          defined_pokemon: deck?.defined_pokemon ?? null,
-        },
-      };
-    }
-  );
+    return {
+      player_name,
+      deck: {
+        id: deck_archetype,
+        name: deck?.name ?? null,
+        defined_pokemon: deck?.defined_pokemon ?? null,
+      },
+    };
+  });
 
   console.log(
     'getPlayerDeckObjects:',
@@ -176,7 +174,7 @@ const getPlayerDeck = (
 
   return {
     ...playerDeck,
-    defined_pokemon: playerDeck.defined_pokemon ?? ['substitute'],
+    defined_pokemon: playerDeck.defined_pokemon ?? [],
   };
 };
 
@@ -202,7 +200,7 @@ function mapResultsArray(
       ...(currentMatchResult ? { currentMatchResult } : {}),
       day2: player.record.wins * 3 + player.record.ties >= 19,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
-      ...((player.drop > 0) ? { drop: player.drop } : {})
+      ...(player.drop > 0 ? { drop: player.drop } : {}),
     };
   });
 
@@ -292,12 +290,9 @@ export const fetchLiveResults = async (
     (endTime - startTime) / 1000,
     'sec'
   );
-  // The criteria of the tournament being completed is if there's a list published,
-  // which is the case except in the few days before lists are published on RK9.
-  // So, there are a few inaccurate days where 1 and 2 seed will be colored and the
-  // tournament is finished.
+
   return {
-    live: !parsedData[0]?.deck?.list,
+    live: tournament?.tournamentStatus === 'running',
     numPlayers: parsedData.length,
     roundNumber,
     data: parsedData,

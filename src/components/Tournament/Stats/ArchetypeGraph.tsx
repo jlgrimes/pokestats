@@ -8,7 +8,7 @@ import {
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useHighResImageUrls } from '../../../hooks/images';
-import { HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
+import { getLowResUnownUrl, HIGH_RES_SUBSTITUTE_URL } from '../../common/helpers';
 import { DeckArchetype, Tournament } from '../../../../types/tournament';
 
 export const ArchetypeGraph = ({
@@ -86,11 +86,11 @@ export const ArchetypeGraph = ({
     return (
       <>
         <image
-          height={definedPokemon ? height : 30}
+          height={definedPokemon ? height : 100}
           href={
             definedPokemon
               ? imageUrls?.[definedPokemon[0]]
-              : HIGH_RES_SUBSTITUTE_URL
+              : getLowResUnownUrl()
           }
           x={x - height / 2}
           y={y - height / 2}

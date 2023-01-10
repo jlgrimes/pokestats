@@ -3,6 +3,8 @@ import {
   getHighResSpriteUrl,
   getRegionFlag,
   getSpriteUrl,
+  HIGH_RES_SUBSTITUTE_URL,
+  LOW_RES_SUBSTITUTE_URL,
   removeRegionFlag,
 } from '../components/common/helpers';
 
@@ -28,9 +30,18 @@ export const usePokedex = () => {
   return useQuery({ queryKey: [`pokedex`], queryFn: fetchPokedex });
 };
 
-export const useHighResImageUrls = (pokemonNames: string[]): Record<string, string> => {
+export const useHighResImageUrls = (
+  pokemonNames: string[]
+): Record<string, string> => {
   const { data } = usePokedex();
   return pokemonNames?.reduce((acc, name) => {
+    if (name === 'substitute') {
+      return {
+        ...acc,
+        [name]: HIGH_RES_SUBSTITUTE_URL,
+      };
+    }
+
     return {
       ...acc,
       [name]: getHighResSpriteUrl(
@@ -41,9 +52,18 @@ export const useHighResImageUrls = (pokemonNames: string[]): Record<string, stri
   }, {});
 };
 
-export const useLowResImageUrls = (pokemonNames: string[]): Record<string, string> => {
+export const useLowResImageUrls = (
+  pokemonNames: string[]
+): Record<string, string> => {
   const { data } = usePokedex();
   return pokemonNames?.reduce((acc, name) => {
+    if (name === 'substitute') {
+      return {
+        ...acc,
+        [name]: LOW_RES_SUBSTITUTE_URL,
+      };
+    }
+
     return {
       ...acc,
       [name]: getSpriteUrl(
