@@ -7,6 +7,7 @@ import { Tournament } from '../../../../types/tournament';
 import { Record } from './ResultsList/Record';
 import { StoredPlayerProfile } from '../../../../types/player';
 import { useSession } from 'next-auth/react';
+import { RecordIcon } from './ResultsList/RecordIcon';
 
 const RecordNeeded = ({
   record,
@@ -79,7 +80,11 @@ export const PlayerMatchupStatus = ({
               tournamentFinished={tournamentFinished}
               big
             />
-            <Heading size='sm' color='gray.500'>
+            <RecordIcon
+              standing={playerResults}
+              tournamentFinished={tournamentFinished}
+            />
+            <Heading size='sm' color='gray.700'>
               {ordinalSuffixOf(playerResults.placing)}
             </Heading>
           </Stack>
