@@ -61,7 +61,7 @@ export const OpponentRoundList = ({
                     result={standing}
                     tournament={tournament}
                     canEditDecks={userIsAdmin}
-                    opponentRoundNumber={idx + 1}
+                    opponentRoundNumber={opponents.length - idx}
                     opponentResult={result}
                   />
                 )
