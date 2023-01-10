@@ -19,6 +19,7 @@ import {
 import { Fragment, useEffect, useState } from 'react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
+import { useIsMobile } from '../../../hooks/device';
 import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
@@ -43,14 +44,15 @@ export const OpponentRoundList = ({
     load: { allRoundData: true },
   });
   const { data: userIsAdmin } = useUserIsAdmin();
+  const isMobile = useIsMobile();
 
   const opponents: { name: string; result: string }[] | undefined =
     player.rounds;
 
   return (
-    <Modal isOpen={modalOpen} onClose={handleCloseModal} size='full'>
+    <Modal isOpen={modalOpen} onClose={handleCloseModal} size='md'>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent margin={isMobile ? 'auto' : 0}>
         <ModalHeader padding={'0.5rem 2rem'}>
           <Stack direction='row' alignItems={'center'}>
             <Text>{player.name}</Text>
