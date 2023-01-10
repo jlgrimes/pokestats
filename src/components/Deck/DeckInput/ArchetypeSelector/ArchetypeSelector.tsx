@@ -122,21 +122,6 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
             <ModalCloseButton />
             <ModalBody>
               <Stack spacing={4}>
-                {!props.userIsAdmin && (
-                  <Text>
-                    You can only report a deck once. If you accidentally
-                    misreport, you can contact{' '}
-                    <Link
-                      isExternal
-                      href={myTwitter}
-                      as={NextLink}
-                      color='twitter.500'
-                    >
-                      @jgrimesey
-                    </Link>{' '}
-                    to modify your submission.
-                  </Text>
-                )}
                 <Stack spacing={0}>
                   <Input
                     placeholder='Filter archetype'
@@ -167,6 +152,21 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
                     )}
                   </Stack>
                 </Stack>
+                {!props.userIsAdmin && (
+                  <Text as='b' color='red.600'>
+                    You can only report a deck once. If you accidentally
+                    misreport, you can contact{' '}
+                    <Link
+                      isExternal
+                      href={myTwitter}
+                      as={NextLink}
+                      color='twitter.500'
+                    >
+                      @jgrimesey
+                    </Link>{' '}
+                    to modify your submission.
+                  </Text>
+                )}
               </Stack>
             </ModalBody>
             {!props.userIsAdmin && (
@@ -178,7 +178,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
                     handleArchetypeSubmit(selectedArchetype as number)
                   }
                 >
-                  Submit
+                  Submit (I understand I cannot resubmit)
                 </Button>
               </ModalFooter>
             )}
