@@ -33,8 +33,8 @@ export const OpponentRoundList = ({
   const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
-    <Card gridColumn={'1/-1'}>
-      <CardBody padding='4' paddingTop='0'>
+    <Card gridColumn={'1/-1'} variant='outline'>
+      <CardBody padding='0' paddingTop='0'>
         <Grid gridTemplateColumns={'2rem repeat(3, auto)'} alignItems='center'>
           <GridItem gridColumn={'1/-1'} padding={1}>
             <Text

@@ -17,8 +17,9 @@ export const StandingsList = memo(
 
     return (
       <Grid
-        gridTemplateColumns='3rem repeat(3, auto)'
+        gridTemplateColumns='2.6rem repeat(3, auto)'
         paddingLeft={2}
+        paddingRight={2}
         alignItems='center'
       >
         <GridItem></GridItem>
