@@ -18,3 +18,6 @@ export const getStandingsBadgeProps = (tournament: Tournament): BadgeProps => {
 
   return {};
 };
+
+export const getRK9TournamentUrl = (slug: string) =>
+  `https://rk9.gg/tournament/${slug}`;

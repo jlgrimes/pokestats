@@ -3,6 +3,8 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Icon, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FaExternalLinkAlt } from 'react-icons/fa';
+import { getRK9TournamentUrl } from './helpers';
+
 
 export const RK9TournamentLink = ({
   tournament,
@@ -12,7 +14,7 @@ export const RK9TournamentLink = ({
   return (
     <Link
       as={NextLink}
-      href={`https://rk9.gg/tournament/${tournament.rk9link}`}
+      href={getRK9TournamentUrl(tournament.rk9link)}
       isExternal
     >
       <Icon as={FaExternalLinkAlt} mx='8px' boxSize={4} />
