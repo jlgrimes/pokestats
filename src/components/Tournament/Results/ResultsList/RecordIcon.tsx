@@ -1,5 +1,5 @@
 import { Icon } from '@chakra-ui/react';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   FaChessBishop,
   FaChessKing,
@@ -8,6 +8,7 @@ import {
   FaHandPeace,
   FaRunning,
   FaTrash,
+  FaUserAltSlash,
 } from 'react-icons/fa';
 import { Standing } from '../../../../../types/tournament';
 import { madeDayTwo } from './helpers';
@@ -19,9 +20,12 @@ export const RecordIcon = ({
   standing: Standing;
   tournamentFinished: boolean;
 }) => {
-  const commonIconProps = {
-    marginRight: '8px',
-  };
+  const commonIconProps = useMemo(
+    () => ({
+      marginRight: '8px',
+    }),
+    []
+  );
 
   const getCrownIcon = useCallback(() => {
     if (!tournamentFinished) {
@@ -37,9 +41,7 @@ export const RecordIcon = ({
     }
 
     if (standing.placing <= 4) {
-      return (
-        <Icon {...commonIconProps} as={FaChessRook} color='yellow.600' />
-      );
+      return <Icon {...commonIconProps} as={FaChessRook} color='yellow.600' />;
     }
 
     if (standing.placing <= 8) {
@@ -47,27 +49,42 @@ export const RecordIcon = ({
         <Icon {...commonIconProps} as={FaChessBishop} color='yellow.600' />
       );
     }
+
+    return null;
   }, [tournamentFinished, standing.placing, commonIconProps]);
 
-  const showTrashIcon = standing.name === 'Noah Spinale';
+  const getIcon = useCallback(() => {
+    const showTrashIcon = standing.name === 'Noah Spinale';
 
-  return (
-    <>
-      {getCrownIcon()}
-      {standing.drop && showTrashIcon && (
-        <Icon {...commonIconProps} color='red.600' as={FaTrash} />
-      )}
-      {standing.drop && !showTrashIcon && (
-        <Icon {...commonIconProps} color='red.600' as={FaRunning} />
-      )}
-      {!getCrownIcon() && madeDayTwo(standing.record) && !standing.drop && (
+    if (getCrownIcon()) {
+      return getCrownIcon();
+    }
+
+    if (standing.drop) {
+      if (standing.placing === 9999) {
+        return <Icon {...commonIconProps} color='red.600' as={FaUserAltSlash} />
+      }
+
+      if (showTrashIcon) {
+        return <Icon {...commonIconProps} color='red.600' as={FaTrash} />;
+      }
+
+      return <Icon {...commonIconProps} color='red.600' as={FaRunning} />;
+    }
+
+    if (madeDayTwo(standing.record)) {
+      return (
         <Icon
           {...commonIconProps}
           color='gray.500'
           boxSize={3}
           as={FaHandPeace}
         />
-      )}
-    </>
-  );
+      );
+    }
+
+    return null;
+  }, [commonIconProps, getCrownIcon, standing]);
+
+  return getIcon();
 };
