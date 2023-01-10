@@ -21,6 +21,7 @@ import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
+import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
 import { tableHeadingProps } from './props';
 import { StandingsRow } from './StandingsRow';
 
@@ -51,12 +52,17 @@ export const OpponentRoundList = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader padding={'0.5rem 2rem'}>
-          <Stack direction='row'>
+          <Stack direction='row' alignItems={'center'}>
             <Text>{player.name}</Text>
+            <RecordIcon
+              standing={player}
+              tournamentFinished={tournament.tournamentStatus === 'finished'}
+            />
             <DeckInfoDisplay
               tournament={tournament}
               player={player}
               enableEdits={false}
+              disableList
             />
           </Stack>
         </ModalHeader>
