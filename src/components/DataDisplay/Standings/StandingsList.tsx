@@ -4,6 +4,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { StandingsRow } from './StandingsRow';
 import { StandingsRowExpandable } from './StandingsRowExpandable';
 import { Fragment, memo } from 'react';
+import { tableHeadingProps } from './props';
 
 export const StandingsList = memo(
   ({
@@ -23,36 +24,11 @@ export const StandingsList = memo(
         alignItems='center'
       >
         <GridItem></GridItem>
-        <Text
-          fontSize='xs'
-          color={'gray.700'}
-          fontFamily='heading'
-          fontWeight='bold'
-          textTransform={'uppercase'}
-          letterSpacing='wider'
-        >
-          Name
-        </Text>
-        <Text
-          fontSize='xs'
-          color={'gray.700'}
-          fontFamily='heading'
-          fontWeight='bold'
-          textTransform={'uppercase'}
-          letterSpacing='wider'
-          paddingLeft={1}
-        >
+        <Text {...tableHeadingProps}>Name</Text>
+        <Text {...tableHeadingProps} paddingLeft={1}>
           Record
         </Text>
-        <Text
-          fontSize='xs'
-          color={'gray.700'}
-          fontFamily='heading'
-          fontWeight='bold'
-          textTransform={'uppercase'}
-          letterSpacing='wider'
-          paddingLeft={2}
-        >
+        <Text {...tableHeadingProps} paddingLeft={2}>
           Deck
         </Text>
         {results.map((result: Standing, idx: number) => (

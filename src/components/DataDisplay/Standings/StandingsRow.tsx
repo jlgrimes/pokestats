@@ -34,7 +34,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
 
   return (
     <>
-      <GridItem padding={3} paddingLeft={0} paddingRight={2}>
+      <GridItem padding={2} paddingLeft={0} paddingRight={2}>
         <Text fontSize='sm' textAlign='right'>
           {props.opponentRoundNumber ??
             (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
