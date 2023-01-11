@@ -32,11 +32,17 @@ export const SpriteLabel = ({
   };
 
   const getImageHeight = (percent: number) => {
-    if (percent > 0.1) {
+    if (percent > 0.15) {
       if (shouldDrillDown) {
         return 70;
       } else {
         return 80;
+      }
+    } else if (percent > 0.1) {
+      if (shouldDrillDown) {
+        return 60;
+      } else {
+        return 70;
       }
     } else if (percent > 0.03) {
       if (shouldDrillDown) {
