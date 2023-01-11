@@ -82,7 +82,7 @@ export const ArchetypeBarGraph = ({
         layout='vertical'
         reverseStackOrder
       >
-        <Bar dataKey='value' fill='#8884d8'>
+        <Bar dataKey='value' fill={'#A0AEC0'}>
           <LabelList dataKey={'name'} content={renderCustomizedLabel} />
         </Bar>
 

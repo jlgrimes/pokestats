@@ -7,7 +7,7 @@ import {
   Switch,
   Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArchetypeGraph } from './ArchetypeGraph';
 import { ArchetypeBarGraph } from './ArchetypeBarGraph';
 import { Tournament } from '../../../../types/tournament';
@@ -19,20 +19,31 @@ export const ArchetypeGraphsContainer = ({
   tournament: Tournament;
   allDay2DecksSubmitted: boolean;
 }) => {
+  const [shouldShowBothCharts, setShouldShowBothCharts] = useState(false);
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
   const [shouldShowUnreported, setShouldShowUnreported] = useState(true);
-  const [shouldShowPieChart, setShouldShowPieChart] = useState(true);
+  const [shouldToggleShowPieChart, setShouldToggleShowPieChart] = useState(true);
+
+  useEffect(() => {
+    if (window.innerWidth >= 700) {
+      setShouldShowBothCharts(true);
+    }
+  }, []);
+
+  const shouldShowPieChart = shouldShowBothCharts || shouldToggleShowPieChart;
+  const shouldShowBarChart = shouldShowBothCharts || !shouldToggleShowPieChart
 
   return (
     <Stack padding={'0 1.5rem'}>
-      <Stack alignItems={'center'} spacing={0}>
-        {shouldShowPieChart ? (
+      <Stack alignItems={'center'} direction='row' spacing={0}>
+        {shouldShowPieChart && (
           <ArchetypeGraph
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
             shouldShowUnreported={shouldShowUnreported}
           />
-        ) : (
+        )}
+        {shouldShowBarChart && (
           <ArchetypeBarGraph
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
@@ -62,7 +73,7 @@ export const ArchetypeGraphsContainer = ({
           </FormLabel>
           <Switch
             id='show-pie-chart'
-            onChange={() => setShouldShowPieChart(!shouldShowPieChart)}
+            onChange={() => setShouldToggleShowPieChart(!shouldToggleShowPieChart)}
             defaultChecked
           />
           {!allDay2DecksSubmitted && (
