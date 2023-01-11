@@ -75,7 +75,6 @@ export const SpriteLabel = ({
   const [spriteWidth, setSpriteWidth] = useState<number | undefined>();
   const [secondarySpriteWidth, setSecondarySpriteWidth] =
     useState<number | undefined>();
-  console.log(secondarySpriteWidth);
 
   return (
     <>

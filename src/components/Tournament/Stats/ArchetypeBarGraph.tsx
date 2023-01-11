@@ -48,13 +48,14 @@ export const ArchetypeBarGraph = ({
         <image
           className='pixel-image'
           height={shouldDrillDown ? 20 : 30}
+          opacity={shouldDrillDown ? 0.4 : 1}
           href={
             definedPokemon
               ? imageUrls?.[definedPokemon[0]]
               : getLowResUnownUrl()
           }
           x={width + 10}
-          y={y - height / 2}
+          y={y - height / 4}
         />
         {shouldDrillDown && (
           <image
@@ -66,7 +67,7 @@ export const ArchetypeBarGraph = ({
                 : getLowResUnownUrl()
             }
             x={width + 30}
-            y={y - height / 2}
+            y={y - height / 4}
           />
         )}
       </g>
