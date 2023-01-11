@@ -70,7 +70,6 @@ export const SpriteLabel = ({
     (deck: Record<string, any>) =>
       name === getArchetypeKey(deck, shouldDrillDown)
   )?.defined_pokemon;
-  console.log(definedPokemon);
 
   const height = getImageHeight(percent as number);
   const [spriteWidth, setSpriteWidth] = useState<number | undefined>();
