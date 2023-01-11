@@ -83,6 +83,7 @@ export const SpriteLabel = ({
         className='pixel-image'
         height={definedPokemon ? height : 100}
         opacity={shouldDrillDown ? 0.4 : 1}
+        visibility={spriteWidth ? 'visible' : 'hidden'}
         href={
           definedPokemon ? imageUrls?.[definedPokemon[0]] : getLowResUnownUrl()
         }
@@ -102,6 +103,7 @@ export const SpriteLabel = ({
           className='pixel-image'
           height={height * 0.75}
           href={definedPokemon ? imageUrls?.[definedPokemon[1]] : ''}
+          visibility={secondarySpriteWidth ? 'visible' : 'hidden'}
           onLoad={() =>
             setSecondarySpriteWidth(
               document

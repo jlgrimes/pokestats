@@ -53,7 +53,7 @@ export const ArchetypeGraphsContainer = ({
           />
         )}
       </Stack>
-      <Stack padding='1rem 0 0.5rem'>
+      <Stack padding='0.5rem 0'>
         <Heading color='gray.700' size={'md'}>
           Day 2 Archetype Spread
         </Heading>
