@@ -48,7 +48,7 @@ export const ArchetypeGraphsContainer = ({
           />
         </Show>
       </Stack>
-      <Stack padding='2rem 0'>
+      <Stack padding='1rem 0 0.5rem'>
         <Heading color='gray.700' size={'md'}>
           Day 2 Archetype Spread
         </Heading>
@@ -88,12 +88,14 @@ export const ArchetypeGraphsContainer = ({
             </>
           )}
         </FormControl>
-      </Stack>
-      {!shouldShowUnreported && (
-        <Text as='b' color='red.600'>
+        <Text
+          as='b'
+          color='red.600'
+          visibility={!shouldShowUnreported ? 'visible' : 'hidden'}
+        >
           Data does not include unreported decks
         </Text>
-      )}
+      </Stack>
     </Stack>
   );
 };
