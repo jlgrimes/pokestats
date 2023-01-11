@@ -40,6 +40,7 @@ export const ArchetypeGraph = ({
     <ResponsiveContainer width={'100%'} height={350}>
       <PieChart>
         <Pie
+          isAnimationActive={false}
           dataKey='value'
           data={getArchetypeGraphData(
             data,
