@@ -20,10 +20,12 @@ export const ArchetypeGraph = ({
   tournament,
   shouldDrillDown,
   shouldShowUnreported,
+  shouldAnimate,
 }: {
   tournament: Tournament;
   shouldDrillDown: boolean;
   shouldShowUnreported: boolean;
+  shouldAnimate: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);
   const dataFlatList =
@@ -40,7 +42,7 @@ export const ArchetypeGraph = ({
     <ResponsiveContainer width={'100%'} height={'100%'}>
       <PieChart>
         <Pie
-          isAnimationActive={false}
+          isAnimationActive={shouldAnimate}
           dataKey='value'
           data={getArchetypeGraphData(
             data,

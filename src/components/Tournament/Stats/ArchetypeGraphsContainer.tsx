@@ -43,6 +43,7 @@ export const ArchetypeGraphsContainer = ({
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
             shouldShowUnreported={shouldShowUnreported}
+            shouldAnimate={!isLargerThanMd}
           />
         )}
         {shouldShowBarChart && (
@@ -50,6 +51,7 @@ export const ArchetypeGraphsContainer = ({
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
             shouldShowUnreported={shouldShowUnreported}
+            shouldAnimate={!isLargerThanMd}
           />
         )}
       </Stack>

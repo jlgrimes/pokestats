@@ -20,10 +20,12 @@ export const ArchetypeBarGraph = ({
   tournament,
   shouldDrillDown,
   shouldShowUnreported,
+  shouldAnimate
 }: {
   tournament: Tournament;
   shouldDrillDown: boolean;
   shouldShowUnreported: boolean;
+  shouldAnimate: boolean
 }) => {
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useLowResImageUrls(
@@ -83,7 +85,7 @@ export const ArchetypeBarGraph = ({
         layout='vertical'
         reverseStackOrder
       >
-        <Bar dataKey='value' fill={'#A0AEC0'} isAnimationActive={false}>
+        <Bar dataKey='value' fill={'#A0AEC0'} isAnimationActive={shouldAnimate}>
           <LabelList dataKey={'name'} content={renderCustomizedLabel} />
         </Bar>
 
