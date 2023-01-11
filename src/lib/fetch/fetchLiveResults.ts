@@ -291,6 +291,15 @@ export const fetchLiveResults = async (
     'sec'
   );
 
+  // Safeguard for finals has finished
+  const getFinalsHasFinished = () => {
+    if (!parsedData?.[1].rounds?.length || !parsedData?.[2].rounds?.length) return false;
+
+    if (parsedData[1].rounds.length === parsedData[2].rounds.length) return false;
+
+    return parsedData[1].rounds[parsedData[1].rounds.length - 1].result;
+  }
+
   return {
     live: tournament?.tournamentStatus === 'running',
     numPlayers: parsedData.length,
