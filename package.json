@@ -29,6 +29,7 @@
     "@vercel/analytics": "^0.1.6",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
+    "fast-average-color": "^9.3.0",
     "formik": "^2.2.9",
     "framer-motion": "^7.8.0",
     "next": "13.0.6",
