@@ -71,7 +71,7 @@ export const ArchetypeGraph = ({
           outerRadius={'100%'}
         >
           {data?.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={'red'} />
+            <Cell key={`cell-${index}`} fill={'#A0AEC0'} />
           ))}
         </Pie>
         <Tooltip />

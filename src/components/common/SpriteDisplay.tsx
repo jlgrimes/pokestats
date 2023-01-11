@@ -32,8 +32,7 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
               maxHeight='30px'
               height='auto'
               width='auto'
-              src={getSpriteUrl(
-                pokedex?.[removeRegionFlag(name).toLowerCase()],
+              src={getSpriteUrl(removeRegionFlag(name).toLowerCase(),
                 getRegionFlag(name)
               )}
               alt={name}

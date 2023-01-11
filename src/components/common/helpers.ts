@@ -1,5 +1,5 @@
 export const getSpriteUrl = (pokedexNumber: string, regionFlag?: string) =>
-  `https://www.serebii.net/pokedex-swsh/icon/${pokedexNumber?.padStart(
+  `https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen8-v3/${pokedexNumber?.padStart(
     3,
     '0'
   )}${regionFlag ?? ''}.png`;
