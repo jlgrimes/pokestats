@@ -24,6 +24,7 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import { getRK9TournamentUrl } from '../Tournament/helpers';
 import {
+  formatTimeUntilTournament,
   formatTournamentDate,
   formatTournamentStatus,
   getTournamentStatusBadgeProps,

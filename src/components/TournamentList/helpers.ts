@@ -1,5 +1,11 @@
 import { BadgeProps } from '@chakra-ui/react';
-import { format, parseISO } from 'date-fns';
+import {
+  differenceInDays,
+  format,
+  formatDistance,
+  formatDistanceToNow,
+  parseISO,
+} from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 
 export const formatTournamentStatus = (tournament: Tournament) => {
@@ -12,7 +18,10 @@ export const formatTournamentStatus = (tournament: Tournament) => {
   }
 
   if (tournament.tournamentStatus === 'not-started') {
-    return 'Upcoming';
+    if (tournamentHasArrivedButNotLive(tournament)) {
+      return `About to Start`;
+    }
+    return `Upcoming - ${formatTimeUntilTournament(tournament)}`;
   }
 };
 
@@ -45,4 +54,15 @@ export const formatTournamentDate = (tournament: Tournament) => {
   }
 
   return `${format(startDate, 'MMMM d')}-${format(endDate, 'd, y')}`;
+};
+
+export const formatTimeUntilTournament = (tournament: Tournament) => {
+  const startDate = parseISO(tournament.date.start);
+  return formatDistanceToNow(startDate);
+};
+
+export const tournamentHasArrivedButNotLive = (tournament: Tournament) => {
+  const startDate = parseISO(tournament.date.start);
+
+  return differenceInDays(startDate, new Date()) <= 0;
 };
