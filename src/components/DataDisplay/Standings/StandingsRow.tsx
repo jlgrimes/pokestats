@@ -35,7 +35,11 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   return (
     <>
       <GridItem padding={2} paddingLeft={0} paddingRight={2}>
-        <Text fontSize={props.result.placing >= 1000 ? 'xs' : 'sm'} textAlign='right'>
+        <Text
+          fontSize={props.result.placing >= 1000 ? 'xs' : 'sm'}
+          fontFamily='monospace'
+          textAlign='right'
+        >
           {props.opponentRoundNumber ??
             (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
         </Text>
@@ -63,7 +67,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       <Stack
         backgroundColor={getStandingsCellResultBackgroundColor()}
         height='100%'
-        alignItems={'baseline'}
+        alignItems={'end'}
         justifyContent='center'
         padding={1}
       >
