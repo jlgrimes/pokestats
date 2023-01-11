@@ -8,6 +8,7 @@ import { Record } from './ResultsList/Record';
 import { StoredPlayerProfile } from '../../../../types/player';
 import { useSession } from 'next-auth/react';
 import { RecordIcon } from './ResultsList/RecordIcon';
+import { getPercentile } from './helpers';
 
 const RecordNeeded = ({
   record,
@@ -85,7 +86,7 @@ export const PlayerMatchupStatus = ({
               tournamentFinished={tournamentFinished}
             />
             <Heading size='sm' color='gray.700'>
-              {ordinalSuffixOf(playerResults.placing)}
+              {`${ordinalSuffixOf(playerResults.placing)}`}
             </Heading>
           </Stack>
         </Stack>
@@ -97,6 +98,16 @@ export const PlayerMatchupStatus = ({
             enableEdits={!playerResults.deck.name}
             shouldShowAsText
           />
+          {tournamentFinished && (
+            <Heading size='xs' color='gray.700'>
+              {`(${ordinalSuffixOf(
+                getPercentile(
+                  playerResults.placing,
+                  parseInt(tournament.players.masters ?? '')
+                )
+              )} percentile)`}
+            </Heading>
+          )}
         </Stack>
       </Stack>
       {!tournamentFinished && (

@@ -30,7 +30,7 @@ export const MyMatchupRow = memo(
         {roundNumber}
       </Td>
       <Td
-        maxWidth={'12rem'}
+        maxWidth={'10rem'}
         overflow={'hidden'}
         textOverflow={'ellipsis'}
         padding={0}

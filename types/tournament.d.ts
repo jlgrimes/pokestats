@@ -46,6 +46,11 @@ export interface Tournament {
     end: string;
   };
   tournamentStatus: 'not-started' | 'running' | 'finished';
+  players: {
+    juniors: string | null;
+    seniors: string | null;
+    masters: string | null;
+  };
   roundNumbers: {
     juniors: number | null;
     seniors: number | null;
