@@ -17,6 +17,7 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
         if (name === 'substitute') {
           return (
             <Image
+              className='pixel-image'
               key={idx}
               src='https://archives.bulbagarden.net/media/upload/a/a5/SubstituteG5f.png'
               alt='Other'
@@ -29,6 +30,7 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
         return (
           <StackItem width='30px' key={idx} display='flex' justifyContent={'center'}>
             <Image
+              className='pixel-image'
               maxHeight='30px'
               height='auto'
               width='auto'
