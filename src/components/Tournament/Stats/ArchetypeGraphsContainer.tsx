@@ -2,6 +2,7 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Show,
   SimpleGrid,
   Stack,
   Switch,
@@ -19,37 +20,32 @@ export const ArchetypeGraphsContainer = ({
   tournament: Tournament;
   allDay2DecksSubmitted: boolean;
 }) => {
-  const [shouldShowBothCharts, setShouldShowBothCharts] = useState(false);
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
   const [shouldShowUnreported, setShouldShowUnreported] = useState(true);
-  const [shouldToggleShowPieChart, setShouldToggleShowPieChart] = useState(true);
-
-  useEffect(() => {
-    if (window.innerWidth >= 700) {
-      setShouldShowBothCharts(true);
-    }
-  }, []);
-
-  const shouldShowPieChart = shouldShowBothCharts || shouldToggleShowPieChart;
-  const shouldShowBarChart = shouldShowBothCharts || !shouldToggleShowPieChart
+  const [shouldToggleShowPieChart, setShouldToggleShowPieChart] =
+    useState(true);
 
   return (
     <Stack padding={'0 1.5rem'}>
-      <Stack alignItems={'center'} direction='row' spacing={0}>
-        {shouldShowPieChart && (
+      <Stack
+        alignItems={'center'}
+        direction={{ base: 'column', md: 'row' }}
+        spacing={0}
+      >
+        {shouldToggleShowPieChart && (
           <ArchetypeGraph
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
             shouldShowUnreported={shouldShowUnreported}
           />
         )}
-        {shouldShowBarChart && (
+        <Show above='md'>
           <ArchetypeBarGraph
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
             shouldShowUnreported={shouldShowUnreported}
           />
-        )}
+        </Show>
       </Stack>
       <Stack>
         <Heading color='gray.700' size={'md'}>
@@ -73,7 +69,9 @@ export const ArchetypeGraphsContainer = ({
           </FormLabel>
           <Switch
             id='show-pie-chart'
-            onChange={() => setShouldToggleShowPieChart(!shouldToggleShowPieChart)}
+            onChange={() =>
+              setShouldToggleShowPieChart(!shouldToggleShowPieChart)
+            }
             defaultChecked
           />
           {!allDay2DecksSubmitted && (
