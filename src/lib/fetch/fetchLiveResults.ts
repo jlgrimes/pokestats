@@ -225,7 +225,7 @@ export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   data = data.map((player: Standing) => ({
     ...player,
     name: player.name.split('[')[0].trim(),
-  }));
+  })).filter((player: Standing) => player.placing !== 9999);
 
   console.log('getPokedata:', (performance.now() - perfStart) / 1000, 'sec');
 
