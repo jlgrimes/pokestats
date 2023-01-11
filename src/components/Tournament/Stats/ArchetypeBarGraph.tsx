@@ -52,7 +52,7 @@ export const ArchetypeBarGraph = ({
           height={shouldDrillDown ? 20 : 30}
           opacity={shouldDrillDown ? 0.4 : 1}
           href={
-            definedPokemon
+            definedPokemon && definedPokemon.length > 0
               ? imageUrls?.[definedPokemon[0]]
               : getLowResUnownUrl()
           }

@@ -70,6 +70,7 @@ export const SpriteLabel = ({
     (deck: Record<string, any>) =>
       name === getArchetypeKey(deck, shouldDrillDown)
   )?.defined_pokemon;
+  console.log(definedPokemon);
 
   const height = getImageHeight(percent as number);
   const [spriteWidth, setSpriteWidth] = useState<number | undefined>();
@@ -85,7 +86,9 @@ export const SpriteLabel = ({
         opacity={shouldDrillDown ? 0.4 : 1}
         visibility={spriteWidth ? 'visible' : 'hidden'}
         href={
-          definedPokemon ? imageUrls?.[definedPokemon[0]] : getLowResUnownUrl()
+          definedPokemon && definedPokemon.length > 0
+            ? imageUrls?.[definedPokemon[0]]
+            : getLowResUnownUrl()
         }
         onLoad={() =>
           setSpriteWidth(
