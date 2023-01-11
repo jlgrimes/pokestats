@@ -6,12 +6,10 @@ import { formatRecord, madeDayTwo } from './helpers';
 
 export const Record = ({
   standing,
-  tournamentFinished,
   href,
   big,
 }: {
   standing: Standing;
-  tournamentFinished: boolean;
   href?: string;
   big?: boolean;
 }) => {
@@ -23,7 +21,7 @@ export const Record = ({
           color={standing.drop ? 'red.600' : 'blue.600'}
           href={href}
         >
-          <Text fontSize='sm' fontFamily={'mono'}>
+          <Text fontSize='sm' fontFamily={'monospace'}>
             {formatRecord(standing.record)}
           </Text>
         </Link>
@@ -39,7 +37,7 @@ export const Record = ({
     }
 
     return (
-      <Text fontSize='sm' fontFamily={'mono'}>
+      <Text fontSize='sm' fontFamily={'monospace'}>
         {formatRecord(standing.record)}
       </Text>
     );

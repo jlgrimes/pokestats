@@ -1,13 +1,12 @@
-import {
-  Td,
-  Tr,
-} from '@chakra-ui/react';
+import { Flex, Grid, Td, Tr } from '@chakra-ui/react';
 
 import { memo } from 'react';
 import { Standing, Tournament } from '../../../types/tournament';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 import { formatRecord } from '../Tournament/Results/ResultsList/helpers';
 import { Player } from '../Tournament/Results/ResultsList/Player/Player';
+import { Record } from '../Tournament/Results/ResultsList/Record';
+import { RecordIcon } from '../Tournament/Results/ResultsList/RecordIcon';
 import { getResultBackgroundColor } from './helpers';
 
 export const MyMatchupRow = memo(
@@ -26,6 +25,7 @@ export const MyMatchupRow = memo(
         paddingLeft={2}
         backgroundColor={getResultBackgroundColor(round.result)}
         textAlign='center'
+        fontFamily={'monospace'}
       >
         {roundNumber}
       </Td>
@@ -36,14 +36,11 @@ export const MyMatchupRow = memo(
         padding={0}
         paddingLeft={2}
       >
-        <Player
-          name={round.opponent.name}
-          profile={round.opponent.profile}
-        />
+        <Player name={round.opponent.name} profile={round.opponent.profile} />
       </Td>
 
       <Td padding={0} paddingLeft={2}>
-        {formatRecord(round.opponent.record)}
+        <Record standing={round.opponent} />
       </Td>
       <Td padding={0} paddingLeft={2}>
         <DeckInfoDisplay

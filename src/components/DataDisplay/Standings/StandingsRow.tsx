@@ -35,11 +35,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   return (
     <>
       <GridItem padding={2} paddingLeft={0} paddingRight={2}>
-        <Text
-          fontSize={props.result.placing >= 1000 ? 'xs' : 'sm'}
-          fontFamily='monospace'
-          textAlign='right'
-        >
+        <Text fontSize={'sm'} fontFamily='monospace' textAlign='right'>
           {props.opponentRoundNumber ??
             (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
         </Text>
@@ -71,10 +67,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         justifyContent='center'
         padding={1}
       >
-        <Record
-          standing={props.result}
-          tournamentFinished={props.tournament.tournamentStatus === 'finished'}
-        />
+        <Record standing={props.result} />
       </Stack>
       <GridItem paddingLeft={2}>
         <DeckInfoDisplay
