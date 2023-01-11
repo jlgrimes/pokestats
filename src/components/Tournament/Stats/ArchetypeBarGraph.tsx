@@ -55,7 +55,7 @@ export const ArchetypeBarGraph = ({
               : getLowResUnownUrl()
           }
           x={width + 10}
-          y={y - height / 4}
+          y={y}
         />
         {shouldDrillDown && (
           <image
@@ -67,7 +67,7 @@ export const ArchetypeBarGraph = ({
                 : getLowResUnownUrl()
             }
             x={width + 30}
-            y={y - height / 4}
+            y={y}
           />
         )}
       </g>
@@ -75,7 +75,7 @@ export const ArchetypeBarGraph = ({
   };
 
   return (
-    <ResponsiveContainer width={'100%'} height={350}>
+    <ResponsiveContainer width={'100%'} height={'100%'}>
       <BarChart
         width={300}
         height={300}

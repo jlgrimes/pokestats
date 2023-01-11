@@ -65,16 +65,18 @@ export const ArchetypeGraphsContainer = ({
             id='archetype-drill-down'
             onChange={() => setShouldDrillDown(!shouldDrillDown)}
           />
-          <FormLabel htmlFor='show-pie-chart' mb='0'>
-            Pie chart
-          </FormLabel>
-          <Switch
-            id='show-pie-chart'
-            onChange={() =>
-              setShouldToggleShowPieChart(!shouldToggleShowPieChart)
-            }
-            defaultChecked
-          />
+          <Show below='md'>
+            <FormLabel htmlFor='show-pie-chart' mb='0'>
+              Pie chart
+            </FormLabel>
+            <Switch
+              id='show-pie-chart'
+              onChange={() =>
+                setShouldToggleShowPieChart(!shouldToggleShowPieChart)
+              }
+              defaultChecked
+            />
+          </Show>
           {!allDay2DecksSubmitted && (
             <>
               <FormLabel htmlFor='show-unreported' mb='0'>
