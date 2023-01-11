@@ -35,17 +35,6 @@ export const ArchetypeGraph = ({
       []
     ) ?? [];
   const imageUrls = useLowResImageUrls(dataFlatList);
-  const [averageColors, setAverageColors] = useState({});
-
-  useEffect(() => {
-    const getAverageColors = async () => {
-      for (const [deckName, url] of Object.entries(imageUrls)) {
-        const img = document.querySelector(`#sprite-${deckName}`);
-        console.log(img);
-      }
-    };
-    getAverageColors();
-  }, []);
 
   return (
     <ResponsiveContainer width={'100%'} height={350}>

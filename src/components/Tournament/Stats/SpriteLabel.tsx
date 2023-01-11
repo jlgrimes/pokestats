@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { PieLabelRenderProps } from 'recharts';
 import { DeckArchetype } from '../../../../types/tournament';
 import { getLowResUnownUrl } from '../../common/helpers';
@@ -14,7 +15,7 @@ export const SpriteLabel = ({
   name,
   imageUrls,
   shouldDrillDown,
-  data
+  data,
 }: PieLabelRenderProps & {
   imageUrls: Record<string, string>;
   shouldDrillDown: boolean;
@@ -26,7 +27,7 @@ export const SpriteLabel = ({
     } else if (percent > 0.04) {
       return 1.5;
     } else {
-      return index % 2 ? 2 : 1.6;
+      return index % 2 ? 1.8 : 1.6;
     }
   };
 
@@ -65,25 +66,45 @@ export const SpriteLabel = ({
   )?.defined_pokemon;
 
   const height = getImageHeight(percent as number);
+  const [spriteWidth, setSpriteWidth] = useState<number | undefined>();
+  const [secondarySpriteWidth, setSecondarySpriteWidth] =
+    useState<number | undefined>();
+  console.log(secondarySpriteWidth);
 
   return (
     <>
       <image
-        id={`sprite-${name}`}
+        id={`primary-sprite-${index}`}
         className='pixel-image'
         height={definedPokemon ? height : 100}
+        opacity={shouldDrillDown ? 0.4 : 1}
         href={
           definedPokemon ? imageUrls?.[definedPokemon[0]] : getLowResUnownUrl()
         }
-        x={x - height / 2}
+        onLoad={() =>
+          setSpriteWidth(
+            document
+              .querySelector(`#primary-sprite-${index}`)
+              ?.getBoundingClientRect().width
+          )
+        }
+        x={x - (spriteWidth ?? height) / 2}
         y={y - height / 2}
       />
       {shouldDrillDown && (
         <image
+          id={`secondary-sprite-${index}`}
           className='pixel-image'
           height={height * 0.75}
           href={definedPokemon ? imageUrls?.[definedPokemon[1]] : ''}
-          x={x}
+          onLoad={() =>
+            setSecondarySpriteWidth(
+              document
+                .querySelector(`#secondary-sprite-${index}`)
+                ?.getBoundingClientRect().width
+            )
+          }
+          x={x - (secondarySpriteWidth ?? 0) / 2}
           y={y - height / 5}
         />
       )}
