@@ -7,6 +7,7 @@ import {
   Stack,
   Switch,
   Text,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { ArchetypeGraph } from './ArchetypeGraph';
@@ -24,6 +25,10 @@ export const ArchetypeGraphsContainer = ({
   const [shouldShowUnreported, setShouldShowUnreported] = useState(true);
   const [shouldToggleShowPieChart, setShouldToggleShowPieChart] =
     useState(true);
+  const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
+
+  const shouldShowPieChart = isLargerThanMd || shouldToggleShowPieChart;
+  const shouldShowBarChart = isLargerThanMd || !shouldToggleShowPieChart;
 
   return (
     <Stack padding={'0 1.5rem'} height='100%'>
@@ -33,20 +38,20 @@ export const ArchetypeGraphsContainer = ({
         spacing={0}
         height='100%'
       >
-        {shouldToggleShowPieChart && (
+        {shouldShowPieChart && (
           <ArchetypeGraph
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
             shouldShowUnreported={shouldShowUnreported}
           />
         )}
-        <Show above='md'>
+        {shouldShowBarChart && (
           <ArchetypeBarGraph
             tournament={tournament}
             shouldDrillDown={shouldDrillDown}
             shouldShowUnreported={shouldShowUnreported}
           />
-        </Show>
+        )}
       </Stack>
       <Stack padding='1rem 0 0.5rem'>
         <Heading color='gray.700' size={'md'}>
