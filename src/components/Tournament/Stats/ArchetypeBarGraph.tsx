@@ -46,6 +46,7 @@ export const ArchetypeBarGraph = ({
     return (
       <g>
         <image
+          className='pixel-image'
           height={shouldDrillDown ? 20 : 30}
           href={
             definedPokemon
@@ -57,6 +58,7 @@ export const ArchetypeBarGraph = ({
         />
         {shouldDrillDown && (
           <image
+            className='pixel-image'
             height={20}
             href={
               definedPokemon

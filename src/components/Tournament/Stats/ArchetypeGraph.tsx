@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
-import { useHighResImageUrls } from '../../../hooks/images';
+import { useHighResImageUrls, useLowResImageUrls } from '../../../hooks/images';
 import {
   getLowResUnownUrl,
   HIGH_RES_SUBSTITUTE_URL,
@@ -24,7 +24,7 @@ export const ArchetypeGraph = ({
   shouldShowUnreported: boolean;
 }) => {
   const { data } = useDay2Decks(tournament.id);
-  const imageUrls = useHighResImageUrls(
+  const imageUrls = useLowResImageUrls(
     data?.reduce(
       (acc: string[], deck: DeckArchetype) => [
         ...acc,
@@ -46,15 +46,15 @@ export const ArchetypeGraph = ({
   const getImageHeight = (percent: number) => {
     if (percent > 0.1) {
       if (shouldDrillDown) {
-        return 80;
+        return 70;
       } else {
-        return 100;
+        return 80;
       }
     } else if (percent > 0.03) {
       if (shouldDrillDown) {
         return 50;
       } else {
-        return 70;
+        return 60;
       }
     } else {
       return 30;
@@ -91,6 +91,7 @@ export const ArchetypeGraph = ({
     return (
       <>
         <image
+          className='pixel-image'
           height={definedPokemon ? height : 100}
           href={
             definedPokemon
@@ -102,10 +103,11 @@ export const ArchetypeGraph = ({
         />
         {shouldDrillDown && (
           <image
+            className='pixel-image'
             height={height * 0.75}
             href={definedPokemon ? imageUrls?.[definedPokemon[1]] : ''}
             x={x}
-            y={y - height / 4}
+            y={y - height / 5}
           />
         )}
       </>
@@ -126,7 +128,6 @@ export const ArchetypeGraph = ({
           cy='50%'
           labelLine={false}
           label={renderCustomizedLabel}
-          fill='#8884d8'
           outerRadius={'100%'}
         />
         <Tooltip />
