@@ -26,11 +26,12 @@ export const ArchetypeGraphsContainer = ({
     useState(true);
 
   return (
-    <Stack padding={'0 1.5rem'}>
+    <Stack padding={'0 1.5rem'} height='100%'>
       <Stack
         alignItems={'center'}
         direction={{ base: 'column', md: 'row' }}
         spacing={0}
+        height='100%'
       >
         {shouldToggleShowPieChart && (
           <ArchetypeGraph
@@ -47,7 +48,7 @@ export const ArchetypeGraphsContainer = ({
           />
         </Show>
       </Stack>
-      <Stack>
+      <Stack padding='2rem 0'>
         <Heading color='gray.700' size={'md'}>
           Day 2 Archetype Spread
         </Heading>

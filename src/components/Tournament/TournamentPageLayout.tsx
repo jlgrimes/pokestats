@@ -12,7 +12,7 @@ export const TournamentPageLayout = ({
   tournament: Tournament;
 }) => {
   return (
-    <Stack>
+    <Stack height='100%'>
       <Stack spacing={0} paddingBottom={2}>
         <Heading size='lg' color='gray.700' padding={'0.5rem 1.5rem'}>
           {tournament.name}
