@@ -1,4 +1,5 @@
 import { BadgeProps } from '@chakra-ui/react';
+import { format, parseISO } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 
 export const formatTournamentStatus = (tournament: Tournament) => {
@@ -34,8 +35,14 @@ export const getTournamentStatusBadgeProps = (
 };
 
 export const formatTournamentDate = (tournament: Tournament) => {
-  const startDate = new Date(tournament.date.start);
-  const endDate = new Date(tournament.date.end);
+  const startDate = parseISO(tournament.date.start);
+  const endDate = parseISO(tournament.date.end);
 
-  return `${startDate.toDateString()} - ${endDate.toDateString()}`;
+  // I want to use ordinal numbers but these guys won't let me :(
+  // https://atlassian.design/content/writing-guidelines/date-and-time-guideline
+  if (startDate.getMonth() !== endDate.getMonth()) {
+    return `${format(startDate, 'MMMM d')}-${format(endDate, 'MMMM d, y')}`;
+  }
+
+  return `${format(startDate, 'MMMM d')}-${format(endDate, 'd, y')}`;
 };
