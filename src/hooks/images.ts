@@ -67,7 +67,7 @@ export const useLowResImageUrls = (
     return {
       ...acc,
       [name]: getSpriteUrl(
-        data?.[removeRegionFlag(name).toLowerCase()],
+        removeRegionFlag(name).toLowerCase(),
         getRegionFlag(name)
       ),
     };
