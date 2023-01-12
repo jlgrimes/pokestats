@@ -2,10 +2,12 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { PlayerTournamentPerformance } from '../../types/player';
 import { Standing } from '../../types/tournament';
+import { StandingsFilters } from '../components/Tournament/Results/StandingsFilterMenu';
 import {
   fetchLiveResults,
   FetchLiveResultsOptions,
   FetchLoggedInPlayerOptions,
+  LiveResults,
 } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
@@ -26,11 +28,26 @@ export const useTournamentResults = (tournamentName: string) => {
   });
 };
 
+const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
+  if (!filters) return liveResults;
+
+  if (!filters.day1.value) {
+    return {
+      ...liveResults,
+      data: liveResults.data.filter(
+        ({ record }) => record.wins * 3 + record.ties >= 19
+      ),
+    };
+  }
+
+  return liveResults;
+};
+
 export const useLiveTournamentResults = (
   tournamentId: string,
   options?: FetchLiveResultsOptions
 ) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: [
       `live-results`,
       tournamentId,
@@ -40,6 +57,15 @@ export const useLiveTournamentResults = (
     ],
     queryFn: () => fetchLiveResults(tournamentId, options),
   });
+
+  if (query.data) {
+    return {
+      ...query,
+      data: applyFilters(query.data, options?.filters),
+    };
+  }
+
+  return query;
 };
 
 export const useTopPerformingPlayers = (tournamentId: string) => {

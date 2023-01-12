@@ -1,4 +1,5 @@
 import { DeckArchetype, Standing } from '../../../types/tournament';
+import { StandingsFilters } from '../../components/Tournament/Results/StandingsFilterMenu';
 import { fetchCurrentTournamentInfo } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
 
@@ -248,6 +249,7 @@ export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
 export interface FetchLiveResultsOptions {
   prefetch?: boolean;
   load?: LiveResultsLoadOptions;
+  filters?: StandingsFilters;
 }
 
 export interface LiveResultsLoadOptions {
@@ -265,10 +267,17 @@ export interface LoggedInPlayerLoadOptions {
   opponentRoundData?: boolean;
 }
 
+export interface LiveResults {
+  live: boolean;
+  numPlayers: number;
+  roundNumber: number;
+  data: Standing[];
+}
+
 export const fetchLiveResults = async (
   tournamentId: string,
   options?: FetchLiveResultsOptions
-) => {
+): Promise<LiveResults> => {
   const startTime = performance.now();
 
   let parsedData: Standing[] = await getPokedata(
