@@ -143,6 +143,22 @@ interface PlayerDeckObject {
   };
 }
 
+const matchArchetype = (
+  deckArchetypes: DeckArchetype[] | null,
+  list: Record<any, any>,
+  targetLength: number
+) =>
+  deckArchetypes?.find(({ identifiable_cards }) => {
+    return (
+      identifiable_cards?.length === targetLength &&
+      identifiable_cards?.every((identifiableCard: string) =>
+        list.pokemon.some(
+          (pokemon: Record<string, any>) => pokemon.name === identifiableCard
+        )
+      )
+    );
+  });
+
 const getPlayerDeck = (
   playerDeckObjects: PlayerDeckObject[] | undefined,
   player: Player,
@@ -155,15 +171,10 @@ const getPlayerDeck = (
   let inferredArchetypeFromList;
 
   if (list) {
-    inferredArchetypeFromList = deckArchetypes?.find(
-      ({ identifiable_cards }) => {
-        return identifiable_cards?.every((identifiableCard: string) =>
-          list.pokemon.some(
-            (pokemon: Record<string, any>) => pokemon.name === identifiableCard
-          )
-        );
-      }
-    );
+    inferredArchetypeFromList = matchArchetype(deckArchetypes, list, 2);
+    if (!inferredArchetypeFromList) {
+      inferredArchetypeFromList = matchArchetype(deckArchetypes, list, 1);
+    }
   }
 
   const playerDeck = {
@@ -222,10 +233,12 @@ export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
     }/standings/${tournamentId}/masters/${tournamentId}_Masters.json`
   );
   let data = await response.json();
-  data = data.map((player: Standing) => ({
-    ...player,
-    name: player.name.split('[')[0].trim(),
-  })).filter((player: Standing) => player.placing !== 9999);
+  data = data
+    .map((player: Standing) => ({
+      ...player,
+      name: player.name.split('[')[0].trim(),
+    }))
+    .filter((player: Standing) => player.placing !== 9999);
 
   console.log('getPokedata:', (performance.now() - perfStart) / 1000, 'sec');
 
@@ -293,12 +306,14 @@ export const fetchLiveResults = async (
 
   // Safeguard for finals has finished
   const getFinalsHasFinished = () => {
-    if (!parsedData?.[1].rounds?.length || !parsedData?.[2].rounds?.length) return false;
+    if (!parsedData?.[1].rounds?.length || !parsedData?.[2].rounds?.length)
+      return false;
 
-    if (parsedData[1].rounds.length === parsedData[2].rounds.length) return false;
+    if (parsedData[1].rounds.length === parsedData[2].rounds.length)
+      return false;
 
     return parsedData[1].rounds[parsedData[1].rounds.length - 1].result;
-  }
+  };
 
   return {
     live: tournament?.tournamentStatus === 'running',
