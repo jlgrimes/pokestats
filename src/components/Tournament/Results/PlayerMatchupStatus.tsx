@@ -78,7 +78,6 @@ export const PlayerMatchupStatus = ({
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Record
               standing={playerResults}
-              tournamentFinished={tournamentFinished}
               big
             />
             <RecordIcon
