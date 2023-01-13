@@ -43,6 +43,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       <GridItem
         display={'flex'}
         alignItems={'center'}
+        color={props.result.drop ? 'red.600' : 'auto'}
       >
         <RecordIcon
           standing={props.result}

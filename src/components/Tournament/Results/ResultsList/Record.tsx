@@ -21,7 +21,7 @@ export const Record = ({
           color={standing.drop ? 'red.600' : 'blue.600'}
           href={href}
         >
-          <Text fontSize='sm' fontFamily={'monospace'}>
+          <Text fontSize='sm' fontFamily={'mono'}>
             {formatRecord(standing.record)}
           </Text>
         </Link>
@@ -37,7 +37,7 @@ export const Record = ({
     }
 
     return (
-      <Text fontSize='sm' fontFamily={'monospace'}>
+      <Text fontSize='sm' fontFamily={'mono'}>
         {formatRecord(standing.record)}
       </Text>
     );
