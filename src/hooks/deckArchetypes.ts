@@ -8,7 +8,7 @@ import { useLiveTournamentResults } from './tournamentResults';
 export const fetchArchetypes = async () => {
   const res = await supabase
     .from('Deck Archetypes')
-    .select('id,name,defined_pokemon');
+    .select('id,name,defined_pokemon,supertype');
   return res.data;
 };
 
@@ -66,6 +66,7 @@ export const useMostPopularArchetypes = (
   options?: MostPopularArchetypesOptions
 ): DeckArchetype[] | null | undefined => {
   const { data: liveResults } = useLiveTournamentResults(tournamentId);
+  const { data: archetypes } = useArchetypes();
 
   const playerDeckCounts = liveResults?.data?.reduce(
     (
@@ -73,11 +74,14 @@ export const useMostPopularArchetypes = (
       player: Standing
     ) => {
       if (player.deck.id) {
+        // Adds in supertype
+        const playerDeck = archetypes?.find(archetype => archetype.id === player.deck.id) ?? player.deck;
+
         if (acc[player.deck.id]) {
           return {
             ...acc,
             [player.deck.id]: {
-              deck: player.deck,
+              deck: playerDeck,
               count: acc[player.deck.id].count + 1,
             },
           };
@@ -85,7 +89,7 @@ export const useMostPopularArchetypes = (
         return {
           ...acc,
           [player.deck.id]: {
-            deck: player.deck,
+            deck: playerDeck,
             count: 1,
           },
         };

@@ -11,6 +11,7 @@ export interface DeckArchetype {
   id: number;
   name: string;
   defined_pokemon: string[];
+  supertype: string;
   identifiable_cards?: string[];
   count?: number;
 }
