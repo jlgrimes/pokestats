@@ -32,10 +32,7 @@ export const DeckInfoDisplay = memo(
           />
         </StackItem>
         {player?.deck?.list && !disableList ? (
-          <ListViewerOpenButton
-            result={player}
-            tournamentName={tournament.name}
-          />
+          <ListViewerOpenButton result={player} tournament={tournament} />
         ) : enableEdits ? (
           <IconButton
             maxWidth={'2'}

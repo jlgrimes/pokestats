@@ -10,7 +10,7 @@ import {
   CloseButton,
 } from '@chakra-ui/react';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Card } from '../../../../types/tournament';
+import { Card, Tournament } from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
 import { ListView } from './ListView';
@@ -19,7 +19,7 @@ interface ListViewerModalProps {
   isOpen: boolean;
   onClose: () => void;
   result: Record<any, any>;
-  tournamentName: string;
+  tournament: Tournament;
 }
 
 const ListModalBody = ({
@@ -78,7 +78,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
               <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
               <Text>
                 {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
-                {props.tournamentName}
+                {props.tournament.name}
               </Text>
             </Stack>
           </Stack>

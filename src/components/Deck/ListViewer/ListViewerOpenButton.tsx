@@ -1,10 +1,11 @@
 import { IconButton, useDisclosure } from '@chakra-ui/react';
 import { FaListUl } from 'react-icons/fa';
+import { Tournament } from '../../../../types/tournament';
 import { ListViewerModal } from './ListViewerModal';
 
 interface ListViewerOpenButtonProps {
   result: Record<string, any>;
-  tournamentName: string;
+  tournament: Tournament;
 }
 
 export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
@@ -17,7 +18,6 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         variant={'ghost'}
         onClick={onOpen}
         size='sm'
-
       >
         <FaListUl />
       </IconButton>
@@ -26,7 +26,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
           isOpen={isOpen}
           onClose={onClose}
           result={props.result}
-          tournamentName={props.tournamentName}
+          tournament={props.tournament}
         />
       )}
     </>
