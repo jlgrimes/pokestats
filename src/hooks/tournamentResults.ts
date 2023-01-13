@@ -66,6 +66,7 @@ export const useLiveTournamentResults = (
     ],
     queryFn: () => fetchLiveResults(tournamentId, options),
   });
+  console.log(query.data)
 
   if (query.data) {
     return {

@@ -36,12 +36,12 @@ export const FilterTags = ({
           if (key === 'decksVisible') {
             return (
               <>
-                {val!.map((deckId: number, idx: number) => {
+                {val.map((deckId: number, idx: number) => {
                   const deckArchetype = archetypes?.find(
                     ({ id }) => deckId === id
                   );
                   return (
-                    <Tag size='lg' key={idx} borderRadius='full'>
+                    <Tag size='lg' key={key} borderRadius='full'>
                       <HStack spacing={1}>
                         <SpriteDisplay
                           key={`filter-deck-${idx}`}

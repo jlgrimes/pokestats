@@ -72,7 +72,7 @@ export const StandingsFilterMenu = memo(
             </MenuOptionGroup>
             <MenuDivider />
             {supertypeCollection?.map((supertype, idx) => (
-              <Grid key={idx} gridTemplateColumns={`1fr repeat(2, 1fr)`}>
+              <Grid key={`supertype-collection-${idx}`} gridTemplateColumns={`1fr repeat(2, 1fr)`}>
                 <GridItem gridRow={'1/10'}>
                   <MenuItemOption
                     isChecked={getFilter(
@@ -95,7 +95,7 @@ export const StandingsFilterMenu = memo(
                     onClick={() =>
                       toggleFilter('decksVisible', { individualDeck: id })
                     }
-                    key={idx}
+                    key={name}
                     value={name}
                   >
                     <SpriteDisplay squishWidth pokemonNames={defined_pokemon} />

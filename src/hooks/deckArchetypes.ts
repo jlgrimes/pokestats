@@ -1,8 +1,9 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { DeckArchetype } from '../../types/tournament';
+import { DeckArchetype, Standing } from '../../types/tournament';
 import { fetchPlayerDecks } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
+import { useLiveTournamentResults } from './tournamentResults';
 
 export const fetchArchetypes = async () => {
   const res = await supabase
@@ -64,59 +65,53 @@ export const useMostPopularArchetypes = (
   tournamentId: string,
   options?: MostPopularArchetypesOptions
 ): DeckArchetype[] | null | undefined => {
-  const { data: deckArchetypes } = useArchetypes();
+  const { data: liveResults } = useLiveTournamentResults(tournamentId);
 
-  const playerDecks = useQuery({
-    queryKey: ['player-decks', tournamentId],
-    queryFn: () => fetchPlayerDecks(tournamentId),
-  });
-
-  const playerDeckCounts: Record<string, number> | undefined =
-    playerDecks.data?.reduce((acc: Record<string, number>, playerDeck) => {
-      if (acc[playerDeck.deck_archetype]) {
+  const playerDeckCounts = liveResults?.data?.reduce(
+    (
+      acc: Record<string, { deck: DeckArchetype; count: number }>,
+      player: Standing
+    ) => {
+      if (player.deck.id) {
+        if (acc[player.deck.id]) {
+          return {
+            ...acc,
+            [player.deck.id]: {
+              deck: player.deck,
+              count: acc[player.deck.id].count + 1,
+            },
+          };
+        }
         return {
           ...acc,
-          [playerDeck.deck_archetype]: acc[playerDeck.deck_archetype] + 1,
+          [player.deck.id]: {
+            deck: player.deck,
+            count: 1,
+          },
         };
       }
-      return {
-        ...acc,
-        [playerDeck.deck_archetype]: 1,
-      };
-    }, {});
+      return acc;
+    },
+    {}
+  );
 
   if (!playerDeckCounts) {
-    return deckArchetypes;
+    return null;
   }
 
+  const deckArchetypes = Object.values(playerDeckCounts);
+
   const sortedArchetypes = deckArchetypes?.sort((a, b) => {
-    if (
-      playerDeckCounts[a.id] > playerDeckCounts[b.id] ||
-      !playerDeckCounts[b.id]
-    ) {
+    if (a.count > a.count || !b.count) {
       return -1;
     }
 
-    if (
-      playerDeckCounts[a.id] < playerDeckCounts[b.id] ||
-      !playerDeckCounts[a.id]
-    ) {
+    if (a.count < b.count || !a.count) {
       return 1;
     }
 
     return 0;
   });
 
-  if (options?.includeDeckCounts) {
-    return sortedArchetypes?.map(archetype => ({
-      ...archetype,
-      count: playerDeckCounts[archetype.id],
-    }));
-  }
-
-  if (options?.leaveOutZeroCountDecks) {
-    return sortedArchetypes?.filter(({ id }) => playerDeckCounts[id]);
-  }
-
-  return sortedArchetypes;
+  return sortedArchetypes.map(({ deck }) => deck);
 };
