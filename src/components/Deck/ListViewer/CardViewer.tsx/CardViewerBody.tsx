@@ -1,4 +1,4 @@
-import { Button, Image, ModalBody } from '@chakra-ui/react';
+import { Button, Heading, Image, ModalBody, Stack } from '@chakra-ui/react';
 import { memo } from 'react';
 import { Card } from '../../../../../types/tournament';
 import { useCodeToSetMap } from '../../../../hooks/deckList';
@@ -20,14 +20,16 @@ export const CardViewerBody = memo(
 
     return (
       <ModalBody>
-        <Button onClick={clearSelectedCard}>go back</Button>
-        <Image
-
-          width={`${width}px`}
-          height={`${height}px`}
-          src={getCardImageUrl(card, codeToSetMap, { highRes: true })}
-          alt={`${card.name} ${card.set}`}
-        />
+        <Stack>
+          <Button onClick={clearSelectedCard}>go back</Button>
+          <Image
+            width={`${width}px`}
+            height={`${height}px`}
+            src={getCardImageUrl(card, codeToSetMap, { highRes: true })}
+            alt={`${card.name} ${card.set}`}
+          />
+          <Heading size='lg'> {card.name}</Heading>
+        </Stack>
       </ModalBody>
     );
   }

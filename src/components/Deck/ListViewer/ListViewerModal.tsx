@@ -66,24 +66,28 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='full'>
       <ModalOverlay />
-      <ModalCloseButton />
       <ModalContent>
-        <Stack
-          direction='row'
-          justifyContent='space-between'
-          alignItems={'center'}
-        >
-          <Stack spacing={0} padding={3}>
-            <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
-            <Text>
-              {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
-              {props.tournamentName}
-            </Text>
+        <ModalCloseButton />
+        {!selectedCard && (
+          <Stack
+            direction='row'
+            justifyContent='space-between'
+            alignItems={'center'}
+          >
+            <Stack spacing={0} padding={3}>
+              <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
+              <Text>
+                {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
+                {props.tournamentName}
+              </Text>
+            </Stack>
           </Stack>
-          <CloseButton onClick={props.onClose} paddingRight={4} />
-        </Stack>
+        )}
         {selectedCard ? (
-          <CardViewerBody card={selectedCard} clearSelectedCard={handleCardClear} />
+          <CardViewerBody
+            card={selectedCard}
+            clearSelectedCard={handleCardClear}
+          />
         ) : (
           <ListModalBody
             list={props.result.deck.list}
