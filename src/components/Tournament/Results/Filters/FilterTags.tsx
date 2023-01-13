@@ -5,6 +5,7 @@ import {
   useMostPopularArchetypes,
 } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay';
+import { ToggleFilterOptions } from './StandingsFilterContainer';
 import { StandingsFilters } from './StandingsFilterMenu';
 
 // Needed for Object.Entries. Love typescript.
@@ -18,7 +19,10 @@ export const FilterTags = ({
   tournament,
 }: {
   filters: StandingsFilters;
-  toggleFilter: (key: keyof StandingsFilters, arg?: any) => void;
+  toggleFilter: (
+    key: keyof StandingsFilters,
+    options?: ToggleFilterOptions
+  ) => void;
   tournament: Tournament;
 }) => {
   const archetypes = useMostPopularArchetypes(tournament.id, {
@@ -47,7 +51,11 @@ export const FilterTags = ({
                         {/* <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text> */}
                       </HStack>
                       <TagCloseButton
-                        onClick={() => toggleFilter('decksVisible', [deckId])}
+                        onClick={() =>
+                          toggleFilter('decksVisible', {
+                            individualDeck: deckId,
+                          })
+                        }
                       />
                     </Tag>
                   );

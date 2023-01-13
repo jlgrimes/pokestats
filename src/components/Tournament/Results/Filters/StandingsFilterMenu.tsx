@@ -17,6 +17,7 @@ import { DeckArchetype, Tournament } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import { sortBySuperType } from './helpers';
+import { ToggleFilterOptions } from './StandingsFilterContainer';
 
 export interface Filter {
   name: string;
@@ -35,7 +36,10 @@ export const StandingsFilterMenu = memo(
     tournament,
   }: {
     getFilter: (key: keyof StandingsFilters, arg?: any) => boolean;
-    toggleFilter: (key: keyof StandingsFilters, arg?: any) => void;
+    toggleFilter: (
+      key: keyof StandingsFilters,
+      options?: ToggleFilterOptions
+    ) => void;
     tournament: Tournament;
   }) => {
     const mostPopularDecks = useMostPopularArchetypes(tournament.id, {
@@ -71,8 +75,13 @@ export const StandingsFilterMenu = memo(
               <Grid key={idx} gridTemplateColumns={`1fr repeat(2, 1fr)`}>
                 <GridItem gridRow={'1/10'}>
                   <MenuItemOption
-                    isChecked={getFilter('decksVisible', supertype.decks.map(({ id }) => id))}
-                    onClick={() => toggleFilter('decksVisible', supertype.decks.map(({ id }) => id))}
+                    isChecked={getFilter(
+                      'decksVisible',
+                      supertype.decks.map(({ id }) => id)
+                    )}
+                    onClick={() =>
+                      toggleFilter('decksVisible', { superType: supertype.decks })
+                    }
                   >
                     <SpriteDisplay
                       squishWidth
@@ -83,7 +92,9 @@ export const StandingsFilterMenu = memo(
                 {supertype.decks.map(({ id, name, defined_pokemon }) => (
                   <MenuItemOption
                     isChecked={getFilter('decksVisible', [id])}
-                    onClick={() => toggleFilter('decksVisible', [id])}
+                    onClick={() =>
+                      toggleFilter('decksVisible', { individualDeck: id })
+                    }
                     key={idx}
                     value={name}
                   >
