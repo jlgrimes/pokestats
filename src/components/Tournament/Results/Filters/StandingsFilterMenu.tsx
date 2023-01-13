@@ -70,7 +70,10 @@ export const StandingsFilterMenu = memo(
             {supertypeCollection?.map((supertype, idx) => (
               <Grid key={idx} gridTemplateColumns={`1fr repeat(2, 1fr)`}>
                 <GridItem gridRow={'1/10'}>
-                  <MenuItemOption>
+                  <MenuItemOption
+                    isChecked={getFilter('decksVisible', supertype.decks.map(({ id }) => id))}
+                    onClick={() => toggleFilter('decksVisible', supertype.decks.map(({ id }) => id))}
+                  >
                     <SpriteDisplay
                       squishWidth
                       pokemonNames={[supertype.name]}
@@ -79,7 +82,7 @@ export const StandingsFilterMenu = memo(
                 </GridItem>
                 {supertype.decks.map(({ id, name, defined_pokemon }) => (
                   <MenuItemOption
-                    isChecked={getFilter('decksVisible', id)}
+                    isChecked={getFilter('decksVisible', [id])}
                     onClick={() => toggleFilter('decksVisible', [id])}
                     key={idx}
                     value={name}

@@ -15,9 +15,11 @@ export const StandingsFilterContainer = memo(
     tournament: Tournament;
   }) => {
     const getFilter = useCallback(
-      (key: keyof StandingsFilters, arg?: number) => {
+      (key: keyof StandingsFilters, arg?: number[]) => {
         if (key === 'decksVisible')
-          return !!standingsFilters.decksVisible.find(deckId => deckId === arg);
+          return !!arg?.every(deck =>
+            standingsFilters.decksVisible.find(deckId => deckId === deck)
+          );
         return standingsFilters[key].value;
       },
       [standingsFilters]
@@ -29,8 +31,8 @@ export const StandingsFilterContainer = memo(
           if (standingsFilters.decksVisible.find(deck => arg.includes(deck))) {
             return setStandingsFilters({
               ...standingsFilters,
-              decksVisible: standingsFilters.decksVisible.filter(deck =>
-                !arg.includes(deck)
+              decksVisible: standingsFilters.decksVisible.filter(
+                deck => !arg.includes(deck)
               ),
             });
           }
