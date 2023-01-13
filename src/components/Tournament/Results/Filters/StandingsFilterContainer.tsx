@@ -61,7 +61,7 @@ export const StandingsFilterContainer = memo(
           toggleFilter={toggleFilter}
           tournament={tournament}
         />
-        <FilterTags filters={standingsFilters} />
+        <FilterTags filters={standingsFilters} toggleFilter={toggleFilter} />
       </HStack>
     );
   }

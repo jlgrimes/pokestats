@@ -3,7 +3,13 @@ import { useArchetypes } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import { StandingsFilters } from './StandingsFilterMenu';
 
-export const FilterTags = ({ filters }: { filters: StandingsFilters }) => {
+export const FilterTags = ({
+  filters,
+  toggleFilter,
+}: {
+  filters: StandingsFilters;
+  toggleFilter: (key: keyof StandingsFilters, arg?: any) => void;
+}) => {
   const { data: archetypes } = useArchetypes();
 
   return (
@@ -22,7 +28,9 @@ export const FilterTags = ({ filters }: { filters: StandingsFilters }) => {
                     }
                     squishWidth
                   />
-                  <TagCloseButton />
+                  <TagCloseButton
+                    onClick={() => toggleFilter('decksVisible', deckId)}
+                  />
                 </Tag>
               ))}
             </>
@@ -32,7 +40,7 @@ export const FilterTags = ({ filters }: { filters: StandingsFilters }) => {
         return (
           <Tag key={idx} borderRadius='full'>
             <TagLabel>{val.name}</TagLabel>
-            <TagCloseButton />
+            <TagCloseButton onClick={() => toggleFilter(key)} />
           </Tag>
         );
       })}
