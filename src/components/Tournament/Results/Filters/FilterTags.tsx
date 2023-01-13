@@ -41,7 +41,7 @@ export const FilterTags = ({
                     ({ id }) => deckId === id
                   );
                   return (
-                    <Tag size='lg' key={key} borderRadius='full'>
+                    <Tag size='lg' key={`${key}-${deckId}`} borderRadius='full'>
                       <HStack spacing={1}>
                         <SpriteDisplay
                           key={`filter-deck-${idx}`}
