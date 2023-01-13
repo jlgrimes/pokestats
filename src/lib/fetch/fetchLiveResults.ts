@@ -226,8 +226,6 @@ function mapResultsArray(
     };
   });
 
-  console.log(mappedArray);
-
   console.log(
     'mapResultsArray:',
     (performance.now() - perfStart) / 1000,
