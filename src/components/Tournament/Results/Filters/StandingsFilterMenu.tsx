@@ -1,6 +1,7 @@
 import {
   Button,
   Grid,
+  GridItem,
   HStack,
   Menu,
   MenuButton,
@@ -67,8 +68,15 @@ export const StandingsFilterMenu = memo(
             </MenuOptionGroup>
             <MenuDivider />
             {supertypeCollection?.map((supertype, idx) => (
-              <>
-                <SpriteDisplay pokemonNames={[supertype.name]} />
+              <Grid key={idx} gridTemplateColumns={`1fr repeat(2, 1fr)`}>
+                <GridItem gridRow={'1/10'}>
+                  <MenuItemOption>
+                    <SpriteDisplay
+                      squishWidth
+                      pokemonNames={[supertype.name]}
+                    />
+                  </MenuItemOption>
+                </GridItem>
                 {supertype.decks.map(({ id, name, defined_pokemon }) => (
                   <MenuItemOption
                     isChecked={getFilter('decksVisible', id)}
@@ -76,25 +84,11 @@ export const StandingsFilterMenu = memo(
                     key={idx}
                     value={name}
                   >
-                    <SpriteDisplay pokemonNames={defined_pokemon} />
-                  </MenuItemOption>
-                ))}
-              </>
-            ))}
-            {/* <MenuOptionGroup title='Deck archetype' type='checkbox'>
-              <Grid gridTemplateColumns={'auto auto auto'}>
-                {mostPopularDecks?.map(({ id, name, defined_pokemon }, idx) => (
-                  <MenuItemOption
-                    isChecked={getFilter('decksVisible', id)}
-                    onClick={() => toggleFilter('decksVisible', id)}
-                    key={idx}
-                    value={name}
-                  >
-                    <SpriteDisplay pokemonNames={defined_pokemon} />
+                    <SpriteDisplay squishWidth pokemonNames={defined_pokemon} />
                   </MenuItemOption>
                 ))}
               </Grid>
-            </MenuOptionGroup> */}
+            ))}
           </MenuList>
         </Menu>
       </StackItem>

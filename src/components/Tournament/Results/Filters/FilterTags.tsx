@@ -47,7 +47,7 @@ export const FilterTags = ({
                         {/* <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text> */}
                       </HStack>
                       <TagCloseButton
-                        onClick={() => toggleFilter('decksVisible', deckId)}
+                        onClick={() => toggleFilter('decksVisible', [deckId])}
                       />
                     </Tag>
                   );
