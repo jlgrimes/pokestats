@@ -8,6 +8,7 @@ import {
   Thead,
   Th,
   Text,
+  Stack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
@@ -17,6 +18,7 @@ import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import { Record } from '../Tournament/Results/ResultsList/Record';
 import { parseUsername } from '../../lib/strings';
+import { RecordIcon } from '../Tournament/Results/ResultsList/RecordIcon';
 
 export const PlayerPerformanceList = ({
   user,
@@ -69,14 +71,24 @@ export const PlayerPerformanceList = ({
                   </Td>
                   <Td padding={0}>{performance.placing}</Td>
                   <Td padding={0} paddingLeft={2}>
-                    <Record
-                      standing={performance}
-                      href={
-                        userMatchesLoggedInUser
-                          ? `/tournaments/${tournament.id}/${parseUsername(user.email)}`
-                          : undefined
-                      }
-                    />
+                    <Stack direction={'row'} spacing={1} alignItems='center'>
+                      <Record
+                        standing={performance}
+                        href={
+                          userMatchesLoggedInUser
+                            ? `/tournaments/${tournament.id}/${parseUsername(
+                                user.email
+                              )}`
+                            : undefined
+                        }
+                      />
+                      <RecordIcon
+                        standing={performance}
+                        tournamentFinished={
+                          tournament.tournamentStatus === 'finished'
+                        }
+                      />
+                    </Stack>
                   </Td>
                   <Td padding={0} paddingLeft={2} width='80px'>
                     <DeckInfoDisplay
