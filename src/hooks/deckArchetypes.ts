@@ -1,5 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { DeckArchetype } from '../../types/tournament';
 import { fetchPlayerDecks } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 
@@ -55,13 +56,14 @@ export const useMutateArchetypes = (onClose: () => void) => {
 };
 
 interface MostPopularArchetypesOptions {
-  leaveOutZeroCountDecks: boolean;
+  leaveOutZeroCountDecks?: boolean;
+  includeDeckCounts?: boolean;
 }
 
 export const useMostPopularArchetypes = (
   tournamentId: string,
   options?: MostPopularArchetypesOptions
-) => {
+): DeckArchetype[] | null | undefined => {
   const { data: deckArchetypes } = useArchetypes();
 
   const playerDecks = useQuery({
@@ -104,6 +106,13 @@ export const useMostPopularArchetypes = (
 
     return 0;
   });
+
+  if (options?.includeDeckCounts) {
+    return sortedArchetypes?.map(archetype => ({
+      ...archetype,
+      count: playerDeckCounts[archetype.id],
+    }));
+  }
 
   if (options?.leaveOutZeroCountDecks) {
     return sortedArchetypes?.filter(({ id }) => playerDeckCounts[id]);

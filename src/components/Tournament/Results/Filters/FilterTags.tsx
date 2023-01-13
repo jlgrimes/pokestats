@@ -1,5 +1,9 @@
-import { HStack, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
-import { useArchetypes } from '../../../../hooks/deckArchetypes';
+import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
+import { Tournament } from '../../../../../types/tournament';
+import {
+  useArchetypes,
+  useMostPopularArchetypes,
+} from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import { StandingsFilters } from './StandingsFilterMenu';
 
@@ -11,11 +15,15 @@ type Entries<T> = {
 export const FilterTags = ({
   filters,
   toggleFilter,
+  tournament,
 }: {
   filters: StandingsFilters;
   toggleFilter: (key: keyof StandingsFilters, arg?: any) => void;
+  tournament: Tournament;
 }) => {
-  const { data: archetypes } = useArchetypes();
+  const archetypes = useMostPopularArchetypes(tournament.id, {
+    includeDeckCounts: true,
+  });
 
   return (
     <>
@@ -24,29 +32,34 @@ export const FilterTags = ({
           if (key === 'decksVisible') {
             return (
               <>
-                {val.map((deckId: number, idx: number) => (
-                  <Tag key={idx} borderRadius='full'>
-                    <SpriteDisplay
-                      key={`filter-deck-${idx}`}
-                      pokemonNames={
-                        archetypes?.find(({ id }) => deckId === id)
-                          ?.defined_pokemon
-                      }
-                      squishWidth
-                    />
-                    <TagCloseButton
-                      onClick={() => toggleFilter('decksVisible', deckId)}
-                    />
-                  </Tag>
-                ))}
+                {val!.map((deckId: number, idx: number) => {
+                  const deckArchetype = archetypes?.find(
+                    ({ id }) => deckId === id
+                  );
+                  return (
+                    <Tag size='lg' key={idx} borderRadius='full'>
+                      <HStack spacing={1}>
+                        <SpriteDisplay
+                          key={`filter-deck-${idx}`}
+                          pokemonNames={deckArchetype?.defined_pokemon ?? []}
+                          squishWidth
+                        />
+                        <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text>
+                      </HStack>
+                      <TagCloseButton
+                        onClick={() => toggleFilter('decksVisible', deckId)}
+                      />
+                    </Tag>
+                  );
+                })}
               </>
             );
           }
 
           if (val.value) {
             return (
-              <Tag key={idx} borderRadius='full'>
-                <TagLabel>{val.name}</TagLabel>
+              <Tag size='lg' key={idx} borderRadius='full'>
+                <TagLabel fontSize={'sm'}>{val.name}</TagLabel>
                 <TagCloseButton onClick={() => toggleFilter(key)} />
               </Tag>
             );
