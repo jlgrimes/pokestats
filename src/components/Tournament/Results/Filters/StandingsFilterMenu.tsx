@@ -52,15 +52,17 @@ export const StandingsFilterMenu = memo(
             Filter
           </MenuButton>
           <MenuList minWidth='240px'>
-            <MenuItemOption
-              value='justDay2'
-              isChecked={getFilter('justDay2')}
-              onClick={() => toggleFilter('justDay2')}
-            >
-              Just Day 2
-            </MenuItemOption>
+            <MenuOptionGroup title='Placement'>
+              <MenuItemOption
+                value='justDay2'
+                isChecked={getFilter('justDay2')}
+                onClick={() => toggleFilter('justDay2')}
+              >
+                Just Day 2
+              </MenuItemOption>
+            </MenuOptionGroup>
             <MenuDivider />
-            <MenuOptionGroup type='checkbox'>
+            <MenuOptionGroup title='Deck archetype' type='checkbox'>
               <Grid gridTemplateColumns={'auto auto auto'}>
                 {mostPopularDecks?.map(({ id, name, defined_pokemon }, idx) => (
                   <MenuItemOption
