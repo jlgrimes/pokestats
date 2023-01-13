@@ -65,7 +65,9 @@ export const useMostPopularArchetypes = (
   tournamentId: string,
   options?: MostPopularArchetypesOptions
 ): DeckArchetype[] | null | undefined => {
-  const { data: liveResults } = useLiveTournamentResults(tournamentId);
+  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
+    load: { allRoundData: true },
+  });
   const { data: archetypes } = useArchetypes();
 
   const playerDeckCounts = liveResults?.data?.reduce(
@@ -75,7 +77,9 @@ export const useMostPopularArchetypes = (
     ) => {
       if (player.deck.id) {
         // Adds in supertype
-        const playerDeck = archetypes?.find(archetype => archetype.id === player.deck.id) ?? player.deck;
+        const playerDeck =
+          archetypes?.find(archetype => archetype.id === player.deck.id) ??
+          player.deck;
 
         if (acc[player.deck.id]) {
           return {
