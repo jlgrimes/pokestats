@@ -1,5 +1,7 @@
+import { HStack } from '@chakra-ui/react';
 import { memo, useCallback } from 'react';
 import { Tournament } from '../../../../../types/tournament';
+import { FilterTags } from './FilterTags';
 import { StandingsFilterMenu, StandingsFilters } from './StandingsFilterMenu';
 
 export const StandingsFilterContainer = memo(
@@ -53,11 +55,14 @@ export const StandingsFilterContainer = memo(
     );
 
     return (
-      <StandingsFilterMenu
-        getFilter={getFilter}
-        toggleFilter={toggleFilter}
-        tournament={tournament}
-      />
+      <HStack>
+        <StandingsFilterMenu
+          getFilter={getFilter}
+          toggleFilter={toggleFilter}
+          tournament={tournament}
+        />
+        <FilterTags filters={standingsFilters} />
+      </HStack>
     );
   }
 );

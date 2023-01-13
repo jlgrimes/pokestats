@@ -6,6 +6,7 @@ import { getRegionFlag, getSpriteUrl, removeRegionFlag } from './helpers';
 interface SpriteDisplayProps {
   pokemonNames: string[];
   verified?: boolean;
+  squishWidth?: boolean;
 }
 
 export default function SpriteDisplay(props: SpriteDisplayProps) {
@@ -16,7 +17,7 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
       direction='row'
       alignItems={'baseline'}
       spacing={-0.5}
-      minWidth='4.5rem'
+      minWidth={props.squishWidth ? 0 : '4.5rem'}
     >
       <Stack direction={'row'} spacing={1} alignItems={'center'}>
         {props.pokemonNames.map((name, idx) => {
