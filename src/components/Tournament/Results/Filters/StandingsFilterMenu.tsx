@@ -40,7 +40,7 @@ export const StandingsFilterMenu = memo(
     });
 
     return (
-      <StackItem paddingLeft={6}>
+      <StackItem>
         <Menu closeOnSelect={false}>
           <MenuButton
             as={Button}

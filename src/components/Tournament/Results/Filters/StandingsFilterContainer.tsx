@@ -55,7 +55,7 @@ export const StandingsFilterContainer = memo(
     );
 
     return (
-      <HStack>
+      <HStack flexWrap={'wrap'} rowGap={2} paddingLeft={6}>
         <StandingsFilterMenu
           getFilter={getFilter}
           toggleFilter={toggleFilter}

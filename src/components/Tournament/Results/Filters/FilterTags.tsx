@@ -18,7 +18,7 @@ export const FilterTags = ({
   const { data: archetypes } = useArchetypes();
 
   return (
-    <HStack>
+    <>
       {(Object.entries(filters) as Entries<StandingsFilters>).map(
         ([key, val], idx) => {
           if (key === 'decksVisible') {
@@ -53,6 +53,6 @@ export const FilterTags = ({
           }
         }
       )}
-    </HStack>
+    </>
   );
 };
