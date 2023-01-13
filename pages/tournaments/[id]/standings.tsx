@@ -8,6 +8,7 @@ import {
   fetchTournaments,
 } from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
+import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
 
 export default function TournamentPage({
   tournament,
@@ -29,7 +30,9 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
       load: { allRoundData: true },
     })
   );
+  // TODO: take out, might not need
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
+  await queryClient.prefetchQuery(['deck-archetypes'], fetchArchetypes);
 
   const tournament = await fetchCurrentTournamentInfo(params.id, {
     prefetch: true,
