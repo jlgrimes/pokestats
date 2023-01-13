@@ -31,6 +31,15 @@ export const useTournamentResults = (tournamentName: string) => {
 const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
   if (!filters) return liveResults;
 
+  if (filters.decksVisible.length > 0) {
+    return {
+      ...liveResults,
+      data: liveResults.data.filter(
+        ({ deck }) => deck.id && filters.decksVisible.includes(deck.id)
+      ),
+    };
+  }
+
   if (!filters.day1.value) {
     return {
       ...liveResults,
