@@ -57,17 +57,19 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
           );
         })}
       </Stack>
-      <StackItem>
-        {props.pokemonNames &&
-          props.pokemonNames[0] &&
-          props.pokemonNames[0].length > 0 &&
-          props.pokemonNames[0] !== 'substitute' &&
-          (props.verified ? (
-            <VerifiedIcon subtle />
-          ) : (
-            <NotVerifiedIcon subtle />
-          ))}
-      </StackItem>
+      {props.verified !== undefined && (
+        <StackItem>
+          {props.pokemonNames &&
+            props.pokemonNames[0] &&
+            props.pokemonNames[0].length > 0 &&
+            props.pokemonNames[0] !== 'substitute' &&
+            (props.verified ? (
+              <VerifiedIcon subtle />
+            ) : (
+              <NotVerifiedIcon subtle />
+            ))}
+        </StackItem>
+      )}
     </Stack>
   );
 }

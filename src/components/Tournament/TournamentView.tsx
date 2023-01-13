@@ -19,31 +19,60 @@ export default function TournamentView({
       name: 'Day 1',
       value: true,
     },
+    decksVisible: [],
   });
 
+  const getFilter = useCallback(
+    (key: keyof StandingsFilters, arg?: number) => {
+      if (key === 'decksVisible')
+        return !!standingsFilters.decksVisible.find(deckId => deckId === arg);
+      return standingsFilters[key].value;
+    },
+    [standingsFilters]
+  );
+
   const toggleFilter = useCallback(
-    (key: keyof StandingsFilters) => {
-      setStandingsFilters({
-        ...standingsFilters,
-        [key]: {
-          ...standingsFilters[key],
-          value: !standingsFilters[key].value,
-        },
-      });
+    (key: keyof StandingsFilters, arg?: number) => {
+      if (key === 'decksVisible' && arg) {
+        if (standingsFilters.decksVisible.find(deck => deck === arg)) {
+          return setStandingsFilters({
+            ...standingsFilters,
+            decksVisible: standingsFilters.decksVisible.filter(
+              deck => deck !== arg
+            ),
+          });
+        }
+
+        return setStandingsFilters({
+          ...standingsFilters,
+          decksVisible: standingsFilters.decksVisible.concat(arg),
+        });
+      }
+
+      if (key === 'day1') {
+        return setStandingsFilters({
+          ...standingsFilters,
+          [key]: {
+            ...standingsFilters[key],
+            value: !standingsFilters[key].value,
+          },
+        });
+      }
     },
     [standingsFilters]
   );
 
   const { data: liveResults } = useLiveTournamentResults(tournament.id, {
     load: { allRoundData: true },
-    filters: standingsFilters
+    filters: standingsFilters,
   });
 
   return (
     <Stack>
       <StandingsFilterMenu
-        filters={standingsFilters}
+        getFilter={getFilter}
         toggleFilter={toggleFilter}
+        tournament={tournament}
       />
       {liveResults && (
         <StandingsList results={liveResults.data} tournament={tournament} />

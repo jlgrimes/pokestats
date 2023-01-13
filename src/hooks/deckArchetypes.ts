@@ -54,7 +54,14 @@ export const useMutateArchetypes = (onClose: () => void) => {
   return mutation;
 };
 
-export const useMostPopularArchetypes = (tournamentId: string) => {
+interface MostPopularArchetypesOptions {
+  leaveOutZeroCountDecks: boolean;
+}
+
+export const useMostPopularArchetypes = (
+  tournamentId: string,
+  options?: MostPopularArchetypesOptions
+) => {
   const { data: deckArchetypes } = useArchetypes();
 
   const playerDecks = useQuery({
@@ -80,7 +87,7 @@ export const useMostPopularArchetypes = (tournamentId: string) => {
     return deckArchetypes;
   }
 
-  return deckArchetypes?.sort((a, b) => {
+  const sortedArchetypes = deckArchetypes?.sort((a, b) => {
     if (
       playerDeckCounts[a.id] > playerDeckCounts[b.id] ||
       !playerDeckCounts[b.id]
@@ -97,4 +104,10 @@ export const useMostPopularArchetypes = (tournamentId: string) => {
 
     return 0;
   });
+
+  if (options?.leaveOutZeroCountDecks) {
+    return sortedArchetypes?.filter(({ id }) => playerDeckCounts[id]);
+  }
+
+  return sortedArchetypes;
 };
