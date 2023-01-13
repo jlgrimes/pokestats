@@ -72,16 +72,16 @@ export const RecordIcon = ({
       return <Icon {...commonIconProps} color='red.600' as={FaRunning} />;
     }
 
-    if (madeDayTwo(standing.record)) {
-      return (
-        <Icon
-          {...commonIconProps}
-          color='gray.400'
-          boxSize={3}
-          as={FaHandPeace}
-        />
-      );
-    }
+    // if (madeDayTwo(standing.record)) {
+    //   return (
+    //     <Icon
+    //       {...commonIconProps}
+    //       color='gray.400'
+    //       boxSize={3}
+    //       as={FaHandPeace}
+    //     />
+    //   );
+    // }
 
     return null;
   }, [commonIconProps, getCrownIcon, standing]);
