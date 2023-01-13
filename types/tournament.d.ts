@@ -32,6 +32,7 @@ export interface Standing {
   currentMatchResult?: 'W' | 'L' | 'T';
   rounds?: { name: string; result: string; opponent: Standing }[];
   day2: boolean;
+  outOfDay2: boolean;
   deck: Deck;
   drop?: number;
 }

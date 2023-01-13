@@ -101,21 +101,23 @@ const getPlayerDeckObjects = async (
 
   const playerDecks = await fetchPlayerDecks(tournamentId);
 
-  const mappedDecks = playerDecks?.map(({ player_name, deck_archetype, user_submitted_was_admin }) => {
-    const deck: Record<string, any> | undefined = deckArchetypes?.find(
-      deck => deck.id === deck_archetype
-    );
+  const mappedDecks = playerDecks?.map(
+    ({ player_name, deck_archetype, user_submitted_was_admin }) => {
+      const deck: Record<string, any> | undefined = deckArchetypes?.find(
+        deck => deck.id === deck_archetype
+      );
 
-    return {
-      player_name,
-      deck: {
-        id: deck_archetype,
-        name: deck?.name ?? null,
-        defined_pokemon: deck?.defined_pokemon ?? null,
-        verified: user_submitted_was_admin
-      },
-    };
-  });
+      return {
+        player_name,
+        deck: {
+          id: deck_archetype,
+          name: deck?.name ?? null,
+          defined_pokemon: deck?.defined_pokemon ?? null,
+          verified: user_submitted_was_admin,
+        },
+      };
+    }
+  );
 
   console.log(
     'getPlayerDeckObjects:',
@@ -189,7 +191,7 @@ const getPlayerDeck = (
   return {
     ...playerDeck,
     defined_pokemon: playerDeck.defined_pokemon ?? [],
-    verified: playerDeck.verified || !!list
+    verified: playerDeck.verified || !!list,
   };
 };
 
@@ -204,6 +206,7 @@ function mapResultsArray(
 
   const mappedArray: Standing[] = resultsArray.map((player: Player) => {
     const currentMatchResult = player.rounds[roundNumber]?.result;
+    const day2 = player.record.wins * 3 + player.record.ties >= 19;
 
     return {
       name: player.name,
@@ -213,11 +216,17 @@ function mapResultsArray(
         ? { rounds: Object.values(player?.rounds ?? {}) }
         : {}),
       ...(currentMatchResult ? { currentMatchResult } : {}),
-      day2: player.record.wins * 3 + player.record.ties >= 19,
+      day2,
+      outOfDay2:
+        !day2 &&
+        (19 - player.record.wins * 3 - player.record.ties) / 3 >
+          9 - roundNumber,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
       ...(player.drop > 0 ? { drop: player.drop } : {}),
     };
   });
+
+  console.log(mappedArray);
 
   console.log(
     'mapResultsArray:',

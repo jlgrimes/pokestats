@@ -44,6 +44,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         display={'flex'}
         alignItems={'center'}
         color={props.result.drop ? 'red.600' : 'auto'}
+        fontWeight={(props.result.day2) ? 'bold' : 'normal'}
       >
         <RecordIcon
           standing={props.result}

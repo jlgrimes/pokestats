@@ -46,13 +46,7 @@ export const Record = ({
   return (
     <Stack
       direction='row'
-      color={
-        standing.drop
-          ? 'red.600'
-          : madeDayTwo(standing.record)
-          ? 'auto'
-          : 'gray.400'
-      }
+      color={standing.drop ? 'red.600' : 'auto'}
       spacing={1}
       alignItems={big ? 'baseline' : 'center'}
       justifyContent='space-between'
