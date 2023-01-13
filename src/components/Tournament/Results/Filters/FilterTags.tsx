@@ -1,4 +1,5 @@
 import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
+import { Fragment } from 'react';
 import { Tournament } from '../../../../../types/tournament';
 import {
   useArchetypes,
@@ -35,43 +36,51 @@ export const FilterTags = ({
         ([key, val], idx) => {
           if (key === 'decksVisible') {
             return (
-              <>
-                {val.map((deckId: number, idx: number) => {
+              <Fragment key={`${key}`}>
+                {val.map((deckId: number) => {
                   const deckArchetype = archetypes?.find(
                     ({ id }) => deckId === id
                   );
-                  return (
-                    <Tag size='lg' key={`${key}-${deckId}`} borderRadius='full'>
-                      <HStack spacing={1}>
-                        <SpriteDisplay
-                          key={`filter-deck-${idx}`}
-                          pokemonNames={deckArchetype?.defined_pokemon ?? []}
-                          squishWidth
+                  if (deckArchetype) {
+                    return (
+                      <Tag
+                        size='lg'
+                        borderRadius='full'
+                        key={`${key}-${deckId}`}
+                      >
+                        <HStack spacing={1}>
+                          <SpriteDisplay
+                            pokemonNames={deckArchetype?.defined_pokemon ?? []}
+                            squishWidth
+                          />
+                          {/* <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text> */}
+                        </HStack>
+                        <TagCloseButton
+                          onClick={() =>
+                            toggleFilter('decksVisible', {
+                              individualDeck: deckId,
+                            })
+                          }
                         />
-                        {/* <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text> */}
-                      </HStack>
-                      <TagCloseButton
-                        onClick={() =>
-                          toggleFilter('decksVisible', {
-                            individualDeck: deckId,
-                          })
-                        }
-                      />
-                    </Tag>
-                  );
+                      </Tag>
+                    );
+                  }
+                  return <div key={`${key}-${deckId}`}></div>;
                 })}
-              </>
+              </Fragment>
             );
           }
 
           if (val.value) {
             return (
-              <Tag size='lg' key={idx} borderRadius='full'>
+              <Tag size='lg' key={key} borderRadius='full'>
                 <TagLabel fontSize={'sm'}>{val.name}</TagLabel>
                 <TagCloseButton onClick={() => toggleFilter(key)} />
               </Tag>
             );
           }
+
+          return <div key={key}></div>;
         }
       )}
     </>
