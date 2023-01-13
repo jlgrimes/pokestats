@@ -94,15 +94,22 @@ export default function AboutPage() {
             <Link isExternal href={myTwitter} as={NextLink} color='twitter.500'>
               @jgrimesey
             </Link>
-            {`. This site was entirely coded by me, so if there's anything wrong, it's my fault!`}
+            {`. I am the sole developer of this site, so if there's anything wrong, it's my fault!`}
           </Text>
         </Stack>
         <Stack>
           <Heading size='md'>Credits</Heading>
           <Text>
-            {`This project wouldn't be possible without `}
-            <RK9Link />
-            {` for tournament, standings, and match data, `}
+            {`What started off as me in the stats chat joking how we should redo PokéStats... well, turned into me redoing PokéStats! This project wouldn't be possible without the following members/groups:`}
+          </Text>
+          <Text>
+            <RK9Link /> - for all of the outstanding work allowing our
+            tournaments run as smoothly as they do. PokéStats Live would not be
+            nearly what it is today without {`RK9's`} incredible infrastructure
+            and reliability.
+          </Text>
+          <Text>
+            {`Also massive thanks to `}
             <Link isExternal href={juTwitter} as={NextLink} color='twitter.500'>
               @_JuHlien_
             </Link>
@@ -115,7 +122,7 @@ export default function AboutPage() {
             >
               @simeydotme
             </Link>
-            {` for the stellar card previews, Ryan Shore for some dope ideas, and the entirety of the `}
+            {` for the mind-boggling work on card effects (seriously, check this guy out), Ryan Shore for the immense amount of product design help, the entirety of the `}
             <Link
               isExternal
               href={statsTwitter}
@@ -124,7 +131,7 @@ export default function AboutPage() {
             >
               @pokestatstcg
             </Link>
-            {` team for the many ideas and support. `}
+            {` team for the many ideas and support, and Noah Spinale.`}
           </Text>
         </Stack>
       </Stack>
