@@ -9,7 +9,7 @@ import {
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { getArchetypeGraphData, getArchetypeKey } from './helpers';
 import { useLowResImageUrls } from '../../../hooks/images';
-import { DeckArchetype, Tournament } from '../../../../types/tournament';
+import { Deck, Tournament } from '../../../../types/tournament';
 import { FastAverageColor } from 'fast-average-color';
 import { useEffect, useState } from 'react';
 import { SpriteLabel } from './SpriteLabel';
@@ -30,10 +30,7 @@ export const ArchetypeGraph = ({
   const { data } = useDay2Decks(tournament.id);
   const dataFlatList =
     data?.reduce(
-      (acc: string[], deck: DeckArchetype) => [
-        ...acc,
-        ...(deck.defined_pokemon ?? []),
-      ],
+      (acc: string[], deck: Deck) => [...acc, ...(deck.defined_pokemon ?? [])],
       []
     ) ?? [];
   const imageUrls = useLowResImageUrls(dataFlatList);

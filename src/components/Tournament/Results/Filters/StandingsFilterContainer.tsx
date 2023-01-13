@@ -1,6 +1,6 @@
 import { HStack } from '@chakra-ui/react';
 import { memo, useCallback } from 'react';
-import { DeckArchetype, Tournament } from '../../../../../types/tournament';
+import { Deck, Tournament } from '../../../../../types/tournament';
 import { FilterTags } from './FilterTags';
 import { StandingsFilterMenu, StandingsFilters } from './StandingsFilterMenu';
 
@@ -8,7 +8,7 @@ export interface ToggleFilterOptions {
   // ID of the individual deck we want to toggle.
   individualDeck?: number;
   // Name of the defined pokemon.
-  superType?: DeckArchetype[];
+  superType?: Deck[];
 }
 
 export const StandingsFilterContainer = memo(

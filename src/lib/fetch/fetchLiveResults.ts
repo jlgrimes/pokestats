@@ -1,4 +1,4 @@
-import { DeckArchetype, Standing } from '../../../types/tournament';
+import { Deck, Standing } from '../../../types/tournament';
 import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
 import { fetchCurrentTournamentInfo } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
@@ -95,7 +95,7 @@ export const updatePlayerProfilesWithTournament = async (
 
 const getPlayerDeckObjects = async (
   tournamentId: string,
-  deckArchetypes: DeckArchetype[] | null
+  deckArchetypes: Deck[] | null
 ) => {
   const perfStart = performance.now();
 
@@ -149,7 +149,7 @@ interface PlayerDeckObject {
 }
 
 const matchArchetype = (
-  deckArchetypes: DeckArchetype[] | null,
+  deckArchetypes: Deck[] | null,
   list: Record<any, any>,
   targetLength: number
 ) =>
@@ -167,7 +167,7 @@ const matchArchetype = (
 const getPlayerDeck = (
   playerDeckObjects: PlayerDeckObject[] | undefined,
   player: Player,
-  deckArchetypes: DeckArchetype[] | null
+  deckArchetypes: Deck[] | null
 ) => {
   const savedDeckInfo = playerDeckObjects?.find(
     playerDeck => playerDeck.player_name === player.name
@@ -199,7 +199,7 @@ function mapResultsArray(
   resultsArray: any,
   roundNumber: number,
   playerDeckObjects: PlayerDeckObject[] | undefined,
-  deckArchetypes: DeckArchetype[] | null,
+  deckArchetypes: Deck[] | null,
   shouldLoad?: LiveResultsLoadOptions
 ): Standing[] {
   const perfStart = performance.now();

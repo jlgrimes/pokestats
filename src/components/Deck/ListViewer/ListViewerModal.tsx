@@ -87,6 +87,8 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
           <CardViewerBody
             card={selectedCard}
             clearSelectedCard={handleCardClear}
+            tournament={props.tournament}
+            deck={props.result.deck}
           />
         ) : (
           <ListModalBody

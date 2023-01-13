@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Fragment, useMemo, useState } from 'react';
-import { DeckArchetype } from '../../../../../types/tournament';
+import { Deck } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import { useTwitterLink } from '../../../../hooks/twitter';
 import { getLowResUnownUrl } from '../../../common/helpers';
@@ -64,7 +64,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     setSelectedArchetype(null);
   };
 
-  const filteredDecks: DeckArchetype[] = useMemo(
+  const filteredDecks: Deck[] = useMemo(
     () => [
       ...(mostPopularDecks?.filter(({ name }) => {
         return (

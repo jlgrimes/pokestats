@@ -1,16 +1,14 @@
-import { DeckArchetype } from '../../../../../types/tournament';
+import { Deck } from '../../../../../types/tournament';
 
 interface SuperTypeCollection {
   definedPokemon: string;
   archetypeName: string;
-  decks: DeckArchetype[];
+  decks: Deck[];
 }
 
-export const sortBySuperType = (
-  mostPopularDecks: DeckArchetype[] | null | undefined
-) =>
+export const sortBySuperType = (mostPopularDecks: Deck[] | null | undefined) =>
   mostPopularDecks
-    ?.reduce((acc: SuperTypeCollection[], curr: DeckArchetype) => {
+    ?.reduce((acc: SuperTypeCollection[], curr: Deck) => {
       const foundSuperTypeIdx = acc.findIndex(
         supertype => supertype.definedPokemon === curr.defined_pokemon[0]
       );

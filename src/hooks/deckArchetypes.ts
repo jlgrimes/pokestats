@@ -1,7 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { DeckArchetype, Standing } from '../../types/tournament';
-import { fetchPlayerDecks } from '../lib/fetch/fetchLiveResults';
+import { Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { useLiveTournamentResults } from './tournamentResults';
 
@@ -64,17 +63,14 @@ interface MostPopularArchetypesOptions {
 export const useMostPopularArchetypes = (
   tournamentId: string,
   options?: MostPopularArchetypesOptions
-): DeckArchetype[] | null | undefined => {
+): Deck[] | null | undefined => {
   const { data: liveResults } = useLiveTournamentResults(tournamentId, {
     load: { allRoundData: true },
   });
   const { data: archetypes } = useArchetypes();
 
   const playerDeckCounts = liveResults?.data?.reduce(
-    (
-      acc: Record<string, { deck: DeckArchetype; count: number }>,
-      player: Standing
-    ) => {
+    (acc: Record<string, { deck: Deck; count: number }>, player: Standing) => {
       if (player.deck.id) {
         // Adds in supertype
         const playerDeck =

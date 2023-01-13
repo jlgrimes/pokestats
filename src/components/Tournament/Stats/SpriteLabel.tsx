@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PieLabelRenderProps } from 'recharts';
-import { DeckArchetype } from '../../../../types/tournament';
+import { Deck } from '../../../../types/tournament';
 import { getLowResUnownUrl } from '../../common/helpers';
 import { getArchetypeKey } from './helpers';
 
@@ -19,7 +19,7 @@ export const SpriteLabel = ({
 }: PieLabelRenderProps & {
   imageUrls: Record<string, string>;
   shouldDrillDown: boolean;
-  data: DeckArchetype[] | undefined;
+  data: Deck[] | undefined;
 }) => {
   const getRadiusScale = (percent: number, index: number) => {
     if (percent > 0.1) {

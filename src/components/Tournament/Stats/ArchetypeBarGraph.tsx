@@ -7,7 +7,7 @@ import {
   XAxis,
   LabelList,
 } from 'recharts';
-import { DeckArchetype, Tournament } from '../../../../types/tournament';
+import { Deck, Tournament } from '../../../../types/tournament';
 import { useDay2Decks } from '../../../hooks/day2decks';
 import { useLowResImageUrls } from '../../../hooks/images';
 import {
@@ -30,7 +30,7 @@ export const ArchetypeBarGraph = ({
   const { data } = useDay2Decks(tournament.id);
   const imageUrls = useLowResImageUrls(
     data?.reduce(
-      (acc: string[], deck: DeckArchetype) => [
+      (acc: string[], deck: Deck) => [
         ...acc,
         ...(deck.defined_pokemon ?? []),
       ],

@@ -7,22 +7,21 @@ export interface Card {
   set: string;
 }
 
-export interface DeckArchetype {
+export interface Deck {
   id: number;
   name: string;
   defined_pokemon: string[];
   supertype: string;
   identifiable_cards?: string[];
   count?: number;
+  list?: DeckList;
+  verified?: boolean;
 }
 
-export interface Deck {
-  id?: number;
-  name?: string;
-  defined_pokemon?: string[];
-  identifiable_cards?: string[];
-  list?: { pokemon: Card[]; trainer: Card[]; energy: Card[] };
-  verified?: boolean;
+export interface DeckList {
+  pokemon: Card[];
+  trainer: Card[];
+  energy: Card[];
 }
 
 export interface Standing {
