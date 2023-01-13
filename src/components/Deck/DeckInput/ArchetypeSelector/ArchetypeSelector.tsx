@@ -93,10 +93,15 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           mostPopularDecks?.find(deck => deck.id === props.selectedArchetype)
             ?.defined_pokemon ?? [];
 
-        return <SpriteDisplay verified={props.deckIsVerified} pokemonNames={displayedPokemonNames} />;
+        return (
+          <SpriteDisplay
+            verified={props.deckIsVerified}
+            pokemonNames={displayedPokemonNames}
+          />
+        );
       } else {
         return (
-          <Flex justifyContent={'center'}>
+          <Flex justifyContent={'center'} minWidth='4.5rem'>
             <Image
               height='30px'
               src={getLowResUnownUrl(props.unownOverride)}
