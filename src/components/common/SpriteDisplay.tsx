@@ -12,13 +12,13 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
   const { data: pokedex } = usePokedex();
 
   return (
-    <Stack direction='row' alignItems={'baseline'} spacing={-2.5}>
-      <Stack
-        direction={'row'}
-        spacing={1}
-        minWidth='4.5rem'
-        alignItems={'center'}
-      >
+    <Stack
+      direction='row'
+      alignItems={'baseline'}
+      spacing={-0.5}
+      minWidth='4.5rem'
+    >
+      <Stack direction={'row'} spacing={1} alignItems={'center'}>
         {props.pokemonNames.map((name, idx) => {
           if (name.length === 0) return;
 
@@ -62,7 +62,11 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
           props.pokemonNames[0] &&
           props.pokemonNames[0].length > 0 &&
           props.pokemonNames[0] !== 'substitute' &&
-          (props.verified ? <VerifiedIcon subtle /> : <NotVerifiedIcon subtle />)}
+          (props.verified ? (
+            <VerifiedIcon subtle />
+          ) : (
+            <NotVerifiedIcon subtle />
+          ))}
       </StackItem>
     </Stack>
   );
