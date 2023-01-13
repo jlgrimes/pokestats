@@ -55,11 +55,11 @@ export const OpponentRoundList = ({
       <ModalContent margin={isMobile ? 'auto' : 0}>
         <ModalHeader padding={'0.5rem 2rem'}>
           <Stack direction='row' alignItems={'center'}>
-            <Text>{player.name}</Text>
             <RecordIcon
               standing={player}
               tournamentFinished={tournament.tournamentStatus === 'finished'}
             />
+            <Text paddingRight={'8px'}>{player.name}</Text>
             <DeckInfoDisplay
               tournament={tournament}
               player={player}
