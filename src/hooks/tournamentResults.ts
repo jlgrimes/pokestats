@@ -40,7 +40,7 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
     };
   }
 
-  if (!filters.justDay2.value) {
+  if (filters.justDay2.value) {
     return {
       ...liveResults,
       data: liveResults.data.filter(

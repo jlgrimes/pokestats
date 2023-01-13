@@ -58,7 +58,7 @@ export const StandingsFilterMenu = memo(
                 isChecked={getFilter('justDay2')}
                 onClick={() => toggleFilter('justDay2')}
               >
-                Just Day 2
+                Only Day 2
               </MenuItemOption>
             </MenuOptionGroup>
             <MenuDivider />
