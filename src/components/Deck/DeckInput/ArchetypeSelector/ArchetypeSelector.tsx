@@ -33,6 +33,7 @@ interface ArchetypeSelectorProps {
   tournamentId: string;
   unownOverride?: string;
   userIsAdmin: boolean;
+  deckIsVerified?: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
@@ -92,7 +93,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
           mostPopularDecks?.find(deck => deck.id === props.selectedArchetype)
             ?.defined_pokemon ?? [];
 
-        return <SpriteDisplay pokemonNames={displayedPokemonNames} />;
+        return <SpriteDisplay verified={props.deckIsVerified} pokemonNames={displayedPokemonNames} />;
       } else {
         return (
           <Flex justifyContent={'center'}>

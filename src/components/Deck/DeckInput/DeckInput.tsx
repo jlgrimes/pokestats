@@ -1,23 +1,26 @@
 import { UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { Deck } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
 
 export default function DeckInput({
   playerName,
-  deckId,
+  deck,
   tournamentId,
   archetypeModal,
   shouldShowAsText,
 }: {
   playerName: string;
-  deckId: number | undefined;
+  deck: Deck | undefined;
   tournamentId: string;
   archetypeModal: UseDisclosureProps;
   shouldShowAsText?: boolean;
 }) {
+  const deckId = deck?.id;
+
   const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
   const [selectedDeck, setSelectedDeck] = useState(deckId);
@@ -83,6 +86,7 @@ export default function DeckInput({
       tournamentId={tournamentId}
       unownOverride={playerName === 'Isaiah Cheville' ? 'z' : undefined}
       userIsAdmin={userIsAdmin}
+      deckIsVerified={deck?.verified}
     />
   );
 }

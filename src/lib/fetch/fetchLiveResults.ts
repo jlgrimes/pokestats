@@ -6,7 +6,7 @@ import supabase from '../supabase/client';
 export const fetchPlayerDecks = async (tournamentId: string) => {
   const res = await supabase
     .from('Player Decks')
-    .select('id,player_name,deck_archetype')
+    .select('id,player_name,deck_archetype,user_submitted_was_admin')
     .eq('tournament_id', tournamentId);
   return res.data;
 };
@@ -101,7 +101,7 @@ const getPlayerDeckObjects = async (
 
   const playerDecks = await fetchPlayerDecks(tournamentId);
 
-  const mappedDecks = playerDecks?.map(({ player_name, deck_archetype }) => {
+  const mappedDecks = playerDecks?.map(({ player_name, deck_archetype, user_submitted_was_admin }) => {
     const deck: Record<string, any> | undefined = deckArchetypes?.find(
       deck => deck.id === deck_archetype
     );
@@ -112,6 +112,7 @@ const getPlayerDeckObjects = async (
         id: deck_archetype,
         name: deck?.name ?? null,
         defined_pokemon: deck?.defined_pokemon ?? null,
+        verified: user_submitted_was_admin
       },
     };
   });
@@ -141,6 +142,7 @@ interface PlayerDeckObject {
     id: number;
     name: string;
     defined_pokemon: string[];
+    verified: boolean;
   };
 }
 
@@ -187,6 +189,7 @@ const getPlayerDeck = (
   return {
     ...playerDeck,
     defined_pokemon: playerDeck.defined_pokemon ?? [],
+    verified: playerDeck.verified || !!list
   };
 };
 

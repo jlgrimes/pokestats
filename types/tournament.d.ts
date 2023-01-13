@@ -20,6 +20,7 @@ export interface Deck {
   defined_pokemon?: string[];
   identifiable_cards?: string[];
   list?: { pokemon: Card[]; trainer: Card[]; energy: Card[] };
+  verified?: boolean;
 }
 
 export interface Standing {

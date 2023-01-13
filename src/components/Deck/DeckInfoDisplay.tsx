@@ -22,11 +22,11 @@ export const DeckInfoDisplay = memo(
     const archetypeModal = useDisclosure();
     return (
       <Stack direction={'row'} spacing={0} alignItems='center'>
-        <StackItem width={shouldShowAsText ? 'auto' : '60px'}>
+        <StackItem>
           <DeckInput
             tournamentId={tournament.id}
             playerName={player.name}
-            deckId={player.deck?.id}
+            deck={player.deck}
             archetypeModal={archetypeModal}
             shouldShowAsText={shouldShowAsText}
           />
