@@ -42,22 +42,17 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       </GridItem>
       <GridItem
         display={'flex'}
-        justifyContent='space-between'
         alignItems={'center'}
       >
+        <RecordIcon
+          standing={props.result}
+          tournamentFinished={props.tournament.tournamentStatus === 'finished'}
+        />
         <Player
           name={props.result.name}
           profile={props.result.profile}
           toggleRowExpanded={props.toggleRowExpanded}
         />
-        <Grid gridTemplateColumns='1.25rem' justifyContent={'center'}>
-          <RecordIcon
-            standing={props.result}
-            tournamentFinished={
-              props.tournament.tournamentStatus === 'finished'
-            }
-          />
-        </Grid>
       </GridItem>
 
       <Stack
