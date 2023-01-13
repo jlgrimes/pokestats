@@ -9,8 +9,8 @@ interface SuperTypeCollection {
 export const sortBySuperType = (
   mostPopularDecks: DeckArchetype[] | null | undefined
 ) =>
-  mostPopularDecks?.reduce(
-    (acc: SuperTypeCollection[], curr: DeckArchetype) => {
+  mostPopularDecks
+    ?.reduce((acc: SuperTypeCollection[], curr: DeckArchetype) => {
       const foundSuperTypeIdx = acc.findIndex(
         supertype => supertype.definedPokemon === curr.defined_pokemon[0]
       );
@@ -35,6 +35,10 @@ export const sortBySuperType = (
           decks: [curr],
         },
       ];
-    },
-    []
-  );
+    }, [])
+    .sort((a, b) => {
+      if (a.decks.length > b.decks.length) {
+        return -1;
+      }
+      return 1;
+    });

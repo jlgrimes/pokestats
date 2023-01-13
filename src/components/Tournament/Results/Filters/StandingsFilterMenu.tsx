@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Grid,
   GridItem,
@@ -63,6 +64,7 @@ export const StandingsFilterMenu = memo(
           </MenuButton>
           <MenuList minWidth='240px'>
             <MenuItemOption
+              padding={0}
               value='justDay2'
               isChecked={getFilter('justDay2')}
               onClick={() => toggleFilter('justDay2')}
@@ -79,14 +81,14 @@ export const StandingsFilterMenu = memo(
                   <Grid
                     gridColumn={'1/4'}
                     key={`supertype-collection-${idx}`}
-                    gridTemplateColumns={`repeat(3, 1fr)`}
+                    gridTemplateColumns={`repeat(4, 1fr)`}
                   >
                     <GridItem gridRow={'1/10'}>
                       <MenuItemOption
                         height='100%'
                         display='flex'
                         alignItems={'center'}
-                        padding={0}
+                        padding={'1rem 0'}
                         isChecked={getFilter(
                           'decksVisible',
                           supertype.decks.map(({ id }) => id)
@@ -97,10 +99,7 @@ export const StandingsFilterMenu = memo(
                           })
                         }
                       >
-                        <Text
-                          fontSize={'sm'}
-                          as='b'
-                          color='gray.800'
+                        <Box
                           opacity={
                             getFilter(
                               'decksVisible',
@@ -110,12 +109,17 @@ export const StandingsFilterMenu = memo(
                               : '40%'
                           }
                         >
-                          {supertype.archetypeName}
-                        </Text>
+                          <SpriteDisplay
+                            squishWidth
+                            big
+                            pokemonNames={[supertype.definedPokemon]}
+                          />
+                        </Box>
                       </MenuItemOption>
                     </GridItem>
                     {supertype.decks.map(({ id, name, defined_pokemon }) => (
                       <MenuItemOption
+                        padding={0}
                         opacity={
                           getFilter('decksVisible', [id]) ? '100%' : '40%'
                         }
@@ -135,6 +139,7 @@ export const StandingsFilterMenu = memo(
                   </Grid>
                 ) : (
                   <MenuItemOption
+                    padding={0}
                     opacity={
                       getFilter('decksVisible', [supertype.decks[0].id])
                         ? '100%'

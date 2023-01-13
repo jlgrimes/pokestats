@@ -7,11 +7,10 @@ interface SpriteDisplayProps {
   pokemonNames: string[];
   verified?: boolean;
   squishWidth?: boolean;
+  big?: boolean;
 }
 
 export default function SpriteDisplay(props: SpriteDisplayProps) {
-  const { data: pokedex } = usePokedex();
-
   return (
     <Stack
       direction='row'
@@ -31,21 +30,22 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
                 src='https://archives.bulbagarden.net/media/upload/a/a5/SubstituteG5f.png'
                 alt='Other'
                 height='auto'
-                width='40px'
+                width={props.big ? '80px' : '40px'}
               />
             );
           }
 
           return (
             <StackItem
-              width='30px'
+              width={props.big ? '60px' : '30px'}
               key={idx}
               display='flex'
               justifyContent={'center'}
             >
               <Image
                 className='pixel-image'
-                maxHeight='30px'
+                maxHeight={props.big ? '50px' : '30px'}
+                minHeight={props.big ? '50px' : 0}
                 height='auto'
                 width='auto'
                 src={getSpriteUrl(
