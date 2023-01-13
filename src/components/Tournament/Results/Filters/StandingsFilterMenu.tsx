@@ -62,15 +62,13 @@ export const StandingsFilterMenu = memo(
             Filter
           </MenuButton>
           <MenuList minWidth='240px'>
-            <MenuOptionGroup title='Placement'>
-              <MenuItemOption
-                value='justDay2'
-                isChecked={getFilter('justDay2')}
-                onClick={() => toggleFilter('justDay2')}
-              >
-                Only Day 2
-              </MenuItemOption>
-            </MenuOptionGroup>
+            <MenuItemOption
+              value='justDay2'
+              isChecked={getFilter('justDay2')}
+              onClick={() => toggleFilter('justDay2')}
+            >
+              Only Day 2
+            </MenuItemOption>
             <MenuDivider />
             <Grid
               key={`supertype-collection-grid`}
@@ -99,10 +97,19 @@ export const StandingsFilterMenu = memo(
                           })
                         }
                       >
-                        <Text fontSize={'sm'} as='b' color='gray.800' opacity={getFilter(
-                          'decksVisible',
-                          supertype.decks.map(({ id }) => id)
-                        ) ? '100%' : '40%'}>
+                        <Text
+                          fontSize={'sm'}
+                          as='b'
+                          color='gray.800'
+                          opacity={
+                            getFilter(
+                              'decksVisible',
+                              supertype.decks.map(({ id }) => id)
+                            )
+                              ? '100%'
+                              : '40%'
+                          }
+                        >
                           {supertype.archetypeName}
                         </Text>
                       </MenuItemOption>
