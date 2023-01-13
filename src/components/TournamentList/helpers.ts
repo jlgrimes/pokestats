@@ -45,10 +45,14 @@ export const getTournamentStatusBadgeProps = (
 };
 
 const getTournamentRange = (tournament: Tournament) => {
-  return eachWeekendOfInterval({
-    start: parseISO(tournament.date.start),
-    end: parseISO(tournament.date.end),
-  });
+  if (tournament.name.includes('Regional')) {
+    return eachWeekendOfInterval({
+      start: parseISO(tournament.date.start),
+      end: parseISO(tournament.date.end),
+    });
+  }
+
+  return [parseISO(tournament.date.start), parseISO(tournament.date.end)];
 };
 
 export const formatTournamentDate = (tournament: Tournament) => {
