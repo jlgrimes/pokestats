@@ -44,7 +44,7 @@ export const FilterTags = ({
                           pokemonNames={deckArchetype?.defined_pokemon ?? []}
                           squishWidth
                         />
-                        <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text>
+                        {/* <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text> */}
                       </HStack>
                       <TagCloseButton
                         onClick={() => toggleFilter('decksVisible', deckId)}
