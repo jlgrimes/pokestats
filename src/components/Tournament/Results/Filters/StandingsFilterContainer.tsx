@@ -24,13 +24,13 @@ export const StandingsFilterContainer = memo(
     );
 
     const toggleFilter = useCallback(
-      (key: keyof StandingsFilters, arg?: number) => {
+      (key: keyof StandingsFilters, arg?: number[]) => {
         if (key === 'decksVisible' && arg) {
-          if (standingsFilters.decksVisible.find(deck => deck === arg)) {
+          if (standingsFilters.decksVisible.find(deck => arg.includes(deck))) {
             return setStandingsFilters({
               ...standingsFilters,
-              decksVisible: standingsFilters.decksVisible.filter(
-                deck => deck !== arg
+              decksVisible: standingsFilters.decksVisible.filter(deck =>
+                !arg.includes(deck)
               ),
             });
           }

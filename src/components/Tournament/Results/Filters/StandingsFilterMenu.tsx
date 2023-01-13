@@ -1,6 +1,7 @@
 import {
   Button,
   Grid,
+  HStack,
   Menu,
   MenuButton,
   MenuDivider,
@@ -11,9 +12,10 @@ import {
 } from '@chakra-ui/react';
 import { memo } from 'react';
 import { FaFilter } from 'react-icons/fa';
-import { Tournament } from '../../../../../types/tournament';
+import { DeckArchetype, Tournament } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay';
+import { sortBySuperType } from './helpers';
 
 export interface Filter {
   name: string;
@@ -39,6 +41,8 @@ export const StandingsFilterMenu = memo(
       leaveOutZeroCountDecks: true,
     });
 
+    const supertypeCollection = sortBySuperType(mostPopularDecks);
+
     return (
       <StackItem>
         <Menu closeOnSelect={false}>
@@ -62,7 +66,22 @@ export const StandingsFilterMenu = memo(
               </MenuItemOption>
             </MenuOptionGroup>
             <MenuDivider />
-            <MenuOptionGroup title='Deck archetype' type='checkbox'>
+            {supertypeCollection?.map((supertype, idx) => (
+              <>
+                <SpriteDisplay pokemonNames={[supertype.name]} />
+                {supertype.decks.map(({ id, name, defined_pokemon }) => (
+                  <MenuItemOption
+                    isChecked={getFilter('decksVisible', id)}
+                    onClick={() => toggleFilter('decksVisible', [id])}
+                    key={idx}
+                    value={name}
+                  >
+                    <SpriteDisplay pokemonNames={defined_pokemon} />
+                  </MenuItemOption>
+                ))}
+              </>
+            ))}
+            {/* <MenuOptionGroup title='Deck archetype' type='checkbox'>
               <Grid gridTemplateColumns={'auto auto auto'}>
                 {mostPopularDecks?.map(({ id, name, defined_pokemon }, idx) => (
                   <MenuItemOption
@@ -75,7 +94,7 @@ export const StandingsFilterMenu = memo(
                   </MenuItemOption>
                 ))}
               </Grid>
-            </MenuOptionGroup>
+            </MenuOptionGroup> */}
           </MenuList>
         </Menu>
       </StackItem>
