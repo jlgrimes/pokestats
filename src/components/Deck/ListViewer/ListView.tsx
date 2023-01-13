@@ -1,36 +1,18 @@
 import { Flex, GridItem, SimpleGrid, Image } from '@chakra-ui/react';
 import { Card } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
+import { getCardImageUrl } from './helpers';
 
 export const ListView = ({
   deckList,
   containerHeight,
+  handleCardClick,
 }: {
   deckList: Record<string, any>;
   containerHeight: number;
+  handleCardClick: (card: Card) => void;
 }) => {
   const codeToSetMap = useCodeToSetMap();
-
-  const getCardImageUrl = (card: {
-    name: string;
-    number: string;
-    set: string;
-  }) => {
-    let set = codeToSetMap?.[card.set];
-    if (!set) {
-      return '';
-    }
-
-    if (card.number.includes('SWSH')) {
-      set = 'swshp';
-    } else if (card.number.includes('TG')) {
-      set = set.replace('tg', '').concat('tg');
-    } else if (card.number.includes('SV')) {
-      set = set.replace('sv', '').concat('sv');
-    }
-
-    return `https://images.pokemontcg.io/${set}/${card?.number}.png`;
-  };
 
   const heightWidthRatio = 1.396;
   const width = 92;
@@ -85,37 +67,34 @@ export const ListView = ({
       marginTop={`${rowStackMargin}px`}
       height='100%'
     >
-      {flatDeckList.map(
-        (
-          card: { name: string; number: string; set: string; count: number },
-          idx: number
-        ) => (
-          <SimpleGrid
-            key={idx}
-            gridAutoFlow='column'
-            marginLeft={'-12'}
-            marginTop={`-${rowStackMargin}px`}
-          >
-            {[...Array(card.count)].map((_, idx) => (
-              <GridItem
-                key={idx}
-                gridColumn={1}
-                gridRow={1}
-                paddingLeft={idx * 3}
-              >
-                <Image
-                  background='black'
-                  outline='3px solid'
-                  width={`${width}px`}
-                  height={`${height}px`}
-                  src={getCardImageUrl(card)}
-                  alt={`${card.name} ${card.set}`}
-                />
-              </GridItem>
-            ))}
-          </SimpleGrid>
-        )
-      )}
+      {flatDeckList.map((card: Card, idx: number) => (
+        <SimpleGrid
+          cursor={'pointer'}
+          onClick={() => handleCardClick(card)}
+          key={idx}
+          gridAutoFlow='column'
+          marginLeft={'-12'}
+          marginTop={`-${rowStackMargin}px`}
+        >
+          {[...Array(card.count)].map((_, idx) => (
+            <GridItem
+              key={idx}
+              gridColumn={1}
+              gridRow={1}
+              paddingLeft={idx * 3}
+            >
+              <Image
+                background='black'
+                outline='3px solid'
+                width={`${width}px`}
+                height={`${height}px`}
+                src={getCardImageUrl(card, codeToSetMap)}
+                alt={`${card.name} ${card.set}`}
+              />
+            </GridItem>
+          ))}
+        </SimpleGrid>
+      ))}
     </SimpleGrid>
   );
 };

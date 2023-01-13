@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-export const useCodeToSetMap = () => {
+export const useCodeToSetMap = (): Record<string, string> => {
   const { data: sets } = useQuery({
     queryKey: ['https://api.pokemontcg.io/v2/sets/'],
     queryFn: () =>

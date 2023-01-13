@@ -9,9 +9,10 @@ import {
   Text,
   CloseButton,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Card } from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
+import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
 import { ListView } from './ListView';
 
 interface ListViewerModalProps {
@@ -21,7 +22,13 @@ interface ListViewerModalProps {
   tournamentName: string;
 }
 
-const ListModalBody = ({ list }: { list: Record<string, Card[]> }) => {
+const ListModalBody = ({
+  list,
+  handleCardClick,
+}: {
+  list: Record<string, Card[]>;
+  handleCardClick: (card: Card) => void;
+}) => {
   const [listGridHeight, setListGridHeight] = useState(0);
 
   useEffect(() => {
@@ -33,12 +40,29 @@ const ListModalBody = ({ list }: { list: Record<string, Card[]> }) => {
 
   return (
     <ModalBody padding={'3px 0 0'} height='100%' id='list-view-modal-body'>
-      <ListView deckList={list} containerHeight={listGridHeight} />
+      <ListView
+        deckList={list}
+        containerHeight={listGridHeight}
+        handleCardClick={handleCardClick}
+      />
     </ModalBody>
   );
 };
 
-export const ListViewerModal = (props: ListViewerModalProps) => {
+export const ListViewerModal = memo((props: ListViewerModalProps) => {
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+
+  const handleCardClick = useCallback(
+    (card: Card) => {
+      setSelectedCard(card);
+    },
+    [setSelectedCard]
+  );
+
+  const handleCardClear = useCallback(() => {
+    setSelectedCard(null);
+  }, [setSelectedCard]);
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='full'>
       <ModalOverlay />
@@ -58,8 +82,17 @@ export const ListViewerModal = (props: ListViewerModalProps) => {
           </Stack>
           <CloseButton onClick={props.onClose} paddingRight={4} />
         </Stack>
-        <ListModalBody list={props.result.deck.list} />
+        {selectedCard ? (
+          <CardViewerBody card={selectedCard} clearSelectedCard={handleCardClear} />
+        ) : (
+          <ListModalBody
+            list={props.result.deck.list}
+            handleCardClick={handleCardClick}
+          />
+        )}
       </ModalContent>
     </Modal>
   );
-};
+});
+
+ListViewerModal.displayName = 'ListViewerModal';
