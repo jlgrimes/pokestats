@@ -5,6 +5,7 @@ import {
   formatDistance,
   formatDistanceToNow,
   parseISO,
+  eachWeekendOfInterval,
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 
@@ -43,9 +44,15 @@ export const getTournamentStatusBadgeProps = (
   return {};
 };
 
+const getTournamentRange = (tournament: Tournament) => {
+  return eachWeekendOfInterval({
+    start: parseISO(tournament.date.start),
+    end: parseISO(tournament.date.end),
+  });
+};
+
 export const formatTournamentDate = (tournament: Tournament) => {
-  const startDate = parseISO(tournament.date.start);
-  const endDate = parseISO(tournament.date.end);
+  const [startDate, endDate] = getTournamentRange(tournament);
 
   // I want to use ordinal numbers but these guys won't let me :(
   // https://atlassian.design/content/writing-guidelines/date-and-time-guideline
@@ -57,12 +64,12 @@ export const formatTournamentDate = (tournament: Tournament) => {
 };
 
 export const formatTimeUntilTournament = (tournament: Tournament) => {
-  const startDate = parseISO(tournament.date.start);
+  const [startDate] = getTournamentRange(tournament);
   return formatDistanceToNow(startDate);
 };
 
 export const tournamentHasArrivedButNotLive = (tournament: Tournament) => {
-  const startDate = parseISO(tournament.date.start);
+  const [startDate] = getTournamentRange(tournament);
 
   return differenceInDays(startDate, new Date()) <= 0;
 };
