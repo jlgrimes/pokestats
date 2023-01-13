@@ -21,7 +21,7 @@ export interface Filter {
 }
 
 export interface StandingsFilters {
-  day1: Filter;
+  justDay2: Filter;
   decksVisible: number[];
 }
 
@@ -53,11 +53,11 @@ export const StandingsFilterMenu = memo(
           </MenuButton>
           <MenuList minWidth='240px'>
             <MenuItemOption
-              value='day1'
-              isChecked={getFilter('day1')}
-              onClick={() => toggleFilter('day1')}
+              value='justDay2'
+              isChecked={getFilter('justDay2')}
+              onClick={() => toggleFilter('justDay2')}
             >
-              Include day 1
+              Just Day 2
             </MenuItemOption>
             <MenuDivider />
             <MenuOptionGroup type='checkbox'>

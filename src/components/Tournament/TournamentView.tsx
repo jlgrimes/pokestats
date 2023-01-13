@@ -16,9 +16,9 @@ export default function TournamentView({
   tournament: Tournament;
 }) {
   const [standingsFilters, setStandingsFilters] = useState<StandingsFilters>({
-    day1: {
-      name: 'Day 1',
-      value: true,
+    justDay2: {
+      name: 'Just Day 2',
+      value: false,
     },
     decksVisible: [],
   });

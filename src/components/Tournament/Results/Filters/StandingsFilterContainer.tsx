@@ -41,7 +41,7 @@ export const StandingsFilterContainer = memo(
           });
         }
 
-        if (key === 'day1') {
+        if (key === 'justDay2') {
           return setStandingsFilters({
             ...standingsFilters,
             [key]: {

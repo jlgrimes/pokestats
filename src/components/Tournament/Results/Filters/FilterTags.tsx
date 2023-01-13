@@ -43,12 +43,14 @@ export const FilterTags = ({
             );
           }
 
-          return (
-            <Tag key={idx} borderRadius='full'>
-              <TagLabel>{val.name}</TagLabel>
-              <TagCloseButton onClick={() => toggleFilter(key)} />
-            </Tag>
-          );
+          if (val.value) {
+            return (
+              <Tag key={idx} borderRadius='full'>
+                <TagLabel>{val.name}</TagLabel>
+                <TagCloseButton onClick={() => toggleFilter(key)} />
+              </Tag>
+            );
+          }
         }
       )}
     </HStack>
