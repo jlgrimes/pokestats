@@ -4,10 +4,11 @@ import { Tournament } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
+import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
 import {
   StandingsFilterMenu,
   StandingsFilters,
-} from './Results/StandingsFilterMenu';
+} from './Results/Filters/StandingsFilterMenu';
 
 export default function TournamentView({
   tournament,
@@ -22,46 +23,6 @@ export default function TournamentView({
     decksVisible: [],
   });
 
-  const getFilter = useCallback(
-    (key: keyof StandingsFilters, arg?: number) => {
-      if (key === 'decksVisible')
-        return !!standingsFilters.decksVisible.find(deckId => deckId === arg);
-      return standingsFilters[key].value;
-    },
-    [standingsFilters]
-  );
-
-  const toggleFilter = useCallback(
-    (key: keyof StandingsFilters, arg?: number) => {
-      if (key === 'decksVisible' && arg) {
-        if (standingsFilters.decksVisible.find(deck => deck === arg)) {
-          return setStandingsFilters({
-            ...standingsFilters,
-            decksVisible: standingsFilters.decksVisible.filter(
-              deck => deck !== arg
-            ),
-          });
-        }
-
-        return setStandingsFilters({
-          ...standingsFilters,
-          decksVisible: standingsFilters.decksVisible.concat(arg),
-        });
-      }
-
-      if (key === 'day1') {
-        return setStandingsFilters({
-          ...standingsFilters,
-          [key]: {
-            ...standingsFilters[key],
-            value: !standingsFilters[key].value,
-          },
-        });
-      }
-    },
-    [standingsFilters]
-  );
-
   const { data: liveResults } = useLiveTournamentResults(tournament.id, {
     load: { allRoundData: true },
     filters: standingsFilters,
@@ -69,10 +30,10 @@ export default function TournamentView({
 
   return (
     <Stack>
-      <StandingsFilterMenu
-        getFilter={getFilter}
-        toggleFilter={toggleFilter}
+      <StandingsFilterContainer
         tournament={tournament}
+        standingsFilters={standingsFilters}
+        setStandingsFilters={setStandingsFilters}
       />
       {liveResults && (
         <StandingsList results={liveResults.data} tournament={tournament} />

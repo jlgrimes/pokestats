@@ -1,5 +1,5 @@
 import { DeckArchetype, Standing } from '../../../types/tournament';
-import { StandingsFilters } from '../../components/Tournament/Results/StandingsFilterMenu';
+import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
 import { fetchCurrentTournamentInfo } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
 

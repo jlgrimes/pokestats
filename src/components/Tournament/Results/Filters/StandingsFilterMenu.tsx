@@ -11,9 +11,9 @@ import {
 } from '@chakra-ui/react';
 import { memo } from 'react';
 import { FaFilter } from 'react-icons/fa';
-import { Tournament } from '../../../../types/tournament';
-import { useMostPopularArchetypes } from '../../../hooks/deckArchetypes';
-import SpriteDisplay from '../../common/SpriteDisplay';
+import { Tournament } from '../../../../../types/tournament';
+import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
+import SpriteDisplay from '../../../common/SpriteDisplay';
 
 export interface Filter {
   name: string;
