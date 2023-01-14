@@ -32,10 +32,8 @@ export const loadFinalResults = async (tournamentId: string) => {
     rounds: player.rounds
   }))
 
-  // const result = await supabase
-  //   .from('Final Results')
-  //   .insert([{ name, defined_pokemon: [pokemon1, pokemon2] }]);
-  // return result;
-
-  return;
+  const result = await supabase
+    .from('Final Results')
+    .insert(rowsToBeInserted);
+  return result;
 };

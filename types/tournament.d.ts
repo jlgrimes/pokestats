@@ -29,6 +29,7 @@ export interface Standing {
   profile: StoredPlayerProfile;
   placing: number;
   record: { wins: number; ties: number; losses: number };
+  resistances?: { self: number, opp: number, oppopp: number }
   currentMatchResult?: 'W' | 'L' | 'T';
   rounds?: { name: string; result: string; opponent: Standing }[];
   day2: boolean;

@@ -132,6 +132,7 @@ interface Player {
   name: string;
   placing: number;
   record: { wins: number; losses: number; ties: number };
+  resistances: { self: number, opp: number, oppopp: number }
   result: string;
   rounds: Record<number, Record<string, any>>;
   decklist: Record<any, any>;
@@ -216,6 +217,7 @@ function mapResultsArray(
         ? { rounds: Object.values(player?.rounds ?? {}) }
         : {}),
       ...(currentMatchResult ? { currentMatchResult } : {}),
+      resistances: player.resistances,
       day2,
       outOfDay2:
         !day2 &&
