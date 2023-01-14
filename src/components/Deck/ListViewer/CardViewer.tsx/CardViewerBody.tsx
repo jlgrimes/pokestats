@@ -101,13 +101,15 @@ export const CardViewerBody = memo(
               {deck.name}, {shortenTournamentName(tournament.name)}
             </Heading>
           </Stack>
-          <Text>
-            <b>
-              {decksThatIncludeCard.length} (
-              {fixPercentage(percentageOfDecksThatPlayedCard)}%)
-            </b>{' '}
-            decks played at least one
-          </Text>
+          {percentageOfDecksThatPlayedCard < 100 && (
+            <Text>
+              <b>
+                {decksThatIncludeCard.length} (
+                {fixPercentage(percentageOfDecksThatPlayedCard)}%)
+              </b>{' '}
+              decks played at least one
+            </Text>
+          )}
           {cardCountsSorted.map(([count, numberOfCount], idx) =>
             numberOfCount === 1 ? (
               <Text key={idx}>
