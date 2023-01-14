@@ -31,7 +31,7 @@ export const fetchUserProfileFromEmail = async (email: string) => {
 export const fetchUserProfile = async (session: Session) => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
+    .select('id,name,email')
     .eq('email', session.user.email);
   const playerProfile = data?.[0];
 
@@ -39,7 +39,6 @@ export const fetchUserProfile = async (session: Session) => {
     return {
       id: playerProfile?.id as string,
       name: playerProfile?.name as string,
-      tournamentHistory: playerProfile?.tournament_history as string[],
       email: session.user.email,
       image: session.user.image,
     };

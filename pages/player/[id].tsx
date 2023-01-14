@@ -84,8 +84,7 @@ export async function getStaticProps(context: any) {
 export async function getStaticPaths() {
   const { data: playerProfiles } = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
-    .neq('email', null);
+    .select('id,name,email')
 
   const paths = playerProfiles?.map(
     player => ({
