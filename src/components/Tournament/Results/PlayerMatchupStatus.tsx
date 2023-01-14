@@ -76,10 +76,7 @@ export const PlayerMatchupStatus = ({
             {tournamentFinished ? `${getPlayerText} finished` : `You are`}
           </Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
-            <Record
-              standing={playerResults}
-              big
-            />
+            <Record standing={playerResults} big />
             <RecordIcon
               standing={playerResults}
               tournamentFinished={tournamentFinished}
@@ -89,12 +86,18 @@ export const PlayerMatchupStatus = ({
             </Heading>
           </Stack>
         </Stack>
-        <Stack direction={'row'} alignItems='baseline' spacing={1}>
+        <Stack
+          direction={'row'}
+          justifyContent='center'
+          alignItems='baseline'
+          spacing={1}
+          flexWrap='wrap'
+        >
           <Text>with</Text>
           <DeckInfoDisplay
             tournament={tournament}
             player={playerResults}
-            enableEdits={!playerResults.deck.name}
+            enableEdits={!playerResults.deck?.name}
             shouldShowAsText
           />
           {tournamentFinished && (
