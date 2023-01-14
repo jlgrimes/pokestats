@@ -13,7 +13,7 @@ export const DeckHeader = memo(({ deck }: { deck: Deck }) => {
     () =>
       deck.identifiable_cards
         ?.map(cardName => {
-          return deckStandings?.[0].deck_list?.pokemon.find(({ name, set }) => {
+          return deckStandings?.[0]?.deck_list?.pokemon.find(({ name, set }) => {
             // Hard code to get the right Inteleon
             if (
               name === 'Inteleon' &&
