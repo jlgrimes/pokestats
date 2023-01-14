@@ -10,7 +10,7 @@ import {
   CloseButton,
 } from '@chakra-ui/react';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Card, Tournament } from '../../../../types/tournament';
+import { Card, DeckList, Tournament } from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
 import { ListView } from './ListView';
@@ -26,7 +26,7 @@ const ListModalBody = ({
   list,
   handleCardClick,
 }: {
-  list: Record<string, Card[]>;
+  list: DeckList;
   handleCardClick: (card: Card) => void;
 }) => {
   const [listGridHeight, setListGridHeight] = useState(0);
