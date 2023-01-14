@@ -308,7 +308,7 @@ export const fetchLiveResults = async (
     deckArchetypes
   );
 
-  await updatePlayerProfilesWithTournament(parsedData, tournamentId);
+  // await updatePlayerProfilesWithTournament(parsedData, tournamentId);
 
   parsedData = await mapResultsArray(
     parsedData,
