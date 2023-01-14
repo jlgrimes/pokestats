@@ -49,33 +49,23 @@ export const fetchFinalResults = async (
 
   const res = await query;
   const finalResultsData: FinalResultsSchema[] | null = res.data;
-  console.log(finalResultsData)
 
   let userReportedDecks: Deck[] | undefined | null = null;
   if (filters?.playerName) {
     const playerDecks = await fetchDecksByPlayer(filters.playerName);
-    console.log(playerDecks);
-    userReportedDecks = playerDecks;
+    userReportedDecks = playerDecks?.map(({ deck_archetype }) =>
+      Array.isArray(deck_archetype)
+        ? deck_archetype[0]
+        : (deck_archetype as Deck)
+    );
   }
 
   return finalResultsData?.map(finalResult => {
-    let deckArchetype;
-
     const userReportedDeck = userReportedDecks?.find(
       deck => finalResult.name === deck.name
     );
-    if (userReportedDeck) {
-      deckArchetype = userReportedDeck;
-    }
 
-    const confirmedArchetype = deckArchetypes?.find(
-      ({ id }) => id === finalResult.deck_archetype
-    );
-    if (confirmedArchetype) {
-      deckArchetype = confirmedArchetype;
-    }
-
-    if (!deckArchetype)
+    if (!userReportedDeck || finalResult.deck_list)
       return {
         ...finalResult,
         tournamentId: finalResult.tournament_id,
@@ -85,7 +75,7 @@ export const fetchFinalResults = async (
       ...finalResult,
       tournamentId: finalResult.tournament_id,
       deck: {
-        ...deckArchetype,
+        ...userReportedDeck,
         ...(finalResult.deck_list ? { list: finalResult.deck_list } : {}),
       },
     };
@@ -93,10 +83,8 @@ export const fetchFinalResults = async (
 };
 
 export const useFinalResults = (filters?: FinalResultsFilters) => {
-  const { data: deckArchetypes } = useArchetypes();
-
   return useQuery({
     queryKey: ['final-results', ...Object.entries(filters ?? [])],
-    queryFn: () => fetchFinalResults(deckArchetypes, filters),
+    queryFn: () => fetchFinalResults(filters),
   });
 };

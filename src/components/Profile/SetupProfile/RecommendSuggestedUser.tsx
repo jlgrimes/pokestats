@@ -11,8 +11,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
+import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
-import { useSuggestedUserProfile } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 
 export const RecommendedSuggestedUser = ({
@@ -29,15 +29,13 @@ export const RecommendedSuggestedUser = ({
   const [elementFadedIn, setElementFadedIn] = useState(0);
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
-  const { data: suggestedUser } = useSuggestedUserProfile();
+  const { data: suggestedUserTournaments } = useFinalResults({
+    playerName: session.user.name,
+  });
   const { data: tournaments } = useTournaments();
 
-  const attendedTournaments = useMemo(
-    () =>
-      suggestedUser?.tournament_history.map(
-        id => tournaments?.find(tournament => tournament.id === id)?.name
-      ),
-    [suggestedUser?.tournament_history, tournaments]
+  const attendedTournaments = suggestedUserTournaments?.map(standing =>
+    tournaments?.find(({ id }) => id === standing.tournamentId)
   );
 
   const onIdentityConfirmClick = useCallback(async () => {
@@ -90,7 +88,7 @@ export const RecommendedSuggestedUser = ({
           <Heading size='md'>Did you attend the following tournaments?</Heading>
           <List size='xl' color='gray.700'>
             {attendedTournaments?.map((tournament, idx) => (
-              <ListItem key={idx}>{tournament}</ListItem>
+              <ListItem key={idx}>{tournament?.name}</ListItem>
             ))}
           </List>
           <Text>

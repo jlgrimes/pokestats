@@ -1,17 +1,18 @@
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import {
-  useSuggestedUserProfile,
-  useUserSentAccountRequest,
-} from '../../../hooks/user';
+import { useFinalResults } from '../../../hooks/finalResults';
+import { useUserSentAccountRequest } from '../../../hooks/user';
 import { AccountMadeSuccessfully } from './AccountMadeSuccessfully';
 import { RecommendedSuggestedUser } from './RecommendSuggestedUser';
 import { RequestToComplete } from './RequestToComplete';
 
 export const SetupProfileController = () => {
   const session = useSession();
-  const { data: suggestedUser, isLoading } = useSuggestedUserProfile();
+  const { data: fetchedTournamentsForUser, isLoading } = useFinalResults({
+    playerName: session.data?.user.name,
+  });
+  const suggestedUser = fetchedTournamentsForUser && fetchedTournamentsForUser.length > 0
   const { data: userSentRequest } = useUserSentAccountRequest(
     session.data?.user.email
   );

@@ -63,28 +63,6 @@ export const useSessionUserProfile = () => {
   });
 };
 
-export const fetchSuggestedUserProfile = async (name: string) => {
-  const { data } = await supabase
-    .from('Player Profiles')
-    .select('id,name,email,tournament_history')
-    .eq('name', name);
-  const playerProfile: StoredPlayerProfile | undefined = data?.[0];
-  return playerProfile;
-};
-
-/**
- * Suggested user profile based on name
- */
-export const useSuggestedUserProfile = () => {
-  const session = useSession();
-  const name = session.data?.user.name ?? '';
-
-  return useQuery({
-    queryKey: [`suggested-user-profile`, name],
-    queryFn: () => fetchSuggestedUserProfile(name),
-  });
-};
-
 export const useAccountRequests = () => {
   const fetchUserAccountRequests = async () => {
     const { data } = await supabase.from('Account Requests').select('*');
