@@ -44,17 +44,19 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         display={'flex'}
         alignItems={'center'}
         color={props.result.drop ? 'red.600' : 'auto'}
-        fontWeight={(props.result.day2) ? 'bold' : 'normal'}
+        fontWeight={props.result.day2 ? 'bold' : 'normal'}
       >
         <RecordIcon
           standing={props.result}
           tournamentFinished={props.tournament.tournamentStatus === 'finished'}
         />
-        <Player
-          name={props.result.name}
-          profile={props.result.profile}
-          toggleRowExpanded={props.toggleRowExpanded}
-        />
+        {props.result.profile && (
+          <Player
+            name={props.result.name}
+            profile={props.result.profile}
+            toggleRowExpanded={props.toggleRowExpanded}
+          />
+        )}
       </GridItem>
 
       <Stack

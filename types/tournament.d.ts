@@ -38,7 +38,7 @@ export interface PlayerResistances {
 }
 
 export interface PlayerRound {
-  name: number;
+  name: string;
   result: 'W' | 'L' | 'T';
   opponent?: Standing
 }

@@ -35,7 +35,7 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
     return {
       ...liveResults,
       data: liveResults.data.filter(
-        ({ deck }) => deck.id && filters.decksVisible.includes(deck.id)
+        ({ deck }) => deck && deck.id && filters.decksVisible.includes(deck.id)
       ),
     };
   }

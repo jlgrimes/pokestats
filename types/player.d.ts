@@ -17,7 +17,6 @@ export interface GooglePlayerProfile {
 export interface CombinedPlayerProfile {
   id: string;
   name: string;
-  tournamentHistory: string[],
   email: string;
   image: string;
 };
