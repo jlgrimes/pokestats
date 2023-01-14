@@ -11,6 +11,14 @@ export const fetchArchetypes = async () => {
   return res.data;
 };
 
+export const fetchArchetype = async (archetypeId: number) => {
+  const res = await supabase
+    .from('Deck Archetypes')
+    .select('id,name,defined_pokemon,supertype')
+    .eq('id', archetypeId);
+  return res.data?.[0];
+};
+
 export const useArchetypes = () => {
   return useQuery({ queryKey: ['deck-archetypes'], queryFn: fetchArchetypes });
 };

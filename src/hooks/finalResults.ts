@@ -31,6 +31,15 @@ export const fetchDecksByPlayer = async (name: string) => {
   return res.data;
 };
 
+export const fetchUniqueDecks = async () => {
+  const res = await supabase
+    .from('Final Results')
+    .select(`deck_archetype`)
+    .neq('deck_archetype', null);
+  const uniqueDecks = Array.from(new Set(res.data ?? []));
+  return uniqueDecks;
+};
+
 export const fetchVerifiedUserTournaments = async () => {
   const verifiedUsers = await fetchAllVerifiedUsers();
   const verifiedUserEmailMap: Record<string, string> =
@@ -70,10 +79,15 @@ export const fetchFinalResults = async (
       supertype
     )`);
 
-  if (filters?.tournamentId)
+  if (filters?.tournamentId) {
     query = query.eq('tournament_id', filters.tournamentId);
-  if (filters?.deckId) query = query.eq('deck_archetype', filters.deckId);
-  if (filters?.playerName) query = query.eq('name', filters.playerName);
+  }
+  if (filters?.deckId) {
+    query = query.eq('deck_archetype', filters.deckId);
+  }
+  if (filters?.playerName) {
+    query = query.eq('name', filters.playerName);
+  }
 
   const res = await query;
   const finalResultsData: FinalResultsSchema[] | null = res.data;
