@@ -1,4 +1,4 @@
-import { Deck, Standing } from '../../../types/tournament';
+import { Deck, Standing, Tournament, TournamentStatus } from '../../../types/tournament';
 import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
 import { fetchCurrentTournamentInfo } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
@@ -278,7 +278,7 @@ export interface LoggedInPlayerLoadOptions {
 }
 
 export interface LiveResults {
-  live: boolean;
+  tournamentStatus: TournamentStatus;
   numPlayers: number;
   roundNumber: number;
   data: Standing[];
@@ -296,6 +296,7 @@ export const fetchLiveResults = async (
   );
 
   const tournament = await fetchCurrentTournamentInfo(tournamentId, options);
+
   const roundNumber = tournament?.roundNumbers.masters as number;
   const deckArchetypes = await fetchDeckArchetypes();
 
@@ -335,7 +336,7 @@ export const fetchLiveResults = async (
   };
 
   return {
-    live: tournament?.tournamentStatus === 'running',
+    tournamentStatus: tournament?.tournamentStatus ?? 'not-started',
     numPlayers: parsedData.length,
     roundNumber,
     data: parsedData,

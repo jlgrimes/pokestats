@@ -41,6 +41,8 @@ export interface MatchupResult extends Standing {
   result?: string;
 }
 
+export type TournamentStatus = 'not-started' | 'running' | 'finished';
+
 export interface Tournament {
   id: string;
   name: string;
@@ -48,7 +50,7 @@ export interface Tournament {
     start: string;
     end: string;
   };
-  tournamentStatus: 'not-started' | 'running' | 'finished';
+  tournamentStatus: TournamentStatus;
   players: {
     juniors: string | null;
     seniors: string | null;

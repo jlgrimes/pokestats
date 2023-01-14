@@ -27,7 +27,7 @@ export default function StatsPage({ tournament }: { tournament: Tournament }) {
   return (
     <TournamentPageLayout tournament={tournament}>
       {/* <TournamentDetails tournament={tournament} /> */}
-      {!liveResults?.live && (
+      {liveResults?.tournamentStatus === 'finished' && (
         <ArchetypeGraphsContainer
           tournament={tournament}
           allDay2DecksSubmitted={allDay2DecksSubmitted}
