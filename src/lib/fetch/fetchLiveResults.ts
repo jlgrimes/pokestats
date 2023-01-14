@@ -27,7 +27,7 @@ const fetchDeckArchetypes = async () => {
   return res.data;
 };
 
-export const updatePlayerProfilesWithTournament = async (
+const updatePlayerProfilesWithTournament = async (
   parsedData: Record<string, any>[],
   tournamentId: string,
   playerProfiles?: any[] | null

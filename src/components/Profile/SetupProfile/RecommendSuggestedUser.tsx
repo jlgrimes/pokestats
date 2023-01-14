@@ -42,10 +42,10 @@ export const RecommendedSuggestedUser = ({
     setIdentityConfirmationLoading(true);
     await supabase
       .from('Player Profiles')
-      .update({
-        email: session.user.email,
-      })
-      .eq('name', session.user.name);
+      .insert({
+        name: session.user.name,
+        email: session.user.email
+      });
 
     queryClient.setQueryData(
       [`session-user-profile`, session.user.email],
