@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchTournaments } from '../../src/hooks/tournaments';
-import {
-  getPokedata,
-  updatePlayerProfilesWithTournament,
-} from '../../src/lib/fetch/fetchLiveResults';
 import { loadFinalResults } from '../../src/lib/supabase/finalResults';
 
 type Data = {
