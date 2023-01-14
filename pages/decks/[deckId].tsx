@@ -21,7 +21,7 @@ export default function DeckPage({ deck }: { deck: Deck }) {
     .filter(card => card);
 
   const heightWidthRatio = 1.396;
-  const width = 150;
+  const width = 125;
   const height = width * heightWidthRatio;
 
   return (
