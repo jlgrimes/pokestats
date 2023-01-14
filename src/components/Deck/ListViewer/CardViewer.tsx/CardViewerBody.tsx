@@ -1,4 +1,11 @@
-import { Button, Heading, Image, ModalBody, Stack } from '@chakra-ui/react';
+import {
+  Button,
+  Heading,
+  Image,
+  ModalBody,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import { memo } from 'react';
 import { Card, Deck, Tournament } from '../../../../../types/tournament';
 import { useDay2Decks } from '../../../../hooks/day2decks';
@@ -21,9 +28,14 @@ export const CardViewerBody = memo(
   }) => {
     const codeToSetMap = useCodeToSetMap();
     const { data: day2decks } = useDay2Decks(tournament.id);
-    
-    const decksOfSameArchetype = day2decks?.filter(({ id }) => id === deck.id);
-    const decksThatIncludeCard = decksOfSameArchetype?.filter(({ de }) => listContainsCard(list, card))
+
+    const decksOfSameArchetype =
+      day2decks?.filter(({ id }) => id === deck.id) ?? [];
+    const decksThatIncludeCard = decksOfSameArchetype?.filter(
+      ({ list }) => list && listContainsCard(list, card)
+    );
+    const percentageOfDecksThatPlayedCard =
+      (decksThatIncludeCard?.length / decksOfSameArchetype?.length) * 100;
 
     const heightWidthRatio = 1.396;
     const width = 200;
@@ -40,6 +52,11 @@ export const CardViewerBody = memo(
             alt={`${card.name} ${card.set}`}
           />
           <Heading size='lg'>{card.name}</Heading>
+          <Text>
+            {decksThatIncludeCard.length} {deck.name} decks (
+            {percentageOfDecksThatPlayedCard.toFixed(2)}%) played at least one{' '}
+            {card.name}
+          </Text>
         </Stack>
       </ModalBody>
     );
