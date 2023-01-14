@@ -10,7 +10,7 @@ import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
 export interface StandingsRowProps {
   result: Standing;
   tournament: Tournament;
-  canEditDecks: boolean;
+  canEditDecks?: boolean;
   rowExpanded?: boolean;
   toggleRowExpanded?: () => void;
   opponentRoundNumber?: number;

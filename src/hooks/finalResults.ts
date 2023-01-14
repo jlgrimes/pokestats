@@ -70,14 +70,18 @@ export const fetchVerifiedUserTournaments = async () => {
 export const fetchFinalResults = async (
   filters?: FinalResultsFilters
 ): Promise<Standing[] | null | undefined> => {
-  let query = supabase.from('Final Results')
-    .select(`name,placing,record,resistances,drop,rounds,tournament_id,deck_list,deck_archetype (
+  let query = supabase
+    .from('Final Results')
+    .select(
+      `name,placing,record,resistances,drop,rounds,tournament_id,deck_list,deck_archetype (
     id,
       name,
       defined_pokemon,
       identifiable_cards,
       supertype
-    )`);
+    )`
+    )
+    .order('tournament_id', { ascending: false });
 
   if (filters?.tournamentId) {
     query = query.eq('tournament_id', filters.tournamentId);

@@ -1,4 +1,5 @@
 import { Heading, HStack, Image, Stack } from '@chakra-ui/react';
+import { DeckFinishes } from '../../src/components/Deck/Analytics/DeckFinishes';
 import { DeckHeader } from '../../src/components/Deck/Analytics/DeckHeader';
 import { DeckVariants } from '../../src/components/Deck/Analytics/DeckVariants';
 import { getCardImageUrl } from '../../src/components/Deck/ListViewer/helpers';
@@ -15,6 +16,7 @@ export default function DeckPage({ deck }: { deck: Deck }) {
     <Stack padding={8}>
       <DeckHeader deck={deck} />
       <DeckVariants deck={deck} />
+      <DeckFinishes deck={deck} />
     </Stack>
   );
 }
