@@ -8,7 +8,10 @@ export const loadFinalResults = async (tournamentId: string) => {
     .eq('tournament_id', tournamentId);
 
   // We've already inserted final results for this tournament.
-  if (finalResultsData && finalResultsData.length > 0) return;
+  if (finalResultsData && finalResultsData.length > 0) {
+    console.log('We already inserted the results. Cancelling...');
+    return { error: null };
+  }
 
   const { tournamentStatus, data: playerData } = await fetchLiveResults(
     tournamentId,
@@ -19,21 +22,22 @@ export const loadFinalResults = async (tournamentId: string) => {
   );
 
   // If the tournament is still ongoing
-  if (tournamentStatus !== 'finished') return;
+  if (tournamentStatus !== 'finished') {
+    console.log('Tournament is not done. Cancelling...');
+    return { error: null };
+  }
 
   // Fire away!
-  const rowsToBeInserted = playerData.map((player) => ({
+  const rowsToBeInserted = playerData.map(player => ({
     tournament_id: tournamentId,
     name: player.name,
     placing: player.placing,
     record: player.record,
     resistances: player.resistances,
     deck_list: player.deck.list,
-    rounds: player.rounds
-  }))
+    rounds: player.rounds,
+  }));
 
-  const result = await supabase
-    .from('Final Results')
-    .insert(rowsToBeInserted);
+  const result = await supabase.from('Final Results').insert(rowsToBeInserted);
   return result;
 };

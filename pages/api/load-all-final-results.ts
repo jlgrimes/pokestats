@@ -15,15 +15,12 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    //const tournaments = await fetchTournaments({ prefetch: true });
-    // for await (const tournament of tournaments) {
-    //   const data = await getPokedata(tournament.id, true);
-    //   const { error } = await updatePlayerProfilesWithTournament(
-    //     data,
-    //     tournament.id
-    //   );
-    //   if (error) return res.status(500);
-    // }
+    const tournaments = await fetchTournaments({ prefetch: true });
+    for await (const tournament of tournaments) {
+      console.log('Loading results for', tournament.name, '...');
+      const { error } = await loadFinalResults(tournament.id);
+      if (error) return res.status(500);
+    }
     const results = await loadFinalResults('0000036');
     console.log(results)
     return res.status(200);
