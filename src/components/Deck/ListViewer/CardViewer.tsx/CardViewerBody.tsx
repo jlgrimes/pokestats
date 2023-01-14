@@ -61,6 +61,12 @@ export const CardViewerBody = memo(
       {}
     );
 
+    const cardCountsSorted = Object.entries(cardCounts).sort((a, b) => {
+      if (a[1] > b[1]) return -1;
+      if (b[1] > a[1]) return 1;
+      return 0;
+    })
+
     const heightWidthRatio = 1.396;
     const width = 200;
     const height = width * heightWidthRatio;
@@ -86,13 +92,21 @@ export const CardViewerBody = memo(
             {percentageOfDecksThatPlayedCard.toFixed(2)}%) decks played at least
             one {card.name}
           </Text>
-          {Object.entries(cardCounts).map(([count, numberOfCount], idx) => (
-            <Text key={idx}>
-              {numberOfCount} (
-              {((numberOfCount / decksThatIncludeCard.length) * 100).toFixed(2)}
-              %) decks played {count} copies of {card.name}
-            </Text>
-          ))}
+          {cardCountsSorted.map(([count, numberOfCount], idx) =>
+            numberOfCount === 1 ? (
+              <Text key={idx}>
+                1 deck played {count} copies of {card.name}
+              </Text>
+            ) : (
+              <Text key={idx}>
+                {numberOfCount} (
+                {((numberOfCount / decksThatIncludeCard.length) * 100).toFixed(
+                  2
+                )}
+                %) decks played {count} copies of {card.name}
+              </Text>
+            )
+          )}
         </Stack>
       </ModalBody>
     );
