@@ -1,4 +1,5 @@
 import { Card, DeckList } from '../../../../../types/tournament';
+import { getCompressedList } from '../helpers';
 
 export const listContainsCard = (list: DeckList, card: Card) => {
   const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
@@ -9,19 +10,9 @@ export const listContainsCard = (list: DeckList, card: Card) => {
 };
 
 export const getCardCount = (list: DeckList, card: Card) => {
-  const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
+  const compressedList: Card[] = getCompressedList(list);
 
-  for (const supertype of listKeys) {
-    const foundCard = list[supertype].find(
-      listCard => listCard.name === card.name
-    );
-
-    if (foundCard) {
-      return foundCard.count;
-    }
-  }
-
-  return 0;
+  return compressedList.find(({ name }) => name === card.name)?.count ?? 0;
 };
 
 export const fixPercentage = (percentNumber: number) => {
