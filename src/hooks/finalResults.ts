@@ -19,13 +19,13 @@ export const fetchDecksByPlayer = async (name: string) => {
   const res = await supabase
     .from('Player Decks')
     .select(
-      `deck_archetype (
+      `tournament_id,deck_archetype (
       id,
       name,
       defined_pokemon,
       identifiable_cards,
       supertype
-    ),tournament_id`
+    )`
     )
     .eq('player_name', name);
   return res.data;
@@ -81,16 +81,19 @@ export const fetchFinalResults = async (
   let userReportedDecks: Deck[] | undefined | null = null;
   if (filters?.playerName) {
     const playerDecks = await fetchDecksByPlayer(filters.playerName);
-    userReportedDecks = playerDecks?.map(({ deck_archetype }) =>
-      Array.isArray(deck_archetype)
-        ? deck_archetype[0]
-        : (deck_archetype as Deck)
+    userReportedDecks = playerDecks?.map(
+      ({ deck_archetype, tournament_id }) => ({
+        ...(Array.isArray(deck_archetype)
+          ? deck_archetype[0]
+          : (deck_archetype as Deck)),
+        tournament_id,
+      })
     );
   }
 
   return finalResultsData?.map(finalResult => {
     const userReportedDeck = userReportedDecks?.find(
-      deck => finalResult.name === deck.name
+      deck => finalResult.tournament_id === deck.tournament_id
     );
 
     if (!userReportedDeck || finalResult.deck_list)

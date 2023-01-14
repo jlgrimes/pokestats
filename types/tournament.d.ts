@@ -16,6 +16,7 @@ export interface Deck {
   count?: number;
   list?: DeckList;
   verified?: boolean;
+  tournament_id?: string;
 }
 
 export interface DeckList {
