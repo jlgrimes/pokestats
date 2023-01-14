@@ -107,7 +107,7 @@ export const CardViewerBody = memo(
                 {decksThatIncludeCard.length} (
                 {fixPercentage(percentageOfDecksThatPlayedCard)}%)
               </b>{' '}
-              decks played at least one
+              decks played at least 1 copy
             </Text>
           )}
           {cardCountsSorted.map(([count, numberOfCount], idx) =>
@@ -124,6 +124,7 @@ export const CardViewerBody = memo(
                   )}
                   %)
                 </b>{' '}
+                {percentageOfDecksThatPlayedCard < 100 ? 'of those ' : ''}
                 decks played {count} {getCopyText(parseInt(count))}
               </Text>
             )
