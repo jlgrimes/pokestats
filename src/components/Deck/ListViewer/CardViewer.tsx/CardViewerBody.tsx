@@ -6,7 +6,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { Card, Deck, Tournament } from '../../../../../types/tournament';
 import { useDay2Decks } from '../../../../hooks/day2decks';
 import { useCodeToSetMap } from '../../../../hooks/deckList';
@@ -65,7 +65,12 @@ export const CardViewerBody = memo(
       if (a[1] > b[1]) return -1;
       if (b[1] > a[1]) return 1;
       return 0;
-    })
+    });
+
+    const getCopyText = useCallback(
+      (count: number) => (count === 1 ? 'copy' : 'copies'),
+      []
+    );
 
     const heightWidthRatio = 1.396;
     const width = 200;
@@ -95,7 +100,7 @@ export const CardViewerBody = memo(
           {cardCountsSorted.map(([count, numberOfCount], idx) =>
             numberOfCount === 1 ? (
               <Text key={idx}>
-                1 deck played {count} copies of {card.name}
+                1 deck played {count} {getCopyText(numberOfCount)} of {card.name}
               </Text>
             ) : (
               <Text key={idx}>
@@ -103,7 +108,7 @@ export const CardViewerBody = memo(
                 {((numberOfCount / decksThatIncludeCard.length) * 100).toFixed(
                   2
                 )}
-                %) decks played {count} copies of {card.name}
+                %) decks played {count} {getCopyText(numberOfCount)} of {card.name}
               </Text>
             )
           )}
