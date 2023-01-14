@@ -7,13 +7,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { memo, useCallback } from 'react';
+import { FaChevronLeft } from 'react-icons/fa';
 import { Card, Deck, Tournament } from '../../../../../types/tournament';
 import { useDay2Decks } from '../../../../hooks/day2decks';
 import { useCodeToSetMap } from '../../../../hooks/deckList';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { shortenTournamentName } from '../../../../lib/tournament';
 import { getCardImageUrl } from '../helpers';
-import { getCardCount, listContainsCard } from './helpers';
+import { fixPercentage, getCardCount, listContainsCard } from './helpers';
 
 export const CardViewerBody = memo(
   ({
@@ -79,7 +80,15 @@ export const CardViewerBody = memo(
     return (
       <ModalBody>
         <Stack>
-          <Button onClick={clearSelectedCard}>go back</Button>
+          <div>
+            <Button
+              variant='ghost'
+              leftIcon={<FaChevronLeft />}
+              onClick={clearSelectedCard}
+            >
+              Back
+            </Button>
+          </div>
           <Image
             width={`${width}px`}
             height={`${height}px`}
@@ -94,21 +103,21 @@ export const CardViewerBody = memo(
           </Stack>
           <Text>
             {decksThatIncludeCard.length} (
-            {percentageOfDecksThatPlayedCard.toFixed(2)}%) decks played at least
-            one {card.name}
+            {fixPercentage(percentageOfDecksThatPlayedCard)}%) decks played at
+            least one {card.name}
           </Text>
           {cardCountsSorted.map(([count, numberOfCount], idx) =>
             numberOfCount === 1 ? (
               <Text key={idx}>
-                1 deck played {count} {getCopyText(numberOfCount)} of {card.name}
+                1 deck played {count} {getCopyText(numberOfCount)} of{' '}
+                {card.name}
               </Text>
             ) : (
               <Text key={idx}>
                 {numberOfCount} (
-                {((numberOfCount / decksThatIncludeCard.length) * 100).toFixed(
-                  2
-                )}
-                %) decks played {count} {getCopyText(numberOfCount)} of {card.name}
+                {fixPercentage((numberOfCount / decksThatIncludeCard.length) * 100)}
+                %) decks played {count} {getCopyText(numberOfCount)} of{' '}
+                {card.name}
               </Text>
             )
           )}
