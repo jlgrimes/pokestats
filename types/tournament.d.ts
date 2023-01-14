@@ -54,6 +54,7 @@ export interface Standing {
   outOfDay2?: boolean;
   deck?: Deck;
   drop?: number | null;
+  tournamentId?: string;
 }
 
 export interface MatchupResult extends Standing {

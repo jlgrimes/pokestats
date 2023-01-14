@@ -38,7 +38,7 @@ export const StandingsList = memo(
               key={idx}
               result={result}
               tournament={tournament}
-              canEditDecks={userIsAdmin && !result.deck.list}
+              canEditDecks={userIsAdmin && !result.deck?.list}
             />
           </Fragment>
         ))}

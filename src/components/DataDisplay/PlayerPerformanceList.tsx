@@ -54,71 +54,63 @@ export const PlayerPerformanceList = ({
           </Tr>
         </Thead>
         <Tbody>
-          {tournamentPerformance?.map(
-            (performance: FinalResultsSchema, idx) => {
-              const tournament = tournaments?.find(
-                ({ id }) => id === performance.tournament_id
-              );
-              const standing: Standing = {
-                name: performance.name,
-                placing: performance.placing,
-                record: performance.record,
-                resistances: performance.resistances,
-                rounds: performance.rounds,
-                deck: performance.
-              }
+          {tournamentPerformance?.map((performance: Standing, idx) => {
+            if (!performance.tournamentId) return null;
 
-              return (
-                tournament && (
-                  <Tr height='41px' key={idx}>
-                    <Td padding={2}>
-                      <Link
-                        as={NextLink}
-                        color='blue.600'
-                        href={`/tournaments/${performance.tournament_id}/standings`}
+            const tournament = tournaments?.find(
+              ({ id }) => id === performance.tournamentId
+            );
+
+            return (
+              tournament && (
+                <Tr height='41px' key={idx}>
+                  <Td padding={2}>
+                    <Link
+                      as={NextLink}
+                      color='blue.600'
+                      href={`/tournaments/${performance.tournamentId}/standings`}
+                    >
+                      <Text
+                        fontSize='sm'
+                        whiteSpace={'pre-wrap'}
+                        overflowWrap={'break-word'}
                       >
-                        <Text
-                          fontSize='sm'
-                          whiteSpace={'pre-wrap'}
-                          overflowWrap={'break-word'}
-                        >
-                          {tournament?.name}
-                        </Text>
-                      </Link>
-                    </Td>
-                    <Td padding={0}>{performance.placing}</Td>
-                    <Td padding={0} paddingLeft={2}>
-                      <Stack direction={'row'} spacing={1} alignItems='center'>
-                        <Record
-                          standing={standing}
-                          href={
-                            userMatchesLoggedInUser
-                              ? `/tournaments/${
-                                  performance.tournament_id
-                                }/${parseUsername(user.email)}`
-                              : undefined
-                          }
-                        />
-                        <RecordIcon
-                          standing={standing}
-                          tournamentFinished={
-                            tournament?.tournamentStatus === 'finished'
-                          }
-                        />
-                      </Stack>
-                    </Td>
-                    <Td padding={0} paddingLeft={2} width='80px'>
-                      <DeckInfoDisplay
-                        tournament={tournament}
-                        player={standing}
-                        enableEdits={userMatchesLoggedInUser || userIsAdmin}
+                        {tournament?.name}
+                      </Text>
+                    </Link>
+                  </Td>
+                  <Td padding={0}>{performance.placing}</Td>
+                  <Td padding={0} paddingLeft={2}>
+                    <Stack direction={'row'} spacing={1} alignItems='center'>
+                      <Record
+                        standing={performance}
+                        href={
+                          userMatchesLoggedInUser
+                            ? `/tournaments/${
+                                performance.tournamentId
+                              }/${parseUsername(user.email)}`
+                            : undefined
+                        }
                       />
-                    </Td>
-                  </Tr>
-                )
-              );
-            }
-          )}
+                      <RecordIcon
+                        standing={performance}
+                        tournamentFinished={
+                          tournament?.tournamentStatus === 'finished'
+                        }
+                      />
+                    </Stack>
+                  </Td>
+                  <Td padding={0} paddingLeft={2} width='80px'>
+                    <DeckInfoDisplay
+                      tournament={tournament}
+                      player={performance}
+                      enableEdits={userMatchesLoggedInUser || userIsAdmin}
+                    />
+                  </Td>
+                </Tr>
+              )
+            );
+          })}
         </Tbody>
       </Table>
     </TableContainer>

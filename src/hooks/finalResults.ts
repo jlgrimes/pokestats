@@ -29,10 +29,15 @@ export const fetchFinalResults = async (
       ({ id }) => id === finalResult.deck_archetype
     );
 
-    if (!deckArchetype) return finalResult;
+    if (!deckArchetype)
+      return {
+        ...finalResult,
+        tournamentId: finalResult.tournament_id,
+      };
 
     return {
       ...finalResult,
+      tournamentId: finalResult.tournament_id,
       deck: {
         ...deckArchetype,
         ...(finalResult.deck_list ? { list: finalResult.deck_list } : {}),

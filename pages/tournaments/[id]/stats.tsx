@@ -17,9 +17,9 @@ export default function StatsPage({ tournament }: { tournament: Tournament }) {
   const allDay2DecksSubmitted = useMemo(() => {
     return (
       (liveResults?.data.every(
-        player => !player.day2 || (player.day2 && player.deck.name)
+        player => !player.day2 || (player.day2 && player.deck?.name)
       ) ||
-        liveResults?.data.some(player => player.deck.list)) ??
+        liveResults?.data.some(player => player.deck?.list)) ??
       false
     );
   }, [liveResults]);
