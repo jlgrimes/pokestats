@@ -89,14 +89,14 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
       );
     } else {
       if (props.selectedArchetype) {
-        const displayedPokemonNames =
-          mostPopularDecks?.find(deck => deck.id === props.selectedArchetype)
-            ?.defined_pokemon ?? [];
+        const deck = mostPopularDecks?.find(deck => deck.id === props.selectedArchetype);
+        const displayedPokemonNames = deck?.defined_pokemon ?? [];
 
         return (
           <SpriteDisplay
             verified={props.deckIsVerified}
             pokemonNames={displayedPokemonNames}
+            deckId={deck?.id}
           />
         );
       } else {
