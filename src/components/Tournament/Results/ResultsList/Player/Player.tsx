@@ -10,7 +10,7 @@ export const Player = memo(
     toggleRowExpanded,
   }: {
     name: string;
-    profile: StoredPlayerProfile;
+    profile?: StoredPlayerProfile;
     toggleRowExpanded?: () => void;
   }) => {
     return (

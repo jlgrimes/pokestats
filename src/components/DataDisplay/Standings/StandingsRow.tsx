@@ -50,13 +50,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           standing={props.result}
           tournamentFinished={props.tournament.tournamentStatus === 'finished'}
         />
-        {props.result.profile && (
-          <Player
-            name={props.result.name}
-            profile={props.result.profile}
-            toggleRowExpanded={props.toggleRowExpanded}
-          />
-        )}
+        <Player
+          name={props.result.name}
+          toggleRowExpanded={props.toggleRowExpanded}
+        />
       </GridItem>
 
       <Stack
