@@ -74,16 +74,16 @@ export const StandingsFilterMenu = memo(
             <MenuDivider />
             <Grid
               key={`supertype-collection-grid`}
-              gridTemplateColumns={`1fr repeat(2, 1fr)`}
+              gridTemplateColumns={`1fr repeat(3, 1fr)`}
             >
               {supertypeCollection?.map((supertype, idx) =>
                 supertype.decks.length > 1 ? (
                   <Grid
-                    gridColumn={'1/4'}
+                    gridColumn={'1/5'}
                     key={`supertype-collection-${idx}`}
                     gridTemplateColumns={`repeat(4, 1fr)`}
                   >
-                    <GridItem gridRow={'1/10'}>
+                    <GridItem gridRow={'1/3'}>
                       <MenuItemOption
                         height='100%'
                         display='flex'
@@ -99,30 +99,16 @@ export const StandingsFilterMenu = memo(
                           })
                         }
                       >
-                        <Box
-                          opacity={
-                            getFilter(
-                              'decksVisible',
-                              supertype.decks.map(({ id }) => id)
-                            )
-                              ? '100%'
-                              : '40%'
-                          }
-                        >
-                          <SpriteDisplay
-                            squishWidth
-                            big
-                            pokemonNames={[supertype.definedPokemon]}
-                          />
-                        </Box>
+                        <SpriteDisplay
+                          squishWidth
+                          big
+                          pokemonNames={[supertype.definedPokemon]}
+                        />
                       </MenuItemOption>
                     </GridItem>
                     {supertype.decks.map(({ id, name, defined_pokemon }) => (
                       <MenuItemOption
                         padding={0}
-                        opacity={
-                          getFilter('decksVisible', [id]) ? '100%' : '40%'
-                        }
                         isChecked={getFilter('decksVisible', [id])}
                         onClick={() =>
                           toggleFilter('decksVisible', { individualDeck: id })
@@ -139,12 +125,7 @@ export const StandingsFilterMenu = memo(
                   </Grid>
                 ) : (
                   <MenuItemOption
-                    padding={0}
-                    opacity={
-                      getFilter('decksVisible', [supertype.decks[0].id])
-                        ? '100%'
-                        : '40%'
-                    }
+                    padding={'0.25rem 0'}
                     isChecked={getFilter('decksVisible', [
                       supertype.decks[0].id,
                     ])}
