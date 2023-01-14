@@ -12,8 +12,6 @@ export const DeckFinishes = memo(({ deck }: { deck: Deck }) => {
   return (
     <Grid
       gridTemplateColumns='2.3rem repeat(3, auto)'
-      paddingLeft={2}
-      paddingRight={2}
       alignItems='center'
     >
       {tournaments &&
