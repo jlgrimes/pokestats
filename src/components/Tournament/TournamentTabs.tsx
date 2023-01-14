@@ -2,7 +2,7 @@ import { Tabs, TabList, Tab, Badge, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 import { Tournament } from '../../../types/tournament';
-import { useSessionUserProfile } from '../../hooks/user';
+import { useSessionUserProfile, useUserIsInTournament } from '../../hooks/user';
 import { parseUsername } from '../../lib/strings';
 import { getStandingsBadgeProps } from './helpers';
 
@@ -10,9 +10,7 @@ export const TournamentTabs = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const router = useRouter();
     const { data: userProfile } = useSessionUserProfile();
-    const userIsInTournament = userProfile?.tournamentHistory?.includes(
-      tournament.id as string
-    );
+    const userIsInTournament = useUserIsInTournament(tournament.id, userProfile?.name)
 
     const tabs = [
       {

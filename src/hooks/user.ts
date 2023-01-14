@@ -3,6 +3,7 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { StoredPlayerProfile } from '../../types/player';
 import supabase from '../lib/supabase/client';
+import { useLiveTournamentResults } from './tournamentResults';
 
 export const useUserMatchesLoggedInUser = (name: string) => {
   const session = useSession();
@@ -55,10 +56,21 @@ export const useSessionUserProfile = () => {
       if (session.data) {
         return fetchUserProfile(session.data);
       }
-      
+
       return null;
     },
   });
+};
+
+export const useUserIsInTournament = (
+  tournamentId: string,
+  playerName?: string
+) => {
+  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
+    load: { allRoundData: true },
+  });
+
+  return liveResults?.data.some(({ name }) => name === playerName);
 };
 
 export const useAccountRequests = () => {
@@ -108,9 +120,7 @@ export const useNotSetupProfiles = () => {
 };
 
 export const fetchAllVerifiedUsers = async () => {
-  const res = await supabase
-    .from('Player Profiles')
-    .select('id,name,email')
+  const res = await supabase.from('Player Profiles').select('id,name,email');
   return res.data;
 };
 
