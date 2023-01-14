@@ -21,7 +21,6 @@ import { parseUsername } from '../../lib/strings';
 import { RecordIcon } from '../Tournament/Results/ResultsList/RecordIcon';
 import { useFinalResults } from '../../hooks/finalResults';
 import { useTournaments } from '../../hooks/tournaments';
-import { FinalResultsSchema } from '../../../types/final-results';
 import { Standing } from '../../../types/tournament';
 
 export const PlayerPerformanceList = ({
