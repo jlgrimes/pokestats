@@ -29,7 +29,9 @@ export const CardViewerBody = memo(
     deck: Deck;
   }) => {
     const codeToSetMap = useCodeToSetMap();
-    const { data: day2decks } = useDay2Decks(tournament.id);
+    const { data: day2decks } = useDay2Decks(tournament.id, {
+      includeStanding: true,
+    });
 
     const decksOfSameArchetype =
       day2decks?.filter(({ id }) => id === deck.id) ?? [];

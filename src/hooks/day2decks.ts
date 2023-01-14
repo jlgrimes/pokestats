@@ -1,7 +1,10 @@
 import { Deck } from '../../types/tournament';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const useDay2Decks = (tournamentId: string) => {
+export const useDay2Decks = (
+  tournamentId: string,
+  options?: { includeStanding: boolean }
+) => {
   const { data: liveResults, isLoading } = useLiveTournamentResults(
     tournamentId,
     { load: { allRoundData: true } }
@@ -12,7 +15,13 @@ export const useDay2Decks = (tournamentId: string) => {
       if (!curr.day2) return acc;
 
       if (curr.deck.name) {
-        return [...acc, curr.deck];
+        return [
+          ...acc,
+          {
+            ...curr.deck,
+            ...(options?.includeStanding ? { standing: curr } : {}),
+          },
+        ];
       }
       return [
         ...acc,

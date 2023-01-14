@@ -4,9 +4,7 @@ export const listContainsCard = (list: DeckList, card: Card) => {
   const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
 
   return listKeys.some(supertype =>
-    list[supertype].some(
-      listCard => listCard.name === card.name && listCard.set === card.set
-    )
+    list[supertype].some(listCard => listCard.name === card.name)
   );
 };
 
@@ -15,7 +13,7 @@ export const getCardCount = (list: DeckList, card: Card) => {
 
   for (const supertype of listKeys) {
     const foundCard = list[supertype].find(
-      listCard => listCard.name === card.name && listCard.set === card.set
+      listCard => listCard.name === card.name
     );
 
     if (foundCard) {

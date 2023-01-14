@@ -1,58 +1,25 @@
 import { Flex, GridItem, SimpleGrid, Image } from '@chakra-ui/react';
-import { Card } from '../../../../types/tournament';
+import { useMemo } from 'react';
+import { Card, DeckList } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
-import { getCardImageUrl } from './helpers';
+import { getCardImageUrl, getCompressedList } from './helpers';
 
 export const ListView = ({
   deckList,
   containerHeight,
   handleCardClick,
 }: {
-  deckList: Record<string, any>;
+  deckList: DeckList;
   containerHeight: number;
   handleCardClick: (card: Card) => void;
 }) => {
   const codeToSetMap = useCodeToSetMap();
+  const flatDeckList = useMemo(() => getCompressedList(deckList), [deckList]);
 
   const heightWidthRatio = 1.396;
   const width = 92;
   const height = width * heightWidthRatio;
 
-  const flattenOutEnergies = (card: Card) => {
-    const numPiles = Math.ceil(card.count / 4);
-    const lastPileCount = card.count % 4 === 0 ? 4 : card.count % 4;
-
-    return [...Array(numPiles)].map((_, idx) => ({
-      ...card,
-      count: idx === numPiles - 1 ? lastPileCount : 4,
-    }));
-  };
-
-  const flatDeckList = ['pokemon', 'trainer', 'energy'].reduce(
-    (acc: Card[], superclass) => [
-      ...acc,
-      ...deckList[superclass].reduce((acc: Card[], card: Card) => {
-        if (card.count > 4) {
-          return [...acc, ...flattenOutEnergies(card)];
-        }
-
-        const sameCardIdx = acc.findIndex(
-          pushedCard =>
-            pushedCard.name === card.name && pushedCard.set === card.set
-        );
-        if (sameCardIdx >= 0) {
-          acc[sameCardIdx] = {
-            ...acc[sameCardIdx],
-            count: acc[sameCardIdx].count + card.count,
-          };
-          return acc;
-        }
-
-        return [...acc, card];
-      }, []),
-    ],
-    []
-  );
   const numberOfColumns = 4;
   const numberOfRows = Math.ceil(flatDeckList.length / numberOfColumns);
   const rowStackMargin =
