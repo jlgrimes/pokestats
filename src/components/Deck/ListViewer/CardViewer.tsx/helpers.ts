@@ -9,3 +9,19 @@ export const listContainsCard = (list: DeckList, card: Card) => {
     )
   );
 };
+
+export const getCardCount = (list: DeckList, card: Card) => {
+  const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
+
+  for (const supertype of listKeys) {
+    const foundCard = list[supertype].find(
+      listCard => listCard.name === card.name && listCard.set === card.set
+    );
+
+    if (foundCard) {
+      return foundCard.count;
+    }
+  }
+
+  return 0;
+};

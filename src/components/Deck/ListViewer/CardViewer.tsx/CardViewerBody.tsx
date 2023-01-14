@@ -11,8 +11,9 @@ import { Card, Deck, Tournament } from '../../../../../types/tournament';
 import { useDay2Decks } from '../../../../hooks/day2decks';
 import { useCodeToSetMap } from '../../../../hooks/deckList';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
+import { shortenTournamentName } from '../../../../lib/tournament';
 import { getCardImageUrl } from '../helpers';
-import { listContainsCard } from './helpers';
+import { getCardCount, listContainsCard } from './helpers';
 
 export const CardViewerBody = memo(
   ({
@@ -37,6 +38,29 @@ export const CardViewerBody = memo(
     const percentageOfDecksThatPlayedCard =
       (decksThatIncludeCard?.length / decksOfSameArchetype?.length) * 100;
 
+    const cardCounts = decksThatIncludeCard.reduce(
+      (acc: Record<number, number>, deck) => {
+        if (deck.list) {
+          const cardCount = getCardCount(deck.list, card);
+
+          if (acc[cardCount]) {
+            return {
+              ...acc,
+              [cardCount]: acc[cardCount] + 1,
+            };
+          }
+
+          return {
+            ...acc,
+            [cardCount]: 1,
+          };
+        }
+
+        return acc;
+      },
+      {}
+    );
+
     const heightWidthRatio = 1.396;
     const width = 200;
     const height = width * heightWidthRatio;
@@ -51,12 +75,24 @@ export const CardViewerBody = memo(
             src={getCardImageUrl(card, codeToSetMap, { highRes: true })}
             alt={`${card.name} ${card.set}`}
           />
-          <Heading size='lg'>{card.name}</Heading>
+          <Stack spacing={0}>
+            <Heading size='lg'>{card.name}</Heading>
+            <Heading size='sm' color='gray.500'>
+              {deck.name}, {shortenTournamentName(tournament.name)}
+            </Heading>
+          </Stack>
           <Text>
-            {decksThatIncludeCard.length} {deck.name} decks (
-            {percentageOfDecksThatPlayedCard.toFixed(2)}%) played at least one{' '}
-            {card.name}
+            {decksThatIncludeCard.length} (
+            {percentageOfDecksThatPlayedCard.toFixed(2)}%) decks played at least
+            one {card.name}
           </Text>
+          {Object.entries(cardCounts).map(([count, numberOfCount], idx) => (
+            <Text key={idx}>
+              {numberOfCount} (
+              {((numberOfCount / decksThatIncludeCard.length) * 100).toFixed(2)}
+              %) decks played {count} copies of {card.name}
+            </Text>
+          ))}
         </Stack>
       </ModalBody>
     );
