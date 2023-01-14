@@ -19,7 +19,7 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
   return (
     <HStack flexWrap={'wrap'} rowGap={1}>
       <Heading size='sm' color='gray.600'>
-        Variants:
+        {deck.supertype} Variants:
       </Heading>
       {variants
         ?.filter(({ id }) => id !== deck.id)
@@ -36,7 +36,6 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
                         : [variant.defined_pokemon[0]]
                     }
                   />
-                  <Text as='b' fontSize={'sm'}>{variant.name}</Text>
                 </HStack>
               </LinkOverlay>
             </LinkBox>
