@@ -34,8 +34,8 @@ export const loadFinalResults = async (tournamentId: string) => {
     placing: player.placing,
     record: player.record,
     resistances: player.resistances,
-    deck_list: player.deck.list,
-    deck_archetype: player.deck.list ?  player.deck.id : null,
+    deck_list: player.deck?.list,
+    deck_archetype: player.deck?.list ?  player.deck.id : null,
     rounds: player.rounds,
   }));
 

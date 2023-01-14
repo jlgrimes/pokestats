@@ -17,8 +17,6 @@ export default async function handler(
       const { error } = await loadFinalResults(tournament.id);
       if (error) return res.status(500);
     }
-    const results = await loadFinalResults('0000036');
-    console.log(results)
     return res.status(200);
   } catch (err) {
     console.log(err)

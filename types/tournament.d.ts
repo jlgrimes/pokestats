@@ -24,18 +24,36 @@ export interface DeckList {
   energy: Card[];
 }
 
+export interface PlayerRecord {
+  wins: number;
+  ties: number;
+  losses: number;
+}
+
+export interface PlayerResistances {
+  self: number;
+  opp: number;
+  oppopp: number;
+}
+
+export interface PlayerRound {
+  name: number;
+  result: 'W' | 'L' | 'T';
+  opponent?: Standing
+}
+
 export interface Standing {
   name: string;
-  profile: StoredPlayerProfile;
+  profile?: StoredPlayerProfile;
   placing: number;
-  record: { wins: number; ties: number; losses: number };
-  resistances?: { self: number, opp: number, oppopp: number }
+  record: PlayerRecord;
+  resistances?: PlayerResistances;
   currentMatchResult?: 'W' | 'L' | 'T';
-  rounds?: { name: string; result: string; opponent: Standing }[];
-  day2: boolean;
-  outOfDay2: boolean;
-  deck: Deck;
-  drop?: number;
+  rounds?: PlayerRound[];
+  day2?: boolean;
+  outOfDay2?: boolean;
+  deck?: Deck;
+  drop?: number | null;
 }
 
 export interface MatchupResult extends Standing {
