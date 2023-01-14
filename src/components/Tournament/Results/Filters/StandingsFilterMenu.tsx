@@ -11,6 +11,7 @@ import {
   MenuList,
   MenuOptionGroup,
   StackItem,
+  Tag,
   Text,
 } from '@chakra-ui/react';
 import { memo } from 'react';
@@ -62,89 +63,73 @@ export const StandingsFilterMenu = memo(
           >
             Filter
           </MenuButton>
-          <MenuList minWidth='240px'>
-            <MenuItemOption
-              padding={0}
-              value='justDay2'
-              isChecked={getFilter('justDay2')}
-              onClick={() => toggleFilter('justDay2')}
-            >
-              Only Day 2
-            </MenuItemOption>
+          <MenuList minWidth='240px' marginRight='0.5'>
+            <MenuOptionGroup title='Results'>
+              <MenuItemOption
+                padding={0}
+                value='justDay2'
+                isChecked={getFilter('justDay2')}
+                onClick={() => toggleFilter('justDay2')}
+              >
+                Only Day 2
+              </MenuItemOption>
+            </MenuOptionGroup>
             <MenuDivider />
-            <Grid
-              key={`supertype-collection-grid`}
-              gridTemplateColumns={`1fr repeat(3, 1fr)`}
-            >
-              {supertypeCollection?.map((supertype, idx) =>
-                supertype.decks.length > 1 ? (
-                  <Grid
-                    gridColumn={'1/5'}
-                    key={`supertype-collection-${idx}`}
-                    gridTemplateColumns={`repeat(4, 1fr)`}
-                  >
-                    <GridItem gridRow={'1/3'}>
-                      <MenuItemOption
-                        height='100%'
-                        display='flex'
-                        alignItems={'center'}
-                        padding={'1rem 0'}
-                        isChecked={getFilter(
-                          'decksVisible',
-                          supertype.decks.map(({ id }) => id)
-                        )}
-                        onClick={() =>
-                          toggleFilter('decksVisible', {
-                            superType: supertype.decks,
-                          })
-                        }
-                      >
-                        <SpriteDisplay
-                          squishWidth
-                          big
-                          pokemonNames={[supertype.definedPokemon]}
-                        />
-                      </MenuItemOption>
-                    </GridItem>
-                    {supertype.decks.map(({ id, name, defined_pokemon }) => (
-                      <MenuItemOption
-                        padding={0}
-                        isChecked={getFilter('decksVisible', [id])}
-                        onClick={() =>
-                          toggleFilter('decksVisible', { individualDeck: id })
-                        }
-                        key={name}
-                        value={name}
-                      >
-                        <SpriteDisplay
-                          squishWidth
-                          pokemonNames={defined_pokemon}
-                        />
-                      </MenuItemOption>
-                    ))}
-                  </Grid>
-                ) : (
+            <MenuOptionGroup title='Archetype'>
+              <Grid gridTemplateColumns={`1fr 1fr`} gap={2} paddingX={2}>
+                {supertypeCollection?.map(
+                  (supertype, idx) =>
+                    supertype.decks.length > 1 && (
+                      <Tag variant={'outline'} key={idx}>
+                        <MenuItemOption
+                          background={'none'}
+                          height='100%'
+                          alignItems={'center'}
+                          padding={'0.25rem 0'}
+                          isChecked={getFilter(
+                            'decksVisible',
+                            supertype.decks.map(({ id }) => id)
+                          )}
+                          onClick={() =>
+                            toggleFilter('decksVisible', {
+                              superType: supertype.decks,
+                            })
+                          }
+                        >
+                          <HStack spacing={1}>
+                            <SpriteDisplay
+                              squishWidth
+                              pokemonNames={[supertype.definedPokemon]}
+                            />
+                            <Text as='b'>{supertype.archetypeName}</Text>
+                          </HStack>
+                        </MenuItemOption>
+                      </Tag>
+                    )
+                )}
+              </Grid>
+            </MenuOptionGroup>
+
+            <MenuOptionGroup title='Individual deck'>
+              <Grid
+                key={`supertype-collection-grid`}
+                gridTemplateColumns={`1fr repeat(3, 1fr)`}
+              >
+                {mostPopularDecks?.map(({ id, name, defined_pokemon }) => (
                   <MenuItemOption
-                    padding={'0.25rem 0'}
-                    isChecked={getFilter('decksVisible', [
-                      supertype.decks[0].id,
-                    ])}
+                    padding={0}
+                    isChecked={getFilter('decksVisible', [id])}
                     onClick={() =>
-                      toggleFilter('decksVisible', {
-                        individualDeck: supertype.decks[0].id,
-                      })
+                      toggleFilter('decksVisible', { individualDeck: id })
                     }
-                    key={supertype.decks[0].name}
-                    value={supertype.decks[0].name}
+                    key={name}
+                    value={name}
                   >
-                    <SpriteDisplay
-                      squishWidth
-                      pokemonNames={supertype.decks[0].defined_pokemon}
-                    />
+                    <SpriteDisplay squishWidth pokemonNames={defined_pokemon} />
                   </MenuItemOption>
-                )
-              )}
-            </Grid>
+                ))}
+              </Grid>
+            </MenuOptionGroup>
           </MenuList>
         </Menu>
       </StackItem>
