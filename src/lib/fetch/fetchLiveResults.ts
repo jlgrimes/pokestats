@@ -93,7 +93,7 @@ export const updatePlayerProfilesWithTournament = async (
   return { error };
 };
 
-const getPlayerDeckObjects = async (
+export const getPlayerDeckObjects = async (
   tournamentId: string,
   deckArchetypes: Deck[] | null
 ) => {
@@ -113,6 +113,7 @@ const getPlayerDeckObjects = async (
           id: deck_archetype,
           name: deck?.name ?? null,
           defined_pokemon: deck?.defined_pokemon ?? null,
+          supertype: deck?.supertype,
           verified: user_submitted_was_admin,
         },
       };

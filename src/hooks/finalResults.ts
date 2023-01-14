@@ -1,20 +1,46 @@
 import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../types/final-results';
 import { Deck, Standing } from '../../types/tournament';
+import {
+  fetchPlayerDecks,
+  getPlayerDeckObjects,
+} from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 import { useArchetypes } from './deckArchetypes';
 
 interface FinalResultsFilters {
-  tournamentId?: number;
+  tournamentId?: string;
   deckId?: number;
   playerName?: string;
 }
 
+export const fetchDecksByPlayer = async (name: string) => {
+  const res = await supabase
+    .from('Player Decks')
+    .select(
+      `deck_archetype (
+      id,
+      name,
+      defined_pokemon,
+      identifiable_cards,
+      supertype
+    ),tournament_id`
+    )
+    .eq('player_name', name);
+  return res.data;
+};
+
 export const fetchFinalResults = async (
-  deckArchetypes: Deck[] | null | undefined,
   filters?: FinalResultsFilters
 ): Promise<Standing[] | null | undefined> => {
-  let query = supabase.from('Final Results').select('*');
+  let query = supabase.from('Final Results')
+    .select(`name,placing,record,resistances,drop,rounds,tournament_id,deck_list,deck_archetype (
+    id,
+      name,
+      defined_pokemon,
+      identifiable_cards,
+      supertype
+    )`);
 
   if (filters?.tournamentId)
     query = query.eq('tournament_id', filters.tournamentId);
@@ -23,11 +49,31 @@ export const fetchFinalResults = async (
 
   const res = await query;
   const finalResultsData: FinalResultsSchema[] | null = res.data;
+  console.log(finalResultsData)
+
+  let userReportedDecks: Deck[] | undefined | null = null;
+  if (filters?.playerName) {
+    const playerDecks = await fetchDecksByPlayer(filters.playerName);
+    console.log(playerDecks);
+    userReportedDecks = playerDecks;
+  }
 
   return finalResultsData?.map(finalResult => {
-    const deckArchetype = deckArchetypes?.find(
+    let deckArchetype;
+
+    const userReportedDeck = userReportedDecks?.find(
+      deck => finalResult.name === deck.name
+    );
+    if (userReportedDeck) {
+      deckArchetype = userReportedDeck;
+    }
+
+    const confirmedArchetype = deckArchetypes?.find(
       ({ id }) => id === finalResult.deck_archetype
     );
+    if (confirmedArchetype) {
+      deckArchetype = confirmedArchetype;
+    }
 
     if (!deckArchetype)
       return {

@@ -57,9 +57,6 @@ export async function getStaticProps({
       fetchLiveResults(params.id, { prefetch: true, load: { roundData: user?.name } })
   );
   await queryClient.prefetchQuery(['deck-archetypes'], () => fetchArchetypes());
-  await queryClient.prefetchQuery(['player-decks', params.id], () =>
-    fetchPlayerDecks(params.id)
-  );
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
 
   return {

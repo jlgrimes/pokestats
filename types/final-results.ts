@@ -1,4 +1,5 @@
 import {
+  Deck,
   DeckList,
   PlayerRecord,
   PlayerResistances,
@@ -14,5 +15,5 @@ export interface FinalResultsSchema {
   rounds: PlayerRound[];
   tournament_id: string;
   deck_list: DeckList;
-  deck_archetype: number;
+  deck_archetype: Deck | Deck[] | null;
 }
