@@ -102,12 +102,12 @@ export const PlayerMatchupStatus = ({
           />
           {tournamentFinished && (
             <Heading size='xs' color='gray.700'>
-              {`(${ordinalSuffixOf(
+              {`${ordinalSuffixOf(
                 getPercentile(
                   playerResults.placing,
                   parseInt(tournament.players.masters ?? '')
                 )
-              )} percentile)`}
+              )} percentile`}
             </Heading>
           )}
         </Stack>
