@@ -12,7 +12,7 @@ export const useUserMatchesLoggedInUser = (name: string) => {
 export const fetchUserProfileFromEmail = async (email: string) => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
+    .select('id,name,email')
     .eq('email', email);
   const playerProfile = data?.[0];
 
@@ -20,7 +20,6 @@ export const fetchUserProfileFromEmail = async (email: string) => {
     return {
       id: playerProfile?.id as string,
       name: playerProfile?.name as string,
-      tournamentHistory: playerProfile?.tournament_history as string[],
       email: email,
     };
   }
