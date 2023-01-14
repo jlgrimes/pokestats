@@ -53,6 +53,8 @@ export interface Standing {
   rounds?: PlayerRound[];
   day2?: boolean;
   outOfDay2?: boolean;
+  deck_archetype: number;
+  deck_list: DeckList;
   deck?: Deck;
   drop?: number | null;
   tournamentId?: string;

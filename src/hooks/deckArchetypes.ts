@@ -14,7 +14,7 @@ export const fetchArchetypes = async () => {
 export const fetchArchetype = async (archetypeId: number) => {
   const res = await supabase
     .from('Deck Archetypes')
-    .select('id,name,defined_pokemon,supertype')
+    .select('id,name,defined_pokemon,identifiable_cards,supertype')
     .eq('id', archetypeId);
   return res.data?.[0];
 };
