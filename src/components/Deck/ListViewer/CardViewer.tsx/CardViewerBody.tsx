@@ -36,8 +36,8 @@ export const CardViewerBody = memo(
     const decksThatIncludeCard = decksOfSameArchetype?.filter(
       ({ list }) => list && listContainsCard(list, card)
     );
-    const percentageOfDecksThatPlayedCard =
-      (decksThatIncludeCard?.length / decksOfSameArchetype?.length) * 100;
+    const percentageOfDecksThatDidNotPlayCard =
+      (1 - decksThatIncludeCard?.length / decksOfSameArchetype?.length) * 100;
 
     const cardCounts = decksThatIncludeCard.reduce(
       (acc: Record<number, number>, deck) => {
@@ -101,15 +101,6 @@ export const CardViewerBody = memo(
               {deck.name}, {shortenTournamentName(tournament.name)}
             </Heading>
           </Stack>
-          {percentageOfDecksThatPlayedCard < 100 && (
-            <Text>
-              <b>
-                {decksThatIncludeCard.length} (
-                {fixPercentage(percentageOfDecksThatPlayedCard)}%)
-              </b>{' '}
-              decks played at least 1 copy
-            </Text>
-          )}
           {cardCountsSorted.map(([count, numberOfCount], idx) =>
             numberOfCount === 1 ? (
               <Text key={idx}>
@@ -118,13 +109,23 @@ export const CardViewerBody = memo(
             ) : (
               <Text key={idx}>
                 <b>{numberOfCount} decks</b>{' '}
-                {percentageOfDecksThatPlayedCard < 100 ? 'of those ' : ''}(
+                {percentageOfDecksThatDidNotPlayCard > 0 ? 'of those ' : ''}(
                 {fixPercentage(
                   (numberOfCount / decksThatIncludeCard.length) * 100
                 )}
                 %) played {count} {getCopyText(parseInt(count))}
               </Text>
             )
+          )}
+          {percentageOfDecksThatDidNotPlayCard > 0 && (
+            <Text>
+              <b>
+                {decksOfSameArchetype.length - decksThatIncludeCard.length}{' '}
+                decks
+              </b>{' '}
+              ({fixPercentage(percentageOfDecksThatDidNotPlayCard)}%) played 0
+              copies
+            </Text>
           )}
         </Stack>
       </ModalBody>
