@@ -110,10 +110,9 @@ export const CardViewerBody = memo(
               </Text>
             ) : (
               <Text key={idx}>
-                <b>{numberOfCount} decks</b>{' '}
-                {percentageOfDecksThatDidNotPlayCard > 0 ? 'of those ' : ''}(
+                <b>{numberOfCount} decks</b> (
                 {fixPercentage(
-                  (numberOfCount / decksThatIncludeCard.length) * 100
+                  (numberOfCount / decksOfSameArchetype.length) * 100
                 )}
                 %) played {count} {getCopyText(parseInt(count))}
               </Text>
