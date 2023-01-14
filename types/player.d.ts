@@ -5,7 +5,6 @@ export interface StoredPlayerProfile {
   id: string;
   name: string;
   email: string;
-  tournament_history: string[]
 }
 
 export interface GooglePlayerProfile {

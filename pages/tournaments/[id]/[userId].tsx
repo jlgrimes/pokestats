@@ -6,12 +6,16 @@ import { TournamentPageLayout } from '../../../src/components/Tournament/Tournam
 import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchCurrentTournamentInfo } from '../../../src/hooks/tournaments';
 import { fetchAllVerifiedUsers, fetchUser } from '../../../src/hooks/user';
-import { fetchLiveResults, fetchPlayerDecks } from '../../../src/lib/fetch/fetchLiveResults';
+import {
+  fetchLiveResults,
+  fetchPlayerDecks,
+} from '../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../types/tournament';
 import { StoredPlayerProfile } from '../../../types/player';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
 import { fetchPokedex } from '../../../src/hooks/images';
 import { parseUsername } from '../../../src/lib/strings';
+import { fetchVerifiedUserTournaments } from '../../../src/hooks/finalResults';
 
 export default function UserMatchups({
   tournament,
@@ -46,7 +50,7 @@ export async function getStaticProps({
     userId: string;
   };
 }) {
-  const user = await fetchUser(`${params.userId}@gmail.com`) ?? null;
+  const user = (await fetchUser(`${params.userId}@gmail.com`)) ?? null;
   const queryClient = new QueryClient();
   const tournament = await fetchCurrentTournamentInfo(params.id, {
     prefetch: true,
@@ -54,7 +58,10 @@ export async function getStaticProps({
   await queryClient.prefetchQuery(
     [`live-results`, params.id, 'roundData', user?.name],
     () =>
-      fetchLiveResults(params.id, { prefetch: true, load: { roundData: user?.name } })
+      fetchLiveResults(params.id, {
+        prefetch: true,
+        load: { roundData: user?.name },
+      })
   );
   await queryClient.prefetchQuery(['deck-archetypes'], () => fetchArchetypes());
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
@@ -70,21 +77,21 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const users = await fetchAllVerifiedUsers();
+  const users = await fetchVerifiedUserTournaments();
 
   const paths = users?.reduce(
     (
       acc: { params: { id: string; userId: string } }[],
-      user: StoredPlayerProfile
+      user: { name: string; tournament_id: string; email: string }
     ) => {
       return [
         ...acc,
-        ...user.tournament_history.map((tournamentId: string) => ({
+        {
           params: {
-            id: tournamentId,
+            id: user.tournament_id,
             userId: parseUsername(user.email),
           },
-        })),
+        },
       ];
     },
     []

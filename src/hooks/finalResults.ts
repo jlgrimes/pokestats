@@ -7,6 +7,7 @@ import {
 } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 import { useArchetypes } from './deckArchetypes';
+import { fetchAllVerifiedUsers } from './user';
 
 interface FinalResultsFilters {
   tournamentId?: string;
@@ -28,6 +29,33 @@ export const fetchDecksByPlayer = async (name: string) => {
     )
     .eq('player_name', name);
   return res.data;
+};
+
+export const fetchVerifiedUserTournaments = async () => {
+  const verifiedUsers = await fetchAllVerifiedUsers();
+  const verifiedUserEmailMap: Record<string, string> =
+    verifiedUsers?.reduce((acc, curr) => {
+      return {
+        ...acc,
+        [curr.name]: curr.email,
+      };
+    }, {}) ?? {};
+
+  const res = await supabase
+    .from('Final Results')
+    .select(`name,tournament_id`)
+    .filter(
+      'name',
+      'in',
+      JSON.stringify(verifiedUsers?.map(({ name }) => name as string) ?? [])
+        .replace('[', '(')
+        .replace(']', ')')
+    );
+
+  return res.data?.map(result => ({
+    ...result,
+    email: verifiedUserEmailMap[result.name],
+  }));
 };
 
 export const fetchFinalResults = async (

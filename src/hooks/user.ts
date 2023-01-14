@@ -110,15 +110,14 @@ export const useNotSetupProfiles = () => {
 export const fetchAllVerifiedUsers = async () => {
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
-    .neq('email', null);
+    .select('id,name,email')
   return res.data;
 };
 
 export const fetchUser = async (email: string) => {
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
+    .select('id,name,email')
     .eq('email', email);
   return res.data?.[0];
 };
