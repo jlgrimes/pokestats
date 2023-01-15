@@ -81,7 +81,8 @@ export const fetchFinalResults = async (
       supertype
     )`
     )
-    .order('tournament_id', { ascending: false });
+    .order('tournament_id', { ascending: false })
+    .order('placing', { ascending: true });
 
   if (filters?.tournamentId) {
     query = query.eq('tournament_id', filters.tournamentId);
