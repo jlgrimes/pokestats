@@ -24,7 +24,7 @@ const Sprites = (props: SpriteDisplayProps & { deckIsReal: boolean }) => (
     direction='row'
     alignItems={'baseline'}
     spacing={-0.5}
-    minWidth={props.squishWidth ? 0 : '4.5rem'}
+    minWidth={props.squishWidth ? 0 : '4.61rem'}
   >
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
       {props.pokemonNames.map((name, idx) => {

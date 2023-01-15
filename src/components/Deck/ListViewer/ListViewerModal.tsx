@@ -12,6 +12,7 @@ import {
 import { memo, useCallback, useEffect, useState } from 'react';
 import { Card, DeckList, Tournament } from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
+import { shortenTournamentName } from '../../../lib/tournament';
 import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
 import { ListView } from './ListView';
 
@@ -78,7 +79,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
               <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
               <Text>
                 {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
-                {props.tournament.name}
+                {shortenTournamentName(props.tournament)}
               </Text>
             </Stack>
           </Stack>
