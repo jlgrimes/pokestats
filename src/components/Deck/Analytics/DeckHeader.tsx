@@ -44,7 +44,7 @@ export const DeckHeader = memo(
     );
 
     const heightWidthRatio = 1.396;
-    const width = 100;
+    const width = 125;
     const height = width * heightWidthRatio;
 
     if (compact) {

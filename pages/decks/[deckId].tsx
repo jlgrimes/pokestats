@@ -8,12 +8,13 @@ import { fetchUniqueDecks } from '../../src/hooks/finalResults';
 import { Deck } from '../../types/tournament';
 
 export default function DeckPage({ deck }: { deck: Deck }) {
-  
   return (
-    <Stack paddingX={8} paddingY={2}>
+    <Stack spacing={4} paddingLeft={4}>
       <BackToDecksButton />
-      <DeckHeader deck={deck} />
-      <DeckVariants deck={deck} />
+      <Stack>
+        <DeckHeader deck={deck} />
+        <DeckVariants deck={deck} />
+      </Stack>
       <DeckFinishes deck={deck} />
     </Stack>
   );
