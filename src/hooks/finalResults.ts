@@ -66,7 +66,10 @@ export const fetchDeckCounts = async (): Promise<Record<number, number>> => {
   return deckCounts;
 };
 
-export const useStoredDecks = () => {
+export const useStoredDecks = (): {
+  deck: Deck;
+  count: number;
+}[] => {
   const { data: archetypes } = useArchetypes();
 
   const { data: deckCounts } = useQuery({
@@ -75,17 +78,19 @@ export const useStoredDecks = () => {
   });
 
   if (deckCounts) {
-    return Object.entries(deckCounts)?.map(([deckId, count]) => ({
-      deck: archetypes?.find(({ id }) => parseInt(deckId) === id) as Deck,
-      count,
-    })).sort((a, b) => {
-      if (a.count < b.count) return 1;
-      if (b.count < a.count) return -1;
-      return 0;
-    });
+    return Object.entries(deckCounts)
+      ?.map(([deckId, count]) => ({
+        deck: archetypes?.find(({ id }) => parseInt(deckId) === id) as Deck,
+        count,
+      }))
+      .sort((a, b) => {
+        if (a.count < b.count) return 1;
+        if (b.count < a.count) return -1;
+        return 0;
+      });
   }
 
-  return {};
+  return [];
 };
 
 export const fetchVerifiedUserTournaments = async () => {
