@@ -34,7 +34,7 @@ export const DeckFinishes = memo(({ deck }: { deck: Deck }) => {
                   <Heading
                     size='sm'
                     color='gray.700'
-                    paddingTop={4}
+                    paddingTop={3}
                     paddingBottom={1}
                   >
                     {shortenTournamentName(tournament)}

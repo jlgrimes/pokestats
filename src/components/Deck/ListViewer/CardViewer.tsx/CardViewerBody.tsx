@@ -100,7 +100,7 @@ export const CardViewerBody = memo(
           <Stack spacing={0}>
             <Heading size='lg'>{card.name}</Heading>
             <Heading size='sm' color='gray.500'>
-              {deck.name}, {shortenTournamentName(tournament.name)}
+              {deck.name}, {shortenTournamentName(tournament)}
             </Heading>
           </Stack>
           {cardCountsSorted.map(([count, numberOfCount], idx) =>
