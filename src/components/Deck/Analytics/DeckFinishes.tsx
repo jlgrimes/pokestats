@@ -1,4 +1,5 @@
-import { Grid, Heading, Stack } from '@chakra-ui/react';
+import { Grid, Heading, Link, Stack } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { Fragment, memo } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
@@ -25,15 +26,20 @@ export const DeckFinishes = memo(({ deck }: { deck: Deck }) => {
           return (
             <Fragment key={standing.name + standing.tournamentId}>
               {shouldShowHeading && (
-                <Heading
+                <Link
                   gridColumn={'1/-1'}
-                  size='sm'
-                  color='gray.700'
-                  paddingTop={4}
-                  paddingBottom={1}
+                  as={NextLink}
+                  href={`/tournaments/${standing.tournamentId}/standings`}
                 >
-                  {shortenTournamentName(tournament)}
-                </Heading>
+                  <Heading
+                    size='sm'
+                    color='gray.700'
+                    paddingTop={4}
+                    paddingBottom={1}
+                  >
+                    {shortenTournamentName(tournament)}
+                  </Heading>
+                </Link>
               )}
               <StandingsRow
                 result={{
