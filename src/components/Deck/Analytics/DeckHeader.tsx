@@ -1,5 +1,13 @@
 import { memo, useMemo } from 'react';
-import { Heading, HStack, Image, Stack } from '@chakra-ui/react';
+import {
+  Heading,
+  HStack,
+  Image,
+  LinkBox,
+  LinkOverlay,
+  Stack,
+} from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { getCardImageUrl } from '../ListViewer/helpers';
 import { Card, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
@@ -41,12 +49,16 @@ export const DeckHeader = memo(
 
     if (compact) {
       return (
-        <HStack>
-          <Heading color='gray.700' size='md'>
-            {deck.name}
-          </Heading>
-          <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-        </HStack>
+        <LinkBox>
+          <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
+            <HStack>
+              <Heading color='gray.700' size='md'>
+                {deck.name}
+              </Heading>
+              <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+            </HStack>
+          </LinkOverlay>
+        </LinkBox>
       );
     }
 
