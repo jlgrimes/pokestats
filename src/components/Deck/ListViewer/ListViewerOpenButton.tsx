@@ -1,10 +1,10 @@
 import { IconButton, useDisclosure } from '@chakra-ui/react';
 import { FaListUl } from 'react-icons/fa';
-import { Tournament } from '../../../../types/tournament';
+import { Standing, Tournament } from '../../../../types/tournament';
 import { ListViewerModal } from './ListViewerModal';
 
 interface ListViewerOpenButtonProps {
-  result: Record<string, any>;
+  result: Standing;
   tournament: Tournament;
 }
 
