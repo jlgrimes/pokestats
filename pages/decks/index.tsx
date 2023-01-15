@@ -13,25 +13,42 @@ import { useStoredDecks } from '../../src/hooks/finalResults';
 
 export default function DecksPage() {
   const decks = useStoredDecks();
-  console.log(decks);
   return (
     <Grid gridTemplateColumns={'1fr 1fr'} paddingX={8} paddingY={4}>
-      {decks.map(({ deck, count }) => (
-        <LinkBox key={deck.id}>
-          <Card>
-            <CardBody>
-              <Stack>
-                <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-                <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
-                  <Heading color='gray.700' size='xs'>
-                    {deck.name}
-                  </Heading>
-                </LinkOverlay>
-              </Stack>
-            </CardBody>
-          </Card>
-        </LinkBox>
-      ))}
+      {decks.map(({ deck, count }) => {
+        const metaShare = (count / decks.length) * 10;
+        return (
+          <LinkBox
+            {...(metaShare > 25 ? { gridColumn: '1/3' } : {})}
+            key={deck.id}
+          >
+            <Card>
+              <CardBody>
+                <Stack
+                  direction={metaShare > 25 ? 'row' : 'column'}
+                  alignItems={metaShare > 25 ? 'center' : 'baseline'}
+                >
+                  <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+                  <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
+                    <Heading
+                      color='gray.700'
+                      size={metaShare > 25 ? 'md' : 'sm'}
+                    >
+                      {deck.name}
+                    </Heading>
+                    <Heading
+                      color='gray.500'
+                      size={metaShare > 25 ? 'sm' : 'xs'}
+                    >
+                      {metaShare.toFixed(2)}% share
+                    </Heading>
+                  </LinkOverlay>
+                </Stack>
+              </CardBody>
+            </Card>
+          </LinkBox>
+        );
+      })}
     </Grid>
   );
 }
