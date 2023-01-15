@@ -61,9 +61,16 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const router = useRouter();
 
-  const handleCardClick = useCallback((card: Card) => {
-    router.push(`/decks/${props.result.deck?.id}/${getCardSlug(card)}`);
-  }, []);
+  // const handleCardClick = useCallback((card: Card) => {
+  //   router.push(`/decks/${props.result.deck?.id}/${getCardSlug(card)}`);
+  // }, []);
+
+  const handleCardClick = useCallback(
+    (card: Card) => {
+      setSelectedCard(card);
+    },
+    [setSelectedCard]
+  );
 
   const handleCardClear = useCallback(() => {
     setSelectedCard(null);
