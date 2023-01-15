@@ -14,7 +14,7 @@ import { useStoredDecks } from '../../src/hooks/finalResults';
 export default function DecksPage() {
   const decks = useStoredDecks();
   return (
-    <Grid gridTemplateColumns={'1fr 1fr'} paddingX={8} paddingY={4}>
+    <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
       {decks.map(({ deck, count }) => {
         const metaShare = (count / decks.length) * 10;
         return (
