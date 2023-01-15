@@ -8,7 +8,7 @@ import { Deck } from '../../types/tournament';
 
 export default function DeckPage({ deck }: { deck: Deck }) {
   return (
-    <Stack padding={8}>
+    <Stack paddingX={8} paddingY={4}>
       <DeckHeader deck={deck} />
       <DeckVariants deck={deck} />
       <DeckFinishes deck={deck} />

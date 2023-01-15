@@ -32,11 +32,11 @@ export const DeckHeader = memo(({ deck }: { deck: Deck }) => {
   );
 
   const heightWidthRatio = 1.396;
-  const width = 125;
+  const width = 100;
   const height = width * heightWidthRatio;
 
   return (
-    <Stack spacing={4}>
+    <Stack>
       <HStack spacing={0}>
         {identifiableCards?.map(card => (
           <Image
