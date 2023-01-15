@@ -40,6 +40,54 @@ export const fetchUniqueDecks = async () => {
   return uniqueDecks;
 };
 
+export const fetchDeckCounts = async (): Promise<Record<number, number>> => {
+  const res = await supabase
+    .from('Final Results')
+    .select(`deck_archetype`)
+    .not('deck_archetype', 'is', null);
+
+  const deckCounts = (res.data ?? []).reduce(
+    (acc: Record<number, number>, curr) => {
+      if (acc[curr.deck_archetype]) {
+        return {
+          ...acc,
+          [curr.deck_archetype]: acc[curr.deck_archetype] + 1,
+        };
+      }
+
+      return {
+        ...acc,
+        [curr.deck_archetype]: 1,
+      };
+    },
+    {}
+  );
+
+  return deckCounts;
+};
+
+export const useStoredDecks = () => {
+  const { data: archetypes } = useArchetypes();
+
+  const { data: deckCounts } = useQuery({
+    queryKey: ['decks-with-lists'],
+    queryFn: fetchDeckCounts,
+  });
+
+  if (deckCounts) {
+    return Object.entries(deckCounts)?.map(([deckId, count]) => ({
+      deck: archetypes?.find(({ id }) => parseInt(deckId) === id) as Deck,
+      count,
+    })).sort((a, b) => {
+      if (a.count < b.count) return 1;
+      if (b.count < a.count) return -1;
+      return 0;
+    });
+  }
+
+  return {};
+};
+
 export const fetchVerifiedUserTournaments = async () => {
   const verifiedUsers = await fetchAllVerifiedUsers();
   const verifiedUserEmailMap: Record<string, string> =
