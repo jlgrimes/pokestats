@@ -28,7 +28,10 @@ export default function DecksPage() {
                   direction={metaShare > 25 ? 'row' : 'column'}
                   alignItems={metaShare > 25 ? 'center' : 'baseline'}
                 >
-                  <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+                  <SpriteDisplay
+                    big={metaShare > 25}
+                    pokemonNames={deck.defined_pokemon}
+                  />
                   <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
                     <Heading
                       color='gray.700'
