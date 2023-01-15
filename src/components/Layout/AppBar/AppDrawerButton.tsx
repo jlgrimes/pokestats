@@ -22,21 +22,16 @@ import NextLink from 'next/link';
 import { useRef } from 'react';
 import {
   FaBars,
-  FaQuestionCircle,
   FaRegCalendar,
-  FaRegHandshake,
   FaRegListAlt,
   FaRegQuestionCircle,
-  FaRegStickyNote,
   FaRegUser,
-  FaSignOutAlt,
 } from 'react-icons/fa';
 import { CombinedPlayerProfile } from '../../../../types/player';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { parseUsername } from '../../../lib/strings';
 import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const AppDrawerButton = ({
   userProfile,
