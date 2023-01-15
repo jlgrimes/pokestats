@@ -12,7 +12,7 @@ export const DeckFinishes = memo(({ deck }: { deck: Deck }) => {
   const { data: tournaments } = useTournaments();
 
   return (
-    <Grid gridTemplateColumns='2rem repeat(3, auto)' alignItems='center'>
+    <Grid gridTemplateColumns='2.1rem repeat(3, auto)' alignItems='center'>
       {tournaments &&
         deckStandings?.map((standing, idx) => {
           const tournament = tournaments.find(
