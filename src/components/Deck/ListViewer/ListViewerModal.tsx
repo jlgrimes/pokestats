@@ -9,17 +9,24 @@ import {
   Text,
   CloseButton,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { Card, DeckList, Tournament } from '../../../../types/tournament';
+import {
+  Card,
+  DeckList,
+  Standing,
+  Tournament,
+} from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { shortenTournamentName } from '../../../lib/tournament';
 import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
+import { getCardSlug } from './helpers';
 import { ListView } from './ListView';
 
 interface ListViewerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  result: Record<any, any>;
+  result: Standing;
   tournament: Tournament;
 }
 
@@ -52,17 +59,17 @@ const ListModalBody = ({
 
 export const ListViewerModal = memo((props: ListViewerModalProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const router = useRouter();
 
-  const handleCardClick = useCallback(
-    (card: Card) => {
-      setSelectedCard(card);
-    },
-    [setSelectedCard]
-  );
+  const handleCardClick = useCallback((card: Card) => {
+    router.push(`/decks/${props.result.deck?.id}/${getCardSlug(card)}`);
+  }, []);
 
   const handleCardClear = useCallback(() => {
     setSelectedCard(null);
   }, [setSelectedCard]);
+
+  if (!props.result.deck?.list) return null;
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='full'>

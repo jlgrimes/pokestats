@@ -66,3 +66,6 @@ export const getCompressedList = (deckList: DeckList) => {
     []
   );
 };
+
+export const getCardSlug = (card: Card) =>
+  `${card.name.toLowerCase().split(' ').join('-')}-${card.set.toLowerCase()}`;
