@@ -22,7 +22,11 @@ import NextLink from 'next/link';
 import { useRef } from 'react';
 import {
   FaBars,
+  FaQuestionCircle,
+  FaRegCalendar,
+  FaRegHandshake,
   FaRegListAlt,
+  FaRegQuestionCircle,
   FaRegStickyNote,
   FaRegUser,
   FaSignOutAlt,
@@ -32,6 +36,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { parseUsername } from '../../../lib/strings';
 import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const AppDrawerButton = ({
   userProfile,
@@ -62,14 +67,19 @@ export const AppDrawerButton = ({
         <DrawerContent>
           <Stack justifyContent='space-between' height='100%'>
             <Grid
-              templateColumns='repeat(2, 1fr)'
+              templateColumns='1fr 1fr'
               rowGap={'1.5rem'}
-              padding='4.5rem 3.5rem'
+              padding='4.5rem 4.25rem 4.5rem 3.25rem'
               alignItems={'center'}
             >
-              <Icon as={FaRegListAlt} />
+              <Icon as={FaRegCalendar} />
               <Link as={NextLink} href='/' onClick={onClose}>
                 <Heading size='lg'>Tournaments</Heading>
+              </Link>
+
+              <Icon as={FaRegListAlt} />
+              <Link as={NextLink} href='/decks' onClick={onClose}>
+                <Heading size='lg'>Decks</Heading>
               </Link>
 
               <Icon as={FaRegUser} />
@@ -87,7 +97,7 @@ export const AppDrawerButton = ({
                 </Heading>
               </Link>
 
-              <Icon as={FaRegStickyNote} />
+              <Icon as={FaRegQuestionCircle} />
               <Link as={NextLink} href={'/about'} onClick={onClose}>
                 <Heading size='lg'>About</Heading>
               </Link>
