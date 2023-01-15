@@ -50,6 +50,7 @@ export const DeckFinishes = memo(({ deck }: { deck: Deck }) => {
                   },
                 }}
                 tournament={tournament}
+                hideArchetype
               />
             </Fragment>
           );

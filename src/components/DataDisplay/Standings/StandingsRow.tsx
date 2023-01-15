@@ -6,6 +6,7 @@ import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { Record } from '../../Tournament/Results/ResultsList/Record';
 import { memo, useCallback } from 'react';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
+import { ListViewerOpenButton } from '../../Deck/ListViewer/ListViewerOpenButton';
 
 export interface StandingsRowProps {
   result: Standing;
@@ -15,6 +16,7 @@ export interface StandingsRowProps {
   toggleRowExpanded?: () => void;
   opponentRoundNumber?: number;
   opponentResult?: string;
+  hideArchetype?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -66,11 +68,19 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         <Record standing={props.result} />
       </Stack>
       <GridItem paddingLeft={2}>
-        <DeckInfoDisplay
-          tournament={props.tournament}
-          player={props.result}
-          enableEdits={props.canEditDecks}
-        />
+        {!props.hideArchetype && (
+          <DeckInfoDisplay
+            tournament={props.tournament}
+            player={props.result}
+            enableEdits={!!props.canEditDecks}
+          />
+        )}
+        {props.hideArchetype && props.result.deck?.list && (
+          <ListViewerOpenButton
+            result={props.result}
+            tournament={props.tournament}
+          />
+        )}
       </GridItem>
     </>
   );
