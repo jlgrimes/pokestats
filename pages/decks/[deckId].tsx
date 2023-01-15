@@ -1,4 +1,5 @@
-import { Stack } from '@chakra-ui/react';
+import { Button, Stack } from '@chakra-ui/react';
+import { BackToDecksButton } from '../../src/components/Deck/Analytics/BackToDecksButton';
 import { DeckFinishes } from '../../src/components/Deck/Analytics/DeckFinishes';
 import { DeckHeader } from '../../src/components/Deck/Analytics/DeckHeader';
 import { DeckVariants } from '../../src/components/Deck/Analytics/DeckVariants';
@@ -7,8 +8,10 @@ import { fetchUniqueDecks } from '../../src/hooks/finalResults';
 import { Deck } from '../../types/tournament';
 
 export default function DeckPage({ deck }: { deck: Deck }) {
+  
   return (
-    <Stack paddingX={8} paddingY={4}>
+    <Stack paddingX={8} paddingY={2}>
+      <BackToDecksButton />
       <DeckHeader deck={deck} />
       <DeckVariants deck={deck} />
       <DeckFinishes deck={deck} />
