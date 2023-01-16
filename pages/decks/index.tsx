@@ -12,7 +12,7 @@ import NextLink from 'next/link';
 import { useState } from 'react';
 import { FilterMenu } from '../../src/components/common/FilterMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
-import { DeckFilterBody } from '../../src/components/Deck/Analytics/Filter/DeckFilterBody';
+import { DeckFilterBody } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { useStoredDecks } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
