@@ -43,6 +43,7 @@ export default function DecksPage({
           tournamentFilter={tournamentRange}
           setTournamentFilter={setTournamentRange}
           defaultTournamentRange={defaultTournamentRange}
+          tournaments={tournaments}
         />
       </StackItem>
       <Heading>
