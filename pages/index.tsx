@@ -1,6 +1,8 @@
+import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
+import { CommonCard } from '../src/components/common/CommonCard';
 import { SeeMoreButton } from '../src/components/Deck/Analytics/SeeMoreButton';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
 import { fetchPokedex } from '../src/hooks/images';
@@ -22,11 +24,11 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
         <meta name='description' content='Pokestats' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <TournamentList
-        tournaments={tournaments}
-        mostRecent
-      />
-      <SeeMoreButton slug='/tournaments' />
+      <Stack>
+        <CommonCard header='Tournaments' slug='/tournaments'>
+          <TournamentList tournaments={tournaments} mostRecent />
+        </CommonCard>
+      </Stack>
     </div>
   );
 }
