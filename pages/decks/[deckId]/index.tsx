@@ -1,4 +1,4 @@
-import { Button, Stack } from '@chakra-ui/react';
+import { Button, Heading, Stack } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { BackToDecksButton } from '../../../src/components/Deck/Analytics/BackToDecksButton';
 import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts/CardCounts';
@@ -14,8 +14,7 @@ export default function DeckPage({ deck }: { deck: Deck }) {
     <DeckAnalyticsContainer deck={deck}>
       <Fragment>
         <DeckVariants deck={deck} />
-        <CardCounts deck={deck} />
-        <DeckFinishes deck={deck} />
+        <DeckFinishes deck={deck} onlyShowRecent />
       </Fragment>
     </DeckAnalyticsContainer>
   );
