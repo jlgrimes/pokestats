@@ -45,6 +45,7 @@ export const AppBar = () => {
         padding={'0.25rem 1.5rem 0.25rem'}
         justifyContent={SHOULD_SHOW_COMING_SOON ? 'center' : 'space-between'}
         boxShadow={scrollTop === 0 ? 'sm' : 'lg'}
+        transition='box-shadow 0.15s ease-in-out'
       >
         {!SHOULD_SHOW_COMING_SOON && (
           <AppDrawerButton userProfile={userProfile} />
