@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 import { Tournament } from '../../../../../types/tournament';
 
-export const DeckFilterBody = ({
+export const DateRangeSlider = ({
   tournamentFilter,
   setTournamentFilter,
   defaultTournamentRange,

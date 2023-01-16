@@ -12,7 +12,7 @@ import NextLink from 'next/link';
 import { useState } from 'react';
 import { FilterMenu } from '../../src/components/common/FilterMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
-import { DeckFilterBody } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
+import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { useStoredDecks } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
@@ -24,9 +24,10 @@ export default function DecksPage({
   defaultTournamentRange: number[];
   tournaments: Tournament[] | undefined;
 }) {
-  const [tournamentRange, setTournamentRange] = useState(
-    defaultTournamentRange
-  );
+  const [tournamentRange, setTournamentRange] = useState([
+    (tournaments?.length ?? 0),
+    (tournaments?.length ?? 0),
+  ]);
   const decks = useStoredDecks({ tournamentRange });
 
   const startTournament = tournaments?.find(
@@ -39,7 +40,7 @@ export default function DecksPage({
   return (
     <Stack>
       <StackItem paddingX={4}>
-        <DeckFilterBody
+        <DateRangeSlider
           tournamentFilter={tournamentRange}
           setTournamentFilter={setTournamentRange}
           defaultTournamentRange={defaultTournamentRange}
