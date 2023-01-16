@@ -37,6 +37,22 @@ const flattenOutEnergies = (card: DeckCard) => {
   }));
 };
 
+const isSpecialCard = (card: DeckCard) => {
+  if (card.name === 'Drizzile') console.log(card);
+  return (
+    ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon'].some(cardType =>
+      card.name.includes(cardType)
+    ) || ['SHF', 'PR'].some(specialSet => card.set.includes(specialSet))
+  );
+};
+
+export const getSameCardIdx = (compressedList: DeckCard[], card: DeckCard) => {
+  return compressedList.findIndex(pushedCard => {
+    if (isSpecialCard(card)) return pushedCard.name === card.name;
+    return pushedCard.name === card.name && pushedCard.set === card.set;
+  });
+};
+
 export const getCompressedList = (deckList: DeckList) => {
   const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
 
@@ -48,13 +64,7 @@ export const getCompressedList = (deckList: DeckList) => {
           return [...acc, ...flattenOutEnergies(card)];
         }
 
-        const sameCardIdx = acc.findIndex(
-          pushedCard =>
-            pushedCard.name === card.name &&
-            (pushedCard.set === card.set ||
-              card.set.includes('PR') ||
-              pushedCard.set.includes('PR'))
-        );
+        const sameCardIdx = getSameCardIdx(acc, card);
         if (sameCardIdx >= 0) {
           acc[sameCardIdx] = {
             ...acc[sameCardIdx],

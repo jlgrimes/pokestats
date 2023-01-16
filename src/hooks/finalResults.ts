@@ -4,7 +4,10 @@ import { DeckCard, Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { useArchetypes } from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
-import { getCompressedList } from '../components/Deck/ListViewer/helpers';
+import {
+  getCompressedList,
+  getSameCardIdx,
+} from '../components/Deck/ListViewer/helpers';
 
 interface FinalResultsFilters {
   tournamentId?: string;
@@ -224,35 +227,41 @@ export const useCardCounts = (
   if (!deckStandings) return [];
 
   const cardCounts = deckStandings?.reduce(
-    (acc: Record<string, { card: DeckCard; count: number }>, deck) => {
-      let cardMap = acc;
-
+    (acc: { card: DeckCard; count: number }[], deck) => {
       if (deck.deck_list) {
         const compressedList = getCompressedList(deck.deck_list);
+        console.log(compressedList);
 
         for (const card of compressedList) {
-          if (cardMap[card.name]) {
-            cardMap[card.name] = {
-              ...cardMap[card.name],
+          const sameCardIdx = getSameCardIdx(
+            acc.map(({ card }) => card),
+            card
+          );
+          if (sameCardIdx >= 0) {
+            acc[sameCardIdx] = {
+              ...acc[sameCardIdx],
               count:
-                cardMap[card.name].count +
+                acc[sameCardIdx].count +
                 (options?.countCopies ? card.count : 1),
             };
           } else {
-            cardMap[card.name] = {
-              card,
-              count: options?.countCopies ? card.count : 1,
-            };
+            acc = [
+              ...acc,
+              {
+                card,
+                count: options?.countCopies ? card.count : 1,
+              },
+            ];
           }
         }
       }
 
-      return cardMap;
+      return acc;
     },
-    {}
+    []
   );
 
-  const cardCountsSorted = Object.values(cardCounts).sort((a, b) => {
+  const cardCountsSorted = cardCounts.sort((a, b) => {
     if (a.count > b.count) return -1;
     if (b.count < a.count) return 1;
     return 0;
