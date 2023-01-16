@@ -11,13 +11,15 @@ export const CommonCard = ({
   header,
   children,
   slug,
+  ghost,
 }: {
   header?: string;
   children: JSX.Element;
   slug?: string;
+  ghost?: boolean;
 }) => {
   return (
-    <Card>
+    <Card variant={ghost ? 'unstyled' : 'elevated'}>
       {header && (
         <CardHeader paddingX={4} paddingBottom={0}>
           <Heading color='gray.700' size='md' fontWeight={'semibold'}>
@@ -25,11 +27,13 @@ export const CommonCard = ({
           </Heading>
         </CardHeader>
       )}
-      <CardBody padding={4}>
-        {children}
-      </CardBody>
+      <CardBody padding={ghost ? 0 : 4}>{children}</CardBody>
       {slug && (
-        <CardFooter paddingLeft={4} paddingTop={0}>
+        <CardFooter
+          padding={ghost ? 0 : 'auto'}
+          paddingLeft={ghost ? 0 : 4}
+          paddingTop={ghost ? 4 : 0}
+        >
           <SeeMoreButton slug={slug} />
         </CardFooter>
       )}
