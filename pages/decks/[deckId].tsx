@@ -1,8 +1,8 @@
 import { Button, Stack } from '@chakra-ui/react';
 import { BackToDecksButton } from '../../src/components/Deck/Analytics/BackToDecksButton';
+import { CardCounts } from '../../src/components/Deck/Analytics/CardCounts';
 import { DeckFinishes } from '../../src/components/Deck/Analytics/DeckFinishes';
 import { DeckHeader } from '../../src/components/Deck/Analytics/DeckHeader';
-import { DeckTechs } from '../../src/components/Deck/Analytics/DeckTechs';
 import { DeckVariants } from '../../src/components/Deck/Analytics/DeckVariants';
 import { fetchArchetype } from '../../src/hooks/deckArchetypes';
 import { fetchUniqueDecks } from '../../src/hooks/finalResults';
@@ -16,7 +16,7 @@ export default function DeckPage({ deck }: { deck: Deck }) {
         <DeckHeader deck={deck} />
         <DeckVariants deck={deck} />
       </Stack>
-      <DeckTechs deck={deck} />
+      <CardCounts deck={deck} />
       <DeckFinishes deck={deck} />
     </Stack>
   );
