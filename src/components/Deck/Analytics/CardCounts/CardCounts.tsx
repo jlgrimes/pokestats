@@ -35,7 +35,7 @@ export const CardCounts = ({
   const popularTechBound = [0.5, 0.95];
 
   return (
-    <Grid gridTemplateColumns={'repeat(4, 1fr)'}>
+    <Grid gridTemplateColumns={`repeat(${onlyPopularTechs ? 3 : 4}, 1fr)`}>
       {cardCounts
         .filter(card =>
           onlyPopularTechs

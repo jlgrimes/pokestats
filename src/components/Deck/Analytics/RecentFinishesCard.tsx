@@ -6,7 +6,7 @@ export const RecentFinishesCard = ({ deck }: { deck: Deck }) => {
   return (
     <Card>
       <CardHeader paddingX={4} paddingBottom={2}>
-        <Heading color='gray.700' size='md'>
+        <Heading color='gray.700' size='md' fontWeight={'semibold'}>
           Recent finishes
         </Heading>
       </CardHeader>
