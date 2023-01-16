@@ -64,7 +64,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
                 />
               )}
             </Heading>
-            <Heading size={'xs'} color='gray.500'>
+            <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
               {formatTournamentDate(tournament)}
             </Heading>
           </Stack>
