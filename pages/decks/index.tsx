@@ -73,6 +73,8 @@ export default function DecksPage({
       </OptionsMenu> */}
       <Grid gridTemplateColumns={'1fr 1fr'}>
         {decks.map(({ deck, count }, idx) => {
+          if (!deck) return null;
+
           const metaShare = count / getNumberOfDecks(decks);
 
           const previousMetaDeck =

@@ -1,6 +1,6 @@
 import { Flex, GridItem, SimpleGrid, Image } from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { Card, DeckList } from '../../../../types/tournament';
+import { DeckCard, DeckList } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
 import { getCardImageUrl, getCompressedList } from './helpers';
 
@@ -11,10 +11,10 @@ export const ListView = ({
 }: {
   deckList: DeckList;
   containerHeight: number;
-  handleCardClick: (card: Card) => void;
+  handleCardClick: (card: DeckCard) => void;
 }) => {
   const codeToSetMap = useCodeToSetMap();
-  const flatDeckList = useMemo(() => getCompressedList(deckList), [deckList]);
+  const flatDeckList = useMemo(() => getCompressedList(deckList, true), [deckList]);
 
   const heightWidthRatio = 1.396;
   const width = 92;
@@ -34,7 +34,7 @@ export const ListView = ({
       marginTop={`${rowStackMargin}px`}
       height='100%'
     >
-      {flatDeckList.map((card: Card, idx: number) => (
+      {flatDeckList.map((card: DeckCard, idx: number) => (
         <SimpleGrid
           cursor={'pointer'}
           onClick={() => handleCardClick(card)}

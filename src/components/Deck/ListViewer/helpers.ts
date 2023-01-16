@@ -38,7 +38,6 @@ const flattenOutEnergies = (card: DeckCard) => {
 };
 
 const isSpecialCard = (card: DeckCard) => {
-  if (card.name === 'Drizzile') console.log(card);
   return (
     ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon'].some(cardType =>
       card.name.includes(cardType)
@@ -53,14 +52,14 @@ export const getSameCardIdx = (compressedList: DeckCard[], card: DeckCard) => {
   });
 };
 
-export const getCompressedList = (deckList: DeckList) => {
+export const getCompressedList = (deckList: DeckList, flattenEnergies?: boolean) => {
   const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
 
   return listKeys.reduce(
     (acc: DeckCard[], superclass) => [
       ...acc,
       ...deckList[superclass].reduce((acc: DeckCard[], card: DeckCard) => {
-        if (card.count > 4) {
+        if (flattenEnergies && card.count > 4) {
           return [...acc, ...flattenOutEnergies(card)];
         }
 
