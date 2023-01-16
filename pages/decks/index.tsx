@@ -24,6 +24,7 @@ import { OptionsMenu } from '../../src/components/common/OptionsMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
+import { MetaGameShareList } from '../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
 import { fixPercentage } from '../../src/components/Deck/ListViewer/CardViewer.tsx/helpers';
 import { useStoredDecks } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
@@ -41,13 +42,6 @@ export default function DecksPage({
     tournaments?.length ?? 0,
   ]);
   const [showRange, setShowRange] = useState(false);
-  const decks = useStoredDecks({ tournamentRange });
-  const previousDecks = useStoredDecks({
-    tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
-  });
-
-  const getNumberOfDecks = (decks: { count: number; deck: Deck }[]) =>
-    decks.reduce((acc, curr) => acc + (curr.count ?? 0), 0);
 
   return (
     <Stack>
@@ -71,65 +65,7 @@ export default function DecksPage({
       {/* <OptionsMenu>
         <Switch></Switch>
       </OptionsMenu> */}
-      <Grid gridTemplateColumns={'1fr 1fr'}>
-        {decks.map(({ deck, count }, idx) => {
-          if (!deck) return null;
-
-          const metaShare = count / getNumberOfDecks(decks);
-
-          const previousMetaDeck =
-            tournamentRange[0] === tournamentRange[1]
-              ? previousDecks.find(
-                  ({ deck: previousDeck }) => previousDeck.id === deck.id
-                )
-              : null;
-
-          const previousMetaShare =
-            (previousMetaDeck?.count ?? 0) /
-            (previousDecks.length > 0 ? getNumberOfDecks(previousDecks) : 1);
-          const metaShareDiff =
-            previousMetaShare === 0 ? 1 : metaShare - previousMetaShare;
-
-          if (!deck?.id) return null;
-
-          return (
-            <LinkBox key={deck.id}>
-              <Card>
-                <CardBody padding={4}>
-                  <Stack direction={'column'} alignItems={'baseline'}>
-                    <HStack>
-                      <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-                      <Stat>
-                        <StatNumber>
-                          {fixPercentage(metaShare * 100)}%
-                        </StatNumber>
-                        {metaShareDiff && (
-                          <StatHelpText>
-                            <StatArrow
-                              type={
-                                metaShareDiff >= 0 ? 'increase' : 'decrease'
-                              }
-                            />
-                            {fixPercentage(metaShareDiff * 100)}%
-                          </StatHelpText>
-                        )}
-                      </Stat>
-                    </HStack>
-                    <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
-                      <Heading
-                        color='gray.700'
-                        size={'sm'}
-                      >
-                        {deck.name}
-                      </Heading>
-                    </LinkOverlay>
-                  </Stack>
-                </CardBody>
-              </Card>
-            </LinkBox>
-          );
-        })}
-      </Grid>
+    <MetaGameShareList tournamentRange={tournamentRange} />
     </Stack>
   );
 }
