@@ -19,17 +19,17 @@ export const CommonCard = ({
   return (
     <Card>
       {header && (
-        <CardHeader paddingX={4} paddingBottom={2}>
+        <CardHeader paddingX={4} paddingBottom={0}>
           <Heading color='gray.700' size='md' fontWeight={'semibold'}>
             {header}
           </Heading>
         </CardHeader>
       )}
-      <CardBody paddingX={4} paddingY={2}>
+      <CardBody padding={4}>
         {children}
       </CardBody>
       {slug && (
-        <CardFooter paddingLeft={4} paddingTop={2}>
+        <CardFooter paddingLeft={4} paddingTop={0}>
           <SeeMoreButton slug={slug} />
         </CardFooter>
       )}
