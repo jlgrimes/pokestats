@@ -1,12 +1,16 @@
+import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts';
 import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { fetchArchetype } from '../../../src/hooks/deckArchetypes';
-import { fetchUniqueDecks } from '../../../src/hooks/finalResults';
+import {
+  fetchUniqueDecks,
+  useCardCounts,
+} from '../../../src/hooks/finalResults';
 import { Deck } from '../../../types/tournament';
 
 export default function CardsInDeckPage({ deck }: { deck: Deck }) {
   return (
     <DeckAnalyticsContainer deck={deck} compactTitle>
-      <div>hi</div>
+      <CardCounts deck={deck} />
     </DeckAnalyticsContainer>
   );
 }

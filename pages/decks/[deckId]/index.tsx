@@ -4,7 +4,6 @@ import { BackToDecksButton } from '../../../src/components/Deck/Analytics/BackTo
 import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts';
 import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { DeckFinishes } from '../../../src/components/Deck/Analytics/DeckFinishes';
-import { DeckHeader } from '../../../src/components/Deck/Analytics/DeckHeader';
 import { DeckVariants } from '../../../src/components/Deck/Analytics/DeckVariants';
 import { fetchArchetype } from '../../../src/hooks/deckArchetypes';
 import { fetchUniqueDecks } from '../../../src/hooks/finalResults';

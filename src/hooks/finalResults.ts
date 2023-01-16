@@ -225,7 +225,7 @@ export const useCardCounts = (
   if (!deckStandings) return [];
 
   const cardCounts = deckStandings?.reduce(
-    (acc: Record<string, number>, deck) => {
+    (acc: Record<string, { card: Card; count: number }>, deck) => {
       let cardMap = acc;
 
       if (deck.deck_list) {
@@ -233,10 +233,17 @@ export const useCardCounts = (
 
         for (const card of compressedList) {
           if (cardMap[card.name]) {
-            cardMap[card.name] =
-              cardMap[card.name] + (options?.countCopies ? card.count : 1);
+            cardMap[card.name] = {
+              ...cardMap[card.name],
+              count:
+                cardMap[card.name].count +
+                (options?.countCopies ? card.count : 1),
+            };
           } else {
-            cardMap[card.name] = options?.countCopies ? card.count : 1;
+            cardMap[card.name] = {
+              card,
+              count: options?.countCopies ? card.count : 1,
+            };
           }
         }
       }
@@ -247,8 +254,8 @@ export const useCardCounts = (
   );
 
   const cardCountsSorted = Object.entries(cardCounts).sort((a, b) => {
-    if (a[1] > b[1]) return -1;
-    if (b[1] < a[1]) return 1;
+    if (a[1].count > b[1].count) return -1;
+    if (b[1].count < a[1].count) return 1;
     return 0;
   });
 
