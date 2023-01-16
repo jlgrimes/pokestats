@@ -15,6 +15,7 @@ import {
 import { useState } from 'react';
 import { Tournament } from '../../../../../types/tournament';
 import { shortenTournamentName } from '../../../../lib/tournament';
+import { formatTournamentDate } from '../../../TournamentList/helpers';
 import { findTournament } from './helpers';
 
 export const TournamentSlider = ({
@@ -48,13 +49,10 @@ export const TournamentSlider = ({
           setSlider(undefined);
         }}
       >
-        <SliderTrack bg='red.100'>
-          <SliderFilledTrack bg='tomato' />
+        <SliderTrack bg='gray.100'>
+          <SliderFilledTrack bg='blue.500' />
         </SliderTrack>
-        <SliderThumb
-          boxSize={6}
-          defaultValue={defaultTournamentRange[0]}
-        />
+        <SliderThumb boxSize={6} defaultValue={defaultTournamentRange[0]} />
         {/* <SliderMark
           value={slider as unknown as number}
           textAlign='center'
@@ -68,7 +66,18 @@ export const TournamentSlider = ({
           {slider ? findTournamentDate(slider) : null}
         </SliderMark> */}
       </Slider>
-      <Heading size='lg' noOfLines={3}>{shortenTournamentName(findTournament(tournamentFilter, tournaments) as Tournament)}</Heading>
+      <Stack spacing={1}>
+        <Heading size='lg' noOfLines={3} color='gray.800'>
+          {shortenTournamentName(
+            findTournament(tournamentFilter, tournaments) as Tournament
+          )}
+        </Heading>
+        <Heading size='md' noOfLines={1} color='gray.500'>
+          {formatTournamentDate(
+            findTournament(tournamentFilter, tournaments) as Tournament
+          )}
+        </Heading>
+      </Stack>
     </Stack>
   );
 };
