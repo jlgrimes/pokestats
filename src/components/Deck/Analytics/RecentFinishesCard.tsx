@@ -1,0 +1,16 @@
+import { Card, CardBody, CardHeader, Heading } from '@chakra-ui/react';
+import { Deck } from '../../../../types/tournament';
+import { DeckFinishes } from './DeckFinishes';
+
+export const RecentFinishesCard = ({ deck }: { deck: Deck }) => {
+  return (
+    <Card>
+      <CardHeader paddingX={4} paddingBottom={0}>
+        <Heading color='gray.700' size='md'>Recent finishes</Heading>
+      </CardHeader>
+      <CardBody padding={4}>
+        <DeckFinishes deck={deck} onlyShowRecent />
+      </CardBody>
+    </Card>
+  );
+};

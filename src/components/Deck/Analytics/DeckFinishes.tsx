@@ -43,11 +43,6 @@ export const DeckFinishes = memo(
 
               return (
                 <Fragment key={standing.name + standing.tournamentId}>
-                  {shouldShowHeading && onlyShowRecent && (
-                    <Heading size='md' color='gray.700' gridColumn={'1/-1'}>
-                      Recent finishes
-                    </Heading>
-                  )}
                   {shouldShowHeading && (
                     <Link
                       gridColumn={'1/-1'}
@@ -57,7 +52,7 @@ export const DeckFinishes = memo(
                       <Heading
                         size='sm'
                         color='gray.700'
-                        paddingTop={3}
+                        paddingTop={onlyShowRecent ? 0 : 3}
                         paddingBottom={1}
                       >
                         {shortenTournamentName(tournament)}

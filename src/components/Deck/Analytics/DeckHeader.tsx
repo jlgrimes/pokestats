@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { getCardImageUrl } from '../ListViewer/helpers';
-import { Card, Deck } from '../../../../types/tournament';
+import { DeckCard, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
 import { useFinalResults } from '../../../hooks/finalResults';
 import SpriteDisplay from '../../common/SpriteDisplay';
@@ -52,7 +52,7 @@ export const DeckHeader = memo(
         <LinkBox>
           <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
             <HStack>
-              <Heading color='gray.700' size='md'>
+              <Heading color='gray.500' size='md' letterSpacing={'wide'}>
                 {deck.name}
               </Heading>
               <SpriteDisplay pokemonNames={deck.defined_pokemon} />
@@ -70,7 +70,7 @@ export const DeckHeader = memo(
               key={`${card?.name} ${card?.set}`}
               width={`${width}px`}
               height={`${height}px`}
-              src={getCardImageUrl(card as Card, codeToSetMap, {
+              src={getCardImageUrl(card as DeckCard, codeToSetMap, {
                 highRes: true,
               })}
               alt={`${card?.name} ${card?.set}`}
