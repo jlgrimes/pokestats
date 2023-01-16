@@ -7,7 +7,7 @@ export const CardCounts = ({ deck }: { deck: Deck }) => {
   const cardCounts = useCardCounts(deck);
   // This is assuming each archetype unanimously runs a card.
   // If this isn't the case, you need to redefine what the archetype is.
-  const numberOfDecks = cardCounts[0].count;
+  const numberOfDecks = cardCounts[0]?.count;
 
   return (
     <Grid gridTemplateColumns={'repeat(3, 1fr)'}>
