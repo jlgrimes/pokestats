@@ -77,7 +77,10 @@ export default function DecksPage({
 }
 
 export async function getStaticProps() {
-  const tournaments = await fetchTournaments({ prefetch: true });
+  const tournaments = await fetchTournaments({
+    prefetch: true,
+    onlyFinished: true,
+  });
   return {
     props: {
       defaultTournamentRange: [

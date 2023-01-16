@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { Tournament } from '../../types/tournament';
 
-export const fetchTournaments = async (options?: { prefetch?: boolean }) => {
+export const fetchTournaments = async (options?: { prefetch?: boolean, onlyFinished?: boolean }) => {
   const res: Response = await fetch(
     `${
       options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
     }/standings/tournaments.json`
   );
-  const data: Tournament[] = await res.json();
+  let data: Tournament[] = await res.json();
+  if (options?.onlyFinished) {
+    data = data.filter((tournament) => tournament.tournamentStatus === 'finished')
+  }
 
   return data;
 };
