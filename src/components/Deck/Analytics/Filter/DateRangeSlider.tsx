@@ -25,8 +25,6 @@ export const DeckFilterBody = ({
   const findTournament = (tournamentIdInt: number) =>
     tournaments?.find(({ id }) => parseInt(id) === tournamentIdInt)?.name;
 
-  console.log((startSlider ?? endSlider ?? 0))
-
   return (
     <RangeSlider
       defaultValue={tournamentFilter}
@@ -34,6 +32,7 @@ export const DeckFilterBody = ({
       max={defaultTournamentRange[1]}
       step={1}
       onChange={(value: number[]) => {
+        setTournamentFilter(value);
         if (value[0] !== tournamentFilter[0]) {
           setStartSlider(value[0]);
         } else if (value[1] !== tournamentFilter[1]) {
@@ -41,7 +40,6 @@ export const DeckFilterBody = ({
         }
       }}
       onChangeEnd={(value: number[]) => {
-        setTournamentFilter(value);
         setStartSlider(undefined);
         setEndSlider(undefined);
       }}
