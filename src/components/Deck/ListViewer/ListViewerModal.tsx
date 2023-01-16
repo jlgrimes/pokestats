@@ -12,7 +12,7 @@ import {
 import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
-  Card,
+  DeckCard,
   DeckList,
   Standing,
   Tournament,
@@ -35,7 +35,7 @@ const ListModalBody = ({
   handleCardClick,
 }: {
   list: DeckList;
-  handleCardClick: (card: Card) => void;
+  handleCardClick: (card: DeckCard) => void;
 }) => {
   const [listGridHeight, setListGridHeight] = useState(0);
 
@@ -58,7 +58,7 @@ const ListModalBody = ({
 };
 
 export const ListViewerModal = memo((props: ListViewerModalProps) => {
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [selectedCard, setSelectedCard] = useState<DeckCard | null>(null);
   const router = useRouter();
 
   // const handleCardClick = useCallback((card: Card) => {
@@ -66,7 +66,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
   // }, []);
 
   const handleCardClick = useCallback(
-    (card: Card) => {
+    (card: DeckCard) => {
       setSelectedCard(card);
     },
     [setSelectedCard]
