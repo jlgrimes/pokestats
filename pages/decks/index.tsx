@@ -68,9 +68,9 @@ export default function DecksPage({
           />
         )}
       </StackItem>
-      <OptionsMenu>
+      {/* <OptionsMenu>
         <Switch></Switch>
-      </OptionsMenu>
+      </OptionsMenu> */}
       <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
         {decks.map(({ deck, count }, idx) => {
           const metaShare = count / getNumberOfDecks(decks);
