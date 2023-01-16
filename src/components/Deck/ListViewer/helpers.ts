@@ -48,7 +48,7 @@ const isSpecialCard = (card: DeckCard) => {
 
 export const getSameCardIdx = (compressedList: DeckCard[], card: DeckCard) => {
   return compressedList.findIndex(pushedCard => {
-    if (isSpecialCard(card)) return pushedCard.name === card.name;
+    if (isSpecialCard(card) || isSpecialCard(pushedCard)) return pushedCard.name === card.name;
     return pushedCard.name === card.name && pushedCard.set === card.set;
   });
 };

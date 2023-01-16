@@ -230,7 +230,6 @@ export const useCardCounts = (
     (acc: { card: DeckCard; count: number }[], deck) => {
       if (deck.deck_list) {
         const compressedList = getCompressedList(deck.deck_list);
-        console.log(compressedList);
 
         for (const card of compressedList) {
           const sameCardIdx = getSameCardIdx(
@@ -245,13 +244,10 @@ export const useCardCounts = (
                 (options?.countCopies ? card.count : 1),
             };
           } else {
-            acc = [
-              ...acc,
-              {
-                card,
-                count: options?.countCopies ? card.count : 1,
-              },
-            ];
+            acc.push({
+              card,
+              count: options?.countCopies ? card.count : 1,
+            });
           }
         }
       }
@@ -260,6 +256,7 @@ export const useCardCounts = (
     },
     []
   );
+  console.log(cardCounts)
 
   const cardCountsSorted = cardCounts.sort((a, b) => {
     if (a.count > b.count) return -1;
