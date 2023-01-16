@@ -1,6 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
+import { Fragment } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { CommonCard } from '../src/components/common/CommonCard';
 import { SeeMoreButton } from '../src/components/Deck/Analytics/SeeMoreButton';
@@ -9,7 +10,6 @@ import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
 import { fetchTournaments } from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
-import styles from '../styles/Home.module.css';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
@@ -18,9 +18,9 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   }
 
   return (
-    <div className={styles.container}>
+    <Fragment>
       <Head>
-        <title>Pokestats Live</title>
+        <title>PokéStats Live</title>
         <meta name='description' content='Pokestats' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
@@ -29,7 +29,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
           <TournamentList tournaments={tournaments} mostRecent />
         </CommonCard>
       </Stack>
-    </div>
+    </Fragment>
   );
 }
 
