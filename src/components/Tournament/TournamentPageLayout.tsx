@@ -13,8 +13,8 @@ export const TournamentPageLayout = ({
 }) => {
   return (
     <Stack height='100%'>
-      <Stack spacing={0}>
-        <Heading size='lg' color='gray.700' padding={'0.5rem 1.5rem'}>
+      <Stack spacing={0} paddingX={4} paddingTop={4}>
+        <Heading size='lg' color='gray.700'>
           {tournament.name}
           <RK9TournamentLink tournament={tournament} />
         </Heading>

@@ -9,7 +9,7 @@ import { FaFilter } from 'react-icons/fa';
 
 export const FilterMenu = ({ children }: { children: JSX.Element }) => {
   return (
-    <StackItem>
+    <StackItem paddingLeft={4}>
       <Menu closeOnSelect={false}>
         <MenuButton
           as={Button}

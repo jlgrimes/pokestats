@@ -9,6 +9,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
@@ -22,13 +23,14 @@ export const AppLayout = ({
   dehydratedState?: DehydratedState;
 }) => {
   const [queryClient] = useState(() => new QueryClient());
+  const router = useRouter();
 
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={dehydratedState}>
         <ChakraProvider theme={theme}>
           <AppBar />
-          <Stack padding={4} spacing={1} height='100%'>
+          <Stack padding={router.asPath.includes('standings') ? 0 : 4} spacing={1} height='100%'>
             {children}
           </Stack>
         </ChakraProvider>

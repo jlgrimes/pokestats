@@ -97,7 +97,7 @@ export const StandingsFilterContainer = memo(
     );
 
     return (
-      <HStack flexWrap={'wrap'} rowGap={2} paddingLeft={6}>
+      <HStack flexWrap={'wrap'} rowGap={2}>
         <StandingsFilterMenu
           getFilter={getFilter}
           toggleFilter={toggleFilter}
