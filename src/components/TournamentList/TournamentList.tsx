@@ -1,24 +1,40 @@
 import { Heading, Stack, Text } from '@chakra-ui/react';
+import { differenceInDays, parseISO } from 'date-fns';
 import { Tournament, TournamentStatus } from '../../../types/tournament';
 import { TournamentOrSet, useTournamentRender } from '../../hooks/sets';
+import { formatTimeUntilTournament } from './helpers';
 import { TournamentCard } from './TournamentCard';
 
 export const TournamentList = ({
   tournaments,
-  statusFilter,
+  mostRecent,
 }: {
   tournaments: Tournament[];
-  statusFilter?: TournamentStatus[];
+  mostRecent?: boolean;
 }) => {
   let items = useTournamentRender(tournaments);
 
-  if (statusFilter) {
-    items = items?.filter(tournament => {
-      return statusFilter.some(
-        filter => tournament.data.tournamentStatus === filter
+  if (mostRecent) {
+    const finishedTournaments = items.filter(
+      tournament => tournament.data.tournamentStatus === 'finished'
+    );
+    const upcomingTournaments = items.filter(tournament => {
+      return (
+        tournament.data.tournamentStatus === 'not-started' &&
+        differenceInDays(parseISO(tournament.data.date?.start), new Date()) <= 7
       );
     });
-    console.log(items)
+
+    items = [
+      ...finishedTournaments.slice(
+        finishedTournaments.length - 2,
+        finishedTournaments.length
+      ),
+      ...items.filter(
+        tournament => tournament.data.tournamentStatus === 'live'
+      ),
+      ...upcomingTournaments,
+    ];
   }
 
   return (

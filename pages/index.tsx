@@ -24,7 +24,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
       </Head>
       <TournamentList
         tournaments={tournaments}
-        statusFilter={['running', 'not-started']}
+        mostRecent
       />
       <SeeMoreButton slug='/tournaments' />
     </div>
