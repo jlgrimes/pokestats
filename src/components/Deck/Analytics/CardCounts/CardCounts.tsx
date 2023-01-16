@@ -60,7 +60,6 @@ export const CardCounts = ({ deck }: { deck: Deck }) => {
         }
 
         const firstInGroupWithNoStat =
-          !(count === numberOfDecks || count <= techCardDeckInstanceMax) &&
           cardCounts.at(idx - 1)?.count === numberOfDecks &&
           cardCounts.at(idx - 1)?.count !== count;
 

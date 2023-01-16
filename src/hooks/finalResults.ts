@@ -256,7 +256,6 @@ export const useCardCounts = (
     },
     []
   );
-  console.log(cardCounts)
 
   const cardCountsSorted = cardCounts.sort((a, b) => {
     if (a.count > b.count) return -1;
