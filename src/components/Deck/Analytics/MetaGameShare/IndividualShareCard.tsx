@@ -17,6 +17,7 @@ import { Deck } from '../../../../../types/tournament';
 import { fixPercentage } from '../../ListViewer/CardViewer.tsx/helpers';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { getNumberOfDecks } from './helpers';
+import { ShareStat } from './ShareStat';
 
 export const IndividualShareCard = memo(
   ({
@@ -54,17 +55,7 @@ export const IndividualShareCard = memo(
           <Stack direction={'column'} alignItems={'baseline'}>
             <HStack>
               <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-              <Stat>
-                <StatNumber>{fixPercentage(metaShare * 100)}%</StatNumber>
-                {metaShareDiff && (
-                  <StatHelpText>
-                    <StatArrow
-                      type={metaShareDiff >= 0 ? 'increase' : 'decrease'}
-                    />
-                    {fixPercentage(metaShareDiff * 100)}%
-                  </StatHelpText>
-                )}
-              </Stat>
+              <ShareStat metaShare={metaShare} metaShareDiff={metaShareDiff} />
             </HStack>
             <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
               <Heading color='gray.700' size={'sm'}>
