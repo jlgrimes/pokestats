@@ -8,17 +8,30 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useState } from 'react';
 import { FilterMenu } from '../../src/components/common/FilterMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
 import { DeckFilterBody } from '../../src/components/Deck/Analytics/Filter/DeckFilterBody';
 import { useStoredDecks } from '../../src/hooks/finalResults';
+import { fetchTournaments } from '../../src/hooks/tournaments';
 
-export default function DecksPage() {
-  const decks = useStoredDecks({ tournamentRange: [34] });
+export default function DecksPage({
+  defaultTournamentRange,
+}: {
+  defaultTournamentRange: number[];
+}) {
+  const [tournamentRange, setTournamentRange] = useState(
+    defaultTournamentRange
+  );
+  const decks = useStoredDecks({ tournamentRange });
   return (
     <Stack>
       <FilterMenu>
-        <DeckFilterBody />
+        <DeckFilterBody
+          tournamentFilter={tournamentRange}
+          setTournamentFilter={setTournamentRange}
+          defaultTournamentRange={defaultTournamentRange}
+        />
       </FilterMenu>
       <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
         {decks.map(({ deck, count }) => {
@@ -64,8 +77,14 @@ export default function DecksPage() {
 }
 
 export async function getStaticProps() {
+  const tournaments = await fetchTournaments({ prefetch: true });
   return {
-    props: {},
+    props: {
+      defaultTournamentRange: [
+        parseInt(tournaments[0].id),
+        parseInt(tournaments[tournaments.length - 1].id),
+      ],
+    },
     revalidate: 10,
   };
 }

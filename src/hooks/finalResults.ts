@@ -38,21 +38,33 @@ export const fetchUniqueDecks = async () => {
 
 export const fetchDeckCounts = async (options?: {
   tournamentRange?: number[];
-}): Promise<Record<number, number>> => {
+}) => {
   const res = await supabase
     .from('Final Results')
     .select(`deck_archetype,tournament_id`)
     .not('deck_archetype', 'is', null);
 
-  let decks: { deck_archetype: number; tournament_id: string }[] =
-    res.data ?? [];
-  console.log(decks)
-  if (options?.tournamentRange) {
+  return res.data;
+};
+
+export const useStoredDecks = (options?: {
+  tournamentRange?: number[];
+}): {
+  deck: Deck;
+  count: number;
+}[] => {
+  const { data: archetypes } = useArchetypes();
+
+  let { data: decks } = useQuery({
+    queryKey: ['decks-with-lists'],
+    queryFn: () => fetchDeckCounts(options),
+  });
+
+  if (decks && options?.tournamentRange) {
     decks = filterFinalResultsByTournament(decks, options.tournamentRange);
   }
-  console.log(decks)
 
-  const deckCounts = decks.reduce((acc: Record<number, number>, curr) => {
+  const deckCounts = decks?.reduce((acc: Record<number, number>, curr) => {
     if (acc[curr.deck_archetype]) {
       return {
         ...acc,
@@ -65,22 +77,6 @@ export const fetchDeckCounts = async (options?: {
       [curr.deck_archetype]: 1,
     };
   }, {});
-
-  return deckCounts;
-};
-
-export const useStoredDecks = (options?: {
-  tournamentRange?: number[];
-}): {
-  deck: Deck;
-  count: number;
-}[] => {
-  const { data: archetypes } = useArchetypes();
-
-  const { data: deckCounts } = useQuery({
-    queryKey: ['decks-with-lists'],
-    queryFn: () => fetchDeckCounts(options),
-  });
 
   if (deckCounts) {
     return Object.entries(deckCounts)
