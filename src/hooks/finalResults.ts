@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../types/final-results';
-import { Card, Deck, Standing } from '../../types/tournament';
-import { getCardCount } from '../components/Deck/ListViewer/CardViewer.tsx/helpers';
+import { DeckCard, Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { useArchetypes } from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
@@ -225,7 +224,7 @@ export const useCardCounts = (
   if (!deckStandings) return [];
 
   const cardCounts = deckStandings?.reduce(
-    (acc: Record<string, { card: Card; count: number }>, deck) => {
+    (acc: Record<string, { card: DeckCard; count: number }>, deck) => {
       let cardMap = acc;
 
       if (deck.deck_list) {
@@ -253,9 +252,9 @@ export const useCardCounts = (
     {}
   );
 
-  const cardCountsSorted = Object.entries(cardCounts).sort((a, b) => {
-    if (a[1].count > b[1].count) return -1;
-    if (b[1].count < a[1].count) return 1;
+  const cardCountsSorted = Object.values(cardCounts).sort((a, b) => {
+    if (a.count > b.count) return -1;
+    if (b.count < a.count) return 1;
     return 0;
   });
 

@@ -1,6 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { Card, Deck } from '../../types/tournament';
-import { LiveResults } from '../lib/fetch/fetchLiveResults';
 
 export const useCodeToSetMap = (): Record<string, string> => {
   const { data: sets } = useQuery({

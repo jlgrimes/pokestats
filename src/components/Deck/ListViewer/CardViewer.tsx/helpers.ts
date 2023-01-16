@@ -1,7 +1,7 @@
-import { Card, DeckList } from '../../../../../types/tournament';
+import { DeckCard, DeckList } from '../../../../../types/tournament';
 import { getCompressedList } from '../helpers';
 
-export const listContainsCard = (list: DeckList, card: Card) => {
+export const listContainsCard = (list: DeckList, card: DeckCard) => {
   const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
 
   return listKeys.some(supertype =>
@@ -9,8 +9,8 @@ export const listContainsCard = (list: DeckList, card: Card) => {
   );
 };
 
-export const getCardCount = (list: DeckList, card: Card) => {
-  const compressedList: Card[] = getCompressedList(list);
+export const getCardCount = (list: DeckList, card: DeckCard) => {
+  const compressedList: DeckCard[] = getCompressedList(list);
 
   return compressedList.find(({ name }) => name === card.name)?.count ?? 0;
 };

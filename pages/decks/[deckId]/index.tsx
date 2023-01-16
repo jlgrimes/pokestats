@@ -1,7 +1,7 @@
 import { Button, Stack } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { BackToDecksButton } from '../../../src/components/Deck/Analytics/BackToDecksButton';
-import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts';
+import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts/CardCounts';
 import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { DeckFinishes } from '../../../src/components/Deck/Analytics/DeckFinishes';
 import { DeckVariants } from '../../../src/components/Deck/Analytics/DeckVariants';

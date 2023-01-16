@@ -1,4 +1,4 @@
-import { Card, DeckList } from '../../../../types/tournament';
+import { DeckCard, DeckList } from '../../../../types/tournament';
 
 export const getCardImageUrl = (
   card: {
@@ -27,7 +27,7 @@ export const getCardImageUrl = (
   }.png`;
 };
 
-const flattenOutEnergies = (card: Card) => {
+const flattenOutEnergies = (card: DeckCard) => {
   const numPiles = Math.ceil(card.count / 4);
   const lastPileCount = card.count % 4 === 0 ? 4 : card.count % 4;
 
@@ -41,9 +41,9 @@ export const getCompressedList = (deckList: DeckList) => {
   const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
 
   return listKeys.reduce(
-    (acc: Card[], superclass) => [
+    (acc: DeckCard[], superclass) => [
       ...acc,
-      ...deckList[superclass].reduce((acc: Card[], card: Card) => {
+      ...deckList[superclass].reduce((acc: DeckCard[], card: DeckCard) => {
         if (card.count > 4) {
           return [...acc, ...flattenOutEnergies(card)];
         }
@@ -70,5 +70,5 @@ export const getCompressedList = (deckList: DeckList) => {
   );
 };
 
-export const getCardSlug = (card: Card) =>
+export const getCardSlug = (card: DeckCard) =>
   `${card.name.toLowerCase().split(' ').join('-')}-${card.set.toLowerCase()}`;

@@ -1,4 +1,4 @@
-import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts';
+import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts/CardCounts';
 import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { fetchArchetype } from '../../../src/hooks/deckArchetypes';
 import {

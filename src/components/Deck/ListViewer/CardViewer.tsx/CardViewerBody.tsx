@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { memo, useCallback } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
-import { Card, Deck, Tournament } from '../../../../../types/tournament';
+import { DeckCard, Deck, Tournament } from '../../../../../types/tournament';
 import { useDay2Decks } from '../../../../hooks/day2decks';
 import { useCodeToSetMap } from '../../../../hooks/deckList';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
@@ -23,7 +23,7 @@ export const CardViewerBody = memo(
     tournament,
     deck,
   }: {
-    card: Card;
+    card: DeckCard;
     clearSelectedCard: () => void;
     tournament: Tournament;
     deck: Deck;

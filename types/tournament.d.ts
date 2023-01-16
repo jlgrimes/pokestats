@@ -1,6 +1,6 @@
 import { StoredPlayerProfile } from './player';
 
-export interface Card {
+export interface DeckCard {
   count: number;
   name: string;
   number: string;
@@ -20,9 +20,9 @@ export interface Deck {
 }
 
 export interface DeckList {
-  pokemon: Card[];
-  trainer: Card[];
-  energy: Card[];
+  pokemon: DeckCard[];
+  trainer: DeckCard[];
+  energy: DeckCard[];
 }
 
 export interface PlayerRecord {
