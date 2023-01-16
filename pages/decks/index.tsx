@@ -1,6 +1,7 @@
 import {
   Card,
   CardBody,
+  Checkbox,
   Grid,
   Heading,
   LinkBox,
@@ -11,6 +12,7 @@ import {
 import NextLink from 'next/link';
 import { useState } from 'react';
 import { FilterMenu } from '../../src/components/common/FilterMenu';
+import { OptionsMenu } from '../../src/components/common/OptionsMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { useStoredDecks } from '../../src/hooks/finalResults';
@@ -25,8 +27,8 @@ export default function DecksPage({
   tournaments: Tournament[] | undefined;
 }) {
   const [tournamentRange, setTournamentRange] = useState([
-    (tournaments?.length ?? 0),
-    (tournaments?.length ?? 0),
+    tournaments?.length ?? 0,
+    tournaments?.length ?? 0,
   ]);
   const decks = useStoredDecks({ tournamentRange });
 
@@ -47,9 +49,9 @@ export default function DecksPage({
           tournaments={tournaments}
         />
       </StackItem>
-      <Heading>
-        {startTournament?.date.start} - {endTournament?.date.start}
-      </Heading>
+      <OptionsMenu>
+        <Checkbox>Check</Checkbox>
+      </OptionsMenu>
       <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
         {decks.map(({ deck, count }) => {
           const metaShare = (count / decks.length) * 10;
