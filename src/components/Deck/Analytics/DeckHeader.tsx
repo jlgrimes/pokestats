@@ -52,7 +52,7 @@ export const DeckHeader = memo(
         <LinkBox>
           <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
             <HStack>
-              <Heading color='gray.500' size='md' letterSpacing={'wide'}>
+              <Heading color='gray.700' size='md' letterSpacing={'wide'}>
                 {deck.name}
               </Heading>
               <SpriteDisplay pokemonNames={deck.defined_pokemon} />
