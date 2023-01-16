@@ -19,7 +19,7 @@ export default function AboutPage() {
   );
 
   return (
-    <Stack spacing={12}>
+    <Stack spacing={12} padding={4}>
       <Stack spacing={6}>
         <Stack>
           <Heading size='md'>What is PokéStats Live?</Heading>
