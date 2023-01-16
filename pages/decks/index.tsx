@@ -6,6 +6,7 @@ import {
   LinkBox,
   LinkOverlay,
   Stack,
+  StackItem,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useState } from 'react';
@@ -14,25 +15,39 @@ import SpriteDisplay from '../../src/components/common/SpriteDisplay';
 import { DeckFilterBody } from '../../src/components/Deck/Analytics/Filter/DeckFilterBody';
 import { useStoredDecks } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
+import { Tournament } from '../../types/tournament';
 
 export default function DecksPage({
   defaultTournamentRange,
+  tournaments,
 }: {
   defaultTournamentRange: number[];
+  tournaments: Tournament[] | undefined;
 }) {
   const [tournamentRange, setTournamentRange] = useState(
     defaultTournamentRange
   );
   const decks = useStoredDecks({ tournamentRange });
+
+  const startTournament = tournaments?.find(
+    ({ id }) => parseInt(id) === tournamentRange[0]
+  );
+  const endTournament = tournaments?.find(
+    ({ id }) => parseInt(id) === tournamentRange[1]
+  );
+
   return (
     <Stack>
-      <FilterMenu>
+      <StackItem paddingX={4}>
         <DeckFilterBody
           tournamentFilter={tournamentRange}
           setTournamentFilter={setTournamentRange}
           defaultTournamentRange={defaultTournamentRange}
         />
-      </FilterMenu>
+      </StackItem>
+      <Heading>
+        {startTournament?.date.start} - {endTournament?.date.start}
+      </Heading>
       <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
         {decks.map(({ deck, count }) => {
           const metaShare = (count / decks.length) * 10;
@@ -87,6 +102,7 @@ export async function getStaticProps() {
         parseInt(tournaments[0].id),
         parseInt(tournaments[tournaments.length - 1].id),
       ],
+      tournaments,
     },
     revalidate: 10,
   };
