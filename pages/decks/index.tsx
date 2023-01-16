@@ -93,7 +93,7 @@ export default function DecksPage({
           return (
             <LinkBox key={deck.id}>
               <Card>
-                <CardBody>
+                <CardBody padding={4}>
                   <Stack direction={'column'} alignItems={'baseline'}>
                     <HStack>
                       <SpriteDisplay pokemonNames={deck.defined_pokemon} />

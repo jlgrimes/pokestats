@@ -1,17 +1,14 @@
 import {
   Heading,
-  RangeSlider,
-  RangeSliderFilledTrack,
-  RangeSliderMark,
-  RangeSliderThumb,
-  RangeSliderTrack,
+  LinkBox,
+  LinkOverlay,
   Slider,
   SliderFilledTrack,
-  SliderMark,
   SliderThumb,
   SliderTrack,
   Stack,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useState } from 'react';
 import { Tournament } from '../../../../../types/tournament';
 import { shortenTournamentName } from '../../../../lib/tournament';
@@ -67,16 +64,23 @@ export const TournamentSlider = ({
         </SliderMark> */}
       </Slider>
       <Stack spacing={1}>
-        <Heading size='lg' noOfLines={3} color='gray.800'>
-          {shortenTournamentName(
-            findTournament(tournamentFilter, tournaments) as Tournament
-          )}
-        </Heading>
-        <Heading size='md' noOfLines={1} color='gray.500'>
-          {formatTournamentDate(
-            findTournament(tournamentFilter, tournaments) as Tournament
-          )}
-        </Heading>
+        <LinkBox>
+          <LinkOverlay
+            as={NextLink}
+            href={`/tournaments/${findTournament(tournamentFilter, tournaments)?.id}/standings`}
+          >
+            <Heading size='lg' noOfLines={3} color='gray.800'>
+              {shortenTournamentName(
+                findTournament(tournamentFilter, tournaments) as Tournament
+              )}
+            </Heading>
+            <Heading size='md' noOfLines={1} color='gray.500'>
+              {formatTournamentDate(
+                findTournament(tournamentFilter, tournaments) as Tournament
+              )}
+            </Heading>
+          </LinkOverlay>
+        </LinkBox>
       </Stack>
     </Stack>
   );
