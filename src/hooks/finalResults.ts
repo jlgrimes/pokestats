@@ -1,10 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../types/final-results';
 import { Deck, Standing } from '../../types/tournament';
-import {
-  fetchPlayerDecks,
-  getPlayerDeckObjects,
-} from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 import { useArchetypes } from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
@@ -40,33 +36,42 @@ export const fetchUniqueDecks = async () => {
   return uniqueDecks;
 };
 
-export const fetchDeckCounts = async (): Promise<Record<number, number>> => {
+export const fetchDeckCounts = async (options?: {
+  tournamentRange?: number[];
+}): Promise<Record<number, number>> => {
   const res = await supabase
     .from('Final Results')
-    .select(`deck_archetype`)
+    .select(`deck_archetype,tournament_id`)
     .not('deck_archetype', 'is', null);
 
-  const deckCounts = (res.data ?? []).reduce(
-    (acc: Record<number, number>, curr) => {
-      if (acc[curr.deck_archetype]) {
-        return {
-          ...acc,
-          [curr.deck_archetype]: acc[curr.deck_archetype] + 1,
-        };
-      }
+  let decks: { deck_archetype: number; tournament_id: string }[] =
+    res.data ?? [];
+  console.log(decks)
+  if (options?.tournamentRange) {
+    decks = filterFinalResultsByTournament(decks, options.tournamentRange);
+  }
+  console.log(decks)
 
+  const deckCounts = decks.reduce((acc: Record<number, number>, curr) => {
+    if (acc[curr.deck_archetype]) {
       return {
         ...acc,
-        [curr.deck_archetype]: 1,
+        [curr.deck_archetype]: acc[curr.deck_archetype] + 1,
       };
-    },
-    {}
-  );
+    }
+
+    return {
+      ...acc,
+      [curr.deck_archetype]: 1,
+    };
+  }, {});
 
   return deckCounts;
 };
 
-export const useStoredDecks = (): {
+export const useStoredDecks = (options?: {
+  tournamentRange?: number[];
+}): {
   deck: Deck;
   count: number;
 }[] => {
@@ -74,7 +79,7 @@ export const useStoredDecks = (): {
 
   const { data: deckCounts } = useQuery({
     queryKey: ['decks-with-lists'],
-    queryFn: fetchDeckCounts,
+    queryFn: () => fetchDeckCounts(options),
   });
 
   if (deckCounts) {
@@ -120,6 +125,26 @@ export const fetchVerifiedUserTournaments = async () => {
   }));
 };
 
+const filterFinalResultsByTournament = (
+  finalResults: { tournament_id: string; deck_archetype: number }[],
+  tournamentRange: number[]
+) => {
+  const lowerBound = tournamentRange[0];
+  const upperBound = tournamentRange.length > 0 ? tournamentRange[1] : null;
+
+  return finalResults?.filter(({ tournament_id }) => {
+    if (parseInt(tournament_id) < lowerBound) {
+      return false;
+    }
+
+    if (upperBound && parseInt(tournament_id) > upperBound) {
+      return false;
+    }
+
+    return true;
+  });
+};
+
 export const fetchFinalResults = async (
   filters?: FinalResultsFilters
 ): Promise<Standing[] | null | undefined> => {
@@ -163,7 +188,7 @@ export const fetchFinalResults = async (
     );
   }
 
-  return finalResultsData?.map(finalResult => {
+  let mappedFinalResults = finalResultsData?.map(finalResult => {
     const userReportedDeck = userReportedDecks?.find(
       deck => finalResult.tournament_id === deck.tournament_id
     );
@@ -183,6 +208,8 @@ export const fetchFinalResults = async (
       },
     };
   });
+
+  return mappedFinalResults;
 };
 
 export const useFinalResults = (filters?: FinalResultsFilters) => {
