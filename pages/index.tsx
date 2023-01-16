@@ -25,7 +25,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Stack>
-        <CommonCard header='Tournaments' slug='/tournaments'>
+        <CommonCard slug='/tournaments'>
           <TournamentList tournaments={tournaments} mostRecent />
         </CommonCard>
       </Stack>
