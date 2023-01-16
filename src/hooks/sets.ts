@@ -22,10 +22,16 @@ export interface TournamentOrSet {
   data: Record<string, any>;
 }
 
-export const useTournamentRender = (tournaments: Tournament[]) => {
+export const useTournamentRender = (
+  tournaments: Tournament[]
+): TournamentOrSet[] => {
   const sets = useSets();
 
-  if (!sets.data) return tournaments;
+  if (!sets.data)
+    return tournaments.map(tournament => ({
+      type: 'tournament',
+      data: tournament,
+    }));
 
   const parsedSets: any[] = sets.data
     ?.sort((a: Record<string, any>, b: Record<string, any>) => {
