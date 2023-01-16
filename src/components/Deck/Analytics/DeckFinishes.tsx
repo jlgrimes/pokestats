@@ -1,4 +1,4 @@
-import { Button, Grid, GridItem, Heading, Link, Stack } from '@chakra-ui/react';
+import { Button, Divider, Grid, GridItem, Heading, Link, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, memo } from 'react';
@@ -22,7 +22,7 @@ export const DeckFinishes = memo(
     const mostRecentTournamentId = deckStandings?.[0]?.tournamentId;
 
     return (
-      <Grid gridTemplateColumns='2.1rem repeat(3, auto)' alignItems='center'>
+      <Grid gridTemplateColumns='2.1rem repeat(2, auto) 2.1rem' alignItems='center'>
         {tournaments &&
           deckStandings
             ?.filter(standing =>
@@ -69,6 +69,7 @@ export const DeckFinishes = memo(
                     tournament={tournament}
                     hideArchetype
                   />
+                  <Divider gridColumn={'1/-1'} />
                 </Fragment>
               );
             })}
