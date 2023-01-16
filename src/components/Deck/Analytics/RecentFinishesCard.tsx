@@ -5,10 +5,12 @@ import { DeckFinishes } from './DeckFinishes';
 export const RecentFinishesCard = ({ deck }: { deck: Deck }) => {
   return (
     <Card>
-      <CardHeader paddingX={4} paddingBottom={0}>
-        <Heading color='gray.700' size='md'>Recent finishes</Heading>
+      <CardHeader paddingX={4} paddingBottom={2}>
+        <Heading color='gray.700' size='md'>
+          Recent finishes
+        </Heading>
       </CardHeader>
-      <CardBody padding={4}>
+      <CardBody paddingX={4} paddingY={2}>
         <DeckFinishes deck={deck} onlyShowRecent />
       </CardBody>
     </Card>
