@@ -17,8 +17,8 @@ export const getCardCount = (list: DeckList, card: Card) => {
 
 export const fixPercentage = (percentNumber: number) => {
   if ((percentNumber * 100) % 100 === 0) {
-    return percentNumber.toFixed(0);
+    return Math.abs(percentNumber).toFixed(0);
   }
 
-  return percentNumber.toFixed(2);
+  return Math.abs(percentNumber).toFixed(1);
 };

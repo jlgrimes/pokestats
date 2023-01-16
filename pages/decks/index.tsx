@@ -24,6 +24,7 @@ import { OptionsMenu } from '../../src/components/common/OptionsMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
+import { fixPercentage } from '../../src/components/Deck/ListViewer/CardViewer.tsx/helpers';
 import { useStoredDecks } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Deck, Tournament } from '../../types/tournament';
@@ -82,8 +83,10 @@ export default function DecksPage({
               : null;
 
           const previousMetaShare =
-            (previousMetaDeck?.count ?? 0) / getNumberOfDecks(previousDecks);
-          const metaShareDiff = previousMetaShare === 0 ? 1 : (metaShare - previousMetaShare);
+            (previousMetaDeck?.count ?? 0) /
+            (previousDecks.length > 0 ? getNumberOfDecks(previousDecks) : 1);
+          const metaShareDiff =
+            previousMetaShare === 0 ? 1 : metaShare - previousMetaShare;
 
           if (!deck?.id) return null;
 
@@ -96,7 +99,7 @@ export default function DecksPage({
                       <SpriteDisplay pokemonNames={deck.defined_pokemon} />
                       <Stat>
                         <StatNumber>
-                          {Math.abs(metaShare * 100).toFixed(2)}%
+                          {fixPercentage(metaShare * 100)}%
                         </StatNumber>
                         {metaShareDiff && (
                           <StatHelpText>
@@ -105,7 +108,7 @@ export default function DecksPage({
                                 metaShareDiff >= 0 ? 'increase' : 'decrease'
                               }
                             />
-                            {Math.abs(metaShareDiff * 100).toFixed(2)}%
+                            {fixPercentage(metaShareDiff * 100)}%
                           </StatHelpText>
                         )}
                       </Stat>
