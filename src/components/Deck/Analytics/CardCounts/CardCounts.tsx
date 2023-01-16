@@ -32,7 +32,7 @@ export const CardCounts = ({
   const shouldGroup = (count: number) =>
     count === numberOfDecks || count <= techCardDeckInstanceMax;
   // Don't call any cards outside of this "techs"
-  const popularTechBound = [0.5, 0.95];
+  const popularTechBound = [0, 0.95];
 
   return (
     <Grid gridTemplateColumns={`repeat(${onlyPopularTechs ? 3 : 4}, 1fr)`}>
@@ -40,10 +40,10 @@ export const CardCounts = ({
         .filter(card =>
           onlyPopularTechs
             ? !shouldGroup(card.count) &&
-              card.count / numberOfDecks > popularTechBound[0] &&
               card.count / numberOfDecks < popularTechBound[1]
             : true
         )
+        .slice(0, onlyPopularTechs ? 9 : undefined)
         .map(({ card, count }, idx) => {
           const isInGroup =
             (count === numberOfDecks || count <= techCardDeckInstanceMax) &&
