@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
   Card,
   CardHeader,
@@ -38,17 +39,17 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
 
   return (
     <LinkBox>
-      <Card>
-        <Stack padding='1rem 1.5rem' spacing={1}>
-          <LinkOverlay
-            as={NextLink}
-            href={
-              linkShouldGoToRK9
-                ? getRK9TournamentUrl(tournament.rk9link)
-                : `/tournaments/${tournament.id}/standings`
-            }
-            isExternal={linkShouldGoToRK9}
-          >
+      <LinkOverlay
+        as={NextLink}
+        href={
+          linkShouldGoToRK9
+            ? getRK9TournamentUrl(tournament.rk9link)
+            : `/tournaments/${tournament.id}/standings`
+        }
+        isExternal={linkShouldGoToRK9}
+      >
+        <Card>
+          <Stack padding='1rem 1.5rem' spacing={1}>
             <Heading size='sm' color='gray.700'>
               {tournament.name}{' '}
               <Badge {...getTournamentStatusBadgeProps(tournament)}>
@@ -58,15 +59,17 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
                 <Icon
                   color='gray.700'
                   mx={2}
-                  boxSize={3}
-                  as={FaExternalLinkAlt}
+                  boxSize={4}
+                  as={ExternalLinkIcon}
                 />
               )}
             </Heading>
-            <Text fontSize={'sm'}>{formatTournamentDate(tournament)}</Text>
-          </LinkOverlay>
-        </Stack>
-      </Card>
+            <Heading size={'xs'} color='gray.500'>
+              {formatTournamentDate(tournament)}
+            </Heading>
+          </Stack>
+        </Card>
+      </LinkOverlay>
     </LinkBox>
   );
 };

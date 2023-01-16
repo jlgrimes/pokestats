@@ -2,9 +2,8 @@ import { Tournament } from '../../../types/tournament';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Icon, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaExternalLinkSquareAlt } from 'react-icons/fa';
 import { getRK9TournamentUrl } from './helpers';
-
 
 export const RK9TournamentLink = ({
   tournament,
@@ -17,7 +16,7 @@ export const RK9TournamentLink = ({
       href={getRK9TournamentUrl(tournament.rk9link)}
       isExternal
     >
-      <Icon as={FaExternalLinkAlt} mx='8px' boxSize={4} />
+      <Icon as={ExternalLinkIcon} mx='8px' boxSize={4} />
     </Link>
   );
 };
