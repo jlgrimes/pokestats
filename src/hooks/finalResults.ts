@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../types/final-results';
-import { Deck, Standing } from '../../types/tournament';
+import { Card, Deck, Standing } from '../../types/tournament';
+import { getCardCount } from '../components/Deck/ListViewer/CardViewer.tsx/helpers';
 import supabase from '../lib/supabase/client';
 import { useArchetypes } from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
+import { getCompressedList } from '../components/Deck/ListViewer/helpers';
 
 interface FinalResultsFilters {
   tournamentId?: string;
@@ -36,9 +38,7 @@ export const fetchUniqueDecks = async () => {
   return uniqueDecks;
 };
 
-export const fetchDeckCounts = async (options?: {
-  tournamentRange?: number[];
-}) => {
+export const fetchDecksWithLists = async () => {
   const res = await supabase
     .from('Final Results')
     .select(`deck_archetype,tournament_id`)
@@ -57,7 +57,7 @@ export const useStoredDecks = (options?: {
 
   let { data: decks } = useQuery({
     queryKey: ['decks-with-lists'],
-    queryFn: () => fetchDeckCounts(options),
+    queryFn: () => fetchDecksWithLists(),
   });
 
   if (decks && options?.tournamentRange) {
@@ -214,4 +214,48 @@ export const useFinalResults = (filters?: FinalResultsFilters) => {
     queryKey: ['final-results', ...Object.entries(filters ?? [])],
     queryFn: () => fetchFinalResults(filters),
   });
+};
+
+export const useCardCounts = (
+  deck: Deck,
+  options?: { countCopies?: boolean }
+) => {
+  const { data: deckStandings } = useFinalResults({ deckId: deck.id });
+
+  if (!deckStandings) return [];
+
+  const cardCounts = deckStandings?.reduce(
+    (acc: Record<string, number>, deck) => {
+      let cardMap = acc;
+
+      if (deck.deck_list) {
+        const compressedList = getCompressedList(deck.deck_list);
+
+        for (const card of compressedList) {
+          if (cardMap[card.name]) {
+            cardMap[card.name] =
+              cardMap[card.name] + (options?.countCopies ? card.count : 1);
+          } else {
+            cardMap[card.name] = options?.countCopies ? card.count : 1;
+          }
+        }
+      }
+
+      return cardMap;
+    },
+    {}
+  );
+
+  const cardCountsSorted = Object.entries(cardCounts).sort((a, b) => {
+    if (a[0] > b[0]) return -1;
+    if (b[0] < a[0]) return 1;
+    return 0;
+  });
+
+  return cardCountsSorted;
+};
+
+export const useTechs = (deck: Deck) => {
+  const cardCounts = useCardCounts(deck);
+  return cardCounts;
 };
