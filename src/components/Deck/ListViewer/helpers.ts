@@ -51,7 +51,9 @@ export const getCompressedList = (deckList: DeckList) => {
         const sameCardIdx = acc.findIndex(
           pushedCard =>
             pushedCard.name === card.name &&
-            (pushedCard.set === card.set || card.set.includes('PR'))
+            (pushedCard.set === card.set ||
+              card.set.includes('PR') ||
+              pushedCard.set.includes('PR'))
         );
         if (sameCardIdx >= 0) {
           acc[sameCardIdx] = {
