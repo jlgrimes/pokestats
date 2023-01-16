@@ -13,7 +13,7 @@ export const DeckAnalyticsContainer = ({
   compactTitle?: boolean;
 }) => (
   <Stack>
-    <BackToDecksButton />
+    {!compactTitle && <BackToDecksButton />}
     <DeckHeader deck={deck} compact={compactTitle} />
     {children}
   </Stack>

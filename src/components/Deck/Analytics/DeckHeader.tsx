@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 import {
   Heading,
   HStack,
+  Icon,
   Image,
   LinkBox,
   LinkOverlay,
@@ -13,6 +14,8 @@ import { DeckCard, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
 import { useFinalResults } from '../../../hooks/finalResults';
 import SpriteDisplay from '../../common/SpriteDisplay';
+import { BackToDecksButton } from './BackToDecksButton';
+import { FaChevronLeft } from 'react-icons/fa';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
@@ -52,6 +55,7 @@ export const DeckHeader = memo(
         <LinkBox>
           <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
             <HStack>
+              <Icon as={FaChevronLeft} />
               <Heading color='gray.700' size='md' letterSpacing={'wide'}>
                 {deck.name}
               </Heading>

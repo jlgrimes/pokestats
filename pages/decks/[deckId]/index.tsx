@@ -1,9 +1,5 @@
-import { Button, Heading, Stack } from '@chakra-ui/react';
 import { Fragment } from 'react';
-import { BackToDecksButton } from '../../../src/components/Deck/Analytics/BackToDecksButton';
-import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts/CardCounts';
 import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/DeckAnalyticsContainer';
-import { DeckFinishes } from '../../../src/components/Deck/Analytics/DeckFinishes';
 import { DeckVariants } from '../../../src/components/Deck/Analytics/DeckVariants';
 import { PopularTechsCard } from '../../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../../src/components/Deck/Analytics/RecentFinishesCard';
