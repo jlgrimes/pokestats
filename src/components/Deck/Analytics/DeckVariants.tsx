@@ -21,7 +21,7 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
 
   return (
     <HStack flexWrap={'wrap'} rowGap={1}>
-      <Heading size='sm' color='gray.500'>
+      <Heading size='sm' color='gray.600' fontWeight='medium'>
         {deck.supertype} variants:
       </Heading>
       {variantsExcludingSelf.map(variant => (
