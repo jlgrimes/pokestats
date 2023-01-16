@@ -1,6 +1,7 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
+import { SeeMoreButton } from '../src/components/Deck/Analytics/SeeMoreButton';
 import { TournamentList } from '../src/components/TournamentList/TournamentList';
 import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
@@ -21,7 +22,11 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
         <meta name='description' content='Pokestats' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <TournamentList tournaments={tournaments} />
+      <TournamentList
+        tournaments={tournaments}
+        statusFilter={['running', 'not-started']}
+      />
+      <SeeMoreButton slug='/tournaments' />
     </div>
   );
 }

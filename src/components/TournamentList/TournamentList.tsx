@@ -13,9 +13,12 @@ export const TournamentList = ({
   let items = useTournamentRender(tournaments);
 
   if (statusFilter) {
-    items = items?.filter(tournament =>
-      statusFilter.includes(tournament.data.tournamentStatus)
-    );
+    items = items?.filter(tournament => {
+      return statusFilter.some(
+        filter => tournament.data.tournamentStatus === filter
+      );
+    });
+    console.log(items)
   }
 
   return (
