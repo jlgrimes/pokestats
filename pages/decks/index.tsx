@@ -72,7 +72,7 @@ export default function DecksPage({
       </OptionsMenu>
       <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
         {decks.map(({ deck, count }, idx) => {
-          const metaShare = (count / getNumberOfDecks(decks)) * 100;
+          const metaShare = count / getNumberOfDecks(decks);
 
           const previousMetaDeck =
             tournamentRange[0] === tournamentRange[1]
@@ -82,10 +82,8 @@ export default function DecksPage({
               : null;
 
           const previousMetaShare =
-            tournamentRange[0] === tournamentRange[1] &&
-            (previousMetaDeck?.count ?? 0 / getNumberOfDecks(previousDecks));
-          const metaShareDiff =
-            previousMetaShare && metaShare - previousMetaShare;
+            (previousMetaDeck?.count ?? 0) / getNumberOfDecks(previousDecks);
+          const metaShareDiff = previousMetaShare === 0 ? 1 : (metaShare - previousMetaShare);
 
           if (!deck?.id) return null;
 
@@ -97,11 +95,17 @@ export default function DecksPage({
                     <HStack>
                       <SpriteDisplay pokemonNames={deck.defined_pokemon} />
                       <Stat>
-                        <StatNumber>{metaShare.toFixed(2)}%</StatNumber>
+                        <StatNumber>
+                          {Math.abs(metaShare * 100).toFixed(2)}%
+                        </StatNumber>
                         {metaShareDiff && (
                           <StatHelpText>
-                            <StatArrow type={metaShareDiff >= 0 ? 'increase' : 'decrease' } />
-                            {Math.abs(metaShareDiff).toFixed(2)}%
+                            <StatArrow
+                              type={
+                                metaShareDiff >= 0 ? 'increase' : 'decrease'
+                              }
+                            />
+                            {Math.abs(metaShareDiff * 100).toFixed(2)}%
                           </StatHelpText>
                         )}
                       </Stat>
