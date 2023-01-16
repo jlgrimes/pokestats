@@ -29,26 +29,6 @@ export const IndividualShareCard = memo(
     count: number;
     tournamentRange: number[];
   }) => {
-    const decks = useStoredDecks({ tournamentRange });
-    const previousDecks = useStoredDecks({
-      tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
-    });
-
-    const metaShare = count / getNumberOfDecks(decks);
-
-    const previousMetaDeck =
-      tournamentRange[0] === tournamentRange[1]
-        ? previousDecks.find(
-            ({ deck: previousDeck }) => previousDeck.id === deck.id
-          )
-        : null;
-
-    const previousMetaShare =
-      (previousMetaDeck?.count ?? 0) /
-      (previousDecks.length > 0 ? getNumberOfDecks(previousDecks) : 1);
-    const metaShareDiff =
-      previousMetaShare === 0 ? 1 : metaShare - previousMetaShare;
-
     return (
       <Card>
         <CardBody padding={4}>
