@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react';
 import {
+  Button,
   Heading,
   HStack,
   Icon,
@@ -14,13 +15,14 @@ import { DeckCard, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
 import { useFinalResults } from '../../../hooks/finalResults';
 import SpriteDisplay from '../../common/SpriteDisplay';
-import { BackToDecksButton } from './BackToDecksButton';
 import { FaChevronLeft } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
     const { data: deckStandings } = useFinalResults({ deckId: deck.id });
     const codeToSetMap = useCodeToSetMap();
+    const router = useRouter();
 
     const identifiableCards = useMemo(
       () =>
@@ -52,17 +54,21 @@ export const DeckHeader = memo(
 
     if (compact) {
       return (
-        <LinkBox>
-          <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
-            <HStack>
-              <Icon as={FaChevronLeft} />
-              <Heading color='gray.700' size='md' letterSpacing={'wide'}>
-                {deck.name}
-              </Heading>
-              <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-            </HStack>
-          </LinkOverlay>
-        </LinkBox>
+        <Button
+          variant={'ghost'}
+          size='sm'
+          leftIcon={<FaChevronLeft />}
+          onClick={() => router.push(`/decks/${deck.id}`)}
+          paddingLeft={0}
+          justifyContent='start'
+        >
+          <HStack>
+            <Heading color='gray.700' size='md' letterSpacing={'wide'}>
+              {deck.name}
+            </Heading>
+            <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+          </HStack>
+        </Button>
       );
     }
 
