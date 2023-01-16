@@ -6,8 +6,10 @@ import {
   Heading,
   LinkBox,
   LinkOverlay,
+  MenuItemOption,
   Stack,
   StackItem,
+  Switch,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useState } from 'react';
@@ -15,6 +17,7 @@ import { FilterMenu } from '../../src/components/common/FilterMenu';
 import { OptionsMenu } from '../../src/components/common/OptionsMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
+import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
 import { useStoredDecks } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
@@ -30,31 +33,37 @@ export default function DecksPage({
     tournaments?.length ?? 0,
     tournaments?.length ?? 0,
   ]);
+  const [showRange, setShowRange] = useState(false);
   const decks = useStoredDecks({ tournamentRange });
-
-  const startTournament = tournaments?.find(
-    ({ id }) => parseInt(id) === tournamentRange[0]
-  );
-  const endTournament = tournaments?.find(
-    ({ id }) => parseInt(id) === tournamentRange[1]
-  );
 
   return (
     <Stack>
       <StackItem paddingX={4}>
-        <DateRangeSlider
-          tournamentFilter={tournamentRange}
-          setTournamentFilter={setTournamentRange}
-          defaultTournamentRange={defaultTournamentRange}
-          tournaments={tournaments}
-        />
+        {showRange ? (
+          <DateRangeSlider
+            tournamentFilter={tournamentRange}
+            setTournamentFilter={setTournamentRange}
+            defaultTournamentRange={defaultTournamentRange}
+            tournaments={tournaments}
+          />
+        ) : (
+          <TournamentSlider
+            tournamentFilter={tournamentRange[0]}
+            setTournamentFilter={num => setTournamentRange([num, num])}
+            defaultTournamentRange={defaultTournamentRange}
+            tournaments={tournaments}
+          />
+        )}
       </StackItem>
       <OptionsMenu>
-        <Checkbox>Check</Checkbox>
+        <Switch></Switch>
       </OptionsMenu>
       <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
         {decks.map(({ deck, count }) => {
           const metaShare = (count / decks.length) * 10;
+
+          if (!deck?.id) return null;
+
           return (
             <LinkBox
               {...(metaShare > 25 ? { gridColumn: '1/3' } : {})}

@@ -7,6 +7,8 @@ import {
   RangeSliderTrack,
   Slider,
   SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
   SliderTrack,
   Stack,
 } from '@chakra-ui/react';
@@ -48,29 +50,22 @@ export const TournamentSlider = ({
         <SliderTrack bg='red.100'>
           <SliderFilledTrack bg='tomato' />
         </SliderTrack>
-        <RangeSliderThumb
+        <SliderThumb
           boxSize={6}
-          index={0}
           defaultValue={defaultTournamentRange[0]}
         />
-        <RangeSliderThumb
-          boxSize={6}
-          index={1}
-          defaultValue={defaultTournamentRange[1]}
-        />
-        <RangeSliderMark
+        {/* <SliderMark
           value={slider as unknown as number}
           textAlign='center'
           bg='blue.500'
           color='white'
           mt='10'
-          ml={(-150 * (slider ?? 0)) / (tournaments?.length ?? 1)}
-          maxWidth='150'
-          height='100'
+          ml={(-80 * (slider ?? 0)) / (tournaments?.length ?? 1)}
+          maxWidth='80'
           zIndex={50}
         >
           {slider ? findTournamentDate(slider) : null}
-        </RangeSliderMark>
+        </SliderMark> */}
       </Slider>
       <Heading>{findTournament(tournamentFilter, tournaments)?.name}</Heading>
     </Stack>
