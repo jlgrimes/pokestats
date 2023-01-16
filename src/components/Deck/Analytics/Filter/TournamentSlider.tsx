@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Tournament } from '../../../../../types/tournament';
+import { shortenTournamentName } from '../../../../lib/tournament';
 import { findTournament } from './helpers';
 
 export const TournamentSlider = ({
@@ -67,7 +68,7 @@ export const TournamentSlider = ({
           {slider ? findTournamentDate(slider) : null}
         </SliderMark> */}
       </Slider>
-      <Heading>{findTournament(tournamentFilter, tournaments)?.name}</Heading>
+      <Heading size='lg' noOfLines={3}>{shortenTournamentName(findTournament(tournamentFilter, tournaments) as Tournament)}</Heading>
     </Stack>
   );
 };
