@@ -80,9 +80,12 @@ export default function DecksPage({
                   ({ deck: previousDeck }) => previousDeck.id === deck.id
                 )
               : null;
+
           const previousMetaShare =
             tournamentRange[0] === tournamentRange[1] &&
-            (previousMetaDeck?.count ?? 0 / getNumberOfDecks(previousDecks)) * 100;
+            (previousMetaDeck?.count ?? 0 / getNumberOfDecks(previousDecks));
+          const metaShareDiff =
+            previousMetaShare && metaShare - previousMetaShare;
 
           if (!deck?.id) return null;
 
@@ -95,10 +98,12 @@ export default function DecksPage({
                       <SpriteDisplay pokemonNames={deck.defined_pokemon} />
                       <Stat>
                         <StatNumber>{metaShare.toFixed(2)}%</StatNumber>
-                        <StatHelpText>
-                          <StatArrow type='increase' />
-                          {previousMetaShare}%
-                        </StatHelpText>
+                        {metaShareDiff && (
+                          <StatHelpText>
+                            <StatArrow type={metaShareDiff >= 0 ? 'increase' : 'decrease' } />
+                            {Math.abs(metaShareDiff).toFixed(2)}%
+                          </StatHelpText>
+                        )}
                       </Stat>
                     </HStack>
                     <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
