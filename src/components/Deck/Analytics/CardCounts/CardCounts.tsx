@@ -1,9 +1,12 @@
 import {
-  Card,
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
   Grid,
   GridItem,
-  HStack,
-  Image,
   StackItem,
   Stat,
   StatNumber,
@@ -21,7 +24,7 @@ export const CardCounts = ({
   deck: Deck;
   onlyPopularTechs?: boolean;
 }) => {
-  const cardCounts = useCardCounts(deck);
+  let cardCounts = useCardCounts(deck);
   // This is assuming each archetype unanimously runs a card.
   // If this isn't the case, you need to redefine what the archetype is.
   const numberOfDecks = cardCounts[0]?.count;
@@ -34,78 +37,121 @@ export const CardCounts = ({
   // Don't call any cards outside of this "techs"
   const popularTechBound = [0, 0.95];
 
-  return (
-    <Grid gridTemplateColumns={`repeat(${onlyPopularTechs ? 3 : 4}, 1fr)`}>
-      {cardCounts
-        .filter(card =>
-          onlyPopularTechs
-            ? !shouldGroup(card.count) &&
-              card.count / numberOfDecks < popularTechBound[1]
-            : true
-        )
-        .slice(0, onlyPopularTechs ? 9 : undefined)
-        .map(({ card, count }, idx) => {
-          const isInGroup =
-            (count === numberOfDecks || count <= techCardDeckInstanceMax) &&
-            (cardCounts.at(idx + 1)?.count === count ||
-              cardCounts.at(idx - 1)?.count === count);
-          const firstInGroup =
-            (count === numberOfDecks || count <= techCardDeckInstanceMax) &&
-            cardCounts.at(idx + 1)?.count === count &&
-            cardCounts.at(idx - 1)?.count !== count;
+  const cardsInAllDecks = cardCounts.filter(
+    cardCount => cardCount.count === numberOfDecks
+  );
+  cardCounts = cardCounts.filter(
+    cardCount => cardCount.count !== numberOfDecks
+  );
 
-          if (firstInGroup) {
-            return (
-              <Fragment key={`${card.name}-${card.set}`}>
-                <StackItem gridColumn={'1/-1'} paddingY={4}>
+  return (
+    <Fragment>
+      {!onlyPopularTechs && (
+        <Accordion allowToggle paddingY={2}>
+          <AccordionItem>
+            <h2>
+              <AccordionButton>
+                <Box as='span' flex='1' textAlign='left'>
                   <Stat>
-                    <StatNumber>
-                      {count > techCardDeckInstanceMax
-                        ? `${fixPercentage(
-                            (count * 100) / numberOfDecks
-                          )}% of decks ran`
-                        : `${count} ${count > 1 ? 'decks' : 'deck'} ran`}
+                    <StatNumber fontSize={'md'}>
+                      See cards 100% of decks run
                     </StatNumber>
                   </Stat>
-                </StackItem>
-                <SingleCardCountDisplay
-                  card={card}
-                  count={count}
-                  numberOfDecks={numberOfDecks}
-                  hideStat
-                />
-              </Fragment>
-            );
-          }
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <Grid
+                gridTemplateColumns={`repeat(${onlyPopularTechs ? 3 : 4}, 1fr)`}
+              >
+                {cardsInAllDecks.map(({ card }) => (
+                  <SingleCardCountDisplay
+                    key={card.name}
+                    card={card}
+                    count={numberOfDecks}
+                    numberOfDecks={numberOfDecks}
+                    hideStat
+                  />
+                ))}
+              </Grid>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      )}
 
-          const firstInGroupWithNoStat =
-            cardCounts.at(idx - 1)?.count === numberOfDecks &&
-            cardCounts.at(idx - 1)?.count !== count;
+      <Grid gridTemplateColumns={`repeat(${onlyPopularTechs ? 3 : 4}, 1fr)`}>
+        {cardCounts
+          .filter(card =>
+            onlyPopularTechs
+              ? !shouldGroup(card.count) &&
+                card.count / numberOfDecks < popularTechBound[1]
+              : true
+          )
+          .slice(0, onlyPopularTechs ? 9 : undefined)
+          .map(({ card, count }, idx) => {
+            const isInGroup =
+              (count === numberOfDecks || count <= techCardDeckInstanceMax) &&
+              (cardCounts.at(idx + 1)?.count === count ||
+                cardCounts.at(idx - 1)?.count === count);
+            const firstInGroup =
+              (count === numberOfDecks || count <= techCardDeckInstanceMax) &&
+              cardCounts.at(idx + 1)?.count === count &&
+              cardCounts.at(idx - 1)?.count !== count;
 
-          if (firstInGroupWithNoStat && !onlyPopularTechs) {
+            if (firstInGroup) {
+              return (
+                <Fragment key={`${card.name}-${card.set}`}>
+                  <StackItem gridColumn={'1/-1'} paddingY={4}>
+                    <Stat>
+                      <StatNumber>
+                        {count > techCardDeckInstanceMax
+                          ? `${fixPercentage(
+                              (count * 100) / numberOfDecks
+                            )}% of decks ran`
+                          : `${count} ${count > 1 ? 'decks' : 'deck'} ran`}
+                      </StatNumber>
+                    </Stat>
+                  </StackItem>
+                  <SingleCardCountDisplay
+                    card={card}
+                    count={count}
+                    numberOfDecks={numberOfDecks}
+                    hideStat
+                  />
+                </Fragment>
+              );
+            }
+
+            const firstInGroupWithNoStat =
+              cardCounts.at(idx - 1)?.count === numberOfDecks &&
+              cardCounts.at(idx - 1)?.count !== count;
+
+            if (firstInGroupWithNoStat && !onlyPopularTechs) {
+              return (
+                <Fragment key={`${card.name}-${card.set}`}>
+                  <GridItem gridColumn={'1/-1'} paddingY={4} />
+                  <SingleCardCountDisplay
+                    card={card}
+                    count={count}
+                    numberOfDecks={numberOfDecks}
+                    hideStat={isInGroup}
+                  />
+                </Fragment>
+              );
+            }
+
             return (
-              <Fragment key={`${card.name}-${card.set}`}>
-                <GridItem gridColumn={'1/-1'} paddingY={4} />
-                <SingleCardCountDisplay
-                  card={card}
-                  count={count}
-                  numberOfDecks={numberOfDecks}
-                  hideStat={isInGroup}
-                />
-              </Fragment>
+              <SingleCardCountDisplay
+                key={`${card.name}-${card.set}`}
+                card={card}
+                count={count}
+                numberOfDecks={numberOfDecks}
+                hideStat={isInGroup}
+              />
             );
-          }
-
-          return (
-            <SingleCardCountDisplay
-              key={`${card.name}-${card.set}`}
-              card={card}
-              count={count}
-              numberOfDecks={numberOfDecks}
-              hideStat={isInGroup}
-            />
-          );
-        })}
-    </Grid>
+          })}
+      </Grid>
+    </Fragment>
   );
 };
