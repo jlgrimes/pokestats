@@ -116,8 +116,7 @@ export default function DecksPage({
                     <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
                       <Heading
                         color='gray.700'
-                        size={'md'}
-                        wordBreak='break-word'
+                        size={'sm'}
                       >
                         {deck.name}
                       </Heading>

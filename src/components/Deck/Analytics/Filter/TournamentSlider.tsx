@@ -69,7 +69,7 @@ export const TournamentSlider = ({
             as={NextLink}
             href={`/tournaments/${findTournament(tournamentFilter, tournaments)?.id}/standings`}
           >
-            <Heading size='lg' noOfLines={3} color='gray.800'>
+            <Heading size='lg' noOfLines={3} color='gray.700'>
               {shortenTournamentName(
                 findTournament(tournamentFilter, tournaments) as Tournament
               )}
