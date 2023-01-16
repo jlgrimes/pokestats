@@ -11,6 +11,7 @@ import NextLink from 'next/link';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import { Deck } from '../../../../../types/tournament';
 import { ShareStat } from './ShareStat';
+import { CommonCard } from '../../../common/CommonCard';
 
 export const IndividualShareCard = memo(
   ({
@@ -23,21 +24,19 @@ export const IndividualShareCard = memo(
     tournamentRange: number[];
   }) => {
     return (
-      <Card>
-        <CardBody padding={4}>
-          <Stack direction={'column'} alignItems={'baseline'}>
-            <HStack>
-              <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-              <ShareStat deck={deck} tournamentRange={tournamentRange} />
-            </HStack>
-            <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
-              <Heading color='gray.700' size={'sm'}>
-                {deck.name}
-              </Heading>
-            </LinkOverlay>
-          </Stack>
-        </CardBody>
-      </Card>
+      <CommonCard>
+        <Stack direction={'column'} alignItems={'baseline'}>
+          <HStack>
+            <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+            <ShareStat deck={deck} tournamentRange={tournamentRange} />
+          </HStack>
+          <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
+            <Heading color='gray.700' size={'sm'}>
+              {deck.name}
+            </Heading>
+          </LinkOverlay>
+        </Stack>
+      </CommonCard>
     );
   }
 );
