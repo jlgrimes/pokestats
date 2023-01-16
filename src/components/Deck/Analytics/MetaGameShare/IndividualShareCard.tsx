@@ -6,17 +6,10 @@ import {
   HStack,
   LinkOverlay,
   Stack,
-  Stat,
-  StatArrow,
-  StatHelpText,
-  StatNumber,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import { Deck } from '../../../../../types/tournament';
-import { fixPercentage } from '../../ListViewer/CardViewer.tsx/helpers';
-import { useStoredDecks } from '../../../../hooks/finalResults';
-import { getNumberOfDecks } from './helpers';
 import { ShareStat } from './ShareStat';
 
 export const IndividualShareCard = memo(
