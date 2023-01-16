@@ -14,10 +14,11 @@ import {
   Tag,
   Text,
 } from '@chakra-ui/react';
-import { memo } from 'react';
+import { Fragment, memo } from 'react';
 import { FaFilter } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
+import { FilterMenu } from '../../../common/FilterMenu';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import { sortBySuperType } from './helpers';
 import { ToggleFilterOptions } from './StandingsFilterContainer';
@@ -53,17 +54,8 @@ export const StandingsFilterMenu = memo(
 
     return (
       <StackItem>
-        <Menu closeOnSelect={false}>
-          <MenuButton
-            as={Button}
-            colorScheme='gray'
-            variant='outline'
-            size='sm'
-            leftIcon={<FaFilter />}
-          >
-            Filter
-          </MenuButton>
-          <MenuList minWidth='240px' marginRight='0.5'>
+        <FilterMenu>
+          <Fragment>
             <MenuOptionGroup title='Results'>
               <MenuItemOption
                 padding={0}
@@ -130,8 +122,8 @@ export const StandingsFilterMenu = memo(
                 ))}
               </Grid>
             </MenuOptionGroup>
-          </MenuList>
-        </Menu>
+          </Fragment>
+        </FilterMenu>
       </StackItem>
     );
   }
