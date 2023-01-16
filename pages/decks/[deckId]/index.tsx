@@ -5,6 +5,7 @@ import { CardCounts } from '../../../src/components/Deck/Analytics/CardCounts/Ca
 import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { DeckFinishes } from '../../../src/components/Deck/Analytics/DeckFinishes';
 import { DeckVariants } from '../../../src/components/Deck/Analytics/DeckVariants';
+import { PopularTechsCard } from '../../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../../src/components/Deck/Analytics/RecentFinishesCard';
 import { fetchArchetype } from '../../../src/hooks/deckArchetypes';
 import { fetchUniqueDecks } from '../../../src/hooks/finalResults';
@@ -16,6 +17,7 @@ export default function DeckPage({ deck }: { deck: Deck }) {
       <Fragment>
         <DeckVariants deck={deck} />
         <RecentFinishesCard deck={deck} />
+        <PopularTechsCard deck={deck} />
       </Fragment>
     </DeckAnalyticsContainer>
   );
