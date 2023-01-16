@@ -1,6 +1,7 @@
-import { Card, CardBody, CardHeader, Heading } from '@chakra-ui/react';
+import { Card, CardBody, CardFooter, CardHeader, Heading } from '@chakra-ui/react';
 import { Deck } from '../../../../types/tournament';
 import { DeckFinishes } from './DeckFinishes';
+import { SeeMoreButton } from './SeeMoreButton';
 
 export const RecentFinishesCard = ({ deck }: { deck: Deck }) => {
   return (
@@ -13,6 +14,9 @@ export const RecentFinishesCard = ({ deck }: { deck: Deck }) => {
       <CardBody paddingX={4} paddingY={2}>
         <DeckFinishes deck={deck} onlyShowRecent />
       </CardBody>
+      <CardFooter paddingLeft={2} paddingTop={0}>
+        <SeeMoreButton slug='/finishes' />
+      </CardFooter>
     </Card>
   );
 };

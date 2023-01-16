@@ -18,7 +18,6 @@ export const DeckFinishes = memo(
   ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
     const { data: deckStandings } = useFinalResults({ deckId: deck.id });
     const { data: tournaments } = useTournaments();
-    const router = useRouter();
 
     const mostRecentTournamentId = deckStandings?.[0]?.tournamentId;
 
@@ -73,18 +72,6 @@ export const DeckFinishes = memo(
                 </Fragment>
               );
             })}
-        {onlyShowRecent && (
-          <GridItem gridColumn={'1/-1'}>
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => router.push(router.asPath + '/finishes')}
-              rightIcon={<FaArrowRight />}
-            >
-              See more
-            </Button>
-          </GridItem>
-        )}
       </Grid>
     );
   }
