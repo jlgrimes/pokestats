@@ -40,7 +40,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
   return (
     <>
-      <Stack padding='1.5rem 0' spacing={6}>
+      <Stack spacing={6}>
         <Stack spacing={4} alignItems={'center'} padding='0 1.5rem'>
           {/* <Avatar
             size={'xl'}

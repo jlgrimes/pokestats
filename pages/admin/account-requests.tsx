@@ -26,7 +26,7 @@ export default function AccountRequestsPage() {
   }, [userIsAdmin, userIsAdminLoading, router]);
 
   return (
-    <Stack padding='0.5rem 1.5rem'>
+    <Stack>
       <Heading size='sm'>
         {accountRequests?.length} request{accountRequests?.length !== 1 && 's'}
       </Heading>

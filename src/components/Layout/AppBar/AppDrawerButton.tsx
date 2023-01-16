@@ -68,7 +68,7 @@ export const AppDrawerButton = ({
               alignItems={'center'}
             >
               <Icon as={FaRegCalendar} />
-              <Link as={NextLink} href='/' onClick={onClose}>
+              <Link as={NextLink} href='/tournaments' onClick={onClose}>
                 <Heading size='lg'>Tournaments</Heading>
               </Link>
 

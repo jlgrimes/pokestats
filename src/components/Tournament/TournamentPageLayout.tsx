@@ -1,4 +1,4 @@
-import { Flex, Heading, Stack } from '@chakra-ui/react';
+import { Heading, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { RK9TournamentLink } from './RK9TournamentLink';

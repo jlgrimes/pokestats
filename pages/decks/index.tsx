@@ -45,7 +45,7 @@ export default function DecksPage({
 
   return (
     <Stack>
-      <StackItem paddingX={4}>
+      <StackItem>
         {showRange ? (
           <DateRangeSlider
             tournamentFilter={tournamentRange}
