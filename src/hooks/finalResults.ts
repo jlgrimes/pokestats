@@ -79,7 +79,7 @@ export const useStoredDecks = (options?: {
   }, {});
 
   if (deckCounts) {
-    return Object.entries(deckCounts)
+    const ret = Object.entries(deckCounts)
       ?.map(([deckId, count]) => ({
         deck: archetypes?.find(({ id }) => parseInt(deckId) === id) as Deck,
         count,
@@ -89,6 +89,7 @@ export const useStoredDecks = (options?: {
         if (b.count < a.count) return -1;
         return 0;
       });
+    return ret;
   }
 
   return [];

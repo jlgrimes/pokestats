@@ -4,15 +4,21 @@ import {
   Checkbox,
   Grid,
   Heading,
+  HStack,
   LinkBox,
   LinkOverlay,
   MenuItemOption,
   Stack,
   StackItem,
+  Stat,
+  StatArrow,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
   Switch,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FilterMenu } from '../../src/components/common/FilterMenu';
 import { OptionsMenu } from '../../src/components/common/OptionsMenu';
 import SpriteDisplay from '../../src/components/common/SpriteDisplay';
@@ -20,7 +26,7 @@ import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/Date
 import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
 import { useStoredDecks } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
-import { Tournament } from '../../types/tournament';
+import { Deck, Tournament } from '../../types/tournament';
 
 export default function DecksPage({
   defaultTournamentRange,
@@ -35,6 +41,12 @@ export default function DecksPage({
   ]);
   const [showRange, setShowRange] = useState(false);
   const decks = useStoredDecks({ tournamentRange });
+  const previousDecks = useStoredDecks({
+    tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
+  });
+
+  const getNumberOfDecks = (decks: { count: number; deck: Deck }[]) =>
+    decks.reduce((acc, curr) => acc + (curr.count ?? 0), 0);
 
   return (
     <Stack>
@@ -59,38 +71,43 @@ export default function DecksPage({
         <Switch></Switch>
       </OptionsMenu>
       <Grid gridTemplateColumns={'1fr 1fr'} paddingY={4}>
-        {decks.map(({ deck, count }) => {
-          const metaShare = (count / decks.length) * 10;
+        {decks.map(({ deck, count }, idx) => {
+          const metaShare = (count / getNumberOfDecks(decks)) * 100;
+
+          const previousMetaDeck =
+            tournamentRange[0] === tournamentRange[1]
+              ? previousDecks.find(
+                  ({ deck: previousDeck }) => previousDeck.id === deck.id
+                )
+              : null;
+          const previousMetaShare =
+            tournamentRange[0] === tournamentRange[1] &&
+            (previousMetaDeck?.count ?? 0 / getNumberOfDecks(previousDecks)) * 100;
 
           if (!deck?.id) return null;
 
           return (
-            <LinkBox
-              {...(metaShare > 25 ? { gridColumn: '1/3' } : {})}
-              key={deck.id}
-            >
+            <LinkBox key={deck.id}>
               <Card>
                 <CardBody>
-                  <Stack
-                    direction={metaShare > 25 ? 'row' : 'column'}
-                    alignItems={metaShare > 25 ? 'center' : 'baseline'}
-                  >
-                    <SpriteDisplay
-                      big={metaShare > 25}
-                      pokemonNames={deck.defined_pokemon}
-                    />
+                  <Stack direction={'column'} alignItems={'baseline'}>
+                    <HStack>
+                      <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+                      <Stat>
+                        <StatNumber>{metaShare.toFixed(2)}%</StatNumber>
+                        <StatHelpText>
+                          <StatArrow type='increase' />
+                          {previousMetaShare}%
+                        </StatHelpText>
+                      </Stat>
+                    </HStack>
                     <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
                       <Heading
                         color='gray.700'
-                        size={metaShare > 25 ? 'md' : 'sm'}
+                        size={'md'}
+                        wordBreak='break-word'
                       >
                         {deck.name}
-                      </Heading>
-                      <Heading
-                        color='gray.500'
-                        size={metaShare > 25 ? 'sm' : 'xs'}
-                      >
-                        {metaShare.toFixed(2)}% share
                       </Heading>
                     </LinkOverlay>
                   </Stack>
