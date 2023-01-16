@@ -16,20 +16,35 @@ import { AppDrawerButton } from './AppDrawerButton';
 import { AppLogo } from './AppLogo';
 import { parseUsername } from '../../../lib/strings';
 import { SHOULD_SHOW_COMING_SOON } from '../../../lib/coming-soon';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 
 export const AppBar = () => {
   const { data: session } = useSession();
   const { data: userProfile, isLoading: isUserProfileLoading } =
     useSessionUserProfile();
+  const [scrollTop, setScrollTop] = useState(0);
+
+  useEffect(() => {
+    const onScroll = (e: any) => {
+      setScrollTop(e.target.documentElement.scrollTop);
+    };
+    window.addEventListener('scroll', onScroll);
+
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [scrollTop]);
 
   return (
-    <>
+    <Stack height='48px'>
       <Stack
+        background={'white'}
+        position='fixed'
+        zIndex={'50'}
+        width='100%'
         direction={'row'}
         alignItems={'center'}
         padding={'0.25rem 1.5rem 0.25rem'}
         justifyContent={SHOULD_SHOW_COMING_SOON ? 'center' : 'space-between'}
-        boxShadow='sm'
+        boxShadow={scrollTop === 0 ? 'sm' : 'lg'}
       >
         {!SHOULD_SHOW_COMING_SOON && (
           <AppDrawerButton userProfile={userProfile} />
@@ -78,6 +93,6 @@ export const AppBar = () => {
             />
           ))}
       </Stack>
-    </>
+    </Stack>
   );
 };
