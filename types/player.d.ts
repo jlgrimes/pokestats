@@ -2,7 +2,7 @@ import { Standing, Tournament } from "./tournament";
 
 export interface StoredPlayerProfile {
   // id stored in supabase
-  id: string;
+  id?: string;
   name: string;
   email: string;
 }

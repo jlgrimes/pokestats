@@ -1,12 +1,9 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import Head from 'next/head';
 import { Fragment } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
-import { CommonCard } from '../src/components/common/CommonCard';
-import { SeeMoreButton } from '../src/components/Deck/Analytics/SeeMoreButton';
+import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
-import { TournamentList } from '../src/components/TournamentList/TournamentList';
 import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
 import { fetchTournaments } from '../src/hooks/tournaments';
@@ -22,6 +19,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
     <Fragment>
       <Stack>
         <RecentTournaments tournaments={tournaments} />
+        <MyMostRecentResults tournaments={tournaments}/>
       </Stack>
     </Fragment>
   );

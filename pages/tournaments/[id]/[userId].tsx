@@ -34,7 +34,6 @@ export default function UserMatchups({
         <PlayerMatchupStatus
           tournament={tournament}
           user={user}
-          tournamentFinished={liveResults?.tournamentStatus === 'finished'}
         />
         <MyMatchupsList tournament={tournament} user={user} />
       </Stack>

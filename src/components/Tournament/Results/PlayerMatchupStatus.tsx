@@ -57,12 +57,11 @@ const RecordNeeded = ({
 export const PlayerMatchupStatus = ({
   tournament,
   user,
-  tournamentFinished,
 }: {
   tournament: Tournament;
   user: StoredPlayerProfile;
-  tournamentFinished: boolean;
 }) => {
+  const tournamentFinished = tournament.tournamentStatus === 'finished';
   const session = useSession();
   const getPlayerText =
     session.data?.user.email === user.email ? 'You' : user.name;
