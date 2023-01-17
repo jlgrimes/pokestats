@@ -22,7 +22,7 @@ export const formatTournamentStatus = (tournament: Tournament) => {
     if (tournamentHasArrivedButNotLive(tournament)) {
       return `About to Start`;
     }
-    return `Upcoming - ${formatTimeUntilTournament(tournament)}`;
+    return `Live in ${formatTimeUntilTournament(tournament)}`;
   }
 };
 
