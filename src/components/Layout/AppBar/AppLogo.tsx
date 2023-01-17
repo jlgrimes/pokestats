@@ -1,7 +1,7 @@
 import { Heading, Stack, LinkOverlay, LinkBox, Badge } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
-export const AppLogo = () => {
+export const AppLogo = ({ smol }: { smol?: boolean}) => {
   return (
     <Stack direction='row' alignItems='center'>
       <LinkBox>
@@ -10,7 +10,7 @@ export const AppLogo = () => {
             <Heading
               color={'gray.700'}
               letterSpacing={'wider'}
-              size={'md'}
+              size={smol ? 'sm' : 'md'}
               fontWeight={'black'}
               lineHeight={'taller'}
             >
@@ -18,7 +18,7 @@ export const AppLogo = () => {
             </Heading>
             <Heading
               letterSpacing={'wider'}
-              size={'md'}
+              size={smol ? 'sm' : 'md'}
               fontWeight={'black'}
               color='red.600'
             >

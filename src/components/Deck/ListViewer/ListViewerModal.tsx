@@ -8,6 +8,7 @@ import {
   Heading,
   Text,
   CloseButton,
+  Box,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useState } from 'react';
@@ -19,6 +20,7 @@ import {
 } from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { shortenTournamentName } from '../../../lib/tournament';
+import { AppLogo } from '../../Layout/AppBar/AppLogo';
 import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
 import { getCardSlug } from './helpers';
 import { ListView } from './ListView';
@@ -111,6 +113,9 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
             handleCardClick={handleCardClick}
           />
         )}
+        <Box paddingX={3}>
+          <AppLogo smol />
+        </Box>
       </ModalContent>
     </Modal>
   );
