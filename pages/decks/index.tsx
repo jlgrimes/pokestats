@@ -48,7 +48,7 @@ export default function DecksPage({
     <Stack>
       <StackItem>
         <Switch checked={sortByMoves} onChange={() => setSortByMoves(!sortByMoves)}>
-          sort by controversial
+          Sort by biggest moves
         </Switch>
         {showRange ? (
           <DateRangeSlider
