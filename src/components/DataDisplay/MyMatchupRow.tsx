@@ -35,7 +35,7 @@ export const MyMatchupRow = memo(
           padding={0}
           paddingLeft={2}
         >
-          {round.opponent.profile && (
+          {(
             <Player
               name={round.opponent.name}
               profile={round.opponent.profile}

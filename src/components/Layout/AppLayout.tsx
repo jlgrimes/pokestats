@@ -30,7 +30,7 @@ export const AppLayout = ({
       <Hydrate state={dehydratedState}>
         <ChakraProvider theme={theme}>
           <AppBar />
-          <Stack padding={router.asPath.includes('standings') ? 0 : 4} spacing={1} height='100%'>
+          <Stack padding={router.asPath.includes('tournaments') ? 0 : 4} spacing={1} height='100%'>
             {children}
           </Stack>
         </ChakraProvider>
