@@ -27,14 +27,18 @@ export const DeckHeader = memo(
     const router = useRouter();
     const [scrollTop, setScrollTop] = useState(0);
     const [stickyHeaderStyle, setStickyHeaderStyle] = useState(false);
+    const [headerOffset, setHeaderOffset] = useState<number>(0);
+
+    useEffect(() => {
+      setHeaderOffset(
+        document.getElementById('compact-deck-header')?.offsetTop as number
+      );
+    }, []);
 
     useEffect(() => {
       const onScroll = (e: any) => {
         setScrollTop(e.target.documentElement.scrollTop);
-        if (
-          e.target.documentElement.scrollTop >
-          (document.getElementById('compact-deck-header')?.offsetTop as number)
-        ) {
+        if (e.target.documentElement.scrollTop > headerOffset) {
           setStickyHeaderStyle(true);
         } else {
           setStickyHeaderStyle(false);
