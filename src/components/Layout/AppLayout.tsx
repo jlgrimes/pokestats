@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
@@ -29,8 +30,17 @@ export const AppLayout = ({
     <QueryClientProvider client={queryClient}>
       <Hydrate state={dehydratedState}>
         <ChakraProvider theme={theme}>
+          <Head>
+            <title>PokéStats Live</title>
+            <meta name='description' content='Pokestats' />
+            <link rel='icon' href='/favicon.ico' />
+          </Head>
           <AppBar />
-          <Stack padding={router.asPath.includes('tournaments') ? 0 : 4} spacing={1} height='100%'>
+          <Stack
+            padding={router.asPath.includes('tournaments') ? 0 : 4}
+            spacing={1}
+            height='100%'
+          >
             {children}
           </Stack>
         </ChakraProvider>

@@ -20,11 +20,6 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
 
   return (
     <Fragment>
-      <Head>
-        <title>PokéStats Live</title>
-        <meta name='description' content='Pokestats' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
       <Stack>
         <RecentTournaments tournaments={tournaments} />
       </Stack>
