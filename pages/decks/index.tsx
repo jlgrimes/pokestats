@@ -1,34 +1,17 @@
-import {
-  Card,
-  CardBody,
-  Checkbox,
-  Grid,
-  Heading,
-  HStack,
-  LinkBox,
-  LinkOverlay,
-  MenuItemOption,
-  Stack,
-  StackItem,
-  Stat,
-  StatArrow,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-  Switch,
-} from '@chakra-ui/react';
-import NextLink from 'next/link';
-import { useCallback, useState } from 'react';
-import { FilterMenu } from '../../src/components/common/FilterMenu';
-import { OptionsMenu } from '../../src/components/common/OptionsMenu';
-import SpriteDisplay from '../../src/components/common/SpriteDisplay';
+import { Stack, StackItem, Switch } from '@chakra-ui/react';
+import { QueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
 import { MetaGameShareList } from '../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
 import { fixPercentage } from '../../src/components/Deck/ListViewer/CardViewer.tsx/helpers';
-import { useStoredDecks } from '../../src/hooks/finalResults';
+import {
+  fetchDecksWithLists,
+  useStoredDecks,
+} from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
-import { Deck, Tournament } from '../../types/tournament';
+import { Tournament } from '../../types/tournament';
+import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
 
 export default function DecksPage({
   defaultTournamentRange,
@@ -47,7 +30,10 @@ export default function DecksPage({
   return (
     <Stack padding={4}>
       <StackItem>
-        <Switch checked={sortByMoves} onChange={() => setSortByMoves(!sortByMoves)}>
+        <Switch
+          checked={sortByMoves}
+          onChange={() => setSortByMoves(!sortByMoves)}
+        >
           Sort by biggest moves
         </Switch>
         {showRange ? (
@@ -82,6 +68,17 @@ export async function getStaticProps() {
     prefetch: true,
     onlyFinished: true,
   });
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['decks-with-lists'],
+    queryFn: () => fetchDecksWithLists(),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['deck-archetypes'],
+    queryFn: () => fetchArchetypes(),
+  });
+
   return {
     props: {
       defaultTournamentRange: [
