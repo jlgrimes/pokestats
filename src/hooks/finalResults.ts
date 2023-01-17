@@ -62,7 +62,7 @@ export const useStoredDecks = (options?: {
     queryFn: () => fetchDecksWithLists(),
   });
 
-  if (!decks) return [];
+  if (!decks || !archetypes) return [];
 
   if (decks && options?.tournamentRange) {
     decks = filterFinalResultsByTournament(decks, options.tournamentRange);
