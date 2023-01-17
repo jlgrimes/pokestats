@@ -39,7 +39,7 @@ const flattenOutEnergies = (card: DeckCard) => {
 
 const isSpecialCard = (card: DeckCard) => {
   return (
-    ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon'].some(cardType =>
+    ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon', 'Oranguru'].some(cardType =>
       card.name.includes(cardType)
     ) || ['SHF', 'PR'].some(specialSet => card.set.includes(specialSet))
   );
