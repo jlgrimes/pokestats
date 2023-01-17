@@ -18,6 +18,7 @@ import { parseUsername } from '../../../lib/strings';
 import { SHOULD_SHOW_COMING_SOON } from '../../../lib/coming-soon';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { StickyHeader } from '../../common/Layout/StickyHeader';
 
 export const AppBar = () => {
   const { data: session } = useSession();
@@ -26,31 +27,18 @@ export const AppBar = () => {
   const [scrollTop, setScrollTop] = useState(0);
   const router = useRouter();
 
-  useEffect(() => {
-    const onScroll = (e: any) => {
-      setScrollTop(e.target.documentElement.scrollTop);
-    };
-    window.addEventListener('scroll', onScroll);
 
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [scrollTop]);
 
   const disableSticky =
     router.asPath.includes('finishes') || router.asPath.includes('cards');
 
   return (
-    <Stack height='48px'>
+    <StickyHeader id='app-bar'>
       <Stack
-        background={'white'}
-        position={disableSticky ? 'relative' : 'fixed'}
-        zIndex={'50'}
-        width='100%'
         direction={'row'}
         alignItems={'center'}
-        padding={'0.25rem 1.5rem 0.25rem'}
+        padding={'0.25rem 1.5rem'}
         justifyContent={SHOULD_SHOW_COMING_SOON ? 'center' : 'space-between'}
-        boxShadow={disableSticky || scrollTop === 0 ? 'sm' : 'lg'}
-        transition='box-shadow 0.15s ease-in-out'
       >
         {!SHOULD_SHOW_COMING_SOON && (
           <AppDrawerButton userProfile={userProfile} />
@@ -99,6 +87,6 @@ export const AppBar = () => {
             />
           ))}
       </Stack>
-    </Stack>
+    </StickyHeader>
   );
 };

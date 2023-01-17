@@ -15,6 +15,7 @@ export const StickyHeader = memo(
 
     useEffect(() => {
       const onScroll = (e: any) => {
+        console.log(headerOffset)
         setScrollTop(e.target.documentElement.scrollTop);
         if (e.target.documentElement.scrollTop > headerOffset) {
           setStickyHeaderStyle(true);
@@ -30,13 +31,12 @@ export const StickyHeader = memo(
     return (
       <Stack height={height}>
         <Stack
-          id='compact-deck-header'
+          id={id}
           height={height}
           background={'white'}
           position={stickyHeaderStyle ? 'fixed' : 'relative'}
           top={0}
           left={0}
-          paddingLeft={4}
           zIndex={'50'}
           width={'100%'}
           justifyContent={'center'}

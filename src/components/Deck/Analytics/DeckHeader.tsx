@@ -75,7 +75,7 @@ export const DeckHeader = memo(
               size='sm'
               leftIcon={<FaChevronLeft />}
               onClick={() => router.push(`/decks/${deck.id}`)}
-              paddingLeft={0}
+              paddingLeft={4}
               justifyContent='start'
             >
               <HStack>
