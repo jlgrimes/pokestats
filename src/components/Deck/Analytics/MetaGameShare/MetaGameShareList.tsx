@@ -8,9 +8,11 @@ export const MetaGameShareList = memo(
   ({
     tournamentRange,
     sortByMoves,
+    preview,
   }: {
     tournamentRange: number[];
     sortByMoves?: boolean;
+    preview?: boolean;
   }) => {
     let decks = useStoredDecks({ tournamentRange });
     const previousDecks = useStoredDecks({
@@ -44,7 +46,7 @@ export const MetaGameShareList = memo(
 
     return (
       <Grid gridTemplateColumns={'1fr 1fr'}>
-        {decks.map(({ deck, count }) => {
+        {decks.slice(0, preview ? 2 : undefined).map(({ deck, count }) => {
           return (
             deck?.id && (
               <IndividualShareCard
