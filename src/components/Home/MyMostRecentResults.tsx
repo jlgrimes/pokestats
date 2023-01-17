@@ -40,11 +40,11 @@ export const MyMostRecentResults = memo(
             load: { allRoundData: true },
           });
           queryClient.setQueryData(
-            [`live-results`, tournament.id, 'roundData', sessionUserName],
+            [`live-results`, tournament.id, 'allRoundData', true],
             () =>
               fetchLiveResults(tournament.id, {
                 prefetch: true,
-                load: { roundData: sessionUserName },
+                load: { allRoundData: true },
               })
           );
 

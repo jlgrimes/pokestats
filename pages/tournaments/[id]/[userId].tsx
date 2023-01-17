@@ -24,17 +24,10 @@ export default function UserMatchups({
   tournament: Tournament;
   user: StoredPlayerProfile;
 }) {
-  const { data: liveResults } = useLiveTournamentResults(tournament?.id, {
-    load: { roundData: user.name },
-  });
-
   return (
     <TournamentPageLayout tournament={tournament}>
       <Stack spacing={6}>
-        <PlayerMatchupStatus
-          tournament={tournament}
-          user={user}
-        />
+        <PlayerMatchupStatus tournament={tournament} user={user} />
         <MyMatchupsList tournament={tournament} user={user} />
       </Stack>
     </TournamentPageLayout>
@@ -55,11 +48,11 @@ export async function getStaticProps({
     prefetch: true,
   });
   await queryClient.prefetchQuery(
-    [`live-results`, params.id, 'roundData', user?.name],
+    [`live-results`, params.id, 'allRoundData', true],
     () =>
       fetchLiveResults(params.id, {
         prefetch: true,
-        load: { roundData: user?.name },
+        load: { allRoundData: true },
       })
   );
   await queryClient.prefetchQuery(['deck-archetypes'], () => fetchArchetypes());

@@ -93,7 +93,7 @@ export const usePlayerLiveResults = (
   options?: FetchLoggedInPlayerOptions
 ): Standing | undefined => {
   const { data: liveResults } = useLiveTournamentResults(tournamentId, {
-    load: { roundData: name },
+    load: { allRoundData: true },
   });
   const player = liveResults?.data.find(
     (result: Standing) => result.name === name
@@ -129,7 +129,7 @@ export const useLoggedInPlayerLiveResults = (
 ): Standing | undefined => {
   const session = useSession();
   const { data: liveResults } = useLiveTournamentResults(tournamentId, {
-    load: { roundData: session.data?.user.name },
+    load: { allRoundData: true },
   });
   const player = liveResults?.data.find(
     (result: Standing) => result.name === session.data?.user.name

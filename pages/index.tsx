@@ -10,19 +10,19 @@ import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
 import { fetchTournaments } from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
+import { fetchLiveResults } from '../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../types/tournament';
 
-export default function Home({ tournaments }: { tournaments: Tournament[] }) {
+export default function Home({
+  tournaments,
+  mostRecentFinishedTournament,
+}: {
+  tournaments: Tournament[];
+  mostRecentFinishedTournament: Tournament;
+}) {
   if (SHOULD_SHOW_COMING_SOON) {
     return <ComingSoonPage />;
   }
-
-  const mostRecentFinishedTournament = tournaments
-    .slice()
-    .reverse()
-    .find(
-      ({ tournamentStatus }) => tournamentStatus === 'finished'
-    ) as Tournament;
 
   return (
     <Fragment>
@@ -42,9 +42,26 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
   await queryClient.prefetchQuery([`sets`], fetchSets);
 
+  const mostRecentFinishedTournament = tournaments
+    .slice()
+    .reverse()
+    .find(
+      ({ tournamentStatus }) => tournamentStatus === 'finished'
+    ) as Tournament;
+
+  await queryClient.prefetchQuery(
+    [`live-results`, mostRecentFinishedTournament.id, 'allRoundData', true],
+    () =>
+      fetchLiveResults(mostRecentFinishedTournament.id, {
+        prefetch: true,
+        load: { allRoundData: true },
+      })
+  );
+
   return {
     props: {
       tournaments,
+      mostRecentFinishedTournament,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 60,
