@@ -5,6 +5,7 @@ import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { BiggestMovers } from '../src/components/Home/BiggestMovers';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
+import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
 import { fetchTournaments } from '../src/hooks/tournaments';
@@ -26,6 +27,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   return (
     <Fragment>
       <Stack>
+        <AppLogo big />
         <MyMostRecentResults tournaments={tournaments} />
         <RecentTournaments tournaments={tournaments} />
         <BiggestMovers tournament={mostRecentFinishedTournament} />

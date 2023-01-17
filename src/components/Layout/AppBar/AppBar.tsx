@@ -55,7 +55,7 @@ export const AppBar = () => {
         {!SHOULD_SHOW_COMING_SOON && (
           <AppDrawerButton userProfile={userProfile} />
         )}
-        <AppLogo />
+        {router.asPath !== '/' && <AppLogo />}
         {!SHOULD_SHOW_COMING_SOON &&
           (session ? (
             <>
