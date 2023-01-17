@@ -45,7 +45,7 @@ export default function DecksPage({
   const [showRange, setShowRange] = useState(false);
 
   return (
-    <Stack>
+    <Stack padding={4}>
       <StackItem>
         <Switch checked={sortByMoves} onChange={() => setSortByMoves(!sortByMoves)}>
           Sort by biggest moves

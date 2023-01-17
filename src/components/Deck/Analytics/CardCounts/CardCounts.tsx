@@ -88,7 +88,7 @@ export const CardCounts = ({
                 card.count / numberOfDecks < popularTechBound[1]
               : true
           )
-          .slice(0, onlyPopularTechs ? 3 : undefined)
+          .slice(0, onlyPopularTechs ? 6 : undefined)
           .map(({ card, count }, idx) => {
             const isInGroup =
               (count === numberOfDecks || count <= techCardDeckInstanceMax) &&

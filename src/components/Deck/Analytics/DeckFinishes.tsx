@@ -51,6 +51,7 @@ export const DeckFinishes = memo(
                       <Heading
                         size='sm'
                         color='gray.700'
+                        padding={2}
                         paddingTop={onlyShowRecent ? 0 : 3}
                         paddingBottom={1}
                       >

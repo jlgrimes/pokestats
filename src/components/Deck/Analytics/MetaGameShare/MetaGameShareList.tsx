@@ -44,7 +44,7 @@ export const MetaGameShareList = memo(
 
     return (
       <Grid gridTemplateColumns={'1fr 1fr'}>
-        {decks.slice(0, preview ? 2 : undefined).map(({ deck, count }) => {
+        {decks.slice(0, preview ? 4 : undefined).map(({ deck, count }) => {
           return (
             deck?.id && (
               <IndividualShareCard
