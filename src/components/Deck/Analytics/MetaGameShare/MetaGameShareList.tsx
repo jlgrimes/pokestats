@@ -11,7 +11,7 @@ export const MetaGameShareList = memo(
       <Grid gridTemplateColumns={'1fr 1fr'}>
         {decks.map(({ deck, count }) => {
           return (
-            deck.id && (
+            deck?.id && (
               <IndividualShareCard
                 deck={deck}
                 count={count}
