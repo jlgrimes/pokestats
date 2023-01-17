@@ -14,8 +14,9 @@ export const SeeMoreButton = ({
   return (
     <GridItem gridColumn={'1/-1'}>
       <Button
+        color='gray.500'
         size='sm'
-        variant='outline'
+        variant='ghost'
         onClick={() => router.push(router.asPath + slug)}
         rightIcon={<FaArrowRight />}
         disabled={loading}
