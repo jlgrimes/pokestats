@@ -29,6 +29,6 @@ export const getMetaDiff = (
     (previousMetaDeck?.count ?? 0) /
     (previousDecks.length > 0 ? getNumberOfDecks(previousDecks) : 1);
   const metaShareDiff =
-    previousMetaShare === 0 ? 1 : metaShare - previousMetaShare;
+    previousMetaShare === 0 ? metaShare : metaShare - previousMetaShare;
   return metaShareDiff;
 };

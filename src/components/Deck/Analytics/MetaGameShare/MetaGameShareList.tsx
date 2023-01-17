@@ -36,8 +36,6 @@ export const MetaGameShareList = memo(
           ) as number
         );
 
-        if (a.count < 2) return 1;
-        if (b.count < 2) return -1;
         if (firstMetaDiff > secondMetaDiff) return -1;
         if (firstMetaDiff < secondMetaDiff) return 1;
         return 0;
