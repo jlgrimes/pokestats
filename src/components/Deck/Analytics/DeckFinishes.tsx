@@ -11,7 +11,6 @@ import {
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
-import { shortenTournamentName } from '../../../lib/tournament';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 
 export const DeckFinishes = memo(
@@ -55,7 +54,7 @@ export const DeckFinishes = memo(
                         paddingTop={onlyShowRecent ? 0 : 3}
                         paddingBottom={1}
                       >
-                        {shortenTournamentName(tournament)}
+                        {tournament.name}
                       </Heading>
                     </Link>
                   )}

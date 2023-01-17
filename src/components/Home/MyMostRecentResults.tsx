@@ -6,7 +6,6 @@ import { Standing, Tournament } from '../../../types/tournament';
 import { useFinalResults } from '../../hooks/finalResults';
 import { fetchLiveResults } from '../../lib/fetch/fetchLiveResults';
 import { parseUsername } from '../../lib/strings';
-import { shortenTournamentName } from '../../lib/tournament';
 import { CommonCard } from '../common/CommonCard';
 import { PlayerMatchupStatus } from '../Tournament/Results/PlayerMatchupStatus';
 
@@ -67,7 +66,7 @@ export const MyMostRecentResults = memo(
     return (
       <CommonCard
         loading={!loaded}
-        header={loaded ? shortenTournamentName(resultToShowTournament) : 'loading'}
+        header={loaded ? resultToShowTournament.name : 'loading'}
         slug={
           loaded
             ? `/tournaments/${resultToShowTournament.id}/${parseUsername(

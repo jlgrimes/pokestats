@@ -11,8 +11,6 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { DeckCard, Deck, Tournament } from '../../../../../types/tournament';
 import { useDay2Decks } from '../../../../hooks/day2decks';
 import { useCodeToSetMap } from '../../../../hooks/deckList';
-import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
-import { shortenTournamentName } from '../../../../lib/tournament';
 import { getCardImageUrl } from '../helpers';
 import { fixPercentage, getCardCount, listContainsCard } from './helpers';
 
@@ -100,7 +98,7 @@ export const CardViewerBody = memo(
           <Stack spacing={0}>
             <Heading size='lg'>{card.name}</Heading>
             <Heading size='sm' color='gray.500'>
-              {deck.name}, {shortenTournamentName(tournament)}
+              {deck.name}, {tournament.name}
             </Heading>
           </Stack>
           {cardCountsSorted.map(([count, numberOfCount], idx) =>

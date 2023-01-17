@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { isAfter, isBefore, parseISO } from 'date-fns';
 import { Tournament } from '../../types/tournament';
+import { shortenTournamentName } from '../lib/tournament';
 
 export const fetchTournaments = async (options?: {
   prefetch?: boolean;
@@ -12,6 +13,10 @@ export const fetchTournaments = async (options?: {
     }/standings/tournaments.json`
   );
   let data: Tournament[] = await res.json();
+  data = data.map(tournament => ({
+    ...tournament,
+    name: shortenTournamentName(tournament),
+  }));
 
   data = data.map(tournament => {
     if (isBefore(new Date(), parseISO(tournament.date.start))) {

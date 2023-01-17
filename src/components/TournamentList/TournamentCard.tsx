@@ -21,9 +21,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useMemo } from 'react';
-import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
-import { shortenTournamentName } from '../../lib/tournament';
 import { getRK9TournamentUrl } from '../Tournament/helpers';
 import {
   formatTimeUntilTournament,
@@ -53,7 +51,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
           <Stack padding='1rem 1.5rem' spacing={1}>
             <Stack spacing={0}>
               <Heading size='sm' color='gray.700'>
-                {shortenTournamentName(tournament)}{' '}
+                {tournament.name}{' '}
                 {linkShouldGoToRK9 && (
                   <Icon
                     color='gray.700'

@@ -19,10 +19,8 @@ import {
   Tournament,
 } from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
-import { shortenTournamentName } from '../../../lib/tournament';
 import { AppLogo } from '../../Layout/AppBar/AppLogo';
 import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
-import { getCardSlug } from './helpers';
 import { ListView } from './ListView';
 
 interface ListViewerModalProps {
@@ -95,7 +93,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
               <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
               <Text>
                 {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
-                {shortenTournamentName(props.tournament)}
+                {props.tournament.name}
               </Text>
             </Stack>
           </Stack>

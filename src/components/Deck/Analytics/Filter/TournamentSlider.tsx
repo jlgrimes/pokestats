@@ -11,7 +11,6 @@ import {
 import NextLink from 'next/link';
 import { useState } from 'react';
 import { Tournament } from '../../../../../types/tournament';
-import { shortenTournamentName } from '../../../../lib/tournament';
 import { formatTournamentDate } from '../../../TournamentList/helpers';
 import { findTournament } from './helpers';
 
@@ -67,12 +66,15 @@ export const TournamentSlider = ({
         <LinkBox>
           <LinkOverlay
             as={NextLink}
-            href={`/tournaments/${findTournament(tournamentFilter, tournaments)?.id}/standings`}
+            href={`/tournaments/${
+              findTournament(tournamentFilter, tournaments)?.id
+            }/standings`}
           >
             <Heading size='lg' noOfLines={3} color='gray.700'>
-              {shortenTournamentName(
-                findTournament(tournamentFilter, tournaments) as Tournament
-              )}
+              {
+                (findTournament(tournamentFilter, tournaments) as Tournament)
+                  .name
+              }
             </Heading>
             <Heading size='md' noOfLines={1} color='gray.500'>
               {formatTournamentDate(

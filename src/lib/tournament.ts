@@ -6,7 +6,9 @@ export const shortenTournamentName = (tournament: Tournament) => {
   const shortName = tournament.name
     .replace('Pokémon TCG', '')
     .replace('TCG', '')
-    .replace(`${tournamentStartYear}`, '');
+    .replace(`${tournamentStartYear}`, '')
+    .replace(/ +(?= )/g, '')
+    .trim();
 
   return shortName;
 };
