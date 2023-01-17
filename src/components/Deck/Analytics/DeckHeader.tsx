@@ -7,6 +7,7 @@ import { useFinalResults } from '../../../hooks/finalResults';
 import SpriteDisplay from '../../common/SpriteDisplay';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import { StickyHeader } from '../../common/Layout/StickyHeader';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
@@ -67,40 +68,25 @@ export const DeckHeader = memo(
 
     if (compact) {
       return (
-        <Stack height={'3rem'}>
-          <Stack
-            id='compact-deck-header'
-            height={'3rem'}
-            background={'white'}
-            position={stickyHeaderStyle ? 'fixed' : 'relative'}
-            top={0}
-            left={0}
-            paddingLeft={4}
-            zIndex={'50'}
-            width={'100%'}
-            justifyContent={'center'}
-            boxShadow={stickyHeaderStyle ? 'lg' : 'none'}
-            transition='box-shadow 0.15s ease-in-out'
-          >
-            <div>
-              <Button
-                variant={'ghost'}
-                size='sm'
-                leftIcon={<FaChevronLeft />}
-                onClick={() => router.push(`/decks/${deck.id}`)}
-                paddingLeft={0}
-                justifyContent='start'
-              >
-                <HStack>
-                  <Heading color='gray.700' size='md' letterSpacing={'wide'}>
-                    {deck.name}
-                  </Heading>
-                  <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-                </HStack>
-              </Button>
-            </div>
-          </Stack>
-        </Stack>
+        <StickyHeader id='compact-deck-header'>
+          <div>
+            <Button
+              variant={'ghost'}
+              size='sm'
+              leftIcon={<FaChevronLeft />}
+              onClick={() => router.push(`/decks/${deck.id}`)}
+              paddingLeft={0}
+              justifyContent='start'
+            >
+              <HStack>
+                <Heading color='gray.700' size='md' letterSpacing={'wide'}>
+                  {deck.name}
+                </Heading>
+                <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+              </HStack>
+            </Button>
+          </div>
+        </StickyHeader>
       );
     }
 
