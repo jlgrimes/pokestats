@@ -23,6 +23,7 @@ import NextLink from 'next/link';
 import { useMemo } from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
+import { shortenTournamentName } from '../../lib/tournament';
 import { getRK9TournamentUrl } from '../Tournament/helpers';
 import {
   formatTimeUntilTournament,
@@ -51,7 +52,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
         <Card>
           <Stack padding='1rem 1.5rem' spacing={1}>
             <Heading size='sm' color='gray.700'>
-              {tournament.name}{' '}
+              {shortenTournamentName(tournament)}{' '}
               <Badge {...getTournamentStatusBadgeProps(tournament)}>
                 {formatTournamentStatus(tournament)}
               </Badge>

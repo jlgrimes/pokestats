@@ -5,6 +5,9 @@ import { memo, useEffect, useState } from 'react';
 import { Standing, Tournament } from '../../../types/tournament';
 import { useFinalResults } from '../../hooks/finalResults';
 import { fetchLiveResults } from '../../lib/fetch/fetchLiveResults';
+import { parseUsername } from '../../lib/strings';
+import { shortenTournamentName } from '../../lib/tournament';
+import { CommonCard } from '../common/CommonCard';
 import { PlayerMatchupStatus } from '../Tournament/Results/PlayerMatchupStatus';
 
 const queryClient = new QueryClient();
@@ -61,10 +64,17 @@ export const MyMostRecentResults = memo(
     }, [sessionUserName, tournaments]);
 
     return session.data?.user && resultToShow && resultToShowTournament ? (
-      <PlayerMatchupStatus
-        tournament={resultToShowTournament}
-        user={session.data?.user}
-      />
+      <CommonCard
+        header={shortenTournamentName(resultToShowTournament)}
+        slug={`/tournaments/${resultToShowTournament.id}/${parseUsername(
+          session.data.user.email
+        )}`}
+      >
+        <PlayerMatchupStatus
+          tournament={resultToShowTournament}
+          user={session.data?.user}
+        />
+      </CommonCard>
     ) : (
       <Skeleton height={63.9} />
     );
