@@ -7,7 +7,7 @@ export const BiggestMovers = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const tourneyId = parseInt(tournament.id);
     return (
-      <CommonCard header='Biggest moves' slug=''>
+      <CommonCard header='Big moves 🏃' slug={`/decks`} ghost>
         <MetaGameShareList
           tournamentRange={[tourneyId, tourneyId]}
           sortByMoves

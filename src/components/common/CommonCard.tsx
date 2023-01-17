@@ -24,7 +24,7 @@ export const CommonCard = ({
   return (
     <Card variant={ghost ? 'unstyled' : 'elevated'}>
       {header && (
-        <CardHeader paddingX={4} paddingBottom={0}>
+        <CardHeader paddingX={ghost ? 0 : 4} paddingBottom={ghost ? 4 : 0}>
           {!loading ? (
             <Heading color='gray.700' size='md' fontWeight={'semibold'}>
               {header}
@@ -36,7 +36,7 @@ export const CommonCard = ({
       )}
       <CardBody padding={ghost ? 0 : 4}>{children}</CardBody>
       {slug && (
-        <CardFooter padding={ghost ? 0 : 4} paddingTop={ghost ? 4 : 0}>
+        <CardFooter padding={ghost ? 0 : 4} paddingTop={ghost ? 4 : 0} paddingBottom={4}>
           <SeeMoreButton slug={slug} />
         </CardFooter>
       )}
