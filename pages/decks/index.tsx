@@ -47,6 +47,9 @@ export default function DecksPage({
   return (
     <Stack>
       <StackItem>
+        <Switch checked={sortByMoves} onChange={() => setSortByMoves(!sortByMoves)}>
+          sort by controversial
+        </Switch>
         {showRange ? (
           <DateRangeSlider
             tournamentFilter={tournamentRange}
@@ -66,7 +69,10 @@ export default function DecksPage({
       {/* <OptionsMenu>
         <Switch></Switch>
       </OptionsMenu> */}
-    <MetaGameShareList tournamentRange={tournamentRange} sortByMoves={sortByMoves} />
+      <MetaGameShareList
+        tournamentRange={tournamentRange}
+        sortByMoves={sortByMoves}
+      />
     </Stack>
   );
 }
