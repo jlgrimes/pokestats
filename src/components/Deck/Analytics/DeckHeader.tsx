@@ -1,17 +1,5 @@
 import { memo, useEffect, useMemo, useState } from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Icon,
-  Image,
-  LinkBox,
-  LinkOverlay,
-  Stack,
-  StackItem,
-} from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Button, Heading, HStack, Image, Stack } from '@chakra-ui/react';
 import { getCardImageUrl } from '../ListViewer/helpers';
 import { DeckCard, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
@@ -87,28 +75,30 @@ export const DeckHeader = memo(
             position={stickyHeaderStyle ? 'fixed' : 'relative'}
             top={0}
             left={0}
-            paddingLeft={8}
+            paddingLeft={4}
             zIndex={'50'}
             width={'100%'}
             justifyContent={'center'}
-            boxShadow={scrollTop === 0 ? 'sm' : 'lg'}
+            boxShadow={scrollTop === 0 ? 'none' : 'lg'}
             transition='box-shadow 0.15s ease-in-out'
           >
-            <Button
-              variant={'ghost'}
-              size='sm'
-              leftIcon={<FaChevronLeft />}
-              onClick={() => router.push(`/decks/${deck.id}`)}
-              paddingLeft={0}
-              justifyContent='start'
-            >
-              <HStack>
-                <Heading color='gray.700' size='md' letterSpacing={'wide'}>
-                  {deck.name}
-                </Heading>
-                <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-              </HStack>
-            </Button>
+            <div>
+              <Button
+                variant={'ghost'}
+                size='sm'
+                leftIcon={<FaChevronLeft />}
+                onClick={() => router.push(`/decks/${deck.id}`)}
+                paddingLeft={0}
+                justifyContent='start'
+              >
+                <HStack>
+                  <Heading color='gray.700' size='md' letterSpacing={'wide'}>
+                    {deck.name}
+                  </Heading>
+                  <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+                </HStack>
+              </Button>
+            </div>
           </Stack>
         </Stack>
       );
