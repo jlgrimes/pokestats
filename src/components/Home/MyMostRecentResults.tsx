@@ -1,4 +1,4 @@
-import { Skeleton } from '@chakra-ui/react';
+import { CardBody, Skeleton } from '@chakra-ui/react';
 import { QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { memo, useEffect, useState } from 'react';
@@ -27,6 +27,7 @@ export const MyMostRecentResults = memo(
     const resultToShowTournament = tournaments.find(
       ({ id }) => id === resultToShow?.tournamentId
     );
+    const loaded = session.data?.user && resultToShow && resultToShowTournament;
 
     useEffect(() => {
       const fetchLiveTournament = async () => {
@@ -63,20 +64,29 @@ export const MyMostRecentResults = memo(
       fetchLiveTournament();
     }, [sessionUserName, tournaments]);
 
-    return session.data?.user && resultToShow && resultToShowTournament ? (
+    return (
       <CommonCard
-        header={shortenTournamentName(resultToShowTournament)}
-        slug={`/tournaments/${resultToShowTournament.id}/${parseUsername(
-          session.data.user.email
-        )}`}
+        loading={!loaded}
+        header={loaded ? shortenTournamentName(resultToShowTournament) : 'loading'}
+        slug={
+          loaded
+            ? `/tournaments/${resultToShowTournament.id}/${parseUsername(
+                session.data.user.email
+              )}`
+            : '/'
+        }
       >
-        <PlayerMatchupStatus
-          tournament={resultToShowTournament}
-          user={session.data?.user}
-        />
+        <CardBody padding={0} height={63.9}>
+          {loaded ? (
+            <PlayerMatchupStatus
+              tournament={resultToShowTournament}
+              user={session.data?.user}
+            />
+          ) : (
+            <Skeleton height={63.9} />
+          )}
+        </CardBody>
       </CommonCard>
-    ) : (
-      <Skeleton height={63.9} />
     );
   }
 );

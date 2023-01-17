@@ -18,8 +18,8 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   return (
     <Fragment>
       <Stack>
+        <MyMostRecentResults tournaments={tournaments} />
         <RecentTournaments tournaments={tournaments} />
-        <MyMostRecentResults tournaments={tournaments}/>
       </Stack>
     </Fragment>
   );

@@ -2,7 +2,13 @@ import { Button, GridItem } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FaArrowRight } from 'react-icons/fa';
 
-export const SeeMoreButton = ({ slug }: { slug: string }) => {
+export const SeeMoreButton = ({
+  slug,
+  loading,
+}: {
+  slug: string;
+  loading?: boolean;
+}) => {
   const router = useRouter();
 
   return (
@@ -12,6 +18,7 @@ export const SeeMoreButton = ({ slug }: { slug: string }) => {
         variant='outline'
         onClick={() => router.push(router.asPath + slug)}
         rightIcon={<FaArrowRight />}
+        disabled={loading}
       >
         See more
       </Button>
