@@ -37,7 +37,12 @@ export const AppLayout = ({
           </Head>
           <AppBar />
           <Stack
-            padding={router.asPath.includes('tournaments') ? 0 : 4}
+            padding={
+              router.asPath.includes('tournaments') ||
+              router.asPath.includes('decks')
+                ? 0
+                : 4
+            }
             spacing={1}
             height='100%'
           >
