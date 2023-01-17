@@ -3,38 +3,19 @@ import { memo } from 'react';
 import { Deck } from '../../../../../types/tournament';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { fixPercentage } from '../../ListViewer/CardViewer.tsx/helpers';
-import { getNumberOfDecks } from './helpers';
+import { getMetaDiff, getMetaShare, getNumberOfDecks } from './helpers';
 
 export const ShareStat = memo(
-  ({ deck, tournamentRange }: { deck: Deck, tournamentRange: number[] }) => {
+  ({ deck, tournamentRange }: { deck: Deck; tournamentRange: number[] }) => {
     const decks = useStoredDecks({ tournamentRange });
     const previousDecks = useStoredDecks({
       tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
     });
 
-    const metaDeck =
-    tournamentRange[0] === tournamentRange[1]
-      ? decks.find(
-          ({ deck: currDeck }) => currDeck.id === deck.id
-        )
-      : null;
+    const metaShare = getMetaShare(deck, decks);
+    if (!metaShare) return null;
 
-    if (!metaDeck) return null;
-
-    const metaShare = metaDeck.count / getNumberOfDecks(decks);
-
-    const previousMetaDeck =
-      tournamentRange[0] === tournamentRange[1]
-        ? previousDecks.find(
-            ({ deck: previousDeck }) => previousDeck.id === deck.id
-          )
-        : null;
-
-    const previousMetaShare =
-      (previousMetaDeck?.count ?? 0) /
-      (previousDecks.length > 0 ? getNumberOfDecks(previousDecks) : 1);
-    const metaShareDiff =
-      previousMetaShare === 0 ? 1 : metaShare - previousMetaShare;
+    const metaShareDiff = getMetaDiff(deck, decks, previousDecks);
 
     return (
       <Stat>

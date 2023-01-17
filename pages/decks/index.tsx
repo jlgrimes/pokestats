@@ -41,6 +41,7 @@ export default function DecksPage({
     tournaments?.length ?? 0,
     tournaments?.length ?? 0,
   ]);
+  const [sortByMoves, setSortByMoves] = useState(false);
   const [showRange, setShowRange] = useState(false);
 
   return (
@@ -65,7 +66,7 @@ export default function DecksPage({
       {/* <OptionsMenu>
         <Switch></Switch>
       </OptionsMenu> */}
-    <MetaGameShareList tournamentRange={tournamentRange} />
+    <MetaGameShareList tournamentRange={tournamentRange} sortByMoves={sortByMoves} />
     </Stack>
   );
 }

@@ -4,8 +4,14 @@ import { useStoredDecks } from '../../../../hooks/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
 
 export const MetaGameShareList = memo(
-  ({ tournamentRange }: { tournamentRange: number[] }) => {
-    const decks = useStoredDecks({ tournamentRange });
+  ({
+    tournamentRange,
+    sortByMoves,
+  }: {
+    tournamentRange: number[];
+    sortByMoves?: boolean;
+  }) => {
+    let decks = useStoredDecks({ tournamentRange });
 
     return (
       <Grid gridTemplateColumns={'1fr 1fr'}>
