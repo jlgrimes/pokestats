@@ -1,5 +1,4 @@
 import {
-  Flex,
   Image,
   LinkBox,
   LinkOverlay,
@@ -7,7 +6,6 @@ import {
   StackItem,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { usePokedex } from '../../hooks/images';
 import { NotVerifiedIcon, VerifiedIcon } from '../Player/Icons';
 import { getRegionFlag, getSpriteUrl, removeRegionFlag } from './helpers';
 
