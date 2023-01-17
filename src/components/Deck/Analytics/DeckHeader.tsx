@@ -79,7 +79,7 @@ export const DeckHeader = memo(
             zIndex={'50'}
             width={'100%'}
             justifyContent={'center'}
-            boxShadow={scrollTop === 0 ? 'none' : 'lg'}
+            boxShadow={stickyHeaderStyle ? 'lg' : 'none'}
             transition='box-shadow 0.15s ease-in-out'
           >
             <div>
