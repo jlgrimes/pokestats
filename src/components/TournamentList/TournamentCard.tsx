@@ -51,20 +51,24 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
       >
         <Card>
           <Stack padding='1rem 1.5rem' spacing={1}>
-            <Heading size='sm' color='gray.700'>
-              {shortenTournamentName(tournament)}{' '}
-              <Badge {...getTournamentStatusBadgeProps(tournament)}>
-                {formatTournamentStatus(tournament)}
-              </Badge>
-              {linkShouldGoToRK9 && (
-                <Icon
-                  color='gray.700'
-                  mx={2}
-                  boxSize={4}
-                  as={ExternalLinkIcon}
-                />
-              )}
-            </Heading>
+            <Stack spacing={0}>
+              <Heading size='sm' color='gray.700'>
+                {shortenTournamentName(tournament)}{' '}
+                {linkShouldGoToRK9 && (
+                  <Icon
+                    color='gray.700'
+                    mx={1}
+                    boxSize={4}
+                    as={ExternalLinkIcon}
+                  />
+                )}
+              </Heading>
+              <div>
+                <Badge {...getTournamentStatusBadgeProps(tournament)}>
+                  {formatTournamentStatus(tournament)}
+                </Badge>
+              </div>
+            </Stack>
             <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
               {formatTournamentDate(tournament)}
             </Heading>
