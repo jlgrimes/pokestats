@@ -28,7 +28,7 @@ export default function DecksPage({
   const [showRange, setShowRange] = useState(false);
 
   return (
-    <Stack padding={4}>
+    <Stack padding={4} height='100%'>
       <StackItem>
         <Switch
           checked={sortByMoves}

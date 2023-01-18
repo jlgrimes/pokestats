@@ -3,6 +3,7 @@ import { Grid } from '@chakra-ui/react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
 import { getMetaDiff } from './helpers';
+import { NoDataDisplay } from './NoDataDisplay';
 
 export const MetaGameShareList = memo(
   ({
@@ -41,6 +42,8 @@ export const MetaGameShareList = memo(
         return 0;
       });
     }
+
+    if (decks.length === 0) return <NoDataDisplay />
 
     return (
       <Grid gridTemplateColumns={'1fr 1fr'}>
