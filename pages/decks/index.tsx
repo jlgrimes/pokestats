@@ -1,5 +1,5 @@
 import { Stack, StackItem, Switch } from '@chakra-ui/react';
-import { QueryClient } from '@tanstack/react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
@@ -86,6 +86,7 @@ export async function getStaticProps() {
         parseInt(tournaments[tournaments.length - 1].id),
       ],
       tournaments,
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
   };

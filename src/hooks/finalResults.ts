@@ -215,7 +215,7 @@ export const fetchFinalResults = async (
 
 export const useFinalResults = (filters?: FinalResultsFilters) => {
   return useQuery({
-    queryKey: ['final-results', ...Object.entries(filters ?? [])],
+    queryKey: ['final-results', filters],
     queryFn: () => fetchFinalResults(filters),
   });
 };

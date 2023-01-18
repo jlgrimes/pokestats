@@ -1,10 +1,16 @@
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { Fragment } from 'react';
 import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { DeckVariants } from '../../../src/components/Deck/Analytics/DeckVariants';
 import { PopularTechsCard } from '../../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../../src/components/Deck/Analytics/RecentFinishesCard';
 import { fetchArchetype } from '../../../src/hooks/deckArchetypes';
-import { fetchUniqueDecks } from '../../../src/hooks/finalResults';
+import { fetchCodeToSetMap } from '../../../src/hooks/deckList';
+import {
+  fetchFinalResults,
+  fetchUniqueDecks,
+} from '../../../src/hooks/finalResults';
+import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { Deck } from '../../../types/tournament';
 
 export default function DeckPage({ deck }: { deck: Deck }) {
@@ -23,14 +29,41 @@ export async function getStaticProps({
   params,
 }: {
   params: {
-    deckId: number;
+    deckId: string;
   };
 }) {
-  const deck = await fetchArchetype(params.deckId);
+  const deckId = parseInt(params.deckId);
+  const queryClient = new QueryClient();
+
+  const deck = await fetchArchetype(deckId);
+  await queryClient.prefetchQuery({
+    queryKey: ['tournaments'],
+    queryFn: () => fetchTournaments({ prefetch: true }),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: [
+      'final-results',
+      {
+        deckId,
+      },
+    ],
+    queryFn: () => fetchFinalResults({ deckId }),
+  });
+  console.log([
+    'final-results',
+    {
+      deckId: parseInt(params.deckId),
+    },
+  ]);
+  await queryClient.prefetchQuery({
+    queryKey: ['code-to-set-map'],
+    queryFn: () => fetchCodeToSetMap(),
+  });
 
   return {
     props: {
       deck,
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
   };
