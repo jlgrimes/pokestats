@@ -6,6 +6,8 @@ import { BiggestMovers } from '../src/components/Home/BiggestMovers';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
+import { fetchArchetypes } from '../src/hooks/deckArchetypes';
+import { fetchDecksWithLists } from '../src/hooks/finalResults';
 import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
 import { fetchTournaments } from '../src/hooks/tournaments';
@@ -57,6 +59,14 @@ export async function getStaticProps() {
         load: { allRoundData: true },
       })
   );
+  await queryClient.prefetchQuery({
+    queryKey: ['deck-archetypes'],
+    queryFn: () => fetchArchetypes(),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['decks-with-lists'],
+    queryFn: () => fetchDecksWithLists(),
+  });
 
   return {
     props: {
