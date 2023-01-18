@@ -23,18 +23,18 @@ export default function DeckInput({
 
   const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
-  const [selectedDeck, setSelectedDeck] = useState(deckId);
+  const [selectedDeck, setSelectedDeck] = useState<Deck | undefined>(deck);
   const toast = useToast();
 
   useEffect(() => {
-    setSelectedDeck(deckId);
-  }, [deckId]);
+    setSelectedDeck(deck);
+  }, [deck]);
 
-  const handleArchetypeSelect = async (newValue: number) => {
+  const handleArchetypeSelect = async (newValue: Deck) => {
     if (deckId) {
       const { error } = await supabase
         .from('Player Decks')
-        .update({ deck_archetype: newValue })
+        .update({ deck_archetype: newValue.id })
         .match({ player_name: playerName, tournament_id: tournamentId });
 
       if (error) {
@@ -53,7 +53,7 @@ export default function DeckInput({
       }
     } else {
       const { error } = await supabase.from('Player Decks').insert({
-        deck_archetype: newValue,
+        deck_archetype: newValue.id,
         player_name: playerName,
         tournament_id: tournamentId,
         user_who_submitted: session.data?.user.email,

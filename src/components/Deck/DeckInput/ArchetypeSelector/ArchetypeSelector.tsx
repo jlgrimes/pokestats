@@ -16,18 +16,17 @@ import {
   ModalFooter,
   StackItem,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment } from 'react';
 import { Deck } from '../../../../../types/tournament';
-import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import { useTwitterLink } from '../../../../hooks/twitter';
 import { getLowResUnownUrl } from '../../../common/helpers';
 import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
+import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 
-interface ArchetypeSelectorProps {
-  selectedArchetype: number | undefined;
-  onChange: (value: number) => void;
+export interface ArchetypeSelectorProps {
+  selectedArchetype: Deck | undefined;
+  onChange: (value: Deck) => void;
   modalControls: UseDisclosureProps;
   shouldShowAsText?: boolean;
   tournamentId: string;
@@ -37,66 +36,25 @@ interface ArchetypeSelectorProps {
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
-  const myTwitter = useTwitterLink('jgrimesey');
-
-  const mostPopularDecks = useMostPopularArchetypes(props.tournamentId);
-  const [filterQuery, setFilterQuery] = useState<string>('');
-  const [selectedArchetype, setSelectedArchetype] =
-    useState<number | null>(null);
-
-  const modalControls = props.modalControls ?? {};
-
-  const handleArchetypeChange = (deckId: number) => {
-    setSelectedArchetype(deckId);
-  };
-
-  const handleArchetypeSubmit = (deckId: number) => {
-    props.onChange(deckId);
-    modalControls.onClose && modalControls.onClose();
-  };
-
-  const handleFilterChange = (e: Record<string, any>) => {
-    setFilterQuery(e.target.value);
-  };
-
-  const handleModalClose = () => {
-    modalControls.onClose && modalControls.onClose();
-    setSelectedArchetype(null);
-  };
-
-  const filteredDecks: Deck[] = useMemo(
-    () => [
-      ...(mostPopularDecks?.filter(({ name }) => {
-        return (
-          name.toLowerCase().includes(filterQuery.toLowerCase()) ||
-          name === 'Other'
-        );
-      }) ?? []),
-    ],
-    [mostPopularDecks, filterQuery]
-  );
-
   const renderDeckName = () => {
     if (props.shouldShowAsText) {
       return (
         <Text>
           {props.selectedArchetype
-            ? mostPopularDecks?.find(
-                deck => deck.id === props.selectedArchetype
-              )?.name
+            ? props.selectedArchetype.name
             : 'Unknown deck'}
         </Text>
       );
     } else {
       if (props.selectedArchetype) {
-        const deck = mostPopularDecks?.find(deck => deck.id === props.selectedArchetype);
-        const displayedPokemonNames = deck?.defined_pokemon ?? [];
+        const displayedPokemonNames =
+          props.selectedArchetype?.defined_pokemon ?? [];
 
         return (
           <SpriteDisplay
             verified={props.deckIsVerified}
             pokemonNames={displayedPokemonNames}
-            deckId={deck?.id}
+            deckId={props.selectedArchetype.id}
           />
         );
       } else {
@@ -116,77 +74,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   return (
     <Fragment>
       {renderDeckName()}
-      {modalControls.isOpen && (
-        <Modal isOpen={modalControls.isOpen} onClose={handleModalClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Report deck</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Stack spacing={4}>
-                <Stack spacing={0}>
-                  <Input
-                    placeholder='Filter archetype'
-                    onChange={handleFilterChange}
-                  />
-                  <Stack height={'220px'} overflowY={'scroll'} padding={4}>
-                    {filteredDecks?.map(
-                      ({ id, name, defined_pokemon }, idx) => (
-                        <StackItem
-                          key={idx}
-                          p={1}
-                          boxShadow={
-                            selectedArchetype === id ? 'outline' : 'none'
-                          }
-                          rounded='md'
-                          onClick={() =>
-                            props.userIsAdmin
-                              ? handleArchetypeSubmit(id)
-                              : handleArchetypeChange(id)
-                          }
-                        >
-                          <SpriteAndNameDisplay
-                            archetypeName={name}
-                            pokemonNames={defined_pokemon}
-                          />
-                        </StackItem>
-                      )
-                    )}
-                  </Stack>
-                </Stack>
-                {!props.userIsAdmin && (
-                  <Text as='b' color='red.600'>
-                    You can only report a deck once. If you accidentally
-                    misreport, you can contact{' '}
-                    <Link
-                      isExternal
-                      href={myTwitter}
-                      as={NextLink}
-                      color='twitter.500'
-                    >
-                      @jgrimesey
-                    </Link>{' '}
-                    to modify your submission.
-                  </Text>
-                )}
-              </Stack>
-            </ModalBody>
-            {!props.userIsAdmin && (
-              <ModalFooter>
-                <Button
-                  colorScheme='blue'
-                  disabled={!selectedArchetype}
-                  onClick={() =>
-                    handleArchetypeSubmit(selectedArchetype as number)
-                  }
-                >
-                  Submit (I understand I cannot resubmit)
-                </Button>
-              </ModalFooter>
-            )}
-          </ModalContent>
-        </Modal>
-      )}
+      {props.modalControls.isOpen && <ArchetypeSelectorModal {...props} />}
     </Fragment>
   );
 }
