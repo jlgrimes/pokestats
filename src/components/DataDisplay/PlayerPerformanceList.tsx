@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
-import { usePlayerPerformance } from '../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import { DeckInfoDisplay } from '../Deck/DeckInfoDisplay';
 import { useUserIsAdmin } from '../../hooks/administrators';

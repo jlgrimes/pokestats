@@ -3,7 +3,6 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../../../src/components/Tournament/Results/PlayerMatchupStatus';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
 import { fetchCurrentTournamentInfo } from '../../../src/hooks/tournaments';
 import { fetchAllVerifiedUsers, fetchUser } from '../../../src/hooks/user';
 import {

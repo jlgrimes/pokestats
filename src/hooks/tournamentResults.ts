@@ -122,42 +122,6 @@ export const usePlayerLiveResults = (
   return player;
 };
 
-// TODO: Deprecate
-export const useLoggedInPlayerLiveResults = (
-  tournamentId: string,
-  options?: FetchLoggedInPlayerOptions
-): Standing | undefined => {
-  const session = useSession();
-  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
-    load: { allRoundData: true },
-  });
-  const player = liveResults?.data.find(
-    (result: Standing) => result.name === session.data?.user.name
-  );
-
-  if (options?.load?.opponentRoundData && player?.rounds) {
-    return {
-      ...player,
-      rounds: player.rounds.map(roundResult => {
-        const opponent = liveResults?.data.find(
-          player => player.name === roundResult.name
-        );
-
-        if (opponent) {
-          return {
-            ...roundResult,
-            opponent,
-          };
-        }
-
-        return roundResult;
-      }),
-    };
-  }
-
-  return player;
-};
-
 export const usePlayerPerformance = (
   playerName: string | undefined,
   tournamentHistory: string[] | undefined

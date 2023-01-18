@@ -19,6 +19,10 @@ import {
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
 import { parseUsername } from '../../src/lib/strings';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { fetchFinalResults } from '../../src/hooks/finalResults';
+import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
+import { fetchTournaments } from '../../src/hooks/tournaments';
 
 function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
   // const twitterLink = useTwitterLink(user?.email);
@@ -73,9 +77,24 @@ export async function getStaticProps(context: any) {
     `${username}@gmail.com`
   );
 
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['tournaments'],
+    queryFn: () => fetchTournaments({ prefetch: true }),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['deck-archetypes'],
+    queryFn: () => fetchArchetypes(),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['final-results', { playerName: combinedProfile?.name }],
+    queryFn: () => fetchFinalResults({ playerName: combinedProfile?.name }),
+  });
+
   return {
     props: {
       user: combinedProfile,
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 60,
   };
@@ -84,7 +103,7 @@ export async function getStaticProps(context: any) {
 export async function getStaticPaths() {
   const { data: playerProfiles } = await supabase
     .from('Player Profiles')
-    .select('id,name,email')
+    .select('id,name,email');
 
   const paths = playerProfiles?.map(
     player => ({
