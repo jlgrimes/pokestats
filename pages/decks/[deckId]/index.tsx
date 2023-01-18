@@ -49,12 +49,6 @@ export async function getStaticProps({
     ],
     queryFn: () => fetchFinalResults({ deckId }),
   });
-  console.log([
-    'final-results',
-    {
-      deckId: parseInt(params.deckId),
-    },
-  ]);
   await queryClient.prefetchQuery({
     queryKey: ['code-to-set-map'],
     queryFn: () => fetchCodeToSetMap(),

@@ -15,7 +15,6 @@ export const StickyHeader = memo(
 
     useEffect(() => {
       const onScroll = (e: any) => {
-        console.log(headerOffset)
         setScrollTop(e.target.documentElement.scrollTop);
         if (e.target.documentElement.scrollTop > headerOffset) {
           setStickyHeaderStyle(true);
