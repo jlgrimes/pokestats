@@ -29,7 +29,6 @@ interface SpriteDisplayProps {
 const Sprites = (props: SpriteDisplayProps & { deckIsReal: boolean }) => (
   <Stack
     direction='row'
-    justifyContent={'center'}
     alignItems={'baseline'}
     spacing={-0.5}
     minWidth={props.squishWidth ? 0 : '4.61rem'}

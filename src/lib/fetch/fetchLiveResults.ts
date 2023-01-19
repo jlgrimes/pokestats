@@ -344,7 +344,7 @@ export const fetchLiveResults = async (
 
   return {
     tournamentStatus: tournament?.tournamentStatus ?? 'not-started',
-    shouldHideDecks: true,
+    shouldHideDecks: roundNumber < 9,
     numPlayers: parsedData.length,
     roundNumber,
     data: parsedData,
