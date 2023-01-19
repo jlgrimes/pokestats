@@ -52,7 +52,6 @@ export const MyMatchupRow = memo(
             player={round.opponent}
             // We don't want player to edit something they already edited
             enableEdits={!round.opponent.deck?.name}
-            shouldHideDeck={true}
           />
         </Td>
       </Tr>

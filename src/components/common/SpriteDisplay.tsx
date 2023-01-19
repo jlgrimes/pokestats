@@ -10,7 +10,12 @@ import {
 import NextLink from 'next/link';
 import { FaRegEyeSlash } from 'react-icons/fa';
 import { NotVerifiedIcon, VerifiedIcon } from '../Player/Icons';
-import { getLowResUnownUrl, getRegionFlag, getSpriteUrl, removeRegionFlag } from './helpers';
+import {
+  getLowResUnownUrl,
+  getRegionFlag,
+  getSpriteUrl,
+  removeRegionFlag,
+} from './helpers';
 
 interface SpriteDisplayProps {
   pokemonNames?: string[];
@@ -29,54 +34,54 @@ const Sprites = (props: SpriteDisplayProps & { deckIsReal: boolean }) => (
     minWidth={props.squishWidth ? 0 : '4.61rem'}
   >
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
-      {!props.pokemonNames || props.pokemonNames.length === 0 && (
-        <Flex justifyContent={'center'} minWidth='4.5rem'>
-          <Image
-            height='30px'
-            src={getLowResUnownUrl()}
-            alt='Unown'
-          />
+      {props.hidden ? (
+        <Flex justifyContent={'center'} minWidth='3rem'>
+          <Icon as={FaRegEyeSlash} />
         </Flex>
-      )}
-      {/* {props.hidden && <Icon as={FaRegEyeSlash} />} */}
-      {props.pokemonNames?.map((name, idx) => {
-        if (name.length === 0) return;
+      ) : !props.pokemonNames || props.pokemonNames.length === 0 ? (
+        <Flex justifyContent={'center'} minWidth='4.5rem'>
+          <Image height='30px' src={getLowResUnownUrl()} alt='Unown' />
+        </Flex>
+      ) : (
+        props.pokemonNames?.map((name, idx) => {
+          if (name.length === 0) return;
 
-        if (name === 'substitute') {
+          if (name === 'substitute') {
+            return (
+              <Image
+                className='pixel-image'
+                key={idx}
+                src='https://archives.bulbagarden.net/media/upload/a/a5/SubstituteG5f.png'
+                alt='Other'
+                height='auto'
+                width={props.big ? '80px' : '40px'}
+              />
+            );
+          }
+
           return (
-            <Image
-              className='pixel-image'
+            <StackItem
+              width={props.big ? '60px' : '30px'}
               key={idx}
-              src='https://archives.bulbagarden.net/media/upload/a/a5/SubstituteG5f.png'
-              alt='Other'
-              height='auto'
-              width={props.big ? '80px' : '40px'}
-            />
+              display='flex'
+              justifyContent={'center'}
+            >
+              <Image
+                className='pixel-image'
+                maxHeight={props.big ? '50px' : '30px'}
+                minHeight={props.big ? '50px' : 0}
+                height='auto'
+                width='auto'
+                src={getSpriteUrl(
+                  removeRegionFlag(name).toLowerCase(),
+                  getRegionFlag(name)
+                )}
+                alt={name}
+              />
+            </StackItem>
           );
-        }
-
-        return (
-          <StackItem
-            width={props.big ? '60px' : '30px'}
-            key={idx}
-            display='flex'
-            justifyContent={'center'}
-          >
-            <Image
-              className='pixel-image'
-              maxHeight={props.big ? '50px' : '30px'}
-              minHeight={props.big ? '50px' : 0}
-              height='auto'
-              width='auto'
-              src={getSpriteUrl(
-                removeRegionFlag(name).toLowerCase(),
-                getRegionFlag(name)
-              )}
-              alt={name}
-            />
-          </StackItem>
-        );
-      })}
+        })
+      )}
     </Stack>
     {props.verified !== undefined && (
       <StackItem>
