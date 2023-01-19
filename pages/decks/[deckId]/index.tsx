@@ -4,6 +4,7 @@ import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/D
 import { DeckVariants } from '../../../src/components/Deck/Analytics/DeckVariants';
 import { PopularTechsCard } from '../../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../../src/components/Deck/Analytics/RecentFinishesCard';
+import { fetchCards } from '../../../src/hooks/cards';
 import { fetchArchetype } from '../../../src/hooks/deckArchetypes';
 import { fetchCodeToSetMap } from '../../../src/hooks/deckList';
 import {
