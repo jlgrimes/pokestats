@@ -17,6 +17,7 @@ export interface StandingsRowProps {
   opponentRoundNumber?: number;
   opponentResult?: string;
   hideArchetype?: boolean;
+  shouldHideDeck?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {

@@ -33,6 +33,7 @@ export interface ArchetypeSelectorProps {
   unownOverride?: string;
   userIsAdmin: boolean;
   deckIsVerified?: boolean;
+  shouldHideDeck?: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
@@ -46,28 +47,14 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
         </Text>
       );
     } else {
-      if (props.selectedArchetype) {
-        const displayedPokemonNames =
-          props.selectedArchetype?.defined_pokemon ?? [];
-
-        return (
-          <SpriteDisplay
-            verified={props.deckIsVerified}
-            pokemonNames={displayedPokemonNames}
-            deckId={props.selectedArchetype.id}
-          />
-        );
-      } else {
-        return (
-          <Flex justifyContent={'center'} minWidth='4.5rem'>
-            <Image
-              height='30px'
-              src={getLowResUnownUrl(props.unownOverride)}
-              alt='Unown'
-            />
-          </Flex>
-        );
-      }
+      return (
+        <SpriteDisplay
+          verified={props.deckIsVerified}
+          pokemonNames={props.selectedArchetype?.defined_pokemon}
+          deckId={props.selectedArchetype?.id}
+          hidden={props.shouldHideDeck}
+        />
+      );
     }
   };
 

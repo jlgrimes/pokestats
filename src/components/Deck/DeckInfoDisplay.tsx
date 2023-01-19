@@ -12,12 +12,14 @@ export const DeckInfoDisplay = memo(
     enableEdits,
     shouldShowAsText,
     disableList,
+    shouldHideDeck
   }: {
     player: Standing;
     tournament: Tournament;
     enableEdits: boolean;
     shouldShowAsText?: boolean;
     disableList?: boolean;
+    shouldHideDeck?: boolean;
   }) => {
     const archetypeModal = useDisclosure();
     return (
@@ -29,6 +31,7 @@ export const DeckInfoDisplay = memo(
             deck={player.deck}
             archetypeModal={archetypeModal}
             shouldShowAsText={shouldShowAsText}
+            shouldHideDeck={shouldHideDeck}
           />
         </StackItem>
         {player?.deck?.list && !disableList ? (

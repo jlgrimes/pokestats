@@ -36,7 +36,11 @@ export default function TournamentView({
         setStandingsFilters={setStandingsFilters}
       />
       {liveResults && (
-        <StandingsList results={liveResults.data} tournament={tournament} />
+        <StandingsList
+          results={liveResults.data}
+          tournament={tournament}
+          shouldHideDecks={liveResults.shouldHideDecks}
+        />
       )}
     </Stack>
   );

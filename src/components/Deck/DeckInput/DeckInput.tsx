@@ -12,12 +12,14 @@ export default function DeckInput({
   tournamentId,
   archetypeModal,
   shouldShowAsText,
+  shouldHideDeck,
 }: {
   playerName: string;
   deck: Deck | undefined;
   tournamentId: string;
   archetypeModal: UseDisclosureProps;
   shouldShowAsText?: boolean;
+  shouldHideDeck?: boolean;
 }) {
   const deckId = deck?.id;
 
@@ -87,6 +89,7 @@ export default function DeckInput({
       unownOverride={playerName === 'Isaiah Cheville' ? 'z' : undefined}
       userIsAdmin={userIsAdmin}
       deckIsVerified={deck?.verified}
+      shouldHideDeck={shouldHideDeck}
     />
   );
 }

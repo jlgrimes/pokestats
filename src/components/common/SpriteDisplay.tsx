@@ -1,4 +1,6 @@
 import {
+  Flex,
+  Icon,
   Image,
   LinkBox,
   LinkOverlay,
@@ -6,12 +8,14 @@ import {
   StackItem,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { FaRegEyeSlash } from 'react-icons/fa';
 import { NotVerifiedIcon, VerifiedIcon } from '../Player/Icons';
-import { getRegionFlag, getSpriteUrl, removeRegionFlag } from './helpers';
+import { getLowResUnownUrl, getRegionFlag, getSpriteUrl, removeRegionFlag } from './helpers';
 
 interface SpriteDisplayProps {
-  pokemonNames: string[];
+  pokemonNames?: string[];
   deckId?: number;
+  hidden?: boolean;
   verified?: boolean;
   squishWidth?: boolean;
   big?: boolean;
@@ -25,7 +29,17 @@ const Sprites = (props: SpriteDisplayProps & { deckIsReal: boolean }) => (
     minWidth={props.squishWidth ? 0 : '4.61rem'}
   >
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
-      {props.pokemonNames.map((name, idx) => {
+      {!props.pokemonNames || props.pokemonNames.length === 0 && (
+        <Flex justifyContent={'center'} minWidth='4.5rem'>
+          <Image
+            height='30px'
+            src={getLowResUnownUrl()}
+            alt='Unown'
+          />
+        </Flex>
+      )}
+      {/* {props.hidden && <Icon as={FaRegEyeSlash} />} */}
+      {props.pokemonNames?.map((name, idx) => {
         if (name.length === 0) return;
 
         if (name === 'substitute') {

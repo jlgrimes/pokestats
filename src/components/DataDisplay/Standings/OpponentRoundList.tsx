@@ -96,6 +96,7 @@ export const OpponentRoundList = ({
                           canEditDecks={userIsAdmin}
                           opponentRoundNumber={opponents.length - idx}
                           opponentResult={result}
+                          shouldHideDeck={liveResults?.shouldHideDecks}
                         />
                       </Fragment>
                     )
