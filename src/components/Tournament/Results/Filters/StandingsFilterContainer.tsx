@@ -16,10 +16,12 @@ export const StandingsFilterContainer = memo(
     standingsFilters,
     setStandingsFilters,
     tournament,
+    disabled
   }: {
     standingsFilters: StandingsFilters;
     setStandingsFilters: (filters: StandingsFilters) => void;
     tournament: Tournament;
+    disabled?: boolean
   }) => {
     const getFilter = useCallback(
       (key: keyof StandingsFilters, arg?: number[]) => {
@@ -102,6 +104,7 @@ export const StandingsFilterContainer = memo(
           getFilter={getFilter}
           toggleFilter={toggleFilter}
           tournament={tournament}
+          disabled={disabled}
         />
         <FilterTags
           filters={standingsFilters}

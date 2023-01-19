@@ -34,6 +34,7 @@ export default function TournamentView({
         tournament={tournament}
         standingsFilters={standingsFilters}
         setStandingsFilters={setStandingsFilters}
+        disabled={liveResults?.shouldHideDecks}
       />
       {liveResults && (
         <StandingsList

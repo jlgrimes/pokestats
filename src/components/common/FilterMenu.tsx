@@ -7,7 +7,13 @@ import {
 } from '@chakra-ui/react';
 import { FaFilter } from 'react-icons/fa';
 
-export const FilterMenu = ({ children }: { children: JSX.Element }) => {
+export const FilterMenu = ({
+  children,
+  disabled,
+}: {
+  children: JSX.Element;
+  disabled?: boolean;
+}) => {
   return (
     <StackItem paddingLeft={4}>
       <Menu closeOnSelect={false}>
@@ -17,6 +23,7 @@ export const FilterMenu = ({ children }: { children: JSX.Element }) => {
           variant='outline'
           size='sm'
           leftIcon={<FaFilter />}
+          disabled={disabled}
         >
           Filter
         </MenuButton>

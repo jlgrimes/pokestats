@@ -1,26 +1,24 @@
-import {
-  TableContainer,
-  Table,
-  Tbody,
-  Tr,
-  Thead,
-  Th,
-} from '@chakra-ui/react';
+import { TableContainer, Table, Tbody, Tr, Thead, Th } from '@chakra-ui/react';
 import { usePlayerLiveResults } from '../../hooks/tournamentResults';
 import { Tournament } from '../../../types/tournament';
 import { memo } from 'react';
 import { MyMatchupRow } from './MyMatchupRow';
 
-export const MyMatchupsList = memo(({
-  tournament,
-  user,
-}: {
-  tournament: Tournament;
-  user: Record<string, any>;
-}) => {
-  const player = usePlayerLiveResults(tournament.id, user.name, {
-    load: { opponentRoundData: true },
-  });
+export const MyMatchupsList = memo(
+  ({
+    tournament,
+    user,
+  }: {
+    tournament: Tournament;
+    user: Record<string, any>;
+  }) => {
+    const { player, shouldHideDecks } = usePlayerLiveResults(
+      tournament.id,
+      user.name,
+      {
+        load: { opponentRoundData: true },
+      }
+    );
 
     return (
       <TableContainer>
@@ -52,6 +50,7 @@ export const MyMatchupsList = memo(({
                       tournament={tournament}
                       roundNumber={(player.rounds?.length ?? 0) - idx}
                       round={round}
+                      shouldHideDeck={!!shouldHideDecks}
                     />
                   )
               )}

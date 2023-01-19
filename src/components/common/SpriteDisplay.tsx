@@ -29,18 +29,19 @@ interface SpriteDisplayProps {
 const Sprites = (props: SpriteDisplayProps & { deckIsReal: boolean }) => (
   <Stack
     direction='row'
+    justifyContent={'center'}
     alignItems={'baseline'}
     spacing={-0.5}
     minWidth={props.squishWidth ? 0 : '4.61rem'}
   >
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
-      {props.hidden ? (
-        <Flex justifyContent={'center'} minWidth='3rem'>
-          <Icon as={FaRegEyeSlash} />
-        </Flex>
-      ) : !props.pokemonNames || props.pokemonNames.length === 0 ? (
+      {!props.pokemonNames || props.pokemonNames.length === 0 ? (
         <Flex justifyContent={'center'} minWidth='4.5rem'>
           <Image height='30px' src={getLowResUnownUrl()} alt='Unown' />
+        </Flex>
+      ) : props.hidden ? (
+        <Flex justifyContent={'center'} minWidth='2rem'>
+          <Icon as={FaRegEyeSlash} />
         </Flex>
       ) : (
         props.pokemonNames?.map((name, idx) => {

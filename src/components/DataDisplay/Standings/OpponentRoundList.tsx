@@ -65,6 +65,7 @@ export const OpponentRoundList = ({
               player={player}
               enableEdits={false}
               disableList
+              shouldHideDeck={liveResults?.shouldHideDecks}
             />
           </Stack>
         </ModalHeader>

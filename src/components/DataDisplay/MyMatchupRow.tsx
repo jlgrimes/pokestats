@@ -12,10 +12,12 @@ export const MyMatchupRow = memo(
     tournament,
     roundNumber,
     round,
+    shouldHideDeck,
   }: {
     tournament: Tournament;
     roundNumber: number;
     round: PlayerRound;
+    shouldHideDeck: boolean;
   }) =>
     round.opponent ? (
       <Tr height='41px'>
@@ -35,12 +37,12 @@ export const MyMatchupRow = memo(
           padding={0}
           paddingLeft={2}
         >
-          {(
+          {
             <Player
               name={round.opponent.name}
               profile={round.opponent.profile}
             />
-          )}
+          }
         </Td>
 
         <Td padding={0} paddingLeft={2}>
@@ -52,6 +54,7 @@ export const MyMatchupRow = memo(
             player={round.opponent}
             // We don't want player to edit something they already edited
             enableEdits={!round.opponent.deck?.name}
+            shouldHideDeck={shouldHideDeck}
           />
         </Td>
       </Tr>

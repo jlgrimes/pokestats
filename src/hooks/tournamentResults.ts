@@ -91,7 +91,10 @@ export const usePlayerLiveResults = (
   tournamentId: string,
   name: string,
   options?: FetchLoggedInPlayerOptions
-): Standing | undefined => {
+): {
+  player: Standing | undefined;
+  shouldHideDecks: boolean | undefined;
+} => {
   const { data: liveResults } = useLiveTournamentResults(tournamentId, {
     load: { allRoundData: true },
   });
@@ -101,25 +104,31 @@ export const usePlayerLiveResults = (
 
   if (options?.load?.opponentRoundData && player?.rounds) {
     return {
-      ...player,
-      rounds: player.rounds.map(roundResult => {
-        const opponent = liveResults?.data.find(
-          player => player.name === roundResult.name
-        );
+      player: {
+        ...player,
+        rounds: player.rounds.map(roundResult => {
+          const opponent = liveResults?.data.find(
+            player => player.name === roundResult.name
+          );
 
-        if (opponent) {
-          return {
-            ...roundResult,
-            opponent,
-          };
-        }
+          if (opponent) {
+            return {
+              ...roundResult,
+              opponent,
+            };
+          }
 
-        return roundResult;
-      }),
+          return roundResult;
+        }),
+      },
+      shouldHideDecks: liveResults?.shouldHideDecks,
     };
   }
 
-  return player;
+  return {
+    player,
+    shouldHideDecks: liveResults?.shouldHideDecks,
+  };
 };
 
 export const usePlayerPerformance = (

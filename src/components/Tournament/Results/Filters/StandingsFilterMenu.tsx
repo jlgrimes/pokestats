@@ -38,6 +38,7 @@ export const StandingsFilterMenu = memo(
     getFilter,
     toggleFilter,
     tournament,
+    disabled
   }: {
     getFilter: (key: keyof StandingsFilters, arg?: any) => boolean;
     toggleFilter: (
@@ -45,6 +46,7 @@ export const StandingsFilterMenu = memo(
       options?: ToggleFilterOptions
     ) => void;
     tournament: Tournament;
+    disabled?: boolean
   }) => {
     const mostPopularDecks = useMostPopularArchetypes(tournament.id, {
       leaveOutZeroCountDecks: true,
@@ -53,7 +55,7 @@ export const StandingsFilterMenu = memo(
     const supertypeCollection = sortBySuperType(mostPopularDecks);
 
     return (
-      <FilterMenu>
+      <FilterMenu disabled={disabled}>
         <Fragment>
           <MenuOptionGroup title='Results'>
             <MenuItemOption

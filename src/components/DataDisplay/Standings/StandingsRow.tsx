@@ -74,6 +74,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
             tournament={props.tournament}
             player={props.result}
             enableEdits={!!props.canEditDecks}
+            shouldHideDeck={props.shouldHideDeck}
           />
         )}
         {props.hideArchetype && props.result.deck?.list && (

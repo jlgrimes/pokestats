@@ -66,7 +66,10 @@ export const PlayerMatchupStatus = ({
   const getPlayerText =
     session.data?.user.email === user.email ? 'You' : user.name;
 
-  const playerResults = usePlayerLiveResults(tournament.id, user.name);
+  const { player: playerResults, shouldHideDecks } = usePlayerLiveResults(
+    tournament.id,
+    user.name
+  );
   return playerResults ? (
     <Stack alignItems={'center'} spacing={4}>
       <Stack spacing={0} alignItems='center'>
@@ -98,6 +101,7 @@ export const PlayerMatchupStatus = ({
             player={playerResults}
             enableEdits={!playerResults.deck?.name}
             shouldShowAsText
+            shouldHideDeck={shouldHideDecks}
           />
           {tournamentFinished && (
             <Heading size='xs' color='gray.700'>
