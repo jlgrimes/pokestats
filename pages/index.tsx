@@ -41,8 +41,6 @@ export default function Home({
 export async function getStaticProps() {
   const tournaments = await fetchTournaments({ prefetch: true });
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
-  await queryClient.prefetchQuery([`sets`], fetchSets);
 
   const mostRecentFinishedTournament = tournaments
     .slice()
@@ -51,14 +49,6 @@ export async function getStaticProps() {
       ({ tournamentStatus }) => tournamentStatus === 'finished'
     ) as Tournament;
 
-  await queryClient.prefetchQuery(
-    [`live-results`, mostRecentFinishedTournament.id, 'allRoundData', true],
-    () =>
-      fetchLiveResults(mostRecentFinishedTournament.id, {
-        prefetch: true,
-        load: { allRoundData: true },
-      })
-  );
   await queryClient.prefetchQuery({
     queryKey: ['deck-archetypes'],
     queryFn: () => fetchArchetypes(),
