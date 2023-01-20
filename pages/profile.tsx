@@ -3,7 +3,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaHistory, FaRegClock } from 'react-icons/fa';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { getFirstName } from '../src/components/Profile/helpers';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
@@ -34,14 +34,13 @@ export default function ProfilePage({
       </Heading>
       <MyMostRecentResults tournaments={tournaments} />
       <Button
-        variant={'outline'}
-        rightIcon={<FaArrowRight />}
+        leftIcon={<FaHistory />}
         onClick={() =>
           session.data?.user.email &&
           router.push('/player/' + parseUsername(session.data?.user.email))
         }
       >
-        See my tournament history
+        My tournament history
       </Button>
     </Stack>
   );

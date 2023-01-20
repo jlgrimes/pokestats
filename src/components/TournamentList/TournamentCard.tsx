@@ -48,7 +48,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
         isExternal={linkShouldGoToRK9}
       >
         <Card>
-          <Stack padding='1rem 1.5rem' spacing={1}>
+          <Stack padding={4} spacing={1}>
             <Stack spacing={0}>
               <Heading size='sm' color='gray.700'>
                 {tournament.name}{' '}

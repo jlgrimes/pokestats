@@ -28,7 +28,7 @@ export const CommonCard = ({
       {header && (
         <CardHeader
           paddingX={ghost ? 2 : 6}
-          paddingBottom={ghost ? 2 : 0}
+          paddingBottom={ghost ? 4 : 0}
           display='flex'
           flexDirection={'column'}
           gap={1}
