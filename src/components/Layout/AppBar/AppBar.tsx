@@ -20,7 +20,8 @@ import { StickyHeader } from '../../common/Layout/StickyHeader';
 
 export const AppBar = () => {
   const session = useSession();
-  const { data: userProfile } = useSessionUserProfile();
+  const { data: userProfile, isLoading: profileIsLoading } =
+    useSessionUserProfile();
   const router = useRouter();
 
   return (
@@ -55,7 +56,7 @@ export const AppBar = () => {
                     )}
                     {userProfile ? (
                       <VerifiedIcon />
-                    ) : session.status === 'loading' || !userProfile ? (
+                    ) : profileIsLoading ? (
                       <SkeletonCircle size='4' />
                     ) : (
                       <NotVerifiedIcon />

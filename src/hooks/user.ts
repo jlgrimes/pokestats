@@ -51,7 +51,7 @@ export const fetchUserProfile = async (session: Session) => {
 export const useSessionUserProfile = () => {
   const session = useSession();
 
-  return useQuery({
+  const query = useQuery({
     queryKey: [`session-user-profile`, session.data?.user.email],
     queryFn: () => {
       if (session.data) {
@@ -61,6 +61,11 @@ export const useSessionUserProfile = () => {
       return null;
     },
   });
+
+  return {
+    data: query.data,
+    isLoading: session.status === 'loading' || query.isLoading,
+  };
 };
 
 export const useUserIsInTournament = (
