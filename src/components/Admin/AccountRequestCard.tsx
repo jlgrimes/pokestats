@@ -9,8 +9,9 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FaLink } from 'react-icons/fa';
+import { GiLeatherBoot } from 'react-icons/gi';
 import supabase from '../../lib/supabase/client';
 import { SelectPlayerModal } from './SelectPlayerModal';
 
@@ -22,6 +23,7 @@ export const AccountRequestCard = ({
   const modalControls = useDisclosure();
   const [associatedName, setAssociatedName] = useState<string | null>(null);
   const [linkUsersInProgress, setLinkUsersInProgress] = useState(false);
+  const [bootInProgress, setBootInProgress] = useState(false);
   const [shouldHideCard, setShouldHideCard] = useState(false);
 
   const toast = useToast();
@@ -33,21 +35,6 @@ export const AccountRequestCard = ({
 
   const handleLinkClick = async () => {
     setLinkUsersInProgress(true);
-    const { error: deleteError } = await supabase
-      .from('Account Requests')
-      .delete()
-      .eq('email', request.email);
-
-    if (deleteError) {
-      setLinkUsersInProgress(false);
-      toast({
-        status: 'error',
-        title: deleteError.message,
-        description: deleteError.details,
-      });
-      return;
-    }
-
     const { error: updateError } = await supabase
       .from('Player Profiles')
       .update({
@@ -65,6 +52,21 @@ export const AccountRequestCard = ({
       return;
     }
 
+    const { error: deleteError } = await supabase
+      .from('Account Requests')
+      .delete()
+      .eq('email', request.email);
+
+    if (deleteError) {
+      setLinkUsersInProgress(false);
+      toast({
+        status: 'error',
+        title: deleteError.message,
+        description: deleteError.details,
+      });
+      return;
+    }
+
     setLinkUsersInProgress(false);
     setShouldHideCard(true);
     toast({
@@ -74,38 +76,72 @@ export const AccountRequestCard = ({
     });
   };
 
-  return (
-    !shouldHideCard ? (
-      <Card>
-        <CardHeader>
-          <Heading size={'md'}>{request.email}</Heading>
-          <Text>Name: {request.name}</Text>
-        </CardHeader>
-        <Button
-          onClick={() => {
-            modalControls.onOpen();
-          }}
-          rightIcon={<EditIcon />}
-        >
-          {associatedName ?? 'Associate with RK9 player'}
-        </Button>
-        <Button
-          colorScheme={'green'}
-          isLoading={linkUsersInProgress}
-          loadingText='Link users'
-          disabled={!associatedName}
-          onClick={handleLinkClick}
-          rightIcon={<FaLink />}
-        >
-          Link users
-        </Button>
-        {modalControls.isOpen && (
-          <SelectPlayerModal
-            modalControls={modalControls}
-            handleSubmit={handleModalSubmit}
-          />
-        )}
-      </Card>
-    ) : null
-  );
+  const handleBootClick = useCallback(async () => {
+    setBootInProgress(true);
+    const { error: deleteError } = await supabase
+      .from('Account Requests')
+      .delete()
+      .eq('email', request.email);
+
+    if (deleteError) {
+      setLinkUsersInProgress(false);
+      toast({
+        status: 'error',
+        title: deleteError.message,
+        description: deleteError.details,
+      });
+      return;
+    }
+
+    setBootInProgress(false);
+    setShouldHideCard(true);
+
+    toast({
+      status: 'success',
+      title: 'User booted!',
+      description: `${request.email} + ${associatedName}`,
+    });
+  }, [associatedName, request.email, toast]);
+
+  return !shouldHideCard ? (
+    <Card>
+      <CardHeader>
+        <Heading size={'md'}>{request.email}</Heading>
+        <Text>Name: {request.name}</Text>
+      </CardHeader>
+      <Button
+        onClick={() => {
+          modalControls.onOpen();
+        }}
+        rightIcon={<EditIcon />}
+      >
+        {associatedName ?? 'Associate with RK9 player'}
+      </Button>
+      <Button
+        colorScheme={'green'}
+        isLoading={linkUsersInProgress}
+        loadingText='Link users'
+        disabled={!associatedName}
+        onClick={handleLinkClick}
+        rightIcon={<FaLink />}
+      >
+        Link users
+      </Button>
+      <Button
+        colorScheme={'red'}
+        isLoading={bootInProgress}
+        loadingText='Bootin'
+        onClick={handleBootClick}
+        rightIcon={<GiLeatherBoot />}
+      >
+        Give em the boot!
+      </Button>
+      {modalControls.isOpen && (
+        <SelectPlayerModal
+          modalControls={modalControls}
+          handleSubmit={handleModalSubmit}
+        />
+      )}
+    </Card>
+  ) : null;
 };
