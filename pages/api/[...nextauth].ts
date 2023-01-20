@@ -18,7 +18,13 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, token }: { session: Session, token: TokenSet}) {
-      return session;
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          email: session.user.email.toLowerCase()
+        }
+      };
     },
   },
 };
