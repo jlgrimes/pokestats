@@ -19,7 +19,7 @@ export const StandingsList = memo(
     const { data: userIsAdmin } = useUserIsAdmin();
 
     return (
-      <Grid gridTemplateColumns='2.3rem repeat(3, auto)' alignItems='center'>
+      <Grid gridTemplateColumns='2.65rem repeat(3, auto)' alignItems='center'>
         <GridItem></GridItem>
         <Text {...tableHeadingProps}>Name</Text>
         <Text {...tableHeadingProps} paddingLeft={1}>
