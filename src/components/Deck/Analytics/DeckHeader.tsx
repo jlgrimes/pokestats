@@ -8,6 +8,8 @@ import SpriteDisplay from '../../common/SpriteDisplay';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
+import { DeckVariants } from './DeckVariants';
+import { BackToDecksButton } from './BackToDecksButton';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
@@ -91,7 +93,8 @@ export const DeckHeader = memo(
     }
 
     return (
-      <Stack paddingX={4}>
+      <Stack paddingX={8}>
+        <BackToDecksButton />
         <HStack spacing={0}>
           {identifiableCards?.map(card => (
             <Image
@@ -106,6 +109,7 @@ export const DeckHeader = memo(
           ))}
         </HStack>
         <Heading color='gray.700'>{deck.name}</Heading>
+        <DeckVariants deck={deck} />
       </Stack>
     );
   }

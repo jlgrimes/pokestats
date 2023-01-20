@@ -17,7 +17,6 @@ export default function DeckPage({ deck }: { deck: Deck }) {
   return (
     <DeckAnalyticsContainer deck={deck}>
       <Fragment>
-        <DeckVariants deck={deck} />
         <RecentFinishesCard deck={deck} />
         <PopularTechsCard deck={deck} />
       </Fragment>

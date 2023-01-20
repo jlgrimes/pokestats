@@ -5,6 +5,7 @@ import { Deck, Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
+import { formatTournamentDate } from '../../TournamentList/helpers';
 
 export const DeckFinishes = memo(
   ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
@@ -46,11 +47,18 @@ export const DeckFinishes = memo(
                       <Heading
                         size='sm'
                         color='gray.700'
-                        padding={2}
+                        paddingX={2}
                         paddingTop={onlyShowRecent ? 0 : 3}
-                        paddingBottom={1}
                       >
                         {tournament.name}
+                      </Heading>
+                      <Heading
+                        size='xs'
+                        color='gray.500'
+                        paddingX={2}
+                        paddingY={1}
+                      >
+                        {formatTournamentDate(tournament)}
                       </Heading>
                     </Link>
                   )}
