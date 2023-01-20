@@ -9,6 +9,7 @@ import { getFirstName } from '../src/components/Profile/helpers';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
 import { fetchDecksWithLists } from '../src/hooks/finalResults';
 import { fetchTournaments } from '../src/hooks/tournaments';
+import { useSessionUserProfile } from '../src/hooks/user';
 import { parseUsername } from '../src/lib/strings';
 import { Tournament } from '../types/tournament';
 
@@ -19,13 +20,18 @@ export default function ProfilePage({
 }) {
   const session = useSession();
   const router = useRouter();
+  const { data: user } = useSessionUserProfile();
 
   useEffect(() => {
     // If user is on the page with their profile, and there is not a profile stored
-    if (session.status === 'unauthenticated') {
+    if (session.status === 'authenticated' && !user) {
       router.push('/setup-profile');
     }
-  }, [session.status, router]);
+
+    if (session.status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [session.status, router, user]);
 
   return (
     <Stack>
