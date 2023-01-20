@@ -26,9 +26,7 @@ export const FilterTags = ({
   ) => void;
   tournament: Tournament;
 }) => {
-  const archetypes = useMostPopularArchetypes(tournament.id, {
-    includeDeckCounts: true,
-  });
+  const archetypes = useMostPopularArchetypes(tournament.id);
 
   return (
     <>

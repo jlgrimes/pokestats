@@ -1,14 +1,10 @@
-import { Grid, Stack, Switch } from '@chakra-ui/react';
-import { useCallback, useState } from 'react';
+import { Stack } from '@chakra-ui/react';
+import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
-import { useUserIsAdmin } from '../../hooks/administrators';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
-import {
-  StandingsFilterMenu,
-  StandingsFilters,
-} from './Results/Filters/StandingsFilterMenu';
+import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';
 
 export default function TournamentView({
   tournament,
@@ -17,7 +13,11 @@ export default function TournamentView({
 }) {
   const [standingsFilters, setStandingsFilters] = useState<StandingsFilters>({
     justDay2: {
-      name: 'Only Day 2',
+      name: 'Day 2',
+      value: false,
+    },
+    onStream: {
+      name: 'On stream',
       value: false,
     },
     decksVisible: [],

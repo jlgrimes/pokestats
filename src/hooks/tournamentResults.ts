@@ -30,9 +30,10 @@ export const useTournamentResults = (tournamentName: string) => {
 
 const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
   if (!filters) return liveResults;
+  let ret = liveResults;
 
   if (filters.decksVisible.length > 0) {
-    return {
+    ret = {
       ...liveResults,
       data: liveResults.data.filter(
         ({ deck }) => deck && deck.id && filters.decksVisible.includes(deck.id)
@@ -41,7 +42,7 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
   }
 
   if (filters.justDay2.value) {
-    return {
+    ret = {
       ...liveResults,
       data: liveResults.data.filter(
         ({ record }) => record.wins * 3 + record.ties >= 19
@@ -49,7 +50,16 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
     };
   }
 
-  return liveResults;
+  if (filters.onStream.value) {
+    ret = {
+      ...liveResults,
+      data: liveResults.data.filter(
+        ({ deck }) => deck?.on_stream
+      ),
+    };
+  }
+
+  return ret;
 };
 
 export const useLiveTournamentResults = (

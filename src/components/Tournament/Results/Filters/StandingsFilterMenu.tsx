@@ -30,6 +30,7 @@ export interface Filter {
 
 export interface StandingsFilters {
   justDay2: Filter;
+  onStream: Filter;
   decksVisible: number[];
 }
 
@@ -38,7 +39,7 @@ export const StandingsFilterMenu = memo(
     getFilter,
     toggleFilter,
     tournament,
-    disabled
+    disabled,
   }: {
     getFilter: (key: keyof StandingsFilters, arg?: any) => boolean;
     toggleFilter: (
@@ -46,25 +47,29 @@ export const StandingsFilterMenu = memo(
       options?: ToggleFilterOptions
     ) => void;
     tournament: Tournament;
-    disabled?: boolean
+    disabled?: boolean;
   }) => {
-    const mostPopularDecks = useMostPopularArchetypes(tournament.id, {
-      leaveOutZeroCountDecks: true,
-    });
+    const mostPopularDecks = useMostPopularArchetypes(tournament.id);
 
     const supertypeCollection = sortBySuperType(mostPopularDecks);
 
     return (
       <FilterMenu disabled={disabled}>
         <Fragment>
-          <MenuOptionGroup title='Results'>
+          <MenuOptionGroup title='Results' type='checkbox'>
             <MenuItemOption
-              padding={0}
               value='justDay2'
               isChecked={getFilter('justDay2')}
               onClick={() => toggleFilter('justDay2')}
             >
-              Only Day 2
+              Day 2
+            </MenuItemOption>
+            <MenuItemOption
+              value='onStream'
+              isChecked={getFilter('onStream')}
+              onClick={() => toggleFilter('onStream')}
+            >
+              Featured on stream
             </MenuItemOption>
           </MenuOptionGroup>
           <MenuDivider />
