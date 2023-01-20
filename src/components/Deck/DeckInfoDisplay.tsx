@@ -12,7 +12,7 @@ export const DeckInfoDisplay = memo(
     enableEdits,
     shouldShowAsText,
     disableList,
-    shouldHideDeck
+    shouldHideDeck,
   }: {
     player: Standing;
     tournament: Tournament;
@@ -34,9 +34,10 @@ export const DeckInfoDisplay = memo(
             shouldHideDeck={shouldHideDeck}
           />
         </StackItem>
-        {player?.deck?.list && !disableList ? (
+        {player?.deck?.list && !disableList && (
           <ListViewerOpenButton result={player} tournament={tournament} />
-        ) : enableEdits ? (
+        )}
+        {enableEdits && (
           <IconButton
             maxWidth={'2'}
             icon={<FaRegEdit />}
@@ -47,7 +48,7 @@ export const DeckInfoDisplay = memo(
             color='gray.500'
             onClick={archetypeModal.onOpen}
           />
-        ) : null}
+        )}
       </Stack>
     );
   }

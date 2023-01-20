@@ -14,8 +14,9 @@ export interface ArchetypeSelectorProps {
   userIsAdmin: boolean;
   deckIsVerified?: boolean;
   shouldHideDeck?: boolean;
-  isStreamDeck: boolean
+  isStreamDeck: boolean;
   toggleIsStreamDeck: () => void;
+  isListUp: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {

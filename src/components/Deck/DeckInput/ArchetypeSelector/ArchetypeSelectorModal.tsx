@@ -74,6 +74,11 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
                 On stream
               </Checkbox>
             )}
+            {props.userIsAdmin && props.isListUp && (
+              <Text>
+                Because lists are up, deck archetype is fed from RK9. Changing an archetype here just updates the database for no reason.
+              </Text>
+            )}
             <Stack spacing={0}>
               <Input
                 placeholder='Filter archetype'

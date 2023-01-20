@@ -96,6 +96,7 @@ export default function DeckInput({
       shouldHideDeck={shouldHideDeck}
       isStreamDeck={!!isStreamDeck}
       toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
+      isListUp={!!deck?.list}
     />
   );
 }
