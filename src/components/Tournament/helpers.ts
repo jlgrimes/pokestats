@@ -19,5 +19,5 @@ export const getStandingsBadgeProps = (tournament: Tournament): BadgeProps => {
   return {};
 };
 
-export const getRK9TournamentUrl = (slug: string) =>
-  `https://rk9.gg/tournament/${slug}`;
+export const getRK9TournamentUrl = (slug: string, directory: string = 'tournament') =>
+  `https://rk9.gg/${directory}/${slug}`;
