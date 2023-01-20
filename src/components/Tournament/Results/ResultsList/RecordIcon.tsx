@@ -1,4 +1,4 @@
-import { Icon } from '@chakra-ui/react';
+import { HStack, Icon } from '@chakra-ui/react';
 import { useCallback, useMemo } from 'react';
 import {
   FaChessBishop,
@@ -8,6 +8,7 @@ import {
   FaHandPeace,
   FaRunning,
   FaTrash,
+  FaTwitch,
   FaUserAltSlash,
 } from 'react-icons/fa';
 import { Standing } from '../../../../../types/tournament';
@@ -62,7 +63,9 @@ export const RecordIcon = ({
 
     if (standing.drop) {
       if (standing.placing === 9999) {
-        return <Icon {...commonIconProps} color='red.600' as={FaUserAltSlash} />
+        return (
+          <Icon {...commonIconProps} color='red.600' as={FaUserAltSlash} />
+        );
       }
 
       if (showTrashIcon) {
@@ -85,6 +88,15 @@ export const RecordIcon = ({
 
     return null;
   }, [commonIconProps, getCrownIcon, standing]);
+
+  if (standing.deck?.on_stream && !getCrownIcon()) {
+    return (
+      <HStack spacing={1} paddingRight={1}>
+        <Icon color='purple' as={FaTwitch} />
+        {getIcon()}
+      </HStack>
+    );
+  }
 
   return getIcon();
 };
