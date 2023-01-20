@@ -3,7 +3,6 @@ import {
   Avatar,
   LinkOverlay,
   LinkBox,
-  Button,
   SkeletonCircle,
   IconButton,
 } from '@chakra-ui/react';
@@ -14,20 +13,15 @@ import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 import { AppDrawerButton } from './AppDrawerButton';
 import { AppLogo } from './AppLogo';
-import { parseUsername } from '../../../lib/strings';
 import { SHOULD_SHOW_COMING_SOON } from '../../../lib/coming-soon';
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
 
 export const AppBar = () => {
   const session = useSession();
   const { data: userProfile } = useSessionUserProfile();
-  const [scrollTop, setScrollTop] = useState(0);
   const router = useRouter();
-
-  const disableSticky =
-    router.asPath.includes('finishes') || router.asPath.includes('cards');
 
   return (
     <StickyHeader id='app-bar'>

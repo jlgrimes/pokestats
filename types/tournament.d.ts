@@ -17,6 +17,7 @@ export interface Deck {
   list?: DeckList;
   verified?: boolean;
   tournament_id?: string;
+  on_stream?: boolean;
 }
 
 export interface DeckList {

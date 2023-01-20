@@ -26,17 +26,20 @@ export default function DeckInput({
   const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
   const [selectedDeck, setSelectedDeck] = useState<Deck | undefined>(deck);
+  const [isStreamDeck, setIsStreamDeck] = useState(deck?.on_stream);
   const toast = useToast();
 
   useEffect(() => {
     setSelectedDeck(deck);
   }, [deck]);
 
-  const handleArchetypeSelect = async (newValue: Deck) => {
+  const handleArchetypeSelect = async (
+    newValue: Deck,
+  ) => {
     if (deckId) {
       const { error } = await supabase
         .from('Player Decks')
-        .update({ deck_archetype: newValue.id })
+        .update({ deck_archetype: newValue.id, on_stream: isStreamDeck })
         .match({ player_name: playerName, tournament_id: tournamentId });
 
       if (error) {
@@ -60,6 +63,7 @@ export default function DeckInput({
         tournament_id: tournamentId,
         user_who_submitted: session.data?.user.email,
         user_submitted_was_admin: userIsAdmin,
+        on_stream: isStreamDeck,
       });
 
       if (error) {
@@ -90,6 +94,8 @@ export default function DeckInput({
       userIsAdmin={userIsAdmin}
       deckIsVerified={deck?.verified}
       shouldHideDeck={shouldHideDeck}
+      isStreamDeck={!!isStreamDeck}
+      toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
     />
   );
 }

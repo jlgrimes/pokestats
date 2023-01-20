@@ -11,7 +11,7 @@ import supabase from '../supabase/client';
 export const fetchPlayerDecks = async (tournamentId: string) => {
   const res = await supabase
     .from('Player Decks')
-    .select('id,player_name,deck_archetype,user_submitted_was_admin')
+    .select('id,player_name,deck_archetype,user_submitted_was_admin,on_stream')
     .eq('tournament_id', tournamentId);
   return res.data;
 };
@@ -107,7 +107,7 @@ export const getPlayerDeckObjects = async (
   const playerDecks = await fetchPlayerDecks(tournamentId);
 
   const mappedDecks = playerDecks?.map(
-    ({ player_name, deck_archetype, user_submitted_was_admin }) => {
+    ({ player_name, deck_archetype, user_submitted_was_admin, on_stream }) => {
       const deck: Record<string, any> | undefined = deckArchetypes?.find(
         deck => deck.id === deck_archetype
       );
@@ -120,6 +120,7 @@ export const getPlayerDeckObjects = async (
           defined_pokemon: deck?.defined_pokemon ?? null,
           supertype: deck?.supertype,
           verified: user_submitted_was_admin,
+          on_stream
         },
       };
     }

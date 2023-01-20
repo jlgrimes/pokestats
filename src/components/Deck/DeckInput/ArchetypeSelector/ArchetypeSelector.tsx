@@ -1,26 +1,6 @@
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Stack,
-  Input,
-  Image,
-  UseDisclosureProps,
-  Text,
-  Flex,
-  Link,
-  ModalFooter,
-  StackItem,
-} from '@chakra-ui/react';
+import { UseDisclosureProps, Text } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { Deck } from '../../../../../types/tournament';
-import { useTwitterLink } from '../../../../hooks/twitter';
-import { getLowResUnownUrl } from '../../../common/helpers';
-import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
 import SpriteDisplay from '../../../common/SpriteDisplay';
 import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 
@@ -34,6 +14,8 @@ export interface ArchetypeSelectorProps {
   userIsAdmin: boolean;
   deckIsVerified?: boolean;
   shouldHideDeck?: boolean;
+  isStreamDeck: boolean
+  toggleIsStreamDeck: () => void;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
