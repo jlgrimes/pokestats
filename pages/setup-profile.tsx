@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { SetupProfileController } from '../src/components/Profile/SetupProfile/SetupProfileController';
 import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
-import { parseUsername } from '../src/lib/strings';
 
 export default function SetupPage() {
   const session = useSession();
@@ -13,7 +12,7 @@ export default function SetupPage() {
 
   useEffect(() => {
     if (user) {
-      router.push(`/player/${parseUsername(user.email)}`);
+      router.push(`/profile`);
     }
   }, [router, user]);
 

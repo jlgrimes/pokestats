@@ -28,16 +28,6 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
   // const twitterLink = useTwitterLink(user?.email);
   const userOwnsPage = useUserMatchesLoggedInUser(user?.name ?? '');
 
-  const session = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    // If user is on the page with their profile, and there is not a profile stored
-    if (session.data?.user.email === router.query.id && !user) {
-      router.push('/setup-profile');
-    }
-  }, [session.data?.user.email, router, user]);
-
   if (!user) {
     return <ProfileNotFound />;
   }

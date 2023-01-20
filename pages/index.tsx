@@ -5,6 +5,7 @@ import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { BiggestMovers } from '../src/components/Home/BiggestMovers';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
+import { TopDecks } from '../src/components/Home/TopDecks';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
 import { fetchDecksWithLists } from '../src/hooks/finalResults';
@@ -30,9 +31,8 @@ export default function Home({
     <Fragment>
       <Stack>
         <AppLogo big />
-        <MyMostRecentResults tournaments={tournaments} />
         <RecentTournaments tournaments={tournaments} />
-        <BiggestMovers tournament={mostRecentFinishedTournament} />
+        <TopDecks tournament={mostRecentFinishedTournament} />
       </Stack>
     </Fragment>
   );
