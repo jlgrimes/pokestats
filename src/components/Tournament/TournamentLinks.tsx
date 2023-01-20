@@ -57,7 +57,7 @@ export const TournamentLinks = memo(
           href={getRK9TournamentUrl(tournament.rk9link)}
           target='_blank'
         >
-          Details
+          Info
         </Button>
       </HStack>
     );
