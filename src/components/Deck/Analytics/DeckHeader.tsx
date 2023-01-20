@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { Button, Heading, HStack, Image, Stack } from '@chakra-ui/react';
 import { getCardImageUrl } from '../ListViewer/helpers';
 import { DeckCard, Deck } from '../../../../types/tournament';
@@ -16,29 +16,6 @@ export const DeckHeader = memo(
     const { data: deckStandings } = useFinalResults({ deckId: deck.id });
     const codeToSetMap = useCodeToSetMap();
     const router = useRouter();
-    const [scrollTop, setScrollTop] = useState(0);
-    const [stickyHeaderStyle, setStickyHeaderStyle] = useState(false);
-    const [headerOffset, setHeaderOffset] = useState<number>(0);
-
-    useEffect(() => {
-      setHeaderOffset(
-        document.getElementById('compact-deck-header')?.offsetTop as number
-      );
-    }, []);
-
-    useEffect(() => {
-      const onScroll = (e: any) => {
-        setScrollTop(e.target.documentElement.scrollTop);
-        if (e.target.documentElement.scrollTop > headerOffset) {
-          setStickyHeaderStyle(true);
-        } else {
-          setStickyHeaderStyle(false);
-        }
-      };
-      window.addEventListener('scroll', onScroll);
-
-      return () => window.removeEventListener('scroll', onScroll);
-    }, [scrollTop]);
 
     const identifiableCards = useMemo(
       () =>

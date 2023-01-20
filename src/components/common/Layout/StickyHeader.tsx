@@ -11,7 +11,7 @@ export const StickyHeader = memo(
 
     useEffect(() => {
       setHeaderOffset(document.getElementById(id)?.offsetTop as number);
-    }, []);
+    }, [id]);
 
     useEffect(() => {
       const onScroll = (e: any) => {
