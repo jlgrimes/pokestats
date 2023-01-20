@@ -47,7 +47,7 @@ export const useTournamentRender = (
     })
     .filter(
       ({ name }: { name: string }) =>
-        !name.includes('Collection') && !name.includes('Trainer Gallery')
+        !name.includes('Collection') && !name.includes('Gallery')
     );
   const startingSet = 'Astral Radiance';
 
