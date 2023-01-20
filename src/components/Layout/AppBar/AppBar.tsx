@@ -21,13 +21,10 @@ import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
 
 export const AppBar = () => {
-  const { data: session } = useSession();
-  const { data: userProfile, isLoading: isUserProfileLoading } =
-    useSessionUserProfile();
+  const session = useSession();
+  const { data: userProfile } = useSessionUserProfile();
   const [scrollTop, setScrollTop] = useState(0);
   const router = useRouter();
-
-
 
   const disableSticky =
     router.asPath.includes('finishes') || router.asPath.includes('cards');
@@ -45,30 +42,26 @@ export const AppBar = () => {
         )}
         {router.asPath !== '/' && <AppLogo />}
         {!SHOULD_SHOW_COMING_SOON &&
-          (session ? (
+          (session.status !== 'unauthenticated' ? (
             <>
               <LinkBox>
                 <LinkOverlay
                   as={NextLink}
-                  href={
-                    userProfile
-                      ? `/profile`
-                      : `/setup-profile`
-                  }
+                  href={userProfile ? `/profile` : `/setup-profile`}
                 >
                   <Stack direction={'row'} alignItems='baseline' spacing={-1.5}>
-                    {isUserProfileLoading ? (
+                    {!session.data?.user?.image ? (
                       <SkeletonCircle size='8' />
                     ) : (
                       <Avatar
                         size='sm'
-                        name={session.user?.name as string}
-                        src={session.user?.image as string}
+                        name={session.data?.user?.name as string}
+                        src={session.data?.user?.image as string}
                       />
                     )}
                     {userProfile ? (
                       <VerifiedIcon />
-                    ) : isUserProfileLoading ? (
+                    ) : session.status === 'loading' || !userProfile ? (
                       <SkeletonCircle size='4' />
                     ) : (
                       <NotVerifiedIcon />
