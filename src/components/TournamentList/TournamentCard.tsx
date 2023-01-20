@@ -58,6 +58,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
                     mx={1}
                     boxSize={4}
                     as={ExternalLinkIcon}
+                    marginBottom={1}
                   />
                 )}
               </Heading>

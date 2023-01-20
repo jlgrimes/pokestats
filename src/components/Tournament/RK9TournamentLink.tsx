@@ -16,7 +16,7 @@ export const RK9TournamentLink = ({
       href={getRK9TournamentUrl(tournament.rk9link)}
       isExternal
     >
-      <Icon as={ExternalLinkIcon} mx='8px' boxSize={4} />
+      <Icon as={ExternalLinkIcon} mx='8px' boxSize={4} marginBottom={1} />
     </Link>
   );
 };
