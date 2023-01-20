@@ -52,7 +52,7 @@ export const AppBar = () => {
                   as={NextLink}
                   href={
                     userProfile
-                      ? `/player/${parseUsername(session.user.email)}`
+                      ? `/profile`
                       : `/setup-profile`
                   }
                 >

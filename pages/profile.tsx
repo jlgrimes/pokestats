@@ -1,12 +1,15 @@
-import { Heading, Stack } from '@chakra-ui/react';
+import { Button, Heading, Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
+import { getFirstName } from '../src/components/Profile/helpers';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
 import { fetchDecksWithLists } from '../src/hooks/finalResults';
 import { fetchTournaments } from '../src/hooks/tournaments';
+import { parseUsername } from '../src/lib/strings';
 import { Tournament } from '../types/tournament';
 
 export default function ProfilePage({
@@ -26,8 +29,20 @@ export default function ProfilePage({
 
   return (
     <Stack>
-      <Heading>Hi, Jared!</Heading>
+      <Heading color='gray.700' padding={2}>
+        Hi, {getFirstName(session.data)}!
+      </Heading>
       <MyMostRecentResults tournaments={tournaments} />
+      <Button
+        variant={'outline'}
+        rightIcon={<FaArrowRight />}
+        onClick={() =>
+          session.data?.user.email &&
+          router.push('/player/' + parseUsername(session.data?.user.email))
+        }
+      >
+        See my tournament history
+      </Button>
     </Stack>
   );
 }
