@@ -91,7 +91,7 @@ export const RecordIcon = ({
 
   if (standing.deck?.on_stream && !getCrownIcon()) {
     return (
-      <HStack spacing={1} paddingRight={1}>
+      <HStack spacing={1} paddingRight={2}>
         <Icon color='purple' as={FaTwitch} />
         {getIcon()}
       </HStack>
