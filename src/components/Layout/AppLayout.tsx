@@ -12,6 +12,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { Footer } from './Footer';
 
 const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
@@ -37,17 +38,20 @@ export const AppLayout = ({
             <link rel='icon' href='/favicon.ico' />
           </Head>
           <AppBar />
-          <Stack
-            padding={
-              router.asPath.includes('tournaments') ||
-              router.asPath.includes('decks')
-                ? 0
-                : 4
-            }
-            spacing={1}
-            height='100%'
-          >
-            {children}
+          <Stack>
+            <Stack
+              padding={
+                router.asPath.includes('tournaments') ||
+                router.asPath.includes('decks')
+                  ? 0
+                  : 4
+              }
+              spacing={1}
+              height='100%'
+            >
+              {children}
+            </Stack>
+            <Footer />
           </Stack>
         </ChakraProvider>
       </Hydrate>
