@@ -79,8 +79,7 @@ export const useMutateArchetypes = (onClose: () => void) => {
 };
 
 interface MostPopularArchetypesOptions {
-  leaveOutZeroCountDecks?: boolean;
-  includeDeckCounts?: boolean;
+  shouldIncludeDecksNotPlayed?: boolean;
 }
 
 export const useMostPopularArchetypes = (
@@ -124,6 +123,31 @@ export const useMostPopularArchetypes = (
 
   if (!playerDeckCounts) {
     return null;
+  }
+
+  if (options?.shouldIncludeDecksNotPlayed) {
+    const sortedArchetypes = archetypes?.sort((a, b) => {
+      if (!playerDeckCounts[a.id]) {
+        return 1;
+      }
+      if (!playerDeckCounts[b.id]) {
+        return -1;
+      }
+
+      if (playerDeckCounts[a.id].count > playerDeckCounts[b.id].count) {
+        return -1;
+      }
+      if (
+        playerDeckCounts[a.id].count < playerDeckCounts[b.id].count ||
+        playerDeckCounts[a.id]
+      ) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    return sortedArchetypes;
   }
 
   const deckArchetypes = Object.values(playerDeckCounts);

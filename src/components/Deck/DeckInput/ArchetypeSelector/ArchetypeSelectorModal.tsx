@@ -25,7 +25,9 @@ import { useTwitterLink } from '../../../../hooks/twitter';
 export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
   const [selectedArchetype, setSelectedArchetype] = useState<Deck | null>(null);
   const [filterQuery, setFilterQuery] = useState<string>('');
-  const mostPopularDecks = useMostPopularArchetypes(props.tournamentId);
+  const mostPopularDecks = useMostPopularArchetypes(props.tournamentId, {
+    shouldIncludeDecksNotPlayed: true,
+  });
   const myTwitter = useTwitterLink('jgrimesey');
 
   const filteredDecks: Deck[] = useMemo(
@@ -76,7 +78,8 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
             )}
             {props.userIsAdmin && props.isListUp && (
               <Text>
-                Because lists are up, deck archetype is fed from RK9. Changing an archetype here just updates the database for no reason.
+                Because lists are up, deck archetype is fed from RK9. Changing
+                an archetype here just updates the database for no reason.
               </Text>
             )}
             <Stack spacing={0}>
