@@ -49,7 +49,7 @@ export const AppBar = () => {
                   as={NextLink}
                   href={userProfile ? `/profile` : `/setup-profile`}
                 >
-                  <Stack direction={'row'} alignItems='baseline' spacing={-1.5}>
+                  <Stack direction={'row'} alignItems='end' spacing={-1.5}>
                     {!session.data?.user?.image ? (
                       <SkeletonCircle size='8' />
                     ) : (
