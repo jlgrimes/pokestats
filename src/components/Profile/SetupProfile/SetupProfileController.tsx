@@ -12,7 +12,8 @@ export const SetupProfileController = () => {
   const { data: fetchedTournamentsForUser, isLoading } = useFinalResults({
     playerName: session.data?.user.name,
   });
-  const suggestedUser = fetchedTournamentsForUser && fetchedTournamentsForUser.length > 0
+  const suggestedUser =
+    fetchedTournamentsForUser && fetchedTournamentsForUser.length > 0;
   const { data: userSentRequest } = useUserSentAccountRequest(
     session.data?.user.email
   );
@@ -26,16 +27,14 @@ export const SetupProfileController = () => {
     >(null);
 
   useEffect(() => {
-    if (userSentRequest) {
-      setScreenState('request-to-complete');
-    } else if (suggestedUser) {
+    if (suggestedUser) {
       setScreenState('recommended-suggested-user');
+    } else {
+      setScreenState('request-to-complete');
     }
   }, [suggestedUser, userSentRequest]);
 
   if (isLoading) return null;
-  // TODO: replace with redirect back to something
-  if (session === null) return null;
   if (screenState === 'recommended-suggested-user')
     return (
       <RecommendedSuggestedUser

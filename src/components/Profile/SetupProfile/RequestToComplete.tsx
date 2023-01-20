@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
-import { FaBars, FaCheck, FaEnvelope, FaSkull } from 'react-icons/fa';
+import { FaCheck, FaEnvelope, FaSkull } from 'react-icons/fa';
 import { useUserSentAccountRequest } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
@@ -17,7 +17,7 @@ import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 export const RequestToComplete = ({ session }: { session: Session }) => {
   const [fadeIn, setFadeIn] = useState(false);
   const { data: userSentRequest } = useUserSentAccountRequest(
-    session.user.email
+    session.user?.email
   );
   const [requestSentStatus, setRequestSentStatus] =
     useState<'before' | 'sending' | 'sent' | 'sent-error'>('before');
@@ -37,7 +37,7 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
     const { data, error } = await supabase.from('Account Requests').insert([
       {
         email: session.user.email,
-        twitter_full_name: session.user.name,
+        name: session.user.name,
       },
     ]);
     if (error) {

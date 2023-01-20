@@ -3,6 +3,7 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { StoredPlayerProfile } from '../../types/player';
 import supabase from '../lib/supabase/client';
+import { fetchPlayers } from './finalResults';
 import { useLiveTournamentResults } from './tournamentResults';
 
 export const useUserMatchesLoggedInUser = (name: string) => {
@@ -99,18 +100,20 @@ const fetchUserSentAccountRequest = async (email: string) => {
 export const useUserSentAccountRequest = (email: string | undefined) => {
   return useQuery({
     queryKey: [`user-sent-account-request`],
-    queryFn: () => (email ? fetchUserSentAccountRequest(email) : {}),
+    queryFn: () => (email ? fetchUserSentAccountRequest(email) : false),
   });
 };
 
 // For admin view
 export const useNotSetupProfiles = () => {
   const fetchAllPlayerProfiles = async () => {
-    const res = await supabase
-      .from('Player Profiles')
-      .select('id,name,email,tournament_history')
-      .is('email', null);
-    return res.data;
+    const res = await supabase.from('Player Profiles').select('id,name,email');
+
+    const players = await fetchPlayers();
+
+    return players?.filter(
+      name => !res.data?.some(profile => profile.name === name)
+    );
   };
 
   return useQuery({

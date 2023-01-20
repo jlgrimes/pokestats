@@ -49,5 +49,4 @@ export const fetchCards = async (name: string, set: string) => {
   //     .replace(']', ')')
   // );
   //.not('deck_list', 'is', null);
-  console.log(data);
 };

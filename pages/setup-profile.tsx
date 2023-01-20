@@ -6,7 +6,6 @@ import { SetupProfileController } from '../src/components/Profile/SetupProfile/S
 import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
 
 export default function SetupPage() {
-  const session = useSession();
   const router = useRouter();
   const { data: user } = useSessionUserProfile();
 
@@ -15,10 +14,6 @@ export default function SetupPage() {
       router.push(`/profile`);
     }
   }, [router, user]);
-
-  if (!session.data?.user) {
-    return null;
-  }
 
   return <SetupProfileController />;
 }

@@ -79,7 +79,7 @@ export const AccountRequestCard = ({
       <Card>
         <CardHeader>
           <Heading size={'md'}>{request.email}</Heading>
-          <Text>Name on Twitter: {request.twitter_full_name}</Text>
+          <Text>Name: {request.name}</Text>
         </CardHeader>
         <Button
           onClick={() => {
