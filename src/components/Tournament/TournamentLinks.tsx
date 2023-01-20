@@ -16,8 +16,6 @@ import { getRK9TournamentUrl } from './helpers';
 export const TournamentLinks = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const RK9ButtonProps: Partial<ButtonProps> = {
-      variant: 'outline',
-      colorScheme: 'orange',
       size: 'sm',
       as: NextLink,
     };
