@@ -6,6 +6,7 @@ import {
   LinkOverlay,
   Stack,
   StackItem,
+  Tooltip,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FaRegEyeSlash } from 'react-icons/fa';
@@ -102,6 +103,10 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
     props.pokemonNames[0] &&
     props.pokemonNames[0].length > 0 &&
     props.pokemonNames[0] !== 'substitute';
+
+  if (props.hidden) {
+    return <Sprites {...props} deckIsReal={false} />;
+  }
 
   if (deckIsReal && props.deckId) {
     return (

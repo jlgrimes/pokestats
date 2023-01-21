@@ -52,11 +52,11 @@ export const TournamentLinks = memo(
         </Button>
         <Button
           {...RK9ButtonProps}
-          leftIcon={<FaInfoCircle />}
+          leftIcon={<FaInfo />}
           href={getRK9TournamentUrl(tournament.rk9link)}
           target='_blank'
         >
-          Info
+          Tournament Info
         </Button>
       </HStack>
     );
