@@ -104,7 +104,7 @@ export const StandingsFilterContainer = memo(
           getFilter={getFilter}
           toggleFilter={toggleFilter}
           tournament={tournament}
-          disabled={disabled}
+          disableDeckFilter={disabled}
         />
         <FilterTags
           filters={standingsFilters}

@@ -42,7 +42,7 @@ export const StandingsFilterMenu = memo(
     getFilter,
     toggleFilter,
     tournament,
-    disabled,
+    disableDeckFilter,
   }: {
     getFilter: (key: keyof StandingsFilters, arg?: any) => boolean;
     toggleFilter: (
@@ -50,14 +50,14 @@ export const StandingsFilterMenu = memo(
       options?: ToggleFilterOptions
     ) => void;
     tournament: Tournament;
-    disabled?: boolean;
+    disableDeckFilter?: boolean;
   }) => {
     const mostPopularDecks = useMostPopularArchetypes(tournament.id);
 
     const supertypeCollection = sortBySuperType(mostPopularDecks);
 
     return (
-      <FilterMenu disabled={disabled}>
+      <FilterMenu>
         <Fragment>
           <MenuOptionGroup title='Results' type='checkbox'>
             <Stack paddingX={4}>
@@ -82,61 +82,68 @@ export const StandingsFilterMenu = memo(
             </Stack>
           </MenuOptionGroup>
           <MenuDivider />
-          <MenuOptionGroup title='Archetype'>
-            <Grid gridTemplateColumns={`1fr 1fr`} gap={2} paddingX={2}>
-              {supertypeCollection?.map(
-                (supertype, idx) =>
-                  supertype.decks.length > 1 && (
-                    <Tag variant={'outline'} key={idx}>
-                      <MenuItemOption
-                        background={'none'}
-                        height='100%'
-                        alignItems={'center'}
-                        padding={'0.25rem 0'}
-                        isChecked={getFilter(
-                          'decksVisible',
-                          supertype.decks.map(({ id }) => id)
-                        )}
-                        onClick={() =>
-                          toggleFilter('decksVisible', {
-                            superType: supertype.decks,
-                          })
-                        }
-                      >
-                        <HStack spacing={1}>
-                          <SpriteDisplay
-                            squishWidth
-                            pokemonNames={[supertype.definedPokemon]}
-                          />
-                          <Text as='b'>{supertype.archetypeName}</Text>
-                        </HStack>
-                      </MenuItemOption>
-                    </Tag>
-                  )
-              )}
-            </Grid>
-          </MenuOptionGroup>
+          {!disableDeckFilter && (
+            <Fragment>
+              <MenuOptionGroup title='Archetype'>
+                <Grid gridTemplateColumns={`1fr 1fr`} gap={2} paddingX={2}>
+                  {supertypeCollection?.map(
+                    (supertype, idx) =>
+                      supertype.decks.length > 1 && (
+                        <Tag variant={'outline'} key={idx}>
+                          <MenuItemOption
+                            background={'none'}
+                            height='100%'
+                            alignItems={'center'}
+                            padding={'0.25rem 0'}
+                            isChecked={getFilter(
+                              'decksVisible',
+                              supertype.decks.map(({ id }) => id)
+                            )}
+                            onClick={() =>
+                              toggleFilter('decksVisible', {
+                                superType: supertype.decks,
+                              })
+                            }
+                          >
+                            <HStack spacing={1}>
+                              <SpriteDisplay
+                                squishWidth
+                                pokemonNames={[supertype.definedPokemon]}
+                              />
+                              <Text as='b'>{supertype.archetypeName}</Text>
+                            </HStack>
+                          </MenuItemOption>
+                        </Tag>
+                      )
+                  )}
+                </Grid>
+              </MenuOptionGroup>
 
-          <MenuOptionGroup title='Individual deck'>
-            <Grid
-              key={`supertype-collection-grid`}
-              gridTemplateColumns={`1fr repeat(3, 1fr)`}
-            >
-              {mostPopularDecks?.map(({ id, name, defined_pokemon }) => (
-                <MenuItemOption
-                  padding={0}
-                  isChecked={getFilter('decksVisible', [id])}
-                  onClick={() =>
-                    toggleFilter('decksVisible', { individualDeck: id })
-                  }
-                  key={name}
-                  value={name}
+              <MenuOptionGroup title='Individual deck'>
+                <Grid
+                  key={`supertype-collection-grid`}
+                  gridTemplateColumns={`1fr repeat(3, 1fr)`}
                 >
-                  <SpriteDisplay squishWidth pokemonNames={defined_pokemon} />
-                </MenuItemOption>
-              ))}
-            </Grid>
-          </MenuOptionGroup>
+                  {mostPopularDecks?.map(({ id, name, defined_pokemon }) => (
+                    <MenuItemOption
+                      padding={0}
+                      isChecked={getFilter('decksVisible', [id])}
+                      onClick={() =>
+                        toggleFilter('decksVisible', { individualDeck: id })
+                      }
+                      key={name}
+                      value={name}
+                    >
+                      <SpriteDisplay
+                        squishWidth
+                        pokemonNames={defined_pokemon}
+                      />
+                    </MenuItemOption>
+                  ))}
+                </Grid>
+              </MenuOptionGroup>
+            </Fragment>
+          )}
         </Fragment>
       </FilterMenu>
     );
