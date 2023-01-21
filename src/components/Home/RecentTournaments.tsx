@@ -5,7 +5,7 @@ import { TournamentList } from '../TournamentList/TournamentList';
 
 export const RecentTournaments = memo(
   ({ tournaments }: { tournaments: Tournament[] }) => (
-    <CommonCard header='Tournaments' slug='/tournaments' ghost>
+    <CommonCard header='Tournaments' slug='tournaments' ghost>
       <TournamentList tournaments={tournaments} mostRecent />
     </CommonCard>
   )

@@ -10,6 +10,7 @@ export const SeeMoreButton = ({
   loading?: boolean;
 }) => {
   const router = useRouter();
+  const absolute = slug.includes('/');
 
   return (
     <GridItem gridColumn={'1/-1'}>
@@ -17,7 +18,9 @@ export const SeeMoreButton = ({
         color='gray.500'
         size='sm'
         variant='ghost'
-        onClick={() => router.push(router.asPath + slug)}
+        onClick={() =>
+          router.push(absolute ? slug : router.asPath + '/' + slug)
+        }
         rightIcon={<FaArrowRight />}
         disabled={loading}
       >

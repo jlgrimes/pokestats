@@ -7,7 +7,7 @@ export const PopularTechsCard = ({ deck }: { deck: Deck }) => {
     <CommonCard
       header='Popular inclusions'
       subheader='Cards that made it to day 2'
-      slug='/cards'
+      slug='cards'
     >
       <CardCounts deck={deck} onlyPopularTechs />
     </CommonCard>
