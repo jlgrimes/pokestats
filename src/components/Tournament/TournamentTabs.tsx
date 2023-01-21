@@ -10,7 +10,10 @@ export const TournamentTabs = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const router = useRouter();
     const { data: userProfile } = useSessionUserProfile();
-    const userIsInTournament = useUserIsInTournament(tournament.id, userProfile?.name)
+    const userIsInTournament = useUserIsInTournament(
+      tournament.id,
+      userProfile?.name
+    );
 
     const tabs = [
       {
@@ -18,10 +21,14 @@ export const TournamentTabs = memo(
         slug: 'standings',
         badge: getStandingsBadgeProps(tournament),
       },
-      {
-        name: 'Stats',
-        slug: 'stats',
-      },
+      ...(tournament.tournamentStatus === 'finished'
+        ? [
+            {
+              name: 'Stats',
+              slug: 'stats',
+            },
+          ]
+        : []),
       ...(userIsInTournament
         ? [
             {
