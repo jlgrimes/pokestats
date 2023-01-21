@@ -13,7 +13,7 @@ export default function SetupPage() {
     if (user) {
       router.push(`/profile`);
     }
-    if (!isLoading && !user) {
+    if (!isLoading && user) {
       router.push('/');
     }
   }, [router, user, isLoading]);
