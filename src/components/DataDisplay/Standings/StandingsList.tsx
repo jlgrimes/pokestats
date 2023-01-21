@@ -22,10 +22,10 @@ export const StandingsList = memo(
       <Grid gridTemplateColumns='2.65rem repeat(3, auto)' alignItems='center'>
         <GridItem></GridItem>
         <Text {...tableHeadingProps}>Name</Text>
-        <Text {...tableHeadingProps} paddingLeft={1}>
+        <Text {...tableHeadingProps} paddingRight={1} textAlign='right'>
           Record
         </Text>
-        <Text {...tableHeadingProps} paddingLeft={2}>
+        <Text {...tableHeadingProps} paddingRight={4} textAlign='right'>
           Deck
         </Text>
         {results.map((result: Standing, idx: number) => (

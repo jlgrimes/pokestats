@@ -65,6 +65,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         alignItems={'end'}
         justifyContent='center'
         padding={1}
+        paddingRight={2}
       >
         <Record standing={props.result} />
       </Stack>
