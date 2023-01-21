@@ -1,4 +1,4 @@
-import { Grid, GridItem, Stack, Td, Text, Tr } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Stack, Td, Text, Tr } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from '../helpers';
@@ -59,6 +59,24 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         />
       </GridItem>
 
+      <GridItem paddingLeft={2}>
+        <Flex>
+          {!props.hideArchetype && (
+            <DeckInfoDisplay
+              tournament={props.tournament}
+              player={props.result}
+              enableEdits={!!props.canEditDecks}
+              shouldHideDeck={props.shouldHideDeck}
+            />
+          )}
+          {props.hideArchetype && props.result.deck?.list && (
+            <ListViewerOpenButton
+              result={props.result}
+              tournament={props.tournament}
+            />
+          )}
+        </Flex>
+      </GridItem>
       <Stack
         backgroundColor={getStandingsCellResultBackgroundColor()}
         height='100%'
@@ -69,22 +87,6 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       >
         <Record standing={props.result} />
       </Stack>
-      <GridItem paddingLeft={2}>
-        {!props.hideArchetype && (
-          <DeckInfoDisplay
-            tournament={props.tournament}
-            player={props.result}
-            enableEdits={!!props.canEditDecks}
-            shouldHideDeck={props.shouldHideDeck}
-          />
-        )}
-        {props.hideArchetype && props.result.deck?.list && (
-          <ListViewerOpenButton
-            result={props.result}
-            tournament={props.tournament}
-          />
-        )}
-      </GridItem>
     </>
   );
 });

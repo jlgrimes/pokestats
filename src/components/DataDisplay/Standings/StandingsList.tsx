@@ -19,14 +19,14 @@ export const StandingsList = memo(
     const { data: userIsAdmin } = useUserIsAdmin();
 
     return (
-      <Grid gridTemplateColumns='2.65rem repeat(3, auto)' alignItems='center'>
+      <Grid gridTemplateColumns='2.65rem repeat(3, auto)' alignItems='center' paddingRight={1}>
         <GridItem></GridItem>
         <Text {...tableHeadingProps}>Name</Text>
+        <Text {...tableHeadingProps} paddingLeft={2}>
+          Deck
+        </Text>
         <Text {...tableHeadingProps} paddingRight={1} textAlign='right'>
           Record
-        </Text>
-        <Text {...tableHeadingProps} paddingRight={4} textAlign='right'>
-          Deck
         </Text>
         {results.map((result: Standing, idx: number) => (
           <Fragment key={idx}>

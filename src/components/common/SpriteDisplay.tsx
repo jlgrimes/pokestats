@@ -35,7 +35,7 @@ const Sprites = (props: SpriteDisplayProps & { deckIsReal: boolean }) => (
   >
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
       {!props.pokemonNames || props.pokemonNames.length === 0 ? (
-        <Flex justifyContent={'center'} minWidth='4.5rem'>
+        <Flex justifyContent={'center'}>
           <Image height='30px' src={getLowResUnownUrl()} alt='Unown' />
         </Flex>
       ) : props.hidden ? (

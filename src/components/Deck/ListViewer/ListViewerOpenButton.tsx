@@ -18,6 +18,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         variant={'ghost'}
         onClick={onOpen}
         size='sm'
+        minWidth={6}
       >
         <FaListUl />
       </IconButton>
