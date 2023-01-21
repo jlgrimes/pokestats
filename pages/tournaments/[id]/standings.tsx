@@ -9,6 +9,7 @@ import {
 } from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
+import { getPatchedTournament } from '../../../src/lib/patches';
 
 export default function TournamentPage({
   tournament,
@@ -42,23 +43,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     prefetch: true,
   });
 
-  const tournamentApiSaysCompleted =
-    tournament?.tournamentStatus === 'finished';
-  const butTournamentIsRunning =
-    currentLiveResults.data[0]?.rounds &&
-    currentLiveResults.data[0]?.rounds?.length < 18;
-  if (
-    tournament &&
-    currentLiveResults.data &&
-    currentLiveResults.data.length > 0 &&
-    tournamentApiSaysCompleted &&
-    butTournamentIsRunning
-  ) {
-    tournament = {
-      ...tournament,
-      tournamentStatus: 'running',
-    };
-  }
+  tournament = await getPatchedTournament(tournament, currentLiveResults, true);
 
   return {
     props: {
