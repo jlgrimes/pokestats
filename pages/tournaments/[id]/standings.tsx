@@ -24,19 +24,41 @@ export default function TournamentPage({
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([`live-results`, params.id, 'allRoundData', true], () =>
-    fetchLiveResults(params.id, {
-      prefetch: true,
-      load: { allRoundData: true },
-    })
+  const currentLiveResults = await fetchLiveResults(params.id, {
+    prefetch: true,
+    load: { allRoundData: true },
+  });
+
+  queryClient.setQueryData(
+    [`live-results`, params.id, 'allRoundData', true],
+    () => currentLiveResults
   );
+
   // TODO: take out, might not need
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
   await queryClient.prefetchQuery(['deck-archetypes'], fetchArchetypes);
 
-  const tournament = await fetchCurrentTournamentInfo(params.id, {
+  let tournament = await fetchCurrentTournamentInfo(params.id, {
     prefetch: true,
   });
+
+  const tournamentApiSaysCompleted =
+    tournament?.tournamentStatus === 'finished';
+  const butTournamentIsRunning =
+    currentLiveResults.data[0]?.rounds &&
+    currentLiveResults.data[0]?.rounds?.length < 18;
+  if (
+    tournament &&
+    currentLiveResults.data &&
+    currentLiveResults.data.length > 0 &&
+    tournamentApiSaysCompleted &&
+    butTournamentIsRunning
+  ) {
+    tournament = {
+      ...tournament,
+      tournamentStatus: 'running',
+    };
+  }
 
   return {
     props: {
