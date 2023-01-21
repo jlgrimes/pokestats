@@ -20,9 +20,17 @@ export default function DecksPage({
   defaultTournamentRange: number[];
   tournaments: Tournament[] | undefined;
 }) {
+  const mostRecentCompletedTournament = tournaments
+    ? tournaments.length -
+        tournaments
+          ?.reverse()
+          .findIndex(
+            tournament => tournament.tournamentStatus === 'finished'
+          ) - 1 ?? 0
+    : 0;
   const [tournamentRange, setTournamentRange] = useState([
-    tournaments?.length ?? 0,
-    tournaments?.length ?? 0,
+    mostRecentCompletedTournament,
+    mostRecentCompletedTournament,
   ]);
   const [sortByMoves, setSortByMoves] = useState(false);
   const [showRange, setShowRange] = useState(false);

@@ -17,7 +17,6 @@ export async function getStaticProps({
   const set = splitQueryParam.at(splitQueryParam.length - 1) ?? '';
 
   const results = await fetchCards(name, set);
-  console.log(results)
 
   const queryClient = new QueryClient();
 
