@@ -7,13 +7,16 @@ import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
 
 export default function SetupPage() {
   const router = useRouter();
-  const { data: user } = useSessionUserProfile();
+  const { data: user, isLoading } = useSessionUserProfile();
 
   useEffect(() => {
     if (user) {
       router.push(`/profile`);
     }
-  }, [router, user]);
+    if (!isLoading && !user) {
+      router.push('/');
+    }
+  }, [router, user, isLoading]);
 
   return <SetupProfileController />;
 }
