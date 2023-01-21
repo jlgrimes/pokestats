@@ -20,6 +20,10 @@ export default function TournamentView({
       name: 'On stream',
       value: false,
     },
+    deckKnown: {
+      name: 'Deck known',
+      value: false,
+    },
     decksVisible: [],
   });
 

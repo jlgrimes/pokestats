@@ -53,9 +53,14 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
   if (filters.onStream.value) {
     ret = {
       ...liveResults,
-      data: liveResults.data.filter(
-        ({ deck }) => deck?.on_stream
-      ),
+      data: liveResults.data.filter(({ deck }) => deck?.on_stream),
+    };
+  }
+
+  if (filters.deckKnown.value) {
+    ret = {
+      ...liveResults,
+      data: liveResults.data.filter(({ deck }) => deck?.id),
     };
   }
 

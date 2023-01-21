@@ -85,7 +85,7 @@ export const StandingsFilterContainer = memo(
           }
         }
 
-        if (key === 'justDay2' || key === 'onStream') {
+        if (key === 'justDay2' || key === 'onStream' || key === 'deckKnown') {
           return setStandingsFilters({
             ...standingsFilters,
             [key]: {

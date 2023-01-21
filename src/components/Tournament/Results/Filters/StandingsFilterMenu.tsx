@@ -31,6 +31,7 @@ export interface Filter {
 export interface StandingsFilters {
   justDay2: Filter;
   onStream: Filter;
+  deckKnown: Filter;
   decksVisible: number[];
 }
 
@@ -70,6 +71,13 @@ export const StandingsFilterMenu = memo(
               onClick={() => toggleFilter('onStream')}
             >
               Featured on stream
+            </MenuItemOption>
+            <MenuItemOption
+              value='deckKnown'
+              isChecked={getFilter('deckKnown')}
+              onClick={() => toggleFilter('deckKnown')}
+            >
+              Deck is known
             </MenuItemOption>
           </MenuOptionGroup>
           <MenuDivider />
