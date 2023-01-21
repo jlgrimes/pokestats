@@ -47,10 +47,7 @@ export const getPatchedTournament = async (
   return tournamentFromApi;
 };
 
-export const patchTournamentsClient = async (
-  tournamentList: Tournament[],
-  setTournamentsState: (tournaments: Tournament[]) => void
-) => {
+export const patchTournamentsClient = async (tournamentList: Tournament[]) => {
   const newTournamentsList = [];
   for await (const tournament of tournamentList) {
     const newTournament = tournamentFallsOnCurrentDate(tournament)
@@ -64,5 +61,5 @@ export const patchTournamentsClient = async (
     }
   }
 
-  setTournamentsState(newTournamentsList);
+  return newTournamentsList;
 };

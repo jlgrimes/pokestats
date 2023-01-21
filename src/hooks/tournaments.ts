@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { isAfter, isBefore, parseISO } from 'date-fns';
+import { useState } from 'react';
 import { Tournament } from '../../types/tournament';
+import { patchTournamentsClient } from '../lib/patches';
 import { shortenTournamentName } from '../lib/tournament';
 
 export const fetchTournaments = async (options?: {
@@ -60,5 +62,14 @@ export const useTournaments = (options?: { prefetch?: boolean }) => {
   return useQuery({
     queryKey: ['tournaments'],
     queryFn: () => fetchTournaments(options),
+  });
+};
+
+export const usePatchedTournaments = (tournaments: Tournament[]) => {
+  return useQuery({
+    queryKey: ['patched-tournaments'],
+    queryFn: () => {
+      return patchTournamentsClient(tournaments);
+    },
   });
 };

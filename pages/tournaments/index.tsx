@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
 import { TournamentList } from '../../src/components/TournamentList/TournamentList';
-import { fetchTournaments } from '../../src/hooks/tournaments';
-import { patchTournamentsClient } from '../../src/lib/patches';
+import {
+  fetchTournaments,
+  usePatchedTournaments,
+} from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
 
 export default function TournamentPage({
@@ -9,15 +10,9 @@ export default function TournamentPage({
 }: {
   tournaments: Tournament[];
 }) {
-  const [patchedTournaments, setPatchedTournaments] = useState(tournaments);
+  const { data: patchedTournaments } = usePatchedTournaments(tournaments);
 
-  useEffect(() => {
-    patchTournamentsClient(patchedTournaments, (tournies: Tournament[]) =>
-      setPatchedTournaments(tournies)
-    );
-  }, []);
-
-  return <TournamentList tournaments={patchedTournaments} />;
+  return <TournamentList tournaments={patchedTournaments ?? tournaments} />;
 }
 
 export async function getStaticProps() {

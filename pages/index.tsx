@@ -9,23 +9,17 @@ import { TopDecks } from '../src/components/Home/TopDecks';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
 import { fetchDecksWithLists } from '../src/hooks/finalResults';
-import { fetchPokedex } from '../src/hooks/images';
-import { fetchSets } from '../src/hooks/sets';
-import { fetchTournaments } from '../src/hooks/tournaments';
+import {
+  fetchTournaments,
+  usePatchedTournaments,
+} from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
-import { patchTournamentsClient } from '../src/lib/patches';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
-  const [patchedTournaments, setPatchedTournaments] = useState(tournaments.slice().reverse());
+  const { data: patchedTournaments } = usePatchedTournaments(tournaments);
 
-  useEffect(() => {
-    patchTournamentsClient(patchedTournaments, (tournies: Tournament[]) =>
-      setPatchedTournaments(tournies)
-    );
-  }, []);
-
-  const mostRecentFinishedTournament = patchedTournaments.find(
+  const mostRecentFinishedTournament = (patchedTournaments ?? tournaments).find(
     ({ tournamentStatus }) => tournamentStatus === 'finished'
   ) as Tournament;
 
@@ -37,7 +31,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
     <Fragment>
       <Stack>
         <AppLogo big />
-        <RecentTournaments tournaments={patchedTournaments} />
+        <RecentTournaments tournaments={patchedTournaments ?? tournaments} />
         <TopDecks tournament={mostRecentFinishedTournament} />
       </Stack>
     </Fragment>
