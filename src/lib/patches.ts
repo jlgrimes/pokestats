@@ -15,7 +15,7 @@ export const getPatchedTournament = async (
   if (preloadedLiveResults) {
     liveResults = preloadedLiveResults;
   } else {
-    liveResults = await fetchLiveResults(tournamentFromApi.tournamentStatus, {
+    liveResults = await fetchLiveResults(tournamentFromApi.id, {
       prefetch,
     });
   }
@@ -23,7 +23,11 @@ export const getPatchedTournament = async (
   const tournamentApiSaysCompleted =
     tournamentFromApi?.tournamentStatus === 'finished';
   const butTournamentIsRunning =
-    liveResults.data[0]?.rounds && liveResults.data[0]?.rounds?.length < 18;
+    liveResults.data[0]?.record.wins > 0 &&
+    liveResults.data[0]?.record.wins +
+      liveResults.data[0]?.record.ties +
+      liveResults.data[0]?.record.losses <
+      18;
   if (
     liveResults.data &&
     liveResults.data.length > 0 &&
@@ -37,4 +41,25 @@ export const getPatchedTournament = async (
   }
 
   return tournamentFromApi;
+};
+
+export const patchTournamentsClient = async (
+  tournamentList: Tournament[],
+  setTournamentsState: (tournaments: Tournament[]) => void
+) => {
+  const newTournamentsList = [];
+  for await (const tournament of tournamentList) {
+    const newTournament = await getPatchedTournament(
+      tournament,
+      undefined,
+      false
+    );
+
+    if (newTournament) {
+      newTournamentsList.push(newTournament);
+    }
+  }
+
+  console.log(newTournamentsList)
+  setTournamentsState(newTournamentsList);
 };

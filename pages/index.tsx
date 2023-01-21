@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { BiggestMovers } from '../src/components/Home/BiggestMovers';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
@@ -13,16 +13,22 @@ import { fetchPokedex } from '../src/hooks/images';
 import { fetchSets } from '../src/hooks/sets';
 import { fetchTournaments } from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
-import { fetchLiveResults } from '../src/lib/fetch/fetchLiveResults';
+import { patchTournamentsClient } from '../src/lib/patches';
 import { Tournament } from '../types/tournament';
 
-export default function Home({
-  tournaments,
-  mostRecentFinishedTournament,
-}: {
-  tournaments: Tournament[];
-  mostRecentFinishedTournament: Tournament;
-}) {
+export default function Home({ tournaments }: { tournaments: Tournament[] }) {
+  const [patchedTournaments, setPatchedTournaments] = useState(tournaments.slice().reverse());
+
+  useEffect(() => {
+    patchTournamentsClient(patchedTournaments, (tournies: Tournament[]) =>
+      setPatchedTournaments(tournies)
+    );
+  }, []);
+
+  const mostRecentFinishedTournament = patchedTournaments.find(
+    ({ tournamentStatus }) => tournamentStatus === 'finished'
+  ) as Tournament;
+
   if (SHOULD_SHOW_COMING_SOON) {
     return <ComingSoonPage />;
   }
@@ -31,7 +37,7 @@ export default function Home({
     <Fragment>
       <Stack>
         <AppLogo big />
-        <RecentTournaments tournaments={tournaments} />
+        <RecentTournaments tournaments={patchedTournaments} />
         <TopDecks tournament={mostRecentFinishedTournament} />
       </Stack>
     </Fragment>
@@ -41,13 +47,6 @@ export default function Home({
 export async function getStaticProps() {
   const tournaments = await fetchTournaments({ prefetch: true });
   const queryClient = new QueryClient();
-
-  const mostRecentFinishedTournament = tournaments
-    .slice()
-    .reverse()
-    .find(
-      ({ tournamentStatus }) => tournamentStatus === 'finished'
-    ) as Tournament;
 
   await queryClient.prefetchQuery({
     queryKey: ['deck-archetypes'],
@@ -61,7 +60,6 @@ export async function getStaticProps() {
   return {
     props: {
       tournaments,
-      mostRecentFinishedTournament,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 60,
