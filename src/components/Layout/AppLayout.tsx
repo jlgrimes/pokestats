@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Footer } from './Footer';
+import { BetaBanner } from './BetaBanner';
 
 const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
@@ -38,6 +39,7 @@ export const AppLayout = ({
             <link rel='icon' href='/favicon.ico' />
           </Head>
           <AppBar />
+          <BetaBanner />
           <Stack>
             <Stack
               padding={
