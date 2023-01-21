@@ -14,10 +14,14 @@ import { useUserSentAccountRequest } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 
-export const RequestToComplete = ({ session }: { session: Session }) => {
+export const RequestToComplete = ({
+  session,
+}: {
+  session: Session | undefined;
+}) => {
   const [fadeIn, setFadeIn] = useState(false);
   const { data: userSentRequest } = useUserSentAccountRequest(
-    session.user?.email
+    session?.user?.email
   );
   const [requestSentStatus, setRequestSentStatus] =
     useState<'before' | 'sending' | 'sent' | 'sent-error'>('before');
@@ -36,8 +40,8 @@ export const RequestToComplete = ({ session }: { session: Session }) => {
     setRequestSentStatus('sending');
     const { data, error } = await supabase.from('Account Requests').insert([
       {
-        email: session.user.email,
-        name: session.user.name,
+        email: session?.user.email,
+        name: session?.user.name,
       },
     ]);
     if (error) {

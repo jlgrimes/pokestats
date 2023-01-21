@@ -20,7 +20,7 @@ export const RecommendedSuggestedUser = ({
   didNotAttendCallback,
   accountMadeSuccessfullyCallback,
 }: {
-  session: Session;
+  session: Session | undefined;
   didNotAttendCallback: () => void;
   accountMadeSuccessfullyCallback: () => void;
 }) => {
@@ -30,7 +30,7 @@ export const RecommendedSuggestedUser = ({
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
   const { data: suggestedUserTournaments } = useFinalResults({
-    playerName: session.user.name,
+    playerName: session?.user.name,
   });
   const { data: tournaments } = useTournaments();
 
@@ -39,13 +39,13 @@ export const RecommendedSuggestedUser = ({
   );
 
   const onIdentityConfirmClick = useCallback(async () => {
+    if (!session) return;
+
     setIdentityConfirmationLoading(true);
-    await supabase
-      .from('Player Profiles')
-      .insert({
-        name: session.user.name,
-        email: session.user.email
-      });
+    await supabase.from('Player Profiles').insert({
+      name: session.user.name,
+      email: session.user.email,
+    });
 
     queryClient.setQueryData(
       [`session-user-profile`, session.user.email],
@@ -56,12 +56,7 @@ export const RecommendedSuggestedUser = ({
     );
     accountMadeSuccessfullyCallback();
     setIdentityConfirmationLoading(false);
-  }, [
-    accountMadeSuccessfullyCallback,
-    queryClient,
-    session.user.name,
-    session.user.email,
-  ]);
+  }, [accountMadeSuccessfullyCallback, queryClient, session]);
 
   useEffect(() => {
     const firstFade = setTimeout(() => {
