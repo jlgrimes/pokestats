@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Grid,
   GridItem,
   HStack,
@@ -10,6 +11,7 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
+  Stack,
   StackItem,
   Tag,
   Text,
@@ -58,27 +60,26 @@ export const StandingsFilterMenu = memo(
       <FilterMenu disabled={disabled}>
         <Fragment>
           <MenuOptionGroup title='Results' type='checkbox'>
-            <MenuItemOption
-              value='justDay2'
-              isChecked={getFilter('justDay2')}
-              onClick={() => toggleFilter('justDay2')}
-            >
-              Day 2
-            </MenuItemOption>
-            <MenuItemOption
-              value='onStream'
-              isChecked={getFilter('onStream')}
-              onClick={() => toggleFilter('onStream')}
-            >
-              Featured on stream
-            </MenuItemOption>
-            <MenuItemOption
-              value='deckKnown'
-              isChecked={getFilter('deckKnown')}
-              onClick={() => toggleFilter('deckKnown')}
-            >
-              Deck is known
-            </MenuItemOption>
+            <Stack paddingX={4}>
+              <Checkbox
+                isChecked={getFilter('justDay2')}
+                onChange={() => toggleFilter('justDay2')}
+              >
+                Day 2
+              </Checkbox>
+              <Checkbox
+                isChecked={getFilter('onStream')}
+                onChange={() => toggleFilter('onStream')}
+              >
+                Featured on stream
+              </Checkbox>
+              <Checkbox
+                isChecked={getFilter('deckKnown')}
+                onChange={() => toggleFilter('deckKnown')}
+              >
+                Deck is known
+              </Checkbox>
+            </Stack>
           </MenuOptionGroup>
           <MenuDivider />
           <MenuOptionGroup title='Archetype'>
