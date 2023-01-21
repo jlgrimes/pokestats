@@ -18,6 +18,7 @@ export const TournamentLinks = memo(
     const RK9ButtonProps: Partial<ButtonProps> = {
       size: 'sm',
       as: NextLink,
+      variant: 'outline'
     };
 
     return (
