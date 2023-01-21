@@ -38,6 +38,7 @@ export const TournamentSlider = ({
         max={defaultTournamentRange[1]}
         step={1}
         onChange={(value: number) => {
+          console.log(value)
           setTournamentFilter(value);
           setSlider(value);
         }}

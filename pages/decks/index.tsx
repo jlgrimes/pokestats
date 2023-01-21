@@ -82,8 +82,8 @@ export async function getStaticProps() {
   return {
     props: {
       defaultTournamentRange: [
-        parseInt(tournaments[0].id),
         parseInt(tournaments[tournaments.length - 1].id),
+        parseInt(tournaments[0].id),
       ],
       tournaments,
       dehydratedState: dehydrate(queryClient),
