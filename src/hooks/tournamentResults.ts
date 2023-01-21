@@ -35,7 +35,7 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
   if (filters.decksVisible.length > 0) {
     ret = {
       ...liveResults,
-      data: liveResults.data.filter(
+      data: ret.data.filter(
         ({ deck }) => deck && deck.id && filters.decksVisible.includes(deck.id)
       ),
     };
@@ -44,7 +44,7 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
   if (filters.justDay2.value) {
     ret = {
       ...liveResults,
-      data: liveResults.data.filter(
+      data: ret.data.filter(
         ({ record }) => record.wins * 3 + record.ties >= 19
       ),
     };
@@ -53,14 +53,14 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
   if (filters.onStream.value) {
     ret = {
       ...liveResults,
-      data: liveResults.data.filter(({ deck }) => deck?.on_stream),
+      data: ret.data.filter(({ deck }) => deck?.on_stream),
     };
   }
 
   if (filters.deckKnown.value) {
     ret = {
       ...liveResults,
-      data: liveResults.data.filter(({ deck }) => deck?.id),
+      data: ret.data.filter(({ deck }) => deck?.id),
     };
   }
 
