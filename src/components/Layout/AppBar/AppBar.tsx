@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
-import { FaSign, FaSignInAlt, FaTwitter } from 'react-icons/fa';
+import { FaSign, FaSignInAlt, FaTwitter, FaUser } from 'react-icons/fa';
 import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 import { AppDrawerButton } from './AppDrawerButton';
@@ -67,11 +67,11 @@ export const AppBar = () => {
             </>
           ) : (
             <IconButton
-              size={'xs'}
+              size={'sm'}
               variant='outline'
               onClick={() => signIn('google')}
               aria-label='log in'
-              icon={<FaSignInAlt />}
+              icon={<FaUser />}
             />
           ))}
       </Stack>
