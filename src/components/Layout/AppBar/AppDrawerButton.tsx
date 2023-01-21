@@ -97,6 +97,13 @@ export const AppDrawerButton = ({
                 <Stack>
                   <Heading size='lg'>Admin tools</Heading>
                   <AccountRequestLink onClose={onClose} />
+                  <Link
+                    as={NextLink}
+                    href='/admin/report-activity'
+                    onClick={onClose}
+                  >
+                    <Heading size='sm'>Reporting activity</Heading>
+                  </Link>
                 </Stack>
               )}
               <LogInOutButton />
