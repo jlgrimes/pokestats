@@ -53,14 +53,14 @@ export const patchTournamentsClient = async (
 ) => {
   const newTournamentsList = [];
   for await (const tournament of tournamentList) {
-    const newTournament = await getPatchedTournament(
-      tournament,
-      undefined,
-      false
-    );
+    const newTournament = tournamentFallsOnCurrentDate(tournament)
+      ? await getPatchedTournament(tournament, undefined, false)
+      : null;
 
     if (newTournament) {
       newTournamentsList.push(newTournament);
+    } else {
+      newTournamentsList.push(tournament);
     }
   }
 
