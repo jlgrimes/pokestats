@@ -44,7 +44,7 @@ export const fetchTournaments = async (options?: {
     );
   }
 
-  return data;
+  return data.slice().reverse();
 };
 
 export const fetchCurrentTournamentInfo = async (

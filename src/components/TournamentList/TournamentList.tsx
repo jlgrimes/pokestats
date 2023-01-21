@@ -27,10 +27,10 @@ export const TournamentList = ({
       });
 
       return [
-        ...finishedTournaments.slice(0, 2),
         ...items.filter(
           tournament => tournament.data.tournamentStatus === 'running'
         ),
+        ...finishedTournaments.slice(0, 2),
         ...upcomingTournaments,
       ];
     }
@@ -39,24 +39,22 @@ export const TournamentList = ({
 
   return (
     <Stack>
-      {getParsedItems()
-        .reverse()
-        ?.map((item: Record<string, any>, idx) => {
-          if (item.type === 'tournament')
-            return <TournamentCard tournament={item.data} key={idx} />;
-          return (
-            <Text
-              key={idx}
-              fontSize='sm'
-              color='gray.600'
-              padding='1rem 1.5rem'
-              as={'b'}
-              letterSpacing='0.05rem'
-            >
-              🎉 {item.data?.name} ({item.data?.ptcgoCode}) becomes legal
-            </Text>
-          );
-        })}
+      {getParsedItems()?.map((item: Record<string, any>, idx) => {
+        if (item.type === 'tournament')
+          return <TournamentCard tournament={item.data} key={idx} />;
+        return (
+          <Text
+            key={idx}
+            fontSize='sm'
+            color='gray.600'
+            padding='1rem 1.5rem'
+            as={'b'}
+            letterSpacing='0.05rem'
+          >
+            🎉 {item.data?.name} ({item.data?.ptcgoCode}) becomes legal
+          </Text>
+        );
+      })}
     </Stack>
   );
 };

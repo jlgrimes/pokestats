@@ -53,7 +53,7 @@ export const useTournamentRender = (
 
   let setIdx = parsedSets?.findIndex(({ name }) => name === startingSet);
 
-  const result = tournaments.reduce((acc: TournamentOrSet[], tournament) => {
+  const result = tournaments.slice().reverse().reduce((acc: TournamentOrSet[], tournament) => {
     const releaseDate = new Date(parsedSets[setIdx]?.releaseDate);
     releaseDate.setDate(releaseDate.getDate() + 13);
     if (new Date(tournament.date.start) >= releaseDate) {
@@ -66,5 +66,5 @@ export const useTournamentRender = (
     }
     return [...acc, { type: 'tournament', data: tournament }];
   }, []);
-  return result;
+  return result.slice().reverse();
 };
