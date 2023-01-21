@@ -6,6 +6,7 @@ import {
   formatDistanceToNow,
   parseISO,
   eachWeekendOfInterval,
+  isWithinInterval,
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 
@@ -76,4 +77,12 @@ export const tournamentHasArrivedButNotLive = (tournament: Tournament) => {
   const [startDate] = getTournamentRange(tournament);
 
   return differenceInDays(startDate, new Date()) <= 0;
+};
+
+export const tournamentFallsOnCurrentDate = (tournament: Tournament) => {
+  const [startDate, endDate] = getTournamentRange(tournament);
+  return isWithinInterval(new Date(), {
+    start: startDate,
+    end: endDate,
+  });
 };
