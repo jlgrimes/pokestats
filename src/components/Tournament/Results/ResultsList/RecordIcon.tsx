@@ -27,23 +27,36 @@ export const RecordIcon = ({
   );
 
   const getCrownIcon = useCallback(() => {
-    if (tournament.tournamentStatus !== 'finished') {
-      return null;
-    }
+    if (!tournament.topCutStatus) return null;
 
-    if (standing.placing === 1) {
+    const topCutComparator = {
+      top8: 0,
+      top4: 1,
+      finals: 2,
+    };
+
+    if (standing.placing === 1 && tournament.tournamentStatus === 'finished') {
       return <Icon {...commonIconProps} as={FaChessKing} color='yellow.500' />;
     }
 
-    if (standing.placing === 2) {
+    if (
+      standing.placing === 2 &&
+      topCutComparator[tournament.topCutStatus] >= 2
+    ) {
       return <Icon {...commonIconProps} as={FaChessQueen} color='gray.400' />;
     }
 
-    if (standing.placing <= 4) {
+    if (
+      standing.placing <= 4 &&
+      topCutComparator[tournament.topCutStatus] >= 1
+    ) {
       return <Icon {...commonIconProps} as={FaChessRook} color='yellow.600' />;
     }
 
-    if (standing.placing <= 8) {
+    if (
+      standing.placing <= 8 &&
+      topCutComparator[tournament.topCutStatus] >= 0
+    ) {
       return (
         <Icon {...commonIconProps} as={FaChessBishop} color='yellow.600' />
       );
