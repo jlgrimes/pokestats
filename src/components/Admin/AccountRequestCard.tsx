@@ -9,6 +9,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { format, formatDistance, parseISO } from 'date-fns';
 import { useCallback, useState } from 'react';
 import { FaLink } from 'react-icons/fa';
 import { GiLeatherBoot } from 'react-icons/gi';
@@ -106,6 +107,7 @@ export const AccountRequestCard = ({
   return !shouldHideCard ? (
     <Card>
       <CardHeader>
+        <Text>{format(parseISO(request.created_at), 'k:mm:ss MMM d y')}</Text>
         <Heading size={'md'}>{request.email}</Heading>
         <Text>Name: {request.name}</Text>
       </CardHeader>
