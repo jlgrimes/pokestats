@@ -22,6 +22,7 @@ export const getPatchedTournament = async (
   } else {
     liveResults = await fetchLiveResults(tournamentFromApi.id, {
       prefetch,
+      load: { allRoundData: true },
     });
   }
 
