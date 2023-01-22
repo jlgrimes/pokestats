@@ -10,6 +10,7 @@ import {
 import { Tournament } from '../../../types/tournament';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
 import { getPatchedTournament } from '../../../src/lib/patches';
+import { fetchTournamentMetadata } from '../../../src/hooks/tournamentMetadata';
 
 export default function TournamentPage({
   tournament,
@@ -38,6 +39,11 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   // TODO: take out, might not need
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
   await queryClient.prefetchQuery(['deck-archetypes'], fetchArchetypes);
+  // TODO: update with other tournament metadata if needed
+  await queryClient.prefetchQuery(
+    ['tournament-metadata', params.id, 'stream'],
+    () => fetchTournamentMetadata(params.id, 'stream')
+  );
 
   let tournament = await fetchCurrentTournamentInfo(params.id, {
     prefetch: true,
