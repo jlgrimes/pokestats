@@ -1,6 +1,7 @@
 import {
   Deck,
   Standing,
+  TopCutStatus,
   Tournament,
   TournamentStatus,
 } from '../../../types/tournament';
@@ -120,7 +121,7 @@ export const getPlayerDeckObjects = async (
           defined_pokemon: deck?.defined_pokemon ?? null,
           supertype: deck?.supertype,
           verified: user_submitted_was_admin,
-          on_stream
+          on_stream,
         },
       };
     }
@@ -286,11 +287,30 @@ export interface LoggedInPlayerLoadOptions {
 
 export interface LiveResults {
   tournamentStatus: TournamentStatus;
+  topCutStatus: TopCutStatus;
   shouldHideDecks: boolean;
   numPlayers: number;
   roundNumber: number;
   data: Standing[];
 }
+
+export const getTopCutStatus = (
+  standings: Standing[],
+  tournament: Tournament | undefined
+) => {
+  if (!tournament || standings.length < 9) {
+    return null;
+  }
+
+  if ((standings[2].rounds?.length ?? 0) < (standings[1].rounds?.length ?? 0))
+    return 'finals';
+  if ((standings[4].rounds?.length ?? 0) < (standings[3].rounds?.length ?? 0))
+    return 'top4';
+  if ((standings[8].rounds?.length ?? 0) < (standings[7].rounds?.length ?? 0))
+    return 'top8';
+
+  return null;
+};
 
 export const fetchLiveResults = async (
   tournamentId: string,
@@ -345,6 +365,7 @@ export const fetchLiveResults = async (
 
   return {
     tournamentStatus: tournament?.tournamentStatus ?? 'not-started',
+    topCutStatus: getTopCutStatus(parsedData, tournament),
     shouldHideDecks: roundNumber < 9,
     numPlayers: parsedData.length,
     roundNumber,

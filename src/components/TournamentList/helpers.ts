@@ -10,6 +10,7 @@ import {
   endOfDay,
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
+import { getRoundText } from '../Tournament/helpers';
 
 export const formatTournamentStatus = (tournament: Tournament) => {
   if (tournament.tournamentStatus === 'finished') {
@@ -17,7 +18,7 @@ export const formatTournamentStatus = (tournament: Tournament) => {
   }
 
   if (tournament.tournamentStatus === 'running') {
-    return `Live - Round ${tournament.roundNumbers.masters}`;
+    return `Live - ${getRoundText(tournament)}`;
   }
 
   if (tournament.tournamentStatus === 'not-started') {

@@ -2,7 +2,11 @@
 
 import { Tournament } from '../../types/tournament';
 import { tournamentFallsOnCurrentDate } from '../components/TournamentList/helpers';
-import { fetchLiveResults, LiveResults } from './fetch/fetchLiveResults';
+import {
+  fetchLiveResults,
+  getTopCutStatus,
+  LiveResults,
+} from './fetch/fetchLiveResults';
 
 export const getPatchedTournament = async (
   tournamentFromApi: Tournament | undefined,
@@ -41,6 +45,7 @@ export const getPatchedTournament = async (
     return {
       ...tournamentFromApi,
       tournamentStatus: 'running',
+      topCutStatus: getTopCutStatus(liveResults.data, tournamentFromApi),
     } as Tournament;
   }
 
