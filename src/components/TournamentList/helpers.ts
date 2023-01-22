@@ -7,6 +7,7 @@ import {
   parseISO,
   eachWeekendOfInterval,
   isWithinInterval,
+  endOfDay,
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 
@@ -83,6 +84,6 @@ export const tournamentFallsOnCurrentDate = (tournament: Tournament) => {
   const [startDate, endDate] = getTournamentRange(tournament);
   return isWithinInterval(new Date(), {
     start: startDate,
-    end: endDate,
+    end: endOfDay(endDate),
   });
 };
