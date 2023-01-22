@@ -57,7 +57,7 @@ export const OpponentRoundList = ({
           <Stack direction='row' alignItems={'center'}>
             <RecordIcon
               standing={player}
-              tournamentFinished={tournament.tournamentStatus === 'finished'}
+              tournament={tournament}
             />
             <Text paddingRight={'8px'}>{player.name}</Text>
             <DeckInfoDisplay

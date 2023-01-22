@@ -51,7 +51,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       >
         <RecordIcon
           standing={props.result}
-          tournamentFinished={props.tournament.tournamentStatus === 'finished'}
+          tournament={props.tournament as Tournament}
         />
         <Player
           name={props.result.name}

@@ -81,7 +81,7 @@ export const PlayerMatchupStatus = ({
             <Record standing={playerResults} big />
             <RecordIcon
               standing={playerResults}
-              tournamentFinished={tournamentFinished}
+              tournament={tournament}
             />
             <Heading size='sm' color='gray.700'>
               {`${ordinalSuffixOf(playerResults.placing)}`}

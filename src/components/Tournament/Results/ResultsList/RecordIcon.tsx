@@ -5,21 +5,19 @@ import {
   FaChessKing,
   FaChessQueen,
   FaChessRook,
-  FaHandPeace,
   FaRunning,
   FaTrash,
   FaTwitch,
   FaUserAltSlash,
 } from 'react-icons/fa';
-import { Standing } from '../../../../../types/tournament';
-import { madeDayTwo } from './helpers';
+import { Standing, Tournament } from '../../../../../types/tournament';
 
 export const RecordIcon = ({
   standing,
-  tournamentFinished,
+  tournament,
 }: {
   standing: Standing;
-  tournamentFinished: boolean;
+  tournament: Tournament;
 }) => {
   const commonIconProps = useMemo(
     () => ({
@@ -29,7 +27,7 @@ export const RecordIcon = ({
   );
 
   const getCrownIcon = useCallback(() => {
-    if (!tournamentFinished) {
+    if (tournament.tournamentStatus !== 'finished') {
       return null;
     }
 
@@ -52,7 +50,7 @@ export const RecordIcon = ({
     }
 
     return null;
-  }, [tournamentFinished, standing.placing, commonIconProps]);
+  }, [tournament, standing.placing, commonIconProps]);
 
   const getIcon = useCallback(() => {
     const showTrashIcon = standing.name === 'Noah Spinale';

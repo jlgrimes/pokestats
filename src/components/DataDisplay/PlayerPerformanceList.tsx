@@ -92,9 +92,7 @@ export const PlayerPerformanceList = ({
                       />
                       <RecordIcon
                         standing={performance}
-                        tournamentFinished={
-                          tournament?.tournamentStatus === 'finished'
-                        }
+                        tournament={tournament}
                       />
                     </Stack>
                   </Td>
