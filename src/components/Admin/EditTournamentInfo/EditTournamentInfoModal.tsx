@@ -62,6 +62,7 @@ export const EditTournamentInfoModal = ({
     } else {
       const res = await supabase.from('Tournament Metadata').insert({
         tournament: tournament.id,
+        type: 'stream',
         data: streamUrl,
       });
       if (res.error) {
@@ -72,7 +73,7 @@ export const EditTournamentInfoModal = ({
         });
       }
     }
-  
+
     toast({
       status: 'success',
       title: 'Success updating stream!',
