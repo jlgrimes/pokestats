@@ -13,7 +13,7 @@ export const OpenEditTournamentInfo = ({
 
   return (
     <Fragment>
-      <IconButton aria-label='edit tournament info' onClick={onOpen}>
+      <IconButton aria-label='edit tournament info' onClick={onOpen} size='sm' variant='outline'>
         <EditIcon />
       </IconButton>
       {isOpen && (
