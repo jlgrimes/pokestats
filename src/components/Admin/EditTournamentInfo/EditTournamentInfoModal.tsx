@@ -19,6 +19,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { QueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Tournament } from '../../../../types/tournament';
 import { useTournamentMetadata } from '../../../hooks/tournamentMetadata';
@@ -41,6 +42,8 @@ export const EditTournamentInfoModal = ({
   const [streamUrl, setStreamUrl] = useState(streamUrlFromSupa);
 
   const handleSubmit = useCallback(async () => {
+    const queryClient = new QueryClient();
+
     if (streamUrlFromSupa) {
       const res = await supabase
         .from('Tournament Metadata')
@@ -55,10 +58,6 @@ export const EditTournamentInfoModal = ({
           description: res.error.message,
         });
       }
-      toast({
-        status: 'success',
-        title: 'Success updating stream!',
-      });
       onClose();
     } else {
       const res = await supabase.from('Tournament Metadata').insert({
@@ -72,12 +71,22 @@ export const EditTournamentInfoModal = ({
           description: res.error.message,
         });
       }
-      toast({
-        status: 'success',
-        title: 'Success adding stream!',
-      });
-      onClose();
     }
+  
+    toast({
+      status: 'success',
+      title: 'Success updating stream!',
+    });
+    queryClient.setQueryData(
+      ['tournament-metadata', tournament.id, 'stream'],
+      [
+        {
+          tournament: tournament.id,
+          data: streamUrl,
+        },
+      ]
+    );
+    onClose();
   }, [onClose, streamUrl, streamUrlFromSupa, toast, tournament.id]);
 
   return (
