@@ -77,6 +77,7 @@ export interface Tournament {
   };
   tournamentStatus: TournamentStatus;
   topCutStatus?: TopCutStatus;
+  hasStaleData?: boolean;
   players: {
     juniors: string | null;
     seniors: string | null;

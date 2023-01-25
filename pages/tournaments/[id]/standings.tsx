@@ -50,6 +50,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   });
 
   tournament = await getPatchedTournament(tournament, currentLiveResults, true);
+  console.log(tournament)
 
   return {
     props: {

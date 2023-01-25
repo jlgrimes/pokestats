@@ -1,7 +1,8 @@
-import { Stack } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
+import { Banner } from '../common/Banner';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
 import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';
@@ -34,6 +35,11 @@ export default function TournamentView({
 
   return (
     <Stack>
+      {tournament.hasStaleData && (
+        <Banner color='yellow'>
+          <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>
+        </Banner>
+      )}
       <StandingsFilterContainer
         tournament={tournament}
         standingsFilters={standingsFilters}
