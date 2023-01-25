@@ -55,7 +55,7 @@ export const fetchCurrentTournamentInfo = async (
 ) => {
   const tournaments = await fetchTournaments(options);
   const currentTournament = tournaments?.find(({ id }) => id === tournamentId);
-  return currentTournament;
+  return currentTournament ?? null;
 };
 
 export const useTournaments = (options?: { prefetch?: boolean }) => {
