@@ -26,6 +26,8 @@ export const getPatchedTournament = async (
     });
   }
 
+  if (!liveResults.data || liveResults.data.length === 0) return null;
+
   const tournamentApiSaysCompleted =
     tournamentFromApi?.tournamentStatus === 'finished';
   const tournamentIsComplete =
