@@ -15,7 +15,7 @@ export const getPatchedTournament = async (
 ) => {
   let liveResults;
 
-  if (!tournamentFromApi) return;
+  if (!tournamentFromApi) return null;
 
   if (preloadedLiveResults) {
     liveResults = preloadedLiveResults;
