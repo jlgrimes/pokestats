@@ -5,11 +5,13 @@ import { Tournament } from '../../types/tournament';
 import { patchTournamentsClient } from '../lib/patches';
 import { shortenTournamentName } from '../lib/tournament';
 
-export const fetchTournaments = async (options?: {
+interface FetchTournamentsOptions {
   prefetch?: boolean;
   onlyFinished?: boolean;
   excludeUpcoming?: boolean;
-}) => {
+}
+
+export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   const res: Response = await fetch(
     `${
       options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
@@ -68,7 +70,7 @@ export const fetchCurrentTournamentInfo = async (
   return currentTournament ?? null;
 };
 
-export const useTournaments = (options?: { prefetch?: boolean }) => {
+export const useTournaments = (options?: FetchTournamentsOptions) => {
   return useQuery({
     queryKey: ['tournaments'],
     queryFn: () => fetchTournaments(options),

@@ -12,3 +12,12 @@ export const shortenTournamentName = (tournament: Tournament) => {
 
   return shortName;
 };
+
+export const getMostRecentCompletedTournamentIdx = (tournaments: Tournament[] | undefined) =>
+  tournaments
+    ? tournaments.length -
+        tournaments
+          ?.reverse()
+          .findIndex(tournament => tournament.tournamentStatus === 'finished') -
+        1 ?? 0
+    : 0;

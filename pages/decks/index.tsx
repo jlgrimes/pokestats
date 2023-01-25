@@ -12,6 +12,7 @@ import {
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
 import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
+import { getMostRecentCompletedTournamentIdx } from '../../src/lib/tournament';
 
 export default function DecksPage({
   defaultTournamentRange,
@@ -20,14 +21,8 @@ export default function DecksPage({
   defaultTournamentRange: number[];
   tournaments: Tournament[] | undefined;
 }) {
-  const mostRecentCompletedTournament = tournaments
-    ? tournaments.length -
-        tournaments
-          ?.reverse()
-          .findIndex(
-            tournament => tournament.tournamentStatus === 'finished'
-          ) - 1 ?? 0
-    : 0;
+  const mostRecentCompletedTournament =
+    getMostRecentCompletedTournamentIdx(tournaments);
   const [tournamentRange, setTournamentRange] = useState([
     mostRecentCompletedTournament,
     mostRecentCompletedTournament,
