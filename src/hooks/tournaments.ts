@@ -8,6 +8,7 @@ import { shortenTournamentName } from '../lib/tournament';
 export const fetchTournaments = async (options?: {
   prefetch?: boolean;
   onlyFinished?: boolean;
+  excludeUpcoming?: boolean;
 }) => {
   const res: Response = await fetch(
     `${
@@ -39,6 +40,12 @@ export const fetchTournaments = async (options?: {
   });
 
   if (options?.onlyFinished) {
+    data = data.filter(
+      tournament => tournament.tournamentStatus === 'finished'
+    );
+  }
+
+  if (options?.excludeUpcoming) {
     data = data.filter(
       tournament => tournament.tournamentStatus === 'finished'
     );
