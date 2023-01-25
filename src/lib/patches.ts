@@ -9,7 +9,7 @@ import {
 } from './fetch/fetchLiveResults';
 
 export const getPatchedTournament = async (
-  tournamentFromApi: Tournament | undefined,
+  tournamentFromApi: Tournament | null,
   preloadedLiveResults?: LiveResults,
   prefetch?: boolean
 ) => {
