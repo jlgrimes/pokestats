@@ -62,7 +62,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 }
 
 export async function getStaticPaths() {
-  const tournaments = await fetchTournaments({ prefetch: true });
+  const tournaments = await fetchTournaments({ prefetch: true, excludeUpcoming: true });
   const paths = tournaments?.map(tournament => {
     return {
       params: {

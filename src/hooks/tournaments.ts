@@ -47,7 +47,10 @@ export const fetchTournaments = async (options?: {
 
   if (options?.excludeUpcoming) {
     data = data.filter(
-      tournament => tournament.tournamentStatus === 'finished'
+      tournament =>
+        tournament.tournamentStatus !== 'not-started' &&
+        // something's wrong with tournament 0000019 i guess
+        tournament.id !== '0000019'
     );
   }
 
