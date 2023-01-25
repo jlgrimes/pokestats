@@ -296,7 +296,7 @@ export interface LiveResults {
 
 export const getTopCutStatus = (
   standings: Standing[],
-  tournament: Tournament | undefined
+  tournament: Tournament | null
 ) => {
   if (!tournament || standings.length < 9) {
     return null;
