@@ -35,7 +35,6 @@ export const SubmissionView = ({
 
   const handleUnknownSubmission = useCallback(
     async (deck: Deck) => {
-      console.log(deck);
       const res = await supabase.from('Pairing Submissions').insert({
         user_who_submitted: user?.email,
         tournament_id: tournament.id,
@@ -54,7 +53,7 @@ export const SubmissionView = ({
         });
       }
     },
-    [playerNames, tableNumber, toast, tournament.id, user?.email]
+    [playerNames, tableNumber, toast, tournament.id, user?.email, roundNumber]
   );
 
   return (
