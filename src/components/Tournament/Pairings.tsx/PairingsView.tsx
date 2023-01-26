@@ -34,7 +34,7 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
   return (
     <Stack paddingX={4}>
       <Heading size='md'>{`Round ${pairings.round} pairings`}</Heading>
-      <SubmissionUpdateLog updates={updateLog} />
+      {updateLog.length > 0 && <SubmissionUpdateLog updates={updateLog} />}
       <Stack>
         {pairings.tables.map(pairing => (
           <PairingsCard
