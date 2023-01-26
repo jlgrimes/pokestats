@@ -1,14 +1,11 @@
-import { Stack, Text } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { MyMatchupsList } from '../../../src/components/DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../../../src/components/Tournament/Results/PlayerMatchupStatus';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { fetchCurrentTournamentInfo } from '../../../src/hooks/tournaments';
-import { fetchAllVerifiedUsers, fetchUser } from '../../../src/hooks/user';
-import {
-  fetchLiveResults,
-  fetchPlayerDecks,
-} from '../../../src/lib/fetch/fetchLiveResults';
+import { fetchTournaments } from '../../../src/hooks/tournaments';
+import { fetchUser } from '../../../src/hooks/user';
+import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../types/tournament';
 import { StoredPlayerProfile } from '../../../types/player';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
@@ -43,9 +40,12 @@ export async function getStaticProps({
 }) {
   const user = (await fetchUser(`${params.userId}@gmail.com`)) ?? null;
   const queryClient = new QueryClient();
-  const tournament = await fetchCurrentTournamentInfo(params.id, {
+  const [tournament] = await fetchTournaments({
+    tournamentId: params.id,
     prefetch: true,
   });
+  queryClient.setQueryData(['tournaments', params.id], () => tournament);
+
   await queryClient.prefetchQuery(
     [`live-results`, params.id, 'allRoundData', true],
     () =>
