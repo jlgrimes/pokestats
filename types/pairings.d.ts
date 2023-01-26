@@ -9,6 +9,7 @@ export interface PairingRound {
 }
 
 export interface PairingSubmission {
+  id: number;
   deck_archetype: number;
   player1_name: string;
   player2_name: string;
