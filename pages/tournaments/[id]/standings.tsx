@@ -3,10 +3,7 @@ import TournamentView from '../../../src/components/Tournament/TournamentView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { fetchPokedex } from '../../../src/hooks/images';
-import {
-  fetchCurrentTournamentInfo,
-  fetchTournaments,
-} from '../../../src/hooks/tournaments';
+import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
 import { getPatchedTournament } from '../../../src/lib/patches';
@@ -45,11 +42,17 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     () => fetchTournamentMetadata(params.id, 'stream')
   );
 
-  let tournament = await fetchCurrentTournamentInfo(params.id, {
+  let [tournament] = await fetchTournaments({
+    tournamentId: params.id,
     prefetch: true,
   });
+  queryClient.setQueryData(['tournaments', params.id], () => tournament);
 
-  tournament = await getPatchedTournament(tournament, currentLiveResults, true);
+  tournament = (await getPatchedTournament(
+    tournament,
+    currentLiveResults,
+    true
+  )) as Tournament;
 
   return {
     props: {
@@ -61,7 +64,10 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 }
 
 export async function getStaticPaths() {
-  const tournaments = await fetchTournaments({ prefetch: true, excludeUpcoming: true });
+  const tournaments = await fetchTournaments({
+    prefetch: true,
+    excludeUpcoming: true,
+  });
   const paths = tournaments?.map(tournament => {
     return {
       params: {

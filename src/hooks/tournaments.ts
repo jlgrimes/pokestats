@@ -9,6 +9,7 @@ interface FetchTournamentsOptions {
   prefetch?: boolean;
   onlyFinished?: boolean;
   excludeUpcoming?: boolean;
+  tournamentId?: string;
 }
 
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
@@ -56,23 +57,19 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
     );
   }
 
+  if (options?.tournamentId) {
+    data = data.filter(tournament => tournament.id === options.tournamentId);
+  }
+
   return data.slice().reverse();
 };
 
-export const fetchCurrentTournamentInfo = async (
-  tournamentId: string,
-  options?: {
-    prefetch?: boolean;
-  }
-) => {
-  const tournaments = await fetchTournaments(options);
-  const currentTournament = tournaments?.find(({ id }) => id === tournamentId);
-  return currentTournament ?? null;
-};
-
 export const useTournaments = (options?: FetchTournamentsOptions) => {
+  const queryKey = ['tournaments'];
+  if (options?.tournamentId) queryKey.push(options.tournamentId);
+
   return useQuery({
-    queryKey: ['tournaments'],
+    queryKey,
     queryFn: () => fetchTournaments(options),
   });
 };

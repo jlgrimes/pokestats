@@ -6,7 +6,7 @@ import {
   TournamentStatus,
 } from '../../../types/tournament';
 import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
-import { fetchCurrentTournamentInfo } from '../../hooks/tournaments';
+import { fetchTournaments } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
 
 export const fetchPlayerDecks = async (tournamentId: string) => {
@@ -323,7 +323,10 @@ export const fetchLiveResults = async (
     options?.prefetch
   );
 
-  const tournament = await fetchCurrentTournamentInfo(tournamentId, options);
+  const [tournament] = await fetchTournaments({
+    tournamentId,
+    prefetch: options?.prefetch,
+  });
 
   const roundNumber = tournament?.roundNumbers.masters as number;
   const deckArchetypes = await fetchDeckArchetypes();
