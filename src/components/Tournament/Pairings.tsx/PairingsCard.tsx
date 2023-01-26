@@ -11,6 +11,7 @@ export const PairingsCard = ({
   pairingSubmissions,
   round,
   refetchData,
+  addToUpdateLog
 }: {
   pairing: Pairing;
   tournament: Tournament;
@@ -18,6 +19,7 @@ export const PairingsCard = ({
   round: number;
   pairingSubmissions?: PairingSubmission[] | null;
   refetchData: () => {};
+  addToUpdateLog: (name: string) => void;
 }) => {
   const players = [
     {
@@ -58,6 +60,7 @@ export const PairingsCard = ({
             knownDecksCount={knownDecksCount}
             tableNumber={pairing.table}
             refetchData={refetchData}
+            addToUpdateLog={addToUpdateLog}
           />
         )}
       </Stack>

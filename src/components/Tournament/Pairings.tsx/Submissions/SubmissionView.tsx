@@ -5,7 +5,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { PairingSubmission } from '../../../../../types/pairings';
 import { Deck, Tournament } from '../../../../../types/tournament';
 import { useSessionUserProfile } from '../../../../hooks/user';
@@ -22,6 +22,7 @@ export const SubmissionView = ({
   tableNumber,
   roundNumber,
   refetchData,
+  addToUpdateLog,
 }: {
   pairingSubmissions?: PairingSubmission[] | null;
   knownDecksCount: number;
@@ -30,6 +31,7 @@ export const SubmissionView = ({
   tableNumber: number;
   roundNumber: number;
   refetchData: () => {};
+  addToUpdateLog: (name: string) => void;
 }) => {
   const { data: user } = useSessionUserProfile();
   const modalControls = useDisclosure();
@@ -51,7 +53,10 @@ export const SubmissionView = ({
         submission.player1_name === playerNames[1] ||
         submission.player2_name === playerNames[1])
   );
-  console.log(potentialPairingMatches)
+
+  useEffect(() => {
+    addToUpdateLog('Jared')
+  }, []);
 
   const handleUnknownSubmission = useCallback(
     async (deck: Deck) => {

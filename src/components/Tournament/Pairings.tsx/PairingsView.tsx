@@ -1,9 +1,11 @@
 import { Heading, Stack } from '@chakra-ui/react';
+import { useCallback, useState } from 'react';
 import { PairingRound } from '../../../../types/pairings';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { usePairingSubmissions } from '../../../hooks/pairings';
 import { PairingsCard } from './PairingsCard';
+import { SubmissionUpdateLog } from './Submissions/SubmissionUpdateLog';
 
 export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
   const pairings: PairingRound = {
@@ -20,10 +22,19 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
   const { data: pairingSubmissions, refetch } = usePairingSubmissions(
     tournament.id
   );
+  const [updateLog, setUpdateLog] = useState<string[]>([]);
+
+  const addToUpdateLog = useCallback(
+    (name: string) => {
+      setUpdateLog([...updateLog, name]);
+    },
+    [setUpdateLog, updateLog]
+  );
 
   return (
     <Stack paddingX={4}>
       <Heading size='md'>{`Round ${pairings.round} pairings`}</Heading>
+      <SubmissionUpdateLog updates={updateLog} />
       <Stack>
         {pairings.tables.map(pairing => (
           <PairingsCard
@@ -34,6 +45,7 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
             isUserAdmin={userIsAdmin}
             pairingSubmissions={pairingSubmissions}
             refetchData={refetch}
+            addToUpdateLog={addToUpdateLog}
           />
         ))}
       </Stack>
