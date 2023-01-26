@@ -9,9 +9,10 @@ export interface PairingRound {
 }
 
 export interface PairingSubmission {
-  deck_id: number;
+  deck_archetype: number;
   player1_name: string;
   player2_name: string;
   user_who_submitted: string;
   table_number: number;
+  round_number: number;
 }

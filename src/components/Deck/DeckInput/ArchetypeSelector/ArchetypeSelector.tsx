@@ -5,7 +5,7 @@ import SpriteDisplay from '../../../common/SpriteDisplay';
 import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 
 export interface ArchetypeSelectorProps {
-  selectedArchetype: Deck | undefined;
+  selectedArchetype?: Deck;
   onChange: (value: Deck) => void;
   modalControls: UseDisclosureProps;
   shouldShowAsText?: boolean;
@@ -15,8 +15,8 @@ export interface ArchetypeSelectorProps {
   deckIsVerified?: boolean;
   shouldHideDeck?: boolean;
   shouldHideVerifiedIcon?: boolean;
-  isStreamDeck: boolean;
-  toggleIsStreamDeck: () => void;
+  isStreamDeck?: boolean;
+  toggleIsStreamDeck?: () => void;
   isListUp: boolean;
 }
 

@@ -68,7 +68,7 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={4}>
-            {props.userIsAdmin && (
+            {props.userIsAdmin && props.isStreamDeck && (
               <Checkbox
                 isChecked={props.isStreamDeck}
                 onChange={props.toggleIsStreamDeck}

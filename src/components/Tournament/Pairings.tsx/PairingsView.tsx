@@ -25,12 +25,17 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
       <Stack>
         {pairings.tables.map(pairing => (
           <PairingsCard
+            round={pairings.round}
             key={pairing.table}
             pairing={pairing}
             tournament={tournament}
             isUserAdmin={userIsAdmin}
-            pairingSubmission={pairingSubmissions?.find(
-              submission => submission.table_number === pairing.table
+            potentialPairingMatches={pairingSubmissions?.filter(
+              submission =>
+                submission.player1_name === pairing.players[0] ||
+                submission.player2_name === pairing.players[0] ||
+                submission.player1_name === pairing.players[1] ||
+                submission.player2_name === pairing.players[1]
             )}
           />
         ))}
