@@ -86,12 +86,7 @@ const Sprites = (props: SpriteDisplayProps & { deckIsReal: boolean }) => (
     </Stack>
     {props.verified !== undefined && (
       <StackItem>
-        {props.deckIsReal &&
-          (props.verified ? (
-            <VerifiedIcon subtle />
-          ) : (
-            <NotVerifiedIcon subtle />
-          ))}
+        {props.deckIsReal && props.verified && <VerifiedIcon subtle />}
       </StackItem>
     )}
   </Stack>
