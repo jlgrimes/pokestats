@@ -45,21 +45,21 @@ export const TournamentLinks = memo(
             Stream
           </Button>
         )}
-        <Button
+        {/* <Button
           {...RK9ButtonProps}
           leftIcon={<FaChess />}
           href={getRK9TournamentUrl(tournament.rk9link, 'pairings')}
           target='_blank'
         >
           Pairings
-        </Button>
+        </Button> */}
         <Button
           {...RK9ButtonProps}
           leftIcon={<FaInfo />}
           href={getRK9TournamentUrl(tournament.rk9link)}
           target='_blank'
         >
-          Tournament Info
+          Info
         </Button>
         {isAdmin && <OpenEditTournamentInfo tournament={tournament} />}
       </HStack>

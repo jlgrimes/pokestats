@@ -19,6 +19,10 @@ export const TournamentTabs = memo(
         name: 'Standings',
         slug: 'standings',
       },
+      {
+        name: 'Pairings',
+        slug: 'pairings',
+      },
       ...(tournament.tournamentStatus === 'finished'
         ? [
             {
@@ -40,7 +44,7 @@ export const TournamentTabs = memo(
     return (
       <Tabs
         size='sm'
-        variant='line'
+        variant='soft-rounded'
         colorScheme='red'
         onChange={idx =>
           router.push(`/tournaments/${tournament.id}/${tabs[idx].slug}`)
