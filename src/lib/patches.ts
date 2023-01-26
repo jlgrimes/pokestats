@@ -30,9 +30,12 @@ export const getPatchedTournament = async (
 
   const tournamentApiSaysCompleted =
     tournamentFromApi?.tournamentStatus === 'finished';
+  // Tournament is complete if finals has happened and has completed.
   const tournamentIsComplete =
-    (liveResults.data[1].rounds?.length ?? 0) <
-    (liveResults.data[0].rounds?.length ?? 0);
+    (liveResults.data[1].rounds?.length ?? 0) ===
+      (liveResults.data[0].rounds?.length ?? 0) &&
+    (liveResults.data[1].rounds?.length ?? 0) >
+      (liveResults.data[2].rounds?.length ?? 0);
 
   const butTournamentIsRunning =
     liveResults.data[0]?.record.wins > 0 &&
