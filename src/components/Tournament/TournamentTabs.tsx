@@ -19,7 +19,6 @@ export const TournamentTabs = memo(
       {
         name: 'Standings',
         slug: 'standings',
-        badge: getStandingsBadgeProps(tournament),
       },
       ...(tournament.tournamentStatus === 'finished'
         ? [
