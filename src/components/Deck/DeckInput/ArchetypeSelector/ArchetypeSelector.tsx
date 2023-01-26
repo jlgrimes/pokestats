@@ -14,6 +14,7 @@ export interface ArchetypeSelectorProps {
   userIsAdmin: boolean;
   deckIsVerified?: boolean;
   shouldHideDeck?: boolean;
+  shouldHideVerifiedIcon?: boolean;
   isStreamDeck: boolean;
   toggleIsStreamDeck: () => void;
   isListUp: boolean;
@@ -32,7 +33,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
     } else {
       return (
         <SpriteDisplay
-          verified={props.deckIsVerified}
+          verified={!props.shouldHideVerifiedIcon && props.deckIsVerified}
           pokemonNames={props.selectedArchetype?.defined_pokemon}
           deckId={props.selectedArchetype?.id}
           hidden={props.shouldHideDeck}

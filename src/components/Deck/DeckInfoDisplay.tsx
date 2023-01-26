@@ -13,6 +13,7 @@ export const DeckInfoDisplay = memo(
     shouldShowAsText,
     disableList,
     shouldHideDeck,
+    shouldHideVerifiedIcon
   }: {
     player: Standing;
     tournament: Tournament;
@@ -20,6 +21,7 @@ export const DeckInfoDisplay = memo(
     shouldShowAsText?: boolean;
     disableList?: boolean;
     shouldHideDeck?: boolean;
+    shouldHideVerifiedIcon?: boolean
   }) => {
     const archetypeModal = useDisclosure();
     return (
@@ -32,6 +34,7 @@ export const DeckInfoDisplay = memo(
             archetypeModal={archetypeModal}
             shouldShowAsText={shouldShowAsText}
             shouldHideDeck={shouldHideDeck}
+            shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           />
         </StackItem>
         {player?.deck?.list && !disableList && (

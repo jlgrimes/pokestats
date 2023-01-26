@@ -13,6 +13,7 @@ export default function DeckInput({
   archetypeModal,
   shouldShowAsText,
   shouldHideDeck,
+  shouldHideVerifiedIcon,
 }: {
   playerName: string;
   deck: Deck | undefined;
@@ -20,6 +21,7 @@ export default function DeckInput({
   archetypeModal: UseDisclosureProps;
   shouldShowAsText?: boolean;
   shouldHideDeck?: boolean;
+  shouldHideVerifiedIcon?: boolean;
 }) {
   const deckId = deck?.id;
 
@@ -33,9 +35,7 @@ export default function DeckInput({
     setSelectedDeck(deck);
   }, [deck]);
 
-  const handleArchetypeSelect = async (
-    newValue: Deck,
-  ) => {
+  const handleArchetypeSelect = async (newValue: Deck) => {
     if (deckId) {
       const { error } = await supabase
         .from('Player Decks')
@@ -97,6 +97,7 @@ export default function DeckInput({
       isStreamDeck={!!isStreamDeck}
       toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
       isListUp={!!deck?.list}
+      shouldHideVerifiedIcon={shouldHideVerifiedIcon}
     />
   );
 }
