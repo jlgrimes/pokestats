@@ -9,13 +9,17 @@ export const PairingsCard = ({
   tournament,
   isUserAdmin,
   potentialPairingMatches,
+  currentRoundPairingMatches,
   round,
+  refetchData
 }: {
   pairing: Pairing;
   tournament: Tournament;
   isUserAdmin: boolean;
   round: number;
+  currentRoundPairingMatches?: PairingSubmission[];
   potentialPairingMatches?: PairingSubmission[];
+  refetchData: () => {}
 }) => {
   const players = [
     {
@@ -52,9 +56,11 @@ export const PairingsCard = ({
             playerNames={players.map(({ name }) => name)}
             roundNumber={round}
             tournament={tournament}
+            currentRoundPairingMatches={currentRoundPairingMatches}
             potentialPairingMatches={potentialPairingMatches}
             knownDecksCount={knownDecksCount}
             tableNumber={pairing.table}
+            refetchData={refetchData}
           />
         )}
       </Stack>

@@ -17,7 +17,7 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
   };
 
   const { data: userIsAdmin } = useUserIsAdmin();
-  const { data: pairingSubmissions } = usePairingSubmissions(tournament.id);
+  const { data: pairingSubmissions, refetch } = usePairingSubmissions(tournament.id);
 
   return (
     <Stack paddingX={4}>
@@ -30,6 +30,11 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
             pairing={pairing}
             tournament={tournament}
             isUserAdmin={userIsAdmin}
+            currentRoundPairingMatches={pairingSubmissions?.filter(
+              submission =>
+                submission.round_number === pairings.round &&
+                submission.table_number === pairing.table
+            )}
             potentialPairingMatches={pairingSubmissions?.filter(
               submission =>
                 submission.player1_name === pairing.players[0] ||
@@ -37,6 +42,7 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
                 submission.player1_name === pairing.players[1] ||
                 submission.player2_name === pairing.players[1]
             )}
+            refetchData={refetch}
           />
         ))}
       </Stack>

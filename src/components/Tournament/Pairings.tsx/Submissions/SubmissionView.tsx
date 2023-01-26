@@ -16,18 +16,22 @@ import DeckInput from '../../../Deck/DeckInput/DeckInput';
 
 export const SubmissionView = ({
   potentialPairingMatches,
+  currentRoundPairingMatches,
   knownDecksCount,
   tournament,
   playerNames,
   tableNumber,
   roundNumber,
+  refetchData,
 }: {
   potentialPairingMatches?: PairingSubmission[];
+  currentRoundPairingMatches?: PairingSubmission[];
   knownDecksCount: number;
   tournament: Tournament;
   playerNames: string[];
   tableNumber: number;
   roundNumber: number;
+  refetchData: () => {};
 }) => {
   const { data: user } = useSessionUserProfile();
   const modalControls = useDisclosure();
@@ -44,6 +48,7 @@ export const SubmissionView = ({
         table_number: tableNumber,
         round_number: roundNumber,
       });
+      refetchData();
 
       if (res.error) {
         return toast({
@@ -58,7 +63,17 @@ export const SubmissionView = ({
 
   return (
     <HStack>
-      <Button onClick={modalControls.onOpen}>Submit deck</Button>
+      <Button
+        disabled={currentRoundPairingMatches?.length === 2}
+        variant='outline'
+        onClick={modalControls.onOpen}
+      >
+        Submit deck
+      </Button>
+      <Text>
+        {currentRoundPairingMatches?.length ?? 0}{' '}
+        {currentRoundPairingMatches?.length === 1 ? 'deck' : 'decks'} reported
+      </Text>
       {modalControls.isOpen && (
         <ArchetypeSelectorModal
           modalControls={modalControls}
