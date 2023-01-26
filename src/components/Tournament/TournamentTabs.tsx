@@ -4,7 +4,6 @@ import { memo } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useSessionUserProfile, useUserIsInTournament } from '../../hooks/user';
 import { parseUsername } from '../../lib/strings';
-import { getStandingsBadgeProps } from './helpers';
 
 export const TournamentTabs = memo(
   ({ tournament }: { tournament: Tournament }) => {
@@ -52,11 +51,10 @@ export const TournamentTabs = memo(
         )}
       >
         <TabList>
-          {tabs.map(({ name, badge }, idx) => (
+          {tabs.map(({ name }, idx) => (
             <Tab key={idx}>
               <Stack direction={'row'} alignItems={'center'} spacing={1}>
                 <Text>{name}</Text>
-                {badge?.children && <Badge variant='subtle' {...badge} />}
               </Stack>
             </Tab>
           ))}
