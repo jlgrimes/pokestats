@@ -8,7 +8,7 @@ import { Tournament } from '../../../types/tournament';
 export default function StatsPage({ tournament }: { tournament: Tournament }) {
   return (
     <TournamentPageLayout tournament={tournament}>
-      <PairingsView />
+      <PairingsView tournament={tournament} />
     </TournamentPageLayout>
   );
 }
