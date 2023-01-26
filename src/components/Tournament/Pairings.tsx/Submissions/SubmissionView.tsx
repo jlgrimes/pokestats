@@ -23,7 +23,7 @@ export const SubmissionView = ({
   roundNumber,
   refetchData,
 }: {
-  pairingSubmissions: PairingSubmission[];
+  pairingSubmissions?: PairingSubmission[] | null;
   knownDecksCount: number;
   tournament: Tournament;
   playerNames: string[];

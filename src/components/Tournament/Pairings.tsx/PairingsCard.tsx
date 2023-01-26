@@ -16,7 +16,7 @@ export const PairingsCard = ({
   tournament: Tournament;
   isUserAdmin: boolean;
   round: number;
-  pairingSubmissions: PairingSubmission[];
+  pairingSubmissions?: PairingSubmission[] | null;
   refetchData: () => {};
 }) => {
   const players = [
