@@ -15,8 +15,7 @@ import { ArchetypeSelectorModal } from '../../../Deck/DeckInput/ArchetypeSelecto
 import DeckInput from '../../../Deck/DeckInput/DeckInput';
 
 export const SubmissionView = ({
-  potentialPairingMatches,
-  currentRoundPairingMatches,
+  pairingSubmissions,
   knownDecksCount,
   tournament,
   playerNames,
@@ -24,8 +23,7 @@ export const SubmissionView = ({
   roundNumber,
   refetchData,
 }: {
-  potentialPairingMatches?: PairingSubmission[];
-  currentRoundPairingMatches?: PairingSubmission[];
+  pairingSubmissions: PairingSubmission[];
   knownDecksCount: number;
   tournament: Tournament;
   playerNames: string[];
@@ -36,6 +34,24 @@ export const SubmissionView = ({
   const { data: user } = useSessionUserProfile();
   const modalControls = useDisclosure();
   const toast = useToast();
+
+  const currentRoundPairingMatches = pairingSubmissions?.filter(
+    submission =>
+      submission.round_number === roundNumber &&
+      submission.table_number === tableNumber
+  );
+  const potentialPairingMatches = pairingSubmissions?.filter(
+    submission =>
+      !(
+        submission.round_number === roundNumber &&
+        submission.table_number === tableNumber
+      ) &&
+      (submission.player1_name === playerNames[0] ||
+        submission.player2_name === playerNames[0] ||
+        submission.player1_name === playerNames[1] ||
+        submission.player2_name === playerNames[1])
+  );
+  console.log(potentialPairingMatches)
 
   const handleUnknownSubmission = useCallback(
     async (deck: Deck) => {
