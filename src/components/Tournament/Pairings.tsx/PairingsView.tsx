@@ -2,6 +2,7 @@ import { Heading, Stack } from '@chakra-ui/react';
 import { PairingRound } from '../../../../types/pairings';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
+import { usePairingSubmissions } from '../../../hooks/pairings';
 import { PairingsCard } from './PairingsCard';
 
 export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
@@ -16,6 +17,7 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
   };
 
   const { data: userIsAdmin } = useUserIsAdmin();
+  const { data: pairingSubmissions } = usePairingSubmissions(tournament.id);
 
   return (
     <Stack paddingX={4}>
@@ -27,6 +29,9 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
             pairing={pairing}
             tournament={tournament}
             isUserAdmin={userIsAdmin}
+            pairingSubmission={pairingSubmissions?.find(
+              submission => submission.table_number === pairing.table
+            )}
           />
         ))}
       </Stack>

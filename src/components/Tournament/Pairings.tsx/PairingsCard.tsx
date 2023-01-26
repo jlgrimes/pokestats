@@ -1,17 +1,18 @@
 import { Card, Grid, Heading, Text } from '@chakra-ui/react';
-import { Pairing } from '../../../../types/pairings';
+import { Pairing, PairingSubmission } from '../../../../types/pairings';
 import { Standing, Tournament } from '../../../../types/tournament';
-import { useUserIsAdmin } from '../../../hooks/administrators';
 import { PairingsPlayerInfo } from './PairingsPlayerInfo';
 
 export const PairingsCard = ({
   pairing,
   tournament,
   isUserAdmin,
+  pairingSubmission,
 }: {
   pairing: Pairing;
   tournament: Tournament;
   isUserAdmin: boolean;
+  pairingSubmission?: PairingSubmission;
 }) => {
   return (
     <Card padding={4}>
@@ -20,7 +21,10 @@ export const PairingsCard = ({
           player={
             {
               name: 'Jared Grimes',
-              deck: { id: 1, defined_pokemon: ['Eternatus-eternamax', 'chandelure'] },
+              deck: {
+                id: 1,
+                defined_pokemon: ['Eternatus-eternamax', 'chandelure'],
+              },
             } as Standing
           }
           tournament={tournament}
