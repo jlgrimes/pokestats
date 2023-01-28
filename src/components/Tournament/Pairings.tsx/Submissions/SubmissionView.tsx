@@ -61,9 +61,11 @@ export const SubmissionView = ({
     updatePairingSubmissions(
       pairingSubmissions,
       playerNames,
-      [1, 5],
+      [5, 1],
       tableNumber,
-      roundNumber
+      roundNumber,
+      tournament.id,
+      user?.email ?? ''
     );
   }, []);
 

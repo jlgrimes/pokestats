@@ -1,11 +1,12 @@
 import { PairingSubmission } from '../../../../../types/pairings';
+import { PlayerDeck } from '../../../../../types/player-deck';
 
 const getDeductedPlayerDeckRow = (
   name: string,
   deckId: number,
   tournamentId: string,
   username: string
-) => ({
+): PlayerDeck => ({
   player_name: name,
   deck_archetype: deckId,
   tournament_id: tournamentId,
@@ -19,7 +20,9 @@ export const updatePairingSubmissions = (
   playerNames: string[],
   deckIds: number[],
   tableNumber: number,
-  roundNumber: number
+  roundNumber: number,
+  tournamentId: string,
+  username: string
 ) => {
   if (!pairingSubmissions) return;
 
@@ -41,7 +44,7 @@ export const updatePairingSubmissions = (
       {}
     );
 
-  const playerDeckRowsToInsert = [];
+  let playerDeckRowsToInsert: PlayerDeck[] = [];
   const pairingSubmissionRowsToRemove: PairingSubmission[] = [];
 
   for (const i of [0, 1]) {
@@ -53,23 +56,56 @@ export const updatePairingSubmissions = (
         pairingSubmissionMap[playerNames[i]]
       );
 
-      const potentialDecks = pairingSubmissionMap[playerNames[i]].map(
-        submission => submission.deck_archetype
+      const potentialDecks = pairingSubmissionMap[playerNames[i]];
+      const deductedPlayerDeckIdx = potentialDecks.findIndex(submission =>
+        deckIds.includes(submission.deck_archetype)
       );
-      const deductedPlayerDeckIdx = potentialDecks.findIndex(id =>
-        deckIds.includes(id)
-      );
-      const deductedPlayerDeck = potentialDecks.at(deductedPlayerDeckIdx);
-      if (!deductedPlayerDeck) return;
+      const deductedPlayerDeck = potentialDecks.at(
+        deductedPlayerDeckIdx
+      )?.deck_archetype;
 
-      const earlierOpponentDeck = potentialDecks.at(
+      const earlierOpponent = potentialDecks.at(
         (deductedPlayerDeckIdx + 1) % 2
       );
-      const submittedOpponentDeck =
-        (deckIds.findIndex(id => id === deductedPlayerDeck) + 1) / 2;
-      console.log('current p deck', deductedPlayerDeck);
-      console.log('current opp deck', submittedOpponentDeck);
-      console.log('found opp deck', earlierOpponentDeck);
+      const earlierOpponentDeck = earlierOpponent?.deck_archetype;
+      const earlierOpponentName =
+        earlierOpponent?.player1_name === playerNames[i]
+          ? earlierOpponent.player2_name
+          : earlierOpponent?.player1_name;
+
+      const submittedOpponentDeck = deckIds.at(
+        (deckIds.findIndex(id => id === deductedPlayerDeck) + 1) % 2
+      );
+
+      if (
+        !deductedPlayerDeck ||
+        !earlierOpponentDeck ||
+        !earlierOpponentName ||
+        !submittedOpponentDeck
+      )
+        return;
+
+      playerDeckRowsToInsert = [
+        getDeductedPlayerDeckRow(
+          playerNames[i],
+          deductedPlayerDeck,
+          tournamentId,
+          username
+        ),
+        getDeductedPlayerDeckRow(
+          playerNames[(i + 1) % 2],
+          submittedOpponentDeck,
+          tournamentId,
+          username
+        ),
+        getDeductedPlayerDeckRow(
+          earlierOpponentName,
+          earlierOpponentDeck,
+          tournamentId,
+          username
+        ),
+      ];
+      console.log(playerDeckRowsToInsert);
     }
   }
 };
