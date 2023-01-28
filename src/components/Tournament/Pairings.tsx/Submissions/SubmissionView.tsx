@@ -5,7 +5,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PairingSubmission } from '../../../../../types/pairings';
 import { Deck, Tournament } from '../../../../../types/tournament';
 import { useSessionUserProfile } from '../../../../hooks/user';
@@ -36,6 +36,7 @@ export const SubmissionView = ({
   const { data: user } = useSessionUserProfile();
   const modalControls = useDisclosure();
   const toast = useToast();
+  const [decksToAdd, setDecksToAdd] = useState<number[]>([]);
 
   const currentRoundPairingMatches = pairingSubmissions?.filter(
     submission =>
@@ -55,20 +56,40 @@ export const SubmissionView = ({
   );
 
   useEffect(() => {
-    addToUpdateLog('Jared')
+    addToUpdateLog('Jared');
   }, []);
 
   const handleUnknownSubmission = useCallback(
     async (deck: Deck) => {
-      const res = await supabase.from('Pairing Submissions').insert({
+      if (decksToAdd.length === 0) {
+        setDecksToAdd([...decksToAdd, deck.id]);
+
+        return toast({
+          status: 'info',
+          title: 'Add another one',
+        });
+      }
+
+      const commonRowData = {
         user_who_submitted: user?.email,
         tournament_id: tournament.id,
-        deck_archetype: deck.id,
         player1_name: playerNames[0],
         player2_name: playerNames[1],
         table_number: tableNumber,
         round_number: roundNumber,
-      });
+      };
+
+      const res = await supabase.from('Pairing Submissions').insert([
+        {
+          ...commonRowData,
+          deck_archetype: deck.id,
+        },
+        {
+          ...commonRowData,
+          deck_archetype: decksToAdd[0],
+        },
+      ]);
+      modalControls.onClose();
       refetchData();
 
       if (res.error) {
@@ -79,7 +100,16 @@ export const SubmissionView = ({
         });
       }
     },
-    [playerNames, tableNumber, toast, tournament.id, user?.email, roundNumber]
+    [
+      playerNames,
+      tableNumber,
+      toast,
+      tournament.id,
+      user?.email,
+      roundNumber,
+      refetchData,
+      decksToAdd,
+    ]
   );
 
   return (
@@ -97,7 +127,10 @@ export const SubmissionView = ({
       </Text>
       {modalControls.isOpen && (
         <ArchetypeSelectorModal
-          modalControls={modalControls}
+          modalControls={{
+            ...modalControls,
+            onClose: () => {},
+          }}
           tournamentId={tournament.id}
           onChange={handleUnknownSubmission}
           userIsAdmin
