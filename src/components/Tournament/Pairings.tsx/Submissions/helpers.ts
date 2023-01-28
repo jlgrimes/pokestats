@@ -15,16 +15,24 @@ const getDeductedPlayerDeckRow = (
   on_stream: false,
 });
 
-export const updatePairingSubmissions = (
+interface RowsForSubmittedPairingSchema {
+  playerDeckRowsToInsert: PlayerDeck[];
+  pairingSubmissionRowsToRemove: PairingSubmission[];
+}
+
+export const nullSubmission = {
+  playerDeckRowsToInsert: [],
+  pairingSubmissionRowsToRemove: [],
+};
+
+export const getRowsForSubmittedPairing = (
   pairingSubmissions: PairingSubmission[] | null | undefined,
   playerNames: string[],
   deckIds: number[],
-  tableNumber: number,
-  roundNumber: number,
   tournamentId: string,
   username: string
-) => {
-  if (!pairingSubmissions) return;
+): RowsForSubmittedPairingSchema => {
+  if (!pairingSubmissions) return nullSubmission;
 
   const pairingSubmissionMap: Record<string, PairingSubmission[]> =
     pairingSubmissions.reduce(
@@ -45,12 +53,13 @@ export const updatePairingSubmissions = (
     );
 
   let playerDeckRowsToInsert: PlayerDeck[] = [];
-  const pairingSubmissionRowsToRemove: PairingSubmission[] = [];
+  let pairingSubmissionRowsToRemove: PairingSubmission[] = [];
 
   for (const i of [0, 1]) {
     if (pairingSubmissionMap[playerNames[i]]) {
       // throw error
-      if (pairingSubmissionMap[playerNames[i]].length < 2) return;
+      if (pairingSubmissionMap[playerNames[i]].length < 2)
+        return nullSubmission;
 
       pairingSubmissionRowsToRemove.concat(
         pairingSubmissionMap[playerNames[i]]
@@ -83,7 +92,7 @@ export const updatePairingSubmissions = (
         !earlierOpponentName ||
         !submittedOpponentDeck
       )
-        return;
+        return nullSubmission;
 
       playerDeckRowsToInsert = [
         getDeductedPlayerDeckRow(
@@ -105,7 +114,11 @@ export const updatePairingSubmissions = (
           username
         ),
       ];
-      console.log(playerDeckRowsToInsert);
     }
   }
+
+  return {
+    playerDeckRowsToInsert,
+    pairingSubmissionRowsToRemove,
+  };
 };

@@ -13,7 +13,6 @@ import supabase from '../../../../lib/supabase/client';
 import ArchetypeSelector from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelector';
 import { ArchetypeSelectorModal } from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
 import DeckInput from '../../../Deck/DeckInput/DeckInput';
-import { updatePairingSubmissions } from './helpers';
 
 export const SubmissionView = ({
   pairingSubmissions,
@@ -58,15 +57,6 @@ export const SubmissionView = ({
 
   useEffect(() => {
     addToUpdateLog('if anyone sees this page, no you didnt');
-    updatePairingSubmissions(
-      pairingSubmissions,
-      playerNames,
-      [5, 1],
-      tableNumber,
-      roundNumber,
-      tournament.id,
-      user?.email ?? ''
-    );
   }, []);
 
   const handleUnknownSubmission = useCallback(
