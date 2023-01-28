@@ -61,9 +61,7 @@ export const getRowsForSubmittedPairing = (
       if (pairingSubmissionMap[playerNames[i]].length < 2)
         return nullSubmission;
 
-      pairingSubmissionRowsToRemove.concat(
-        pairingSubmissionMap[playerNames[i]]
-      );
+      pairingSubmissionRowsToRemove = pairingSubmissionMap[playerNames[i]];
 
       const potentialDecks = pairingSubmissionMap[playerNames[i]];
       const deductedPlayerDeckIdx = potentialDecks.findIndex(submission =>
