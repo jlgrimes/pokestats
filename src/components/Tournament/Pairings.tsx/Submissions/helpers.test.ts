@@ -188,6 +188,20 @@ describe('getRowsForSubmittedPairing', () => {
       ],
     });
   });
+
+  it('should not deduct when previous match is same', () => {
+    const deckIds = [1, 2];
+
+    expect(
+      getRowsForSubmittedPairing(
+        pairingSubmissions,
+        playerNames,
+        deckIds,
+        tournamentId,
+        username
+      )
+    ).toEqual(nullSubmission);
+  });
 });
 
 export {};

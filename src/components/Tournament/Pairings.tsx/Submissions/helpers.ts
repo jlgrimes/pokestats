@@ -83,12 +83,15 @@ export const getRowsForSubmittedPairing = (
       const submittedOpponentDeck = deckIds.at(
         (deckIds.findIndex(id => id === deductedPlayerDeck) + 1) % 2
       );
+      const submittedDecksAreSame =
+        earlierOpponentDeck === submittedOpponentDeck;
 
       if (
         !deductedPlayerDeck ||
         !earlierOpponentDeck ||
         !earlierOpponentName ||
-        !submittedOpponentDeck
+        !submittedOpponentDeck ||
+        submittedDecksAreSame
       )
         return nullSubmission;
 
