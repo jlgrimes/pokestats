@@ -1,6 +1,7 @@
 import { Card, Grid, Heading, Stack, Text } from '@chakra-ui/react';
 import { Pairing, PairingSubmission } from '../../../../types/pairings';
 import { Standing, Tournament } from '../../../../types/tournament';
+import { usePlayerDecks } from '../../../hooks/playerDecks';
 import { PairingsPlayerInfo } from './PairingsPlayerInfo';
 import { SubmissionView } from './Submissions/SubmissionView';
 
@@ -11,7 +12,7 @@ export const PairingsCard = ({
   pairingSubmissions,
   round,
   refetchData,
-  addToUpdateLog
+  addToUpdateLog,
 }: {
   pairing: Pairing;
   tournament: Tournament;
@@ -21,35 +22,35 @@ export const PairingsCard = ({
   refetchData: () => {};
   addToUpdateLog: (name: string) => void;
 }) => {
-  const players = [
-    {
-      name: 'Jared Grimes',
-    } as Standing,
-    {
-      name: 'Tord Reklev',
-    } as Standing,
-  ];
+  const { data: players } = usePlayerDecks(tournament.id, {
+    playerNames: pairing.players.map(({ name }) => name),
+  });
+
   const knownDecksCount = players.filter(
-    player => player.deck?.defined_pokemon
+    player => player.deck_archetype?.defined_pokemon
   ).length;
 
   return (
     <Card padding={4}>
       <Stack>
         <Grid gridTemplateColumns={'1fr 1fr 1fr'} alignItems='center'>
-          <PairingsPlayerInfo
-            player={players[0]}
-            tournament={tournament}
-            isUserAdmin={isUserAdmin}
-          />
+          {players.at(0) && (
+            <PairingsPlayerInfo
+              player={players[0]}
+              tournament={tournament}
+              isUserAdmin={isUserAdmin}
+            />
+          )}
           <Heading size='md' textAlign={'center'}>
             {pairing.table}
           </Heading>
-          <PairingsPlayerInfo
-            player={players[1]}
-            tournament={tournament}
-            isUserAdmin={isUserAdmin}
-          />
+          {players.at(1) && (
+            <PairingsPlayerInfo
+              player={players[1]}
+              tournament={tournament}
+              isUserAdmin={isUserAdmin}
+            />
+          )}
         </Grid>
         {isUserAdmin && (
           <SubmissionView

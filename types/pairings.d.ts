@@ -1,6 +1,14 @@
+import { PlayerRecord } from "./tournament";
+
+export interface PairingPlayer {
+  name: string;
+  record: PlayerRecord;
+  result: string;
+}
+
 export interface Pairing {
   table: number;
-  players: string[];
+  players: PairingPlayer[];
 }
 
 export interface PairingSubmission {
