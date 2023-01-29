@@ -3,11 +3,6 @@ export interface Pairing {
   players: string[];
 }
 
-export interface PairingRound {
-  round: number;
-  tables: Pairing[];
-}
-
 export interface PairingSubmission {
   id: number;
   deck_archetype: number;
