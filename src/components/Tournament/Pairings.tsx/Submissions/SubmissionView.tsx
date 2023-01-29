@@ -117,11 +117,14 @@ export const SubmissionView = ({
 
         if (pairingSubmissionRowsToRemove.length > 0) {
           const res = await supabase
-            .from('Player Decks')
+            .from('Pairing Submissions')
             .delete()
-            .containedBy(
+            .filter(
               'id',
-              pairingSubmissionRowsToRemove.map(({ id }) => id)
+              'in',
+              JSON.stringify(pairingSubmissionRowsToRemove.map(({ id }) => id))
+                .replace('[', '(')
+                .replace(']', ')')
             );
 
           if (res.error) {
