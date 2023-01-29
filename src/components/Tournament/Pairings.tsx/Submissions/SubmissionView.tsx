@@ -13,6 +13,7 @@ import supabase from '../../../../lib/supabase/client';
 import ArchetypeSelector from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelector';
 import { ArchetypeSelectorModal } from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
 import DeckInput from '../../../Deck/DeckInput/DeckInput';
+import { getRowsForSubmittedPairing } from './helpers';
 
 export const SubmissionView = ({
   pairingSubmissions,
@@ -43,17 +44,6 @@ export const SubmissionView = ({
       submission.round_number === roundNumber &&
       submission.table_number === tableNumber
   );
-  const potentialPairingMatches = pairingSubmissions?.filter(
-    submission =>
-      !(
-        submission.round_number === roundNumber &&
-        submission.table_number === tableNumber
-      ) &&
-      (submission.player1_name === playerNames[0] ||
-        submission.player2_name === playerNames[0] ||
-        submission.player1_name === playerNames[1] ||
-        submission.player2_name === playerNames[1])
-  );
 
   useEffect(() => {
     addToUpdateLog('if anyone sees this page, no you didnt');
@@ -79,26 +69,73 @@ export const SubmissionView = ({
         round_number: roundNumber,
       };
 
-      const res = await supabase.from('Pairing Submissions').insert([
-        {
-          ...commonRowData,
-          deck_archetype: deck.id,
-        },
-        {
-          ...commonRowData,
-          deck_archetype: decksToAdd[0],
-        },
-      ]);
+      const { playerDeckRowsToInsert, pairingSubmissionRowsToRemove } =
+        getRowsForSubmittedPairing(
+          pairingSubmissions,
+          playerNames,
+          [decksToAdd[0], deck.id],
+          tournament.id,
+          user?.email ?? ''
+        );
+
+      if (
+        playerDeckRowsToInsert.length === 0 &&
+        pairingSubmissionRowsToRemove.length === 0
+      ) {
+        const res = await supabase.from('Pairing Submissions').insert([
+          {
+            ...commonRowData,
+            deck_archetype: deck.id,
+          },
+          {
+            ...commonRowData,
+            deck_archetype: decksToAdd[0],
+          },
+        ]);
+
+        if (res.error) {
+          return toast({
+            status: 'error',
+            title: 'Error submitting pairing',
+            description: res.error.message,
+          });
+        }
+      } else {
+        if (playerDeckRowsToInsert.length > 0) {
+          const res = await supabase
+            .from('Player Decks')
+            .insert(playerDeckRowsToInsert);
+
+          if (res.error) {
+            return toast({
+              status: 'error',
+              title: 'Error inserting player decks',
+              description: res.error.message,
+            });
+          }
+        }
+
+        if (pairingSubmissionRowsToRemove.length > 0) {
+          const res = await supabase
+            .from('Player Decks')
+            .delete()
+            .containedBy(
+              'id',
+              pairingSubmissionRowsToRemove.map(({ id }) => id)
+            );
+
+          if (res.error) {
+            return toast({
+              status: 'error',
+              title: 'Error deleting submissions',
+              description: res.error.message,
+            });
+          }
+        }
+      }
+
       modalControls.onClose();
       refetchData();
-
-      if (res.error) {
-        return toast({
-          status: 'error',
-          title: 'Error submitting pairing',
-          description: res.error.message,
-        });
-      }
     },
     [
       playerNames,
