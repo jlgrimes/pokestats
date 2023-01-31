@@ -31,12 +31,13 @@ interface PairingsSchema {
 interface FetchPairingsSchema {
   round: number;
   tables?: Pairing[];
+  maxRound: number;
 }
 
 export const fetchPairings = async (
   tournamentId: string,
   options?: FetchPairingsOptions
-): Promise<FetchPairingsSchema> => {
+): Promise<PairingsSchema[]> => {
   const slug = `standings/${tournamentId}/masters/${tournamentId}_Masterstables.json`;
   const url = `${
     options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
@@ -45,25 +46,37 @@ export const fetchPairings = async (
   const res: Response = await fetch(url);
   const data: PairingsSchema[] = await res.json();
 
-  if (options?.roundNumber) {
-    return {
-      round: options.roundNumber,
-      tables: data.at(options.roundNumber)?.tables,
-    };
-  }
-
-  return {
-    round: data.length - 1,
-    tables: data.at(data.length - 1)?.tables,
-  };
+  return data;
 };
 
 export const usePairings = (
   tournamentId: string,
   options?: FetchPairingsOptions
 ) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ['pairings', tournamentId],
     queryFn: () => fetchPairings(tournamentId, options),
   });
+
+  let data = query.data ?? [];
+  let ret: FetchPairingsSchema;
+
+  if (options?.roundNumber) {
+    ret = {
+      round: options.roundNumber,
+      tables: data.at(options.roundNumber)?.tables,
+      maxRound: data.length - 1,
+    };
+  } else {
+    ret = {
+      round: data.length - 1,
+      tables: data.at(data.length - 1)?.tables,
+      maxRound: data.length - 1,
+    };
+  }
+
+  return {
+    ...query,
+    data: ret,
+  };
 };
