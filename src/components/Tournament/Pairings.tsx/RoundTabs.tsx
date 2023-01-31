@@ -10,11 +10,23 @@ export const RoundTabs = ({
   maxRound: number;
 }) => {
   return (
-    <HStack overflowX={'scroll'}>
-      <Tabs index={round - 1} onChange={idx => setRound(idx + 1)}>
+    <HStack overflowX={'scroll'} flexDirection='row-reverse'>
+      <Tabs
+        variant={'soft-rounded'}
+        colorScheme='red'
+        size={'sm'}
+        index={round - 1}
+        onChange={idx => setRound(idx + 1)}
+      >
         <TabList>
           {[...Array(maxRound)].map((_, idx) => (
-            <Tab key={`round-tab-${idx}`}>{idx + 1}</Tab>
+            <Tab
+              key={`round-tab-${idx}`}
+              paddingInlineStart={3}
+              paddingInlineEnd={3}
+            >
+              {idx + 1}
+            </Tab>
           ))}
         </TabList>
       </Tabs>
