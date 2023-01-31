@@ -14,7 +14,6 @@ export const RoundTabs = ({
       <Tabs
         variant={'soft-rounded'}
         colorScheme='red'
-        size={'sm'}
         index={round - 1}
         onChange={idx => setRound(idx + 1)}
       >
@@ -22,8 +21,6 @@ export const RoundTabs = ({
           {[...Array(maxRound)].map((_, idx) => (
             <Tab
               key={`round-tab-${idx}`}
-              paddingInlineStart={3}
-              paddingInlineEnd={3}
             >
               {idx + 1}
             </Tab>
