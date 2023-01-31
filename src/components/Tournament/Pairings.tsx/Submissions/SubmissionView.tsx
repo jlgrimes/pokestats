@@ -146,23 +146,28 @@ export const SubmissionView = ({
       refetchData,
       decksToAdd,
       modalControls,
-      pairingSubmissions
+      pairingSubmissions,
     ]
   );
 
   return (
     <HStack>
-      <Button
-        disabled={knownDecksCount === 2}
-        variant='outline'
-        onClick={modalControls.onOpen}
-      >
-        Submit deck
-      </Button>
-      <Text>
-        {knownDecksCount ?? 0}{' '}
-        {knownDecksCount === 1 ? 'deck' : 'decks'} reported
-      </Text>
+      {knownDecksCount === 0 && (
+        <Text as='b' color='red.600'>
+          2 decks needed
+        </Text>
+      )}
+      {knownDecksCount === 1 && (
+        <Text as='b' color='yellow.500'>
+          1 deck needed
+        </Text>
+      )}
+      {knownDecksCount === 2 && <Text color='green.500'>Decks known!</Text>}
+      {knownDecksCount < 2 && (
+        <Button variant='outline' onClick={modalControls.onOpen}>
+          Submit deck
+        </Button>
+      )}
       {modalControls.isOpen && (
         <ArchetypeSelectorModal
           modalControls={{
