@@ -1,11 +1,13 @@
 import {
   Button,
+  Grid,
   HStack,
   Text,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
+import { FaHatWizard } from 'react-icons/fa';
 import { PairingSubmission } from '../../../../../types/pairings';
 import { Deck, Tournament } from '../../../../../types/tournament';
 import { useSessionUserProfile } from '../../../../hooks/user';
@@ -152,22 +154,28 @@ export const SubmissionView = ({
 
   return (
     <HStack>
-      {knownDecksCount === 0 && (
-        <Text as='b' color='red.600'>
-          2 decks needed
-        </Text>
-      )}
-      {knownDecksCount === 1 && (
-        <Text as='b' color='yellow.500'>
-          1 deck needed
-        </Text>
-      )}
-      {knownDecksCount === 2 && <Text color='green.500'>Decks known!</Text>}
-      {knownDecksCount < 2 && (
-        <Button variant='outline' onClick={modalControls.onOpen}>
-          Submit deck
-        </Button>
-      )}
+      <Grid gridTemplateColumns={'1.5fr 1fr'} alignItems='baseline'>
+        {knownDecksCount === 0 && (
+          <Text as='b' color='red.600'>
+            2 decks needed
+          </Text>
+        )}
+        {knownDecksCount === 1 && (
+          <Text as='b' color='yellow.500'>
+            1 deck needed
+          </Text>
+        )}
+        {knownDecksCount === 2 && <Text color='green.500'>Decks known!</Text>}
+        {knownDecksCount < 2 && (
+          <Button
+            variant='outline'
+            onClick={modalControls.onOpen}
+            leftIcon={<FaHatWizard />}
+          >
+            Add
+          </Button>
+        )}
+      </Grid>
       {modalControls.isOpen && (
         <ArchetypeSelectorModal
           modalControls={{
