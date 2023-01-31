@@ -20,6 +20,8 @@ export const getCardImageUrl = (
     set = set.replace('tg', '').concat('tg');
   } else if (card.number.includes('SV')) {
     set = set.replace('sv', '').concat('sv');
+  } else if (card.number.includes('GG')) {
+    set = set + 'gg';
   }
 
   return `https://images.pokemontcg.io/${set}/${card?.number}${
@@ -41,20 +43,24 @@ export const isSpecialCard = (card: Partial<DeckCard>) => {
   if (!card.name || !card.set) return false;
 
   return (
-    ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon', 'Oranguru'].some(cardType =>
-      card.name!.includes(cardType)
+    ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon', 'Oranguru'].some(
+      cardType => card.name!.includes(cardType)
     ) || ['SHF', 'PR'].some(specialSet => card.set!.includes(specialSet))
   );
 };
 
 export const getSameCardIdx = (compressedList: DeckCard[], card: DeckCard) => {
   return compressedList.findIndex(pushedCard => {
-    if (isSpecialCard(card) || isSpecialCard(pushedCard)) return pushedCard.name === card.name;
+    if (isSpecialCard(card) || isSpecialCard(pushedCard))
+      return pushedCard.name === card.name;
     return pushedCard.name === card.name && pushedCard.set === card.set;
   });
 };
 
-export const getCompressedList = (deckList: DeckList, flattenEnergies?: boolean) => {
+export const getCompressedList = (
+  deckList: DeckList,
+  flattenEnergies?: boolean
+) => {
   const listKeys: (keyof DeckList)[] = ['pokemon', 'trainer', 'energy'];
 
   return listKeys.reduce(
