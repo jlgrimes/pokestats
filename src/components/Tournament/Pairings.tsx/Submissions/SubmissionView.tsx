@@ -45,10 +45,6 @@ export const SubmissionView = ({
       submission.table_number === tableNumber
   );
 
-  useEffect(() => {
-    addToUpdateLog('if anyone sees this page, no you didnt');
-  }, []);
-
   const handleUnknownSubmission = useCallback(
     async (deck: Deck) => {
       if (decksToAdd.length === 0) {
