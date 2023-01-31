@@ -1,12 +1,10 @@
 import { Heading, Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
 import { MetaGameShareList } from '../../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
-import { ArchetypeGraphsContainer } from '../../../src/components/Tournament/Stats/ArchetypeGraphsContainer';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { useLiveTournamentResults } from '../../../src/hooks/tournamentResults';
+import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
+import { fetchDecksWithLists } from '../../../src/hooks/finalResults';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
-import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../types/tournament';
 
 export default function DecksPage({ tournament }: { tournament: Tournament }) {
@@ -25,10 +23,14 @@ export default function DecksPage({ tournament }: { tournament: Tournament }) {
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([`live-results`, params.id], () =>
-    fetchLiveResults(params.id, { prefetch: true })
-  );
-
+  await queryClient.prefetchQuery({
+    queryKey: ['decks-with-lists'],
+    queryFn: () => fetchDecksWithLists(),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['deck-archetypes'],
+    queryFn: () => fetchArchetypes(),
+  });
   const [tournament] = await fetchTournaments({
     tournamentId: params.id,
     prefetch: true,
