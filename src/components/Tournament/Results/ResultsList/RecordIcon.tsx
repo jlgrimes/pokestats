@@ -1,6 +1,7 @@
 import { HStack, Icon } from '@chakra-ui/react';
 import { useCallback, useMemo } from 'react';
 import {
+  FaBroadcastTower,
   FaChessBishop,
   FaChessKing,
   FaChessQueen,
@@ -103,7 +104,7 @@ export const RecordIcon = ({
   if (standing.deck?.on_stream && !getCrownIcon()) {
     return (
       <HStack spacing={1} paddingRight={2}>
-        <Icon color='purple' as={FaTwitch} />
+        <Icon color='purple' as={FaBroadcastTower} />
         {getIcon()}
       </HStack>
     );
