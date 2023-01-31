@@ -55,7 +55,7 @@ export interface Standing {
   day2?: boolean;
   outOfDay2?: boolean;
   deck_list?: DeckList;
-  deck?: Deck;
+  deck?: Deck | null;
   drop?: number | null;
   tournamentId?: string;
 }

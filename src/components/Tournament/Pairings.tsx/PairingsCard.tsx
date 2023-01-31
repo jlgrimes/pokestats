@@ -23,11 +23,11 @@ export const PairingsCard = ({
   addToUpdateLog: (name: string) => void;
 }) => {
   const { data: players } = usePlayerDecks(tournament.id, {
-    playerNames: pairing.players.map(({ name }) => name),
+    pairingPlayers: pairing.players,
   });
 
   const knownDecksCount = players.filter(
-    player => player.deck_archetype?.defined_pokemon
+    player => player.deck?.defined_pokemon
   ).length;
 
   return (

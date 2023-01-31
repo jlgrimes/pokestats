@@ -1,16 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
+import { PairingPlayer } from '../../types/pairings';
+import { Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 
 export const fetchPlayerDecks = async (tournamentId: string) => {
   const res = await supabase
     .from('Player Decks')
-    .select('id,player_name,deck_archetype,user_submitted_was_admin,on_stream')
+    .select(
+      `id,player_name,deck_archetype (
+      id,
+      name,
+      defined_pokemon,
+      identifiable_cards,
+      supertype
+    ),user_submitted_was_admin,on_stream`
+    )
     .eq('tournament_id', tournamentId);
   return res.data;
 };
 
 interface PlayerDecksOptions {
-  playerNames?: string[];
+  pairingPlayers?: PairingPlayer[];
 }
 
 export const usePlayerDecks = (
@@ -21,21 +31,26 @@ export const usePlayerDecks = (
     queryKey: ['player-decks', tournamentId],
     queryFn: () => fetchPlayerDecks(tournamentId),
   });
-  const data = query.data
-    ? options?.playerNames
-      ? query.data.filter(({ player_name }) =>
-          options.playerNames?.includes(player_name)
-        )
-      : query.data
-    : [];
+
+  const data = query.data ?? [];
+  let playerDecks: Standing[];
+
+  if (options?.pairingPlayers) {
+    playerDecks = options.pairingPlayers.map(player => ({
+      ...player,
+      deck: data.find(({ player_name }) => player_name === player.name)
+        ?.deck_archetype as Deck,
+    }));
+  } else {
+    playerDecks = data.map(player => ({
+      ...player,
+      name: player.player_name,
+      record: { wins: -1, ties: -1, losses: -1 },
+    }));
+  }
 
   return {
     ...query,
-    data: data.map((player) => ({
-      ...player,
-      name: player.player_name,
-      deck: player.deck_archetype,
-      record: { wins: -1, losses: -1, ties: -1}
-    })),
+    data: playerDecks,
   };
 };
