@@ -6,9 +6,14 @@ import { usePairings, usePairingSubmissions } from '../../../hooks/pairings';
 import { PairingsCard } from './PairingsCard';
 import { SubmissionUpdateLog } from './Submissions/SubmissionUpdateLog';
 
-export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
-  const round = 2;
-  const { data: pairings } = usePairings(tournament.id, { roundNumber: round });
+export const PairingsView = ({
+  tournament,
+  roundNumber,
+}: {
+  tournament: Tournament;
+  roundNumber?: number;
+}) => {
+  const { data: pairingsData } = usePairings(tournament.id, { roundNumber });
 
   const { data: userIsAdmin } = useUserIsAdmin();
   const { data: pairingSubmissions, refetch } = usePairingSubmissions(
@@ -25,12 +30,12 @@ export const PairingsView = ({ tournament }: { tournament: Tournament }) => {
 
   return (
     <Stack paddingX={4}>
-      <Heading size='md'>{`Round ${round} pairings`}</Heading>
+      <Heading size='md'>{`Round ${pairingsData?.round} pairings`}</Heading>
       {updateLog.length > 0 && <SubmissionUpdateLog updates={updateLog} />}
       <Stack>
-        {pairings?.map(pairing => (
+        {pairingsData?.tables?.map(pairing => (
           <PairingsCard
-            round={round}
+            round={pairingsData.round}
             key={pairing.table}
             pairing={pairing}
             tournament={tournament}

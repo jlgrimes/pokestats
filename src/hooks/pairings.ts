@@ -28,10 +28,15 @@ interface PairingsSchema {
   tables: Pairing[];
 }
 
+interface FetchPairingsSchema {
+  round: number;
+  tables?: Pairing[];
+}
+
 export const fetchPairings = async (
   tournamentId: string,
   options?: FetchPairingsOptions
-): Promise<Pairing[] | undefined> => {
+): Promise<FetchPairingsSchema> => {
   const slug = `standings/${tournamentId}/masters/${tournamentId}_Masterstables.json`;
   const url = `${
     options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
@@ -41,10 +46,16 @@ export const fetchPairings = async (
   const data: PairingsSchema[] = await res.json();
 
   if (options?.roundNumber) {
-    return data.at(options.roundNumber)?.tables;
+    return {
+      round: options.roundNumber,
+      tables: data.at(options.roundNumber)?.tables,
+    };
   }
 
-  return data.at(data.length - 1)?.tables;
+  return {
+    round: data.length - 1,
+    tables: data.at(data.length - 1)?.tables,
+  };
 };
 
 export const usePairings = (
