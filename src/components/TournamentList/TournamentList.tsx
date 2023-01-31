@@ -30,8 +30,8 @@ export const TournamentList = ({
         ...items.filter(
           tournament => tournament.data.tournamentStatus === 'running'
         ),
-        ...finishedTournaments.slice(0, 2),
         ...upcomingTournaments,
+        ...finishedTournaments.slice(0, 2),
       ];
     }
     return items;
