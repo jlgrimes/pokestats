@@ -47,7 +47,7 @@ export interface PlayerRound {
 export interface Standing {
   name: string;
   profile?: StoredPlayerProfile;
-  placing?: number;
+  placing: number;
   record: PlayerRecord;
   resistances?: PlayerResistances;
   currentMatchResult?: 'W' | 'L' | 'T';

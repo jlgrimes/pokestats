@@ -14,14 +14,14 @@ export const PairingsView = ({
   tournament: Tournament;
   roundNumber?: number;
 }) => {
-  const [round, setRound] = useState<number | undefined>();
+  const [round, setRound] = useState<number>();
   const { data: pairingsData } = usePairings(tournament.id, {
     roundNumber: round,
   });
 
   useEffect(() => {
-    setRound(pairingsData?.round);
-  }, [pairingsData?.round]);
+    pairingsData.round && setRound(pairingsData.round);
+  }, [pairingsData.round]);
 
   const { data: userIsAdmin } = useUserIsAdmin();
   const { data: pairingSubmissions, refetch } = usePairingSubmissions(
@@ -42,7 +42,7 @@ export const PairingsView = ({
         <RoundTabs
           round={round}
           setRound={setRound}
-          maxRound={pairingsData.maxRound}
+          maxRound={pairingsData.maxRound as number}
         />
       )}
       <Heading size='md'>{`Round ${round} pairings`}</Heading>

@@ -38,12 +38,14 @@ export const usePlayerDecks = (
   if (options?.pairingPlayers) {
     playerDecks = options.pairingPlayers.map(player => ({
       ...player,
+      placing: -1,
       deck: data.find(({ player_name }) => player_name === player.name)
         ?.deck_archetype as Deck,
     }));
   } else {
     playerDecks = data.map(player => ({
       ...player,
+      placing: -1,
       name: player.player_name,
       record: { wins: -1, ties: -1, losses: -1 },
     }));

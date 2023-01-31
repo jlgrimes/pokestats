@@ -61,7 +61,15 @@ export const usePairings = (
   let data = query.data;
   let ret: FetchPairingsSchema;
 
-  if (!data) return query;
+  if (!data)
+    return {
+      ...query,
+      data: {
+        round: null,
+        tables: null,
+        maxRound: null,
+      },
+    };
 
   if (options?.roundNumber) {
     ret = {
