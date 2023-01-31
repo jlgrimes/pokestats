@@ -45,7 +45,9 @@ export const isSpecialCard = (card: Partial<DeckCard>) => {
   return (
     ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon', 'Oranguru'].some(
       cardType => card.name!.includes(cardType)
-    ) || ['SHF', 'PR'].some(specialSet => card.set!.includes(specialSet))
+    ) ||
+    ['SHF', 'PR'].some(specialSet => card.set!.includes(specialSet)) ||
+    card.number?.includes('GG')
   );
 };
 
