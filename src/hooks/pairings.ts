@@ -58,8 +58,10 @@ export const usePairings = (
     queryFn: () => fetchPairings(tournamentId, options),
   });
 
-  let data = query.data ?? [];
+  let data = query.data;
   let ret: FetchPairingsSchema;
+
+  if (!data) return query;
 
   if (options?.roundNumber) {
     ret = {

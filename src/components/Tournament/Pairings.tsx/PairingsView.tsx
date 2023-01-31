@@ -14,7 +14,7 @@ export const PairingsView = ({
   tournament: Tournament;
   roundNumber?: number;
 }) => {
-  const [round, setRound] = useState(roundNumber);
+  const [round, setRound] = useState<number | undefined>();
   const { data: pairingsData } = usePairings(tournament.id, {
     roundNumber: round,
   });
@@ -42,24 +42,25 @@ export const PairingsView = ({
         <RoundTabs
           round={round}
           setRound={setRound}
-          maxRound={pairingsData?.maxRound}
+          maxRound={pairingsData.maxRound}
         />
       )}
       <Heading size='md'>{`Round ${round} pairings`}</Heading>
       {updateLog.length > 0 && <SubmissionUpdateLog updates={updateLog} />}
       <Stack>
-        {round && pairingsData?.tables?.map(pairing => (
-          <PairingsCard
-            round={round}
-            key={pairing.table}
-            pairing={pairing}
-            tournament={tournament}
-            isUserAdmin={userIsAdmin}
-            pairingSubmissions={pairingSubmissions}
-            refetchData={refetch}
-            addToUpdateLog={addToUpdateLog}
-          />
-        ))}
+        {round &&
+          pairingsData?.tables?.map(pairing => (
+            <PairingsCard
+              round={round}
+              key={pairing.table}
+              pairing={pairing}
+              tournament={tournament}
+              isUserAdmin={userIsAdmin}
+              pairingSubmissions={pairingSubmissions}
+              refetchData={refetch}
+              addToUpdateLog={addToUpdateLog}
+            />
+          ))}
       </Stack>
     </Stack>
   );
