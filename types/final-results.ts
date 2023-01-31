@@ -11,7 +11,6 @@ export interface FinalResultsSchema {
   placing: number;
   record: PlayerRecord;
   resistances: PlayerResistances;
-  drop: number | null;
   rounds: PlayerRound[];
   tournament_id: string;
   deck_list: DeckList;

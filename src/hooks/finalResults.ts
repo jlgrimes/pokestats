@@ -160,7 +160,7 @@ export const fetchFinalResults = async (
   let query = supabase
     .from('Final Results')
     .select(
-      `name,placing,record,resistances,drop,rounds,tournament_id,deck_list,deck_archetype (
+      `name,placing,record,resistances,rounds,tournament_id,deck_list,deck_archetype (
     id,
       name,
       defined_pokemon,
