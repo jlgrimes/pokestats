@@ -16,7 +16,7 @@ export default function TournamentPage({
 }
 
 export async function getStaticProps() {
-  const tournaments = await fetchTournaments({ prefetch: true, excludeUpcoming: true });
+  const tournaments = await fetchTournaments({ prefetch: true });
 
   return {
     props: {
