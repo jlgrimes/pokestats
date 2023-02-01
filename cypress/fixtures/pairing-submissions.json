@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "deck_archetype": 1,
+    "player1_name": "Jared Grimes",
+    "player_2_name": "Tord Reklev",
+    "user_who_submitted": "jared",
+    "table_number": 1,
+    "round_number": 1
+  },  {
+    "id": 2,
+    "deck_archetype": 2,
+    "player1_name": "Jared Grimes",
+    "player_2_name": "Tord Reklev",
+    "user_who_submitted": "jared",
+    "table_number": 1,
+    "round_number": 1
+  }
+]
