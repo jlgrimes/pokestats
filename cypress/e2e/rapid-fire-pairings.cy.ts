@@ -6,6 +6,9 @@ describe('template spec', () => {
       `${BASE_URL}/pokedata/standings/0000037/masters/0000037_Masterstables.json`,
       { fixture: 'pairings.json' }
     );
+    cy.intercept(`${BASE_URL}/api/auth/session`, {
+      fixture: 'admin-auth.json',
+    });
   });
 
   it('passes', () => {
