@@ -26,9 +26,18 @@ export const PairingsCard = ({
     pairingPlayers: pairing.players,
   });
 
-  const knownDecksCount = players.filter(
-    player => player.deck?.defined_pokemon
-  ).length;
+  const currentRoundPairingMatches =
+    pairingSubmissions?.filter(
+      submission =>
+        submission.round_number === round &&
+        submission.table_number === pairing.table
+    ) ?? [];
+
+  const knownDecksCount = Math.min(
+    players.filter(player => player.deck?.defined_pokemon).length +
+      currentRoundPairingMatches?.length,
+    2
+  );
 
   return (
     <Card padding={4}>

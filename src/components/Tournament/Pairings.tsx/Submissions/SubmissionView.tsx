@@ -12,9 +12,7 @@ import { PairingSubmission } from '../../../../../types/pairings';
 import { Deck, Tournament } from '../../../../../types/tournament';
 import { useSessionUserProfile } from '../../../../hooks/user';
 import supabase from '../../../../lib/supabase/client';
-import ArchetypeSelector from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelector';
 import { ArchetypeSelectorModal } from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
-import DeckInput from '../../../Deck/DeckInput/DeckInput';
 import { getRowsForSubmittedPairing } from './helpers';
 
 export const SubmissionView = ({
@@ -40,12 +38,6 @@ export const SubmissionView = ({
   const modalControls = useDisclosure();
   const toast = useToast();
   const [decksToAdd, setDecksToAdd] = useState<number[]>([]);
-
-  const currentRoundPairingMatches = pairingSubmissions?.filter(
-    submission =>
-      submission.round_number === roundNumber &&
-      submission.table_number === tableNumber
-  );
 
   const handleUnknownSubmission = useCallback(
     async (deck: Deck) => {
