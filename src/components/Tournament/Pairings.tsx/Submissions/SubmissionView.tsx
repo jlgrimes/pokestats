@@ -158,7 +158,7 @@ export const SubmissionView = ({
           </Text>
         )}
         {knownDecksCount === 2 && <Text color='green.500'>Decks known!</Text>}
-        {knownDecksCount < 2 && (
+        {knownDecksCount === 0 && (
           <Button
             variant='outline'
             onClick={modalControls.onOpen}
