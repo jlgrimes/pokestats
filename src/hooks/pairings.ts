@@ -74,14 +74,14 @@ export const usePairings = (
   if (options?.roundNumber) {
     ret = {
       round: options.roundNumber,
-      tables: data.at(options.roundNumber)?.tables,
-      maxRound: data.length - 1,
+      tables: data.at(options.roundNumber - 1)?.tables,
+      maxRound: data.length,
     };
   } else {
     ret = {
-      round: data.length - 1,
+      round: data.length,
       tables: data.at(data.length - 1)?.tables,
-      maxRound: data.length - 1,
+      maxRound: data.length,
     };
   }
 

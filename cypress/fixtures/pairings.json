@@ -1,0 +1,54 @@
+[
+  {
+    "tables": [
+      {
+        "table": 1,
+        "players": [
+          {
+            "name": "Jared Grimes"
+          },
+          {
+            "name": "Tord Reklev"
+          }
+        ]
+      },
+      {
+        "table": 2,
+        "players": [
+          {
+            "name": "Noah Spinale"
+          },
+          {
+            "name": "Ryan Shore"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "tables": [
+      {
+        "table": 1,
+        "players": [
+          {
+            "name": "Ryan Shore"
+          },
+          {
+            "name": "Jared Grimes"
+          }
+        ]
+      },
+      {
+        "table": 2,
+        "players": [
+          {
+            "name": "Tord Reklev"
+          },
+          {
+            "name": "Noah Spinale"
+          }
+        ]
+      }
+    ]
+  }
+]
