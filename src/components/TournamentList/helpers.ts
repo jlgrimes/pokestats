@@ -2,12 +2,11 @@ import { BadgeProps } from '@chakra-ui/react';
 import {
   differenceInDays,
   format,
-  formatDistance,
-  formatDistanceToNow,
   parseISO,
   eachWeekendOfInterval,
   isWithinInterval,
   endOfDay,
+  formatDistanceToNowStrict,
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 import { getRoundText } from '../Tournament/helpers';
@@ -72,7 +71,8 @@ export const formatTournamentDate = (tournament: Tournament) => {
 
 export const formatTimeUntilTournament = (tournament: Tournament) => {
   const [startDate] = getTournamentRange(tournament);
-  return formatDistanceToNow(startDate);
+  console.log(startDate);
+  return formatDistanceToNowStrict(startDate);
 };
 
 export const tournamentHasArrivedButNotLive = (tournament: Tournament) => {
