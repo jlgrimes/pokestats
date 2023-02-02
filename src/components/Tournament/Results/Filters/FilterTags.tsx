@@ -5,7 +5,7 @@ import {
   useArchetypes,
   useMostPopularArchetypes,
 } from '../../../../hooks/deckArchetypes';
-import SpriteDisplay from '../../../common/SpriteDisplay';
+import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
 import { ToggleFilterOptions } from './StandingsFilterContainer';
 import { StandingsFilters } from './StandingsFilterMenu';
 

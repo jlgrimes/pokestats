@@ -11,7 +11,7 @@ import NextLink from 'next/link';
 import { memo } from 'react';
 import { Deck } from '../../../../types/tournament';
 import { useVariants } from '../../../hooks/deckArchetypes';
-import SpriteDisplay from '../../common/SpriteDisplay';
+import SpriteDisplay from '../../common/SpriteDisplay/SpriteDisplay';
 
 export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
   const { data: variants } = useVariants(deck.supertype);

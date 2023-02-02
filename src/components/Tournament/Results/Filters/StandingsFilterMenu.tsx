@@ -21,7 +21,7 @@ import { FaFilter } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import { FilterMenu } from '../../../common/FilterMenu';
-import SpriteDisplay from '../../../common/SpriteDisplay';
+import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
 import { sortBySuperType } from './helpers';
 import { ToggleFilterOptions } from './StandingsFilterContainer';
 

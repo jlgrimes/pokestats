@@ -16,7 +16,7 @@ import {
   Checkbox,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
+import SpriteAndNameDisplay from '../../../common/SpriteDisplay/SpriteAndNameDisplay';
 import { Deck } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import { ArchetypeSelectorProps } from './ArchetypeSelector';

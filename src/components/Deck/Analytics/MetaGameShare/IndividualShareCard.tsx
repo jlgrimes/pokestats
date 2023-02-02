@@ -8,7 +8,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import SpriteDisplay from '../../../common/SpriteDisplay';
+import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
 import { Deck } from '../../../../../types/tournament';
 import { ShareStat } from './ShareStat';
 import { CommonCard } from '../../../common/CommonCard';

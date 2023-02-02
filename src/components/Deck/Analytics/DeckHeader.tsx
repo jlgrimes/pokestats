@@ -4,7 +4,7 @@ import { getCardImageUrl } from '../ListViewer/helpers';
 import { DeckCard, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
 import { useFinalResults } from '../../../hooks/finalResults';
-import SpriteDisplay from '../../common/SpriteDisplay';
+import SpriteDisplay from '../../common/SpriteDisplay/SpriteDisplay';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
