@@ -8,9 +8,7 @@ import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../types/tournament';
 
 export default function StatsPage({ tournament }: { tournament: Tournament }) {
-  const { data: liveResults } = useLiveTournamentResults(
-    tournament.id as string
-  );
+  const { data: liveResults } = useLiveTournamentResults(tournament.id);
   const allDay2DecksSubmitted = useMemo(() => {
     return (
       (liveResults?.data.every(

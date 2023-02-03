@@ -319,7 +319,7 @@ export const fetchLiveResults = async (
   const startTime = performance.now();
 
   let parsedData: Standing[] = await getPokedata(
-    tournamentId as string,
+    tournamentId,
     options?.prefetch
   );
 

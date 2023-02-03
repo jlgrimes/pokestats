@@ -35,7 +35,7 @@ export const TournamentTabs = memo(
         ? [
             {
               name: 'My results',
-              slug: parseUsername(userProfile?.email as string),
+              slug: parseUsername(userProfile?.email ?? ''),
             },
           ]
         : []),

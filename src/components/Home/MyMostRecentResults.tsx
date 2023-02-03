@@ -71,7 +71,7 @@ export const MyMostRecentResults = memo(
         slug={
           loaded
             ? `/tournaments/${resultToShowTournament.id}/${parseUsername(
-                session.data.user?.email as string
+                session.data.user?.email ?? ''
               )}`
             : '/'
         }

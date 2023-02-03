@@ -33,20 +33,4 @@ export const fetchCards = async (name: string, set: string) => {
       ).data;
     }
   }
-
-  // .contains(
-  //   `deck_list->pokemon`,
-  //   JSON.stringify([{ name: 'Crobat VMAX' }])
-  //     .replace('[', '(')
-  //     .replace(']', ')')
-  // );
-  //.contains('deck_list->pokemon', ['pokemon->>name: Corviknight VMAX'])
-  // .filter(
-  //   'name',
-  //   'in',
-  //   JSON.stringify(verifiedUsers?.map(({ name }) => name as string) ?? [])
-  //     .replace('[', '(')
-  //     .replace(']', ')')
-  // );
-  //.not('deck_list', 'is', null);
 };

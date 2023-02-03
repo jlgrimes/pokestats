@@ -6,8 +6,10 @@ import supabase from '../lib/supabase/client';
 import { fetchPlayers } from './finalResults';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const useUserMatchesLoggedInUser = (name: string) => {
+export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
   const session = useSession();
+
+  if (!name) return false;
   return session.data?.user?.name === name;
 };
 
@@ -20,8 +22,8 @@ export const fetchUserProfileFromEmail = async (email: string) => {
 
   if (playerProfile) {
     return {
-      id: playerProfile?.id as string,
-      name: playerProfile?.name as string,
+      id: playerProfile?.id,
+      name: playerProfile?.name,
       email: email,
     };
   }
@@ -38,8 +40,8 @@ export const fetchUserProfile = async (session: Session) => {
 
   if (playerProfile) {
     return {
-      id: playerProfile?.id as string,
-      name: playerProfile?.name as string,
+      id: playerProfile?.id,
+      name: playerProfile?.name,
       email: session.user?.email,
       image: session.user?.image,
     };

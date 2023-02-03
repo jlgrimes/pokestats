@@ -50,8 +50,8 @@ export const AppBar = () => {
                     ) : (
                       <Avatar
                         size='sm'
-                        name={session.data?.user?.name as string}
-                        src={session.data?.user?.image as string}
+                        name={session.data?.user?.name ?? undefined}
+                        src={session.data?.user?.image}
                       />
                     )}
                     {userProfile ? (
