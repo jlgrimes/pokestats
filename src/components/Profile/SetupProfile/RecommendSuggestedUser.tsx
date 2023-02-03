@@ -30,7 +30,7 @@ export const RecommendedSuggestedUser = ({
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
   const { data: suggestedUserTournaments } = useFinalResults({
-    playerName: session?.user.name,
+    playerName: session?.user?.name,
   });
   const { data: tournaments } = useTournaments();
 
@@ -43,15 +43,15 @@ export const RecommendedSuggestedUser = ({
 
     setIdentityConfirmationLoading(true);
     await supabase.from('Player Profiles').insert({
-      name: session.user.name,
-      email: session.user.email,
+      name: session.user?.name,
+      email: session.user?.email,
     });
 
     queryClient.setQueryData(
-      [`session-user-profile`, session.user.email],
+      [`session-user-profile`, session.user?.email],
       () => ({
-        name: session.user.name,
-        email: session.user.email,
+        name: session.user?.name,
+        email: session.user?.email,
       })
     );
     accountMadeSuccessfullyCallback();

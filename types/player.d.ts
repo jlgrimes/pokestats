@@ -16,9 +16,9 @@ export interface GooglePlayerProfile {
 
 export interface CombinedPlayerProfile {
   id: string;
-  name: string;
-  email: string;
-  image: string;
+  name: string | null | undefined;
+  email: string | null | undefined;
+  image: string | null | undefined;
 };
 
 export interface PlayerTournamentPerformance {

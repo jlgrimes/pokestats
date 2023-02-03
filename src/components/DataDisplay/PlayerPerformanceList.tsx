@@ -27,9 +27,9 @@ export const PlayerPerformanceList = ({
 }: {
   user: CombinedPlayerProfile;
 }) => {
-  const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user.name);
+  const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user.name as string);
   const { data: tournamentPerformance } = useFinalResults({
-    playerName: user.name,
+    playerName: user.name as string,
   });
   const { data: tournaments } = useTournaments();
   const { data: userIsAdmin } = useUserIsAdmin();
@@ -86,7 +86,7 @@ export const PlayerPerformanceList = ({
                           userMatchesLoggedInUser
                             ? `/tournaments/${
                                 performance.tournamentId
-                              }/${parseUsername(user.email)}`
+                              }/${parseUsername(user.email as string)}`
                             : undefined
                         }
                       />

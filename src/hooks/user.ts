@@ -8,7 +8,7 @@ import { useLiveTournamentResults } from './tournamentResults';
 
 export const useUserMatchesLoggedInUser = (name: string) => {
   const session = useSession();
-  return session.data?.user.name === name;
+  return session.data?.user?.name === name;
 };
 
 export const fetchUserProfileFromEmail = async (email: string) => {
@@ -33,15 +33,15 @@ export const fetchUserProfile = async (session: Session) => {
   const { data } = await supabase
     .from('Player Profiles')
     .select('id,name,email')
-    .eq('email', session.user.email);
+    .eq('email', session.user?.email);
   const playerProfile = data?.[0];
 
   if (playerProfile) {
     return {
       id: playerProfile?.id as string,
       name: playerProfile?.name as string,
-      email: session.user.email,
-      image: session.user.image,
+      email: session.user?.email,
+      image: session.user?.image,
     };
   }
 
@@ -52,7 +52,7 @@ export const useSessionUserProfile = () => {
   const session = useSession();
 
   const query = useQuery({
-    queryKey: [`session-user-profile`, session.data?.user.email],
+    queryKey: [`session-user-profile`, session.data?.user?.email],
     queryFn: () => {
       if (session.data) {
         return fetchUserProfile(session.data);
@@ -102,7 +102,7 @@ const fetchUserSentAccountRequest = async (email: string) => {
   return false;
 };
 
-export const useUserSentAccountRequest = (email: string | undefined) => {
+export const useUserSentAccountRequest = (email: string | null | undefined) => {
   return useQuery({
     queryKey: [`user-sent-account-request`],
     queryFn: () => (email ? fetchUserSentAccountRequest(email) : false),

@@ -10,12 +10,12 @@ import { RequestToComplete } from './RequestToComplete';
 export const SetupProfileController = () => {
   const session = useSession();
   const { data: fetchedTournamentsForUser, isLoading } = useFinalResults({
-    playerName: session.data?.user.name,
+    playerName: session.data?.user?.name,
   });
   const suggestedUser =
     fetchedTournamentsForUser && fetchedTournamentsForUser.length > 0;
   const { data: userSentRequest } = useUserSentAccountRequest(
-    session.data?.user.email
+    session.data?.user?.email
   );
   const [screenState, setScreenState] =
     useState<

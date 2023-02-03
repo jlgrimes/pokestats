@@ -40,8 +40,8 @@ export const RequestToComplete = ({
     setRequestSentStatus('sending');
     const { data, error } = await supabase.from('Account Requests').insert([
       {
-        email: session?.user.email,
-        name: session?.user.name,
+        email: session?.user?.email,
+        name: session?.user?.name,
       },
     ]);
     if (error) {

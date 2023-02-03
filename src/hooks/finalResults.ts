@@ -12,7 +12,7 @@ import {
 interface FinalResultsFilters {
   tournamentId?: string;
   deckId?: number;
-  playerName?: string;
+  playerName?: string | null;
 }
 
 export const fetchDecksByPlayer = async (name: string) => {

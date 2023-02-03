@@ -16,7 +16,7 @@ export const useAdministrators = () => {
 
 export const useUserIsAdmin = () => {
   const session = useSession();
-  const email = session.data?.user.email;
+  const email = session.data?.user?.email;
   const { data: administrators } = useAdministrators();
 
   return {

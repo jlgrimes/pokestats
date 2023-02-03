@@ -64,7 +64,7 @@ export const PlayerMatchupStatus = ({
   const tournamentFinished = tournament.tournamentStatus === 'finished';
   const session = useSession();
   const getPlayerText =
-    session.data?.user.email === user.email ? 'You' : user.name;
+    session.data?.user?.email === user.email ? 'You' : user.name;
 
   const { player: playerResults, shouldHideDecks } = usePlayerLiveResults(
     tournament.id,
@@ -79,10 +79,7 @@ export const PlayerMatchupStatus = ({
           </Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Record standing={playerResults} big />
-            <RecordIcon
-              standing={playerResults}
-              tournament={tournament}
-            />
+            <RecordIcon standing={playerResults} tournament={tournament} />
             <Heading size='sm' color='gray.700'>
               {`${ordinalSuffixOf(playerResults.placing)}`}
             </Heading>

@@ -42,7 +42,7 @@ export default function ProfilePage({
       <Button
         leftIcon={<FaHistory />}
         onClick={() =>
-          session.data?.user.email &&
+          session.data?.user?.email &&
           router.push('/player/' + parseUsername(session.data?.user.email))
         }
       >

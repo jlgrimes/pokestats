@@ -8,6 +8,7 @@ import { fetchLiveResults } from '../../lib/fetch/fetchLiveResults';
 import { parseUsername } from '../../lib/strings';
 import { CommonCard } from '../common/CommonCard';
 import { PlayerMatchupStatus } from '../Tournament/Results/PlayerMatchupStatus';
+import { StoredPlayerProfile } from '../../../types/player';
 
 const queryClient = new QueryClient();
 
@@ -16,9 +17,9 @@ export const MyMostRecentResults = memo(
     const session = useSession();
     const [currentLiveStanding, setCurrentLiveStanding] =
       useState<Standing | null>(null);
-    const sessionUserName = session.data?.user.name;
+    const sessionUserName = session.data?.user?.name;
     const { data: userResults } = useFinalResults({
-      playerName: sessionUserName,
+      playerName: sessionUserName ?? undefined,
     });
     const mostRecentFinalizedResult = userResults?.at(0);
     const resultToShow: Standing | undefined =
@@ -70,7 +71,7 @@ export const MyMostRecentResults = memo(
         slug={
           loaded
             ? `/tournaments/${resultToShowTournament.id}/${parseUsername(
-                session.data.user.email
+                session.data.user?.email as string
               )}`
             : '/'
         }
@@ -79,7 +80,7 @@ export const MyMostRecentResults = memo(
           {loaded ? (
             <PlayerMatchupStatus
               tournament={resultToShowTournament}
-              user={session.data?.user}
+              user={session.data.user as StoredPlayerProfile}
             />
           ) : (
             <Skeleton height={63.9} />
