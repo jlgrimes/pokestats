@@ -13,8 +13,10 @@ export const TournamentPageLayout = ({
   tournament,
 }: {
   children: ReactNode;
-  tournament: Tournament;
+  tournament: Tournament | null;
 }) => {
+  if (!tournament) return null;
+
   return (
     <Stack height='100%' spacing={4}>
       <Stack paddingX={4} paddingTop={4}>
