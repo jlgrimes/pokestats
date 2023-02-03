@@ -1,7 +1,7 @@
 import NextAuth, { Session, TokenSet } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
-import { fetchServerSideTwitterProfile } from './get-twitter-profile';
+import { fetchServerSideTwitterProfile } from '../get-twitter-profile';
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -22,7 +22,7 @@ export const authOptions = {
         ...session,
         user: {
           ...session.user,
-          email: session.user.email.toLowerCase()
+          email: session.user?.email?.toLowerCase()
         }
       };
     },
