@@ -14,11 +14,15 @@ export default function SpriteDisplay(props: SpriteDisplayProps) {
     return <Sprites {...props} shouldHideVerification />;
   }
 
-  return (
-    <LinkBox>
-      <LinkOverlay as={NextLink} href={`/decks/${props.deckId}`}>
-        <Sprites {...props} />
-      </LinkOverlay>
-    </LinkBox>
-  );
+  return <Sprites {...props} />;
+
+  // We don't need a link for every single little icon thing.
+  // Was also causing the crash bc it was pushing undefined.
+  // return (
+  //   <LinkBox>
+  //     <LinkOverlay as={NextLink} href={`/decks/${props.deckId}`}>
+  //       <Sprites {...props} />
+  //     </LinkOverlay>
+  //   </LinkBox>
+  // );
 }

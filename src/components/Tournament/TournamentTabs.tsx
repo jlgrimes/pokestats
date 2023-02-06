@@ -58,7 +58,7 @@ export const TournamentTabs = memo(
           {tabs.map(({ name }, idx) => (
             <Tab key={idx}>
               <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                <Text>{name}</Text>
+                <Text whiteSpace={'nowrap'} gap={1}>{name}</Text>
               </Stack>
             </Tab>
           ))}

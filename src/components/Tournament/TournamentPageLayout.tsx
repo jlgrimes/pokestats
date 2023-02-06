@@ -23,7 +23,7 @@ export const TournamentPageLayout = ({
         <Heading size='lg' color='gray.700'>
           {tournament.name}
         </Heading>
-        <HStack>
+        <HStack flexWrap={'wrap'}>
           <TournamentTabs tournament={tournament} />
           <TournamentLinks tournament={tournament} />
         </HStack>
