@@ -20,7 +20,7 @@ export const TournamentPageLayout = ({
   return (
     <Stack spacing={4} flexGrow={1} overflow='hidden'>
       <Stack paddingX={4} paddingTop={2}>
-        <Heading size='md' color='gray.700'>
+        <Heading size='lg' color='gray.700'>
           {tournament.name}
         </Heading>
         <HStack>
