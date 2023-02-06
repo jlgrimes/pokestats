@@ -99,18 +99,18 @@ export const StandingsFilterContainer = memo(
     );
 
     return (
-      <Box position='fixed' bottom='20px' right={['0px', '84px']} zIndex={3}>
+      <Box position='fixed' bottom='20px' right={['16px', '84px']} zIndex={3}>
         <HStack flexWrap={'wrap'} rowGap={2}>
+          <FilterTags
+            filters={standingsFilters}
+            toggleFilter={toggleFilter}
+            tournament={tournament}
+          />
           <StandingsFilterMenu
             getFilter={getFilter}
             toggleFilter={toggleFilter}
             tournament={tournament}
             disableDeckFilter={disabled}
-          />
-          <FilterTags
-            filters={standingsFilters}
-            toggleFilter={toggleFilter}
-            tournament={tournament}
           />
         </HStack>
       </Box>
