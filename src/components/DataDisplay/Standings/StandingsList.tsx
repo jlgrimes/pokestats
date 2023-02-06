@@ -19,7 +19,13 @@ export const StandingsList = memo(
   }) => {
     const { data: userIsAdmin } = useUserIsAdmin();
 
-    const StandingsRow = ({ index, style }: { index: number; style: any }) => (
+    const VirtualizedRow = ({
+      index,
+      style,
+    }: {
+      index: number;
+      style: any;
+    }) => (
       <Stack style={style}>
         <StandingsRowExpandable
           result={results[index]}
@@ -27,13 +33,14 @@ export const StandingsList = memo(
           canEditDecks={userIsAdmin}
           shouldHideDeck={shouldHideDecks}
         />
+        <Divider gridColumn='1/-1' />
       </Stack>
     );
 
     return (
       <Stack flexGrow={1}>
         <Grid
-          gridTemplateColumns='2.65rem repeat(3, auto)'
+          gridTemplateColumns='2.65rem 2fr 1fr 1fr'
           gridTemplateRows='20px auto'
           paddingRight={1}
         >
@@ -51,10 +58,10 @@ export const StandingsList = memo(
             <List
               height={height}
               width={width}
-              itemSize={30}
+              itemSize={35}
               itemCount={results.length}
             >
-              {StandingsRow}
+              {VirtualizedRow}
             </List>
           )}
         </AutoSizer>
