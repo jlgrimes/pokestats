@@ -40,20 +40,18 @@ export const AppLayout = ({
           </Head>
           <AppBar />
           <BetaBanner />
-          <Stack>
-            <Stack
-              padding={
-                router.asPath.includes('tournaments') ||
-                router.asPath.includes('decks')
-                  ? 0
-                  : 4
-              }
-              spacing={1}
-              height='100%'
-            >
-              {children}
-            </Stack>
-            <Footer />
+          <Stack
+            flexGrow={1}
+            padding={
+              router.asPath.includes('tournaments') ||
+              router.asPath.includes('decks')
+                ? 0
+                : 4
+            }
+            spacing={1}
+          >
+            {children}
+            {/* <Footer /> */}
           </Stack>
         </ChakraProvider>
       </Hydrate>

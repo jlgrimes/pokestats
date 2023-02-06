@@ -34,7 +34,7 @@ export default function TournamentView({
   });
 
   return (
-    <Stack>
+    <Stack flexGrow={1}>
       {tournament.hasStaleData && (
         <Banner color='yellow'>
           <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>

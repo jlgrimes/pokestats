@@ -18,7 +18,7 @@ export const TournamentPageLayout = ({
   if (!tournament) return null;
 
   return (
-    <Stack height='100%' spacing={4}>
+    <Stack spacing={4} flexGrow={1}>
       <Stack paddingX={4} paddingTop={4}>
         <Heading size='lg' color='gray.700'>
           {tournament.name}

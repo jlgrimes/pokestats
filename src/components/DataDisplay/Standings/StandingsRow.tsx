@@ -36,7 +36,11 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   ]);
 
   return (
-    <>
+    <Grid
+      gridTemplateColumns='2.65rem repeat(3, auto)'
+      gridTemplateRows='30px'
+      paddingRight={1}
+    >
       <GridItem lineHeight={'2.5rem'} paddingLeft={0} paddingRight={2}>
         <Text fontSize={'sm'} fontFamily='monospace' textAlign='right'>
           {props.opponentRoundNumber ??
@@ -87,7 +91,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       >
         <Record standing={props.result} />
       </Stack>
-    </>
+    </Grid>
   );
 });
 
