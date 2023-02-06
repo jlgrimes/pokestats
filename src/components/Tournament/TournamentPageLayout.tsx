@@ -28,7 +28,7 @@ export const TournamentPageLayout = ({
           <TournamentLinks tournament={tournament} />
         </HStack>
       </Stack>
-      <Box flexGrow={1}>{children}</Box>
+      {children}
     </Stack>
   );
 };
