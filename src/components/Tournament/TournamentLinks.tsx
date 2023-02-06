@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { memo } from 'react';
 import {
   FaChess,
+  FaDice,
   FaDog,
   FaInfo,
   FaInfoCircle,
@@ -54,14 +55,29 @@ export const TournamentLinks = memo(
         >
           Pairings
         </Button> */}
+        {/* <Button
+          {...RK9ButtonProps}
+          leftIcon={<FaChess />}
+          href={`/tournaments/${tournament.id}/pairings`}
+        >
+          Pairings
+        </Button>
         <Button
+          {...RK9ButtonProps}
+          leftIcon={<FaDice />}
+          href={getRK9TournamentUrl(tournament.rk9link)}
+          target='_blank'
+        >
+          Decks
+        </Button> */}
+        {/* <Button
           {...RK9ButtonProps}
           leftIcon={<FaInfo />}
           href={getRK9TournamentUrl(tournament.rk9link)}
           target='_blank'
         >
           Info
-        </Button>
+        </Button> */}
         {isAdmin && <OpenEditTournamentInfo tournament={tournament} />}
       </HStack>
     );

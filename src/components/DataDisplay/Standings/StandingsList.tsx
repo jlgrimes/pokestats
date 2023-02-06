@@ -27,7 +27,6 @@ export const StandingsList = memo(
       style: any;
     }) => (
       <Stack style={style}>
-        <Divider gridColumn='1/-1' />
         <StandingsRowExpandable
           result={results[index]}
           tournament={tournament}

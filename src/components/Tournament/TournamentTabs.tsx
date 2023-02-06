@@ -44,8 +44,8 @@ export const TournamentTabs = memo(
     return (
       <Tabs
         size='sm'
-        variant='enclosed'
-        colorScheme='red'
+        variant='soft-rounded'
+        colorScheme='blue'
         onChange={idx =>
           router.push(`/tournaments/${tournament.id}/${tabs[idx].slug}`)
         }

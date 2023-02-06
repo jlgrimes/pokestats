@@ -1,4 +1,4 @@
-import { Badge, Heading, Stack } from '@chakra-ui/react';
+import { Badge, Heading, HStack, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { Tournament } from '../../../types/tournament';
 import {
@@ -18,18 +18,15 @@ export const TournamentPageLayout = ({
   if (!tournament) return null;
 
   return (
-    <Stack spacing={4} flexGrow={1}>
-      <Stack paddingX={4} paddingTop={4}>
-        <Heading size='lg' color='gray.700'>
+    <Stack spacing={4} flexGrow={1} overflow='hidden'>
+      <Stack paddingX={4} paddingTop={2}>
+        <Heading size='md' color='gray.700'>
           {tournament.name}
-          <Badge {...getTournamentStatusBadgeProps(tournament)} marginLeft={2}>
-            {formatTournamentStatus(tournament)}
-          </Badge>
         </Heading>
-        <TournamentLinks tournament={tournament} />
-      </Stack>
-      <Stack paddingX={4}>
-        <TournamentTabs tournament={tournament} />
+        <HStack>
+          <TournamentTabs tournament={tournament} />
+          <TournamentLinks tournament={tournament} />
+        </HStack>
       </Stack>
       {children}
     </Stack>

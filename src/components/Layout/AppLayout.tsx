@@ -39,7 +39,7 @@ export const AppLayout = ({
             <link rel='icon' href='/favicon.ico' />
           </Head>
           <AppBar />
-          <BetaBanner />
+          {/* <BetaBanner /> */}
           <Stack
             flexGrow={1}
             padding={
