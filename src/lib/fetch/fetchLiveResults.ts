@@ -248,11 +248,7 @@ function mapResultsArray(
 export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   const perfStart = performance.now();
 
-  const response = await fetch(
-    `${
-      prefetch ? 'https://pokedata.ovh' : '/pokedata'
-    }/standings/${tournamentId}/masters/${tournamentId}_Masters.json`
-  );
+  const response = await fetch(`/api/standings/?tournamentId=${tournamentId}`);
   let data = await response.json();
   data = data
     .map((player: Standing) => ({

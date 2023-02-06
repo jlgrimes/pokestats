@@ -11,14 +11,6 @@ const moduleExports = {
   images: {
     domains: ['limitlesstcg.s3.us-east-2.amazonaws.com']
   },
-  async rewrites() {
-    return [
-      {
-        source: '/pokedata/:path*',
-        destination: 'https://pokedata.ovh/:path*',
-      },
-    ]
-  },
 
   sentry: {
     // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`

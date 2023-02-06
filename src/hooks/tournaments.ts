@@ -13,11 +13,11 @@ interface FetchTournamentsOptions {
 }
 
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
-  const res: Response = await fetch(
-    `${
-      options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
-    }/standings/tournaments.json`
-  );
+  const url = `${
+    options?.prefetch ? 'https://pokedata.ovh' : '/api/pokedata'
+  }/standings/tournaments.json`;
+
+  const res: Response = await fetch(url);
   let data: Tournament[] = await res.json();
   data = data.map(tournament => ({
     ...tournament,
@@ -82,3 +82,8 @@ export const usePatchedTournaments = (tournaments: Tournament[]) => {
     },
   });
 };
+
+export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>
+  tournaments.find(
+    ({ tournamentStatus }) => tournamentStatus === 'finished'
+  ) as Tournament;
