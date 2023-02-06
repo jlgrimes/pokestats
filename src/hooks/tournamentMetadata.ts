@@ -20,3 +20,11 @@ export const useTournamentMetadata = (tournamentId: string, type: string) => {
     queryFn: () => fetchTournamentMetadata(tournamentId, type),
   });
 };
+
+export const useStreamLink = (tournamentId: string) => {
+  const { data: tournamentMetadata } = useTournamentMetadata(
+    tournamentId,
+    'stream'
+  );
+  return tournamentMetadata?.[0];
+};

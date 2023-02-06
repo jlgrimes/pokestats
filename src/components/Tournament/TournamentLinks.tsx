@@ -12,7 +12,10 @@ import {
 } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
-import { useTournamentMetadata } from '../../hooks/tournamentMetadata';
+import {
+  useStreamLink,
+  useTournamentMetadata,
+} from '../../hooks/tournamentMetadata';
 import { EditTournamentInfoModal } from '../Admin/EditTournamentInfo/EditTournamentInfoModal';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
@@ -20,9 +23,7 @@ import { getRK9TournamentUrl } from './helpers';
 export const TournamentLinks = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const { data: isAdmin } = useUserIsAdmin();
-    const streamLink = useTournamentMetadata(tournament.id, 'stream').data?.at(
-      0
-    );
+    const streamLink = useStreamLink(tournament.id);
 
     const RK9ButtonProps: Partial<ButtonProps> = {
       size: 'sm',

@@ -14,9 +14,7 @@ export const prewarmMostRecentTournament = async () => {
   const patchedTournaments = await patchTournamentsClient(tournaments);
   const mostRecentFinishedTournament =
     getMostRecentFinishedTournament(patchedTournaments);
-  console.log('warming')
   await prewarmTournament(mostRecentFinishedTournament.id);
-  console.log('ding!')
 };
 
 export const prewarmTournament = async (tournamentId: string) => {
