@@ -20,3 +20,18 @@ export interface PairingSubmission {
   table_number: number;
   round_number: number;
 }
+
+export interface FetchPairingsOptions {
+  prefetch?: boolean;
+  roundNumber?: number;
+}
+
+export interface PairingsSchema {
+  tables: Pairing[];
+}
+
+export interface FetchPairingsSchema {
+  round: number;
+  tables?: Pairing[];
+  maxRound: number;
+}

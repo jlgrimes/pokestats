@@ -12,8 +12,8 @@ export const RoundTabs = ({
   return (
     <HStack overflowX={'scroll'} flexDirection='row-reverse'>
       <Tabs
-        variant={'soft-rounded'}
-        colorScheme='red'
+        variant={'solid-rounded'}
+        colorScheme='blue'
         index={round - 1}
         onChange={idx => setRound(idx + 1)}
       >

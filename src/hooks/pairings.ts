@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { Pairing } from '../../types/pairings';
+import {
+  FetchPairingsOptions,
+  FetchPairingsSchema,
+  Pairing,
+  PairingsSchema,
+} from '../../types/pairings';
 import supabase from '../lib/supabase/client';
 
 export const fetchPairingSubmissions = async (tournamentId: string) => {
@@ -19,31 +24,11 @@ export const usePairingSubmissions = (tournamentId: string) => {
   });
 };
 
-export interface FetchPairingsOptions {
-  prefetch?: boolean;
-  roundNumber?: number;
-}
-
-interface PairingsSchema {
-  tables: Pairing[];
-}
-
-interface FetchPairingsSchema {
-  round: number;
-  tables?: Pairing[];
-  maxRound: number;
-}
-
 export const fetchPairings = async (
   tournamentId: string,
   options?: FetchPairingsOptions
 ): Promise<PairingsSchema[]> => {
-  const slug = `standings/${tournamentId}/masters/${tournamentId}_Masterstables.json`;
-  const url = `${
-    options?.prefetch ? 'https://pokedata.ovh' : '/pokedata'
-  }/${slug}`;
-
-  const res: Response = await fetch(url);
+  const res = await fetch(`/api/pairings/?tournamentId=${tournamentId}`);
   const data: PairingsSchema[] = await res.json();
 
   return data;
