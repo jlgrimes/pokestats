@@ -1,5 +1,7 @@
-import { Heading, Stack } from '@chakra-ui/react';
+import { Box, Heading, Stack } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
+import ReactVirtualizedAutoSizer from 'react-virtualized-auto-sizer';
+import { FixedSizeList } from 'react-window';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { usePairings, usePairingSubmissions } from '../../../hooks/pairings';
@@ -36,8 +38,23 @@ export const PairingsView = ({
     [setUpdateLog, updateLog]
   );
 
+  const VirtualizedRow = ({ index, style }: { index: number; style: any }) => (
+    <Stack style={style}>
+      <PairingsCard
+        round={round as number}
+        key={`pairing-${index}`}
+        pairing={pairingsData.tables![index]}
+        tournament={tournament}
+        isUserAdmin={userIsAdmin}
+        pairingSubmissions={pairingSubmissions}
+        refetchData={refetch}
+        addToUpdateLog={addToUpdateLog}
+      />
+    </Stack>
+  );
+
   return (
-    <Stack paddingX={4}>
+    <Stack paddingX={4} height='100%'>
       {round && pairingsData && (
         <RoundTabs
           round={round}
@@ -45,23 +62,22 @@ export const PairingsView = ({
           maxRound={pairingsData.maxRound as number}
         />
       )}
-      <Heading size='md'>{`Round ${round} pairings`}</Heading>
-      {updateLog.length > 0 && <SubmissionUpdateLog updates={updateLog} />}
-      <Stack>
-        {round &&
-          pairingsData?.tables?.map(pairing => (
-            <PairingsCard
-              round={round}
-              key={pairing.table}
-              pairing={pairing}
-              tournament={tournament}
-              isUserAdmin={userIsAdmin}
-              pairingSubmissions={pairingSubmissions}
-              refetchData={refetch}
-              addToUpdateLog={addToUpdateLog}
-            />
-          ))}
-      </Stack>
+      <Box flexGrow={1}>
+        {round && pairingsData.tables && (
+        <ReactVirtualizedAutoSizer>
+          {({ height, width }) => (
+            <FixedSizeList
+              height={height}
+              width={width}
+              itemSize={100}
+              itemCount={pairingsData.tables!.length}
+            >
+              {VirtualizedRow}
+            </FixedSizeList>
+          )}
+        </ReactVirtualizedAutoSizer>
+      )}
+      </Box>
     </Stack>
   );
 };

@@ -1,4 +1,4 @@
-import { Badge, Heading, HStack, Stack } from '@chakra-ui/react';
+import { Badge, Box, Heading, HStack, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { Tournament } from '../../../types/tournament';
 import {
@@ -28,7 +28,7 @@ export const TournamentPageLayout = ({
           <TournamentLinks tournament={tournament} />
         </HStack>
       </Stack>
-      {children}
+      <Box flexGrow={1}>{children}</Box>
     </Stack>
   );
 };

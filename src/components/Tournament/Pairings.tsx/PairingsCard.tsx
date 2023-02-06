@@ -40,9 +40,12 @@ export const PairingsCard = ({
   );
 
   return (
-    <Card padding={4}>
+    <Card paddingY={4} paddingLeft={2}>
       <Stack>
-        <Grid gridTemplateColumns={'1fr 1fr 1fr'} alignItems='center'>
+        <Grid gridTemplateColumns={'3rem 2fr 2fr'} alignItems='center'>
+          <Heading size='md'>
+            {pairing.table}
+          </Heading>
           {players.at(0) && (
             <PairingsPlayerInfo
               player={players[0]}
@@ -50,9 +53,6 @@ export const PairingsCard = ({
               isUserAdmin={isUserAdmin}
             />
           )}
-          <Heading size='md' textAlign={'center'}>
-            {pairing.table}
-          </Heading>
           {players.at(1) && (
             <PairingsPlayerInfo
               player={players[1]}
