@@ -3,13 +3,14 @@ import {
   Menu,
   MenuButton,
   MenuList,
+  Stack,
   StackItem,
 } from '@chakra-ui/react';
 import { FaFilter, FaSearch } from 'react-icons/fa';
 
 export const FilterMenu = ({ children }: { children: JSX.Element }) => {
   return (
-    <StackItem paddingLeft={4}>
+    <Stack paddingLeft={4} justifyContent='end'>
       <Menu closeOnSelect={false} placement='top'>
         <MenuButton
           as={IconButton}
@@ -22,6 +23,6 @@ export const FilterMenu = ({ children }: { children: JSX.Element }) => {
           {children}
         </MenuList>
       </Menu>
-    </StackItem>
+    </Stack>
   );
 };

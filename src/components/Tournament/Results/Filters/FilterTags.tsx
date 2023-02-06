@@ -1,4 +1,12 @@
-import { HStack, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
+import {
+  Box,
+  HStack,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  TagProps,
+  Text,
+} from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { Tournament } from '../../../../../types/tournament';
 import {
@@ -28,8 +36,15 @@ export const FilterTags = ({
 }) => {
   const archetypes = useMostPopularArchetypes(tournament.id);
 
+  const tagProps: Partial<TagProps> = {
+    size: 'lg',
+    borderRadius: 'full',
+    outline: 'solid',
+    boxShadow: ''
+  };
+
   return (
-    <>
+    <HStack flexWrap={'wrap'} flexDirection='row-reverse'>
       {(Object.entries(filters) as Entries<StandingsFilters>).map(
         ([key, val], idx) => {
           if (key === 'decksVisible') {
@@ -41,11 +56,7 @@ export const FilterTags = ({
                   );
                   if (deckArchetype) {
                     return (
-                      <Tag
-                        size='lg'
-                        borderRadius='full'
-                        key={`${key}-${deckId}`}
-                      >
+                      <Tag {...tagProps} key={`${key}-${deckId}`}>
                         <HStack spacing={1}>
                           <SpriteDisplay
                             pokemonNames={deckArchetype?.defined_pokemon ?? []}
@@ -71,7 +82,7 @@ export const FilterTags = ({
 
           if (val.value) {
             return (
-              <Tag size='lg' key={key} borderRadius='full'>
+              <Tag key={key} {...tagProps}>
                 <TagLabel fontSize={'sm'}>{val.name}</TagLabel>
                 <TagCloseButton onClick={() => toggleFilter(key)} />
               </Tag>
@@ -81,6 +92,6 @@ export const FilterTags = ({
           return <div key={key}></div>;
         }
       )}
-    </>
+    </HStack>
   );
 };

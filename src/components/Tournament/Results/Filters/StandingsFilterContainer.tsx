@@ -1,5 +1,5 @@
-import { Box, HStack } from '@chakra-ui/react';
-import { memo, useCallback } from 'react';
+import { Box, Grid, HStack } from '@chakra-ui/react';
+import { memo, useCallback, useMemo } from 'react';
 import { Deck, Tournament } from '../../../../../types/tournament';
 import { FilterTags } from './FilterTags';
 import { StandingsFilterMenu, StandingsFilters } from './StandingsFilterMenu';
@@ -100,7 +100,7 @@ export const StandingsFilterContainer = memo(
 
     return (
       <Box position='fixed' bottom='20px' right={['16px', '84px']} zIndex={3}>
-        <HStack flexWrap={'wrap'} rowGap={2}>
+        <Grid gridTemplateColumns='auto 84px' justifyContent='baseline'>
           <FilterTags
             filters={standingsFilters}
             toggleFilter={toggleFilter}
@@ -112,7 +112,7 @@ export const StandingsFilterContainer = memo(
             tournament={tournament}
             disableDeckFilter={disabled}
           />
-        </HStack>
+        </Grid>
       </Box>
     );
   }
