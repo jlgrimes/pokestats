@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
 import { Fragment, useEffect, useState } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
@@ -13,6 +13,7 @@ import {
   usePatchedTournaments,
 } from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
+import { prewarmMostRecentTournament } from '../src/lib/fetch/cache-prewarm';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
@@ -20,6 +21,12 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   const mostRecentFinishedTournament = getMostRecentFinishedTournament(
     patchedTournaments ?? tournaments
   );
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    prewarmMostRecentTournament(queryClient);
+  }, []);
 
   if (SHOULD_SHOW_COMING_SOON) {
     return <ComingSoonPage />;

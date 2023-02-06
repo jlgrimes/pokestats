@@ -71,14 +71,16 @@ export const useLiveTournamentResults = (
   tournamentId: string,
   options?: FetchLiveResultsOptions
 ) => {
+  const queryKey = [
+    `live-results`,
+    tournamentId,
+    ...(Object.entries(options?.load ?? {}).length > 0
+      ? Object.entries(options?.load ?? {})
+      : [[]])[0],
+  ];
+  console.log('key', queryKey);
   const query = useQuery({
-    queryKey: [
-      `live-results`,
-      tournamentId,
-      ...(Object.entries(options?.load ?? {}).length > 0
-        ? Object.entries(options?.load ?? {})
-        : [[]])[0],
-    ],
+    queryKey,
     queryFn: () => fetchLiveResults(tournamentId, options),
   });
 

@@ -9,21 +9,20 @@ import {
 import { patchTournamentsClient } from '../patches';
 import { fetchLiveResults } from './fetchLiveResults';
 
-export const prewarmMostRecentTournament = async () => {
+export const prewarmMostRecentTournament = async (queryClient: QueryClient) => {
   const tournaments = await fetchTournaments();
   const patchedTournaments = await patchTournamentsClient(tournaments);
   const mostRecentFinishedTournament =
     getMostRecentFinishedTournament(patchedTournaments);
-  await prewarmTournament(mostRecentFinishedTournament.id);
+  await prewarmTournament(mostRecentFinishedTournament.id, queryClient);
 };
 
-export const prewarmTournament = async (tournamentId: string) => {
-  const queryClient = new QueryClient();
+export const prewarmTournament = async (tournamentId: string, queryClient: QueryClient) => {
   const currentLiveResults = await fetchLiveResults(tournamentId, {
-    prefetch: true,
     load: { allRoundData: true },
   });
 
+  console.log([`live-results`, tournamentId, 'allRoundData', true])
   queryClient.setQueryData(
     [`live-results`, tournamentId, 'allRoundData', true],
     () => currentLiveResults

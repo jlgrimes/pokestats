@@ -1,13 +1,7 @@
-import { dehydrate, QueryClient } from '@tanstack/react-query';
 import TournamentView from '../../../src/components/Tournament/TournamentView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
-import { fetchPokedex } from '../../../src/hooks/images';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
-import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
-import { getPatchedTournament } from '../../../src/lib/patches';
-import { fetchTournamentMetadata } from '../../../src/hooks/tournamentMetadata';
 
 export default function TournamentPage({
   tournament,
