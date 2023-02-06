@@ -49,6 +49,7 @@ export const DeckInfoDisplay = memo(
             width={'100%'}
             size='sm'
             color='gray.500'
+            paddingRight={4}
             onClick={archetypeModal.onOpen}
           />
         )}

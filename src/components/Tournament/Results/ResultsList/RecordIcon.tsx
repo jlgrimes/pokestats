@@ -104,7 +104,7 @@ export const RecordIcon = ({
   if (standing.deck?.on_stream && !getCrownIcon()) {
     return (
       <HStack spacing={1} paddingRight={2}>
-        <Icon color='purple' as={FaBroadcastTower} />
+        <Icon color='purple.600' as={FaBroadcastTower} />
         {getIcon()}
       </HStack>
     );

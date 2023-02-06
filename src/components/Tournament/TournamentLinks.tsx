@@ -32,11 +32,13 @@ export const TournamentLinks = memo(
       variant: 'outline',
     };
 
+    const streamActive = tournament.tournamentStatus === 'running';
+
     return (
       <HStack>
         {streamLink && (
           <Button
-            variant={'solid'}
+            variant={streamActive ? 'solid' : 'ghost'}
             colorScheme={'purple'}
             size='sm'
             leftIcon={<FaTwitch />}
