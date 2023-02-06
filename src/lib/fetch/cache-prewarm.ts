@@ -22,7 +22,6 @@ export const prewarmTournament = async (tournamentId: string, queryClient: Query
     load: { allRoundData: true },
   });
 
-  console.log([`live-results`, tournamentId, 'allRoundData', true])
   queryClient.setQueryData(
     [`live-results`, tournamentId, 'allRoundData', true],
     () => currentLiveResults
