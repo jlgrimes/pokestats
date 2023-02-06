@@ -17,15 +17,20 @@ export const prewarmMostRecentTournament = async (queryClient: QueryClient) => {
   await prewarmTournament(mostRecentFinishedTournament.id, queryClient);
 };
 
-export const prewarmTournament = async (tournamentId: string, queryClient: QueryClient) => {
+export const prewarmTournament = async (
+  tournamentId: string,
+  queryClient: QueryClient
+) => {
+  const queryKey = [`live-results`, tournamentId, 'allRoundData', true];
+  if (queryClient.getQueryData(queryKey)) {
+    return;
+  }
+
   const currentLiveResults = await fetchLiveResults(tournamentId, {
     load: { allRoundData: true },
   });
 
-  queryClient.setQueryData(
-    [`live-results`, tournamentId, 'allRoundData', true],
-    () => currentLiveResults
-  );
+  queryClient.setQueryData(queryKey, () => currentLiveResults);
 
   // TODO: take out, might not need
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
