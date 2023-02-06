@@ -27,13 +27,13 @@ export const StandingsList = memo(
       style: any;
     }) => (
       <Stack style={style}>
+        <Divider gridColumn='1/-1' />
         <StandingsRowExpandable
           result={results[index]}
           tournament={tournament}
           canEditDecks={userIsAdmin}
           shouldHideDeck={shouldHideDecks}
         />
-        <Divider gridColumn='1/-1' />
       </Stack>
     );
 
@@ -58,7 +58,7 @@ export const StandingsList = memo(
             <List
               height={height}
               width={width}
-              itemSize={35}
+              itemSize={40}
               itemCount={results.length}
             >
               {VirtualizedRow}
