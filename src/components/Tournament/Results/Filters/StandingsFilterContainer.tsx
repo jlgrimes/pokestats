@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import { memo, useCallback } from 'react';
 import { Deck, Tournament } from '../../../../../types/tournament';
 import { FilterTags } from './FilterTags';
@@ -16,12 +16,12 @@ export const StandingsFilterContainer = memo(
     standingsFilters,
     setStandingsFilters,
     tournament,
-    disabled
+    disabled,
   }: {
     standingsFilters: StandingsFilters;
     setStandingsFilters: (filters: StandingsFilters) => void;
     tournament: Tournament;
-    disabled?: boolean
+    disabled?: boolean;
   }) => {
     const getFilter = useCallback(
       (key: keyof StandingsFilters, arg?: number[]) => {
@@ -99,19 +99,21 @@ export const StandingsFilterContainer = memo(
     );
 
     return (
-      <HStack flexWrap={'wrap'} rowGap={2}>
-        <StandingsFilterMenu
-          getFilter={getFilter}
-          toggleFilter={toggleFilter}
-          tournament={tournament}
-          disableDeckFilter={disabled}
-        />
-        <FilterTags
-          filters={standingsFilters}
-          toggleFilter={toggleFilter}
-          tournament={tournament}
-        />
-      </HStack>
+      <Box position='fixed' bottom='20px' right={['0px', '84px']} zIndex={3}>
+        <HStack flexWrap={'wrap'} rowGap={2}>
+          <StandingsFilterMenu
+            getFilter={getFilter}
+            toggleFilter={toggleFilter}
+            tournament={tournament}
+            disableDeckFilter={disabled}
+          />
+          <FilterTags
+            filters={standingsFilters}
+            toggleFilter={toggleFilter}
+            tournament={tournament}
+          />
+        </HStack>
+      </Box>
     );
   }
 );

@@ -1,4 +1,4 @@
-import { Divider, Grid, GridItem, Stack, Text } from '@chakra-ui/react';
+import { Box, Divider, Grid, GridItem, Stack, Text } from '@chakra-ui/react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import { Standing, Tournament } from '../../../../types/tournament';
@@ -26,14 +26,15 @@ export const StandingsList = memo(
       index: number;
       style: any;
     }) => (
-      <Stack style={style}>
+      <Box style={style}>
         <StandingsRowExpandable
           result={results[index]}
           tournament={tournament}
           canEditDecks={userIsAdmin}
           shouldHideDeck={shouldHideDecks}
         />
-      </Stack>
+        <Divider />
+      </Box>
     );
 
     return (
