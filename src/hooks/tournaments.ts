@@ -13,9 +13,7 @@ interface FetchTournamentsOptions {
 }
 
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
-  const url = `${
-    options?.prefetch ? 'https://pokedata.ovh' : '/api/pokedata'
-  }/standings/tournaments.json`;
+  const url = options?.prefetch ? 'https://pokedata.ovh/standings/tournaments.json' : '/api/tournaments';
 
   const res: Response = await fetch(url);
   let data: Tournament[] = await res.json();
