@@ -37,7 +37,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
 
   return (
     <Grid
-      gridTemplateColumns='2.65rem 2fr 1fr 1fr'
+      gridTemplateColumns='2.65rem 2.5fr 7rem 1fr'
       gridTemplateRows='30px'
       paddingRight={1}
       alignItems='center'

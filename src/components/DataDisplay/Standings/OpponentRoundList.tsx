@@ -4,6 +4,7 @@ import {
   Divider,
   Grid,
   GridItem,
+  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -22,6 +23,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useIsMobile } from '../../../hooks/device';
 import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
+import { Record } from '../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
 import { tableHeadingProps } from './props';
 import { StandingsRow } from './StandingsRow';
@@ -55,11 +57,11 @@ export const OpponentRoundList = ({
       <ModalContent margin={isMobile ? 'auto' : 0}>
         <ModalHeader padding={'0.5rem 2rem'}>
           <Stack direction='row' alignItems={'center'}>
-            <RecordIcon
-              standing={player}
-              tournament={tournament}
-            />
-            <Text paddingRight={'8px'}>{player.name}</Text>
+            <RecordIcon standing={player} tournament={tournament} />
+            <HStack paddingRight={'8px'} alignItems='baseline'>
+              <Text>{player.name}</Text>
+              <Record standing={player} />
+            </HStack>
             <DeckInfoDisplay
               tournament={tournament}
               player={player}
@@ -70,11 +72,8 @@ export const OpponentRoundList = ({
           </Stack>
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody paddingTop={0} paddingBottom={0}>
-          <Grid
-            gridTemplateColumns={'2rem repeat(3, auto)'}
-            alignItems='center'
-          >
+        <ModalBody paddingTop={0} paddingX={0}>
+          <Stack spacing={0.5}>
             {opponents &&
               opponents
                 .slice(0)
@@ -102,7 +101,7 @@ export const OpponentRoundList = ({
                       </Fragment>
                     )
                 )}
-          </Grid>
+          </Stack>
         </ModalBody>
       </ModalContent>
     </Modal>
