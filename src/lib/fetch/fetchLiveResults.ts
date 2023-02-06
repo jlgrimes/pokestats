@@ -8,6 +8,7 @@ import {
 import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
 import { fetchTournaments } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
+import { getPokedataStandingsUrl } from '../url';
 
 export const fetchPlayerDecks = async (tournamentId: string) => {
   const res = await supabase
@@ -248,7 +249,11 @@ function mapResultsArray(
 export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   const perfStart = performance.now();
 
-  const response = await fetch(`/api/standings/?tournamentId=${tournamentId}`);
+  const response = await fetch(
+    prefetch
+      ? getPokedataStandingsUrl(tournamentId)
+      : `/api/standings/?tournamentId=${tournamentId}`
+  );
   let data = await response.json();
   data = data
     .map((player: Standing) => ({
