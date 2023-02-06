@@ -86,7 +86,7 @@ export async function getStaticProps(context: any) {
       user: combinedProfile,
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 }
 

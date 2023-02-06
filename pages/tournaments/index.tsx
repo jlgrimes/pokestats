@@ -22,6 +22,6 @@ export async function getStaticProps() {
     props: {
       tournaments,
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 }

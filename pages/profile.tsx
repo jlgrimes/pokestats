@@ -70,6 +70,6 @@ export async function getStaticProps() {
       tournaments,
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 }

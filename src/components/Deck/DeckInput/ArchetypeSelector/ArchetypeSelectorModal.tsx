@@ -110,21 +110,6 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
                 ))}
               </Stack>
             </Stack>
-            {!props.userIsAdmin && (
-              <Text as='b' color='red.600'>
-                You can only report a deck once. If you accidentally misreport,
-                you can contact{' '}
-                <Link
-                  isExternal
-                  href={myTwitter}
-                  as={NextLink}
-                  color='twitter.500'
-                >
-                  @jgrimesey
-                </Link>{' '}
-                to modify your submission.
-              </Text>
-            )}
           </Stack>
         </ModalBody>
         {!props.userIsAdmin && (
