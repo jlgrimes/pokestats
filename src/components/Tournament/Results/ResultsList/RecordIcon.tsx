@@ -28,7 +28,10 @@ export const RecordIcon = ({
   );
 
   const getCrownIcon = useCallback(() => {
-    if (!tournament.topCutStatus) return null;
+    if (
+      !(tournament.tournamentStatus === 'finished' || tournament.topCutStatus)
+    )
+      return null;
 
     const topCutComparator = {
       top8: 0,
@@ -36,28 +39,26 @@ export const RecordIcon = ({
       finals: 2,
     };
 
+    const compareCurrentResults = (targetStatus: number) => {
+      if (tournament.tournamentStatus === 'finished') return true;
+      if (!tournament.topCutStatus) return false;
+
+      return topCutComparator[tournament.topCutStatus] >= targetStatus;
+    };
+
     if (standing.placing === 1 && tournament.tournamentStatus === 'finished') {
       return <Icon {...commonIconProps} as={FaChessKing} color='yellow.500' />;
     }
 
-    if (
-      standing.placing === 2 &&
-      topCutComparator[tournament.topCutStatus] >= 2
-    ) {
+    if (standing.placing === 2 && compareCurrentResults(2)) {
       return <Icon {...commonIconProps} as={FaChessQueen} color='gray.400' />;
     }
 
-    if (
-      standing.placing <= 4 &&
-      topCutComparator[tournament.topCutStatus] >= 1
-    ) {
+    if (standing.placing <= 4 && compareCurrentResults(1)) {
       return <Icon {...commonIconProps} as={FaChessRook} color='yellow.600' />;
     }
 
-    if (
-      standing.placing <= 8 &&
-      topCutComparator[tournament.topCutStatus] >= 0
-    ) {
+    if (standing.placing <= 8 && compareCurrentResults(0)) {
       return (
         <Icon {...commonIconProps} as={FaChessBishop} color='yellow.600' />
       );

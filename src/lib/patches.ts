@@ -47,26 +47,19 @@ export const getPatchedTournament = async (
     tournamentFallsOnCurrentDate(tournamentFromApi);
   const topCutStatus = getTopCutStatus(liveResults.data, tournamentFromApi);
 
-  if (
-    liveResults.data &&
-    liveResults.data.length > 0 &&
+  const tournamentShouldBeRunning =
     tournamentApiSaysCompleted &&
     butTournamentIsRunning &&
-    tournamentIsHappeningNow
-  ) {
-    return {
-      ...tournamentFromApi,
-      tournamentStatus: 'running',
-      topCutStatus,
-    } as Tournament;
-  } else if (tournamentApiSaysCompleted && !tournamentIsComplete) {
-    return {
-      ...tournamentFromApi,
-      hasStaleData: true,
-    };
-  }
+    tournamentIsHappeningNow;
 
-  return tournamentFromApi;
+  return {
+    ...tournamentFromApi,
+    tournamentStatus: tournamentShouldBeRunning
+      ? 'running'
+      : tournamentFromApi.tournamentStatus,
+    topCutStatus,
+    hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,
+  };
 };
 
 export const patchTournamentsClient = async (tournamentList: Tournament[]) => {
