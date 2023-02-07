@@ -19,7 +19,7 @@ import { Tournament } from '../types/tournament';
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   const { data: patchedTournaments } = usePatchedTournaments(tournaments);
   const mostRecentFinishedTournament = getMostRecentFinishedTournament(
-    patchedTournaments ?? tournaments
+    patchedTournaments ?? tournaments ?? []
   );
 
   const queryClient = useQueryClient();

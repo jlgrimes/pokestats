@@ -52,7 +52,7 @@ export const getPatchedTournament = async (
     butTournamentIsRunning &&
     tournamentIsHappeningNow;
 
-  return {
+  const patchedTournament: Tournament = {
     ...tournamentFromApi,
     tournamentStatus: tournamentShouldBeRunning
       ? 'running'
@@ -60,6 +60,8 @@ export const getPatchedTournament = async (
     topCutStatus,
     hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,
   };
+
+  return patchedTournament;
 };
 
 export const patchTournamentsClient = async (tournamentList: Tournament[]) => {
