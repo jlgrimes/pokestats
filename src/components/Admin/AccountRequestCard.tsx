@@ -30,6 +30,7 @@ export const AccountRequestCard = ({
   const toast = useToast();
 
   const handleModalSubmit = (name: string) => {
+    console.log(name)
     setAssociatedName(name);
     modalControls.onClose();
   };

@@ -42,7 +42,7 @@ export const fetchUniqueDecks = async () => {
 
 export const fetchPlayers = async () => {
   const res = await supabase.from('Final Results').select('name');
-  const uniqueNames = Array.from(
+  const uniqueNames: string[] = Array.from(
     new Set(res.data?.map(({ name }) => name) ?? [])
   );
   return uniqueNames;
