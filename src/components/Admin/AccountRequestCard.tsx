@@ -123,7 +123,7 @@ export const AccountRequestCard = ({
         colorScheme={'green'}
         isLoading={linkUsersInProgress}
         loadingText='Link users'
-        disabled={!associatedName}
+        isDisabled={!associatedName}
         onClick={handleLinkClick}
         rightIcon={<FaLink />}
       >

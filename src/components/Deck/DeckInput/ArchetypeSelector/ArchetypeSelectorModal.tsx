@@ -116,7 +116,7 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
           <ModalFooter>
             <Button
               colorScheme='blue'
-              disabled={!selectedArchetype}
+              isDisabled={!selectedArchetype}
               onClick={() =>
                 selectedArchetype && handleArchetypeSubmit(selectedArchetype)
               }

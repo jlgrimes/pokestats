@@ -86,7 +86,7 @@ export const RequestToComplete = ({
             }
             isLoading={requestSentStatus === 'sending'}
             loadingText='Send a request'
-            disabled={
+            isDisabled={
               requestSentStatus === 'sent' || requestSentStatus === 'sent-error'
             }
             onClick={handleSendRequest}

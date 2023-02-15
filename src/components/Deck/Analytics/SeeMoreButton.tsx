@@ -22,7 +22,7 @@ export const SeeMoreButton = ({
           router.push(absolute ? slug : router.asPath + '/' + slug)
         }
         rightIcon={<FaArrowRight />}
-        disabled={loading}
+        isDisabled={loading}
       >
         See more
       </Button>

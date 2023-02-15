@@ -125,7 +125,7 @@ export const EditTournamentInfoModal = ({
         </ModalBody>
         <ModalFooter>
           <Button
-            disabled={
+            isDisabled={
               (!streamUrlEnabled && !streamUrlFromSupa) ||
               (streamUrlEnabled && streamUrl === streamUrlFromSupa)
             }
