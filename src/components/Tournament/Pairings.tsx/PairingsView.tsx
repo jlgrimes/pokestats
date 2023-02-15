@@ -54,7 +54,7 @@ export const PairingsView = ({
   );
 
   return (
-    <Stack paddingX={4} height='100%'>
+    <Stack padding={4} height='100%'>
       {round && pairingsData && (
         <RoundTabs
           round={round}
@@ -69,7 +69,7 @@ export const PairingsView = ({
             <FixedSizeList
               height={height}
               width={width}
-              itemSize={100}
+              itemSize={userIsAdmin ? 130 : 100}
               itemCount={pairingsData.tables!.length}
             >
               {VirtualizedRow}
