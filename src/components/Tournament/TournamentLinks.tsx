@@ -2,6 +2,7 @@ import { Button, ButtonProps, HStack, IconButton } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { memo } from 'react';
 import {
+  FaChartLine,
   FaChess,
   FaDice,
   FaDog,
@@ -17,6 +18,8 @@ import {
   useStreamLink,
   useTournamentMetadata,
 } from '../../hooks/tournamentMetadata';
+import { useSessionUserProfile, useUserIsInTournament } from '../../hooks/user';
+import { parseUsername } from '../../lib/strings';
 import { EditTournamentInfoModal } from '../Admin/EditTournamentInfo/EditTournamentInfoModal';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
@@ -25,22 +28,40 @@ export const TournamentLinks = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const { data: isAdmin } = useUserIsAdmin();
     const streamLink = useStreamLink(tournament.id);
+    const { data: userProfile } = useSessionUserProfile();
+    const userIsInTournament = useUserIsInTournament(
+      tournament.id,
+      userProfile?.name
+    );
 
     const RK9ButtonProps: Partial<ButtonProps> = {
-      size: 'sm',
+      size: 'md',
       as: NextLink,
       variant: 'outline',
     };
 
-    const streamActive = tournament.tournamentStatus === 'running';
+    const tournamentLive = tournament.tournamentStatus === 'running';
 
     return (
       <HStack>
+        {/* {userIsInTournament && (
+          <Button
+            variant='outline'
+            colorScheme={'blue'}
+            size='md'
+            leftIcon={<FaChartLine />}
+            as={NextLink}
+            href={parseUsername(userProfile?.email ?? '')}
+            target='_blank'
+          >
+            My results
+          </Button>
+        )} */}
         {streamLink && (
           <Button
-            variant={streamActive ? 'solid' : 'ghost'}
+            variant='solid'
             colorScheme={'purple'}
-            size='sm'
+            size='md'
             leftIcon={<FaTwitch />}
             as={NextLink}
             href={streamLink.data}
@@ -72,14 +93,14 @@ export const TournamentLinks = memo(
         >
           Decks
         </Button> */}
-        {/* <Button
+        <Button
           {...RK9ButtonProps}
           leftIcon={<FaInfo />}
           href={getRK9TournamentUrl(tournament.rk9link)}
           target='_blank'
         >
-          Info
-        </Button> */}
+          Tournament Info
+        </Button>
         {isAdmin && <OpenEditTournamentInfo tournament={tournament} />}
       </HStack>
     );

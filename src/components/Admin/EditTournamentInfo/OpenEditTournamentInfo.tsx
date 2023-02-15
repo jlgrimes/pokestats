@@ -16,7 +16,7 @@ export const OpenEditTournamentInfo = ({
       <IconButton
         aria-label='edit tournament info'
         onClick={onOpen}
-        size='sm'
+        size='md'
         variant='ghost'
         color='gray.500'
       >
