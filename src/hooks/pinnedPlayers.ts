@@ -27,9 +27,9 @@ export const deletePinnedPlayer = async (
   pinnedPlayerToRemove: string
 ) => {
   const res = await supabase
-    .from('Account Requests')
+    .from('Pinned Players')
     .delete()
-    .eq('email', userEmail)
+    .eq('user_account', userEmail)
     .eq('pinned_player_name', pinnedPlayerToRemove);
   return res;
 };
@@ -38,7 +38,7 @@ export const addPinnedPlayer = async (
   userEmail: string,
   pinnedPlayerToAdd: string
 ) => {
-  const res = await supabase.from('Account Requests').insert({
+  const res = await supabase.from('Pinned Players').insert({
     email: userEmail,
     pinned_player_name: pinnedPlayerToAdd,
   });

@@ -15,6 +15,7 @@ export const DeckInfoDisplay = memo(
     shouldHideDeck,
     shouldHideVerifiedIcon,
     shouldHideOpponentView,
+    onUnpinPlayer
   }: {
     player: Standing;
     tournament: Tournament;
@@ -24,6 +25,7 @@ export const DeckInfoDisplay = memo(
     shouldHideDeck?: boolean;
     shouldHideVerifiedIcon?: boolean;
     shouldHideOpponentView?: boolean;
+    onUnpinPlayer?: () => void;
   }) => {
     const archetypeModal = useDisclosure();
     return (
@@ -46,6 +48,7 @@ export const DeckInfoDisplay = memo(
           onEditOpen={archetypeModal.onOpen}
           enableEdits={enableEdits}
           shouldHideOpponentView={shouldHideOpponentView}
+          onUnpinPlayer={onUnpinPlayer}
         />
 
         {/* {player?.deck?.list && !disableList && (

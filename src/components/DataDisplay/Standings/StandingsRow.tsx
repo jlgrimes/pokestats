@@ -18,6 +18,7 @@ export interface StandingsRowProps {
   opponentResult?: string;
   hideArchetype?: boolean;
   shouldHideDeck?: boolean;
+  onUnpinPlayer?: () => void;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -72,6 +73,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
               player={props.result}
               enableEdits={!!props.canEditDecks}
               shouldHideDeck={props.shouldHideDeck}
+              onUnpinPlayer={props.onUnpinPlayer}
             />
           )}
           {props.hideArchetype && props.result.deck?.list && (

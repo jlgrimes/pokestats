@@ -20,6 +20,7 @@ interface StandingsInfoMenuProps {
   onEditOpen: () => void;
   enableEdits: boolean;
   shouldHideOpponentView?: boolean;
+  onUnpinPlayer?: () => void;
 }
 
 export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
@@ -65,6 +66,11 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
                   God
                 </Badge>
               )}
+            </MenuItem>
+          )}
+          {props.onUnpinPlayer && (
+            <MenuItem fontSize='lg' onClick={props.onUnpinPlayer}>
+              Unpin Player
             </MenuItem>
           )}
         </MenuList>
