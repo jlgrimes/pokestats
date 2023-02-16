@@ -3,7 +3,10 @@ import { differenceInDays, parseISO } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { Tournament, TournamentStatus } from '../../../types/tournament';
 import { TournamentOrSet, useTournamentRender } from '../../hooks/sets';
-import { tournamentHasArrivedButNotLive } from './helpers';
+import {
+  getMostRecentTournaments,
+  tournamentHasArrivedButNotLive,
+} from './helpers';
 import { TournamentCard } from './TournamentCard';
 
 export const TournamentList = ({
@@ -16,41 +19,7 @@ export const TournamentList = ({
   const items = useTournamentRender(tournaments);
   const getParsedItems = useCallback(() => {
     if (mostRecent) {
-      const finishedTournaments = items.filter(
-        tournament => tournament.data.tournamentStatus === 'finished'
-      );
-      const almostStartedTournamentFilter = (tournament: TournamentOrSet) =>
-        tournament.data.date &&
-        tournamentHasArrivedButNotLive(
-          tournament.data as unknown as Tournament
-        );
-
-      const upcomingTournaments = items.filter(tournament => {
-        return (
-          tournament.data.tournamentStatus === 'not-started' &&
-          differenceInDays(parseISO(tournament.data.date?.start), new Date()) <=
-            7 &&
-          !almostStartedTournamentFilter(tournament)
-        );
-      });
-
-      const liveTournaments = items.filter(
-        tournament => tournament.data.tournamentStatus === 'running'
-      );
-      const almostStartedTournaments = items.filter(tournament =>
-        almostStartedTournamentFilter(tournament)
-      );
-
-      return {
-        highlightedTournamentsLength:
-          liveTournaments.length + almostStartedTournaments.length,
-        items: [
-          ...liveTournaments,
-          ...almostStartedTournaments,
-          ...finishedTournaments.slice(0, 2),
-          ...upcomingTournaments,
-        ],
-      };
+      return getMostRecentTournaments(items);
     }
     return {
       highlightedTournamentsLength: 0,

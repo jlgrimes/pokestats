@@ -9,6 +9,7 @@ import {
   formatDistanceToNowStrict,
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
+import { TournamentOrSet } from '../../hooks/sets';
 import { getRoundText } from '../Tournament/helpers';
 
 export const formatTournamentStatus = (tournament: Tournament) => {
@@ -89,4 +90,40 @@ export const tournamentFallsOnCurrentDate = (tournament: Tournament) => {
     start: startDate,
     end: endOfDay(endDate),
   });
+};
+
+export const getMostRecentTournaments = (items: TournamentOrSet[]) => {
+  const finishedTournaments = items.filter(
+    tournament => tournament.data.tournamentStatus === 'finished'
+  );
+  const almostStartedTournamentFilter = (tournament: TournamentOrSet) =>
+    tournament.data.date &&
+    tournamentHasArrivedButNotLive(tournament.data as unknown as Tournament);
+
+  const upcomingTournaments = items.filter(tournament => {
+    return (
+      tournament.data.tournamentStatus === 'not-started' &&
+      differenceInDays(parseISO(tournament.data.date?.start), new Date()) <=
+        7 &&
+      !almostStartedTournamentFilter(tournament)
+    );
+  });
+
+  const liveTournaments = items.filter(
+    tournament => tournament.data.tournamentStatus === 'running'
+  );
+  const almostStartedTournaments = items.filter(tournament =>
+    almostStartedTournamentFilter(tournament)
+  );
+
+  return {
+    highlightedTournamentsLength:
+      liveTournaments.length + almostStartedTournaments.length,
+    items: [
+      ...liveTournaments,
+      ...almostStartedTournaments,
+      ...finishedTournaments.slice(0, 2),
+      ...upcomingTournaments,
+    ],
+  };
 };
