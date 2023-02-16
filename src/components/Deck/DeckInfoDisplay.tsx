@@ -39,7 +39,7 @@ export const DeckInfoDisplay = memo(
           />
         </StackItem>
 
-        <StandingsInfoMenu />
+        <StandingsInfoMenu result={player} tournament={tournament} />
 
         {/* {player?.deck?.list && !disableList && (
           <ListViewerOpenButton result={player} tournament={tournament} />
