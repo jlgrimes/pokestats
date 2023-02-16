@@ -50,9 +50,11 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           <FaEllipsisV />
         </MenuButton>
         <MenuList>
-          <MenuItem fontSize='lg' onClick={onListOpen}>
-            View Deck List
-          </MenuItem>
+          {props.result.deck?.list && (
+            <MenuItem fontSize='lg' onClick={onListOpen}>
+              View Deck List
+            </MenuItem>
+          )}
           {!props.shouldHideOpponentView && (
             <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
               View Player Matchups
