@@ -43,14 +43,13 @@ export const getPatchedTournament = async (
       liveResults.data[0]?.record.ties +
       liveResults.data[0]?.record.losses <
       18;
-  const tournamentIsHappeningNow =
-    tournamentFallsOnCurrentDate(tournamentFromApi);
   const topCutStatus = getTopCutStatus(liveResults.data, tournamentFromApi);
 
   const tournamentShouldBeRunning =
-    tournamentApiSaysCompleted &&
-    butTournamentIsRunning &&
-    tournamentIsHappeningNow;
+    (tournamentApiSaysCompleted && butTournamentIsRunning) ||
+    (tournamentFromApi.tournamentStatus === 'not-started' &&
+      liveResults.data &&
+      liveResults.data.length > 0);
 
   const patchedTournament: Tournament = {
     ...tournamentFromApi,
@@ -67,9 +66,11 @@ export const getPatchedTournament = async (
 export const patchTournamentsClient = async (tournamentList: Tournament[]) => {
   const newTournamentsList = [];
   for await (const tournament of tournamentList) {
-    const newTournament = tournamentFallsOnCurrentDate(tournament)
-      ? await getPatchedTournament(tournament, undefined, false)
-      : null;
+    const newTournament = await getPatchedTournament(
+      tournament,
+      undefined,
+      false
+    );
 
     if (newTournament) {
       newTournamentsList.push(newTournament);

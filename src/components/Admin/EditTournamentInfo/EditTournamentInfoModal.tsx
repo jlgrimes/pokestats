@@ -35,7 +35,10 @@ export const EditTournamentInfoModal = ({
   tournament: Tournament;
 }) => {
   const toast = useToast();
-  const { data: streamInfo, refetch } = useTournamentMetadata(tournament.id, 'stream');
+  const { data: streamInfo, refetch } = useTournamentMetadata(
+    tournament.id,
+    'stream'
+  );
   const streamUrlFromSupa = streamInfo?.at(0)?.data;
 
   const [streamUrlEnabled, setStreamUrlEnabled] = useState(!!streamUrlFromSupa);
@@ -78,7 +81,7 @@ export const EditTournamentInfoModal = ({
       title: 'Success updating stream!',
     });
     onClose();
-  }, [onClose, streamUrl, streamUrlFromSupa, toast, tournament.id]);
+  }, [onClose, streamUrl, streamUrlFromSupa, toast, tournament.id, refetch]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

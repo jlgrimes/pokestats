@@ -71,7 +71,6 @@ export const formatTournamentDate = (tournament: Tournament) => {
 
 export const formatTimeUntilTournament = (tournament: Tournament) => {
   const [startDate] = getTournamentRange(tournament);
-  console.log(startDate);
   return formatDistanceToNowStrict(startDate);
 };
 

@@ -1,5 +1,8 @@
 import { TournamentHomeView } from '../../../src/components/Tournament/Home/TournamentHomeView';
-import { fetchTournaments } from '../../../src/hooks/tournaments';
+import {
+  fetchTournaments,
+  usePatchedTournaments,
+} from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
 
 interface TournamentPageProps {
@@ -7,7 +10,14 @@ interface TournamentPageProps {
 }
 
 export default function TournamentPage(props: TournamentPageProps) {
-  return <TournamentHomeView tournament={props.tournament} />;
+  const { data: patchedTournamentData } = usePatchedTournaments([
+    props.tournament,
+  ]);
+  const patchedTournament = patchedTournamentData?.at(0);
+
+  return (
+    <TournamentHomeView tournament={patchedTournament ?? props.tournament} />
+  );
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
