@@ -19,21 +19,25 @@ export const TournamentList = ({
       const finishedTournaments = items.filter(
         tournament => tournament.data.tournamentStatus === 'finished'
       );
+      const almostStartedTournamentFilter = (tournament: TournamentOrSet) =>
+        tournament.data.date &&
+        tournamentHasArrivedButNotLive(
+          tournament.data as unknown as Tournament
+        );
+
       const upcomingTournaments = items.filter(tournament => {
         return (
           tournament.data.tournamentStatus === 'not-started' &&
           differenceInDays(parseISO(tournament.data.date?.start), new Date()) <=
-            7
+            7 &&
+          !almostStartedTournamentFilter(tournament)
         );
       });
 
       const highlightedTournaments = items.filter(
         tournament =>
           tournament.data.tournamentStatus === 'running' ||
-          (tournament.data.date &&
-            tournamentHasArrivedButNotLive(
-              tournament.data as unknown as Tournament
-            ))
+          almostStartedTournamentFilter(tournament)
       );
 
       return {
