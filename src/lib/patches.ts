@@ -42,7 +42,7 @@ export const getPatchedTournament = async (
     liveResults.data[0]?.record.wins +
       liveResults.data[0]?.record.ties +
       liveResults.data[0]?.record.losses <
-      18;
+      16;
   const topCutStatus = getTopCutStatus(liveResults.data, tournamentFromApi);
 
   const tournamentShouldBeRunning =
