@@ -20,6 +20,7 @@ import {
   useAvailablePinnedPlayerNames,
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
+import { PlayerSelectModal } from './PlayerSelectModal';
 
 interface PinPlayerModalProps {
   tournament: Tournament;
@@ -30,21 +31,10 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
   const session = useSession();
   const toast = useToast();
 
-  const [filter, setFilter] = useState('');
   const { data: availablePinnedPlayerNames } = useAvailablePinnedPlayerNames(
     props.tournament.id
   );
   const { refetch } = usePinnedPlayers(props.tournament.id);
-
-  const handleFilterChange = (e: Record<string, any>) => {
-    setFilter(e.target.value);
-  };
-
-  const filteredPlayerProfiles = useMemo(() => {
-    return availablePinnedPlayerNames?.filter((name: string) =>
-      name.toLowerCase().includes(filter.toLowerCase())
-    );
-  }, [filter, availablePinnedPlayerNames]);
 
   const handleSubmit = useCallback(
     async (player: string) => {
@@ -77,29 +67,21 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
         title: `Successfully pinned ${player}`,
       });
     },
-    [session.data?.user?.email, refetch, toast]
+    [
+      session.data?.user?.email,
+      refetch,
+      toast,
+      props.modalControls,
+      props.tournament.id,
+    ]
   );
 
   return (
-    <Modal
-      isOpen={!!props.modalControls.isOpen}
-      onClose={props.modalControls.onClose ?? (() => {})}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Select player name</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Input placeholder='Filter name' onChange={handleFilterChange} />
-          <Stack height={'220px'} overflowY={'scroll'} padding={4}>
-            {filteredPlayerProfiles?.map((player, idx) => (
-              <div key={idx} onClick={() => handleSubmit(player)}>
-                {player}
-              </div>
-            ))}
-          </Stack>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+    <PlayerSelectModal
+      tournament={props.tournament}
+      modalControls={props.modalControls}
+      playerNames={availablePinnedPlayerNames ?? []}
+      handleSubmit={handleSubmit}
+    />
   );
 };

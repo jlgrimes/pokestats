@@ -220,3 +220,13 @@ export const usePlayerPerformance = (
     );
   return playerTournamentPerformance;
 };
+
+export const useLiveTournamentPlayers = (tournamentId: string) => {
+  const { data: liveResults, isLoading: isLiveTournamentResultsLoading } =
+    useLiveTournamentResults(tournamentId);
+
+  return {
+    data: liveResults?.data.map(({ name }) => name),
+    isLoading: isLiveTournamentResultsLoading
+  };
+};
