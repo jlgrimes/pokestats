@@ -20,8 +20,8 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         </Heading>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
-      <PinnedPlayerList tournament={props.tournament} />
       <MyTournamentView tournament={props.tournament} />
+      <PinnedPlayerList tournament={props.tournament} />
       <TopDecks tournament={props.tournament} />
     </Stack>
   );

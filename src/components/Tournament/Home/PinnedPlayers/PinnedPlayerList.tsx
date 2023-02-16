@@ -1,7 +1,9 @@
-import { Stack } from '@chakra-ui/react';
+import { Button, Stack } from '@chakra-ui/react';
+import { FaMapPin, FaPlus, FaStar } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
+import { CommonCard } from '../../../common/CommonCard';
 import { PinnedPlayerCard } from './PinnedPlayerCard';
 
 interface PinnedPlayerListProps {
@@ -18,17 +20,22 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   );
 
   return (
-    <Stack>
-      {pinnedPlayers?.map(
-        pinnedPlayer =>
-          pinnedPlayer && (
-            <PinnedPlayerCard
-              key={`pinned-${pinnedPlayer?.name}`}
-              player={pinnedPlayer}
-              tournament={props.tournament}
-            />
-          )
-      )}
-    </Stack>
+    <CommonCard
+      ghost
+    >
+      <Stack>
+        {pinnedPlayers?.map(
+          pinnedPlayer =>
+            pinnedPlayer && (
+              <PinnedPlayerCard
+                key={`pinned-${pinnedPlayer?.name}`}
+                player={pinnedPlayer}
+                tournament={props.tournament}
+              />
+            )
+        )}
+        <Button leftIcon={<FaMapPin />}>Pin a player</Button>
+      </Stack>
+    </CommonCard>
   );
 };
