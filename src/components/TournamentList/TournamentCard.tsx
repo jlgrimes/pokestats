@@ -43,8 +43,8 @@ export const TournamentCard = ({
     <LinkBox>
       <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
         <Card>
-          <Stack padding={4} spacing={1}>
-            <Stack spacing={live ? 2 : 0}>
+          <Stack padding={live ? 6 : 4} spacing={live ? 3 : 1}>
+            <Stack spacing={live ? 1 : 0}>
               <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
                 {tournament.name}
               </Heading>
@@ -65,7 +65,7 @@ export const TournamentCard = ({
                   rightIcon={<FaArrowRight />}
                   paddingX={1}
                 >
-                  View
+                  View live results
                 </Button>
               </div>
             )}

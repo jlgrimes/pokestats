@@ -42,10 +42,10 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       >
         Tournament Info
       </Button>
-      <Button {...commonProps} href={`${router.asPath}/standings`}>
+      <Button {...commonProps} href={`${router.asPath}/standings`} isDisabled={props.tournament.tournamentStatus !== 'running'}>
         Standings
       </Button>
-      <Button {...commonProps} href={`${router.asPath}/pairings`}>
+      <Button {...commonProps} href={`${router.asPath}/pairings`} isDisabled={props.tournament.tournamentStatus !== 'running'}>
         Pairings
       </Button>
     </Grid>

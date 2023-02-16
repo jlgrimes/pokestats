@@ -23,8 +23,8 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
 
   return (
     <Stack padding={6} spacing={6}>
-      <Stack spacing={4}>
-        <Stack>
+      <Stack spacing={6}>
+        <Stack spacing={2}>
           <Heading size='xl' color='gray.700'>
             {props.tournament.name}
           </Heading>

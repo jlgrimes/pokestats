@@ -16,7 +16,7 @@ export const SeeMoreButton = ({
     <GridItem gridColumn={'1/-1'}>
       <Button
         color='gray.500'
-        size='sm'
+        size='md'
         variant='ghost'
         onClick={() =>
           router.push(absolute ? slug : router.asPath + '/' + slug)
