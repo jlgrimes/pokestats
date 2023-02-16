@@ -42,6 +42,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 key={`pinned-${pinnedPlayer?.name}`}
                 player={pinnedPlayer}
                 tournament={props.tournament}
+                shouldHideDecks={liveTournamentResults?.shouldHideDecks}
               />
             )
         )}

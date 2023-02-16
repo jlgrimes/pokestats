@@ -12,6 +12,7 @@ import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
 interface PinnedPlayerCardProps {
   player: Standing;
   tournament: Tournament;
+  shouldHideDecks: boolean | undefined;
 }
 
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
@@ -57,6 +58,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
           tournament={props.tournament}
           onUnpinPlayer={onUnpinPlayer}
           canEditDecks={userIsAdmin}
+          shouldHideDeck={props.shouldHideDecks}
         />
       </CardBody>
     </Card>
