@@ -11,7 +11,7 @@ export const Sprites = memo((props: SpritesProps) => (
     direction='row'
     alignItems={'baseline'}
     spacing={-0.5}
-    minWidth={props.squishWidth ? 0 : '4.61rem'}
+    minWidth={props.squishWidth ? 0 : '5.3rem'}
   >
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
       {!props.pokemonNames || props.pokemonNames.length === 0 ? (

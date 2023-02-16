@@ -47,9 +47,9 @@ export const DeckInfoDisplay = memo(
             aria-label='edit'
             variant={'ghost'}
             width={'100%'}
-            size='sm'
-            color='gray.500'
-            paddingRight={4}
+            size='md'
+            color='gray.400'
+            paddingRight={6}
             onClick={archetypeModal.onOpen}
           />
         )}

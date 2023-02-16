@@ -20,13 +20,13 @@ export const SingleSprite = memo((props: SingleSpriteProps) => {
 
   return (
     <StackItem
-      width={props.big ? '60px' : '30px'}
+      width={props.big ? '60px' : '35px'}
       display='flex'
       justifyContent={'center'}
     >
       <Image
         className='pixel-image'
-        maxHeight={props.big ? '50px' : '30px'}
+        maxHeight={props.big ? '50px' : '35px'}
         minHeight={props.big ? '50px' : 0}
         height='auto'
         width='auto'
