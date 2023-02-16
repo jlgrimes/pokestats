@@ -26,7 +26,6 @@ export const MyMatchupRow = memo(
           paddingLeft={2}
           backgroundColor={getResultBackgroundColor(round.result)}
           textAlign='center'
-          fontFamily={'monospace'}
         >
           {roundNumber}
         </Td>

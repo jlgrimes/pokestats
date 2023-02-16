@@ -39,7 +39,7 @@ export const StandingsList = memo(
 
     return (
       <Stack flexGrow={1}>
-        <Grid
+        {/* <Grid
           gridTemplateColumns='2.65rem 2fr 1fr 1fr'
           gridTemplateRows='20px auto'
           paddingRight={1}
@@ -52,13 +52,13 @@ export const StandingsList = memo(
           <Text {...tableHeadingProps} paddingRight={1} textAlign='right'>
             Record
           </Text>
-        </Grid>
+        </Grid> */}
         <AutoSizer>
           {({ height, width }) => (
             <List
               height={height}
               width={width}
-              itemSize={40}
+              itemSize={42}
               itemCount={results.length}
             >
               {VirtualizedRow}
