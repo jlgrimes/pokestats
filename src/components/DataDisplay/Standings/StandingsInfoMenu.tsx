@@ -12,6 +12,7 @@ import { FaEllipsisV } from 'react-icons/fa';
 import { ListViewerModal } from '../../Deck/ListViewer/ListViewerModal';
 import type { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
+import { OpponentRoundList } from './OpponentRoundList';
 
 interface StandingsInfoMenuProps {
   tournament: Tournament;
@@ -26,6 +27,11 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
     isOpen: isListOpen,
     onOpen: onListOpen,
     onClose: onListClose,
+  } = useDisclosure();
+  const {
+    isOpen: isOpponentsOpen,
+    onOpen: onOpponentsOpen,
+    onClose: onOpponentsClose,
   } = useDisclosure();
 
   return (
@@ -44,7 +50,9 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           <MenuItem fontSize='lg' onClick={onListOpen}>
             View Deck List
           </MenuItem>
-          <MenuItem fontSize='lg'>View Player Matchups</MenuItem>
+          <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
+            View Player Matchups
+          </MenuItem>
           {userIsAdmin && (
             <MenuItem fontSize='lg' onClick={props.onEditOpen}>
               Edit Deck
@@ -60,6 +68,12 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
         onClose={onListClose}
         result={props.result}
         tournament={props.tournament}
+      />
+      <OpponentRoundList
+        player={props.result}
+        tournament={props.tournament}
+        modalOpen={isOpponentsOpen}
+        handleCloseModal={onOpponentsClose}
       />
     </Fragment>
   );

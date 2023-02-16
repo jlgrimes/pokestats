@@ -11,14 +11,6 @@ export const StandingsRowExpandable = memo((props: StandingsRowProps) => {
         rowExpanded={showOpponentRecords}
         toggleRowExpanded={() => setShowOpponentRecords(true)}
       />
-      {showOpponentRecords && props.result.rounds && (
-        <OpponentRoundList
-          player={props.result}
-          tournament={props.tournament}
-          modalOpen={showOpponentRecords}
-          handleCloseModal={() => setShowOpponentRecords(false)}
-        />
-      )}
     </>
   );
 });
