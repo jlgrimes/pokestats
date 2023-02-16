@@ -60,6 +60,11 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
               View Player Matchups
             </MenuItem>
           )}
+          {props.onUnpinPlayer && (
+            <MenuItem fontSize='lg' onClick={props.onUnpinPlayer}>
+              Unpin Player
+            </MenuItem>
+          )}
           {props.enableEdits && (
             <MenuItem fontSize='lg' onClick={props.onEditOpen}>
               Edit Deck
@@ -68,11 +73,6 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
                   God
                 </Badge>
               )}
-            </MenuItem>
-          )}
-          {props.onUnpinPlayer && (
-            <MenuItem fontSize='lg' onClick={props.onUnpinPlayer}>
-              Unpin Player
             </MenuItem>
           )}
         </MenuList>

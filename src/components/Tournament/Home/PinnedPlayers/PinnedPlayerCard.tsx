@@ -2,6 +2,7 @@ import { Card, CardBody, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 import { Standing, Tournament } from '../../../../../types/tournament';
+import { useUserIsAdmin } from '../../../../hooks/administrators';
 import {
   deletePinnedPlayer,
   usePinnedPlayers,
@@ -17,6 +18,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   const session = useSession();
   const toast = useToast();
   const { refetch } = usePinnedPlayers(props.tournament.id);
+  const { data: userIsAdmin } = useUserIsAdmin();
 
   const onUnpinPlayer = useCallback(async () => {
     if (!session.data?.user?.email) {
@@ -54,6 +56,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
           result={props.player}
           tournament={props.tournament}
           onUnpinPlayer={onUnpinPlayer}
+          canEditDecks={userIsAdmin}
         />
       </CardBody>
     </Card>
