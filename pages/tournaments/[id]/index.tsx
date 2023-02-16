@@ -13,6 +13,7 @@ export default function TournamentPage(props: TournamentPageProps) {
   const { data: patchedTournamentData } = usePatchedTournaments([
     props.tournament,
   ]);
+  console.log(patchedTournamentData)
   const patchedTournament = patchedTournamentData?.at(0);
 
   return (

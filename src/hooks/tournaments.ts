@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { isAfter, isBefore, parseISO } from 'date-fns';
 import { useState } from 'react';
 import { Tournament } from '../../types/tournament';
@@ -13,7 +13,9 @@ interface FetchTournamentsOptions {
 }
 
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
-  const url = options?.prefetch ? 'https://pokedata.ovh/standings/tournaments.json' : '/api/tournaments';
+  const url = options?.prefetch
+    ? 'https://pokedata.ovh/standings/tournaments.json'
+    : '/api/tournaments';
 
   const res: Response = await fetch(url);
   let data: Tournament[] = await res.json();
@@ -72,13 +74,26 @@ export const useTournaments = (options?: FetchTournamentsOptions) => {
   });
 };
 
-export const usePatchedTournaments = (tournaments: Tournament[], numberToPatch: number = 2) => {
-  return useQuery({
-    queryKey: ['patched-tournaments'],
-    queryFn: () => {
-      return patchTournamentsClient(tournaments, numberToPatch);
-    },
+export const usePatchedTournaments = (tournamentList: Tournament[]) => {
+  const results = useQueries({
+    queries: tournamentList.map(tournament => ({
+      queryKey: ['patched-tournament', tournament.id],
+      queryFn: () => {
+        return patchTournamentsClient(tournament);
+      },
+    })),
   });
+
+  const data: Tournament[] = results.reduce((acc: Tournament[], curr) => {
+    if (!curr.data) return acc;
+
+    return [...acc, curr.data];
+  }, []);
+
+  return {
+    data,
+    isLoading: results.reduce((acc, curr) => acc || curr.isLoading, false),
+  };
 };
 
 export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>

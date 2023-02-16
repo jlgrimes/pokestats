@@ -63,26 +63,12 @@ export const getPatchedTournament = async (
   return patchedTournament;
 };
 
-export const patchTournamentsClient = async (
-  tournamentList: Tournament[],
-  numberToPatch: number
-) => {
-  const newTournamentsList = [];
-  let ctr = 0;
-  for await (const tournament of tournamentList) {
-    let newTournament: Tournament | null = tournament;
-    if (ctr < numberToPatch) {
-      newTournament = await getPatchedTournament(tournament, undefined, false);
-    }
+export const patchTournamentsClient = async (tournament: Tournament) => {
+  const newTournament = await getPatchedTournament(
+    tournament,
+    undefined,
+    false
+  );
 
-    if (newTournament) {
-      newTournamentsList.push(newTournament);
-    } else {
-      newTournamentsList.push(tournament);
-    }
-
-    ctr++;
-  }
-
-  return newTournamentsList;
+  return newTournament;
 };
