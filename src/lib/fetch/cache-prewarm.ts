@@ -6,14 +6,12 @@ import {
   fetchTournaments,
   getMostRecentFinishedTournament,
 } from '../../hooks/tournaments';
-import { patchTournamentsClient } from '../patches';
 import { fetchLiveResults } from './fetchLiveResults';
 
 export const prewarmMostRecentTournament = async (queryClient: QueryClient) => {
   const tournaments = await fetchTournaments();
-  const patchedTournaments = await patchTournamentsClient(tournaments);
   const mostRecentFinishedTournament =
-    getMostRecentFinishedTournament(patchedTournaments);
+    getMostRecentFinishedTournament(tournaments);
   await prewarmTournament(mostRecentFinishedTournament.id, queryClient);
 };
 
