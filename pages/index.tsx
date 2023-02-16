@@ -26,7 +26,6 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
     )
   ).items.map(({ data }) => data as Tournament);
   const { data: patchedTournaments } = usePatchedTournaments(tournies);
-  console.log(patchedTournaments)
   const mostRecentFinishedTournament = getMostRecentFinishedTournament(
     patchedTournaments ?? tournaments ?? []
   );
@@ -64,6 +63,19 @@ export async function getStaticProps() {
     queryKey: ['decks-with-lists'],
     queryFn: () => fetchDecksWithLists(),
   });
+
+  const tournies = getMostRecentTournaments(
+    tournaments.map(
+      tournament =>
+        ({ type: 'tournament', data: tournament } as TournamentOrSet)
+    )
+  ).items.map(({ data }) => data as Tournament);
+
+  for (const tournament of tournies)
+    await queryClient.prefetchQuery({
+      queryKey: ['patched-tournament', tournament.id],
+      queryFn: () => tournament,
+    });
 
   return {
     props: {
