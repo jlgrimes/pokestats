@@ -1,4 +1,4 @@
-import { Heading, Stack, Text } from '@chakra-ui/react';
+import { Heading, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
@@ -9,6 +9,7 @@ import { StoredPlayerProfile } from '../../../../types/player';
 import { useSession } from 'next-auth/react';
 import { RecordIcon } from './ResultsList/RecordIcon';
 import { getPercentile } from './helpers';
+import { useCallback } from 'react';
 
 const RecordNeeded = ({
   record,
@@ -59,18 +60,27 @@ export const PlayerMatchupStatus = ({
   user,
 }: {
   tournament: Tournament;
-  user: StoredPlayerProfile;
+  user: StoredPlayerProfile | null;
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
   const session = useSession();
+  const {
+    player: playerResults,
+    shouldHideDecks,
+    isLoading,
+  } = usePlayerLiveResults(tournament.id, user?.name);
+
+  const renderLoadingSkeleton = useCallback(
+    () => <Skeleton height={63.9} />,
+    []
+  );
+
+  if (!user) return renderLoadingSkeleton();
+
   const getPlayerText =
     session.data?.user?.email === user.email ? 'You' : user.name;
 
-  const { player: playerResults, shouldHideDecks } = usePlayerLiveResults(
-    tournament.id,
-    user.name
-  );
-  return playerResults ? (
+  return !isLoading && playerResults && user ? (
     <Stack alignItems={'center'} spacing={4}>
       <Stack spacing={0} alignItems='center'>
         <Stack direction={'row'} alignItems='baseline'>
@@ -122,6 +132,6 @@ export const PlayerMatchupStatus = ({
       )}
     </Stack>
   ) : (
-    <></>
+    renderLoadingSkeleton()
   );
 };

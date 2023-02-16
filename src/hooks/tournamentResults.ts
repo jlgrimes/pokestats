@@ -105,15 +105,27 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
 
 export const usePlayerLiveResults = (
   tournamentId: string,
-  name: string,
+  name?: string,
   options?: FetchLoggedInPlayerOptions
 ): {
   player: Standing | undefined;
   shouldHideDecks: boolean | undefined;
+  isLoading: boolean;
 } => {
-  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
-    load: { allRoundData: true },
-  });
+  const { data: liveResults, isLoading } = useLiveTournamentResults(
+    tournamentId,
+    {
+      load: { allRoundData: true },
+    }
+  );
+
+  if (!name)
+    return {
+      player: undefined,
+      shouldHideDecks: undefined,
+      isLoading,
+    };
+
   const player = liveResults?.data.find(
     (result: Standing) => result.name === name
   );
@@ -138,12 +150,14 @@ export const usePlayerLiveResults = (
         }),
       },
       shouldHideDecks: liveResults?.shouldHideDecks,
+      isLoading,
     };
   }
 
   return {
     player,
     shouldHideDecks: liveResults?.shouldHideDecks,
+    isLoading,
   };
 };
 
