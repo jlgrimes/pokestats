@@ -1,5 +1,6 @@
 import { Heading, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
+import { useStoredDecks } from '../../../hooks/finalResults';
 import { TopDecks } from '../../Home/TopDecks';
 import { MyTournamentView } from './MyTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
@@ -10,6 +11,13 @@ interface TournamentHomeViewProps {
 }
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
+  const decks = useStoredDecks({
+    tournamentRange: [
+      parseInt(props.tournament?.id as string),
+      parseInt(props.tournament?.id as string),
+    ],
+  });
+
   if (!props.tournament) return null;
 
   return (
@@ -22,7 +30,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       </Stack>
       <PinnedPlayerList tournament={props.tournament} />
       <MyTournamentView tournament={props.tournament} />
-      <TopDecks tournament={props.tournament} />
+      {decks && decks.length > 0 && <TopDecks tournament={props.tournament} />}
     </Stack>
   );
 };
