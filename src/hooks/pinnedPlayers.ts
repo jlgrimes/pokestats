@@ -21,3 +21,26 @@ export const usePinnedPlayers = () => {
     queryFn: () => fetchPinnedPlayers(user),
   });
 };
+
+export const deletePinnedPlayer = async (
+  userEmail: string,
+  pinnedPlayerToRemove: string
+) => {
+  const res = await supabase
+    .from('Account Requests')
+    .delete()
+    .eq('email', userEmail)
+    .eq('pinned_player_name', pinnedPlayerToRemove);
+  return res;
+};
+
+export const addPinnedPlayer = async (
+  userEmail: string,
+  pinnedPlayerToAdd: string
+) => {
+  const res = await supabase.from('Account Requests').insert({
+    email: userEmail,
+    pinned_player_name: pinnedPlayerToAdd,
+  });
+  return res;
+};
