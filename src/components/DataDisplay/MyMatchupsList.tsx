@@ -26,7 +26,7 @@ export const MyMatchupsList = memo(
           <Thead>
             <Tr>
               <Th padding={0} paddingLeft={2}>
-                Round
+                Rnd
               </Th>
               <Th padding={0} paddingLeft={2}>
                 Name
