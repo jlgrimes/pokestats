@@ -105,7 +105,7 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
 
 export const usePlayerLiveResults = (
   tournamentId: string,
-  name?: string,
+  name?: string | null,
   options?: FetchLoggedInPlayerOptions
 ): {
   player: Standing | undefined;
