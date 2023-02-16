@@ -23,7 +23,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const router = useRouter();
 
   return (
-    <Grid paddingX={6} gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
+    <Grid gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
       {streamLink && (
         <Button
           {...commonProps}

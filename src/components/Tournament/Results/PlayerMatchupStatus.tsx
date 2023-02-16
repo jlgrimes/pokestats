@@ -86,7 +86,7 @@ export const PlayerMatchupStatus = ({
     <Stack alignItems={'center'} spacing={4}>
       <Stack spacing={0} alignItems='center'>
         <Stack direction={'row'} alignItems='baseline'>
-          <Text>
+          <Text fontSize='lg'>
             {tournamentFinished ? `${getPlayerText} finished` : `You are`}
           </Text>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
@@ -104,7 +104,7 @@ export const PlayerMatchupStatus = ({
           spacing={1}
           flexWrap='wrap'
         >
-          <Text>with</Text>
+          <Text fontSize='lg'>with</Text>
           <DeckInfoDisplay
             tournament={tournament}
             player={playerResults}
@@ -114,7 +114,7 @@ export const PlayerMatchupStatus = ({
             shouldHideOpponentView={shouldHideOpponentView}
           />
           {tournamentFinished && (
-            <Heading size='xs' color='gray.700'>
+            <Heading size='sm' color='gray.700'>
               {`${ordinalSuffixOf(
                 getPercentile(
                   playerResults.placing,

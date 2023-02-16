@@ -24,7 +24,7 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
   const renderDeckName = () => {
     if (props.shouldShowAsText) {
       return (
-        <Text>
+        <Text fontSize='lg'>
           {props.selectedArchetype
             ? props.selectedArchetype.name
             : 'Unknown deck'}

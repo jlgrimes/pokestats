@@ -22,16 +22,16 @@ export const MyMatchupsList = memo(
 
     return (
       <TableContainer overflow={'hidden'}>
-        <Table size={'sm'}>
+        <Table size={'md'}>
           <Thead>
             <Tr>
-              <Th padding={0} paddingLeft={2}>
+              <Th padding={0}>
                 Rnd
               </Th>
               <Th padding={0} paddingLeft={2}>
                 Name
               </Th>
-              <Th padding={0} paddingLeft={2}>
+              <Th padding={0}>
                 Record
               </Th>
               <Th padding={0} paddingLeft={2}>
