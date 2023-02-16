@@ -5,8 +5,10 @@ import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
 import { TopDecks } from '../src/components/Home/TopDecks';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
+import { getMostRecentTournaments } from '../src/components/TournamentList/helpers';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
 import { fetchDecksWithLists } from '../src/hooks/finalResults';
+import { TournamentOrSet } from '../src/hooks/sets';
 import {
   fetchTournaments,
   getMostRecentFinishedTournament,
@@ -17,7 +19,13 @@ import { prewarmMostRecentTournament } from '../src/lib/fetch/cache-prewarm';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
-  const { data: patchedTournaments } = usePatchedTournaments(tournaments);
+  const tournies = getMostRecentTournaments(
+    tournaments.map(
+      tournament =>
+        ({ type: 'tournament', data: tournament } as TournamentOrSet)
+    )
+  ).items.map(({ data }) => data as Tournament);
+  const { data: patchedTournaments } = usePatchedTournaments(tournies);
   const mostRecentFinishedTournament = getMostRecentFinishedTournament(
     patchedTournaments ?? tournaments ?? []
   );
