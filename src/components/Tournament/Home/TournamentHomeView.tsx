@@ -2,6 +2,7 @@ import { Heading, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
 import { useStoredDecks } from '../../../hooks/finalResults';
 import { TopDecks } from '../../Home/TopDecks';
+import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
 import { MyTournamentView } from './MyTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
@@ -23,9 +24,12 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   return (
     <Stack padding={6} spacing={6}>
       <Stack spacing={4}>
-        <Heading size='xl' color='gray.700'>
-          {props.tournament.name}
-        </Heading>
+        <Stack>
+          <Heading size='xl' color='gray.700'>
+            {props.tournament.name}
+          </Heading>
+          <TournamentStatusBadge tournament={props.tournament} size='md' />
+        </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
       <PinnedPlayerList tournament={props.tournament} />
