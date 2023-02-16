@@ -34,18 +34,21 @@ export const TournamentList = ({
         );
       });
 
-      const highlightedTournaments = items.filter(
-        tournament =>
-          tournament.data.tournamentStatus === 'running' ||
-          almostStartedTournamentFilter(tournament)
+      const liveTournaments = items.filter(
+        tournament => tournament.data.tournamentStatus === 'running'
+      );
+      const almostStartedTournaments = items.filter(tournament =>
+        almostStartedTournamentFilter(tournament)
       );
 
       return {
-        highlightedTournamentsLength: highlightedTournaments.length,
+        highlightedTournamentsLength:
+          liveTournaments.length + almostStartedTournaments.length,
         items: [
-          ...highlightedTournaments,
-          ...upcomingTournaments,
+          ...liveTournaments,
+          ...almostStartedTournaments,
           ...finishedTournaments.slice(0, 2),
+          ...upcomingTournaments,
         ],
       };
     }
