@@ -79,7 +79,7 @@ export const tournamentHasArrivedButNotLive = (tournament: Tournament) => {
   const [startDate] = getTournamentRange(tournament);
 
   return (
-    tournament.tournamentStatus !== 'finished' &&
+    tournament.tournamentStatus === 'not-started' &&
     differenceInDays(startDate, new Date()) <= 0
   );
 };

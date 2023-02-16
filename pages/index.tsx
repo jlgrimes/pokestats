@@ -26,6 +26,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
     )
   ).items.map(({ data }) => data as Tournament);
   const { data: patchedTournaments } = usePatchedTournaments(tournies);
+  console.log(patchedTournaments)
   const mostRecentFinishedTournament = getMostRecentFinishedTournament(
     patchedTournaments ?? tournaments ?? []
   );
