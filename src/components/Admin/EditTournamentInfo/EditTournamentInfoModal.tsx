@@ -35,15 +35,13 @@ export const EditTournamentInfoModal = ({
   tournament: Tournament;
 }) => {
   const toast = useToast();
-  const { data: streamInfo } = useTournamentMetadata(tournament.id, 'stream');
+  const { data: streamInfo, refetch } = useTournamentMetadata(tournament.id, 'stream');
   const streamUrlFromSupa = streamInfo?.at(0)?.data;
 
   const [streamUrlEnabled, setStreamUrlEnabled] = useState(!!streamUrlFromSupa);
   const [streamUrl, setStreamUrl] = useState(streamUrlFromSupa);
 
   const handleSubmit = useCallback(async () => {
-    const queryClient = new QueryClient();
-
     if (streamUrlFromSupa) {
       const res = await supabase
         .from('Tournament Metadata')
@@ -73,20 +71,12 @@ export const EditTournamentInfoModal = ({
         });
       }
     }
+    await refetch();
 
     toast({
       status: 'success',
       title: 'Success updating stream!',
     });
-    queryClient.setQueryData(
-      ['tournament-metadata', tournament.id, 'stream'],
-      [
-        {
-          tournament: tournament.id,
-          data: streamUrl,
-        },
-      ]
-    );
     onClose();
   }, [onClose, streamUrl, streamUrlFromSupa, toast, tournament.id]);
 
