@@ -1,4 +1,5 @@
 import { useDisclosure, UseDisclosureProps, useToast } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
@@ -14,6 +15,7 @@ interface ReportModalProps {
 }
 
 export const ReportModal = (props: ReportModalProps) => {
+  const session = useSession();
   const toast = useToast();
   const { data: playerDecks } = usePlayerDecks(props.tournament.id);
 
@@ -34,6 +36,8 @@ export const ReportModal = (props: ReportModalProps) => {
   };
 
   const handleDeckSelect = async (deck: Deck) => {
+    setIsStreamDeck(false);
+
     if (playerDecks.find(playerDeck => playerDeck.name === selectedPlayer)) {
       const { error } = await supabase
         .from('Player Decks')
@@ -60,6 +64,8 @@ export const ReportModal = (props: ReportModalProps) => {
         tournament_id: props.tournament.id,
         deck_archetype: deck.id,
         on_stream: isStreamDeck,
+        user_who_submitted: session.data?.user?.email,
+        user_submitted_was_admin: userIsAdmin,
       });
       if (error) {
         return toast({
