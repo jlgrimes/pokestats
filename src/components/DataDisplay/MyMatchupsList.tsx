@@ -21,7 +21,7 @@ export const MyMatchupsList = memo(
     );
 
     return (
-      <TableContainer>
+      <TableContainer overflow={'hidden'}>
         <Table size={'sm'}>
           <Thead>
             <Tr>

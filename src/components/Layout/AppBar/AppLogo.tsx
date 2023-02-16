@@ -37,7 +37,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
               </Heading>
             </Stack>
             <Badge>Beta</Badge>
-            {userIsAdmin && <Badge colorScheme='cyan'>God Mode</Badge>}
+            {userIsAdmin && <Badge colorScheme='cyan'>God</Badge>}
           </HStack>
         </LinkOverlay>
       </LinkBox>
