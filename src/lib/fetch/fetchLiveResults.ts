@@ -254,6 +254,9 @@ export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
       ? getPokedataStandingsUrl(tournamentId)
       : `/api/standings/?tournamentId=${tournamentId}`
   );
+
+  if (!response.ok) return [];
+
   let data = await response.json();
   data = data
     .map((player: Standing) => ({

@@ -12,6 +12,9 @@ export default async function handler(
     const response = await fetch(
       `https://pokedata.ovh/standings/${tournamentId}/masters/${tournamentId}_Masterstables.json`
     );
+
+    if (!response.ok) return res.status(500);
+
     const data: FetchPairingsSchema = await response.json();
 
     res.status(200).json(data);
