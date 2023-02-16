@@ -77,8 +77,8 @@ export const PlayerMatchupStatus = ({
 
   if (!user) return renderLoadingSkeleton();
 
-  const getPlayerText =
-    session.data?.user?.email === user.email ? 'You' : user.name;
+  const isCurrentUser = session.data?.user?.email === user.email;
+  const getPlayerText = isCurrentUser ? 'You' : user.name;
 
   return !isLoading && playerResults && user ? (
     <Stack alignItems={'center'} spacing={4}>
@@ -106,7 +106,7 @@ export const PlayerMatchupStatus = ({
           <DeckInfoDisplay
             tournament={tournament}
             player={playerResults}
-            enableEdits={!playerResults.deck?.name}
+            enableEdits={isCurrentUser}
             shouldShowAsText
             shouldHideDeck={shouldHideDecks}
           />

@@ -4,7 +4,6 @@ import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
 import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
 import DeckInput from './DeckInput/DeckInput';
-import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 
 export const DeckInfoDisplay = memo(
   ({
@@ -39,7 +38,7 @@ export const DeckInfoDisplay = memo(
           />
         </StackItem>
 
-        <StandingsInfoMenu result={player} tournament={tournament} onEditOpen={archetypeModal.onOpen} />
+        <StandingsInfoMenu result={player} tournament={tournament} onEditOpen={archetypeModal.onOpen} enableEdits={enableEdits}/>
 
         {/* {player?.deck?.list && !disableList && (
           <ListViewerOpenButton result={player} tournament={tournament} />

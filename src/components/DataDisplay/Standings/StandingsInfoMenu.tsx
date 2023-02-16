@@ -18,6 +18,7 @@ interface StandingsInfoMenuProps {
   tournament: Tournament;
   result: Standing;
   onEditOpen: () => void;
+  enableEdits: boolean;
 }
 
 export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
@@ -53,12 +54,14 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
             View Player Matchups
           </MenuItem>
-          {userIsAdmin && (
+          {props.enableEdits && (
             <MenuItem fontSize='lg' onClick={props.onEditOpen}>
               Edit Deck
-              <Badge colorScheme={'cyan'} marginLeft={2}>
-                God
-              </Badge>
+              {userIsAdmin && (
+                <Badge colorScheme={'cyan'} marginLeft={2}>
+                  God
+                </Badge>
+              )}
             </MenuItem>
           )}
         </MenuList>
