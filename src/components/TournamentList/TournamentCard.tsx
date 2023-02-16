@@ -30,6 +30,7 @@ import {
   formatTournamentStatus,
   getTournamentStatusBadgeProps,
 } from './helpers';
+import { TournamentStatusBadge } from './TournamentStatusBadge';
 
 export const TournamentCard = ({
   tournament,
@@ -47,14 +48,10 @@ export const TournamentCard = ({
               <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
                 {tournament.name}
               </Heading>
-              <div>
-                <Badge
-                  {...getTournamentStatusBadgeProps(tournament)}
-                  fontSize={live ? 'sm' : 'xs'}
-                >
-                  {formatTournamentStatus(tournament)}
-                </Badge>
-              </div>
+              <TournamentStatusBadge
+                tournament={tournament}
+                size={live ? 'sm' : 'xs'}
+              />
             </Stack>
             {!live && (
               <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
