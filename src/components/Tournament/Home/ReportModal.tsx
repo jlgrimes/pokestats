@@ -1,8 +1,10 @@
-import { useDisclosure, UseDisclosureProps } from '@chakra-ui/react';
+import { useDisclosure, UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { Fragment, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
+import { usePlayerDecks } from '../../../hooks/playerDecks';
 import { useLiveTournamentPlayers } from '../../../hooks/tournamentResults';
+import supabase from '../../../lib/supabase/client';
 import { ArchetypeSelectorModal } from '../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
 import { PlayerSelectModal } from './PinnedPlayers/PlayerSelectModal';
 
@@ -12,10 +14,15 @@ interface ReportModalProps {
 }
 
 export const ReportModal = (props: ReportModalProps) => {
+  const toast = useToast();
+  const { data: playerDecks } = usePlayerDecks(props.tournament.id);
+
   const { data: playerNames } = useLiveTournamentPlayers(props.tournament.id);
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
+  const [isStreamDeck, setIsStreamDeck] = useState(false);
+
   const archetypeModalControls = useDisclosure();
 
   const handlePlayerSelect = (name: string) => {
@@ -26,8 +33,47 @@ export const ReportModal = (props: ReportModalProps) => {
     archetypeModalControls.onOpen();
   };
 
-  const handleDeckSelect = (deck: Deck) => {
-    console.log(selectedPlayer, deck);
+  const handleDeckSelect = async (deck: Deck) => {
+    if (playerDecks.find(playerDeck => playerDeck.name === selectedPlayer)) {
+      const { error } = await supabase
+        .from('Player Decks')
+        .update({ deck_archetype: deck.id, on_stream: isStreamDeck })
+        .match({
+          player_name: selectedPlayer,
+          tournament_id: props.tournament.id,
+        });
+      if (error) {
+        return toast({
+          status: 'error',
+          title: `Error updating deck for ${selectedPlayer}`,
+          description: error.message,
+        });
+      }
+
+      return toast({
+        status: 'success',
+        title: `Submitted deck for ${selectedPlayer}`,
+      });
+    } else {
+      const { error } = await supabase.from('Player Decks').insert({
+        player_name: selectedPlayer,
+        tournament_id: props.tournament.id,
+        deck_archetype: deck.id,
+        on_stream: isStreamDeck,
+      });
+      if (error) {
+        return toast({
+          status: 'error',
+          title: `Error adding deck for ${selectedPlayer}`,
+          description: error.message,
+        });
+      }
+
+      return toast({
+        status: 'success',
+        title: `Submitted deck for ${selectedPlayer}`,
+      });
+    }
   };
 
   return (
@@ -47,6 +93,8 @@ export const ReportModal = (props: ReportModalProps) => {
             modalControls={archetypeModalControls}
             userIsAdmin={userIsAdmin}
             isListUp={false}
+            isStreamDeck={isStreamDeck}
+            toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
           />
         </Fragment>
       )}
