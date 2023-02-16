@@ -72,11 +72,11 @@ export const useTournaments = (options?: FetchTournamentsOptions) => {
   });
 };
 
-export const usePatchedTournaments = (tournaments: Tournament[]) => {
+export const usePatchedTournaments = (tournaments: Tournament[], numberToPatch: number = 2) => {
   return useQuery({
     queryKey: ['patched-tournaments'],
     queryFn: () => {
-      return patchTournamentsClient(tournaments);
+      return patchTournamentsClient(tournaments, numberToPatch);
     },
   });
 };

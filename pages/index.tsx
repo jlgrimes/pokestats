@@ -37,7 +37,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
       <Stack>
         <AppLogo big />
         <RecentTournaments tournaments={patchedTournaments ?? tournaments} />
-        <TopDecks tournament={mostRecentFinishedTournament} />
+        {/* <TopDecks tournament={mostRecentFinishedTournament} /> */}
       </Stack>
     </Fragment>
   );
