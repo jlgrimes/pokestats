@@ -39,7 +39,7 @@ export const DeckInfoDisplay = memo(
           />
         </StackItem>
 
-        <StandingsInfoMenu result={player} tournament={tournament} />
+        <StandingsInfoMenu result={player} tournament={tournament} onEditOpen={archetypeModal.onOpen} />
 
         {/* {player?.deck?.list && !disableList && (
           <ListViewerOpenButton result={player} tournament={tournament} />

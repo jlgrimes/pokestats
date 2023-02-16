@@ -16,6 +16,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 interface StandingsInfoMenuProps {
   tournament: Tournament;
   result: Standing;
+  onEditOpen: () => void;
 }
 
 export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
@@ -45,7 +46,7 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           </MenuItem>
           <MenuItem fontSize='lg'>View Player Matchups</MenuItem>
           {userIsAdmin && (
-            <MenuItem fontSize='lg'>
+            <MenuItem fontSize='lg' onClick={props.onEditOpen}>
               Edit Deck
               <Badge colorScheme={'cyan'} marginLeft={2}>
                 God
