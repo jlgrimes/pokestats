@@ -38,7 +38,7 @@ export const StandingsList = memo(
     );
 
     return (
-      <Stack flexGrow={1}>
+      <Stack height='100%'>
         {/* <Grid
           gridTemplateColumns='2.65rem 2fr 1fr 1fr'
           gridTemplateRows='20px auto'

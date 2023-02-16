@@ -41,7 +41,7 @@ export const AppLayout = ({
           <AppBar />
           {/* <BetaBanner /> */}
           <Stack
-            flexGrow={1}
+            height='100%'
             padding={
               router.asPath.includes('tournaments') ||
               router.asPath.includes('decks')

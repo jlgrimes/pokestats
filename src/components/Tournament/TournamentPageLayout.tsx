@@ -23,7 +23,7 @@ export const TournamentPageLayout = ({
   if (!tournament) return null;
 
   return (
-    <Stack spacing={0} flexGrow={1} overflow='hidden'>
+    <Stack spacing={0} height='100%' overflow='hidden'>
       <Stack paddingX={4} paddingTop={4} paddingBottom={2}>
         <Heading size='lg' color='gray.700'>
           {`${tournament.name} ${capitalize(slug as string)}`}
