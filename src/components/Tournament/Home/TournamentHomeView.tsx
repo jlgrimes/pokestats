@@ -1,6 +1,7 @@
-import { Heading, Stack } from '@chakra-ui/react';
+import { Heading, HStack, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
 import { useStoredDecks } from '../../../hooks/finalResults';
+import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { TopDecks } from '../../Home/TopDecks';
 import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
 import { MyTournamentView } from './MyTournamentView';
@@ -28,7 +29,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           <Heading size='xl' color='gray.700'>
             {props.tournament.name}
           </Heading>
-          <TournamentStatusBadge tournament={props.tournament} size='md' />
+          <HStack>
+            <TournamentStatusBadge tournament={props.tournament} size='md' />
+            <OpenEditTournamentInfo tournament={props.tournament} />
+          </HStack>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
