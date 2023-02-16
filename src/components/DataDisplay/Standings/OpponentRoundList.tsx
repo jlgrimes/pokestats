@@ -12,6 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  StackItem,
   Text,
   Th,
   Thead,
@@ -56,20 +57,27 @@ export const OpponentRoundList = ({
       <ModalOverlay />
       <ModalContent margin={isMobile ? 'auto' : 0}>
         <ModalHeader padding={'0.5rem 2rem'}>
-          <Stack direction='row' alignItems={'center'}>
+          <HStack>
             <RecordIcon standing={player} tournament={tournament} />
-            <HStack paddingRight={'8px'} alignItems='baseline'>
-              <Text>{player.name}</Text>
-              <Record standing={player} />
-            </HStack>
-            <DeckInfoDisplay
-              tournament={tournament}
-              player={player}
-              enableEdits={false}
-              disableList
-              shouldHideDeck={liveResults?.shouldHideDecks}
-            />
-          </Stack>
+            <Stack
+              direction='row'
+              alignItems={'center'}
+              flexWrap='wrap'
+              rowGap={2}
+            >
+              <HStack paddingRight={'8px'} alignItems='baseline'>
+                <Text>{player.name}</Text>
+                <Record standing={player} />
+              </HStack>
+              <DeckInfoDisplay
+                tournament={tournament}
+                player={player}
+                enableEdits={false}
+                disableList
+                shouldHideDeck={liveResults?.shouldHideDecks}
+              />
+            </Stack>
+          </HStack>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody paddingTop={0} paddingX={0}>
