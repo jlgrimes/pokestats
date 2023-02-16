@@ -2,6 +2,7 @@ import { IconButton, Stack, StackItem, useDisclosure } from '@chakra-ui/react';
 import { memo } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
+import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
 import DeckInput from './DeckInput/DeckInput';
 import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 
@@ -13,7 +14,7 @@ export const DeckInfoDisplay = memo(
     shouldShowAsText,
     disableList,
     shouldHideDeck,
-    shouldHideVerifiedIcon
+    shouldHideVerifiedIcon,
   }: {
     player: Standing;
     tournament: Tournament;
@@ -21,7 +22,7 @@ export const DeckInfoDisplay = memo(
     shouldShowAsText?: boolean;
     disableList?: boolean;
     shouldHideDeck?: boolean;
-    shouldHideVerifiedIcon?: boolean
+    shouldHideVerifiedIcon?: boolean;
   }) => {
     const archetypeModal = useDisclosure();
     return (
@@ -37,7 +38,10 @@ export const DeckInfoDisplay = memo(
             shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           />
         </StackItem>
-        {player?.deck?.list && !disableList && (
+
+        <StandingsInfoMenu />
+
+        {/* {player?.deck?.list && !disableList && (
           <ListViewerOpenButton result={player} tournament={tournament} />
         )}
         {enableEdits && (
@@ -49,10 +53,10 @@ export const DeckInfoDisplay = memo(
             width={'100%'}
             size='md'
             color='gray.400'
-            paddingRight={6}
+            paddingRight={0}
             onClick={archetypeModal.onOpen}
           />
-        )}
+        )} */}
       </Stack>
     );
   }
