@@ -16,9 +16,19 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const { data: liveTournamentResults } = useLiveTournamentResults(
     props.tournament.id
   );
-  const pinnedPlayers = pinnedPlayerNames?.map(name =>
-    liveTournamentResults?.data.find(liveResult => liveResult.name === name)
-  );
+  const pinnedPlayers = pinnedPlayerNames
+    ?.map(name =>
+      liveTournamentResults?.data.find(liveResult => liveResult.name === name)
+    )
+    .sort((a, b) => {
+      if (!a || !b) return 0;
+
+      if (a.placing > b.placing) return 1;
+      if (a.placing < b.placing) return -1;
+
+      return 0;
+    });
+
   const addPinPlayerModalControls = useDisclosure();
 
   return (
