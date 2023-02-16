@@ -16,7 +16,7 @@ interface PinnedPlayerCardProps {
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   const session = useSession();
   const toast = useToast();
-  const { refetch } = usePinnedPlayers();
+  const { refetch } = usePinnedPlayers(props.tournament.id);
 
   const onUnpinPlayer = useCallback(async () => {
     if (!session.data?.user?.email) {

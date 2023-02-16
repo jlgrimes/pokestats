@@ -34,7 +34,7 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
   const { data: availablePinnedPlayerNames } = useAvailablePinnedPlayerNames(
     props.tournament.id
   );
-  const { refetch } = usePinnedPlayers();
+  const { refetch } = usePinnedPlayers(props.tournament.id);
 
   const handleFilterChange = (e: Record<string, any>) => {
     setFilter(e.target.value);
@@ -55,7 +55,11 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
         });
       }
 
-      const res = await addPinnedPlayer(session.data.user.email, player);
+      const res = await addPinnedPlayer(
+        props.tournament.id,
+        session.data.user.email,
+        player
+      );
 
       if (res.error) {
         return toast({
