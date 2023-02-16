@@ -5,6 +5,7 @@ import { Tournament } from '../../../../types/tournament';
 import { CommonCard } from '../../common/CommonCard';
 import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
+import { TournamentHomeLinks } from './TournamentHomeLinks';
 
 interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -12,7 +13,6 @@ interface TournamentHomeViewProps {
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   const session = useSession();
-  console.log(session.data?.user);
 
   if (!props.tournament) return null;
 
@@ -21,6 +21,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       <Heading size='xl' color='gray.700' paddingX={6}>
         {props.tournament.name}
       </Heading>
+      <TournamentHomeLinks tournament={props.tournament} />
       <Stack spacing={6}>
         <PlayerMatchupStatus
           tournament={props.tournament}
