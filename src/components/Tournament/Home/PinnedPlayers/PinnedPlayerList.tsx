@@ -25,6 +25,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             <PinnedPlayerCard
               key={`pinned-${pinnedPlayer?.name}`}
               player={pinnedPlayer}
+              tournament={props.tournament}
             />
           )
       )}

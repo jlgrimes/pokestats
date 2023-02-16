@@ -2,6 +2,7 @@ import { Heading, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
 import { TopDecks } from '../../Home/TopDecks';
 import { MyTournamentView } from './MyTournamentView';
+import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
 
 interface TournamentHomeViewProps {
@@ -19,6 +20,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         </Heading>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
+      <PinnedPlayerList tournament={props.tournament} />
       <MyTournamentView tournament={props.tournament} />
       <TopDecks tournament={props.tournament} />
     </Stack>
