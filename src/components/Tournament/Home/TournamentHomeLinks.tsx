@@ -1,5 +1,6 @@
 import { Button, Grid } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { FaTwitch } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
@@ -19,6 +20,8 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
     []
   );
   const streamLink = useStreamLink(props.tournament.id);
+  const router = useRouter();
+  console.log(router)
 
   return (
     <Grid paddingX={6} gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
@@ -40,10 +43,10 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       >
         Tournament Info
       </Button>
-      <Button {...commonProps} href={'/standings'}>
+      <Button {...commonProps} href={`${router.asPath}/standings`}>
         Standings
       </Button>
-      <Button {...commonProps} href={'/pairings'}>
+      <Button {...commonProps} href={`${router.asPath}/pairings`}>
         Pairings
       </Button>
     </Grid>
