@@ -78,7 +78,10 @@ export const formatTimeUntilTournament = (tournament: Tournament) => {
 export const tournamentHasArrivedButNotLive = (tournament: Tournament) => {
   const [startDate] = getTournamentRange(tournament);
 
-  return differenceInDays(startDate, new Date()) <= 0;
+  return (
+    tournament.tournamentStatus !== 'finished' &&
+    differenceInDays(startDate, new Date()) <= 0
+  );
 };
 
 export const tournamentFallsOnCurrentDate = (tournament: Tournament) => {

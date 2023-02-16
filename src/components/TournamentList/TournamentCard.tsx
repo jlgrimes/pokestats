@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useMemo } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import { getRK9TournamentUrl } from '../Tournament/helpers';
 import {
@@ -30,47 +31,47 @@ import {
   getTournamentStatusBadgeProps,
 } from './helpers';
 
-export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
-  const linkShouldGoToRK9 = useMemo(
-    () => tournament.tournamentStatus === 'not-started',
-    [tournament.tournamentStatus]
-  );
-
+export const TournamentCard = ({
+  tournament,
+  live,
+}: {
+  tournament: Tournament;
+  live?: boolean;
+}) => {
   return (
     <LinkBox>
-      <LinkOverlay
-        as={NextLink}
-        href={
-          linkShouldGoToRK9
-            ? getRK9TournamentUrl(tournament.rk9link)
-            : `/tournaments/${tournament.id}`
-        }
-        isExternal={linkShouldGoToRK9}
-      >
+      <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
         <Card>
           <Stack padding={4} spacing={1}>
-            <Stack spacing={0}>
-              <Heading size='sm' color='gray.700'>
-                {tournament.name}{' '}
-                {linkShouldGoToRK9 && (
-                  <Icon
-                    color='gray.700'
-                    mx={1}
-                    boxSize={4}
-                    as={ExternalLinkIcon}
-                    marginBottom={1}
-                  />
-                )}
+            <Stack spacing={live ? 2 : 0}>
+              <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
+                {tournament.name}
               </Heading>
               <div>
-                <Badge {...getTournamentStatusBadgeProps(tournament)}>
+                <Badge
+                  {...getTournamentStatusBadgeProps(tournament)}
+                  fontSize={live ? 'sm' : 'xs'}
+                >
                   {formatTournamentStatus(tournament)}
                 </Badge>
               </div>
             </Stack>
-            <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
-              {formatTournamentDate(tournament)}
-            </Heading>
+            {!live && (
+              <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
+                {formatTournamentDate(tournament)}
+              </Heading>
+            )}
+            {live && (
+              <div>
+                <Button
+                  variant='ghost'
+                  rightIcon={<FaArrowRight />}
+                  paddingX={1}
+                >
+                  View
+                </Button>
+              </div>
+            )}
           </Stack>
         </Card>
       </LinkOverlay>

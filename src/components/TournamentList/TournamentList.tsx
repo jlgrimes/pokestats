@@ -3,6 +3,7 @@ import { differenceInDays, parseISO } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { Tournament, TournamentStatus } from '../../../types/tournament';
 import { TournamentOrSet, useTournamentRender } from '../../hooks/sets';
+import { tournamentHasArrivedButNotLive } from './helpers';
 import { TournamentCard } from './TournamentCard';
 
 export const TournamentList = ({
@@ -26,22 +27,42 @@ export const TournamentList = ({
         );
       });
 
-      return [
-        ...items.filter(
-          tournament => tournament.data.tournamentStatus === 'running'
-        ),
-        ...upcomingTournaments,
-        ...finishedTournaments.slice(0, 2),
-      ];
+      const highlightedTournaments = items.filter(
+        tournament =>
+          tournament.data.tournamentStatus === 'running' ||
+          (tournament.data.date &&
+            tournamentHasArrivedButNotLive(
+              tournament.data as unknown as Tournament
+            ))
+      );
+
+      return {
+        highlightedTournamentsLength: highlightedTournaments.length,
+        items: [
+          ...highlightedTournaments,
+          ...upcomingTournaments,
+          ...finishedTournaments.slice(0, 2),
+        ],
+      };
     }
-    return items;
+    return {
+      highlightedTournamentsLength: 0,
+      items,
+    };
   }, [items, mostRecent]);
+  const parsedItems = getParsedItems();
 
   return (
     <Stack>
-      {getParsedItems()?.map((item: Record<string, any>, idx) => {
+      {parsedItems?.items.map((item: Record<string, any>, idx) => {
         if (item.type === 'tournament')
-          return <TournamentCard tournament={item.data} key={idx} />;
+          return (
+            <TournamentCard
+              tournament={item.data}
+              key={idx}
+              live={idx < parsedItems.highlightedTournamentsLength}
+            />
+          );
         return (
           <Text
             key={idx}
