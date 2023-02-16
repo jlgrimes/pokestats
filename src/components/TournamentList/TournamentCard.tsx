@@ -43,7 +43,7 @@ export const TournamentCard = ({ tournament }: { tournament: Tournament }) => {
         href={
           linkShouldGoToRK9
             ? getRK9TournamentUrl(tournament.rk9link)
-            : `/tournaments/${tournament.id}/standings`
+            : `/tournaments/${tournament.id}`
         }
         isExternal={linkShouldGoToRK9}
       >
