@@ -45,7 +45,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
       status: 'success',
       title: `Successfully unpinned ${props.player.name}`,
     });
-  }, [props.player.name, session.data?.user?.email, toast]);
+  }, [props.player.name, session.data?.user?.email, toast, refetch]);
 
   return (
     <Card>

@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
+import { useLiveTournamentResults } from './tournamentResults';
 
 export const fetchPinnedPlayers = async (user?: string | null) => {
   if (!user) return null;
@@ -9,7 +11,9 @@ export const fetchPinnedPlayers = async (user?: string | null) => {
     .from('Pinned Players')
     .select('pinned_player_name')
     .eq('user_account', user);
-  return res.data?.map(({ pinned_player_name }) => pinned_player_name);
+  return res.data?.map(
+    ({ pinned_player_name }) => pinned_player_name as String
+  );
 };
 
 export const usePinnedPlayers = () => {
@@ -39,8 +43,24 @@ export const addPinnedPlayer = async (
   pinnedPlayerToAdd: string
 ) => {
   const res = await supabase.from('Pinned Players').insert({
-    email: userEmail,
+    user_account: userEmail,
     pinned_player_name: pinnedPlayerToAdd,
   });
   return res;
+};
+
+export const useAvailablePinnedPlayerNames = (tournamentId: string) => {
+  const { data: pinnedPlayers, isLoading: isPinnedPlayersLoading } =
+    usePinnedPlayers();
+  const { data: liveResults, isLoading: isLiveTournamentResultsLoading } =
+    useLiveTournamentResults(tournamentId);
+
+  return {
+    data: liveResults?.data.reduce((acc: string[], curr: Standing) => {
+      if (pinnedPlayers?.some(name => name === curr.name)) return acc;
+
+      return [...acc, curr.name];
+    }, []),
+    isLoading: isPinnedPlayersLoading || isLiveTournamentResultsLoading,
+  };
 };
