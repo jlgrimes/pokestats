@@ -2,7 +2,6 @@ import { useDisclosure, UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
-import { useUserIsAdmin } from '../../../hooks/administrators';
 import { usePlayerDecks } from '../../../hooks/playerDecks';
 import { useLiveTournamentPlayers } from '../../../hooks/tournamentResults';
 import supabase from '../../../lib/supabase/client';
@@ -20,7 +19,6 @@ export const ReportModal = (props: ReportModalProps) => {
   const { data: playerDecks } = usePlayerDecks(props.tournament.id);
 
   const { data: playerNames } = useLiveTournamentPlayers(props.tournament.id);
-  const { data: userIsAdmin } = useUserIsAdmin();
 
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
   const [isStreamDeck, setIsStreamDeck] = useState(false);
@@ -65,7 +63,7 @@ export const ReportModal = (props: ReportModalProps) => {
         deck_archetype: deck.id,
         on_stream: isStreamDeck,
         user_who_submitted: session.data?.user?.email,
-        user_submitted_was_admin: userIsAdmin,
+        user_submitted_was_admin: true,
       });
       if (error) {
         return toast({
@@ -97,7 +95,7 @@ export const ReportModal = (props: ReportModalProps) => {
             onChange={handleDeckSelect}
             tournamentId={props.tournament.id}
             modalControls={archetypeModalControls}
-            userIsAdmin={userIsAdmin}
+            userIsAdmin={true}
             isListUp={false}
             isStreamDeck={isStreamDeck}
             toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
