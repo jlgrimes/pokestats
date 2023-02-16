@@ -24,6 +24,7 @@ export const MyTournamentView = (props: MyTournamentViewProps) => {
       <PlayerMatchupStatus
         tournament={props.tournament}
         user={session.data?.user as StoredPlayerProfile}
+        shouldHideOpponentView
       />
       <MyMatchupsList tournament={props.tournament} user={session.data?.user} />
     </Stack>

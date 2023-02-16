@@ -21,7 +21,6 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   );
   const streamLink = useStreamLink(props.tournament.id);
   const router = useRouter();
-  console.log(router)
 
   return (
     <Grid paddingX={6} gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>

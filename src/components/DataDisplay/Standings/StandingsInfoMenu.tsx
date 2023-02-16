@@ -19,6 +19,7 @@ interface StandingsInfoMenuProps {
   result: Standing;
   onEditOpen: () => void;
   enableEdits: boolean;
+  shouldHideOpponentView?: boolean;
 }
 
 export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
@@ -51,9 +52,11 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           <MenuItem fontSize='lg' onClick={onListOpen}>
             View Deck List
           </MenuItem>
-          <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
-            View Player Matchups
-          </MenuItem>
+          {!props.shouldHideOpponentView && (
+            <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
+              View Player Matchups
+            </MenuItem>
+          )}
           {props.enableEdits && (
             <MenuItem fontSize='lg' onClick={props.onEditOpen}>
               Edit Deck

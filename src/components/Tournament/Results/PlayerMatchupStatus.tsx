@@ -58,9 +58,11 @@ const RecordNeeded = ({
 export const PlayerMatchupStatus = ({
   tournament,
   user,
+  shouldHideOpponentView
 }: {
   tournament: Tournament;
   user: StoredPlayerProfile | null;
+  shouldHideOpponentView?: boolean;
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
   const session = useSession();
@@ -109,6 +111,7 @@ export const PlayerMatchupStatus = ({
             enableEdits={isCurrentUser}
             shouldShowAsText
             shouldHideDeck={shouldHideDecks}
+            shouldHideOpponentView={shouldHideOpponentView}
           />
           {tournamentFinished && (
             <Heading size='xs' color='gray.700'>

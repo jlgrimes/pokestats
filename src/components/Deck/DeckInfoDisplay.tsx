@@ -14,6 +14,7 @@ export const DeckInfoDisplay = memo(
     disableList,
     shouldHideDeck,
     shouldHideVerifiedIcon,
+    shouldHideOpponentView,
   }: {
     player: Standing;
     tournament: Tournament;
@@ -22,6 +23,7 @@ export const DeckInfoDisplay = memo(
     disableList?: boolean;
     shouldHideDeck?: boolean;
     shouldHideVerifiedIcon?: boolean;
+    shouldHideOpponentView?: boolean;
   }) => {
     const archetypeModal = useDisclosure();
     return (
@@ -38,7 +40,13 @@ export const DeckInfoDisplay = memo(
           />
         </StackItem>
 
-        <StandingsInfoMenu result={player} tournament={tournament} onEditOpen={archetypeModal.onOpen} enableEdits={enableEdits}/>
+        <StandingsInfoMenu
+          result={player}
+          tournament={tournament}
+          onEditOpen={archetypeModal.onOpen}
+          enableEdits={enableEdits}
+          shouldHideOpponentView={shouldHideOpponentView}
+        />
 
         {/* {player?.deck?.list && !disableList && (
           <ListViewerOpenButton result={player} tournament={tournament} />
