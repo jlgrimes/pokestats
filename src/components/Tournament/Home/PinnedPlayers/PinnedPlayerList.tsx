@@ -48,6 +48,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
         <Button
           leftIcon={<FaMapPin />}
           onClick={addPinPlayerModalControls.onOpen}
+          isDisabled={props.tournament.tournamentStatus === 'not-started'}
         >
           Pin a player
         </Button>
