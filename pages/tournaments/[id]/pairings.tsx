@@ -1,5 +1,5 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { PairingsView } from '../../../src/components/Tournament/Pairings.tsx/PairingsView';
+import { PairingsView } from '../../../src/components/Tournament/Pairings/PairingsView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { fetchLiveResults } from '../../../src/lib/fetch/fetchLiveResults';
