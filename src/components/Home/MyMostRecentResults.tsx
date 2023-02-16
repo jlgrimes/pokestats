@@ -76,7 +76,7 @@ export const MyMostRecentResults = memo(
             : '/'
         }
       >
-        <CardBody padding={0} height={63.9}>
+        <CardBody padding={0}>
           {loaded ? (
             <PlayerMatchupStatus
               tournament={resultToShowTournament}
