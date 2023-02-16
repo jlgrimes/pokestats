@@ -69,6 +69,7 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
         });
       }
 
+      props.modalControls.onClose && props.modalControls.onClose();
       await refetch();
 
       return toast({
