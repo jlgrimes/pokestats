@@ -10,11 +10,11 @@ export const MyMatchupsList = memo(
     user,
   }: {
     tournament: Tournament;
-    user: Record<string, any>;
+    user: Record<string, any> | undefined;
   }) => {
     const { player, shouldHideDecks } = usePlayerLiveResults(
       tournament.id,
-      user.name,
+      user?.name,
       {
         load: { opponentRoundData: true },
       }

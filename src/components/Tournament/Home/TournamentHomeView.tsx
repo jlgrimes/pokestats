@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { StoredPlayerProfile } from '../../../../types/player';
 import { Tournament } from '../../../../types/tournament';
 import { CommonCard } from '../../common/CommonCard';
+import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
 
 interface TournamentHomeViewProps {
@@ -16,18 +17,20 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   if (!props.tournament) return null;
 
   return (
-    <Stack paddingY={4} paddingX={6}>
-      <Heading size='xl' color='gray.700'>
+    <Stack paddingY={4}>
+      <Heading size='xl' color='gray.700' paddingX={6}>
         {props.tournament.name}
       </Heading>
-      <CommonCard loading={!session?.data?.user}>
-        <CardBody padding={0} height={63.9}>
-          <PlayerMatchupStatus
-            tournament={props.tournament}
-            user={session.data?.user as StoredPlayerProfile}
-          />
-        </CardBody>
-      </CommonCard>
+      <Stack spacing={6}>
+        <PlayerMatchupStatus
+          tournament={props.tournament}
+          user={session.data?.user as StoredPlayerProfile}
+        />
+        <MyMatchupsList
+          tournament={props.tournament}
+          user={session.data?.user}
+        />
+      </Stack>
     </Stack>
   );
 };
