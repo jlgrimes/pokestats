@@ -53,7 +53,7 @@ export const getPatchedTournament = async (
       liveResults.data.length > 0);
   
   const now = new Date();
-  const tournamentIsLongGone = differenceInDays(parseISO(tournamentFromApi.date.end), now) > 4;
+  const tournamentIsLongGone = differenceInDays(now, parseISO(tournamentFromApi.date.end)) > 4;
 
   const patchedTournament: Tournament = {
     ...tournamentFromApi,
