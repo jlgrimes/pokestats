@@ -151,7 +151,8 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                   {filteredSupertypes?.map(supertype => (
                     <Card key={supertype} borderRadius={0}>
                       <CardBody
-                        padding={2}
+                        paddingX={4}
+                        paddingY={3}
                         onClick={() => {
                           formik.setFieldValue('supertype', supertype);
                           onClose();
