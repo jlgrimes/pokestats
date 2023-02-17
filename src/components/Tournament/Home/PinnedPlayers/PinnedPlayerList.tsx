@@ -29,7 +29,6 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
       return 0;
     });
-
   const addPinPlayerModalControls = useDisclosure();
 
   return (

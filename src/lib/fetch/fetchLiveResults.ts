@@ -246,6 +246,8 @@ function mapResultsArray(
   return mappedArray;
 }
 
+export const cropPlayerName = (name: string) => name.split('[')[0].trim();
+
 export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   const perfStart = performance.now();
 
@@ -261,7 +263,8 @@ export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   data = data
     .map((player: Standing) => ({
       ...player,
-      name: player.name.split('[')[0].trim(),
+      name: cropPlayerName(player.name),
+      
     }))
     .filter((player: Standing) => player.placing !== 9999);
 

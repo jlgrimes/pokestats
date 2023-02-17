@@ -23,6 +23,7 @@ import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useIsMobile } from '../../../hooks/device';
 import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
+import { cropPlayerName } from '../../../lib/fetch/fetchLiveResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { Record } from '../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
@@ -86,13 +87,16 @@ export const OpponentRoundList = ({
               opponents
                 .slice(0)
                 .reverse()
-                .map(({ name, result }) => ({
-                  standing: liveResults?.data.find(
-                    standing => standing.name === name
-                  ),
-                  name,
-                  result,
-                }))
+                .map(({ name, result }) => {
+                  const standing = liveResults?.data.find(
+                    standing => standing.name === cropPlayerName(name)
+                  );
+                  return {
+                    standing,
+                    name,
+                    result,
+                  };
+                })
                 .map(
                   ({ standing, name, result }, idx) =>
                     standing && (
