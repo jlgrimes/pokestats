@@ -39,6 +39,7 @@
     "next-auth": "^4.18.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-google-autocomplete": "^2.7.3",
     "react-icons": "^4.7.1",
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "^1.8.8",

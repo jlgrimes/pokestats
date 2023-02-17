@@ -20,10 +20,15 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { QueryClient } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Tournament } from '../../../../types/tournament';
-import { useTournamentMetadata } from '../../../hooks/tournamentMetadata';
+import {
+  useLocation,
+  useStreamLink,
+  useTournamentMetadata,
+} from '../../../hooks/tournamentMetadata';
 import supabase from '../../../lib/supabase/client';
+import Autocomplete from 'react-google-autocomplete';
 
 export const EditTournamentInfoModal = ({
   isOpen,
@@ -35,53 +40,72 @@ export const EditTournamentInfoModal = ({
   tournament: Tournament;
 }) => {
   const toast = useToast();
-  const { data: streamInfo, refetch } = useTournamentMetadata(
-    tournament.id,
-    'stream'
+  const { data: streamLink, refetch } = useStreamLink(tournament.id);
+  const { data: location } = useLocation(tournament.id);
+
+  const [streamUrlEnabled, setStreamUrlEnabled] = useState(!!streamLink);
+  const [streamUrl, setStreamUrl] = useState<string | undefined>(
+    streamLink?.data
   );
-  const streamUrlFromSupa = streamInfo?.at(0)?.data;
+  const [place, setPlace] = useState<Record<string, any> | undefined>(location);
 
-  const [streamUrlEnabled, setStreamUrlEnabled] = useState(!!streamUrlFromSupa);
-  const [streamUrl, setStreamUrl] = useState(streamUrlFromSupa);
+  useEffect(() => {
+    setPlace(location);
+  }, [location]);
 
-  const handleSubmit = useCallback(async () => {
-    if (streamUrlFromSupa) {
-      const res = await supabase
-        .from('Tournament Metadata')
-        .update({
-          data: streamUrl,
-        })
-        .match({ tournament: tournament.id });
-      if (res.error) {
-        return toast({
-          status: 'error',
-          title: 'Error updating',
-          description: res.error.message,
+  const handleSubmit = useCallback(
+    async (type: 'stream' | 'location') => {
+      if (
+        (type === 'stream' && streamLink?.data) ||
+        (type === 'location' && location?.data)
+      ) {
+        const res = await supabase
+          .from('Tournament Metadata')
+          .update({
+            data: type === 'stream' ? streamUrl : place,
+          })
+          .match({ tournament: tournament.id, type });
+        if (res.error) {
+          return toast({
+            status: 'error',
+            title: 'Error updating ' + type,
+            description: res.error.message,
+          });
+        }
+        onClose();
+      } else {
+        const res = await supabase.from('Tournament Metadata').insert({
+          tournament: tournament.id,
+          type,
+          data: type === 'stream' ? streamUrl : place,
         });
+        if (res.error) {
+          return toast({
+            status: 'error',
+            title: 'Error inserting ' + type,
+            description: res.error.message,
+          });
+        }
       }
-      onClose();
-    } else {
-      const res = await supabase.from('Tournament Metadata').insert({
-        tournament: tournament.id,
-        type: 'stream',
-        data: streamUrl,
+      await refetch();
+
+      toast({
+        status: 'success',
+        title: 'Success updating ' + type,
       });
-      if (res.error) {
-        return toast({
-          status: 'error',
-          title: 'Error inserting',
-          description: res.error.message,
-        });
-      }
-    }
-    await refetch();
-
-    toast({
-      status: 'success',
-      title: 'Success updating stream!',
-    });
-    onClose();
-  }, [onClose, streamUrl, streamUrlFromSupa, toast, tournament.id, refetch]);
+      onClose();
+    },
+    [
+      onClose,
+      streamUrl,
+      streamLink?.data,
+      toast,
+      tournament.id,
+      refetch,
+      place,
+      location?.data,
+    ]
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -90,43 +114,66 @@ export const EditTournamentInfoModal = ({
         <ModalHeader>Edit tournament info</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Grid gridTemplateColumns={'1fr 1fr'}>
-            <HStack>
-              <Text>Stream Link</Text>
-              <Switch
-                isChecked={streamUrlEnabled}
-                onChange={() => setStreamUrlEnabled(!streamUrlEnabled)}
-              />
-            </HStack>
-            <HStack>
-              <RadioGroup
-                onChange={value => setStreamUrl(value)}
-                value={streamUrl}
-                isDisabled={!streamUrlEnabled}
-              >
-                <Stack>
-                  <Radio value='https://www.twitch.tv/pokemontcg'>
-                    Pokemon TCG Twitch
-                  </Radio>
-                  <Radio value='https://www.twitch.tv/limitless_tcg'>
-                    Limitless Twitch
-                  </Radio>
-                </Stack>
-              </RadioGroup>
-            </HStack>
-          </Grid>
+          <Stack>
+            <Grid gridTemplateColumns={'1fr 1fr'}>
+              <HStack>
+                <Text>Stream Link</Text>
+                <Switch
+                  isChecked={streamUrlEnabled}
+                  onChange={() => setStreamUrlEnabled(!streamUrlEnabled)}
+                />
+              </HStack>
+              <HStack>
+                <RadioGroup
+                  onChange={value => setStreamUrl(value)}
+                  value={streamUrl}
+                  isDisabled={!streamUrlEnabled}
+                >
+                  <Stack>
+                    <Radio value='https://www.twitch.tv/pokemontcg'>
+                      Pokemon TCG Twitch
+                    </Radio>
+                    <Radio value='https://www.twitch.tv/limitless_tcg'>
+                      Limitless Twitch
+                    </Radio>
+                  </Stack>
+                </RadioGroup>
+              </HStack>
+            </Grid>
+            <Button
+              isDisabled={
+                (!streamUrlEnabled && !streamLink?.data) ||
+                (streamUrlEnabled && streamUrl === streamLink?.data)
+              }
+              onClick={() => handleSubmit('stream')}
+            >
+              Update stream
+            </Button>
+          </Stack>
+          <Stack>
+            <Autocomplete
+              defaultValue={place?.formatted_address}
+              apiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY}
+              onPlaceSelected={place => setPlace(place)}
+              options={{
+                fields: [
+                  'formatted_address',
+                  'utc_offset_minutes',
+                  'address_components',
+                ],
+              }}
+            />
+            <Button
+              isDisabled={
+                !place ||
+                place?.formatted_address === location?.formatted_address
+              }
+              onClick={() => handleSubmit('location')}
+            >
+              Update location
+            </Button>
+          </Stack>
         </ModalBody>
-        <ModalFooter>
-          <Button
-            isDisabled={
-              (!streamUrlEnabled && !streamUrlFromSupa) ||
-              (streamUrlEnabled && streamUrl === streamUrlFromSupa)
-            }
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

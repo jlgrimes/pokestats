@@ -34,8 +34,7 @@ export const prewarmTournament = async (
   await queryClient.prefetchQuery([`pokedex`], fetchPokedex);
   await queryClient.prefetchQuery(['deck-archetypes'], fetchArchetypes);
   // TODO: update with other tournament metadata if needed
-  await queryClient.prefetchQuery(
-    ['tournament-metadata', tournamentId, 'stream'],
-    () => fetchTournamentMetadata(tournamentId, 'stream')
+  await queryClient.prefetchQuery(['tournament-metadata', tournamentId], () =>
+    fetchTournamentMetadata(tournamentId)
   );
 };

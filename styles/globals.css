@@ -33,3 +33,7 @@ a {
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
 }
+
+.pac-container {
+  z-index: 999999;
+}
