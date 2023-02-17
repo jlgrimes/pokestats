@@ -18,12 +18,16 @@ import {
   Badge,
   ButtonGroup,
   Icon,
+  Grid,
+  Box,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useMemo } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
+import { useCountryCode, useLocation } from '../../hooks/tournamentMetadata';
 import { getRK9TournamentUrl } from '../Tournament/helpers';
+import { CountryFlag } from '../Tournament/Home/CountryFlag';
 import {
   formatTimeUntilTournament,
   formatTournamentDate,
@@ -39,15 +43,22 @@ export const TournamentCard = ({
   tournament: Tournament;
   live?: boolean;
 }) => {
+  const countryCode = useCountryCode(tournament.id);
+
   return (
     <LinkBox>
       <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
         <Card>
           <Stack padding={live ? 6 : 4} spacing={live ? 3 : 1}>
             <Stack spacing={live ? 1 : 0}>
-              <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
-                {tournament.name}
-              </Heading>
+              <Grid gridTemplateColumns={'4fr 1fr'} alignItems='end'>
+                <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
+                  {tournament.name}
+                </Heading>
+                <Box paddingBottom={live ? 1 : 0}>
+                  {countryCode && <CountryFlag countryCode={countryCode} />}
+                </Box>
+              </Grid>
               <TournamentStatusBadge
                 tournament={tournament}
                 size={live ? 'sm' : 'xs'}

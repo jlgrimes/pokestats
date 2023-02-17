@@ -1,7 +1,7 @@
 import { Badge, Heading, HStack, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
 import { useStoredDecks } from '../../../hooks/finalResults';
-import { useLocation } from '../../../hooks/tournamentMetadata';
+import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { TopDecks } from '../../Home/TopDecks';
 import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
@@ -17,15 +17,14 @@ interface TournamentHomeViewProps {
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   const { data: location } = useLocation(props.tournament?.id ?? '');
+  const country = useCountryCode(props.tournament?.id ?? '');
+
   const decks = useStoredDecks({
     tournamentRange: [
       parseInt(props.tournament?.id as string),
       parseInt(props.tournament?.id as string),
     ],
   });
-  const country = location?.address_components?.find(({ types }) =>
-    types.includes('country')
-  )?.short_name;
 
   if (!props.tournament) return null;
 

@@ -52,3 +52,13 @@ export const useLocation = (tournamentId: string) => {
     ...rest,
   };
 };
+
+export const useCountryCode = (tournamentId: string) => {
+  const { data: location } = useLocation(tournamentId);
+
+  const country = location?.address_components?.find(({ types }) =>
+    types.includes('country')
+  )?.short_name;
+
+  return country;
+};
