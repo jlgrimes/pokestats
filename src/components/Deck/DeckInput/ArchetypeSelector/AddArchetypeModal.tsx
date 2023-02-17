@@ -61,12 +61,14 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
 
   const handleSubmit = async ({
     name,
+    supertype,
     pokemon1,
     pokemon2,
     identifiableCard1,
     identifiableCard2,
   }: {
     name: string;
+    supertype: string;
     pokemon1: string;
     pokemon2: string;
     identifiableCard1: string;
@@ -74,6 +76,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
   }) => {
     await mutateArchetypes.mutate({
       name,
+      supertype,
       pokemon1,
       pokemon2,
       identifiableCard1,
@@ -93,6 +96,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required('Required'),
+      supertype: Yup.string().required('Required'),
       pokemon1: Yup.string().required('Required'),
       identifiableCard1: Yup.string().required('Required'),
       identifiableCard2: Yup.string().required('Required'),

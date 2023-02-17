@@ -50,12 +50,14 @@ export const useSupertypes = () => {
 
 const addArchetype = async ({
   name,
+  supertype,
   pokemon1,
   pokemon2,
   identifiableCard1,
   identifiableCard2,
 }: {
   name: string;
+  supertype: string;
   pokemon1: string;
   pokemon2: string;
   identifiableCard1: string;
@@ -64,6 +66,7 @@ const addArchetype = async ({
   const result = await supabase.from('Deck Archetypes').insert([
     {
       name,
+      supertype,
       defined_pokemon: [pokemon1, pokemon2].filter(
         pokemon => pokemon.length > 0
       ),
