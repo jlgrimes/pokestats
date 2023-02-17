@@ -44,9 +44,7 @@ export const EditTournamentInfoModal = ({
   const { data: location } = useLocation(tournament.id);
 
   const [streamUrlEnabled, setStreamUrlEnabled] = useState(!!streamLink);
-  const [streamUrl, setStreamUrl] = useState<string | undefined>(
-    streamLink?.data
-  );
+  const [streamUrl, setStreamUrl] = useState<string | undefined>(streamLink);
   const [place, setPlace] = useState<Record<string, any> | undefined>(location);
 
   useEffect(() => {
@@ -56,8 +54,8 @@ export const EditTournamentInfoModal = ({
   const handleSubmit = useCallback(
     async (type: 'stream' | 'location') => {
       if (
-        (type === 'stream' && streamLink?.data) ||
-        (type === 'location' && location?.data)
+        (type === 'stream' && streamLink) ||
+        (type === 'location' && location)
       ) {
         const res = await supabase
           .from('Tournament Metadata')
@@ -98,12 +96,12 @@ export const EditTournamentInfoModal = ({
     [
       onClose,
       streamUrl,
-      streamLink?.data,
+      streamLink,
       toast,
       tournament.id,
       refetch,
       place,
-      location?.data,
+      location,
     ]
   );
 
@@ -142,8 +140,8 @@ export const EditTournamentInfoModal = ({
             </Grid>
             <Button
               isDisabled={
-                (!streamUrlEnabled && !streamLink?.data) ||
-                (streamUrlEnabled && streamUrl === streamLink?.data)
+                (!streamUrlEnabled && !streamLink) ||
+                (streamUrlEnabled && streamUrl === streamLink)
               }
               onClick={() => handleSubmit('stream')}
             >
