@@ -141,25 +141,27 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                   onChange={formik.handleChange}
                   placeholder='Supertype name (ex. Lost Box) *'
                   onFocus={onOpen}
-                  onBlur={onClose}
+                  onBlur={() => window.setTimeout(() => onClose(), 100)}
                 />
-                {isOpen && (
-                  <Box position='absolute' zIndex={5000}>
-                    {filteredSupertypes?.map(supertype => (
-                      <Card key={supertype} borderRadius={0}>
-                        <CardBody
-                          padding={2}
-                          onClick={() => {
-                            formik.setFieldValue('supertype', supertype);
-                            onClose();
-                          }}
-                        >
-                          {supertype}
-                        </CardBody>
-                      </Card>
-                    ))}
-                  </Box>
-                )}
+                <Box
+                  position='absolute'
+                  visibility={isOpen ? 'visible' : 'hidden'}
+                  zIndex={5000}
+                >
+                  {filteredSupertypes?.map(supertype => (
+                    <Card key={supertype} borderRadius={0}>
+                      <CardBody
+                        padding={2}
+                        onClick={() => {
+                          formik.setFieldValue('supertype', supertype);
+                          onClose();
+                        }}
+                      >
+                        {supertype}
+                      </CardBody>
+                    </Card>
+                  ))}
+                </Box>
               </Box>
               <FormLabel>Pokémon to be displayed as sprites</FormLabel>
               <Text fontSize='sm'>
