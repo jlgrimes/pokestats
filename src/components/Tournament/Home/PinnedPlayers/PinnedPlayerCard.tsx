@@ -43,11 +43,6 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
     }
 
     await refetch();
-
-    return toast({
-      status: 'success',
-      title: `Successfully unpinned ${props.player.name}`,
-    });
   }, [props.player.name, session.data?.user?.email, toast, refetch]);
 
   return (
