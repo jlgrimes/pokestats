@@ -51,19 +51,17 @@ const addArchetype = async ({
   identifiableCard1: string;
   identifiableCard2: string;
 }) => {
-  const result = await supabase
-    .from('Deck Archetypes')
-    .insert([
-      {
-        name,
-        defined_pokemon: [pokemon1, pokemon2].filter(
-          pokemon => pokemon.length > 0
-        ),
-        identifiable_cards: [identifiableCard1, identifiableCard2].filter(
-          card => card.length > 0
-        ),
-      },
-    ]);
+  const result = await supabase.from('Deck Archetypes').insert([
+    {
+      name,
+      defined_pokemon: [pokemon1, pokemon2].filter(
+        pokemon => pokemon.length > 0
+      ),
+      identifiable_cards: [identifiableCard1, identifiableCard2].filter(
+        card => card.length > 0
+      ),
+    },
+  ]);
   return result;
 };
 
@@ -99,11 +97,11 @@ interface MostPopularArchetypesOptions {
 export const useMostPopularArchetypes = (
   tournamentId: string,
   options?: MostPopularArchetypesOptions
-): Deck[] | null | undefined => {
+) => {
   const { data: liveResults } = useLiveTournamentResults(tournamentId, {
     load: { allRoundData: true },
   });
-  const { data: archetypes } = useArchetypes();
+  const { data: archetypes, refetch } = useArchetypes();
 
   const playerDeckCounts = liveResults?.data?.reduce(
     (acc: Record<string, { deck: Deck; count: number }>, player: Standing) => {
@@ -136,7 +134,10 @@ export const useMostPopularArchetypes = (
   );
 
   if (!playerDeckCounts) {
-    return null;
+    return {
+      data: null,
+      refetchArchetypes: refetch,
+    };
   }
 
   if (options?.shouldIncludeDecksNotPlayed) {
@@ -161,7 +162,10 @@ export const useMostPopularArchetypes = (
       return 0;
     });
 
-    return sortedArchetypes;
+    return {
+      data: sortedArchetypes,
+      refetchArchetypes: refetch,
+    };
   }
 
   const deckArchetypes = Object.values(playerDeckCounts);
@@ -178,5 +182,8 @@ export const useMostPopularArchetypes = (
     return 0;
   });
 
-  return sortedArchetypes.map(({ deck }) => deck);
+  return {
+    data: sortedArchetypes.map(({ deck }) => deck),
+    refetchArchetypes: refetch,
+  };
 };

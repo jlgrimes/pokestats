@@ -14,6 +14,8 @@ import {
   ModalFooter,
   StackItem,
   Checkbox,
+  HStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import SpriteAndNameDisplay from '../../../common/SpriteDisplay/SpriteAndNameDisplay';
@@ -21,13 +23,17 @@ import { Deck } from '../../../../../types/tournament';
 import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import { ArchetypeSelectorProps } from './ArchetypeSelector';
 import { useTwitterLink } from '../../../../hooks/twitter';
+import AddArchetypeModal from './AddArchetypeModal';
+import { FaDog } from 'react-icons/fa';
 
 export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
   const [selectedArchetype, setSelectedArchetype] = useState<Deck | null>(null);
   const [filterQuery, setFilterQuery] = useState<string>('');
-  const mostPopularDecks = useMostPopularArchetypes(props.tournamentId, {
-    shouldIncludeDecksNotPlayed: true,
-  });
+  const { data: mostPopularDecks, refetchArchetypes } =
+    useMostPopularArchetypes(props.tournamentId, {
+      shouldIncludeDecksNotPlayed: true,
+    });
+  const addArchetypeModalControls = useDisclosure();
   const myTwitter = useTwitterLink('jgrimesey');
 
   const filteredDecks: Deck[] = useMemo(
@@ -68,13 +74,28 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={4}>
-            {props.userIsAdmin && props.toggleIsStreamDeck && (
-              <Checkbox
-                isChecked={props.isStreamDeck}
-                onChange={props.toggleIsStreamDeck}
-              >
-                On stream
-              </Checkbox>
+            {props.userIsAdmin && (
+              <HStack spacing={4}>
+                {props.toggleIsStreamDeck && (
+                  <Checkbox
+                    isChecked={props.isStreamDeck}
+                    onChange={props.toggleIsStreamDeck}
+                  >
+                    On stream
+                  </Checkbox>
+                )}
+                <Button
+                  onClick={addArchetypeModalControls.onOpen}
+                  leftIcon={<FaDog />}
+                >
+                  Add new deck
+                </Button>
+                <AddArchetypeModal
+                  isOpen={addArchetypeModalControls.isOpen}
+                  onClose={addArchetypeModalControls.onClose}
+                  handleArchetypeChange={() => refetchArchetypes()}
+                />
+              </HStack>
             )}
             {props.userIsAdmin && props.isListUp && (
               <Text>
