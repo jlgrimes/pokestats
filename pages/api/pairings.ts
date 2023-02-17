@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { FetchPairingsSchema } from '../../types/pairings';
+import { cropPlayerName } from '../../src/lib/fetch/fetchLiveResults';
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,7 +16,18 @@ export default async function handler(
 
     if (!response.ok) return res.status(500);
 
-    const data: FetchPairingsSchema = await response.json();
+    let data = await response.json();
+
+    data = data.map(round => ({
+      ...round,
+      tables: round.tables.map(table => ({
+        ...table,
+        players: table.players.map(player => ({
+          ...player,
+          name: cropPlayerName(player.name),
+        })),
+      })),
+    }));
 
     res.status(200).json(data);
   } catch (err) {
