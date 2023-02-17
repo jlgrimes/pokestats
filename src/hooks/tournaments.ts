@@ -24,24 +24,6 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
     name: shortenTournamentName(tournament),
   }));
 
-  data = data.map(tournament => {
-    if (isBefore(new Date(), parseISO(tournament.date.start))) {
-      return {
-        ...tournament,
-        tournamentStatus: 'not-started',
-      };
-    }
-
-    if (isAfter(new Date(), parseISO(tournament.date.start))) {
-      return {
-        ...tournament,
-        tournamentStatus: 'finished',
-      };
-    }
-
-    return tournament;
-  });
-
   if (options?.onlyFinished) {
     data = data.filter(
       tournament => tournament.tournamentStatus === 'finished'
