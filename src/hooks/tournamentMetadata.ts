@@ -26,16 +26,29 @@ export const useStreamLink = (tournamentId: string) => {
   };
 };
 
+interface LocationDataSchema {
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[];
+  formatted_address: string;
+  utc_offset_minutes: number;
+}
+
 export const useLocation = (tournamentId: string) => {
   const { data: tournamentMetadata, ...rest } =
     useTournamentMetadata(tournamentId);
 
-  const data = tournamentMetadata?.find(
+  const dataStr: string | undefined = tournamentMetadata?.find(
     ({ type }) => type === 'location'
   )?.data;
+  const data: LocationDataSchema | undefined = dataStr
+    ? JSON.parse(dataStr)
+    : undefined;
 
   return {
-    data: data ? JSON.parse(data) : undefined,
+    data,
     ...rest,
   };
 };
