@@ -10,6 +10,7 @@ export const CountryFlag = (props: CountryFlagProps) => {
   return (
     <Box>
       <Image
+        opacity='0.85'
         crossOrigin='anonymous'
         alt={`${props.countryCode} flag`}
         src={url}

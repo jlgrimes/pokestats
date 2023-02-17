@@ -51,7 +51,7 @@ export const TournamentCard = ({
         <Card>
           <Stack padding={live ? 6 : 4} spacing={live ? 3 : 1}>
             <Stack spacing={live ? 1 : 0}>
-              <Grid gridTemplateColumns={'4fr 1fr'} alignItems='end'>
+              <Grid gridTemplateColumns={'5fr 1fr'} alignItems='end'>
                 <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
                   {tournament.name}
                 </Heading>
