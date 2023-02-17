@@ -22,6 +22,9 @@ import {
   MenuItem,
   forwardRef,
   useDisclosure,
+  Box,
+  Card,
+  CardBody,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import {
@@ -38,21 +41,6 @@ interface AddArchetypeModalProps {
   onClose: () => void;
   handleArchetypeChange?: (name: string) => void;
 }
-
-const SupertypeInput = forwardRef((props, ref) => {
-  return (
-    <Fragment>
-      <Input
-        name='supertype'
-        value={props.formik.values.supertype}
-        onChange={props.formik.handleChange}
-        placeholder='Supertype name (ex. Lost Box) *'
-        onFocus={props.onFocus}
-      />
-      <div ref={ref} />
-    </Fragment>
-  );
-});
 
 export default function AddArchetypeModal(props: AddArchetypeModalProps) {
   const { data: supertypes } = useSupertypes();
@@ -114,6 +102,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
       : [];
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const supertypeRef = useRef(null);
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
@@ -145,29 +134,33 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                   ref={supertypeRef}
                 />
               </FormControl> */}
-              <Menu isOpen={isOpen} onClose={onClose} isLazy>
-                <MenuButton
-                  as={SupertypeInput}
-                  formik={formik}
-                  onFocus={() => {
-                    onOpen();
-                  }}
+              <Box ref={supertypeRef} position='relative'>
+                <Input
+                  name='supertype'
+                  value={formik.values.supertype}
+                  onChange={formik.handleChange}
+                  placeholder='Supertype name (ex. Lost Box) *'
+                  onFocus={onOpen}
+                  onBlur={onClose}
                 />
-                <MenuList>
-                  {filteredSupertypes?.map(supertype => (
-                    <MenuItem
-                      isFocusable={false}
-                      key={supertype}
-                      onClick={() => {
-                        formik.setFieldValue('supertype', supertype);
-                        onClose();
-                      }}
-                    >
-                      {supertype}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </Menu>
+                {isOpen && (
+                  <Box position='absolute' zIndex={5000}>
+                    {filteredSupertypes?.map(supertype => (
+                      <Card key={supertype} borderRadius={0}>
+                        <CardBody
+                          padding={2}
+                          onClick={() => {
+                            formik.setFieldValue('supertype', supertype);
+                            onClose();
+                          }}
+                        >
+                          {supertype}
+                        </CardBody>
+                      </Card>
+                    ))}
+                  </Box>
+                )}
+              </Box>
               <FormLabel>Pokémon to be displayed as sprites</FormLabel>
               <Text fontSize='sm'>
                 Verify the Pokémon shows how you want it here before submitting.
