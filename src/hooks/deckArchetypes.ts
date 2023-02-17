@@ -38,6 +38,16 @@ export const useArchetypes = () => {
   return useQuery({ queryKey: ['deck-archetypes'], queryFn: fetchArchetypes });
 };
 
+export const useSupertypes = () => {
+  const { data: archetypes, ...rest } = useArchetypes();
+  return {
+    data: Array.from(
+      new Set(archetypes?.map(archetype => archetype.supertype))
+    ),
+    ...rest,
+  };
+};
+
 const addArchetype = async ({
   name,
   pokemon1,

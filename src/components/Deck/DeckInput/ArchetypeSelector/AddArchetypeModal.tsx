@@ -15,12 +15,23 @@ import {
   Grid,
   Text,
   Image,
+  HStack,
+  Menu,
+  MenuList,
+  MenuButton,
+  MenuItem,
+  forwardRef,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useMutateArchetypes } from '../../../../hooks/deckArchetypes';
+import {
+  useMutateArchetypes,
+  useSupertypes,
+} from '../../../../hooks/deckArchetypes';
 import * as Yup from 'yup';
 import { getSpriteUrl } from '../../../common/helpers';
 import { useIsMobile } from '../../../../hooks/device';
+import { Fragment, useRef } from 'react';
 
 interface AddArchetypeModalProps {
   isOpen: boolean;
@@ -28,7 +39,23 @@ interface AddArchetypeModalProps {
   handleArchetypeChange?: (name: string) => void;
 }
 
+const SupertypeInput = forwardRef((props, ref) => {
+  return (
+    <Fragment>
+      <Input
+        name='supertype'
+        value={props.formik.values.supertype}
+        onChange={props.formik.handleChange}
+        placeholder='Supertype name (ex. Lost Box) *'
+        onFocus={props.onFocus}
+      />
+      <div ref={ref} />
+    </Fragment>
+  );
+});
+
 export default function AddArchetypeModal(props: AddArchetypeModalProps) {
+  const { data: supertypes } = useSupertypes();
   const mutateArchetypes = useMutateArchetypes(props.onClose);
   const isMobile = useIsMobile();
 
@@ -58,6 +85,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
   const formik = useFormik({
     initialValues: {
       name: '',
+      supertype: '',
       pokemon1: '',
       pokemon2: '',
       identifiableCard1: '',
@@ -71,6 +99,17 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
     }),
     onSubmit: handleSubmit,
   });
+
+  const filteredSupertypes =
+    formik.values.supertype.length > 0
+      ? supertypes?.filter((supertype: string) =>
+          supertype
+            .toLowerCase()
+            .includes(formik.values.supertype.toLowerCase())
+        )
+      : [];
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
@@ -88,70 +127,95 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                   name='name'
                   value={formik.values.name}
                   onChange={formik.handleChange}
-                  placeholder='Archetype name'
+                  placeholder='Archetype name (ex. Lost Box Kyogre) *'
                 />
               </FormControl>
+              {/* <FormControl
+                isInvalid={!!(formik.errors.name && formik.touched.name)}
+              >
+                <Input
+                  name='supertype'
+                  value={formik.values.supertype}
+                  onChange={formik.handleChange}
+                  placeholder='Supertype name (ex. Lost Box) *'
+                  ref={supertypeRef}
+                />
+              </FormControl> */}
+              <Menu isOpen={isOpen} onClose={onClose} isLazy>
+                <MenuButton
+                  as={SupertypeInput}
+                  formik={formik}
+                  onFocus={() => {
+                    onOpen();
+                  }}
+                />
+                <MenuList>
+                  {filteredSupertypes?.map(supertype => (
+                    <MenuItem
+                      isFocusable={false}
+                      key={supertype}
+                      onClick={() => {
+                        formik.setFieldValue('supertype', supertype);
+                        onClose();
+                      }}
+                    >
+                      {supertype}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Menu>
               <FormLabel>Pokémon to be displayed as sprites</FormLabel>
               <Text fontSize='sm'>
-                These come from Limitless. Verify the Pokémon shows how you want
-                it here before submitting. Type in <b>lowercase</b>.
+                Verify the Pokémon shows how you want it here before submitting.
+                Type in <b>lowercase</b>.
               </Text>
-              <Grid gridTemplateColumns={'1fr 1fr'} gap={2}>
-                <FormControl
-                  isInvalid={
-                    !!(formik.errors.pokemon1 && formik.touched.pokemon1)
-                  }
-                >
-                  <Stack>
-                    <Input
-                      name='pokemon1'
-                      value={formik.values.pokemon1}
-                      onChange={formik.handleChange}
-                      placeholder='First Pokémon *'
-                      isRequired
+              <FormControl
+                isInvalid={
+                  !!(formik.errors.pokemon1 && formik.touched.pokemon1)
+                }
+              >
+                <Grid templateColumns={'4fr 1fr'} gap={4}>
+                  <Input
+                    name='pokemon1'
+                    value={formik.values.pokemon1}
+                    onChange={formik.handleChange}
+                    placeholder='First Pokémon *'
+                    isRequired
+                  />
+                  <div>
+                    <Image
+                      className='pixel-image'
+                      height='35px'
+                      width='auto'
+                      alt={formik.values.pokemon1}
+                      src={getSpriteUrl(formik.values.pokemon1)}
                     />
-                    <div>
-                      <Image
-                        className='pixel-image'
-                        height='50px'
-                        width='auto'
-                        alt={formik.values.pokemon1}
-                        src={getSpriteUrl(formik.values.pokemon1)}
-                      />
-                    </div>
-                  </Stack>
-                </FormControl>
-                <FormControl>
-                  <Stack>
-                    <Input
-                      name='pokemon2'
-                      value={formik.values.pokemon2}
-                      onChange={formik.handleChange}
-                      placeholder='Second Pokémon'
+                  </div>
+                </Grid>
+              </FormControl>
+              <FormControl>
+                <Grid templateColumns={'4fr 1fr'} gap={4}>
+                  <Input
+                    name='pokemon2'
+                    value={formik.values.pokemon2}
+                    onChange={formik.handleChange}
+                    placeholder='Second Pokémon'
+                  />
+                  <div>
+                    <Image
+                      className='pixel-image'
+                      height='35px'
+                      width='auto'
+                      alt={formik.values.pokemon2}
+                      src={getSpriteUrl(formik.values.pokemon2)}
                     />
-                    <div>
-                      <Image
-                        className='pixel-image'
-                        height='50px'
-                        width='auto'
-                        alt={formik.values.pokemon2}
-                        src={getSpriteUrl(formik.values.pokemon2)}
-                      />
-                    </div>
-                  </Stack>
-                </FormControl>
-              </Grid>
+                  </div>
+                </Grid>
+              </FormControl>
               <FormLabel>Identifiable Cards</FormLabel>
               <Text fontSize='sm'>
-                Pick cards that are in this specific archetype that define it.
-                For example, a deck with Palkia and Inteleon should be
-                classified as Palkia Inteleon. This is used for classifying
-                decks when lists are made public.
-              </Text>
-              <Text fontSize='sm'>
-                Please type the full name of the card in each field using{' '}
-                <b>capital case</b>. Ex. <b>Origin Forme Palkia VSTAR</b>{' '}
-                instead of Palkia VSTAR.
+                Enter card names in capital case that explicitly define the
+                archetype. Ex. <b>Origin Forme Palkia VSTAR, Inteleon</b>.
               </Text>
               <Grid gridTemplateColumns={'1fr 1fr'} gap={2}>
                 <FormControl
