@@ -1,8 +1,7 @@
-export const getSpriteUrl = (pokedexNumber: string, regionFlag?: string) =>
-  `https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen8-v3/${pokedexNumber?.padStart(
-    3,
-    '0'
-  )}${regionFlag ?? ''}.png`;
+export const getSpriteUrl = (name: string, regionFlag?: string) =>
+  `https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen8-v3/${name}${
+    regionFlag ?? ''
+  }.png`;
 
 export const getHighResSpriteUrl = (
   pokedexNumber: string,

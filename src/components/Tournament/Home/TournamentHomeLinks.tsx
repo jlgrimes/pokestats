@@ -1,11 +1,12 @@
 import { Button, Grid, useDisclosure } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
-import { FaPenFancy, FaTwitch } from 'react-icons/fa';
+import { Fragment, useMemo } from 'react';
+import { FaDog, FaPenFancy, FaTwitch } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useStreamLink } from '../../../hooks/tournamentMetadata';
+import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
 import { ReportModal } from './ReportModal';
 
@@ -25,6 +26,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const playerSelectModalControls = useDisclosure();
+  const addArchetypeModalControls = useDisclosure();
 
   return (
     <Grid gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
@@ -65,19 +67,34 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         Pairings
       </Button>
       {userIsAdmin && (
-        <Button
-          {...commonProps}
-          onClick={playerSelectModalControls.onOpen}
-          isDisabled={props.tournament.tournamentStatus === 'not-started'}
-          leftIcon={<FaPenFancy />}
-        >
-          Report player
-        </Button>
+        <Fragment>
+          <Button
+            {...commonProps}
+            onClick={playerSelectModalControls.onOpen}
+            isDisabled={props.tournament.tournamentStatus === 'not-started'}
+            leftIcon={<FaPenFancy />}
+          >
+            Report player
+          </Button>
+          <Button
+            {...commonProps}
+            onClick={addArchetypeModalControls.onOpen}
+            leftIcon={<FaDog />}
+          >
+            Add new deck
+          </Button>
+          <ReportModal
+            tournament={props.tournament}
+            playerSelectModalControls={playerSelectModalControls}
+          />
+          {addArchetypeModalControls.isOpen && (
+            <AddArchetypeModal
+              isOpen={addArchetypeModalControls.isOpen}
+              onClose={addArchetypeModalControls.onClose}
+            />
+          )}
+        </Fragment>
       )}
-      <ReportModal
-        tournament={props.tournament}
-        playerSelectModalControls={playerSelectModalControls}
-      />
     </Grid>
   );
 };

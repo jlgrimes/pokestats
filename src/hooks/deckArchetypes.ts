@@ -42,14 +42,28 @@ const addArchetype = async ({
   name,
   pokemon1,
   pokemon2,
+  identifiableCard1,
+  identifiableCard2,
 }: {
   name: string;
   pokemon1: string;
   pokemon2: string;
+  identifiableCard1: string;
+  identifiableCard2: string;
 }) => {
   const result = await supabase
     .from('Deck Archetypes')
-    .insert([{ name, defined_pokemon: [pokemon1, pokemon2] }]);
+    .insert([
+      {
+        name,
+        defined_pokemon: [pokemon1, pokemon2].filter(
+          pokemon => pokemon.length > 0
+        ),
+        identifiable_cards: [identifiableCard1, identifiableCard2].filter(
+          card => card.length > 0
+        ),
+      },
+    ]);
   return result;
 };
 
