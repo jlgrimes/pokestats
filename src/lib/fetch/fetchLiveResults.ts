@@ -166,10 +166,17 @@ const matchArchetype = (
   deckArchetypes?.find(({ identifiable_cards }) => {
     return (
       identifiable_cards?.length === targetLength &&
-      identifiable_cards?.every((identifiableCard: string) =>
-        list.pokemon.some(
-          (pokemon: Record<string, any>) => pokemon.name === identifiableCard
-        )
+      identifiable_cards?.every(
+        (identifiableCard: string) =>
+          list.pokemon.some(
+            (pokemon: Record<string, any>) => pokemon.name === identifiableCard
+          ) ||
+          list.trainer.some(
+            (trainer: Record<string, any>) => trainer.name === identifiableCard
+          ) ||
+          list.energy.some(
+            (energy: Record<string, any>) => energy.name === identifiableCard
+          )
       )
     );
   });
@@ -264,7 +271,6 @@ export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
     .map((player: Standing) => ({
       ...player,
       name: cropPlayerName(player.name),
-      
     }))
     .filter((player: Standing) => player.placing !== 9999);
 
