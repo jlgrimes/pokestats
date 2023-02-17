@@ -57,7 +57,7 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           )}
           {!props.shouldHideOpponentView && (
             <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
-              View Player Matchups
+              View Matchups
             </MenuItem>
           )}
           {props.onUnpinPlayer && (
