@@ -34,13 +34,13 @@ export const FilterTags = ({
   ) => void;
   tournament: Tournament;
 }) => {
-  const archetypes = useMostPopularArchetypes(tournament.id);
+  const { data: archetypes } = useMostPopularArchetypes(tournament.id);
 
   const tagProps: Partial<TagProps> = {
     size: 'lg',
     borderRadius: 'full',
     outline: 'solid',
-    boxShadow: ''
+    boxShadow: '',
   };
 
   return (

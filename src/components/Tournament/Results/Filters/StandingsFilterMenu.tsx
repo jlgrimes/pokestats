@@ -52,7 +52,7 @@ export const StandingsFilterMenu = memo(
     tournament: Tournament;
     disableDeckFilter?: boolean;
   }) => {
-    const mostPopularDecks = useMostPopularArchetypes(tournament.id);
+    const { data: mostPopularDecks } = useMostPopularArchetypes(tournament.id);
 
     const supertypeCollection = sortBySuperType(mostPopularDecks);
 
