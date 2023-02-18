@@ -25,7 +25,6 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
         ({ type: 'tournament', data: tournament } as TournamentOrSet)
     )
   ).items.map(({ data }) => data as Tournament);
-  console.log(tournies)
   const { data: patchedTournaments } = usePatchedTournaments(tournies);
   const mostRecentFinishedTournament = getMostRecentFinishedTournament(
     patchedTournaments ?? tournaments ?? []
