@@ -7,6 +7,7 @@ import {
   getTournamentStatusBadgeProps,
   formatTournamentStatus,
 } from '../TournamentList/helpers';
+import { TournamentStatusBadge } from '../TournamentList/TournamentStatusBadge';
 import { TournamentLinks } from './TournamentLinks';
 import { TournamentTabs } from './TournamentTabs';
 
@@ -28,6 +29,7 @@ export const TournamentPageLayout = ({
         <Heading size='lg' color='gray.700'>
           {`${tournament.name} ${capitalize(slug as string)}`}
         </Heading>
+        <TournamentStatusBadge tournament={tournament} size='md' />
         {/* <Stack>
           <TournamentLinks tournament={tournament} />
           <TournamentTabs tournament={tournament} />

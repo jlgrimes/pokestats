@@ -27,7 +27,8 @@ export const getPatchedTournament = async (
     });
   }
 
-  if (!liveResults.data || liveResults.data.length === 0) return tournamentFromApi;
+  if (!liveResults.data || liveResults.data.length === 0)
+    return tournamentFromApi;
 
   const tournamentApiSaysCompleted =
     tournamentFromApi?.tournamentStatus === 'finished';
@@ -51,14 +52,17 @@ export const getPatchedTournament = async (
     (tournamentFromApi.tournamentStatus === 'not-started' &&
       liveResults.data &&
       liveResults.data.length > 0);
-  
+
   const now = new Date();
-  const tournamentIsLongGone = differenceInDays(now, parseISO(tournamentFromApi.date.end)) > 4;
+  const tournamentIsLongGone =
+    differenceInDays(now, parseISO(tournamentFromApi.date.end)) > 4;
 
   const patchedTournament: Tournament = {
     ...tournamentFromApi,
-    tournamentStatus: (tournamentShouldBeRunning && !tournamentIsLongGone)
+    tournamentStatus: tournamentShouldBeRunning
       ? 'running'
+      : tournamentIsLongGone
+      ? 'finished'
       : tournamentFromApi.tournamentStatus,
     topCutStatus,
     hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,

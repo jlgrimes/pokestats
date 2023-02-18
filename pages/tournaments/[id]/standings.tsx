@@ -1,6 +1,9 @@
 import TournamentView from '../../../src/components/Tournament/TournamentView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
-import { fetchTournaments } from '../../../src/hooks/tournaments';
+import {
+  fetchTournaments,
+  usePatchedTournaments,
+} from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
 
 export default function TournamentPage({
@@ -8,9 +11,12 @@ export default function TournamentPage({
 }: {
   tournament: Tournament;
 }) {
+  const { data: patchedTournamentData } = usePatchedTournaments([tournament]);
+  const patchedTournament = patchedTournamentData?.at(0) ?? tournament;
+
   return (
-    <TournamentPageLayout tournament={tournament}>
-      <TournamentView tournament={tournament} />
+    <TournamentPageLayout tournament={patchedTournament}>
+      <TournamentView tournament={patchedTournament} />
     </TournamentPageLayout>
   );
 }
