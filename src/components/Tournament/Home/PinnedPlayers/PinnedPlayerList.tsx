@@ -1,4 +1,4 @@
-import { Button, Stack, useDisclosure } from '@chakra-ui/react';
+import { Button, Grid, Stack, useDisclosure } from '@chakra-ui/react';
 import { FaMapPin, FaPlus, FaStar } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
@@ -34,14 +34,6 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   return (
     <CommonCard ghost>
       <Stack>
-        <Button
-          variant='outline'
-          leftIcon={<FaMapPin />}
-          onClick={addPinPlayerModalControls.onOpen}
-          isDisabled={props.tournament.tournamentStatus === 'not-started'}
-        >
-          Pin a player
-        </Button>
         {pinnedPlayers?.map(
           pinnedPlayer =>
             pinnedPlayer && (
@@ -53,6 +45,14 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               />
             )
         )}
+        <Button
+          variant='outline'
+          leftIcon={<FaMapPin />}
+          onClick={addPinPlayerModalControls.onOpen}
+          isDisabled={props.tournament.tournamentStatus === 'not-started'}
+        >
+          Pin a player
+        </Button>
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}

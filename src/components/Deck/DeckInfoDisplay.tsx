@@ -1,4 +1,4 @@
-import { IconButton, Stack, StackItem, useDisclosure } from '@chakra-ui/react';
+import { Grid, IconButton, Stack, StackItem, useDisclosure } from '@chakra-ui/react';
 import { memo } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
@@ -29,7 +29,7 @@ export const DeckInfoDisplay = memo(
   }) => {
     const archetypeModal = useDisclosure();
     return (
-      <Stack direction={'row'} spacing={0} alignItems='center'>
+      <Grid gridTemplateColumns={'85px 1fr'}>
         <StackItem>
           <DeckInput
             tournamentId={tournament.id}
@@ -67,7 +67,7 @@ export const DeckInfoDisplay = memo(
             onClick={archetypeModal.onOpen}
           />
         )} */}
-      </Stack>
+      </Grid>
     );
   }
 );

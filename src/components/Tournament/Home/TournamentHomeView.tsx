@@ -29,8 +29,8 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   if (!props.tournament) return null;
 
   return (
-    <Stack padding={6} spacing={6}>
-      <Stack spacing={6}>
+    <Stack paddingY={6} spacing={6}>
+      <Stack paddingX={6} spacing={6}>
         <Stack spacing={2}>
           <Heading size='xl' color='gray.700'>
             {props.tournament.name}

@@ -47,7 +47,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
 
   return (
     <Card>
-      <CardBody paddingX={0}>
+      <CardBody paddingX={0} paddingY={2}>
         <StandingsRow
           result={props.player}
           tournament={props.tournament}
