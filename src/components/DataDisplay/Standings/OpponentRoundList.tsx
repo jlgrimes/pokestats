@@ -24,6 +24,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useIsMobile } from '../../../hooks/device';
 import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
 import { cropPlayerName } from '../../../lib/fetch/fetchLiveResults';
+import { ordinalSuffixOf } from '../../../lib/strings';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { Record } from '../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
@@ -59,17 +60,17 @@ export const OpponentRoundList = ({
       <ModalContent margin={isMobile ? 'auto' : 0}>
         <ModalHeader padding={'0.5rem 2rem'}>
           <HStack>
-            <RecordIcon standing={player} tournament={tournament} />
-            <Stack
-              direction='row'
-              alignItems={'center'}
-              flexWrap='wrap'
-              rowGap={2}
-            >
-              <HStack paddingRight={'8px'} alignItems='baseline'>
-                <Text>{player.name}</Text>
-                <Record standing={player} />
-              </HStack>
+            <Grid gridTemplateColumns={'2fr 1fr'} alignItems='center'>
+              <Stack spacing={0}>
+                <HStack>
+                  <RecordIcon standing={player} tournament={tournament} />
+                  <Text>{player.name}</Text>
+                </HStack>
+                <HStack alignItems='baseline'>
+                  <Text fontSize='lg'>{ordinalSuffixOf(player.placing)}</Text>
+                  <Record standing={player} normal />
+                </HStack>
+              </Stack>
               <DeckInfoDisplay
                 tournament={tournament}
                 player={player}
@@ -77,12 +78,12 @@ export const OpponentRoundList = ({
                 disableList
                 shouldHideDeck={liveResults?.shouldHideDecks}
               />
-            </Stack>
+            </Grid>
           </HStack>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody paddingTop={0} paddingX={0}>
-          <Stack spacing={0.5}>
+          <Stack spacing='0.33rem'>
             {opponents &&
               opponents
                 .slice(0)

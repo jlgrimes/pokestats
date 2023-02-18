@@ -8,10 +8,12 @@ export const Record = ({
   standing,
   href,
   big,
+  normal,
 }: {
   standing: Standing;
   href?: string;
   big?: boolean;
+  normal?: boolean;
 }) => {
   const renderRecordText = useCallback(() => {
     if (href) {
@@ -37,7 +39,11 @@ export const Record = ({
     }
 
     return (
-      <Text fontSize='0.95rem' fontFamily={'mono'} whiteSpace={'nowrap'}>
+      <Text
+        fontSize={normal ? 'lg' : '0.95rem'}
+        fontFamily={normal ? 'inherit' : 'mono'}
+        whiteSpace={'nowrap'}
+      >
         {formatRecord(standing.record)}
       </Text>
     );
