@@ -9,6 +9,9 @@ import {
   LiveResults,
 } from './fetch/fetchLiveResults';
 
+export const isTournamentLongGone = (tournament: Tournament) =>
+  differenceInDays(new Date(), parseISO(tournament.date.end)) > 4;
+
 export const getPatchedTournament = async (
   tournamentFromApi: Tournament | null,
   preloadedLiveResults?: LiveResults,
@@ -54,14 +57,12 @@ export const getPatchedTournament = async (
       liveResults.data.length > 0);
 
   const now = new Date();
-  const tournamentIsLongGone =
-    differenceInDays(now, parseISO(tournamentFromApi.date.end)) > 4;
 
   const patchedTournament: Tournament = {
     ...tournamentFromApi,
     tournamentStatus: tournamentShouldBeRunning
       ? 'running'
-      : tournamentIsLongGone
+      : isTournamentLongGone(tournamentFromApi)
       ? 'finished'
       : tournamentFromApi.tournamentStatus,
     topCutStatus,

@@ -10,6 +10,7 @@ import {
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 import { TournamentOrSet } from '../../hooks/sets';
+import { isTournamentLongGone } from '../../lib/patches';
 import { getRoundText } from '../Tournament/helpers';
 
 export const formatTournamentStatus = (tournament: Tournament) => {
@@ -110,7 +111,9 @@ export const getMostRecentTournaments = (items: TournamentOrSet[]) => {
   });
 
   const liveTournaments = items.filter(
-    tournament => tournament.data.tournamentStatus === 'running'
+    tournament =>
+      tournament.data.tournamentStatus === 'running' &&
+      !isTournamentLongGone(tournament.data as Tournament)
   );
   const almostStartedTournaments = items.filter(tournament =>
     almostStartedTournamentFilter(tournament)
