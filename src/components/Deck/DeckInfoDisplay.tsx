@@ -29,7 +29,7 @@ export const DeckInfoDisplay = memo(
   }) => {
     const archetypeModal = useDisclosure();
     return (
-      <Grid gridTemplateColumns={'85px 1fr'}>
+      <Grid gridTemplateColumns={'85px 1fr'} alignItems='center'>
         <StackItem>
           <DeckInput
             tournamentId={tournament.id}
