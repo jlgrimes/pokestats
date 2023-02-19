@@ -12,7 +12,7 @@ interface ChampionDisplayProps {
 export const ChampionDisplay = (props: ChampionDisplayProps) => {
   console.log(props.champion);
   return (
-    <Grid gridTemplateColumns={'20px auto'} alignItems='center' gap={1}>
+    <Grid gridTemplateColumns={'auto'} alignItems='center' gap={1}>
       <Icon as={FaChessKing} color='yellow.500' />
       <Text>{props.champion.name}</Text>
       <Box />
