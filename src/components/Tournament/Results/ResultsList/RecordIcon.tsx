@@ -50,7 +50,7 @@ export const RecordIcon = ({
       return <Icon {...commonIconProps} as={FaChessKing} color='yellow.500' />;
     }
 
-    if (standing.placing === 2 && compareCurrentResults(2)) {
+    if (standing.placing <= 2 && compareCurrentResults(2)) {
       return <Icon {...commonIconProps} as={FaChessQueen} color='gray.400' />;
     }
 
