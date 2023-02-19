@@ -45,8 +45,9 @@ export const loadFinalResults = async (
         resistances: player.resistances,
         deck_list: player.deck?.list ?? null,
         deck_archetype: player.deck?.list ? player.deck.id : null,
+        deck_supertype: player.deck?.supertype ?? null,
         rounds: player.rounds,
-        tournament_id: tournamentId
+        tournament_id: tournamentId,
       };
     });
 
