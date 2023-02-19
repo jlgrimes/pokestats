@@ -1,4 +1,4 @@
-import { Heading, Stack, Text } from '@chakra-ui/react';
+import { Box, Grid, Heading, Stack, Text } from '@chakra-ui/react';
 import { differenceInDays, parseISO } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { Tournament, TournamentStatus } from '../../../types/tournament';
@@ -31,22 +31,26 @@ export const TournamentList = ({
   const parsedItems = getParsedItems();
 
   return (
-    <Stack>
+    <Grid gap={2} gridTemplateColumns='1fr 1fr'>
       {parsedItems?.items.map((item: Record<string, any>, idx) => {
         if (item.type === 'tournament') {
           const tournamentId = (item.data as Tournament).id;
+          const isTournamentUpcoming =
+            (item.data as Tournament).tournamentStatus === 'not-started';
 
           return (
-            <TournamentCard
-              tournament={item.data}
-              key={idx}
-              live={idx < parsedItems.highlightedTournamentsLength}
-              champion={champions ? champions[tournamentId] : undefined}
-            />
+            <Box key={idx} gridColumn={isTournamentUpcoming ? 'auto' : '1/-1'}>
+              <TournamentCard
+                tournament={item.data}
+                live={idx < parsedItems.highlightedTournamentsLength}
+                champion={champions ? champions[tournamentId] : undefined}
+              />
+            </Box>
           );
         }
         return (
           <Text
+            gridColumn={'1/-1'}
             key={idx}
             fontSize='sm'
             color='gray.600'
@@ -58,6 +62,6 @@ export const TournamentList = ({
           </Text>
         );
       })}
-    </Stack>
+    </Grid>
   );
 };

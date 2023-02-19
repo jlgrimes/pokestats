@@ -53,8 +53,8 @@ export const TournamentCard = ({
     <LinkBox>
       <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
         <Card paddingX={live ? 6 : 2} paddingY={live ? 6 : 4}>
-          <Grid gridTemplateColumns={'3fr 2fr'} alignItems='center' gap={4}>
-            <Grid gridTemplateColumns={'1.3fr 4fr'} alignItems='center'>
+          <Grid gridTemplateColumns={champion ? '3fr 2fr' : 'auto'} alignItems='center' gap={4}>
+            <Grid gridTemplateColumns={'3.2rem 4fr'} alignItems='center'>
               {countryCode ? (
                 <Box>
                   <CountryFlag countryCode={countryCode} smol={!live} />
