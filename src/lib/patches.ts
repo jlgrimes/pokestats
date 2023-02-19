@@ -42,12 +42,7 @@ export const getPatchedTournament = async (
     (liveResults.data[1].rounds?.length ?? 0) >
       (liveResults.data[2].rounds?.length ?? 0);
 
-  const butTournamentIsRunning =
-    liveResults.data[0]?.record.wins > 0 &&
-    liveResults.data[0]?.record.wins +
-      liveResults.data[0]?.record.ties +
-      liveResults.data[0]?.record.losses <
-      16;
+  const butTournamentIsRunning = !tournamentIsComplete;
   const topCutStatus = getTopCutStatus(liveResults.data, tournamentFromApi);
 
   const tournamentShouldBeRunning =
@@ -55,8 +50,6 @@ export const getPatchedTournament = async (
     (tournamentFromApi.tournamentStatus === 'not-started' &&
       liveResults.data &&
       liveResults.data.length > 0);
-
-  const now = new Date();
 
   const patchedTournament: Tournament = {
     ...tournamentFromApi,
