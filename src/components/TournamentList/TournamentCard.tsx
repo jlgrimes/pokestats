@@ -24,10 +24,12 @@ import {
 import NextLink from 'next/link';
 import { useMemo } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
-import { Tournament } from '../../../types/tournament';
+import { FinalResultsSchema } from '../../../types/final-results';
+import { Standing, Tournament } from '../../../types/tournament';
 import { useCountryCode, useLocation } from '../../hooks/tournamentMetadata';
 import { getRK9TournamentUrl } from '../Tournament/helpers';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
+import { ChampionDisplay } from './ChampionDisplay';
 import {
   formatTimeUntilTournament,
   formatTournamentDate,
@@ -39,48 +41,56 @@ import { TournamentStatusBadge } from './TournamentStatusBadge';
 export const TournamentCard = ({
   tournament,
   live,
+  champion,
 }: {
   tournament: Tournament;
   live?: boolean;
+  champion?: FinalResultsSchema;
 }) => {
   const countryCode = useCountryCode(tournament.id);
 
   return (
     <LinkBox>
       <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
-        <Card>
-          <Stack padding={live ? 6 : 4} spacing={live ? 3 : 1}>
-            <Stack spacing={live ? 1 : 0}>
-              <Grid gridTemplateColumns={'5fr 1fr'} alignItems='end'>
-                <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
-                  {tournament.name}
-                </Heading>
-                <Box paddingBottom={live ? 1 : 0}>
-                  {countryCode && <CountryFlag countryCode={countryCode} />}
-                </Box>
-              </Grid>
-              <TournamentStatusBadge
-                tournament={tournament}
-                size={live ? 'sm' : 'xs'}
-              />
-            </Stack>
-            {!live && (
-              <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
-                {formatTournamentDate(tournament)}
+        <Card padding={live ? 6 : 2} paddingY={live ? 6 : 4}>
+          <Grid gridTemplateColumns={'6fr 4fr'} alignItems='center' gap={4}>
+            <Grid gridTemplateColumns={'1.6fr 4fr'} alignItems='center'>
+              {countryCode ? (
+                <CountryFlag countryCode={countryCode} />
+              ) : (
+                <Box></Box>
+              )}
+              <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
+                {tournament.name}
               </Heading>
-            )}
-            {live && (
-              <div>
-                <Button
-                  variant='ghost'
-                  rightIcon={<FaArrowRight />}
-                  paddingX={1}
-                >
-                  View live results
-                </Button>
-              </div>
-            )}
-          </Stack>
+              <Box />
+              <Stack spacing={live ? 3 : 1}>
+                <Stack spacing={live ? 1 : 0}>
+                  <TournamentStatusBadge
+                    tournament={tournament}
+                    size={live ? 'sm' : 'xs'}
+                  />
+                </Stack>
+                {!live && (
+                  <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
+                    {formatTournamentDate(tournament)}
+                  </Heading>
+                )}
+                {live && (
+                  <div>
+                    <Button
+                      variant='ghost'
+                      rightIcon={<FaArrowRight />}
+                      paddingX={1}
+                    >
+                      View live results
+                    </Button>
+                  </div>
+                )}
+              </Stack>
+            </Grid>
+            {champion ? <ChampionDisplay champion={champion} /> : <Box />}
+          </Grid>
         </Card>
       </LinkOverlay>
     </LinkBox>

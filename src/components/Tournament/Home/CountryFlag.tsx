@@ -2,6 +2,7 @@ import { Box, Image } from '@chakra-ui/react';
 
 interface CountryFlagProps {
   countryCode: string;
+  smol?: boolean;
 }
 
 export const CountryFlag = (props: CountryFlagProps) => {
@@ -14,7 +15,7 @@ export const CountryFlag = (props: CountryFlagProps) => {
         crossOrigin='anonymous'
         alt={`${props.countryCode} flag`}
         src={url}
-        height='25px'
+        height={`${props.smol ? 20 : 25}px`}
       />
     </Box>
   );

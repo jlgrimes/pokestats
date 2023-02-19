@@ -14,5 +14,5 @@ export interface FinalResultsSchema {
   rounds: PlayerRound[];
   tournament_id: string;
   deck_list: DeckList;
-  deck_archetype: Deck | Deck[] | null;
+  deck_archetype: Deck;
 }

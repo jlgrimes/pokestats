@@ -182,7 +182,9 @@ export const fetchFinalResults = async (
   }
 
   const res = await query;
-  const finalResultsData: FinalResultsSchema[] | null = res.data;
+  const finalResultsData: FinalResultsSchema[] | null = res.data as unknown as
+    | FinalResultsSchema[]
+    | null;
 
   let userReportedDecks: Deck[] | undefined | null = null;
   if (filters?.playerName) {
@@ -226,6 +228,27 @@ export const useFinalResults = (filters?: FinalResultsFilters) => {
     queryKey: ['final-results', filters],
     queryFn: () => fetchFinalResults(filters),
   });
+};
+
+export const useChampions = () => {
+  const { data, ...rest } = useFinalResults();
+
+  const champions: Record<string, FinalResultsSchema> | undefined = data?.reduce(
+    (acc, curr) => {
+      if (curr.placing !== 1 || !curr.tournamentId) return acc;
+
+      return {
+        ...acc,
+        [curr.tournamentId]: curr,
+      };
+    },
+    {}
+  );
+
+  return {
+    data: champions,
+    ...rest,
+  };
 };
 
 export const useCardCounts = (

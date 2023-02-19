@@ -2,6 +2,7 @@ import { Heading, Stack, Text } from '@chakra-ui/react';
 import { differenceInDays, parseISO } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { Tournament, TournamentStatus } from '../../../types/tournament';
+import { useChampions } from '../../hooks/finalResults';
 import { TournamentOrSet, useTournamentRender } from '../../hooks/sets';
 import {
   getMostRecentTournaments,
@@ -16,6 +17,7 @@ export const TournamentList = ({
   tournaments: Tournament[];
   mostRecent?: boolean;
 }) => {
+  const { data: champions } = useChampions();
   const items = useTournamentRender(tournaments);
   const getParsedItems = useCallback(() => {
     if (mostRecent) {
@@ -31,14 +33,18 @@ export const TournamentList = ({
   return (
     <Stack>
       {parsedItems?.items.map((item: Record<string, any>, idx) => {
-        if (item.type === 'tournament')
+        if (item.type === 'tournament') {
+          const tournamentId = (item.data as Tournament).id;
+
           return (
             <TournamentCard
               tournament={item.data}
               key={idx}
               live={idx < parsedItems.highlightedTournamentsLength}
+              champion={champions ? champions[tournamentId] : undefined}
             />
           );
+        }
         return (
           <Text
             key={idx}
