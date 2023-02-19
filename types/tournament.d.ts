@@ -1,3 +1,4 @@
+import { SupertypeSchema } from '../src/hooks/deckArchetypes';
 import { StoredPlayerProfile } from './player';
 
 export interface DeckCard {
@@ -11,7 +12,7 @@ export interface Deck {
   id: number;
   name: string;
   defined_pokemon: string[];
-  supertype: string;
+  supertype: SupertypeSchema;
   identifiable_cards?: string[];
   count?: number;
   list?: DeckList;
@@ -41,7 +42,7 @@ export interface PlayerResistances {
 export interface PlayerRound {
   name: string;
   result: 'W' | 'L' | 'T';
-  opponent?: Standing
+  opponent?: Standing;
 }
 
 export interface Standing {

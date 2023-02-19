@@ -28,6 +28,7 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import {
+  SupertypeSchema,
   useMutateArchetypes,
   useSupertypes,
 } from '../../../../hooks/deckArchetypes';
@@ -94,8 +95,8 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
 
   const filteredSupertypes =
     formik.values.supertype.length > 0
-      ? supertypes?.filter((supertype: string) =>
-          supertype
+      ? supertypes?.filter((supertype: SupertypeSchema) =>
+          supertype.name
             .toLowerCase()
             .includes(formik.values.supertype.toLowerCase())
         )
@@ -149,7 +150,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                   zIndex={5000}
                 >
                   {filteredSupertypes?.map(supertype => (
-                    <Card key={supertype} borderRadius={0}>
+                    <Card key={supertype.name} borderRadius={0}>
                       <CardBody
                         paddingX={4}
                         paddingY={3}
@@ -158,7 +159,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                           onClose();
                         }}
                       >
-                        {supertype}
+                        {supertype.name}
                       </CardBody>
                     </Card>
                   ))}

@@ -5,9 +5,26 @@ import supabase from '../lib/supabase/client';
 import { useLiveTournamentResults } from './tournamentResults';
 
 export const fetchArchetypes = async () => {
-  const res = await supabase
-    .from('Deck Archetypes')
-    .select('id,name,defined_pokemon,supertype');
+  const res = await supabase.from('Deck Archetypes')
+    .select(`id,name,defined_pokemon,supertype (
+      id,
+      name,
+      defined_pokemon
+    )`);
+
+  if (res.data) {
+    return res.data.map(archetype => ({
+      ...archetype,
+      supertype: Array.isArray(archetype.supertype)
+        ? archetype.supertype[0]
+        : archetype.supertype ?? {
+            id: -1,
+            name: archetype.name,
+            defined_pokemon: archetype.defined_pokemon,
+          },
+    }));
+  }
+
   return res.data;
 };
 
@@ -19,18 +36,18 @@ export const fetchArchetype = async (archetypeId: number) => {
   return res.data?.[0];
 };
 
-export const fetchVariants = async (supertype: string) => {
+export const fetchVariants = async (supertypeId: number) => {
   const res = await supabase
     .from('Deck Archetypes')
     .select('id,name,defined_pokemon')
-    .eq('supertype', supertype);
+    .eq('supertype', supertypeId);
   return res.data;
 };
 
-export const useVariants = (supertype: string) => {
+export const useVariants = (supertypeId: number) => {
   return useQuery({
-    queryKey: ['deck-variants', supertype],
-    queryFn: () => fetchVariants(supertype),
+    queryKey: ['deck-variants', supertypeId],
+    queryFn: () => fetchVariants(supertypeId),
   });
 };
 
@@ -38,12 +55,33 @@ export const useArchetypes = () => {
   return useQuery({ queryKey: ['deck-archetypes'], queryFn: fetchArchetypes });
 };
 
+export interface SupertypeSchema {
+  id: number;
+  name: string;
+  defined_pokemon: string[];
+}
+
 export const useSupertypes = () => {
   const { data: archetypes, ...rest } = useArchetypes();
+
+  const supertypes = archetypes?.reduce((acc: SupertypeSchema[], curr) => {
+    let supertype = Array.isArray(curr.supertype)
+      ? curr.supertype[0]
+      : curr.supertype;
+
+    if (supertype) {
+      if (!acc.find(({ id }) => id !== supertype?.id)) {
+        return [...acc, curr];
+      }
+
+      return acc;
+    }
+
+    return [...acc, curr];
+  }, []);
+
   return {
-    data: Array.from(
-      new Set(archetypes?.map(archetype => archetype.supertype))
-    ),
+    data: supertypes,
     ...rest,
   };
 };

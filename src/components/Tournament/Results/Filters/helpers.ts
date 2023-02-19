@@ -29,7 +29,7 @@ export const sortBySuperType = (mostPopularDecks: Deck[] | null | undefined) =>
         ...acc,
         {
           definedPokemon: curr.defined_pokemon[0],
-          archetypeName: curr.supertype,
+          archetypeName: curr.supertype.name,
           decks: [curr],
         },
       ];
