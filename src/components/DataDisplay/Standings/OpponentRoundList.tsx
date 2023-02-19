@@ -63,11 +63,13 @@ export const OpponentRoundList = ({
             <Grid gridTemplateColumns={'2fr 1fr'} alignItems='center'>
               <Stack spacing={0}>
                 <HStack>
-                  <RecordIcon standing={player} tournament={tournament} />
                   <Text>{player.name}</Text>
                 </HStack>
-                <HStack alignItems='baseline'>
-                  <Text fontSize='lg'>{ordinalSuffixOf(player.placing)}</Text>
+                <HStack alignItems='center'>
+                  <HStack spacing={0}>
+                    <RecordIcon standing={player} tournament={tournament} />
+                    <Text fontSize='lg'>{ordinalSuffixOf(player.placing)}</Text>
+                  </HStack>
                   <Record standing={player} normal />
                 </HStack>
               </Stack>
