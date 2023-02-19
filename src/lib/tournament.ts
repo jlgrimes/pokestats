@@ -13,6 +13,18 @@ export const shortenTournamentName = (tournament: Tournament) => {
   return shortName;
 };
 
+export const reallyShortenTournamentName = (tournament: Tournament) => {
+  const shortenedName = shortenTournamentName(tournament);
+
+  return shortenedName
+    .replace('Pokémon', '')
+    .replace('Regional Championship', 'Regionals')
+    .replace('International Championship', 'IC')
+    .replace('World Championships', 'Worlds')
+    .replace('Special Championship', 'SPE')
+    .trim();
+};
+
 export const getMostRecentCompletedTournamentIdx = (
   tournaments: Tournament[] | undefined
 ) =>

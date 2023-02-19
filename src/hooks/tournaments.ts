@@ -3,7 +3,7 @@ import { isAfter, isBefore, parseISO } from 'date-fns';
 import { useState } from 'react';
 import { Tournament } from '../../types/tournament';
 import { patchTournamentsClient } from '../lib/patches';
-import { shortenTournamentName } from '../lib/tournament';
+import { reallyShortenTournamentName, shortenTournamentName } from '../lib/tournament';
 
 interface FetchTournamentsOptions {
   prefetch?: boolean;
