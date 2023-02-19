@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Grid } from '@chakra-ui/react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
@@ -15,7 +15,9 @@ export const MetaGameShareList = memo(
     sortByMoves?: boolean;
     preview?: boolean;
   }) => {
-    let decks = useStoredDecks({ tournamentRange });
+    const [shouldDrillDown, setShouldDrillDown] = useState(false);
+
+    let decks = useStoredDecks({ tournamentRange, shouldDrillDown });
     const previousDecks = useStoredDecks({
       tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
     });
@@ -43,7 +45,7 @@ export const MetaGameShareList = memo(
       });
     }
 
-    if (decks.length === 0) return <NoDataDisplay />
+    if (decks.length === 0) return <NoDataDisplay />;
 
     return (
       <Grid gridTemplateColumns={'1fr 1fr'}>

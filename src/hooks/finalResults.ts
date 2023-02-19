@@ -51,7 +51,7 @@ export const fetchPlayers = async () => {
 export const fetchDecksWithLists = async () => {
   const res = await supabase
     .from('Final Results')
-    .select(`deck_archetype,tournament_id`)
+    .select(`deck_archetype,deck_supertype,tournament_id`)
     .not('deck_archetype', 'is', null);
 
   return res.data;
@@ -59,6 +59,7 @@ export const fetchDecksWithLists = async () => {
 
 export const useStoredDecks = (options?: {
   tournamentRange?: number[];
+  shouldDrillDown?: boolean;
 }): {
   deck: Deck;
   count: number;
@@ -77,6 +78,20 @@ export const useStoredDecks = (options?: {
   }
 
   const deckCounts = decks?.reduce((acc: Record<number, number>, curr) => {
+    if (!options?.shouldDrillDown) {
+      if (acc[curr.deck_supertype]) {
+        return {
+          ...acc,
+          [curr.deck_supertype]: acc[curr.deck_supertype] + 1,
+        };
+      }
+
+      return {
+        ...acc,
+        [curr.deck_supertype]: 1,
+      };
+    }
+
     if (acc[curr.deck_archetype]) {
       return {
         ...acc,
@@ -135,7 +150,11 @@ export const fetchVerifiedUserTournaments = async () => {
 };
 
 const filterFinalResultsByTournament = (
-  finalResults: { tournament_id: string; deck_archetype: number }[],
+  finalResults: {
+    tournament_id: string;
+    deck_archetype: number;
+    deck_supertype: number;
+  }[],
   tournamentRange: number[]
 ) => {
   const lowerBound = tournamentRange[0];
