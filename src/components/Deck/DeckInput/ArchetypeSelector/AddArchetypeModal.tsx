@@ -95,7 +95,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
 
   const filteredSupertypes =
     formik.values.supertype.length > 0
-      ? supertypes?.filter((supertype: DeckTypeSchema) =>
+      ? supertypes?.filter(supertype =>
           supertype.name
             .toLowerCase()
             .includes(formik.values.supertype.toLowerCase())

@@ -7,7 +7,7 @@ export const getNumberOfDecks = (
 
 export const getMetaShare = (
   deck: DeckTypeSchema,
-  decks: { deck?: DeckTypeSchema; count: number }[]
+  decks: { deck: DeckTypeSchema; count: number }[]
 ) => {
   const metaDeck = decks.find(
     ({ deck: currDeck }) => currDeck && currDeck.id === deck.id
@@ -19,7 +19,7 @@ export const getMetaShare = (
 
 export const getMetaDiff = (
   deck: DeckTypeSchema,
-  decks: { deck?: DeckTypeSchema; count: number }[],
+  decks: { deck: DeckTypeSchema; count: number }[],
   previousDecks: { deck: DeckTypeSchema; count: number }[]
 ) => {
   const metaShare = getMetaShare(deck, decks);

@@ -159,12 +159,12 @@ export const useMostPopularArchetypes = (
   const { data: archetypes, refetch } = useArchetypes();
 
   const playerDeckCounts = liveResults?.data?.reduce(
-    (acc: Record<string, { deck: Deck; count: number }>, player: Standing) => {
+    (acc: Record<string, { deck: DeckTypeSchema; count: number }>, player: Standing) => {
       if (player.deck && player.deck.id) {
         // Adds in supertype
-        const playerDeck =
-          archetypes?.find(archetype => archetype.id === player.deck?.id) ??
-          player.deck;
+        const playerDeck = archetypes?.find(
+          archetype => archetype.id === player.deck?.id
+        );
 
         if (acc[player.deck.id]) {
           return {

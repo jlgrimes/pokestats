@@ -20,7 +20,7 @@ import {
 import NextLink from 'next/link';
 import SpriteAndNameDisplay from '../../../common/SpriteDisplay/SpriteAndNameDisplay';
 import { Deck } from '../../../../../types/tournament';
-import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
+import { DeckTypeSchema, useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
 import { ArchetypeSelectorProps } from './ArchetypeSelector';
 import { useTwitterLink } from '../../../../hooks/twitter';
 import AddArchetypeModal from './AddArchetypeModal';
@@ -36,7 +36,7 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
   const addArchetypeModalControls = useDisclosure();
   const myTwitter = useTwitterLink('jgrimesey');
 
-  const filteredDecks: Deck[] = useMemo(
+  const filteredDecks: DeckTypeSchema[] = useMemo(
     () => [
       ...(mostPopularDecks?.filter(({ name }) => {
         return (
@@ -119,8 +119,8 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
                     rounded='md'
                     onClick={() =>
                       props.userIsAdmin
-                        ? handleArchetypeSubmit(deck)
-                        : handleArchetypeChange(deck)
+                        ? handleArchetypeSubmit(deck as unknown as Deck)
+                        : handleArchetypeChange(deck as unknown as Deck)
                     }
                   >
                     <SpriteAndNameDisplay

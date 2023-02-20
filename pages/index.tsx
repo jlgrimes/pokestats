@@ -7,7 +7,10 @@ import { TopDecks } from '../src/components/Home/TopDecks';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { getMostRecentTournaments } from '../src/components/TournamentList/helpers';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
-import { fetchDecksWithLists } from '../src/hooks/finalResults';
+import {
+  fetchDecksWithLists,
+  fetchFinalResults,
+} from '../src/hooks/finalResults';
 import { TournamentOrSet } from '../src/hooks/sets';
 import {
   fetchTournaments,
@@ -62,6 +65,10 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery({
     queryKey: ['decks-with-lists'],
     queryFn: () => fetchDecksWithLists(),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['final-results', null],
+    queryFn: () => fetchFinalResults(),
   });
 
   const tournies = getMostRecentTournaments(

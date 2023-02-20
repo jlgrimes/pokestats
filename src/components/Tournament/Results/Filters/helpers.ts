@@ -1,4 +1,5 @@
 import { Deck } from '../../../../../types/tournament';
+import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 
 interface SuperTypeCollection {
   definedPokemon: string;
@@ -6,9 +7,13 @@ interface SuperTypeCollection {
   decks: Deck[];
 }
 
-export const sortBySuperType = (mostPopularDecks: Deck[] | null | undefined) =>
-  mostPopularDecks
-    ?.reduce((acc: SuperTypeCollection[], curr: Deck) => {
+export const sortBySuperType = (
+  mostPopularDecks: DeckTypeSchema[] | null | undefined
+) => {
+  if (!mostPopularDecks) return;
+
+  const ret = mostPopularDecks.reduce(
+    (acc: SuperTypeCollection[], curr: DeckTypeSchema) => {
       const foundSuperTypeIdx = acc.findIndex(
         supertype => supertype.definedPokemon === curr.defined_pokemon[0]
       );
@@ -18,25 +23,31 @@ export const sortBySuperType = (mostPopularDecks: Deck[] | null | undefined) =>
           if (idx === foundSuperTypeIdx) {
             return {
               ...supertype,
-              decks: [...supertype.decks, curr],
+              decks: [...supertype.decks, curr as unknown as Deck],
             };
           }
           return supertype;
         });
       }
 
-      return [
-        ...acc,
-        {
-          definedPokemon: curr.defined_pokemon[0],
-          archetypeName: curr.supertype.name,
-          decks: [curr],
-        },
-      ];
-    }, [])
-    .sort((a, b) => {
-      if (a.decks.length > b.decks.length) {
-        return -1;
-      }
-      return 1;
-    });
+      return acc;
+
+      // return [
+      //   ...acc,
+      //   {
+      //     definedPokemon: curr.defined_pokemon[0],
+      //     archetypeName: curr.supertype.name,
+      //     decks: [curr],
+      //   },
+      // ];
+    },
+    []
+  );
+
+  return ret.sort((a, b) => {
+    if (a.decks.length > b.decks.length) {
+      return -1;
+    }
+    return 1;
+  });
+};

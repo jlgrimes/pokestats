@@ -1,6 +1,7 @@
 import { UseDisclosureProps, Text } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { Deck } from '../../../../../types/tournament';
+import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
 import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 
