@@ -29,7 +29,10 @@ export const IndividualShareCard = memo(
         <Stack direction={'column'} alignItems={'baseline'}>
           <HStack>
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-            <ShareStat deck={deck} tournamentRange={tournamentRange} />
+            <ShareStat
+              deck={{ ...deck, count }}
+              tournamentRange={tournamentRange}
+            />
           </HStack>
           <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
             <Heading color='gray.700' size={'sm'}>

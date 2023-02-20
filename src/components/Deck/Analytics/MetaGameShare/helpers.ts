@@ -9,12 +9,8 @@ export const getMetaShare = (
   deck: DeckTypeSchema,
   decks: { deck: DeckTypeSchema; count: number }[]
 ) => {
-  const metaDeck = decks.find(
-    ({ deck: currDeck }) => currDeck && currDeck.id === deck.id
-  );
-  if (!metaDeck) return null;
-
-  return metaDeck.count / getNumberOfDecks(decks);
+  if (!deck.count) return 0;
+  return deck.count / getNumberOfDecks(decks);
 };
 
 export const getMetaDiff = (
