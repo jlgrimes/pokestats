@@ -68,7 +68,7 @@ export interface DeckTypeSchema extends SupertypeSchema {
   count?: number;
 }
 
-const fetchSupertypes = async () => {
+export const fetchSupertypes = async () => {
   const res = await supabase
     .from('Deck Supertypes')
     .select(`id,name,defined_pokemon`);
@@ -81,6 +81,20 @@ const fetchSupertypes = async () => {
   }
 
   return res.data;
+};
+
+export const fetchSupertype = async (supertypeId?: number) => {
+  const res = await supabase
+    .from('Deck Supertypes')
+    .select(`id,name,defined_pokemon`)
+    .eq('id', supertypeId);
+
+  if (res.data) {
+    return {
+      ...res.data.at(0),
+      supertype: res.data.at(0)?.id
+    } as Deck;
+  }
 };
 
 export const useSupertypes = () => {
@@ -159,7 +173,10 @@ export const useMostPopularArchetypes = (
   const { data: archetypes, refetch } = useArchetypes();
 
   const playerDeckCounts = liveResults?.data?.reduce(
-    (acc: Record<string, { deck: DeckTypeSchema; count: number }>, player: Standing) => {
+    (
+      acc: Record<string, { deck: DeckTypeSchema; count: number }>,
+      player: Standing
+    ) => {
       if (player.deck && player.deck.id) {
         // Adds in supertype
         const playerDeck = archetypes?.find(

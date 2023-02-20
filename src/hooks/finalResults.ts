@@ -12,6 +12,7 @@ import {
 interface FinalResultsFilters {
   tournamentId?: string;
   deckId?: number;
+  supertypeId?: number;
   playerName?: string | null;
 }
 
@@ -36,6 +37,13 @@ export const fetchUniqueDecks = async () => {
     .from('Final Results')
     .select(`deck_archetype`)
     .neq('deck_archetype', null);
+
+  if (!res.data) return [];
+
+  const deckCounts = getDeckCounts(
+    res.data.map(({ deck_archetype }) => deck_archetype)
+  );
+
   const uniqueDecks = Array.from(new Set(res.data ?? []));
   return uniqueDecks;
 };
@@ -48,7 +56,15 @@ export const fetchPlayers = async () => {
   return uniqueNames;
 };
 
-export const fetchDecksWithLists = async (tournamentRange?: number[]) => {
+interface FinalResultsDeckSchema {
+  deck_archetype: number;
+  deck_supertype: number;
+  tournament_id: string;
+}
+
+export const fetchDecksWithLists = async (
+  tournamentRange?: number[]
+): Promise<FinalResultsDeckSchema[] | null> => {
   const res = await supabase
     .from('Final Results')
     .select(`deck_archetype,deck_supertype,tournament_id`)
@@ -61,25 +77,12 @@ export const fetchDecksWithLists = async (tournamentRange?: number[]) => {
   return res.data;
 };
 
-export const useStoredDecks = (options?: {
-  tournamentRange?: number[];
-  shouldDrillDown?: boolean;
-}): {
-  deck: DeckTypeSchema;
-  count: number;
-}[] => {
-  const { data: archetypes } = useArchetypes();
-  const { data: supertypes } = useSupertypes();
-
-  const { data: decks } = useQuery({
-    queryKey: ['decks-with-lists', options],
-    queryFn: () => fetchDecksWithLists(options?.tournamentRange),
-  });
-
-  if (!decks || !archetypes) return [];
-
-  const deckCounts = decks?.reduce((acc: Record<string, number>, curr) => {
-    if (!options?.shouldDrillDown && curr.deck_supertype) {
+const getDeckCounts = (
+  decks: FinalResultsDeckSchema[],
+  shouldDrillDown?: boolean
+) =>
+  decks?.reduce((acc: Record<string, number>, curr) => {
+    if (!shouldDrillDown && curr.deck_supertype) {
       if (acc[`supertype${curr.deck_supertype}`]) {
         return {
           ...acc,
@@ -107,6 +110,25 @@ export const useStoredDecks = (options?: {
       [`archetype${curr.deck_archetype}`]: 1,
     };
   }, {});
+
+export const useStoredDecks = (options?: {
+  tournamentRange?: number[];
+  shouldDrillDown?: boolean;
+}): {
+  deck: DeckTypeSchema;
+  count: number;
+}[] => {
+  const { data: archetypes } = useArchetypes();
+  const { data: supertypes } = useSupertypes();
+
+  const { data: decks } = useQuery({
+    queryKey: ['decks-with-lists', options],
+    queryFn: () => fetchDecksWithLists(options?.tournamentRange),
+  });
+
+  if (!decks || !archetypes) return [];
+
+  const deckCounts = getDeckCounts(decks, options?.shouldDrillDown);
 
   if (deckCounts) {
     const ret = Object.entries(deckCounts ?? {})
@@ -215,6 +237,9 @@ export const fetchFinalResults = async (
   }
   if (filters?.deckId) {
     query = query.eq('deck_archetype', filters.deckId);
+  }
+  if (filters?.supertypeId) {
+    query = query.eq('deck_archetype.supertype', filters.supertypeId);
   }
   if (filters?.playerName) {
     query = query.eq('name', filters.playerName);

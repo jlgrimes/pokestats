@@ -4,7 +4,10 @@ import { DeckAnalyticsContainer } from '../../../src/components/Deck/Analytics/D
 import { DeckVariants } from '../../../src/components/Deck/Analytics/DeckVariants';
 import { PopularTechsCard } from '../../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../../src/components/Deck/Analytics/RecentFinishesCard';
-import { fetchArchetype, fetchVariants } from '../../../src/hooks/deckArchetypes';
+import {
+  fetchArchetype,
+  fetchVariants,
+} from '../../../src/hooks/deckArchetypes';
 import { fetchCodeToSetMap } from '../../../src/hooks/deckList';
 import {
   fetchFinalResults,
@@ -24,14 +27,8 @@ export default function DeckPage({ deck }: { deck: Deck }) {
   );
 }
 
-export async function getStaticProps({
-  params,
-}: {
-  params: {
-    deckId: string;
-  };
-}) {
-  const deckId = parseInt(params.deckId);
+export async function getStaticProps({ slug }: { slug: string[] }) {
+  const deckId = parseInt(slug[0]);
   const queryClient = new QueryClient();
 
   const deck = await fetchArchetype(deckId);
@@ -68,6 +65,7 @@ export async function getStaticProps({
 
 export async function getStaticPaths() {
   const decks = await fetchUniqueDecks();
+  console.log(decks);
 
   return {
     paths: decks.map(({ deck_archetype }) => ({
