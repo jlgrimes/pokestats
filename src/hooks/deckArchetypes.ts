@@ -9,21 +9,28 @@ export const fetchArchetypes = async (): Promise<DeckTypeSchema[] | null> => {
     .select(`id,name,defined_pokemon,supertype (
       id,
       name,
-      defined_pokemon
-    )`);
+      defined_pokemon,
+      cover_cards
+    ),identifiable_cards`);
 
   if (res.data) {
-    return res.data.map(archetype => ({
-      ...archetype,
-      type: 'archetype',
-      supertype: Array.isArray(archetype.supertype)
+    return res.data.map(archetype => {
+      const supertype = Array.isArray(archetype.supertype)
         ? archetype.supertype[0]
         : archetype.supertype ?? {
             id: -1,
             name: archetype.name,
             defined_pokemon: archetype.defined_pokemon,
-          },
-    }));
+            cover_cards: archetype.identifiable_cards,
+          };
+
+      return {
+        ...archetype,
+        type: 'archetype',
+        cover_cards: archetype.identifiable_cards,
+        supertype,
+      };
+    });
   }
 
   return res.data;
@@ -62,6 +69,7 @@ export interface SupertypeSchema {
   id: number;
   name: string;
   defined_pokemon: string[];
+  cover_cards: string[];
 }
 
 export type DeckClassification = 'archetype' | 'supertype';
@@ -75,7 +83,7 @@ export interface DeckTypeSchema extends SupertypeSchema {
 export const fetchSupertypes = async () => {
   const res = await supabase
     .from('Deck Supertypes')
-    .select(`id,name,defined_pokemon`);
+    .select(`id,name,defined_pokemon,cover_cards`);
 
   if (res.data) {
     return res.data.map(supertype => ({
@@ -87,18 +95,29 @@ export const fetchSupertypes = async () => {
   return res.data;
 };
 
-export const fetchSupertype = async (supertypeId?: number) => {
+export const fetchSupertype = async (
+  supertypeId?: number
+): Promise<Deck | null> => {
   const res = await supabase
     .from('Deck Supertypes')
-    .select(`id,name,defined_pokemon`)
+    .select(`id,name,defined_pokemon,cover_cards`)
     .eq('id', supertypeId);
 
   if (res.data) {
+    const deck = res.data.at(0);
+
+    if (!deck) return null;
+
     return {
-      ...res.data.at(0),
-      supertype: res.data.at(0)?.id,
-    } as Deck;
+      id: deck.id,
+      name: deck.name,
+      supertype: deck.id,
+      defined_pokemon: deck.defined_pokemon,
+      identifiable_cards: deck.cover_cards,
+    };
   }
+
+  return null;
 };
 
 export const useSupertypes = () => {

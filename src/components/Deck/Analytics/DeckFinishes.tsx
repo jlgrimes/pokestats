@@ -2,24 +2,17 @@ import { Divider, Grid, Heading, Link, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Fragment, memo } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
-import { DeckClassification } from '../../../hooks/deckArchetypes';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';
 
 export const DeckFinishes = memo(
-  ({
-    deck,
-    type,
-    onlyShowRecent,
-  }: {
-    deck: Deck;
-    type: DeckClassification;
-    onlyShowRecent?: boolean;
-  }) => {
+  ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
     const filters =
-      type === 'archetype' ? { deckId: deck.id } : { supertypeId: deck.id };
+      deck.classification === 'supertype'
+        ? { supertypeId: deck.id }
+        : { deckId: deck.id };
 
     const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();

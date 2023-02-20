@@ -1,4 +1,7 @@
-import { DeckTypeSchema } from '../src/hooks/deckArchetypes';
+import {
+  DeckClassification,
+  DeckTypeSchema,
+} from '../src/hooks/deckArchetypes';
 import { StoredPlayerProfile } from './player';
 
 export interface DeckCard {
@@ -19,6 +22,7 @@ export interface Deck {
   verified?: boolean;
   tournament_id?: string;
   on_stream?: boolean;
+  classification?: DeckClassification;
 }
 
 export interface DeckList {

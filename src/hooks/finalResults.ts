@@ -3,7 +3,6 @@ import { FinalResultsSchema } from '../../types/final-results';
 import { DeckCard, Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import {
-  DeckClassification,
   DeckTypeSchema,
   useArchetypes,
   useSupertypes,
@@ -320,11 +319,12 @@ export const useChampions = () => {
 
 export const useCardCounts = (
   deck: Deck,
-  type: DeckClassification,
   options?: { countCopies?: boolean }
 ) => {
   const filters =
-    type === 'archetype' ? { deckId: deck.id } : { supertypeId: deck.id };
+    deck.classification === 'supertype'
+      ? { supertypeId: deck.id }
+      : { deckId: deck.id };
 
   const { data: deckStandings } = useFinalResults(filters);
 
