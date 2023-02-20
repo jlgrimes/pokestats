@@ -1,6 +1,8 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { Fragment } from 'react';
+import { CardCounts } from '../../src/components/Deck/Analytics/CardCounts/CardCounts';
 import { DeckAnalyticsContainer } from '../../src/components/Deck/Analytics/DeckAnalyticsContainer';
+import { DeckFinishes } from '../../src/components/Deck/Analytics/DeckFinishes';
 import { DeckVariants } from '../../src/components/Deck/Analytics/DeckVariants';
 import { PopularTechsCard } from '../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../src/components/Deck/Analytics/RecentFinishesCard';
@@ -19,12 +21,24 @@ import { fetchTournaments } from '../../src/hooks/tournaments';
 import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
 
-export default function DeckPage({ deck }: { deck: Deck }) {
+export default function DeckPage({
+  deck,
+  slug,
+}: {
+  deck: Deck;
+  slug: string | null;
+}) {
   return (
-    <DeckAnalyticsContainer deck={deck}>
+    <DeckAnalyticsContainer deck={deck} compactTitle={!!slug}>
       <Fragment>
-        <RecentFinishesCard deck={deck} />
-        <PopularTechsCard deck={deck} />
+        {slug === 'cards' && <CardCounts deck={deck} />}
+        {slug === 'finishes' && <DeckFinishes deck={deck} />}
+        {slug === null && (
+          <Fragment>
+            <RecentFinishesCard deck={deck} />
+            <PopularTechsCard deck={deck} />
+          </Fragment>
+        )}
       </Fragment>
     </DeckAnalyticsContainer>
   );
@@ -88,6 +102,7 @@ export async function getStaticProps({
         ...deck,
         classification: archetypeId ? 'archetype' : 'supertype',
       },
+      slug,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,

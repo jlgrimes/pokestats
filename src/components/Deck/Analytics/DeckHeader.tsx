@@ -57,7 +57,7 @@ export const DeckHeader = memo(
               variant={'ghost'}
               size='sm'
               leftIcon={<FaChevronLeft />}
-              onClick={() => router.push(`/decks/${deck.id}`)}
+              onClick={() => router.back()}
               paddingLeft={4}
               justifyContent='start'
             >
