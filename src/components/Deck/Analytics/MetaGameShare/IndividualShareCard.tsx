@@ -34,7 +34,18 @@ export const IndividualShareCard = memo(
               tournamentRange={tournamentRange}
             />
           </HStack>
-          <LinkOverlay as={NextLink} href={`/decks/${deck.id}`}>
+          <LinkOverlay
+            as={NextLink}
+            href={
+              deck.type === 'supertype'
+                ? `/decks/${deck.id}`
+                : `/decks/${
+                    deck.supertype?.id && deck.supertype.id > 0
+                      ? deck.supertype.id
+                      : 'other'
+                  }/${deck.id}`
+            }
+          >
             <Heading color='gray.700' size={'sm'}>
               {deck.name}
             </Heading>

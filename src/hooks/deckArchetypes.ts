@@ -37,7 +37,9 @@ export const fetchArchetype = async (archetypeId: number) => {
   return res.data?.[0];
 };
 
-export const fetchVariants = async (supertypeId: number) => {
+export const fetchVariants = async (supertypeId: number | undefined) => {
+  if (!supertypeId) return null;
+
   const res = await supabase
     .from('Deck Archetypes')
     .select('id,name,defined_pokemon')
@@ -45,7 +47,7 @@ export const fetchVariants = async (supertypeId: number) => {
   return res.data;
 };
 
-export const useVariants = (supertypeId: number) => {
+export const useVariants = (supertypeId: number | undefined) => {
   return useQuery({
     queryKey: ['deck-variants', supertypeId],
     queryFn: () => fetchVariants(supertypeId),
@@ -92,7 +94,7 @@ export const fetchSupertype = async (supertypeId?: number) => {
   if (res.data) {
     return {
       ...res.data.at(0),
-      supertype: res.data.at(0)?.id
+      supertype: res.data.at(0)?.id,
     } as Deck;
   }
 };

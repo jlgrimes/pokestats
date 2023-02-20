@@ -14,7 +14,7 @@ import { useVariants } from '../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../common/SpriteDisplay/SpriteDisplay';
 
 export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
-  const { data: variants } = useVariants(deck.supertype.id);
+  const { data: variants } = useVariants(deck.supertype?.id);
   const variantsExcludingSelf = variants?.filter(({ id }) => id !== deck.id);
 
   if (!(variantsExcludingSelf && variantsExcludingSelf.length > 0)) return null;
@@ -22,7 +22,7 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
   return (
     <HStack flexWrap={'wrap'} rowGap={1}>
       <Heading size='sm' color='gray.600' fontWeight='medium'>
-        {deck.supertype.name} variants:
+        {deck.supertype?.name} variants:
       </Heading>
       {variantsExcludingSelf.map(variant => (
         <LinkBox key={`variant-${variant.name}`}>

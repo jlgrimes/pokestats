@@ -12,7 +12,7 @@ export interface Deck {
   id: number;
   name: string;
   defined_pokemon: string[];
-  supertype: DeckTypeSchema;
+  supertype?: DeckTypeSchema;
   identifiable_cards?: string[];
   count?: number;
   list?: DeckList;
