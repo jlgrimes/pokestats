@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Grid } from '@chakra-ui/react';
+import { Grid, Spinner } from '@chakra-ui/react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
 import { getMetaDiff } from './helpers';
@@ -17,8 +17,11 @@ export const MetaGameShareList = memo(
   }) => {
     const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
-    let decks = useStoredDecks({ tournamentRange, shouldDrillDown });
-    const previousDecks = useStoredDecks({
+    let { data: decks, isLoading } = useStoredDecks({
+      tournamentRange,
+      shouldDrillDown,
+    });
+    const { data: previousDecks } = useStoredDecks({
       tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
     });
 
@@ -45,6 +48,7 @@ export const MetaGameShareList = memo(
       });
     }
 
+    if (isLoading) return <Spinner />;
     if (decks.length === 0) return <NoDataDisplay />;
 
     return (

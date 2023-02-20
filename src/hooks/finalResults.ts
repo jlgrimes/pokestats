@@ -116,18 +116,25 @@ export const useStoredDecks = (options?: {
   tournamentRange?: number[];
   shouldDrillDown?: boolean;
 }): {
-  deck: DeckTypeSchema;
-  count: number;
-}[] => {
+  isLoading: boolean;
+  data: {
+    deck: DeckTypeSchema;
+    count: number;
+  }[];
+} => {
   const { data: archetypes } = useArchetypes();
   const { data: supertypes } = useSupertypes();
 
-  const { data: decks } = useQuery({
+  const { data: decks, isLoading } = useQuery({
     queryKey: ['decks-with-lists', options],
     queryFn: () => fetchDecksWithLists(options?.tournamentRange),
   });
 
-  if (!decks || !archetypes) return [];
+  if (!decks || !archetypes)
+    return {
+      data: [],
+      isLoading,
+    };
 
   const deckCounts = getDeckCounts(decks, options?.shouldDrillDown);
 
@@ -159,10 +166,16 @@ export const useStoredDecks = (options?: {
         if (b.count < a.count) return -1;
         return 0;
       });
-    return ret;
+    return {
+      isLoading,
+      data: ret,
+    };
   }
 
-  return [];
+  return {
+    data: [],
+    isLoading,
+  };
 };
 
 export const fetchVerifiedUserTournaments = async () => {

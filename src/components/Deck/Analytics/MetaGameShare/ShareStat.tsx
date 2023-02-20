@@ -7,9 +7,15 @@ import { fixPercentage } from '../../ListViewer/CardViewer.tsx/helpers';
 import { getMetaDiff, getMetaShare, getNumberOfDecks } from './helpers';
 
 export const ShareStat = memo(
-  ({ deck, tournamentRange }: { deck: DeckTypeSchema; tournamentRange: number[] }) => {
-    const decks = useStoredDecks({ tournamentRange });
-    const previousDecks = useStoredDecks({
+  ({
+    deck,
+    tournamentRange,
+  }: {
+    deck: DeckTypeSchema;
+    tournamentRange: number[];
+  }) => {
+    const { data: decks } = useStoredDecks({ tournamentRange });
+    const { data: previousDecks } = useStoredDecks({
       tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
     });
 

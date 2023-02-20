@@ -83,10 +83,6 @@ export async function getStaticProps() {
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ['decks-with-lists'],
-    queryFn: () => fetchDecksWithLists(),
-  });
-  await queryClient.prefetchQuery({
     queryKey: ['deck-archetypes'],
     queryFn: () => fetchArchetypes(),
   });
