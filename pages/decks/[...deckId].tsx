@@ -51,22 +51,8 @@ export async function getStaticProps({
 
   if (archetypeId) {
     deck = await fetchArchetype(archetypeId);
-
-    if (!deck) return invalidDeckReturn;
-
-    deck = {
-      ...deck,
-      classification: 'archetype',
-    };
   } else if (supertypeId) {
     deck = await fetchSupertype(supertypeId);
-
-    if (!deck) return invalidDeckReturn;
-
-    deck = {
-      ...deck,
-      classification: 'supertype',
-    };
   }
 
   if (!deck) return invalidDeckReturn;
@@ -100,8 +86,10 @@ export async function getStaticProps({
 
   return {
     props: {
-      deck,
-      type: archetypeId ? 'archetype' : 'supertype',
+      deck: {
+        ...deck,
+        classification: archetypeId ? 'archetype' : 'supertype',
+      },
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
