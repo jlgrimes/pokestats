@@ -54,7 +54,7 @@ const invalidDeckReturn = {
 export async function getStaticProps({
   params,
 }: {
-  params: { deckId: string[] };
+  params: { deckId: string[], tournamentId?: string };
 }) {
   const { supertypeId, archetypeId, slug } = parseDeckUrlParams(params.deckId);
 
@@ -68,21 +68,6 @@ export async function getStaticProps({
   }
 
   if (!deck) return invalidDeckReturn;
-
-  await queryClient.prefetchQuery({
-    queryKey: ['tournaments'],
-    queryFn: () => fetchTournaments({ prefetch: true }),
-  });
-  await queryClient.prefetchQuery({
-    queryKey: [
-      'final-results',
-      {
-        supertypeId,
-        deckId: archetypeId,
-      },
-    ],
-    queryFn: () => fetchFinalResults({ deckId: archetypeId, supertypeId }),
-  });
 
   if (deck.supertype) {
     await queryClient.prefetchQuery({
@@ -102,6 +87,7 @@ export async function getStaticProps({
         ...deck,
         classification: archetypeId ? 'archetype' : 'supertype',
       },
+      tournamentId: params.tournamentId,
       slug,
       dehydratedState: dehydrate(queryClient),
     },

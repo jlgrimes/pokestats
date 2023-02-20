@@ -33,7 +33,7 @@ export const TournamentSlider = ({
   return (
     <Stack>
       <Slider
-        defaultValue={tournamentFilter}
+        value={tournamentFilter}
         min={defaultTournamentRange[0]}
         max={defaultTournamentRange[1]}
         step={1}

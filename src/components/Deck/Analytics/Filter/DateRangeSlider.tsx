@@ -28,7 +28,7 @@ export const DateRangeSlider = ({
   return (
     <Stack>
       <RangeSlider
-        defaultValue={tournamentFilter}
+        value={defaultTournamentRange}
         min={defaultTournamentRange[0]}
         max={defaultTournamentRange[1]}
         step={1}

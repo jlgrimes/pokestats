@@ -1,6 +1,6 @@
 import { Stack, StackItem, Switch } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
 import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
 import { MetaGameShareList } from '../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
@@ -13,6 +13,7 @@ import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
 import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
 import { getMostRecentCompletedTournamentIdx } from '../../src/lib/tournament';
+import { useRouter } from 'next/router';
 
 export default function DecksPage({
   defaultTournamentRange,
@@ -29,6 +30,14 @@ export default function DecksPage({
   ]);
   const [sortByMoves, setSortByMoves] = useState(false);
   const [showRange, setShowRange] = useState(false);
+  const { query } = useRouter();
+
+  useEffect(() => {
+    if (query.tournament) {
+      const tournamentId = parseInt(Array.isArray(query.tournament) ? query.tournament[0] : query.tournament);
+      setTournamentRange([tournamentId, tournamentId]);
+    }
+  }, [query.tournament])
 
   return (
     <Stack padding={4} height='100%'>
