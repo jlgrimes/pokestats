@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useUserIsAdmin } from '../../../hooks/administrators';
+import { AdminBadge } from '../../common/AdminBadge';
 
 export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
   const { data: userIsAdmin } = useUserIsAdmin();
@@ -37,7 +38,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
               </Heading>
             </Stack>
             <Badge>Beta</Badge>
-            {userIsAdmin && <Badge colorScheme='cyan'>God</Badge>}
+            {userIsAdmin && <AdminBadge />}
           </HStack>
         </LinkOverlay>
       </LinkBox>

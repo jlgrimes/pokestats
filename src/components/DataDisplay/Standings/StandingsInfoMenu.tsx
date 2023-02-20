@@ -13,6 +13,7 @@ import { ListViewerModal } from '../../Deck/ListViewer/ListViewerModal';
 import type { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { OpponentRoundList } from './OpponentRoundList';
+import { AdminBadge } from '../../common/AdminBadge';
 
 interface StandingsInfoMenuProps {
   tournament: Tournament;
@@ -68,11 +69,7 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           {props.enableEdits && (
             <MenuItem fontSize='lg' onClick={props.onEditOpen}>
               Edit Deck
-              {userIsAdmin && (
-                <Badge colorScheme={'cyan'} marginLeft={2}>
-                  God
-                </Badge>
-              )}
+              {userIsAdmin && <AdminBadge />}
             </MenuItem>
           )}
         </MenuList>

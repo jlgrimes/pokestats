@@ -2,10 +2,11 @@ import { Button, Grid, useDisclosure } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, useMemo } from 'react';
-import { FaDog, FaPenFancy, FaTwitch } from 'react-icons/fa';
+import { FaDog, FaPen, FaPenFancy, FaTwitch } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useStreamLink } from '../../../hooks/tournamentMetadata';
+import { AdminBadge } from '../../common/AdminBadge';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
 import { ReportModal } from './ReportModal';
@@ -70,14 +71,18 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         <Fragment>
           <Button
             {...commonProps}
+            variant='outline'
+            colorScheme='pink'
             onClick={playerSelectModalControls.onOpen}
             isDisabled={props.tournament.tournamentStatus === 'not-started'}
-            leftIcon={<FaPenFancy />}
+            leftIcon={<FaPen />}
           >
             Report player
           </Button>
           <Button
             {...commonProps}
+            variant='outline'
+            colorScheme='pink'
             onClick={addArchetypeModalControls.onOpen}
             leftIcon={<FaDog />}
           >
