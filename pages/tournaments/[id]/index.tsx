@@ -1,4 +1,6 @@
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { TournamentHomeView } from '../../../src/components/Tournament/Home/TournamentHomeView';
+import { fetchPinnedPlayers } from '../../../src/hooks/pinnedPlayers';
 import {
   fetchTournaments,
   usePatchedTournaments,
@@ -21,14 +23,22 @@ export default function TournamentPage(props: TournamentPageProps) {
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
+  const queryClient = new QueryClient();
+
   const [tournament] = await fetchTournaments({
     tournamentId: params.id,
     prefetch: true,
   });
 
+  await queryClient.prefetchQuery({
+    queryKey: ['all-pinned-players', tournament.id],
+    queryFn: () => fetchPinnedPlayers(tournament.id),
+  });
+
   return {
     props: {
       tournament,
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
   };

@@ -12,6 +12,7 @@ import {
   fetchFinalResults,
 } from '../src/hooks/finalResults';
 import { TournamentOrSet } from '../src/hooks/sets';
+import { fetchTournamentMetadata } from '../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
   getMostRecentFinishedTournament,
@@ -59,12 +60,8 @@ export async function getStaticProps() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['deck-archetypes'],
-    queryFn: () => fetchArchetypes(),
-  });
-  await queryClient.prefetchQuery({
-    queryKey: ['decks-with-lists'],
-    queryFn: () => fetchDecksWithLists(),
+    queryKey: ['all-tournament-metadata'],
+    queryFn: () => fetchTournamentMetadata(),
   });
   await queryClient.prefetchQuery({
     queryKey: ['final-results', null],

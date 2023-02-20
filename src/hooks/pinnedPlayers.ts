@@ -4,30 +4,34 @@ import { Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchPinnedPlayers = async (
-  tournamentId: string,
-  user?: string | null
-) => {
-  if (!user) return null;
-
+export const fetchPinnedPlayers = async (tournamentId: string) => {
   const res = await supabase
     .from('Pinned Players')
-    .select('pinned_player_name')
-    .eq('tournament_id', tournamentId)
-    .eq('user_account', user);
-  return res.data?.map(
-    ({ pinned_player_name }) => pinned_player_name as String
-  );
+    .select('pinned_player_name,user_account')
+    .eq('tournament_id', tournamentId);
+
+  return res.data;
+};
+
+export const useAllPinnedPlayers = (tournamentId: string) => {
+  return useQuery({
+    queryKey: ['all-pinned-players', tournamentId],
+    queryFn: () => fetchPinnedPlayers(tournamentId),
+  });
 };
 
 export const usePinnedPlayers = (tournamentId: string) => {
   const session = useSession();
+  const { data, ...rest } = useAllPinnedPlayers(tournamentId);
+
   const user = session.data?.user?.email;
 
-  return useQuery({
-    queryKey: ['pinned-players', user, tournamentId],
-    queryFn: () => fetchPinnedPlayers(tournamentId, user),
-  });
+  return {
+    data: data
+      ?.filter(pinnedPlayer => pinnedPlayer.user_account === user)
+      .map(pinnedPlayer => pinnedPlayer.pinned_player_name),
+    ...rest,
+  };
 };
 
 export const deletePinnedPlayer = async (

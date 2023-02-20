@@ -1,20 +1,28 @@
 import { useQuery } from '@tanstack/react-query';
 import supabase from '../lib/supabase/client';
 
-export const fetchTournamentMetadata = async (tournamentId: string) => {
+export const fetchTournamentMetadata = async () => {
   const res = await supabase
     .from('Tournament Metadata')
-    .select('tournament,type,data')
-    .eq('tournament', tournamentId);
+    .select('tournament,type,data');
 
   return res.data;
 };
 
-export const useTournamentMetadata = (tournamentId: string) => {
+export const useAllTournamentMetadata = () => {
   return useQuery({
-    queryKey: ['tournament-metadata', tournamentId],
-    queryFn: () => fetchTournamentMetadata(tournamentId),
+    queryKey: ['all-tournament-metadata'],
+    queryFn: () => fetchTournamentMetadata(),
   });
+};
+
+export const useTournamentMetadata = (tournamentId: string) => {
+  const { data, ...rest } = useAllTournamentMetadata();
+
+  return {
+    data: data?.filter(({ tournament }) => tournament === tournamentId),
+    ...rest,
+  };
 };
 
 export const useStreamLink = (tournamentId: string) => {
