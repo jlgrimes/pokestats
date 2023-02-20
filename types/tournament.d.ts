@@ -1,4 +1,4 @@
-import { SupertypeSchema } from '../src/hooks/deckArchetypes';
+import { DeckTypeSchema } from '../src/hooks/deckArchetypes';
 import { StoredPlayerProfile } from './player';
 
 export interface DeckCard {
@@ -12,7 +12,7 @@ export interface Deck {
   id: number;
   name: string;
   defined_pokemon: string[];
-  supertype: SupertypeSchema;
+  supertype: DeckTypeSchema;
   identifiable_cards?: string[];
   count?: number;
   list?: DeckList;

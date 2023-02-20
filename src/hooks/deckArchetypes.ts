@@ -4,7 +4,7 @@ import { Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchArchetypes = async () => {
+export const fetchArchetypes = async (): Promise<DeckTypeSchema[] | null> => {
   const res = await supabase.from('Deck Archetypes')
     .select(`id,name,defined_pokemon,supertype (
       id,
@@ -15,6 +15,7 @@ export const fetchArchetypes = async () => {
   if (res.data) {
     return res.data.map(archetype => ({
       ...archetype,
+      type: 'archetype',
       supertype: Array.isArray(archetype.supertype)
         ? archetype.supertype[0]
         : archetype.supertype ?? {
@@ -61,29 +62,32 @@ export interface SupertypeSchema {
   defined_pokemon: string[];
 }
 
+export interface DeckTypeSchema extends SupertypeSchema {
+  type: 'archetype' | 'supertype';
+  supertype?: SupertypeSchema;
+  count?: number;
+}
+
+const fetchSupertypes = async () => {
+  const res = await supabase
+    .from('Deck Supertypes')
+    .select(`id,name,defined_pokemon`);
+
+  if (res.data) {
+    return res.data.map(supertype => ({
+      ...supertype,
+      type: 'supertype',
+    }));
+  }
+
+  return res.data;
+};
+
 export const useSupertypes = () => {
-  const { data: archetypes, ...rest } = useArchetypes();
-
-  const supertypes = archetypes?.reduce((acc: SupertypeSchema[], curr) => {
-    let supertype = Array.isArray(curr.supertype)
-      ? curr.supertype[0]
-      : curr.supertype;
-
-    if (supertype) {
-      if (!acc.find(({ id }) => id !== supertype?.id)) {
-        return [...acc, curr];
-      }
-
-      return acc;
-    }
-
-    return [...acc, curr];
-  }, []);
-
-  return {
-    data: supertypes,
-    ...rest,
-  };
+  return useQuery({
+    queryKey: ['supertypes'],
+    queryFn: () => fetchSupertypes(),
+  });
 };
 
 const addArchetype = async ({

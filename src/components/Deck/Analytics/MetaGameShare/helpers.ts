@@ -1,28 +1,32 @@
 import { Deck } from '../../../../../types/tournament';
+import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 
-export const getNumberOfDecks = (decks: { count: number; deck: Deck }[]) =>
-  decks.reduce((acc, curr) => acc + (curr.count ?? 0), 0);
+export const getNumberOfDecks = (
+  decks: { count: number; deck: DeckTypeSchema }[]
+) => decks.reduce((acc, curr) => acc + (curr.count ?? 0), 0);
 
 export const getMetaShare = (
-  deck: Deck,
-  decks: { deck: Deck; count: number }[]
+  deck: DeckTypeSchema,
+  decks: { deck?: DeckTypeSchema; count: number }[]
 ) => {
-  const metaDeck = decks.find(({ deck: currDeck }) => currDeck.id === deck.id);
+  const metaDeck = decks.find(
+    ({ deck: currDeck }) => currDeck && currDeck.id === deck.id
+  );
   if (!metaDeck) return null;
 
   return metaDeck.count / getNumberOfDecks(decks);
 };
 
 export const getMetaDiff = (
-  deck: Deck,
-  decks: { deck: Deck; count: number }[],
-  previousDecks: { deck: Deck; count: number }[]
+  deck: DeckTypeSchema,
+  decks: { deck?: DeckTypeSchema; count: number }[],
+  previousDecks: { deck: DeckTypeSchema; count: number }[]
 ) => {
   const metaShare = getMetaShare(deck, decks);
   if (!metaShare) return null;
 
   const previousMetaDeck = previousDecks.find(
-    ({ deck: previousDeck }) => previousDeck.id === deck.id
+    ({ deck: previousDeck }) => previousDeck && previousDeck.id === deck.id
   );
 
   const previousMetaShare =

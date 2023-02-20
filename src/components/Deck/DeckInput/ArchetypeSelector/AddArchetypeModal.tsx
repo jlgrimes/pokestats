@@ -28,7 +28,7 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import {
-  SupertypeSchema,
+  DeckTypeSchema,
   useMutateArchetypes,
   useSupertypes,
 } from '../../../../hooks/deckArchetypes';
@@ -95,7 +95,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
 
   const filteredSupertypes =
     formik.values.supertype.length > 0
-      ? supertypes?.filter((supertype: SupertypeSchema) =>
+      ? supertypes?.filter((supertype: DeckTypeSchema) =>
           supertype.name
             .toLowerCase()
             .includes(formik.values.supertype.toLowerCase())

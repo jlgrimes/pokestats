@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../types/final-results';
 import { DeckCard, Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
-import { useArchetypes } from './deckArchetypes';
+import { DeckTypeSchema, useArchetypes, useSupertypes } from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
 import {
   getCompressedList,
@@ -61,10 +61,11 @@ export const useStoredDecks = (options?: {
   tournamentRange?: number[];
   shouldDrillDown?: boolean;
 }): {
-  deck: Deck;
+  deck: DeckTypeSchema;
   count: number;
 }[] => {
   const { data: archetypes } = useArchetypes();
+  const { data: supertypes } = useSupertypes();
 
   let { data: decks } = useQuery({
     queryKey: ['decks-with-lists'],
@@ -77,45 +78,66 @@ export const useStoredDecks = (options?: {
     decks = filterFinalResultsByTournament(decks, options.tournamentRange);
   }
 
-  const deckCounts = decks?.reduce((acc: Record<number, number>, curr) => {
-    if (!options?.shouldDrillDown) {
-      if (acc[curr.deck_supertype]) {
+  const deckCounts = decks?.reduce((acc: Record<string, number>, curr) => {
+    if (!options?.shouldDrillDown && curr.deck_supertype) {
+      if (acc[`supertype${curr.deck_supertype}`]) {
         return {
           ...acc,
-          [curr.deck_supertype]: acc[curr.deck_supertype] + 1,
+          [`supertype${curr.deck_supertype}`]:
+            acc[`supertype${curr.deck_supertype}`] + 1,
         };
       }
 
       return {
         ...acc,
-        [curr.deck_supertype]: 1,
+        [`supertype${curr.deck_supertype}`]: 1,
       };
     }
 
-    if (acc[curr.deck_archetype]) {
+    if (acc[`archetype${curr.deck_supertype}`]) {
       return {
         ...acc,
-        [curr.deck_archetype]: acc[curr.deck_archetype] + 1,
+        [acc[`archetype${curr.deck_supertype}`]]:
+          acc[`archetype${curr.deck_supertype}`] + 1,
       };
     }
 
     return {
       ...acc,
-      [curr.deck_archetype]: 1,
+      [acc[`archetype${curr.deck_supertype}`]]: 1,
     };
   }, {});
 
   if (deckCounts) {
-    const ret = Object.entries(deckCounts)
-      ?.map(([deckId, count]) => ({
-        deck: archetypes?.find(({ id }) => parseInt(deckId) === id) as Deck,
-        count,
-      }))
+    const ret = Object.entries(deckCounts ?? {})
+      ?.map(([deckId, count]) => {
+        if (deckId.includes('supertype')) {
+          const realId = deckId.replace('supertype', '');
+          console.log(realId)
+          console.log(supertypes)
+          return {
+            deck: supertypes?.find(({ id }) => {
+              return parseInt(realId) === id;
+            }) as DeckTypeSchema,
+            count,
+          };
+        }
+
+        const realId = deckId.replace('archetype', '');
+
+        return {
+          deck: archetypes?.find(({ id }) => {
+            return parseInt(realId) === id;
+          }) as DeckTypeSchema,
+          count,
+        };
+      })
       .sort((a, b) => {
         if (a.count < b.count) return 1;
         if (b.count < a.count) return -1;
         return 0;
       });
+    console.log(ret)
     return ret;
   }
 
