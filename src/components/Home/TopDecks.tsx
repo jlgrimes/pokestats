@@ -1,3 +1,4 @@
+import { Spinner } from '@chakra-ui/react';
 import { memo } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { shortenTournamentName } from '../../lib/tournament';
@@ -13,10 +14,7 @@ export const TopDecks = memo(({ tournament }: { tournament: Tournament }) => {
       slug={`/decks?tournament=${tournament.id}`}
       ghost
     >
-      <MetaGameShareList
-        tournamentRange={[tourneyId, tourneyId]}
-        preview
-      />
+      <MetaGameShareList tournamentRange={[tourneyId, tourneyId]} preview />
     </CommonCard>
   );
 });

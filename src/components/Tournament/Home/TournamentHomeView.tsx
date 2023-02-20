@@ -19,13 +19,6 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   const { data: location } = useLocation(props.tournament?.id ?? '');
   const country = useCountryCode(props.tournament?.id ?? '');
 
-  const decks = useStoredDecks({
-    tournamentRange: [
-      parseInt(props.tournament?.id as string),
-      parseInt(props.tournament?.id as string),
-    ],
-  });
-
   if (!props.tournament) return null;
 
   return (
@@ -52,7 +45,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       </Stack>
       <PinnedPlayerList tournament={props.tournament} />
       <MyTournamentView tournament={props.tournament} />
-      {decks && decks.length > 0 && <TopDecks tournament={props.tournament} />}
+      <TopDecks tournament={props.tournament} />
     </Stack>
   );
 };
