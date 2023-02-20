@@ -64,8 +64,10 @@ export interface SupertypeSchema {
   defined_pokemon: string[];
 }
 
+export type DeckClassification = 'archetype' | 'supertype';
+
 export interface DeckTypeSchema extends SupertypeSchema {
-  type: 'archetype' | 'supertype';
+  type: DeckClassification;
   supertype?: SupertypeSchema;
   count?: number;
 }

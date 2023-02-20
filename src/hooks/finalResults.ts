@@ -2,7 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../types/final-results';
 import { DeckCard, Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
-import { DeckTypeSchema, useArchetypes, useSupertypes } from './deckArchetypes';
+import {
+  DeckClassification,
+  DeckTypeSchema,
+  useArchetypes,
+  useSupertypes,
+} from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
 import {
   getCompressedList,
@@ -227,7 +232,7 @@ export const fetchFinalResults = async (
       defined_pokemon,
       identifiable_cards,
       supertype
-    )`
+    ),deck_supertype`
     )
     .order('tournament_id', { ascending: false })
     .order('placing', { ascending: true });
@@ -239,7 +244,7 @@ export const fetchFinalResults = async (
     query = query.eq('deck_archetype', filters.deckId);
   }
   if (filters?.supertypeId) {
-    query = query.eq('deck_archetype.supertype', filters.supertypeId);
+    query = query.eq('deck_supertype', filters.supertypeId);
   }
   if (filters?.playerName) {
     query = query.eq('name', filters.playerName);
@@ -315,9 +320,13 @@ export const useChampions = () => {
 
 export const useCardCounts = (
   deck: Deck,
+  type: DeckClassification,
   options?: { countCopies?: boolean }
 ) => {
-  const { data: deckStandings } = useFinalResults({ deckId: deck.id });
+  const filters =
+    type === 'archetype' ? { deckId: deck.id } : { supertypeId: deck.id };
+
+  const { data: deckStandings } = useFinalResults(filters);
 
   if (!deckStandings) return [];
 
@@ -359,9 +368,4 @@ export const useCardCounts = (
   });
 
   return cardCountsSorted;
-};
-
-export const useTechs = (deck: Deck) => {
-  const cardCounts = useCardCounts(deck);
-  return cardCounts;
 };

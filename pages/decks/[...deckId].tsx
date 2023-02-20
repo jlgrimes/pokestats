@@ -5,6 +5,7 @@ import { DeckVariants } from '../../src/components/Deck/Analytics/DeckVariants';
 import { PopularTechsCard } from '../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../src/components/Deck/Analytics/RecentFinishesCard';
 import {
+  DeckClassification,
   fetchArchetype,
   fetchSupertype,
   fetchSupertypes,
@@ -18,12 +19,18 @@ import {
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Deck } from '../../types/tournament';
 
-export default function DeckPage({ deck }: { deck: Deck }) {
+export default function DeckPage({
+  deck,
+  type,
+}: {
+  deck: Deck;
+  type: DeckClassification;
+}) {
   return (
     <DeckAnalyticsContainer deck={deck}>
       <Fragment>
-        <RecentFinishesCard deck={deck} />
-        <PopularTechsCard deck={deck} />
+        <RecentFinishesCard deck={deck} type={type} />
+        <PopularTechsCard deck={deck} type={type} />
       </Fragment>
     </DeckAnalyticsContainer>
   );
@@ -72,10 +79,14 @@ export async function getStaticProps({
     ],
     queryFn: () => fetchFinalResults({ deckId: archetypeId, supertypeId }),
   });
-  await queryClient.prefetchQuery({
-    queryKey: ['deck-variants', deck.supertype],
-    queryFn: () => fetchVariants(deck!.supertype.id),
-  });
+
+  if (deck.supertype) {
+    await queryClient.prefetchQuery({
+      queryKey: ['deck-variants', deck.supertype],
+      queryFn: () => fetchVariants(deck!.supertype!.id),
+    });
+  }
+
   await queryClient.prefetchQuery({
     queryKey: ['code-to-set-map'],
     queryFn: () => fetchCodeToSetMap(),
@@ -84,6 +95,7 @@ export async function getStaticProps({
   return {
     props: {
       deck,
+      type: archetypeId ? 'archetype' : 'supertype',
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,

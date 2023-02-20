@@ -2,14 +2,26 @@ import { Divider, Grid, Heading, Link, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Fragment, memo } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
+import { DeckClassification } from '../../../hooks/deckArchetypes';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';
 
 export const DeckFinishes = memo(
-  ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
-    const { data: deckStandings } = useFinalResults({ deckId: deck.id });
+  ({
+    deck,
+    type,
+    onlyShowRecent,
+  }: {
+    deck: Deck;
+    type: DeckClassification;
+    onlyShowRecent?: boolean;
+  }) => {
+    const filters =
+      type === 'archetype' ? { deckId: deck.id } : { supertypeId: deck.id };
+
+    const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();
 
     const mostRecentTournamentId = deckStandings?.[0]?.tournamentId;
