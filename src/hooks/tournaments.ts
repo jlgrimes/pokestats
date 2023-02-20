@@ -1,5 +1,11 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { isAfter, isBefore, parseISO } from 'date-fns';
+import {
+  addDays,
+  isAfter,
+  isBefore,
+  isWithinInterval,
+  parseISO,
+} from 'date-fns';
 import { useState } from 'react';
 import { Tournament } from '../../types/tournament';
 import { patchTournamentsClient } from '../lib/patches';
@@ -60,20 +66,21 @@ export const useTournaments = (options?: FetchTournamentsOptions) => {
 };
 
 export const usePatchedTournaments = (tournamentList: Tournament[]) => {
+  const tournamentsThatNeedToBePatched = tournamentList.filter(tournament => {
+    return isWithinInterval(new Date(), {
+      start: addDays(parseISO(tournament.date.start), -1),
+      end: addDays(parseISO(tournament.date.end), 1),
+    });
+  });
+
   const results = useQueries({
-    queries: tournamentList.map(tournament => ({
+    queries: tournamentsThatNeedToBePatched.map(tournament => ({
       queryKey: ['patched-tournament', tournament.id],
       queryFn: () => {
         return patchTournamentsClient(tournament);
       },
     })),
   });
-
-  const data: Tournament[] = results.reduce((acc: Tournament[], curr) => {
-    if (!curr.data) return acc;
-
-    return [...acc, curr.data];
-  }, []);
 
   const tournamentsWithPatchesApplied = tournamentList.map(
     tournament =>
