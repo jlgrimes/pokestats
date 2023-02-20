@@ -8,9 +8,9 @@ export const TopDecks = memo(({ tournament }: { tournament: Tournament }) => {
   const tourneyId = parseInt(tournament.id);
   return (
     <CommonCard
-      header={`Top Performing Decks`}
+      header={`Day 2 Metagame`}
       subheader={`${shortenTournamentName(tournament)}`}
-      slug={`/decks`}
+      slug={`/decks?tournament=${tournament.id}`}
       ghost
     >
       <MetaGameShareList
