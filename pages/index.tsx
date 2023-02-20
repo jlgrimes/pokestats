@@ -16,6 +16,7 @@ import { fetchTournamentMetadata } from '../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
   getMostRecentFinishedTournament,
+  getTournamentsThatNeedToBePatched,
   usePatchedTournaments,
 } from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
@@ -23,17 +24,7 @@ import { prewarmMostRecentTournament } from '../src/lib/fetch/cache-prewarm';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
-  const tournies = getMostRecentTournaments(
-    tournaments.map(
-      tournament =>
-        ({ type: 'tournament', data: tournament } as TournamentOrSet)
-    )
-  ).items.map(({ data }) => data as Tournament);
-  const { data: patchedTournaments } = usePatchedTournaments(tournies);
-  const mostRecentFinishedTournament = getMostRecentFinishedTournament(
-    patchedTournaments ?? tournaments ?? []
-  );
-
+  const { data: patchedTournaments } = usePatchedTournaments(tournaments);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -63,9 +54,15 @@ export async function getStaticProps() {
     queryKey: ['all-tournament-metadata'],
     queryFn: () => fetchTournamentMetadata(),
   });
+
   await queryClient.prefetchQuery({
-    queryKey: ['final-results', null],
-    queryFn: () => fetchFinalResults(),
+    queryKey: [
+      'final-results',
+      {
+        placing: 1,
+      },
+    ],
+    queryFn: () => fetchFinalResults({ placing: 1 }),
   });
 
   const tournies = getMostRecentTournaments(
@@ -75,7 +72,7 @@ export async function getStaticProps() {
     )
   ).items.map(({ data }) => data as Tournament);
 
-  for (const tournament of tournies)
+  for (const tournament of getTournamentsThatNeedToBePatched(tournies))
     await queryClient.prefetchQuery({
       queryKey: ['patched-tournament', tournament.id],
       queryFn: () => tournament,
@@ -83,7 +80,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      tournaments,
+      tournaments: tournies,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,

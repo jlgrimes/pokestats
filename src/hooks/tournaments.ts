@@ -65,21 +65,26 @@ export const useTournaments = (options?: FetchTournamentsOptions) => {
   });
 };
 
-export const usePatchedTournaments = (tournamentList: Tournament[]) => {
-  const tournamentsThatNeedToBePatched = tournamentList.filter(tournament => {
+export const getTournamentsThatNeedToBePatched = (
+  tournamentList: Tournament[]
+) =>
+  tournamentList.filter(tournament => {
     return isWithinInterval(new Date(), {
       start: addDays(parseISO(tournament.date.start), -1),
       end: addDays(parseISO(tournament.date.end), 1),
     });
   });
 
+export const usePatchedTournaments = (tournamentList: Tournament[]) => {
   const results = useQueries({
-    queries: tournamentsThatNeedToBePatched.map(tournament => ({
-      queryKey: ['patched-tournament', tournament.id],
-      queryFn: () => {
-        return patchTournamentsClient(tournament);
-      },
-    })),
+    queries: getTournamentsThatNeedToBePatched(tournamentList).map(
+      tournament => ({
+        queryKey: ['patched-tournament', tournament.id],
+        queryFn: () => {
+          return patchTournamentsClient(tournament);
+        },
+      })
+    ),
   });
 
   const tournamentsWithPatchesApplied = tournamentList.map(

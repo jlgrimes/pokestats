@@ -2,11 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../types/final-results';
 import { DeckCard, Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
-import {
-  DeckTypeSchema,
-  useArchetypes,
-  useSupertypes,
-} from './deckArchetypes';
+import { DeckTypeSchema, useArchetypes, useSupertypes } from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
 import {
   getCompressedList,
@@ -18,6 +14,7 @@ interface FinalResultsFilters {
   deckId?: number;
   supertypeId?: number;
   playerName?: string | null;
+  placing?: number;
 }
 
 export const fetchDecksByPlayer = async (name: string) => {
@@ -248,6 +245,9 @@ export const fetchFinalResults = async (
   if (filters?.playerName) {
     query = query.eq('name', filters.playerName);
   }
+  if (filters?.placing) {
+    query = query.eq('placing', filters.placing);
+  }
 
   const res = await query;
   const finalResultsData: FinalResultsSchema[] | null = res.data as unknown as
@@ -299,7 +299,7 @@ export const useFinalResults = (filters?: FinalResultsFilters) => {
 };
 
 export const useChampions = () => {
-  const { data, ...rest } = useFinalResults();
+  const { data, ...rest } = useFinalResults({ placing: 1 });
 
   const champions: Record<string, FinalResultsSchema> | undefined =
     data?.reduce((acc, curr) => {
