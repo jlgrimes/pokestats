@@ -1,12 +1,13 @@
 import { Box, Image } from '@chakra-ui/react';
 import NextImage from 'next/image';
+import { memo } from 'react';
 
 interface CountryFlagProps {
   countryCode: string;
   smol?: boolean;
 }
 
-export const CountryFlag = (props: CountryFlagProps) => {
+export const CountryFlag = memo((props: CountryFlagProps) => {
   const url = `https://countryflagsapi.com/png/${props.countryCode}`;
 
   return (
@@ -20,4 +21,6 @@ export const CountryFlag = (props: CountryFlagProps) => {
       />
     </Box>
   );
-};
+});
+
+CountryFlag.displayName = 'CountryFlag';
