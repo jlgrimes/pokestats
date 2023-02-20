@@ -5,5 +5,5 @@ export const getLocalTime = (utcOffsetMinutes: number) => {
   const currentOffset = now.getTimezoneOffset();
 
   const timeZoneDate = addMinutes(now, currentOffset + utcOffsetMinutes);
-  return format(timeZoneDate, 'eee LLL d K:m aaa');
+  return format(timeZoneDate, 'eee LLL d K:mm aaa');
 };
