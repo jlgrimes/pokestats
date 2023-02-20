@@ -48,11 +48,15 @@ export const fetchPlayers = async () => {
   return uniqueNames;
 };
 
-export const fetchDecksWithLists = async () => {
+export const fetchDecksWithLists = async (tournamentRange?: number[]) => {
   const res = await supabase
     .from('Final Results')
     .select(`deck_archetype,deck_supertype,tournament_id`)
     .not('deck_archetype', 'is', null);
+
+  if (res.data && tournamentRange) {
+    return filterFinalResultsByTournament(res.data, tournamentRange);
+  }
 
   return res.data;
 };
@@ -67,19 +71,14 @@ export const useStoredDecks = (options?: {
   const { data: archetypes } = useArchetypes();
   const { data: supertypes } = useSupertypes();
 
-  let { data: decks } = useQuery({
-    queryKey: ['decks-with-lists'],
-    queryFn: () => fetchDecksWithLists(),
+  const { data: decks } = useQuery({
+    queryKey: ['decks-with-lists', options],
+    queryFn: () => fetchDecksWithLists(options?.tournamentRange),
   });
 
   if (!decks || !archetypes) return [];
 
-  if (decks && options?.tournamentRange) {
-    decks = filterFinalResultsByTournament(decks, options.tournamentRange);
-  }
-
   const deckCounts = decks?.reduce((acc: Record<string, number>, curr) => {
-    console.log(acc);
     if (!options?.shouldDrillDown && curr.deck_supertype) {
       if (acc[`supertype${curr.deck_supertype}`]) {
         return {
@@ -103,7 +102,6 @@ export const useStoredDecks = (options?: {
       };
     }
 
-    console.log('addin');
     return {
       ...acc,
       [`archetype${curr.deck_archetype}`]: 1,

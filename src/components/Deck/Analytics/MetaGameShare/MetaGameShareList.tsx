@@ -53,7 +53,7 @@ export const MetaGameShareList = memo(
           return (
             deck?.id && (
               <IndividualShareCard
-                key={deck.id}
+                key={`${deck.name}${deck.id}`}
                 deck={deck}
                 count={count}
                 tournamentRange={tournamentRange}
