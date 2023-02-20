@@ -3,24 +3,18 @@ import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
 import { Fragment, useEffect, useState } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
-import { TopDecks } from '../src/components/Home/TopDecks';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { getMostRecentTournaments } from '../src/components/TournamentList/helpers';
-import { fetchArchetypes } from '../src/hooks/deckArchetypes';
-import {
-  fetchDecksWithLists,
-  fetchFinalResults,
-} from '../src/hooks/finalResults';
+import { fetchFinalResults } from '../src/hooks/finalResults';
 import { TournamentOrSet } from '../src/hooks/sets';
 import { fetchTournamentMetadata } from '../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
-  getMostRecentFinishedTournament,
   getTournamentsThatNeedToBePatched,
   usePatchedTournaments,
 } from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
-import { prewarmMostRecentTournament } from '../src/lib/fetch/cache-prewarm';
+import { prewarmLiveTournamentData } from '../src/lib/fetch/cache-prewarm';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
@@ -28,7 +22,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    prewarmMostRecentTournament(queryClient);
+    prewarmLiveTournamentData(queryClient);
   }, []);
 
   if (SHOULD_SHOW_COMING_SOON) {
