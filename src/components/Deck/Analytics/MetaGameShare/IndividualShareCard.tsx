@@ -12,6 +12,7 @@ import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
 import { Deck } from '../../../../../types/tournament';
 import { ShareStat } from './ShareStat';
 import { CommonCard } from '../../../common/CommonCard';
+import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 
 export const IndividualShareCard = memo(
   ({
@@ -19,7 +20,7 @@ export const IndividualShareCard = memo(
     count,
     tournamentRange,
   }: {
-    deck: Deck;
+    deck: DeckTypeSchema;
     count: number;
     tournamentRange: number[];
   }) => {

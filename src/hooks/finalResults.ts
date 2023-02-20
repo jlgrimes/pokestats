@@ -79,6 +79,7 @@ export const useStoredDecks = (options?: {
   }
 
   const deckCounts = decks?.reduce((acc: Record<string, number>, curr) => {
+    console.log(acc);
     if (!options?.shouldDrillDown && curr.deck_supertype) {
       if (acc[`supertype${curr.deck_supertype}`]) {
         return {
@@ -94,17 +95,18 @@ export const useStoredDecks = (options?: {
       };
     }
 
-    if (acc[`archetype${curr.deck_supertype}`]) {
+    if (acc[`archetype${curr.deck_archetype}`]) {
       return {
         ...acc,
-        [acc[`archetype${curr.deck_supertype}`]]:
-          acc[`archetype${curr.deck_supertype}`] + 1,
+        [`archetype${curr.deck_archetype}`]:
+          acc[`archetype${curr.deck_archetype}`] + 1,
       };
     }
 
+    console.log('addin');
     return {
       ...acc,
-      [acc[`archetype${curr.deck_supertype}`]]: 1,
+      [`archetype${curr.deck_archetype}`]: 1,
     };
   }, {});
 
@@ -113,8 +115,7 @@ export const useStoredDecks = (options?: {
       ?.map(([deckId, count]) => {
         if (deckId.includes('supertype')) {
           const realId = deckId.replace('supertype', '');
-          console.log(realId)
-          console.log(supertypes)
+
           return {
             deck: supertypes?.find(({ id }) => {
               return parseInt(realId) === id;
@@ -137,7 +138,6 @@ export const useStoredDecks = (options?: {
         if (b.count < a.count) return -1;
         return 0;
       });
-    console.log(ret)
     return ret;
   }
 

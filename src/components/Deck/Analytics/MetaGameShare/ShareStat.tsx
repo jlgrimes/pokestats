@@ -1,12 +1,13 @@
 import { Stat, StatArrow, StatHelpText, StatNumber } from '@chakra-ui/react';
 import { memo } from 'react';
 import { Deck } from '../../../../../types/tournament';
+import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { fixPercentage } from '../../ListViewer/CardViewer.tsx/helpers';
 import { getMetaDiff, getMetaShare, getNumberOfDecks } from './helpers';
 
 export const ShareStat = memo(
-  ({ deck, tournamentRange }: { deck: Deck; tournamentRange: number[] }) => {
+  ({ deck, tournamentRange }: { deck: DeckTypeSchema; tournamentRange: number[] }) => {
     const decks = useStoredDecks({ tournamentRange });
     const previousDecks = useStoredDecks({
       tournamentRange: [tournamentRange[0] - 1, tournamentRange[1] - 1],
