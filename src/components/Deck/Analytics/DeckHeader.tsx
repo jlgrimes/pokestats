@@ -13,7 +13,11 @@ import { BackToDecksButton } from './BackToDecksButton';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
-    const { data: deckStandings } = useFinalResults({ deckId: deck.id });
+    const { data: deckStandings } = useFinalResults(
+      deck.classification === 'supertype'
+        ? { supertypeId: deck.id }
+        : { deckId: deck.id }
+    );
     const codeToSetMap = useCodeToSetMap();
     const router = useRouter();
 
