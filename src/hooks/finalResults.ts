@@ -11,7 +11,7 @@ import {
 
 interface FinalResultsFilters {
   tournamentId?: string;
-  deckId?: number;
+  deckId?: number | null;
   supertypeId?: number;
   playerName?: string | null;
   placing?: number;

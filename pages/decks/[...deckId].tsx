@@ -16,6 +16,7 @@ import {
   fetchUniqueDecks,
 } from '../../src/hooks/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
+import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
 
 export default function DeckPage({ deck }: { deck: Deck }) {
@@ -41,12 +42,9 @@ export async function getStaticProps({
 }: {
   params: { deckId: string[] };
 }) {
-  const supertypeId = parseInt(params.deckId[0]);
-  const archetypeId =
-    params.deckId.length >= 1 ? parseInt(params.deckId[1]) : undefined;
+  const { supertypeId, archetypeId, slug } = parseDeckUrlParams(params.deckId);
 
   const queryClient = new QueryClient();
-
   let deck: Deck | null | undefined;
 
   if (archetypeId) {
@@ -98,7 +96,6 @@ export async function getStaticProps({
 
 export async function getStaticPaths() {
   const decks = await fetchUniqueDecks();
-  console.log(decks);
 
   return {
     paths: decks.map(({ deck_archetype }) => ({
