@@ -1,5 +1,6 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { Fragment } from 'react';
+import { useRouter } from 'next/router';
+import { Fragment, useEffect, useState } from 'react';
 import { CardCounts } from '../../src/components/Deck/Analytics/CardCounts/CardCounts';
 import { DeckAnalyticsContainer } from '../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { DeckFinishes } from '../../src/components/Deck/Analytics/DeckFinishes';
@@ -54,7 +55,7 @@ const invalidDeckReturn = {
 export async function getStaticProps({
   params,
 }: {
-  params: { deckId: string[], tournamentId?: string };
+  params: { deckId: string[] };
 }) {
   const { supertypeId, archetypeId, slug } = parseDeckUrlParams(params.deckId);
 
@@ -87,7 +88,6 @@ export async function getStaticProps({
         ...deck,
         classification: archetypeId ? 'archetype' : 'supertype',
       },
-      tournamentId: params.tournamentId,
       slug,
       dehydratedState: dehydrate(queryClient),
     },
