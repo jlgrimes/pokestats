@@ -1,13 +1,15 @@
 import { QueryClient } from '@tanstack/react-query';
+import { Tournament } from '../../../types/tournament';
 import {
   fetchTournaments,
   getMostRecentFinishedTournament,
 } from '../../hooks/tournaments';
 import { fetchLiveResults } from './fetchLiveResults';
 
-export const prewarmLiveTournamentData = async (queryClient: QueryClient) => {
-  const tournaments = await fetchTournaments();
-
+export const prewarmLiveTournamentData = async (
+  queryClient: QueryClient,
+  tournaments: Tournament[]
+) => {
   const liveTournaments = tournaments.filter(
     tournament => tournament.tournamentStatus === 'running'
   );

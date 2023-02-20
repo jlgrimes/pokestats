@@ -22,7 +22,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    prewarmLiveTournamentData(queryClient);
+    prewarmLiveTournamentData(queryClient, tournaments);
   }, []);
 
   if (SHOULD_SHOW_COMING_SOON) {
