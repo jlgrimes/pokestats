@@ -5,12 +5,15 @@ import {
   getTournamentRange,
 } from '../../TournamentList/helpers';
 
+const offsetTimezone = (date: Date, utcOffsetMinutes: number) => {
+  const currentOffset = date.getTimezoneOffset();
+
+  return addMinutes(date, currentOffset + utcOffsetMinutes);
+};
+
 export const getLocalTime = (utcOffsetMinutes: number) => {
   const now = new Date();
-  const currentOffset = now.getTimezoneOffset();
-
-  const timeZoneDate = addMinutes(now, currentOffset + utcOffsetMinutes);
-  return format(timeZoneDate, 'eee LLL d K:mm aaa');
+  return format(offsetTimezone(now, utcOffsetMinutes), 'eee LLL d K:mm aaa');
 };
 
 export const getTimeUntilTournament = (
@@ -22,7 +25,7 @@ export const getTimeUntilTournament = (
   }
 
   const [startDate] = getTournamentRange(tournament);
-  const tournamentStartTime = new Date(
+  let tournamentStartTime = new Date(
     startDate.getFullYear(),
     startDate.getMonth(),
     startDate.getDate(),
@@ -30,6 +33,7 @@ export const getTimeUntilTournament = (
     0,
     0
   );
+  tournamentStartTime = offsetTimezone(tournamentStartTime, utcOffsetMinutes);
 
   return formatDistanceStrict(tournamentStartTime, new Date());
 };
