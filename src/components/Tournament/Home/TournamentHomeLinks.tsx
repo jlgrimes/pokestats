@@ -22,12 +22,14 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
     }),
     []
   );
-  const streamLink = useStreamLink(props.tournament.id);
+  const { data: streamLink } = useStreamLink(props.tournament.id);
   const router = useRouter();
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const playerSelectModalControls = useDisclosure();
   const addArchetypeModalControls = useDisclosure();
+
+  const streamIsLive = props.tournament.tournamentStatus === 'running';
 
   return (
     <Grid gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
@@ -37,8 +39,9 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
           colorScheme='purple'
           leftIcon={<FaTwitch />}
           as={NextLink}
-          href={streamLink.data}
+          href={streamLink}
           target='_blank'
+          variant={streamIsLive ? 'solid' : 'outline'}
         >
           Stream
         </Button>
