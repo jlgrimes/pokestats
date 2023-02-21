@@ -12,8 +12,12 @@ import { Tournament } from '../../../types/tournament';
 import { TournamentOrSet } from '../../hooks/sets';
 import { isTournamentLongGone } from '../../lib/patches';
 import { getRoundText } from '../Tournament/helpers';
+import { getTimeUntilTournament } from '../Tournament/Home/helpers';
 
-export const formatTournamentStatus = (tournament: Tournament) => {
+export const formatTournamentStatus = (
+  tournament: Tournament,
+  utcOffset?: number
+) => {
   if (tournament.tournamentStatus === 'finished') {
     return 'Completed';
   }
@@ -26,7 +30,7 @@ export const formatTournamentStatus = (tournament: Tournament) => {
     if (tournamentHasArrivedButNotLive(tournament)) {
       return `About to Start`;
     }
-    return `Live in ${formatTimeUntilTournament(tournament)}`;
+    return `Live in ${getTimeUntilTournament(tournament, utcOffset)}`;
   }
 };
 
@@ -48,7 +52,7 @@ export const getTournamentStatusBadgeProps = (
   return {};
 };
 
-const getTournamentRange = (tournament: Tournament) => {
+export const getTournamentRange = (tournament: Tournament) => {
   if (tournament.name.includes('Regional')) {
     return eachWeekendOfInterval({
       start: parseISO(tournament.date.start),

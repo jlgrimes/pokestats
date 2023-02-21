@@ -26,9 +26,14 @@ import { useMemo } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { FinalResultsSchema } from '../../../types/final-results';
 import { Standing, Tournament } from '../../../types/tournament';
-import { useCountryCode, useLocation } from '../../hooks/tournamentMetadata';
+import {
+  useCountryCode,
+  useLocation,
+  useUtcOffset,
+} from '../../hooks/tournamentMetadata';
 import { getRK9TournamentUrl } from '../Tournament/helpers';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
+import { getTimeUntilTournament } from '../Tournament/Home/helpers';
 import { ChampionDisplay } from './ChampionDisplay';
 import {
   formatTimeUntilTournament,
@@ -53,7 +58,11 @@ export const TournamentCard = ({
     <LinkBox>
       <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
         <Card paddingX={live ? 6 : 2} paddingY={live ? 6 : 4}>
-          <Grid gridTemplateColumns={champion ? '3fr 2fr' : 'auto'} alignItems='center' gap={2}>
+          <Grid
+            gridTemplateColumns={champion ? '3fr 2fr' : 'auto'}
+            alignItems='center'
+            gap={2}
+          >
             <Grid gridTemplateColumns={'3.2rem 4fr'} alignItems='center'>
               {countryCode ? (
                 <Box>

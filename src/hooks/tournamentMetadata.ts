@@ -70,3 +70,9 @@ export const useCountryCode = (tournamentId: string) => {
 
   return country;
 };
+
+export const useUtcOffset = (tournamentId: string) => {
+  const { data: location } = useLocation(tournamentId);
+
+  return location?.utc_offset_minutes;
+};

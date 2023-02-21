@@ -9,6 +9,7 @@ import { useStreamLink } from '../../../hooks/tournamentMetadata';
 import { AdminBadge } from '../../common/AdminBadge';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
+import { getTimeUntilTournament } from './helpers';
 import { ReportModal } from './ReportModal';
 
 interface TournamentHomeLinksProps {
