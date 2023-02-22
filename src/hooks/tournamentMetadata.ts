@@ -34,7 +34,7 @@ export const useStreamLink = (tournamentId: string) => {
   };
 };
 
-interface LocationDataSchema {
+export interface LocationDataSchema {
   address_components: {
     long_name: string;
     short_name: string;

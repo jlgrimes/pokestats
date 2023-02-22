@@ -65,7 +65,6 @@ export const getTournamentRange = (tournament: Tournament) => {
 
 export const formatTournamentDate = (tournament: Tournament) => {
   const [startDate, endDate] = getTournamentRange(tournament);
-  console.log(startDate, endDate)
 
   // I want to use ordinal numbers but these guys won't let me :(
   // https://atlassian.design/content/writing-guidelines/date-and-time-guideline
