@@ -57,7 +57,7 @@ export const TournamentCard = ({
 
   return (
     <LinkBox>
-      <Card paddingX={live ? 4 : 2} paddingY={4}>
+      <Card paddingX={live ? 4 : 2} paddingY={live ? 6 : 4}>
         <Grid
           gridTemplateColumns={champion ? '3fr 2fr' : 'auto'}
           alignItems='center'
