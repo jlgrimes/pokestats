@@ -20,7 +20,10 @@ import {
 import NextLink from 'next/link';
 import SpriteAndNameDisplay from '../../../common/SpriteDisplay/SpriteAndNameDisplay';
 import { Deck } from '../../../../../types/tournament';
-import { DeckTypeSchema, useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
+import {
+  DeckTypeSchema,
+  useMostPopularArchetypes,
+} from '../../../../hooks/deckArchetypes';
 import { ArchetypeSelectorProps } from './ArchetypeSelector';
 import { useTwitterLink } from '../../../../hooks/twitter';
 import AddArchetypeModal from './AddArchetypeModal';
@@ -107,6 +110,7 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
               <Input
                 placeholder='Filter archetype'
                 onChange={handleFilterChange}
+                autoFocus
               />
               <Stack height={'220px'} overflowY={'scroll'} padding={4}>
                 {filteredDecks?.map((deck, idx) => (
