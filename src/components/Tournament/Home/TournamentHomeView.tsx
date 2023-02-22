@@ -45,7 +45,9 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       </Stack>
       <PinnedPlayerList tournament={props.tournament} />
       <MyTournamentView tournament={props.tournament} />
-      <TopDecks tournament={props.tournament} />
+      {props.tournament.tournamentStatus === 'finished' && (
+        <TopDecks tournament={props.tournament} />
+      )}
     </Stack>
   );
 };
