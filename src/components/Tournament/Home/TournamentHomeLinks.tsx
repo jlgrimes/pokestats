@@ -66,7 +66,11 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       <Button
         {...commonProps}
         as={NextLink}
-        href={`${router.asPath}/standings`}
+        href={
+          props.tournament.tournamentStatus !== 'not-started'
+            ? `${router.asPath}/standings`
+            : '#'
+        }
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
       >
         Standings
@@ -74,7 +78,11 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       <Button
         {...commonProps}
         as={NextLink}
-        href={`${router.asPath}/pairings`}
+        href={
+          props.tournament.tournamentStatus !== 'not-started'
+            ? `${router.asPath}/pairings`
+            : '#'
+        }
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
       >
         Pairings
@@ -85,7 +93,10 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
             {...commonProps}
             variant='outline'
             colorScheme='pink'
-            onClick={playerSelectModalControls.onOpen}
+            onClick={() =>
+              props.tournament.tournamentStatus !== 'not-started' &&
+              playerSelectModalControls.onOpen
+            }
             isDisabled={props.tournament.tournamentStatus === 'not-started'}
             leftIcon={<FaPen />}
           >
@@ -95,7 +106,11 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
             {...commonProps}
             variant='outline'
             colorScheme='pink'
-            onClick={addArchetypeModalControls.onOpen}
+            onClick={() =>
+              props.tournament.tournamentStatus !== 'not-started' &&
+              addArchetypeModalControls.onOpen
+            }
+            isDisabled={props.tournament.tournamentStatus === 'not-started'}
             leftIcon={<FaDog />}
           >
             Add new deck
