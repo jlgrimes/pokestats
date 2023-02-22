@@ -8,7 +8,7 @@ import {
 import { AppLayout } from '../../src/components/Layout/AppLayout';
 import { SessionProvider } from 'next-auth/react';
 
-export default function EverythingDecorator(Story, context) {
+export default function EverythingDecorator(Story: any) {
   return (
     <SessionProvider session={null}>
       <AppLayout>
