@@ -64,7 +64,7 @@ export const TournamentCard = ({
             gap={2}
           >
             <Grid
-              gridTemplateColumns={`${live ? 4 : 3.2}rem 4fr`}
+              gridTemplateColumns={`${live ? 4 : 3.4}rem 4fr`}
               alignItems='center'
             >
               {countryCode ? (
