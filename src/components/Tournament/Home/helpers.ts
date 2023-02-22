@@ -11,6 +11,11 @@ const offsetTimezone = (date: Date, utcOffsetMinutes: number) => {
   return addMinutes(date, currentOffset + utcOffsetMinutes);
 };
 
+export const isInSameTimeZone = (utcOffsetMinutes: number) => {
+  const now = new Date();
+  return now.getTimezoneOffset() === utcOffsetMinutes * -1;
+};
+
 export const getLocalTime = (utcOffsetMinutes: number) => {
   const now = new Date();
   return format(offsetTimezone(now, utcOffsetMinutes), 'eee LLL d K:mm aaa');

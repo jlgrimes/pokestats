@@ -6,7 +6,7 @@ import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditT
 import { TopDecks } from '../../Home/TopDecks';
 import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
 import { CountryFlag } from './CountryFlag';
-import { getLocalTime } from './helpers';
+import { getLocalTime, isInSameTimeZone } from './helpers';
 import { MyTournamentView } from './MyTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
@@ -31,9 +31,11 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           {location && country && (
             <HStack spacing='4'>
               <CountryFlag countryCode={country} />
-              <Badge>
-                Local time: {getLocalTime(location.utc_offset_minutes)}
-              </Badge>
+              {!isInSameTimeZone(location.utc_offset_minutes) && (
+                <Badge>
+                  Local time: {getLocalTime(location.utc_offset_minutes)}
+                </Badge>
+              )}
             </HStack>
           )}
           <HStack>
