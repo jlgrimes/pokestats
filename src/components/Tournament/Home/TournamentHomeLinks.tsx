@@ -47,9 +47,14 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
           colorScheme='purple'
           leftIcon={<FaTwitch />}
           as={NextLink}
-          href={streamLink}
+          href={
+            props.tournament.tournamentStatus !== 'not-started'
+              ? streamLink
+              : '#'
+          }
           target='_blank'
           variant={streamIsLive ? 'solid' : 'outline'}
+          isDisabled={props.tournament.tournamentStatus === 'not-started'}
         >
           Stream
         </Button>
