@@ -51,7 +51,7 @@ export const PlayerSelectModal = (props: PinPlayerModalProps) => {
         <ModalHeader>Select player name</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Input placeholder='Filter name' onChange={handleFilterChange} />
+          <Input placeholder='Filter name' onChange={handleFilterChange} autoFocus />
           <Stack height={'220px'} overflowY={'scroll'} padding={4}>
             {filteredPlayerProfiles?.map((player, idx) => (
               <div key={idx} onClick={() => props.handleSubmit(player)}>

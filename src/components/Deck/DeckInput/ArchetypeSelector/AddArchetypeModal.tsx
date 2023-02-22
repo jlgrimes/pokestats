@@ -122,6 +122,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                   value={formik.values.name}
                   onChange={formik.handleChange}
                   placeholder='Archetype name (ex. Lost Box Kyogre) *'
+                  autoFocus
                 />
               </FormControl>
               {/* <FormControl
