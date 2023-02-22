@@ -2,6 +2,7 @@ import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
 import { Fragment, useEffect, useState } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
+import { HomePage } from '../src/components/Home/HomePage';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { getMostRecentTournaments } from '../src/components/TournamentList/helpers';
@@ -29,15 +30,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
     return <ComingSoonPage />;
   }
 
-  return (
-    <Fragment>
-      <Stack>
-        <AppLogo big />
-        <RecentTournaments tournaments={patchedTournaments ?? tournaments} />
-        {/* <TopDecks tournament={mostRecentFinishedTournament} /> */}
-      </Stack>
-    </Fragment>
-  );
+  return <HomePage tournaments={patchedTournaments ?? tournaments} />;
 }
 
 export async function getStaticProps() {

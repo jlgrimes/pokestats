@@ -1,5 +1,15 @@
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
+const customViewports = {
+  iPhone14: {
+    name: 'iPhone 14 Safari',
+    styles: {
+      width: '393px',
+      height: '660px'
+    }
+  }
+}
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -11,4 +21,8 @@ export const parameters = {
   nextRouter: {
     Provider: RouterContext.Provider,
   },
+  viewport: {
+    defaultViewport: 'iPhone14',
+    viewports: customViewports
+  }
 }
