@@ -19,15 +19,32 @@ import {
   useTournamentMetadata,
 } from '../../hooks/tournamentMetadata';
 import { useSessionUserProfile, useUserIsInTournament } from '../../hooks/user';
-import { parseUsername } from '../../lib/strings';
-import { EditTournamentInfoModal } from '../Admin/EditTournamentInfo/EditTournamentInfoModal';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
+
+export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
+  const streamLink = useStreamLink(tournament.id);
+
+  if (!streamLink.data) return null;
+
+  return (
+    <Button
+      variant='solid'
+      colorScheme={'purple'}
+      size='md'
+      leftIcon={<FaTwitch />}
+      as={NextLink}
+      href={streamLink.data}
+      target='_blank'
+    >
+      Stream
+    </Button>
+  );
+};
 
 export const TournamentLinks = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const { data: isAdmin } = useUserIsAdmin();
-    const streamLink = useStreamLink(tournament.id);
     const { data: userProfile } = useSessionUserProfile();
     const userIsInTournament = useUserIsInTournament(
       tournament.id,
@@ -57,19 +74,7 @@ export const TournamentLinks = memo(
             My results
           </Button>
         )} */}
-        {streamLink && (
-          <Button
-            variant='solid'
-            colorScheme={'purple'}
-            size='md'
-            leftIcon={<FaTwitch />}
-            as={NextLink}
-            href={streamLink.data}
-            target='_blank'
-          >
-            Stream
-          </Button>
-        )}
+        <StreamLink tournament={tournament} />
         {/* <Button
           {...RK9ButtonProps}
           leftIcon={<FaChess />}

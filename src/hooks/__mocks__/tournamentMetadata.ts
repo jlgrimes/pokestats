@@ -20,3 +20,9 @@ export const useLocation = (tournamentId: string) => {
     data,
   };
 };
+
+export const useStreamLink = (tournamentId: string) => {
+  return {
+    data: 'twitch.tv',
+  };
+};

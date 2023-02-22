@@ -41,6 +41,7 @@ import {
   formatTournamentStatus,
   getTournamentStatusBadgeProps,
 } from './helpers';
+import { LiveTournamentLinks } from './LiveTournamentLinks';
 import { TournamentStatusBadge } from './TournamentStatusBadge';
 
 export const TournamentCard = ({
@@ -56,55 +57,45 @@ export const TournamentCard = ({
 
   return (
     <LinkBox>
-      <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
-        <Card paddingX={live ? 4 : 2} paddingY={4}>
+      <Card paddingX={live ? 4 : 2} paddingY={4}>
+        <Grid
+          gridTemplateColumns={champion ? '3fr 2fr' : 'auto'}
+          alignItems='center'
+          gap={2}
+        >
           <Grid
-            gridTemplateColumns={champion ? '3fr 2fr' : 'auto'}
+            gridTemplateColumns={`${live ? 4 : 3.4}rem 4fr`}
             alignItems='center'
-            gap={2}
           >
-            <Grid
-              gridTemplateColumns={`${live ? 4 : 3.4}rem 4fr`}
-              alignItems='center'
-            >
-              {countryCode ? (
-                <Box>
-                  <CountryFlag countryCode={countryCode} smol={!live} />
-                </Box>
-              ) : (
-                <Box></Box>
-              )}
+            {countryCode ? (
+              <Box>
+                <CountryFlag countryCode={countryCode} smol={!live} />
+              </Box>
+            ) : (
+              <Box></Box>
+            )}
+            <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
               <Heading size={live ? 'lg' : 'sm'} color='gray.700'>
                 {tournament.name}
               </Heading>
-              <Box />
-              <Stack spacing={live ? 3 : 1} paddingTop={live ? 1 : 0}>
-                <TournamentStatusBadge
-                  tournament={tournament}
-                  size={live ? 'sm' : 'xs'}
-                />
-                {!live && (
-                  <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
-                    {formatTournamentDate(tournament)}
-                  </Heading>
-                )}
-                {live && (
-                  <div>
-                    <Button
-                      variant='ghost'
-                      rightIcon={<FaArrowRight />}
-                      paddingX={1}
-                    >
-                      Follow live
-                    </Button>
-                  </div>
-                )}
-              </Stack>
-            </Grid>
-            {champion ? <ChampionDisplay champion={champion} /> : null}
+            </LinkOverlay>
+            <Box />
+            <Stack spacing={live ? 3 : 1} paddingTop={live ? 1 : 0}>
+              <TournamentStatusBadge
+                tournament={tournament}
+                size={live ? 'sm' : 'xs'}
+              />
+              {!live && (
+                <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
+                  {formatTournamentDate(tournament)}
+                </Heading>
+              )}
+              {live && <LiveTournamentLinks tournament={tournament} />}
+            </Stack>
           </Grid>
-        </Card>
-      </LinkOverlay>
+          {champion ? <ChampionDisplay champion={champion} /> : null}
+        </Grid>
+      </Card>
     </LinkBox>
   );
 };
