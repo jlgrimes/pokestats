@@ -21,6 +21,7 @@ export const parameters = {
   nextRouter: {
     Provider: RouterContext.Provider,
   },
+  layout: 'fullscreen',
   viewport: {
     defaultViewport: 'iPhone14',
     viewports: customViewports
