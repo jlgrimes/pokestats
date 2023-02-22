@@ -7,6 +7,7 @@ import {
   isWithinInterval,
   endOfDay,
   formatDistanceToNowStrict,
+  isThisYear,
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 import { TournamentOrSet } from '../../hooks/sets';
@@ -68,11 +69,12 @@ export const formatTournamentDate = (tournament: Tournament) => {
 
   // I want to use ordinal numbers but these guys won't let me :(
   // https://atlassian.design/content/writing-guidelines/date-and-time-guideline
-  if (startDate.getMonth() !== endDate.getMonth()) {
-    return `${format(startDate, 'MMMM d')}-${format(endDate, 'MMMM d, y')}`;
-  }
-
-  return `${format(startDate, 'MMMM d')}-${format(endDate, 'd, y')}`;
+  return `${format(startDate, 'MMMM d')}-${format(
+    endDate,
+    `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM' : ''}d${
+      isThisYear(startDate) ? '' : ', y'
+    }`
+  )}`;
 };
 
 export const formatTimeUntilTournament = (tournament: Tournament) => {
