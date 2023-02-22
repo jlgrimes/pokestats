@@ -1,4 +1,5 @@
-import { Badge } from '@chakra-ui/react';
+import { Badge, HStack, Text } from '@chakra-ui/react';
+import { FaBroadcastTower } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import { useUtcOffset } from '../../hooks/tournamentMetadata';
 import {
@@ -20,7 +21,12 @@ export const TournamentStatusBadge = (props: TournamentStatusBadgeProps) => {
         {...getTournamentStatusBadgeProps(props.tournament)}
         fontSize={props.size}
       >
-        {formatTournamentStatus(props.tournament, utcOffset)}
+        <HStack>
+          {props.tournament.tournamentStatus === 'running' && (
+            <FaBroadcastTower />
+          )}
+          <Text>{formatTournamentStatus(props.tournament, utcOffset)}</Text>
+        </HStack>
       </Badge>
     </span>
   );

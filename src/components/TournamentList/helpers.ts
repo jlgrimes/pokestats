@@ -23,7 +23,7 @@ export const formatTournamentStatus = (
   }
 
   if (tournament.tournamentStatus === 'running') {
-    return `Live - ${getRoundText(tournament)}`;
+    return `${getRoundText(tournament)}`;
   }
 
   if (tournament.tournamentStatus === 'not-started') {

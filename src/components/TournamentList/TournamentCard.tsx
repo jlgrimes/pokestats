@@ -78,13 +78,11 @@ export const TournamentCard = ({
                 {tournament.name}
               </Heading>
               <Box />
-              <Stack spacing={live ? 3 : 1}>
-                <Stack spacing={live ? 1 : 0}>
-                  <TournamentStatusBadge
-                    tournament={tournament}
-                    size={live ? 'sm' : 'xs'}
-                  />
-                </Stack>
+              <Stack spacing={live ? 3 : 1} paddingTop={live ? 1 : 0}>
+                <TournamentStatusBadge
+                  tournament={tournament}
+                  size={live ? 'sm' : 'xs'}
+                />
                 {!live && (
                   <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
                     {formatTournamentDate(tournament)}
@@ -97,7 +95,7 @@ export const TournamentCard = ({
                       rightIcon={<FaArrowRight />}
                       paddingX={1}
                     >
-                      View live results
+                      Follow live
                     </Button>
                   </div>
                 )}
