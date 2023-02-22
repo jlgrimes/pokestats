@@ -1,8 +1,15 @@
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Button, Grid, useDisclosure } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, useMemo } from 'react';
-import { FaDog, FaPen, FaPenFancy, FaTwitch } from 'react-icons/fa';
+import {
+  FaDog,
+  FaExternalLinkSquareAlt,
+  FaPen,
+  FaPenFancy,
+  FaTwitch,
+} from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useStreamLink } from '../../../hooks/tournamentMetadata';
@@ -49,11 +56,12 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       )}
       <Button
         {...commonProps}
+        rightIcon={<ExternalLinkIcon />}
         as={NextLink}
         href={getRK9TournamentUrl(props.tournament.rk9link)}
         target='_blank'
       >
-        Tournament Info
+        Tournament info
       </Button>
       <Button
         {...commonProps}
