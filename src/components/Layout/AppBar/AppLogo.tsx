@@ -14,7 +14,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
   const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
-    <Stack direction='row' alignItems='center'>
+    <Stack direction='row' alignItems='center' justifyContent={'center'}>
       <LinkBox>
         <LinkOverlay href={`/`} as={NextLink}>
           <HStack spacing={1} alignItems='baseline'>

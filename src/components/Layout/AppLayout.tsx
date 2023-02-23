@@ -44,7 +44,8 @@ export const AppLayout = ({
             height='100%'
             padding={
               router.asPath.includes('tournaments') ||
-              router.asPath.includes('decks')
+              router.asPath.includes('decks') ||
+              router.asPath === '/'
                 ? 0
                 : 4
             }

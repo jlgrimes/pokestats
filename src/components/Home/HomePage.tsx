@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react';
+import { Box, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
 import { AppLogo } from '../Layout/AppBar/AppLogo';
 import { RecentTournaments } from './RecentTournaments';
