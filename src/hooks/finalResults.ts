@@ -282,6 +282,7 @@ export const fetchFinalResults = async (
 
   let mappedFinalResults = finalResultsData?.map(finalResult => {
     const finalResultAsStanding: Standing = {
+      ...finalResult,
       deck: {
         ...(finalResult.deck_archetype ?? {}),
         ...(finalResult.deck_list
