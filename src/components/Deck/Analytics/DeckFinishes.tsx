@@ -67,7 +67,6 @@ export const DeckFinishes = memo(
                   <StandingsRow
                     result={standing}
                     tournament={tournament}
-                    hideArchetype
                   />
                   <Divider gridColumn={'1/-1'} />
                 </Fragment>

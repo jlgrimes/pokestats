@@ -12,8 +12,8 @@ export const DeckAnalyticsContainer = ({
   deck: Deck;
   compactTitle?: boolean;
 }) => (
-  <Stack>
+  <Stack spacing={4}>
     <DeckHeader deck={deck} compact={compactTitle} />
-    <Stack paddingX={4}>{children}</Stack>
+    <Stack>{children}</Stack>
   </Stack>
 );

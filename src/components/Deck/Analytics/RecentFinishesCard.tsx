@@ -4,7 +4,7 @@ import { DeckFinishes } from './DeckFinishes';
 
 export const RecentFinishesCard = ({ deck }: { deck: Deck }) => {
   return (
-    <CommonCard slug='finishes'>
+    <CommonCard slug='finishes' ghost>
       <DeckFinishes deck={deck} onlyShowRecent />
     </CommonCard>
   );
