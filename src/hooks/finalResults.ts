@@ -281,7 +281,6 @@ export const fetchFinalResults = async (
       })
     );
   } else if (filters?.supertypeId) {
-    console.log('in');
     const playerDecks = await fetchPlayerDecks({
       supertypeId: filters.supertypeId,
     });
@@ -292,7 +291,6 @@ export const fetchFinalResults = async (
         : (deck_archetype as Deck)),
     }));
   }
-  console.log(userReportedDecks);
 
   let mappedFinalResults = finalResultsData?.map(finalResult => {
     const finalResultAsStanding: Standing = {

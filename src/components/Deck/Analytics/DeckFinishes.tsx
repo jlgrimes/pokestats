@@ -65,7 +65,15 @@ export const DeckFinishes = memo(
                     </Link>
                   )}
                   <StandingsRow
-                    result={standing}
+                    result={{
+                      ...standing,
+                      deck: {
+                        ...standing.deck,
+                        defined_pokemon:
+                          standing.deck?.defined_pokemon ??
+                          deck.defined_pokemon,
+                      } as Deck,
+                    }}
                     tournament={tournament}
                   />
                   <Divider gridColumn={'1/-1'} />
