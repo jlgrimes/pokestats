@@ -38,7 +38,11 @@ export const getTimeUntilTournament = (
     0,
     0
   );
-  tournamentStartTime = offsetTimezone(tournamentStartTime, utcOffsetMinutes);
+  tournamentStartTime = offsetTimezone(tournamentStartTime, -utcOffsetMinutes);
 
-  return formatDistanceStrict(tournamentStartTime, new Date());
+  // Ceil is fine closer to the tournament, because we don't usually start right at 9 AM.
+  // For dates, two nights before would still be "two days" instead of "one day" rounded.
+  return formatDistanceStrict(tournamentStartTime, new Date(), {
+    roundingMethod: 'ceil',
+  });
 };
