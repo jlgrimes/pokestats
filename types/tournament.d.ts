@@ -23,6 +23,7 @@ export interface Deck {
   tournament_id?: string;
   on_stream?: boolean;
   classification?: DeckClassification;
+  player_name?: string | null;
 }
 
 export interface DeckList {

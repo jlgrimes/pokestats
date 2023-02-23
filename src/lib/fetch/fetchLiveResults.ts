@@ -6,17 +6,10 @@ import {
   TournamentStatus,
 } from '../../../types/tournament';
 import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
+import { fetchPlayerDecks } from '../../hooks/playerDecks';
 import { fetchTournaments } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
 import { getPokedataStandingsUrl } from '../url';
-
-export const fetchPlayerDecks = async (tournamentId: string) => {
-  const res = await supabase
-    .from('Player Decks')
-    .select('id,player_name,deck_archetype,user_submitted_was_admin,on_stream')
-    .eq('tournament_id', tournamentId);
-  return res.data;
-};
 
 const fetchDeckArchetypes = async () => {
   const perfStart = performance.now();
@@ -106,18 +99,18 @@ export const getPlayerDeckObjects = async (
 ) => {
   const perfStart = performance.now();
 
-  const playerDecks = await fetchPlayerDecks(tournamentId);
+  const playerDecks = await fetchPlayerDecks({ tournamentId });
 
   const mappedDecks = playerDecks?.map(
     ({ player_name, deck_archetype, user_submitted_was_admin, on_stream }) => {
       const deck: Record<string, any> | undefined = deckArchetypes?.find(
-        deck => deck.id === deck_archetype
+        deck => deck.id === deck_archetype.id
       );
 
       return {
         player_name,
         deck: {
-          id: deck_archetype,
+          id: deck_archetype.id,
           name: deck?.name ?? null,
           defined_pokemon: deck?.defined_pokemon ?? null,
           supertype: deck?.supertype,

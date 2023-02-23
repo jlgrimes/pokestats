@@ -3,19 +3,41 @@ import { PairingPlayer } from '../../types/pairings';
 import { Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 
-export const fetchPlayerDecks = async (tournamentId: string) => {
-  const res = await supabase
-    .from('Player Decks')
-    .select(
-      `id,player_name,deck_archetype (
+interface PlayerDecksFilters {
+  tournamentId?: string;
+  supertypeId?: number;
+}
+
+export const fetchPlayerDecks = async (filters: PlayerDecksFilters) => {
+  let query = supabase.from('Player Decks').select(
+    `id,player_name,deck_archetype (
       id,
       name,
       defined_pokemon,
       identifiable_cards,
       supertype
     ),user_submitted_was_admin,on_stream`
-    )
-    .eq('tournament_id', tournamentId);
+  );
+
+  if (filters.tournamentId) {
+    query = query.eq('tournament_id', filters.tournamentId);
+  }
+
+  if (filters.supertypeId) {
+    query = query.eq('deck_archetype.supertype', filters.supertypeId);
+  }
+
+  const res = await query;
+
+  if (res.data) {
+    return res.data.map(({ deck_archetype, ...rest }) => ({
+      ...rest,
+      deck_archetype: Array.isArray(deck_archetype)
+        ? deck_archetype[0]
+        : (deck_archetype as Deck),
+    }));
+  }
+
   return res.data;
 };
 
@@ -29,7 +51,7 @@ export const usePlayerDecks = (
 ) => {
   const query = useQuery({
     queryKey: ['player-decks', tournamentId],
-    queryFn: () => fetchPlayerDecks(tournamentId),
+    queryFn: () => fetchPlayerDecks({ tournamentId }),
   });
 
   const data = query.data ?? [];

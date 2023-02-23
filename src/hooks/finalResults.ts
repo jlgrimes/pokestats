@@ -4,6 +4,7 @@ import { DeckCard, Deck, Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { DeckTypeSchema, useArchetypes, useSupertypes } from './deckArchetypes';
 import { fetchAllVerifiedUsers } from './user';
+import { fetchPlayerDecks } from './playerDecks';
 import {
   getCompressedList,
   getSameCardIdx,
@@ -272,13 +273,26 @@ export const fetchFinalResults = async (
     const playerDecks = await fetchDecksByPlayer(filters.playerName);
     userReportedDecks = playerDecks?.map(
       ({ deck_archetype, tournament_id }) => ({
+        player_name: filters.playerName,
         ...(Array.isArray(deck_archetype)
           ? deck_archetype[0]
           : (deck_archetype as Deck)),
         tournament_id,
       })
     );
+  } else if (filters?.supertypeId) {
+    console.log('in');
+    const playerDecks = await fetchPlayerDecks({
+      supertypeId: filters.supertypeId,
+    });
+    userReportedDecks = playerDecks?.map(({ deck_archetype, player_name }) => ({
+      player_name,
+      ...(Array.isArray(deck_archetype)
+        ? deck_archetype[0]
+        : (deck_archetype as Deck)),
+    }));
   }
+  console.log(userReportedDecks);
 
   let mappedFinalResults = finalResultsData?.map(finalResult => {
     const finalResultAsStanding: Standing = {
@@ -299,7 +313,7 @@ export const fetchFinalResults = async (
     };
 
     const userReportedDeck = userReportedDecks?.find(
-      deck => finalResult.tournament_id === deck.tournament_id
+      deck => finalResult.name === deck.player_name
     );
 
     if (!userReportedDeck || finalResult.deck_list)
