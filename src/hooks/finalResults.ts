@@ -281,23 +281,32 @@ export const fetchFinalResults = async (
   }
 
   let mappedFinalResults = finalResultsData?.map(finalResult => {
+    const finalResultAsStanding: Standing = {
+      deck: {
+        ...(finalResult.deck_archetype ?? {}),
+        ...(finalResult.deck_list
+          ? {
+              list: finalResult.deck_list,
+            }
+          : {}),
+      },
+      name: finalResult.name,
+      placing: finalResult.placing,
+      record: finalResult.record,
+      resistances: finalResult.resistances,
+      tournamentId: finalResult.tournament_id,
+    };
+
     const userReportedDeck = userReportedDecks?.find(
       deck => finalResult.tournament_id === deck.tournament_id
     );
 
     if (!userReportedDeck || finalResult.deck_list)
-      return {
-        ...finalResult,
-        tournamentId: finalResult.tournament_id,
-      };
+      return finalResultAsStanding;
 
     return {
-      ...finalResult,
-      tournamentId: finalResult.tournament_id,
-      deck: {
-        ...userReportedDeck,
-        ...(finalResult.deck_list ? { list: finalResult.deck_list } : {}),
-      },
+      ...finalResultAsStanding,
+      deck: userReportedDeck,
     };
   });
 

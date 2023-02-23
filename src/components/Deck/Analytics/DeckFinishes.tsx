@@ -65,13 +65,7 @@ export const DeckFinishes = memo(
                     </Link>
                   )}
                   <StandingsRow
-                    result={{
-                      ...standing,
-                      deck: {
-                        ...deck,
-                        list: standing.deck_list,
-                      },
-                    }}
+                    result={standing}
                     tournament={tournament}
                     hideArchetype
                   />
