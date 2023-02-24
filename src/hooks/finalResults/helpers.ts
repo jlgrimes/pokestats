@@ -75,7 +75,7 @@ export const addUserReportedDecksToFinalResults = (
                 }
               : {}),
           }
-        : undefined,
+        : null,
       name: finalResult.name,
       placing: finalResult.placing,
       record: finalResult.record,

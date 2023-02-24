@@ -76,10 +76,13 @@ export async function getStaticProps(context: any) {
     queryKey: ['deck-archetypes'],
     queryFn: () => fetchArchetypes(),
   });
-  await queryClient.prefetchQuery({
-    queryKey: ['final-results', { playerName: combinedProfile?.name }],
-    queryFn: () => fetchFinalResults({ playerName: combinedProfile?.name }),
-  });
+
+  if (combinedProfile?.name) {
+    await queryClient.prefetchQuery({
+      queryKey: ['final-results', { playerName: combinedProfile.name }],
+      queryFn: () => fetchFinalResults({ playerName: combinedProfile.name }),
+    });
+  }
 
   return {
     props: {
