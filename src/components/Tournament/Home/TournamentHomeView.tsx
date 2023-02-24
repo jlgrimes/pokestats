@@ -1,6 +1,6 @@
 import { Badge, Heading, HStack, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
-import { useStoredDecks } from '../../../hooks/finalResults';
+import { useStoredDecks } from '../../../hooks/finalResults/finalResults';
 import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { TopDecks } from '../../Home/TopDecks';

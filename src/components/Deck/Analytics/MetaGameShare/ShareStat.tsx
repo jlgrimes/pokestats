@@ -2,7 +2,7 @@ import { Stat, StatArrow, StatHelpText, StatNumber } from '@chakra-ui/react';
 import { memo } from 'react';
 import { Deck } from '../../../../../types/tournament';
 import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
-import { useStoredDecks } from '../../../../hooks/finalResults';
+import { useStoredDecks } from '../../../../hooks/finalResults/finalResults';
 import { fixPercentage } from '../../ListViewer/CardViewer.tsx/helpers';
 import { getMetaDiff, getMetaShare, getNumberOfDecks } from './helpers';
 

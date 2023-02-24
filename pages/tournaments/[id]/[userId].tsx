@@ -11,7 +11,7 @@ import { StoredPlayerProfile } from '../../../types/player';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
 import { fetchPokedex } from '../../../src/hooks/images';
 import { parseUsername } from '../../../src/lib/strings';
-import { fetchVerifiedUserTournaments } from '../../../src/hooks/finalResults';
+import { fetchVerifiedUserTournaments } from '../../../src/hooks/finalResults/finalResults';
 
 export default function UserMatchups({
   tournament,

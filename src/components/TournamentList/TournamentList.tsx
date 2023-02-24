@@ -2,7 +2,7 @@ import { Box, Grid, Heading, Stack, Text } from '@chakra-ui/react';
 import { differenceInDays, parseISO } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { Tournament, TournamentStatus } from '../../../types/tournament';
-import { useChampions } from '../../hooks/finalResults';
+import { useChampions } from '../../hooks/finalResults/finalResults';
 import { TournamentOrSet, useTournamentRender } from '../../hooks/sets';
 import {
   getMostRecentTournaments,

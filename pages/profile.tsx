@@ -7,7 +7,7 @@ import { FaArrowRight, FaHistory, FaRegClock } from 'react-icons/fa';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { getFirstName } from '../src/components/Profile/helpers';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
-import { fetchDecksWithLists } from '../src/hooks/finalResults';
+import { fetchDecksWithLists } from '../src/hooks/finalResults/finalResults';
 import { fetchTournaments } from '../src/hooks/tournaments';
 import { useSessionUserProfile } from '../src/hooks/user';
 import { parseUsername } from '../src/lib/strings';

@@ -1,7 +1,7 @@
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useFinalResults } from '../../../hooks/finalResults';
+import { useFinalResults } from '../../../hooks/finalResults/finalResults';
 import { useUserSentAccountRequest } from '../../../hooks/user';
 import { AccountMadeSuccessfully } from './AccountMadeSuccessfully';
 import { RecommendedSuggestedUser } from './RecommendSuggestedUser';

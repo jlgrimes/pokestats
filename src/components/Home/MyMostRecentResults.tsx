@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { memo, useEffect, useState } from 'react';
 import { Standing, Tournament } from '../../../types/tournament';
-import { useFinalResults } from '../../hooks/finalResults';
+import { useFinalResults } from '../../hooks/finalResults/finalResults';
 import { fetchLiveResults } from '../../lib/fetch/fetchLiveResults';
 import { parseUsername } from '../../lib/strings';
 import { CommonCard } from '../common/CommonCard';

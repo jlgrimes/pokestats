@@ -1,6 +1,6 @@
 import { memo, useState } from 'react';
 import { Grid, Spinner } from '@chakra-ui/react';
-import { useStoredDecks } from '../../../../hooks/finalResults';
+import { useStoredDecks } from '../../../../hooks/finalResults/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
 import { getMetaDiff } from './helpers';
 import { NoDataDisplay } from './NoDataDisplay';

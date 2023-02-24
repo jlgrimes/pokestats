@@ -1,6 +1,6 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { TournamentList } from '../../src/components/TournamentList/TournamentList';
-import { fetchFinalResults } from '../../src/hooks/finalResults';
+import { fetchFinalResults } from '../../src/hooks/finalResults/finalResults';
 import {
   fetchTournaments,
   usePatchedTournaments,

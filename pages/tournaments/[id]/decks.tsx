@@ -3,7 +3,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { MetaGameShareList } from '../../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
-import { fetchDecksWithLists } from '../../../src/hooks/finalResults';
+import { fetchDecksWithLists } from '../../../src/hooks/finalResults/finalResults';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
 

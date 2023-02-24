@@ -8,7 +8,7 @@ import { fixPercentage } from '../../src/components/Deck/ListViewer/CardViewer.t
 import {
   fetchDecksWithLists,
   useStoredDecks,
-} from '../../src/hooks/finalResults';
+} from '../../src/hooks/finalResults/finalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
 import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
