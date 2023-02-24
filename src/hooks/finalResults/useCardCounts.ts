@@ -20,8 +20,8 @@ export const useCardCounts = (
 
   const cardCounts = deckStandings?.reduce(
     (acc: { card: DeckCard; count: number }[], deck) => {
-      if (deck.deck_list) {
-        const compressedList = getCompressedList(deck.deck_list);
+      if (deck.deck?.list) {
+        const compressedList = getCompressedList(deck.deck.list);
 
         for (const card of compressedList) {
           const sameCardIdx = getSameCardIdx(

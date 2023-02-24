@@ -25,12 +25,12 @@ export const DeckHeader = memo(
       () =>
         deck.identifiable_cards
           ?.map(cardName => {
-            return deckStandings?.[0]?.deck_list?.pokemon.find(
+            return deckStandings?.[0]?.deck?.list?.pokemon.find(
               ({ name, set }) => {
                 // Hard code to get the right Inteleon
                 if (
                   name === 'Inteleon' &&
-                  deckStandings?.[0].deck_list?.pokemon.find(
+                  deckStandings?.[0].deck?.list?.pokemon.find(
                     ({ name, set }) => name === 'Inteleon' && set === 'SSH'
                   ) &&
                   set !== 'SSH'
