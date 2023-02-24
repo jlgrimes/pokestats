@@ -77,11 +77,6 @@ export async function getStaticProps({
     });
   }
 
-  await queryClient.prefetchQuery({
-    queryKey: ['code-to-set-map'],
-    queryFn: () => fetchCodeToSetMap(),
-  });
-
   return {
     props: {
       deck: {

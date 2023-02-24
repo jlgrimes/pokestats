@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { OpponentRoundList } from './OpponentRoundList';
+import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
 import { StandingsRow, StandingsRowProps } from './StandingsRow';
 
 export const StandingsRowExpandable = memo((props: StandingsRowProps) => {

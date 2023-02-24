@@ -12,7 +12,7 @@ import { FaEllipsisV } from 'react-icons/fa';
 import { ListViewerModal } from '../../Deck/ListViewer/ListViewerModal';
 import type { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
-import { OpponentRoundList } from './OpponentRoundList';
+import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
 import { AdminBadge } from '../../common/AdminBadge';
 
 interface StandingsInfoMenuProps {
