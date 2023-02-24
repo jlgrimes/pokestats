@@ -66,15 +66,16 @@ export const addUserReportedDecksToFinalResults = (
 ) => {
   return finalResultsData?.map(finalResult => {
     const finalResultAsStanding: Standing = {
-      ...finalResult,
-      deck: {
-        ...(finalResult.deck_archetype ?? {}),
-        ...(finalResult.deck_list
-          ? {
-              list: finalResult.deck_list,
-            }
-          : {}),
-      },
+      deck: finalResult.deck_archetype
+        ? {
+            ...finalResult.deck_archetype,
+            ...(finalResult.deck_list
+              ? {
+                  list: finalResult.deck_list,
+                }
+              : {}),
+          }
+        : undefined,
       name: finalResult.name,
       placing: finalResult.placing,
       record: finalResult.record,

@@ -5,10 +5,6 @@ import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/Date
 import { TournamentSlider } from '../../src/components/Deck/Analytics/Filter/TournamentSlider';
 import { MetaGameShareList } from '../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
 import { fixPercentage } from '../../src/components/Deck/ListViewer/CardViewer.tsx/helpers';
-import {
-  fetchDecksWithLists,
-  useStoredDecks,
-} from '../../src/hooks/finalResults/useFinalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { Tournament } from '../../types/tournament';
 import { fetchArchetypes } from '../../src/hooks/deckArchetypes';

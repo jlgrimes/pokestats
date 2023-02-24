@@ -13,6 +13,6 @@ export interface FinalResultsSchema {
   resistances: PlayerResistances;
   rounds: PlayerRound[];
   tournament_id: string;
-  deck_list: DeckList;
-  deck_archetype: Deck;
+  deck_list: DeckList | null;
+  deck_archetype: Deck | null;
 }

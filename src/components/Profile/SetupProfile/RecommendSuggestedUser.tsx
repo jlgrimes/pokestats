@@ -11,7 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
-import { useFinalResults } from '../../../hooks/finalResults/useFinalResults';
+import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
 import supabase from '../../../lib/supabase/client';
 

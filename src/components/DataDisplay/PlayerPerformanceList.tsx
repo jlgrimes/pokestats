@@ -18,7 +18,7 @@ import { useUserIsAdmin } from '../../hooks/administrators';
 import { Record } from '../Tournament/Results/ResultsList/Record';
 import { parseUsername } from '../../lib/strings';
 import { RecordIcon } from '../Tournament/Results/ResultsList/RecordIcon';
-import { useFinalResults } from '../../hooks/finalResults/useFinalResults';
+import { useFinalResults } from '../../hooks/finalResults';
 import { useTournaments } from '../../hooks/tournaments';
 import { Standing } from '../../../types/tournament';
 

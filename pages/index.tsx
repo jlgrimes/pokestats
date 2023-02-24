@@ -6,7 +6,7 @@ import { HomePage } from '../src/components/Home/HomePage';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { getMostRecentTournaments } from '../src/components/TournamentList/helpers';
-import { fetchFinalResults } from '../src/hooks/finalResults/useFinalResults';
+import { fetchFinalResults } from '../src/hooks/finalResults/fetch';
 import { TournamentOrSet } from '../src/hooks/sets';
 import { fetchTournamentMetadata } from '../src/hooks/tournamentMetadata';
 import {
