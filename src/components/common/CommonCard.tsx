@@ -62,8 +62,7 @@ export const CommonCard = ({
       {slug && (
         <CardFooter
           padding={ghost ? 0 : 4}
-          paddingTop={ghost ? 4 : 0}
-          paddingBottom={4}
+          paddingTop={ghost ? 2 : 0}
         >
           <SeeMoreButton slug={slug} />
         </CardFooter>
