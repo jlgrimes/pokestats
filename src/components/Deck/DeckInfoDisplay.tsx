@@ -43,7 +43,7 @@ export const DeckInfoDisplay = memo(
           <DeckInput
             tournamentId={tournament.id}
             playerName={player.name}
-            deck={player.deck}
+            deck={player.deck ?? undefined}
             archetypeModal={archetypeModal}
             shouldShowAsText={shouldShowAsText}
             shouldHideDeck={shouldHideDeck}

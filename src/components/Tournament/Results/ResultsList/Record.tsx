@@ -47,7 +47,7 @@ export const Record = ({
         {formatRecord(standing.record)}
       </Text>
     );
-  }, [href, standing.record, standing.drop, big]);
+  }, [href, standing.record, standing.drop, big, normal]);
 
   return (
     <Stack
