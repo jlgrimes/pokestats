@@ -145,7 +145,9 @@ export const fetchFinalResults = async (
     };
 
     const userReportedDeck = userReportedDecks?.find(
-      deck => finalResult.name === deck.player_name
+      deck =>
+        finalResult.name === deck.player_name &&
+        finalResult.tournament_id === deck.tournament_id
     );
 
     if (!userReportedDeck || finalResult.deck_list)
