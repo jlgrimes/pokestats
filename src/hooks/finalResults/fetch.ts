@@ -7,7 +7,11 @@ import {
   FinalResultsDeckSchema,
   FinalResultsFilters,
 } from './final-results-schema';
-import { filterFinalResultsByTournament, getDeckCounts } from './helpers';
+import {
+  addUserReportedDecksToFinalResults,
+  filterFinalResultsByTournament,
+  getDeckCounts,
+} from './helpers';
 
 export const fetchDecksByPlayer = async (name: string) => {
   const res = await supabase
@@ -126,40 +130,12 @@ export const fetchFinalResults = async (
     }));
   }
 
-  let mappedFinalResults = finalResultsData?.map(finalResult => {
-    const finalResultAsStanding: Standing = {
-      ...finalResult,
-      deck: {
-        ...(finalResult.deck_archetype ?? {}),
-        ...(finalResult.deck_list
-          ? {
-              list: finalResult.deck_list,
-            }
-          : {}),
-      },
-      name: finalResult.name,
-      placing: finalResult.placing,
-      record: finalResult.record,
-      resistances: finalResult.resistances,
-      tournamentId: finalResult.tournament_id,
-    };
+  if (!finalResultsData || !userReportedDecks) return null;
 
-    const userReportedDeck = userReportedDecks?.find(
-      deck =>
-        finalResult.name === deck.player_name &&
-        finalResult.tournament_id === deck.tournament_id
-    );
-
-    if (!userReportedDeck || finalResult.deck_list)
-      return finalResultAsStanding;
-
-    return {
-      ...finalResultAsStanding,
-      deck: userReportedDeck,
-    };
-  });
-
-  return mappedFinalResults;
+  return addUserReportedDecksToFinalResults(
+    finalResultsData,
+    userReportedDecks
+  );
 };
 
 export const fetchVerifiedUserTournaments = async () => {

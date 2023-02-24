@@ -1,4 +1,6 @@
-import { FinalResultsDeckSchema } from "./final-results-schema";
+import { FinalResultsSchema } from '../../../types/final-results';
+import { Deck, Standing } from '../../../types/tournament';
+import { FinalResultsDeckSchema } from './final-results-schema';
 
 export const getDeckCounts = (
   decks: FinalResultsDeckSchema[],
@@ -55,5 +57,43 @@ export const filterFinalResultsByTournament = (
     }
 
     return true;
+  });
+};
+
+export const addUserReportedDecksToFinalResults = (
+  finalResultsData: FinalResultsSchema[],
+  userReportedDecks: Deck[]
+) => {
+  return finalResultsData?.map(finalResult => {
+    const finalResultAsStanding: Standing = {
+      ...finalResult,
+      deck: {
+        ...(finalResult.deck_archetype ?? {}),
+        ...(finalResult.deck_list
+          ? {
+              list: finalResult.deck_list,
+            }
+          : {}),
+      },
+      name: finalResult.name,
+      placing: finalResult.placing,
+      record: finalResult.record,
+      resistances: finalResult.resistances,
+      tournamentId: finalResult.tournament_id,
+    };
+
+    const userReportedDeck = userReportedDecks?.find(
+      deck =>
+        finalResult.name === deck.player_name &&
+        finalResult.tournament_id === deck.tournament_id
+    );
+
+    if (!userReportedDeck || finalResult.deck_list)
+      return finalResultAsStanding;
+
+    return {
+      ...finalResultAsStanding,
+      deck: userReportedDeck,
+    };
   });
 };
