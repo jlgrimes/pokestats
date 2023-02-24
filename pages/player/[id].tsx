@@ -20,7 +20,7 @@ import {
 } from '../../src/hooks/user';
 import { parseUsername } from '../../src/lib/strings';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { fetchFinalResults } from '../../src/hooks/finalResults/finalResults';
+import { fetchFinalResults } from '../../src/hooks/finalResults/useFinalResults';
 import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 

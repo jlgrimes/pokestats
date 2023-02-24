@@ -3,7 +3,7 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { StoredPlayerProfile } from '../../types/player';
 import supabase from '../lib/supabase/client';
-import { fetchPlayers } from './finalResults/finalResults';
+import { fetchPlayers } from './finalResults/useFinalResults';
 import { useLiveTournamentResults } from './tournamentResults';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {

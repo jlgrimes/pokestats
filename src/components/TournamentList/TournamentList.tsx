@@ -1,13 +1,9 @@
-import { Box, Grid, Heading, Stack, Text } from '@chakra-ui/react';
-import { differenceInDays, parseISO } from 'date-fns';
-import { useCallback, useEffect, useState } from 'react';
-import { Tournament, TournamentStatus } from '../../../types/tournament';
-import { useChampions } from '../../hooks/finalResults/finalResults';
-import { TournamentOrSet, useTournamentRender } from '../../hooks/sets';
-import {
-  getMostRecentTournaments,
-  tournamentHasArrivedButNotLive,
-} from './helpers';
+import { Box, Grid, Text } from '@chakra-ui/react';
+import { useCallback } from 'react';
+import { Tournament } from '../../../types/tournament';
+import { useChampions } from '../../hooks/finalResults';
+import { useTournamentRender } from '../../hooks/sets';
+import { getMostRecentTournaments } from './helpers';
 import { TournamentCard } from './TournamentCard';
 
 export const TournamentList = ({

@@ -17,7 +17,7 @@ import { fetchCodeToSetMap } from '../../src/hooks/deckList';
 import {
   fetchFinalResults,
   fetchUniqueDecks,
-} from '../../src/hooks/finalResults/finalResults';
+} from '../../src/hooks/finalResults/useFinalResults';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';

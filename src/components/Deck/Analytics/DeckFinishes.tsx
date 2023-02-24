@@ -2,7 +2,7 @@ import { Divider, Grid, Heading, Link, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Fragment, memo } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
-import { useFinalResults } from '../../../hooks/finalResults/finalResults';
+import { useFinalResults } from '../../../hooks/finalResults/useFinalResults';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';

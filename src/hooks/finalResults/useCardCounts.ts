@@ -3,7 +3,7 @@ import {
   getCompressedList,
   getSameCardIdx,
 } from '../../components/Deck/ListViewer/helpers';
-import { useFinalResults } from './finalResults';
+import { useFinalResults } from './useFinalResults';
 
 export const useCardCounts = (
   deck: Deck,
