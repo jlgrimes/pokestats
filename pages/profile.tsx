@@ -40,6 +40,8 @@ export default function ProfilePage({
       </Heading>
       <MyMostRecentResults tournaments={tournaments} />
       <Button
+        size='lg'
+        colorScheme={'blue'}
         leftIcon={<FaHistory />}
         onClick={() =>
           session.data?.user?.email &&

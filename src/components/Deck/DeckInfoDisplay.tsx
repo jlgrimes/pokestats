@@ -1,4 +1,10 @@
-import { Grid, IconButton, Stack, StackItem, useDisclosure } from '@chakra-ui/react';
+import {
+  Grid,
+  IconButton,
+  Stack,
+  StackItem,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { memo } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
@@ -15,7 +21,7 @@ export const DeckInfoDisplay = memo(
     shouldHideDeck,
     shouldHideVerifiedIcon,
     shouldHideOpponentView,
-    onUnpinPlayer
+    onUnpinPlayer,
   }: {
     player: Standing;
     tournament: Tournament;
@@ -29,7 +35,10 @@ export const DeckInfoDisplay = memo(
   }) => {
     const archetypeModal = useDisclosure();
     return (
-      <Grid gridTemplateColumns={'85px 1fr'} alignItems='center'>
+      <Grid
+        gridTemplateColumns={shouldShowAsText ? 'auto 1fr' : '85px 1fr'}
+        alignItems='center'
+      >
         <StackItem>
           <DeckInput
             tournamentId={tournament.id}
