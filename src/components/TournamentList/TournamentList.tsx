@@ -37,12 +37,19 @@ export const TournamentList = ({
           const tournamentId = (item.data as Tournament).id;
           const isTournamentUpcoming =
             (item.data as Tournament).tournamentStatus === 'not-started';
+          const isAboutToStart =
+            idx < parsedItems.highlightedTournamentsLength &&
+            isTournamentUpcoming;
 
           return (
-            <Box key={idx} gridColumn={isTournamentUpcoming ? 'auto' : '1/-1'}>
+            <Box
+              key={idx}
+              gridColumn={
+                isTournamentUpcoming && !isAboutToStart ? 'auto' : '1/-1'
+              }
+            >
               <TournamentCard
                 tournament={item.data}
-                live={idx < parsedItems.highlightedTournamentsLength}
                 champion={champions ? champions[tournamentId] : undefined}
               />
             </Box>

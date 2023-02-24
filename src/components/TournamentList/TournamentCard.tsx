@@ -46,14 +46,13 @@ import { TournamentStatusBadge } from './TournamentStatusBadge';
 
 export const TournamentCard = ({
   tournament,
-  live,
   champion,
 }: {
   tournament: Tournament;
-  live?: boolean;
   champion?: FinalResultsSchema;
 }) => {
   const countryCode = useCountryCode(tournament.id);
+  const live = tournament.tournamentStatus === 'running';
 
   return (
     <LinkBox>
