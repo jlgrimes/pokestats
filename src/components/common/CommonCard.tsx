@@ -23,18 +23,26 @@ export const CommonCard = ({
   ghost?: boolean;
   loading?: boolean;
 }) => {
+  // Everything is ghost!
+  ghost = true;
   return (
     <Card variant={ghost ? 'unstyled' : 'elevated'}>
       {header && (
         <CardHeader
           paddingX={ghost ? 2 : 6}
-          paddingBottom={ghost ? 4 : 0}
+          paddingBottom={ghost ? 2 : 0}
           display='flex'
           flexDirection={'column'}
           gap={1}
         >
           {!loading ? (
-            <Heading color='gray.700' size='md' fontWeight={'bold'}>
+            <Heading
+              color='gray.600'
+              size='sm'
+              letterSpacing={1}
+              fontWeight={'extrabold'}
+              textTransform='uppercase'
+            >
               {header}
             </Heading>
           ) : (

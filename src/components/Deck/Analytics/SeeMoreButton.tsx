@@ -15,7 +15,7 @@ export const SeeMoreButton = ({
   return (
     <GridItem gridColumn={'1/-1'}>
       <Button
-        color='gray.500'
+        color='gray.600'
         size='md'
         variant='ghost'
         onClick={() =>
