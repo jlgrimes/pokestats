@@ -1,4 +1,6 @@
 import { Badge, Heading, HStack, Stack } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import { Fragment } from 'react';
 import { Tournament } from '../../../../types/tournament';
 import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
@@ -15,6 +17,7 @@ interface TournamentHomeViewProps {
 }
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
+  const session = useSession();
   const { data: location } = useLocation(props.tournament?.id ?? '');
   const country = useCountryCode(props.tournament?.id ?? '');
 
@@ -44,8 +47,12 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
-      <PinnedPlayerList tournament={props.tournament} />
-      <MyTournamentView tournament={props.tournament} />
+      {session.status === 'authenticated' && (
+        <Fragment>
+          <PinnedPlayerList tournament={props.tournament} />
+          <MyTournamentView tournament={props.tournament} />
+        </Fragment>
+      )}
       {props.tournament.tournamentStatus === 'finished' && (
         <TopDecks tournament={props.tournament} />
       )}
