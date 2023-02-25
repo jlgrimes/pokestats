@@ -304,7 +304,7 @@ export const getTopCutStatus = (
   standings: Standing[],
   tournament: Tournament | null
 ) => {
-  if (!tournament || standings.length < 9) {
+  if (!tournament || (standings[0].rounds?.length ?? 0) < 14) {
     return null;
   }
 
