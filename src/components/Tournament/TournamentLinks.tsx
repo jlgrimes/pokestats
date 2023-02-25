@@ -18,14 +18,17 @@ import {
   useStreamLink,
   useTournamentMetadata,
 } from '../../hooks/tournamentMetadata';
+import { useStreamInfo } from '../../hooks/twitch/useStreamInfo';
 import { useSessionUserProfile, useUserIsInTournament } from '../../hooks/user';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
 
 export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
-  const streamLink = useStreamLink(tournament.id);
+  const { data: streamLink } = useStreamLink(tournament.id);
+  const { data: streamInfo } = useStreamInfo(streamLink);
+  console.log(streamInfo);
 
-  if (!streamLink.data) return null;
+  if (!streamLink) return null;
 
   return (
     <Button
@@ -34,7 +37,7 @@ export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
       size='md'
       leftIcon={<FaTwitch />}
       as={NextLink}
-      href={streamLink.data}
+      href={streamLink}
       target='_blank'
     >
       Stream
