@@ -29,13 +29,14 @@ import {
 import { useFormik } from 'formik';
 import {
   DeckTypeSchema,
+  SupertypeSchema,
   useMutateArchetypes,
   useSupertypes,
 } from '../../../../hooks/deckArchetypes';
 import * as Yup from 'yup';
 import { getSpriteUrl } from '../../../common/helpers';
 import { useIsMobile } from '../../../../hooks/device';
-import { Fragment, useRef } from 'react';
+import { Fragment, useRef, useState } from 'react';
 
 interface AddArchetypeModalProps {
   isOpen: boolean;
@@ -50,22 +51,22 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
 
   const handleSubmit = async ({
     name,
-    supertype,
     pokemon1,
     pokemon2,
     identifiableCard1,
     identifiableCard2,
   }: {
     name: string;
-    supertype: string;
     pokemon1: string;
     pokemon2: string;
     identifiableCard1: string;
     identifiableCard2: string;
   }) => {
+    if (!supertype?.id) return;
+
     await mutateArchetypes.mutate({
       name,
-      supertype,
+      supertypeId: supertype.id,
       pokemon1,
       pokemon2,
       identifiableCard1,
@@ -73,6 +74,8 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
     });
     props.handleArchetypeChange && props.handleArchetypeChange(name);
   };
+
+  const [supertype, setSupertype] = useState<SupertypeSchema>();
 
   const formik = useFormik({
     initialValues: {
@@ -143,20 +146,28 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
                   onChange={formik.handleChange}
                   placeholder='Supertype name (ex. Lost Box) *'
                   onFocus={onOpen}
-                  onBlur={() => window.setTimeout(() => onClose(), 100)}
+                  onBlur={() => {
+                    window.setTimeout(() => {
+                      if (!supertype) {
+                        formik.setFieldValue('supertype', '');
+                      }
+                      onClose();
+                    }, 100);
+                  }}
                 />
                 <Box
                   position='absolute'
                   visibility={isOpen ? 'visible' : 'hidden'}
                   zIndex={5000}
                 >
-                  {filteredSupertypes?.map(supertype => (
+                  {filteredSupertypes?.map((supertype: SupertypeSchema) => (
                     <Card key={supertype.name} borderRadius={0}>
                       <CardBody
                         paddingX={4}
                         paddingY={3}
                         onClick={() => {
-                          formik.setFieldValue('supertype', supertype);
+                          setSupertype(supertype);
+                          formik.setFieldValue('supertype', supertype.name);
                           onClose();
                         }}
                       >
