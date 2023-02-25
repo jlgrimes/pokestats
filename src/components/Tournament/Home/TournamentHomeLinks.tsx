@@ -12,10 +12,9 @@ import {
 } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
-import { useStreamLink } from '../../../hooks/tournamentMetadata';
-import { AdminBadge } from '../../common/AdminBadge';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
+import { StreamLink } from '../TournamentLinks';
 import { getTimeUntilTournament } from './helpers';
 import { ReportModal } from './ReportModal';
 
@@ -30,35 +29,15 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
     }),
     []
   );
-  const { data: streamLink } = useStreamLink(props.tournament.id);
   const router = useRouter();
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const playerSelectModalControls = useDisclosure();
   const addArchetypeModalControls = useDisclosure();
 
-  const streamIsLive = props.tournament.tournamentStatus === 'running';
-
   return (
     <Grid gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
-      {streamLink && (
-        <Button
-          {...commonProps}
-          colorScheme='purple'
-          leftIcon={<FaTwitch />}
-          as={NextLink}
-          href={
-            props.tournament.tournamentStatus !== 'not-started'
-              ? streamLink
-              : '#'
-          }
-          target='_blank'
-          variant={streamIsLive ? 'solid' : 'outline'}
-          isDisabled={props.tournament.tournamentStatus === 'not-started'}
-        >
-          Stream
-        </Button>
-      )}
+      <StreamLink tournament={props.tournament} />
       <Button
         {...commonProps}
         rightIcon={<ExternalLinkIcon />}

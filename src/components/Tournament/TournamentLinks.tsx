@@ -37,7 +37,7 @@ export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
 
   return (
     <Button
-      variant={streamInfo ? 'solid' : 'ghost'}
+      variant={streamInfo ? 'solid' : 'outline'}
       colorScheme={'purple'}
       size='md'
       leftIcon={<FaTwitch />}
