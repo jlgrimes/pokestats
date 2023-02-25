@@ -1,6 +1,6 @@
 import { Button, ButtonProps, HStack, IconButton } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import {
   FaChartLine,
   FaChess,
@@ -26,13 +26,17 @@ import { getRK9TournamentUrl } from './helpers';
 export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
   const { data: streamLink } = useStreamLink(tournament.id);
   const { data: streamInfo } = useStreamInfo(streamLink);
-  console.log(streamInfo);
+
+  const getStreamButtonText = useCallback(() => {
+    if (streamInfo) return 'LIVE';
+    return 'Offline';
+  }, [streamInfo]);
 
   if (!streamLink) return null;
 
   return (
     <Button
-      variant='solid'
+      variant={streamInfo ? 'solid' : 'ghost'}
       colorScheme={'purple'}
       size='md'
       leftIcon={<FaTwitch />}
@@ -40,7 +44,7 @@ export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
       href={streamLink}
       target='_blank'
     >
-      Stream
+      {getStreamButtonText()}
     </Button>
   );
 };
