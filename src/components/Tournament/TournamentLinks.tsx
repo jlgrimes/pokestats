@@ -25,7 +25,8 @@ import { getRK9TournamentUrl } from './helpers';
 
 export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
   const { data: streamLink } = useStreamLink(tournament.id);
-  const { data: streamInfo } = useStreamInfo(streamLink);
+  const { data: streamInfo, isLoading: streamInfoLoading } =
+    useStreamInfo(streamLink);
 
   const getStreamButtonText = useCallback(() => {
     if (streamInfo) return 'LIVE';
@@ -43,6 +44,7 @@ export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
       as={NextLink}
       href={streamLink}
       target='_blank'
+      isLoading={streamInfoLoading}
     >
       {getStreamButtonText()}
     </Button>
