@@ -98,10 +98,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
             {...commonProps}
             variant='outline'
             colorScheme='pink'
-            onClick={() =>
-              props.tournament.tournamentStatus !== 'not-started' &&
-              playerSelectModalControls.onOpen
-            }
+            onClick={playerSelectModalControls.onOpen}
             isDisabled={props.tournament.tournamentStatus === 'not-started'}
             leftIcon={<FaPen />}
           >
@@ -111,10 +108,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
             {...commonProps}
             variant='outline'
             colorScheme='pink'
-            onClick={() =>
-              props.tournament.tournamentStatus !== 'not-started' &&
-              addArchetypeModalControls.onOpen
-            }
+            onClick={addArchetypeModalControls.onOpen}
             isDisabled={props.tournament.tournamentStatus === 'not-started'}
             leftIcon={<FaDog />}
           >
