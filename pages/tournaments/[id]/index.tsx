@@ -15,11 +15,11 @@ export default function TournamentPage(props: TournamentPageProps) {
   const { data: patchedTournamentData } = usePatchedTournaments([
     props.tournament,
   ]);
-  const patchedTournament = patchedTournamentData?.at(0);
+  const patchedTournament = patchedTournamentData
+    ? patchedTournamentData[0]
+    : props.tournament;
 
-  return (
-    <TournamentHomeView tournament={patchedTournament ?? props.tournament} />
-  );
+  return <TournamentHomeView tournament={patchedTournament} />;
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
