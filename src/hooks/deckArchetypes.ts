@@ -154,6 +154,9 @@ const addArchetype = async ({
       ),
     },
   ]);
+  if (result.error) {
+    throw result.error;
+  }
   return result;
 };
 
@@ -171,9 +174,10 @@ export const useMutateArchetypes = (onClose: () => void) => {
       });
       onClose();
     },
-    onError: () => {
+    onError: (error: Error) => {
       toast({
         title: 'Error creating archetype',
+        description: error.message,
         status: 'error',
       });
     },
