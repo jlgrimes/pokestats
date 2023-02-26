@@ -35,11 +35,11 @@ export default function TournamentView({
 
   return (
     <Stack height='100%'>
-      {tournament.hasStaleData && (
+      {/* {tournament.hasStaleData && (
         <Banner color='yellow'>
           <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>
         </Banner>
-      )}
+      )} */}
       <StandingsFilterContainer
         tournament={tournament}
         standingsFilters={standingsFilters}
