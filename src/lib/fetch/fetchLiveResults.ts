@@ -232,6 +232,17 @@ function mapResultsArray(
         !day2 &&
         (19 - player.record.wins * 3 - player.record.ties) / 3 >
           9 - roundNumber,
+      currentOpponent:
+        roundNumber === Object.keys(player.rounds).length
+          ? {
+              ...player.rounds[roundNumber],
+              deck: getPlayerDeck(
+                playerDeckObjects,
+                { name: player.rounds[roundNumber].name } as Player,
+                deckArchetypes
+              ),
+            }
+          : null,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
       ...(player.drop > 0 ? { drop: player.drop } : {}),
     };
