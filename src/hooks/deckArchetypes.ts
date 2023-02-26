@@ -201,7 +201,7 @@ export const useMostPopularArchetypes = (
 
   const playerDeckCounts = liveResults?.data?.reduce(
     (
-      acc: Record<string, { deck: DeckTypeSchema; count: number }>,
+      acc: Record<string, { deck: Deck; count: number }>,
       player: Standing
     ) => {
       if (player.deck && player.deck.id) {
