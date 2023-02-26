@@ -218,6 +218,23 @@ function mapResultsArray(
     const currentMatchResult = player.rounds[roundNumber]?.result;
     const day2 = player.record.wins * 3 + player.record.ties >= 19;
 
+    const currentOpponentName = player.rounds[roundNumber]?.name;
+    const currentOpponentPlayer =
+      resultsArray.find(
+        (player: Player) => player.name === currentOpponentName
+      ) ?? {};
+
+    const currentOpponent = player.rounds[roundNumber]
+      ? {
+          ...currentOpponentPlayer,
+          deck: getPlayerDeck(
+            playerDeckObjects,
+            { name: player.rounds[roundNumber].name } as Player,
+            deckArchetypes
+          ),
+        }
+      : null;
+
     return {
       name: player.name,
       placing: player.placing,
@@ -232,17 +249,7 @@ function mapResultsArray(
         !day2 &&
         (19 - player.record.wins * 3 - player.record.ties) / 3 >
           9 - roundNumber,
-      currentOpponent:
-        roundNumber === Object.keys(player.rounds).length
-          ? {
-              ...player.rounds[roundNumber],
-              deck: getPlayerDeck(
-                playerDeckObjects,
-                { name: player.rounds[roundNumber].name } as Player,
-                deckArchetypes
-              ),
-            }
-          : null,
+      currentOpponent,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
       ...(player.drop > 0 ? { drop: player.drop } : {}),
     };

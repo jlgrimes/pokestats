@@ -1,6 +1,14 @@
-import { Card, CardBody, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Card,
+  CardBody,
+  Heading,
+  Stack,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { useCallback } from 'react';
+import { Fragment, useCallback } from 'react';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
 import {
@@ -16,7 +24,6 @@ interface PinnedPlayerCardProps {
 }
 
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
-  console.log(props.player)
   const session = useSession();
   const toast = useToast();
   const { refetch } = usePinnedPlayers(props.tournament.id);
@@ -49,13 +56,34 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   return (
     <Card>
       <CardBody paddingX={0} paddingY={2}>
-        <StandingsRow
-          result={props.player}
-          tournament={props.tournament}
-          onUnpinPlayer={onUnpinPlayer}
-          canEditDecks={userIsAdmin}
-          shouldHideDeck={props.shouldHideDecks}
-        />
+        <Stack spacing={0}>
+          <StandingsRow
+            result={props.player}
+            tournament={props.tournament}
+            onUnpinPlayer={onUnpinPlayer}
+            canEditDecks={userIsAdmin}
+            shouldHideDeck={props.shouldHideDecks}
+          />
+          {props.player.currentOpponent && (
+            <Fragment>
+              <Heading
+                paddingLeft='2.65rem'
+                color='gray.400'
+                fontSize={14}
+                textTransform='uppercase'
+              >
+                vs
+              </Heading>
+              <StandingsRow
+                result={props.player.currentOpponent}
+                tournament={props.tournament}
+                canEditDecks={userIsAdmin}
+                shouldHideDeck={props.shouldHideDecks}
+                translucent
+              />
+            </Fragment>
+          )}
+        </Stack>
       </CardBody>
     </Card>
   );

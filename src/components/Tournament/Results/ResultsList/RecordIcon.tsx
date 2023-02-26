@@ -74,7 +74,7 @@ export const RecordIcon = ({
       return getCrownIcon();
     }
 
-    if (standing.drop) {
+    if (standing.drop && standing.drop > 0) {
       if (standing.placing === 9999) {
         return (
           <Icon {...commonIconProps} color='red.600' as={FaUserAltSlash} />

@@ -20,7 +20,7 @@ export const Record = ({
       return (
         <Link
           as={NextLink}
-          color={standing.drop ? 'red.600' : 'blue.600'}
+          color={standing.drop && standing.drop > 0 ? 'red.600' : 'blue.600'}
           href={href}
         >
           <Text fontSize='md' whiteSpace={'nowrap'}>
@@ -32,7 +32,9 @@ export const Record = ({
 
     if (big) {
       return (
-        <Heading color={standing.drop ? 'red.600' : 'gray.700'}>
+        <Heading
+          color={standing.drop && standing.drop > 0 ? 'red.600' : 'gray.700'}
+        >
           {formatRecord(standing.record)}
         </Heading>
       );
@@ -52,7 +54,7 @@ export const Record = ({
   return (
     <Stack
       direction='row'
-      color={standing.drop ? 'red.600' : 'auto'}
+      color={standing.drop && standing.drop > 0 ? 'red.600' : 'auto'}
       spacing={1}
       alignItems={big ? 'baseline' : 'center'}
       justifyContent='space-between'

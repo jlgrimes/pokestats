@@ -1,4 +1,13 @@
-import { Flex, Grid, GridItem, Stack, Td, Text, Tr } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Stack,
+  Td,
+  Text,
+  Tr,
+} from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from '../helpers';
@@ -19,6 +28,7 @@ export interface StandingsRowProps {
   hideArchetype?: boolean;
   shouldHideDeck?: boolean;
   onUnpinPlayer?: () => void;
+  translucent?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -38,13 +48,20 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
 
   return (
     <Grid
-      gridTemplateColumns={`2.65rem 2.5fr ${props.hideArchetype ? 2 : 7}rem 1fr`}
+      gridTemplateColumns={`2.65rem 2.5fr ${
+        props.hideArchetype ? 2 : 7
+      }rem 1fr`}
       gridTemplateRows='30px'
       paddingRight={1}
       alignItems='center'
+      textColor={props.translucent ? 'gray.400' : 'auto'}
     >
       <GridItem paddingLeft={0} paddingRight={2}>
-        <Text fontSize={props.result.placing >= 1000 ? 'sm' : '0.95rem'} fontFamily={'mono'} textAlign='right'>
+        <Text
+          fontSize={props.result.placing >= 1000 ? 'sm' : '0.95rem'}
+          fontFamily={'mono'}
+          textAlign='right'
+        >
           {props.opponentRoundNumber ??
             (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
         </Text>
@@ -52,7 +69,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       <GridItem
         display={'flex'}
         alignItems={'center'}
-        color={props.result.drop ? 'red.600' : 'auto'}
+        color={props.result.drop && props.result.drop > 0 ? 'red.600' : 'auto'}
         fontWeight={props.result.day2 ? 'bold' : 'normal'}
       >
         <RecordIcon
@@ -68,13 +85,16 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       <GridItem paddingLeft={2}>
         <Flex>
           {!props.hideArchetype && (
-            <DeckInfoDisplay
-              tournament={props.tournament}
-              player={props.result}
-              enableEdits={!!props.canEditDecks}
-              shouldHideDeck={props.shouldHideDeck}
-              onUnpinPlayer={props.onUnpinPlayer}
-            />
+            <Box opacity={props.translucent ? 0.4 : 1}>
+              <DeckInfoDisplay
+                tournament={props.tournament}
+                player={props.result}
+                enableEdits={!!props.canEditDecks}
+                shouldHideDeck={props.shouldHideDeck}
+                onUnpinPlayer={props.onUnpinPlayer}
+                shouldHideMenu={props.translucent}
+              />
+            </Box>
           )}
           {props.hideArchetype && props.result.deck?.list && (
             <ListViewerOpenButton
