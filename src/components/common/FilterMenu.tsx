@@ -6,7 +6,7 @@ import {
   Stack,
   StackItem,
 } from '@chakra-ui/react';
-import { FaFilter, FaSearch } from 'react-icons/fa';
+import { FaFilter } from 'react-icons/fa';
 
 export const FilterMenu = ({ children }: { children: JSX.Element }) => {
   return (
@@ -15,7 +15,7 @@ export const FilterMenu = ({ children }: { children: JSX.Element }) => {
         <MenuButton
           as={IconButton}
           colorScheme='blue'
-          icon={<FaSearch />}
+          icon={<FaFilter />}
           isRound
           size='lg'
         />
