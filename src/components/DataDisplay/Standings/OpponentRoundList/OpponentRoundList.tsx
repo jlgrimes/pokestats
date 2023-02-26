@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useIsMobile } from '../../../../hooks/device';
+import { usePlayerLiveResults } from '../../../../hooks/tournamentResults';
 import { ordinalSuffixOf } from '../../../../lib/strings';
 import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
 import { Record } from '../../../Tournament/Results/ResultsList/Record';
@@ -34,6 +35,7 @@ export const OpponentRoundList = ({
   handleCloseModal: () => void;
 }) => {
   const isMobile = useIsMobile();
+  const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
 
   return (
     <Modal isOpen={modalOpen} onClose={handleCloseModal} size='md'>
@@ -60,7 +62,7 @@ export const OpponentRoundList = ({
                 enableEdits={false}
                 disableList
                 // Since we're pulling from post-tournament
-                shouldHideDeck={false}
+                shouldHideDeck={shouldHideDecks}
               />
             </Grid>
           </HStack>
