@@ -38,11 +38,11 @@ const RecordNeeded = ({
     );
   }
 
-  if (matchPointsRemaining / 3 > roundsLeft) {
-    return (
-      <Text fontSize='sm'>{`You're out of contention for ${objective} 😓`}</Text>
-    );
-  }
+  // if (matchPointsRemaining / 3 > roundsLeft) {
+  //   return (
+  //     <Text fontSize='sm'>{`You're out of contention for ${objective} 😓`}</Text>
+  //   );
+  // }
 
   return (
     <Stack direction={'row'} alignItems='baseline'>
