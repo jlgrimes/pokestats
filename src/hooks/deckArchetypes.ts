@@ -194,14 +194,19 @@ export const useMostPopularArchetypes = (
   tournamentId: string,
   options?: MostPopularArchetypesOptions
 ) => {
-  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
-    load: { allRoundData: true },
-  });
-  const { data: archetypes, refetch } = useArchetypes();
+  const { data: liveResults, isLoading: liveResultsIsLoading } =
+    useLiveTournamentResults(tournamentId, {
+      load: { allRoundData: true },
+    });
+  const {
+    data: archetypes,
+    refetch,
+    isLoading: archetypesIsLoading,
+  } = useArchetypes();
 
   const playerDeckCounts = liveResults?.data?.reduce(
     (
-      acc: Record<string, { deck: Deck; count: number }>,
+      acc: Record<string, { deck: DeckTypeSchema; count: number }>,
       player: Standing
     ) => {
       if (player.deck && player.deck.id) {
@@ -235,6 +240,7 @@ export const useMostPopularArchetypes = (
   if (!playerDeckCounts) {
     return {
       data: null,
+      isLoading: archetypesIsLoading || liveResultsIsLoading,
       refetchArchetypes: refetch,
     };
   }
@@ -263,6 +269,7 @@ export const useMostPopularArchetypes = (
 
     return {
       data: sortedArchetypes,
+      isLoading: archetypesIsLoading || liveResultsIsLoading,
       refetchArchetypes: refetch,
     };
   }

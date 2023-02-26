@@ -124,22 +124,29 @@ export const StandingsFilterMenu = memo(
                   key={`supertype-collection-grid`}
                   gridTemplateColumns={`1fr repeat(3, 1fr)`}
                 >
-                  {mostPopularDecks?.map(({ id, name, defined_pokemon }) => (
-                    <MenuItemOption
-                      padding={0}
-                      isChecked={getFilter('decksVisible', [id])}
-                      onClick={() =>
-                        toggleFilter('decksVisible', { individualDeck: id })
-                      }
-                      key={name}
-                      value={name}
-                    >
-                      <SpriteDisplay
-                        squishWidth
-                        pokemonNames={defined_pokemon}
-                      />
-                    </MenuItemOption>
-                  ))}
+                  {mostPopularDecks?.map(
+                    popularDeck =>
+                      popularDeck && (
+                        <MenuItemOption
+                          padding={0}
+                          isChecked={getFilter('decksVisible', [
+                            popularDeck.id,
+                          ])}
+                          onClick={() =>
+                            toggleFilter('decksVisible', {
+                              individualDeck: popularDeck.id,
+                            })
+                          }
+                          key={popularDeck.name}
+                          value={popularDeck.name}
+                        >
+                          <SpriteDisplay
+                            squishWidth
+                            pokemonNames={popularDeck.defined_pokemon}
+                          />
+                        </MenuItemOption>
+                      )
+                  )}
                 </Grid>
               </MenuOptionGroup>
             </Fragment>
