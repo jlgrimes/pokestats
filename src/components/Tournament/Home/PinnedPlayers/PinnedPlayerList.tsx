@@ -34,6 +34,14 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   return (
     <CommonCard ghost>
       <Stack>
+        <Button
+          variant='outline'
+          leftIcon={<FaStar />}
+          onClick={addPinPlayerModalControls.onOpen}
+          isDisabled={props.tournament.tournamentStatus === 'not-started'}
+        >
+          Add favorite player
+        </Button>
         {pinnedPlayers?.map(
           pinnedPlayer =>
             pinnedPlayer && (
@@ -45,14 +53,6 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               />
             )
         )}
-        <Button
-          variant='outline'
-          leftIcon={<FaMapPin />}
-          onClick={addPinPlayerModalControls.onOpen}
-          isDisabled={props.tournament.tournamentStatus === 'not-started'}
-        >
-          Pin a player
-        </Button>
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}

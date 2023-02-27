@@ -54,10 +54,15 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
       if (res.error) {
         return toast({
           status: 'error',
-          title: `Error pinning ${player}`,
+          title: `Error favoriting ${player}`,
           description: res.error.message,
         });
       }
+
+      toast({
+        status: 'success',
+        title: `Favorited ${player}!`,
+      });
 
       props.modalControls.onClose && props.modalControls.onClose();
       await refetch();

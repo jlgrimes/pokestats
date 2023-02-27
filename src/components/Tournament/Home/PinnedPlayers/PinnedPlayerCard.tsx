@@ -45,7 +45,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
     if (res.error) {
       return toast({
         status: 'error',
-        title: `Error unpinning ${props.player.name}`,
+        title: `Error unfavoriting ${props.player.name}`,
         description: res.error.message,
       });
     }
