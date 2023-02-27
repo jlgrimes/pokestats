@@ -53,22 +53,22 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
         <MenuList>
           {props.result.deck?.list && (
             <MenuItem fontSize='lg' onClick={onListOpen}>
-              View Deck List
+              View deck list
             </MenuItem>
           )}
           {!props.shouldHideOpponentView && (
             <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
-              View Matchups
+              View matchups
             </MenuItem>
           )}
           {props.onUnpinPlayer && (
             <MenuItem fontSize='lg' onClick={props.onUnpinPlayer}>
-              Unpin Player
+              Remove from favorites
             </MenuItem>
           )}
           {props.enableEdits && (
             <MenuItem fontSize='lg' onClick={props.onEditOpen}>
-              Edit Deck
+              Edit deck
               {userIsAdmin && <AdminBadge />}
             </MenuItem>
           )}
