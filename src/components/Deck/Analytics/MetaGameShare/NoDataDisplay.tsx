@@ -3,9 +3,10 @@ import { memo } from 'react';
 
 export const NoDataDisplay = memo(() => {
   return (
-    <Stack justifyContent={'center'} alignItems='center'>
-      <Heading color='gray.500'>{`No data available for this tournament :(`}</Heading>
-    </Stack>
+    <Heading
+      color='gray.500'
+      fontSize={20}
+    >{`Tournament data on the way!`}</Heading>
   );
 });
 

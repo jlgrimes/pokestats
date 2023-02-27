@@ -39,6 +39,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
           leftIcon={<FaStar />}
           onClick={addPinPlayerModalControls.onOpen}
           isDisabled={props.tournament.tournamentStatus === 'not-started'}
+          colorScheme='yellow'
         >
           Add favorite player
         </Button>

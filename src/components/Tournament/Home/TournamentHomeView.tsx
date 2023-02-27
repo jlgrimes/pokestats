@@ -1,6 +1,12 @@
-import { Badge, Heading, HStack, Stack } from '@chakra-ui/react';
+import { Badge, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment } from 'react';
+import {
+  FaClock,
+  FaMapMarker,
+  FaMapMarkerAlt,
+  FaRegClock,
+} from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
@@ -24,37 +30,46 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   if (!props.tournament) return null;
 
   return (
-    <Stack paddingY={6} spacing={6}>
+    <Stack spacing={4}>
       <Stack paddingX={6} spacing={6}>
-        <Stack spacing={2}>
-          <Heading size='xl' color='gray.700'>
+        <Stack spacing={2} alignItems='center' paddingY={3}>
+          <Heading size='xl' color='gray.700' textAlign={'center'}>
             {props.tournament.name}
           </Heading>
           {location && country && (
             <HStack spacing='4'>
               <CountryFlag countryCode={country} />
+              <Badge>
+                <HStack>
+                  <FaMapMarkerAlt />
+                  <Text>{location.formatted_address}</Text>
+                </HStack>
+              </Badge>
               {!isInSameTimeZone(location.utc_offset_minutes) && (
                 <Badge>
-                  Local time: {getLocalTime(location.utc_offset_minutes)}
+                  <HStack>
+                    <FaRegClock />
+                    <Text>{getLocalTime(location.utc_offset_minutes)}</Text>
+                  </HStack>
                 </Badge>
               )}
+              <OpenEditTournamentInfo tournament={props.tournament} />
             </HStack>
           )}
           <HStack>
             <TournamentStatusBadge tournament={props.tournament} size='md' />
-            <OpenEditTournamentInfo tournament={props.tournament} />
           </HStack>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
-      {session.status === 'authenticated' && (
-        <Fragment>
-          <PinnedPlayerList tournament={props.tournament} />
-          <MyTournamentView tournament={props.tournament} />
-        </Fragment>
-      )}
       {props.tournament.tournamentStatus === 'finished' && (
         <TopDecks tournament={props.tournament} />
+      )}
+      {session.status === 'authenticated' && (
+        <Fragment>
+          <MyTournamentView tournament={props.tournament} />
+          <PinnedPlayerList tournament={props.tournament} />
+        </Fragment>
       )}
     </Stack>
   );

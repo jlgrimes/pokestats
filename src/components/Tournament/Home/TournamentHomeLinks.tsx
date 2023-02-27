@@ -33,19 +33,25 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const playerSelectModalControls = useDisclosure();
-  const addArchetypeModalControls = useDisclosure();
 
   return (
-    <Grid gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
+    <Grid gridTemplateColumns='1fr 1fr 1fr' gap={2} rowGap={2}>
       <StreamLink tournament={props.tournament} />
       <Button
         {...commonProps}
-        rightIcon={<ExternalLinkIcon />}
         as={NextLink}
         href={getRK9TournamentUrl(props.tournament.rk9link)}
         target='_blank'
       >
-        Tournament info
+        Info
+      </Button>
+      <Button
+        {...commonProps}
+        as={NextLink}
+        href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
+        isDisabled={props.tournament.tournamentStatus === 'not-started'}
+      >
+        Pairings
       </Button>
       <Button
         {...commonProps}
@@ -59,50 +65,22 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       >
         Standings
       </Button>
-      <Button
-        {...commonProps}
-        as={NextLink}
-        href={
-          props.tournament.tournamentStatus !== 'not-started'
-            ? `${router.asPath}/pairings`
-            : '#'
-        }
-        isDisabled={props.tournament.tournamentStatus === 'not-started'}
-      >
-        Pairings
-      </Button>
       {userIsAdmin && (
         <Fragment>
           <Button
             {...commonProps}
-            variant='outline'
+            variant='solid'
             colorScheme='pink'
             onClick={playerSelectModalControls.onOpen}
             isDisabled={props.tournament.tournamentStatus === 'not-started'}
             leftIcon={<FaPen />}
           >
-            Report player
-          </Button>
-          <Button
-            {...commonProps}
-            variant='outline'
-            colorScheme='pink'
-            onClick={addArchetypeModalControls.onOpen}
-            isDisabled={props.tournament.tournamentStatus === 'not-started'}
-            leftIcon={<FaDog />}
-          >
-            Add new deck
+            Report
           </Button>
           <ReportModal
             tournament={props.tournament}
             playerSelectModalControls={playerSelectModalControls}
           />
-          {addArchetypeModalControls.isOpen && (
-            <AddArchetypeModal
-              isOpen={addArchetypeModalControls.isOpen}
-              onClose={addArchetypeModalControls.onClose}
-            />
-          )}
         </Fragment>
       )}
     </Grid>
