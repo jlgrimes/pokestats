@@ -12,7 +12,7 @@ import { MyTournamentView } from './MyTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
 
-interface TournamentHomeViewProps {
+export interface TournamentHomeViewProps {
   tournament: Tournament | null;
 }
 

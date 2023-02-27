@@ -7,11 +7,12 @@ import EverythingDecorator from '../../../.storybook/decorators/EverythingDecora
 import { addDays } from 'date-fns';
 import { convertToDateString } from '../../lib/dates';
 import { HomePage, HomePageProps } from './HomePage';
+import { DARWIN_MOCK_TOURNAMENT } from '../../../.storybook/mocks';
 
 export default {
   component: HomePage,
-  decorators: [EverythingDecorator]
-}
+  decorators: [EverythingDecorator],
+};
 //👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof HomePage> = (args: HomePageProps) => (
   <HomePage {...args} />
@@ -21,27 +22,7 @@ const Template: ComponentStory<typeof HomePage> = (args: HomePageProps) => (
 export const Live = Template.bind({});
 Live.args = {
   tournaments: [
-    {
-      id: '1',
-      name: 'Darwin Regional Championships',
-      date: {
-        start: convertToDateString(addDays(new Date(), -1)),
-        end: convertToDateString(addDays(new Date(), 1)),
-      },
-      tournamentStatus: 'running',
-      players: {
-        juniors: null,
-        seniors: null,
-        masters: null,
-      },
-      roundNumbers: {
-        juniors: 1,
-        seniors: 1,
-        masters: 1,
-      },
-      lastUpdated: 'now',
-      rk9link: 'slug',
-    },
+    DARWIN_MOCK_TOURNAMENT,
     {
       id: '2',
       name: 'Sydney Regional Championships',
