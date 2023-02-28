@@ -71,10 +71,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
-      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {props.tournament.tournamentStatus === 'finished' && (
         <TopDecks tournament={props.tournament} />
       )}
+      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {session.status === 'authenticated' && (
         <Fragment>
           <MyTournamentView tournament={props.tournament} />
