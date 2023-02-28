@@ -30,9 +30,9 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   if (!props.tournament) return null;
 
   return (
-    <Stack spacing={4}>
-      <Stack paddingX={6} spacing={6}>
-        <Stack spacing={2} alignItems='center' paddingY={3}>
+    <Stack spacing={4} paddingY={4}>
+      <Stack paddingX={6} spacing={2}>
+        <Stack spacing={2} alignItems='center'>
           <Heading size='xl' color='gray.700' textAlign={'center'}>
             {props.tournament.name}
           </Heading>

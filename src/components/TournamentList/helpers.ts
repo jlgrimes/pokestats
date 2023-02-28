@@ -72,7 +72,7 @@ export const formatTournamentDate = (tournament: Tournament) => {
   return `${format(startDate, 'MMMM d')}-${format(
     endDate,
     `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM' : ''}d${
-      isThisYear(startDate) ? '' : ', y'
+      ( isThisYear(startDate)) ? '' : ', y'
     }`
   )}`;
 };

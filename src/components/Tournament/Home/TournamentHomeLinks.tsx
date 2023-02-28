@@ -50,6 +50,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         as={NextLink}
         href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
+        target='_blank'
       >
         Pairings
       </Button>

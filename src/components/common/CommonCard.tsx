@@ -7,6 +7,7 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import { SeeMoreButton } from '../Deck/Analytics/SeeMoreButton';
+import { StatsHeading } from './StatsHeading';
 
 export const CommonCard = ({
   header,
@@ -28,15 +29,7 @@ export const CommonCard = ({
       {header && (
         <CardHeader padding={0} display='flex' flexDirection={'column'} gap={1}>
           {!loading ? (
-            <Heading
-              color='gray.600'
-              size='sm'
-              letterSpacing={1}
-              fontWeight={'extrabold'}
-              textTransform='uppercase'
-            >
-              {header}
-            </Heading>
+            <StatsHeading>{header}</StatsHeading>
           ) : (
             <Skeleton height='6' width='70' />
           )}
