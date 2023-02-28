@@ -322,15 +322,15 @@ export const getTopCutStatus = (
   standings: Standing[],
   tournament: Tournament | null
 ) => {
-  if (!tournament || (standings[0].rounds?.length ?? 0) < 14) {
+  if (!tournament || (standings[0]?.rounds?.length ?? 0) < 14) {
     return null;
   }
 
-  if ((standings[2].rounds?.length ?? 0) < (standings[1].rounds?.length ?? 0))
+  if ((standings[2]?.rounds?.length ?? 0) < (standings[1]?.rounds?.length ?? 0))
     return 'finals';
-  if ((standings[4].rounds?.length ?? 0) < (standings[3].rounds?.length ?? 0))
+  if ((standings[4]?.rounds?.length ?? 0) < (standings[3]?.rounds?.length ?? 0))
     return 'top4';
-  if ((standings[8].rounds?.length ?? 0) < (standings[7].rounds?.length ?? 0))
+  if ((standings[8]?.rounds?.length ?? 0) < (standings[7]?.rounds?.length ?? 0))
     return 'top8';
 
   return null;
