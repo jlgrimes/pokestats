@@ -8,11 +8,13 @@ import {
   FaRegClock,
 } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
+import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { TopDecks } from '../../Home/TopDecks';
 import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
 import { TournamentStatusBanner } from '../../TournamentList/TournamentStatusBanner';
+import { AdminTournamentPanel } from './AdminTournamentPanel';
 import { CountryFlag } from './CountryFlag';
 import { getLocalTime, isInSameTimeZone } from './helpers';
 import { MyTournamentView } from './MyTournamentView';
@@ -24,6 +26,7 @@ export interface TournamentHomeViewProps {
 }
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
+  const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
   const { data: location } = useLocation(props.tournament?.id ?? '');
   const country = useCountryCode(props.tournament?.id ?? '');
@@ -55,7 +58,9 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
                     <Badge>
                       <HStack>
                         <FaRegClock />
-                        <Text>{`Local time: ${getLocalTime(location.utc_offset_minutes)}`}</Text>
+                        <Text>{`Local time: ${getLocalTime(
+                          location.utc_offset_minutes
+                        )}`}</Text>
                       </HStack>
                     </Badge>
                   </Box>
@@ -66,6 +71,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
+      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {props.tournament.tournamentStatus === 'finished' && (
         <TopDecks tournament={props.tournament} />
       )}

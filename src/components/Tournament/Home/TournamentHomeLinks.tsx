@@ -8,6 +8,7 @@ import {
   FaExternalLinkSquareAlt,
   FaPen,
   FaPenFancy,
+  FaTrophy,
   FaTwitch,
 } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
@@ -16,6 +17,7 @@ import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditT
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
 import { StreamLink } from '../TournamentLinks';
+import { AdminTournamentPanel } from './AdminTournamentPanel';
 import { getTimeUntilTournament } from './helpers';
 import { ReportModal } from './ReportModal';
 
@@ -33,30 +35,12 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const router = useRouter();
   const { data: userIsAdmin } = useUserIsAdmin();
 
-  const playerSelectModalControls = useDisclosure();
-
   return (
-    <Grid gridTemplateColumns='1fr 1fr 1fr' gap={2} rowGap={2}>
+    <Grid gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
       <StreamLink tournament={props.tournament} />
       <Button
         {...commonProps}
-        as={NextLink}
-        href={getRK9TournamentUrl(props.tournament.rk9link)}
-        target='_blank'
-      >
-        Info
-      </Button>
-      <Button
-        {...commonProps}
-        as={NextLink}
-        href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
-        isDisabled={props.tournament.tournamentStatus === 'not-started'}
-        target='_blank'
-      >
-        Pairings
-      </Button>
-      <Button
-        {...commonProps}
+        leftIcon={<FaTrophy />}
         as={NextLink}
         href={
           props.tournament.tournamentStatus !== 'not-started'
@@ -67,25 +51,23 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       >
         Standings
       </Button>
-      {userIsAdmin && (
-        <Fragment>
-          <Button
-            {...commonProps}
-            variant='solid'
-            colorScheme='pink'
-            onClick={playerSelectModalControls.onOpen}
-            isDisabled={props.tournament.tournamentStatus === 'not-started'}
-            leftIcon={<FaPen />}
-          >
-            Report
-          </Button>
-          <ReportModal
-            tournament={props.tournament}
-            playerSelectModalControls={playerSelectModalControls}
-          />
-          <OpenEditTournamentInfo tournament={props.tournament} />
-        </Fragment>
-      )}
+      <Button
+        {...commonProps}
+        as={NextLink}
+        href={getRK9TournamentUrl(props.tournament.rk9link)}
+        target='_blank'
+      >
+        Event info <ExternalLinkIcon mx='1' />
+      </Button>
+      <Button
+        {...commonProps}
+        as={NextLink}
+        href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
+        isDisabled={props.tournament.tournamentStatus === 'not-started'}
+        target='_blank'
+      >
+        Pairings <ExternalLinkIcon mx='1' />
+      </Button>
     </Grid>
   );
 };
