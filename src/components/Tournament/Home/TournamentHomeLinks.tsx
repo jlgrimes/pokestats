@@ -11,6 +11,7 @@ import {
   FaTrophy,
   FaTwitch,
 } from 'react-icons/fa';
+import { IoMdPodium } from 'react-icons/io';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
@@ -40,7 +41,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       <StreamLink tournament={props.tournament} />
       <Button
         {...commonProps}
-        leftIcon={<FaTrophy />}
+        leftIcon={<IoMdPodium />}
         as={NextLink}
         href={
           props.tournament.tournamentStatus !== 'not-started'
