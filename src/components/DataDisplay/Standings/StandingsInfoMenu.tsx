@@ -51,6 +51,11 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           <FaEllipsisV />
         </MenuButton>
         <MenuList>
+          {props.onUnpinPlayer && (
+            <MenuItem fontSize='lg' onClick={props.onUnpinPlayer}>
+              Remove from favorites
+            </MenuItem>
+          )}
           {props.result.deck?.list && (
             <MenuItem fontSize='lg' onClick={onListOpen}>
               View deck list
@@ -59,11 +64,6 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
           {!props.shouldHideOpponentView && (
             <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
               View matchups
-            </MenuItem>
-          )}
-          {props.onUnpinPlayer && (
-            <MenuItem fontSize='lg' onClick={props.onUnpinPlayer}>
-              Remove from favorites
             </MenuItem>
           )}
           {props.enableEdits && (

@@ -51,7 +51,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       >
         Standings
       </Button>
-      <Button
+      {/* <Button
         {...commonProps}
         as={NextLink}
         href={getRK9TournamentUrl(props.tournament.rk9link)}
@@ -67,7 +67,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         target='_blank'
       >
         Pairings <ExternalLinkIcon mx='1' />
-      </Button>
+      </Button> */}
     </Grid>
   );
 };

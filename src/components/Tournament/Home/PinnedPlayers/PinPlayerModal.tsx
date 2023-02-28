@@ -59,10 +59,10 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
         });
       }
 
-      toast({
-        status: 'success',
-        title: `Favorited ${player}!`,
-      });
+      // toast({
+      //   status: 'success',
+      //   title: `Favorited ${player}!`,
+      // });
 
       props.modalControls.onClose && props.modalControls.onClose();
       await refetch();

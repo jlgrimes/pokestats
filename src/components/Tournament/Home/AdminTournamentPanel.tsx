@@ -19,7 +19,7 @@ export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
         <Button
           onClick={playerSelectModalControls.onOpen}
           isDisabled={props.tournament.tournamentStatus === 'not-started'}
-          variant='outline'
+          colorScheme='pink'
         >
           Report deck
         </Button>

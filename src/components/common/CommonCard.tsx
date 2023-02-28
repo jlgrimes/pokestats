@@ -4,7 +4,9 @@ import {
   CardFooter,
   CardHeader,
   Heading,
+  HStack,
   Skeleton,
+  Text,
 } from '@chakra-ui/react';
 import { SeeMoreButton } from '../Deck/Analytics/SeeMoreButton';
 import { StatsHeading } from './StatsHeading';
@@ -13,6 +15,7 @@ export const CommonCard = ({
   header,
   subheader,
   children,
+  leftIcon,
   slug,
   ghost,
   loading,
@@ -20,6 +23,7 @@ export const CommonCard = ({
   header?: string;
   subheader?: string;
   children: JSX.Element;
+  leftIcon?: JSX.Element;
   slug?: string;
   ghost?: boolean;
   loading?: boolean;
@@ -30,7 +34,14 @@ export const CommonCard = ({
         <CardHeader padding={0} display='flex' flexDirection={'column'} gap={1}>
           {!loading ? (
             <StatsHeading headingProps={{ color: 'gray.600' }}>
-              {header}
+              {leftIcon ? (
+                <HStack>
+                  {leftIcon}
+                  <Text>{header}</Text>
+                </HStack>
+              ) : (
+                header
+              )}
             </StatsHeading>
           ) : (
             <Skeleton height='6' width='70' />

@@ -17,7 +17,7 @@ export const OpenEditTournamentInfo = ({
 
   return (
     <Fragment>
-      <Button onClick={onOpen} variant='outline'>
+      <Button onClick={onOpen}>
         Edit event
       </Button>
       {isOpen && (

@@ -1,5 +1,5 @@
-import { Button, Grid, Stack, useDisclosure } from '@chakra-ui/react';
-import { FaMapPin, FaPlus, FaStar } from 'react-icons/fa';
+import { Button, Grid, Stack, Icon, useDisclosure } from '@chakra-ui/react';
+import { FaMapPin, FaPlus, FaStar, FaTwitter } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
@@ -32,17 +32,12 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const addPinPlayerModalControls = useDisclosure();
 
   return (
-    <CommonCard ghost>
+    <CommonCard
+      header='Favorites'
+      leftIcon={<Icon color='yellow.500' as={FaStar} />}
+      ghost
+    >
       <Stack>
-        <Button
-          variant='outline'
-          leftIcon={<FaStar />}
-          onClick={addPinPlayerModalControls.onOpen}
-          isDisabled={props.tournament.tournamentStatus === 'not-started'}
-          colorScheme='yellow'
-        >
-          Add favorite player
-        </Button>
         {pinnedPlayers?.map(
           pinnedPlayer =>
             pinnedPlayer && (
@@ -54,6 +49,16 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               />
             )
         )}
+        <Button
+          variant='ghost'
+          leftIcon={<FaPlus />}
+          onClick={addPinPlayerModalControls.onOpen}
+          isDisabled={props.tournament.tournamentStatus === 'not-started'}
+          size={'sm'}
+          colorScheme='blackAlpha'
+        >
+          Add favorite player
+        </Button>
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}

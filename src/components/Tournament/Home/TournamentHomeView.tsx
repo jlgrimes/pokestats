@@ -36,7 +36,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   return (
     <Stack spacing={4}>
       <TournamentStatusBanner tournament={props.tournament} />
-      <Stack paddingX={6} spacing={6}>
+      <Stack paddingX={6} spacing={4}>
         <Stack spacing={2} alignItems='center'>
           <Heading size='xl' color='gray.700' textAlign={'center'}>
             {props.tournament.name}
@@ -71,16 +71,16 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
-      {props.tournament.tournamentStatus === 'finished' && (
-        <TopDecks tournament={props.tournament} />
-      )}
-      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {session.status === 'authenticated' && (
         <Fragment>
           <MyTournamentView tournament={props.tournament} />
           <PinnedPlayerList tournament={props.tournament} />
         </Fragment>
       )}
+      {props.tournament.tournamentStatus === 'finished' && (
+        <TopDecks tournament={props.tournament} />
+      )}
+      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
     </Stack>
   );
 };
