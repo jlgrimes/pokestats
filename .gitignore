@@ -44,3 +44,6 @@ next-env.d.ts
 
 # Sentry
 .sentryclirc
+
+# Sentry
+.sentryclirc
