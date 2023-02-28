@@ -29,7 +29,9 @@ export const CommonCard = ({
       {header && (
         <CardHeader padding={0} display='flex' flexDirection={'column'} gap={1}>
           {!loading ? (
-            <StatsHeading>{header}</StatsHeading>
+            <StatsHeading headingProps={{ color: 'gray.600' }}>
+              {header}
+            </StatsHeading>
           ) : (
             <Skeleton height='6' width='70' />
           )}

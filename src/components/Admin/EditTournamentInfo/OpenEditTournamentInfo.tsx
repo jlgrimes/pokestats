@@ -1,5 +1,5 @@
 import { EditIcon } from '@chakra-ui/icons';
-import { IconButton, useDisclosure } from '@chakra-ui/react';
+import { Button, IconButton, useDisclosure } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
@@ -17,17 +17,9 @@ export const OpenEditTournamentInfo = ({
 
   return (
     <Fragment>
-      <IconButton
-        aria-label='edit tournament info'
-        onClick={onOpen}
-        size='md'
-        variant='ghost'
-        color='gray.500'
-        padding={0}
-        height='1'
-      >
-        <EditIcon />
-      </IconButton>
+      <Button colorScheme='pink' variant='outline' onClick={onOpen}>
+        Edit event
+      </Button>
       {isOpen && (
         <EditTournamentInfoModal
           isOpen={isOpen}

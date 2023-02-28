@@ -18,7 +18,12 @@ export const isInSameTimeZone = (utcOffsetMinutes: number) => {
 
 export const getLocalTime = (utcOffsetMinutes: number) => {
   const now = new Date();
-  return format(offsetTimezone(now, utcOffsetMinutes), 'eee LLL d K:mm aaa');
+
+  if (now.getDay() !== offsetTimezone(now, utcOffsetMinutes).getDay()) {
+    return format(offsetTimezone(now, utcOffsetMinutes), 'eee LLL d K:mm aaa');
+  }
+
+  return format(offsetTimezone(now, utcOffsetMinutes), 'K:mm aaa');
 };
 
 export const getTimeUntilTournament = (

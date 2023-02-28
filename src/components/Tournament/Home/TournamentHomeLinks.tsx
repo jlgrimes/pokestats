@@ -12,6 +12,7 @@ import {
 } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
+import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
 import { StreamLink } from '../TournamentLinks';
@@ -82,6 +83,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
             tournament={props.tournament}
             playerSelectModalControls={playerSelectModalControls}
           />
+          <OpenEditTournamentInfo tournament={props.tournament} />
         </Fragment>
       )}
     </Grid>

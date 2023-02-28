@@ -1,4 +1,4 @@
-import { Badge, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { Badge, Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment } from 'react';
 import {
@@ -12,6 +12,7 @@ import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { TopDecks } from '../../Home/TopDecks';
 import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
+import { TournamentStatusBanner } from '../../TournamentList/TournamentStatusBanner';
 import { CountryFlag } from './CountryFlag';
 import { getLocalTime, isInSameTimeZone } from './helpers';
 import { MyTournamentView } from './MyTournamentView';
@@ -30,35 +31,38 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   if (!props.tournament) return null;
 
   return (
-    <Stack spacing={4} paddingY={4}>
-      <Stack paddingX={6} spacing={2}>
+    <Stack spacing={4}>
+      <TournamentStatusBanner tournament={props.tournament} />
+      <Stack paddingX={6} spacing={6}>
         <Stack spacing={2} alignItems='center'>
           <Heading size='xl' color='gray.700' textAlign={'center'}>
             {props.tournament.name}
           </Heading>
           {location && country && (
-            <HStack spacing='4'>
+            <HStack spacing={2}>
               <CountryFlag countryCode={country} />
-              <Badge>
-                <HStack>
-                  <FaMapMarkerAlt />
-                  <Text>{location.formatted_address}</Text>
-                </HStack>
-              </Badge>
-              {!isInSameTimeZone(location.utc_offset_minutes) && (
-                <Badge>
-                  <HStack>
-                    <FaRegClock />
-                    <Text>{getLocalTime(location.utc_offset_minutes)}</Text>
-                  </HStack>
-                </Badge>
-              )}
-              <OpenEditTournamentInfo tournament={props.tournament} />
+              <Stack spacing={0}>
+                <Box>
+                  <Badge>
+                    <HStack>
+                      <FaMapMarkerAlt />
+                      <Text>{location.formatted_address}</Text>
+                    </HStack>
+                  </Badge>
+                </Box>
+                {!isInSameTimeZone(location.utc_offset_minutes) && (
+                  <Box>
+                    <Badge>
+                      <HStack>
+                        <FaRegClock />
+                        <Text>{`Local time: ${getLocalTime(location.utc_offset_minutes)}`}</Text>
+                      </HStack>
+                    </Badge>
+                  </Box>
+                )}
+              </Stack>
             </HStack>
           )}
-          <HStack>
-            <TournamentStatusBadge tournament={props.tournament} size='md' />
-          </HStack>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>

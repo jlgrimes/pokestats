@@ -2,18 +2,17 @@ import { Heading, HeadingProps } from '@chakra-ui/react';
 
 export const StatsHeading = ({
   children,
-  ...rest
+  headingProps,
 }: {
   children: any;
-  rest?: Partial<HeadingProps>;
+  headingProps?: Partial<HeadingProps>;
 }) => (
   <Heading
-    color='gray.600'
     size='sm'
     letterSpacing={1}
     fontWeight={'extrabold'}
     textTransform='uppercase'
-    {...rest}
+    {...headingProps}
   >
     {children}
   </Heading>
