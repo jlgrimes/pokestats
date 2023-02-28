@@ -10,6 +10,9 @@ import { Tournament } from '../../types/tournament';
 import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
 import { getMostRecentCompletedTournamentIdx } from '../../src/lib/tournament';
 import { useRouter } from 'next/router';
+import { CommonCard } from '../../src/components/common/CommonCard';
+import { findTournament } from '../../src/components/Deck/Analytics/Filter/helpers';
+import { formatTournamentDate } from '../../src/components/TournamentList/helpers';
 
 export default function DecksPage({
   defaultTournamentRange,
@@ -30,14 +33,30 @@ export default function DecksPage({
 
   useEffect(() => {
     if (query.tournament) {
-      const tournamentId = parseInt(Array.isArray(query.tournament) ? query.tournament[0] : query.tournament);
+      const tournamentId = parseInt(
+        Array.isArray(query.tournament) ? query.tournament[0] : query.tournament
+      );
       setTournamentRange([tournamentId, tournamentId]);
     }
-  }, [query.tournament])
+  }, [query.tournament]);
+
+  //   <Heading size='lg' noOfLines={3} color='gray.700'>
+  //   {
+  //     (findTournament(tournamentFilter, tournaments) as Tournament)
+  //       .name
+  //   }
+  // </Heading>
+  // <Heading size='md' noOfLines={1} color='gray.500'>
+  //   {formatTournamentDate(
+  //     findTournament(tournamentFilter, tournaments) as Tournament
+  //   )}
+  // </Heading>
+
+  const tournament = findTournament(tournamentRange[0], tournaments);
 
   return (
-    <Stack padding={4} height='100%'>
-      <StackItem>
+    <CommonCard header={'Day two metagame'} subheader={tournament?.name} ghost>
+      {/* <StackItem>
         <Switch
           checked={sortByMoves}
           onChange={() => setSortByMoves(!sortByMoves)}
@@ -59,7 +78,7 @@ export default function DecksPage({
             tournaments={tournaments}
           />
         )}
-      </StackItem>
+      </StackItem> */}
       {/* <OptionsMenu>
         <Switch></Switch>
       </OptionsMenu> */}
@@ -67,7 +86,7 @@ export default function DecksPage({
         tournamentRange={tournamentRange}
         sortByMoves={sortByMoves}
       />
-    </Stack>
+    </CommonCard>
   );
 }
 
