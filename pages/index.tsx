@@ -1,5 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
+import Script from 'next/script';
 import { Fragment, useEffect, useState } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { HomePage } from '../src/components/Home/HomePage';
@@ -30,7 +31,12 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
     return <ComingSoonPage />;
   }
 
-  return <HomePage tournaments={patchedTournaments ?? tournaments} />;
+  return (
+    <>
+      <Script src='https://platform.twitter.com/widgets.js' />
+      <HomePage tournaments={patchedTournaments ?? tournaments} />
+    </>
+  );
 }
 
 export async function getStaticProps() {
