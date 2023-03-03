@@ -2,6 +2,7 @@ import { Badge, Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment } from 'react';
 import {
+  FaCalendar,
   FaClock,
   FaMapMarker,
   FaMapMarkerAlt,
@@ -12,6 +13,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { TopDecks } from '../../Home/TopDecks';
+import { formatTournamentDate } from '../../TournamentList/helpers';
 import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
 import { TournamentStatusBanner } from '../../TournamentList/TournamentStatusBanner';
 import { AdminTournamentPanel } from './AdminTournamentPanel';
@@ -35,7 +37,12 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
 
   return (
     <Stack spacing={4}>
-      <TournamentStatusBanner tournament={props.tournament} />
+      {props.tournament.tournamentStatus !== 'finished' ? (
+        <TournamentStatusBanner tournament={props.tournament} />
+      ) : (
+        // Empty Box preserves the padding we get from spacing
+        <Box />
+      )}
       <Stack paddingX={6} spacing={4}>
         <Stack spacing={2} alignItems='center'>
           <Heading size='xl' color='gray.700' textAlign={'center'}>
@@ -48,8 +55,8 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
                 <Box>
                   <Badge>
                     <HStack>
-                      <FaMapMarkerAlt />
-                      <Text>{location.formatted_address}</Text>
+                      <FaCalendar />
+                      <Text>{formatTournamentDate(props.tournament)}</Text>
                     </HStack>
                   </Badge>
                 </Box>
