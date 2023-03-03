@@ -2,9 +2,13 @@ name: Playwright Tests
 run-name: Playwright Tests
 on:
   push:
-    branches: [main, staging]
+    branches:
+      - main
+      - staging
   pull_request:
-    branches: [main, staging]
+    branches:
+      - main
+      - staging
 jobs:
   test:
     timeout-minutes: 60
