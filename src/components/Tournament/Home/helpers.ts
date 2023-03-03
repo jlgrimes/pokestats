@@ -1,4 +1,4 @@
-import { addMinutes, format, formatDistanceStrict } from 'date-fns';
+import { addMinutes, format, formatDistanceStrict, getTime } from 'date-fns';
 import { Tournament } from '../../../../types/tournament';
 import {
   formatTimeUntilTournament,
@@ -26,14 +26,10 @@ export const getLocalTime = (utcOffsetMinutes: number) => {
   return format(offsetTimezone(now, utcOffsetMinutes), 'K:mm aaa');
 };
 
-export const getTimeUntilTournament = (
+export const getLocalizedTournamentTime = (
   tournament: Tournament,
-  utcOffsetMinutes?: number
+  utcOffsetMinutes: number
 ) => {
-  if (!utcOffsetMinutes) {
-    return formatTimeUntilTournament(tournament);
-  }
-
   const [startDate] = getTournamentRange(tournament);
   let tournamentStartTime = new Date(
     startDate.getFullYear(),
@@ -43,7 +39,28 @@ export const getTimeUntilTournament = (
     0,
     0
   );
-  tournamentStartTime = offsetTimezone(tournamentStartTime, -utcOffsetMinutes);
+  return offsetTimezone(tournamentStartTime, -utcOffsetMinutes);
+};
+
+export const getRawTimeUntilTournament = (
+  tournament: Tournament,
+  utcOffsetMinutes: number
+) =>
+  getTime(getLocalizedTournamentTime(tournament, utcOffsetMinutes)) -
+  getTime(new Date());
+
+export const getTimeUntilTournament = (
+  tournament: Tournament,
+  utcOffsetMinutes?: number
+) => {
+  if (!utcOffsetMinutes) {
+    return formatTimeUntilTournament(tournament);
+  }
+
+  const tournamentStartTime = getLocalizedTournamentTime(
+    tournament,
+    utcOffsetMinutes
+  );
 
   // Ceil is fine closer to the tournament, because we don't usually start right at 9 AM.
   // For dates, two nights before would still be "two days" instead of "one day" rounded.

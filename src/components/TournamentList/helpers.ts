@@ -13,7 +13,10 @@ import { Tournament } from '../../../types/tournament';
 import { TournamentOrSet } from '../../hooks/sets';
 import { isTournamentLongGone } from '../../lib/patches';
 import { getRoundText } from '../Tournament/helpers';
-import { getTimeUntilTournament } from '../Tournament/Home/helpers';
+import {
+  getRawTimeUntilTournament,
+  getTimeUntilTournament,
+} from '../Tournament/Home/helpers';
 
 export const formatTournamentStatus = (
   tournament: Tournament,
@@ -28,7 +31,11 @@ export const formatTournamentStatus = (
   }
 
   if (tournament.tournamentStatus === 'not-started') {
-    if (tournamentHasArrivedButNotLive(tournament)) {
+    if (
+      utcOffset
+        ? getRawTimeUntilTournament(tournament, utcOffset) < 0
+        : tournamentHasArrivedButNotLive(tournament)
+    ) {
       return `About to Start`;
     }
     return `Live in ${getTimeUntilTournament(tournament, utcOffset)}`;
@@ -72,7 +79,7 @@ export const formatTournamentDate = (tournament: Tournament) => {
   return `${format(startDate, 'MMMM d')}-${format(
     endDate,
     `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM' : ''}d${
-      ( isThisYear(startDate)) ? '' : ', y'
+      isThisYear(startDate) ? '' : ', y'
     }`
   )}`;
 };
