@@ -3,11 +3,13 @@ import {
   Flex,
   Grid,
   GridItem,
+  Spinner,
   Stack,
   Td,
   Text,
   Tr,
 } from '@chakra-ui/react';
+import PulseLoader from 'react-spinners/PulseLoader';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from '../helpers';
@@ -29,6 +31,7 @@ export interface StandingsRowProps {
   shouldHideDeck?: boolean;
   onUnpinPlayer?: () => void;
   translucent?: boolean;
+  isDeckLoading?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -83,8 +86,8 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       </GridItem>
 
       <GridItem paddingLeft={2}>
-        <Flex>
-          {!props.hideArchetype && (
+        <Flex justifyContent={'center'}>
+          {!props.hideArchetype && !props.isDeckLoading ? (
             <Box opacity={props.translucent ? 0.4 : 1}>
               <DeckInfoDisplay
                 tournament={props.tournament}
@@ -94,6 +97,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                 onUnpinPlayer={props.onUnpinPlayer}
                 shouldHideMenu={props.translucent}
               />
+            </Box>
+          ) : (
+            <Box justifyContent={'center'} opacity={0.4}>
+              <PulseLoader size={5} />
             </Box>
           )}
           {props.hideArchetype && props.result.deck?.list && (

@@ -42,6 +42,7 @@
     "react-dom": "18.2.0",
     "react-google-autocomplete": "^2.7.3",
     "react-icons": "^4.7.1",
+    "react-spinners": "^0.13.8",
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "^1.8.8",
     "recharts": "^2.2.0",

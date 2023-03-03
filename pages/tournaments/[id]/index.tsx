@@ -1,5 +1,6 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { TournamentHomeView } from '../../../src/components/Tournament/Home/TournamentHomeView';
+import { fetchFinalResults } from '../../../src/hooks/finalResults/fetch';
 import { fetchPinnedPlayers } from '../../../src/hooks/pinnedPlayers';
 import {
   fetchTournaments,
@@ -29,6 +30,18 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     tournamentId: params.id,
     prefetch: true,
   });
+
+  if (tournament.tournamentStatus === 'finished') {
+    await queryClient.prefetchQuery({
+      queryKey: [
+        'final-results',
+        {
+          tournamentId: tournament.id,
+        },
+      ],
+      queryFn: () => fetchFinalResults({ tournamentId: tournament.id }),
+    });
+  }
 
   await queryClient.prefetchQuery({
     queryKey: ['all-pinned-players', tournament.id],

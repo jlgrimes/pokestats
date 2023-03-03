@@ -1,6 +1,7 @@
 import { Button, Grid, Stack, Icon, useDisclosure } from '@chakra-ui/react';
 import { FaMapPin, FaPlus, FaStar, FaTwitter } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
+import { useFinalResults } from '../../../../hooks/finalResults';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { CommonCard } from '../../../common/CommonCard';
@@ -13,14 +14,38 @@ interface PinnedPlayerListProps {
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const { data: pinnedPlayerNames } = usePinnedPlayers(props.tournament.id);
-  const { data: liveTournamentResults } = useLiveTournamentResults(
+
+  const { data: tournamentPerformance } = useFinalResults({
+    tournamentId: props.tournament.id,
+  });
+
+  const { data: liveTournamentResults, isLoading } = useLiveTournamentResults(
     props.tournament.id,
     { load: { allRoundData: true } }
   );
   const pinnedPlayers = pinnedPlayerNames
-    ?.map(name =>
-      liveTournamentResults?.data.find(liveResult => liveResult.name === name)
-    )
+    ?.map(name => {
+      const finalStanding = tournamentPerformance?.find(
+        standing => standing.name === name
+      );
+      const liveStanding = liveTournamentResults?.data.find(
+        liveResult => liveResult.name === name
+      );
+
+      if (finalStanding && liveStanding) {
+        if (
+          !finalStanding.deck?.defined_pokemon &&
+          liveStanding.deck?.defined_pokemon
+        ) {
+          return {
+            ...finalStanding,
+            deck: liveStanding.deck,
+          };
+        }
+      }
+
+      return finalStanding ?? liveStanding;
+    })
     .sort((a, b) => {
       if (!a || !b) return 0;
 
@@ -46,6 +71,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 player={pinnedPlayer}
                 tournament={props.tournament}
                 shouldHideDecks={liveTournamentResults?.shouldHideDecks}
+                isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
               />
             )
         )}

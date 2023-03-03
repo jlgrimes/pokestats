@@ -21,6 +21,7 @@ interface PinnedPlayerCardProps {
   player: Standing;
   tournament: Tournament;
   shouldHideDecks: boolean | undefined;
+  isDeckLoading?: boolean;
 }
 
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
@@ -63,6 +64,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
             onUnpinPlayer={onUnpinPlayer}
             canEditDecks={userIsAdmin}
             shouldHideDeck={props.shouldHideDecks}
+            isDeckLoading={props.isDeckLoading}
           />
           {props.player.currentOpponent && (
             <Fragment>
@@ -79,6 +81,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
                 tournament={props.tournament}
                 canEditDecks={userIsAdmin}
                 shouldHideDeck={props.shouldHideDecks}
+                isDeckLoading={props.isDeckLoading}
                 translucent
               />
             </Fragment>
