@@ -32,14 +32,17 @@ export const getLocalizedTournamentTime = (
 ) => {
   const [startDate] = getTournamentRange(tournament);
   let tournamentStartTime = new Date(
-    startDate.getFullYear(),
-    startDate.getMonth(),
-    startDate.getDate(),
-    9,
-    0,
-    0
+    Date.UTC(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate(),
+      9 - utcOffsetMinutes / 60,
+      0,
+      0
+    )
   );
-  return offsetTimezone(tournamentStartTime, -utcOffsetMinutes);
+
+  return tournamentStartTime;
 };
 
 export const getRawTimeUntilTournament = (
