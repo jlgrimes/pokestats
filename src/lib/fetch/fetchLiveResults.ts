@@ -389,7 +389,6 @@ export const fetchLiveResults = async (
 
     return parsedData[1].rounds[parsedData[1].rounds.length - 1].result;
   };
-  console.log(roundNumber < 9)
 
   return {
     tournamentStatus: tournament?.tournamentStatus ?? 'not-started',
