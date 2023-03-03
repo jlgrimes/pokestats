@@ -7,7 +7,7 @@ import EverythingDecorator from '../../../.storybook/decorators/EverythingDecora
 import { addDays } from 'date-fns';
 import { convertToDateString } from '../../lib/dates';
 import { HomePage, HomePageProps } from './HomePage';
-import { DARWIN_MOCK_TOURNAMENT } from '../../../.storybook/mocks';
+import { DARWIN_MOCK_TOURNAMENT } from '../../../tests/mocks';
 
 export default {
   component: HomePage,

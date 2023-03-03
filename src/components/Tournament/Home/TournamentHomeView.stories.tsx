@@ -3,7 +3,7 @@
 import React from 'react';
 import { ComponentStory } from '@storybook/react';
 import EverythingDecorator from '../../../../.storybook/decorators/EverythingDecorator';
-import { DARWIN_MOCK_TOURNAMENT } from '../../../../.storybook/mocks';
+import { DARWIN_MOCK_TOURNAMENT } from '../../../../tests/mocks';
 
 import {
   TournamentHomeView,
