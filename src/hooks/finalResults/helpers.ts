@@ -60,40 +60,42 @@ export const filterFinalResultsByTournament = (
   });
 };
 
+export const mapFinalResultsToStandings = (
+  finalResultsData: FinalResultsSchema[]
+) =>
+  finalResultsData.map((finalResult: FinalResultsSchema) => ({
+    deck: finalResult.deck_archetype
+      ? {
+          ...finalResult.deck_archetype,
+          ...(finalResult.deck_list
+            ? {
+                list: finalResult.deck_list,
+              }
+            : {}),
+        }
+      : null,
+    name: finalResult.name,
+    placing: finalResult.placing,
+    record: finalResult.record,
+    resistances: finalResult.resistances,
+    tournamentId: finalResult.tournament_id,
+  }));
+
 export const addUserReportedDecksToFinalResults = (
-  finalResultsData: FinalResultsSchema[],
+  finalResultsAsStandings: Standing[],
   userReportedDecks: Deck[]
 ) => {
-  return finalResultsData?.map(finalResult => {
-    const finalResultAsStanding: Standing = {
-      deck: finalResult.deck_archetype
-        ? {
-            ...finalResult.deck_archetype,
-            ...(finalResult.deck_list
-              ? {
-                  list: finalResult.deck_list,
-                }
-              : {}),
-          }
-        : null,
-      name: finalResult.name,
-      placing: finalResult.placing,
-      record: finalResult.record,
-      resistances: finalResult.resistances,
-      tournamentId: finalResult.tournament_id,
-    };
-
+  return finalResultsAsStandings?.map(finalResult => {
     const userReportedDeck = userReportedDecks?.find(
       deck =>
         finalResult.name === deck.player_name &&
-        finalResult.tournament_id === deck.tournament_id
+        finalResult.tournamentId === deck.tournament_id
     );
 
-    if (!userReportedDeck || finalResult.deck_list)
-      return finalResultAsStanding;
+    if (!userReportedDeck || finalResult.deck?.list) return finalResult;
 
     return {
-      ...finalResultAsStanding,
+      ...finalResult,
       deck: userReportedDeck,
     };
   });

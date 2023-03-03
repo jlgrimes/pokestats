@@ -11,6 +11,7 @@ import {
   addUserReportedDecksToFinalResults,
   filterFinalResultsByTournament,
   getDeckCounts,
+  mapFinalResultsToStandings,
 } from './helpers';
 
 export const fetchDecksByPlayer = async (name: string) => {
@@ -130,12 +131,17 @@ export const fetchFinalResults = async (
     }));
   }
 
-  if (!finalResultsData || !userReportedDecks) return null;
+  if (!finalResultsData) return null;
 
-  return addUserReportedDecksToFinalResults(
-    finalResultsData,
-    userReportedDecks
-  );
+  const finalResultsAsStandings = mapFinalResultsToStandings(finalResultsData);
+
+  if (userReportedDecks) {
+    return addUserReportedDecksToFinalResults(
+      finalResultsAsStandings,
+      userReportedDecks
+    );
+  }
+  return finalResultsAsStandings;
 };
 
 export const fetchVerifiedUserTournaments = async () => {

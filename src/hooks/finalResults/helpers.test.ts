@@ -1,6 +1,9 @@
 import { FinalResultsSchema } from '../../../types/final-results';
 import { Deck } from '../../../types/tournament';
-import { addUserReportedDecksToFinalResults } from './helpers';
+import {
+  addUserReportedDecksToFinalResults,
+  mapFinalResultsToStandings,
+} from './helpers';
 
 describe('final results helpers', () => {
   describe('addUserReportedDecksToFinalResults', () => {
@@ -46,7 +49,7 @@ describe('final results helpers', () => {
       ];
 
       const modifiedFinalResults = addUserReportedDecksToFinalResults(
-        mockFinalResultsData,
+        mapFinalResultsToStandings(mockFinalResultsData),
         mockUserReportedDecks
       );
       expect(modifiedFinalResults).toEqual([

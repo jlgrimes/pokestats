@@ -6,7 +6,7 @@ import SpriteDisplay from '../common/SpriteDisplay/SpriteDisplay';
 import { FinalResultsSchema } from '../../../types/final-results';
 
 interface ChampionDisplayProps {
-  champion: FinalResultsSchema;
+  champion: Standing;
 }
 
 export const ChampionDisplay = (props: ChampionDisplayProps) => {
@@ -18,7 +18,7 @@ export const ChampionDisplay = (props: ChampionDisplayProps) => {
       </Heading>
       <Box />
       <SpriteDisplay
-        pokemonNames={props.champion.deck_archetype?.defined_pokemon}
+        pokemonNames={props.champion.deck?.defined_pokemon}
       />
     </Grid>
   );
