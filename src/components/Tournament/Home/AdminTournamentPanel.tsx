@@ -1,6 +1,7 @@
 import { Button, Grid, useDisclosure } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { Fragment } from 'react';
-import { FaPen } from 'react-icons/fa';
+import { FaPencilAlt, FaUserFriends } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { CommonCard } from '../../common/CommonCard';
@@ -20,6 +21,7 @@ export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
           onClick={playerSelectModalControls.onOpen}
           isDisabled={props.tournament.tournamentStatus === 'not-started'}
           colorScheme='pink'
+          leftIcon={<FaPencilAlt />}
         >
           Report deck
         </Button>
@@ -28,6 +30,14 @@ export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
           playerSelectModalControls={playerSelectModalControls}
         />
         <OpenEditTournamentInfo tournament={props.tournament} />
+        <Button
+          as={NextLink}
+          href={`/tournaments/${props.tournament.id}/pairings`}
+          isDisabled={props.tournament.tournamentStatus === 'not-started'}
+          leftIcon={<FaUserFriends />}
+        >
+          Report tables
+        </Button>
       </Grid>
     </CommonCard>
   );
