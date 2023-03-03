@@ -139,7 +139,7 @@ export const getMostRecentTournaments = (items: TournamentOrSet[]) => {
       ...liveTournaments,
       ...almostStartedTournaments,
       ...finishedTournaments.slice(0, 2),
-      ...upcomingTournaments,
+      // ...upcomingTournaments,
     ],
   };
 };
