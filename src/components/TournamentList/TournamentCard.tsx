@@ -49,7 +49,7 @@ export const TournamentCard = ({
   champion,
 }: {
   tournament: Tournament;
-  champion?: FinalResultsSchema;
+  champion?: Standing;
 }) => {
   const countryCode = useCountryCode(tournament.id);
   const live = tournament.tournamentStatus === 'running';
