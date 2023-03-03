@@ -75,7 +75,9 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       {session.status === 'authenticated' && (
         <Fragment>
           <MyTournamentView tournament={props.tournament} />
-          <PinnedPlayerList tournament={props.tournament} />
+          {props.tournament.tournamentStatus !== 'not-started' && (
+            <PinnedPlayerList tournament={props.tournament} />
+          )}
         </Fragment>
       )}
       {props.tournament.tournamentStatus === 'finished' && (
