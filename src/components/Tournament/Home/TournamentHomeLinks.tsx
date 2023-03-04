@@ -39,17 +39,6 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   return (
     <Grid gridTemplateColumns='1fr 1fr 1fr' gap={2} rowGap={2}>
       <StreamLink tournament={props.tournament} />
-      {props.tournament.tournamentStatus !== 'not-started' && (
-        <>
-          <Button
-            {...commonProps}
-            as={NextLink}
-            href={`${router.asPath}/standings`}
-          >
-            Standings
-          </Button>
-        </>
-      )}
       <Button
         {...commonProps}
         as={NextLink}
@@ -57,6 +46,14 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         target='_blank'
       >
         Pairings
+      </Button>
+      <Button
+        {...commonProps}
+        as={NextLink}
+        href={`${router.asPath}/standings`}
+        isDisabled={props.tournament.tournamentStatus === 'not-started'}
+      >
+        Standings
       </Button>
       {/* <Button
         {...commonProps}

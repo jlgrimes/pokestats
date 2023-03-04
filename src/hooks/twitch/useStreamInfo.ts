@@ -6,12 +6,12 @@ const streamIdMap: Record<string, number> = {
 };
 
 export const fetchStreamInfo = async (streamUrl: string) => {
-  if (!streamUrl.includes('https://www.twitch.tv/')) return {};
+  if (!streamUrl.includes('https://www.twitch.tv/')) return null;
 
   const channel: string = streamUrl.split('https://www.twitch.tv/')[1];
   const streamId = streamIdMap[channel];
 
-  if (!streamId) return {};
+  if (!streamId) return null;
 
   const res = await fetch(
     `https://api.twitch.tv/helix/streams?user_id=${streamId}`,
