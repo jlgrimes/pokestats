@@ -45,15 +45,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
 
   return (
     <Stack spacing={4}>
-      {props.tournament.tournamentStatus !== 'finished' ? (
-        <TournamentStatusBanner
-          tournament={props.tournament}
-          location={location}
-        />
-      ) : (
-        // Empty Box preserves the padding we get from spacing
-        <Box />
-      )}
+      <TournamentStatusBanner
+        tournament={props.tournament}
+        location={location}
+      />
       <Stack paddingX={6} spacing={4}>
         <Stack spacing={2} alignItems='center'>
           <Grid gridTemplateColumns={'5.5rem auto'} alignItems='center'>

@@ -10,7 +10,12 @@ import {
   Text,
   Icon,
 } from '@chakra-ui/react';
-import { FaBroadcastTower, FaGlobe, FaGlobeAmericas, FaRegClock } from 'react-icons/fa';
+import {
+  FaBroadcastTower,
+  FaGlobe,
+  FaGlobeAmericas,
+  FaRegClock,
+} from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import {
   LocationDataSchema,
@@ -19,6 +24,7 @@ import {
 import { StatsHeading } from '../common/StatsHeading';
 import { getLocalTime, isInSameTimeZone } from '../Tournament/Home/helpers';
 import {
+  formatTournamentDate,
   formatTournamentStatus,
   getTournamentStatusBadgeProps,
 } from './helpers';
@@ -57,32 +63,44 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
   };
 
   const shouldShowLocalTime =
-    props.location && !isInSameTimeZone(props.location.utc_offset_minutes);
+    props.tournament.tournamentStatus !== 'finished' &&
+    props.location &&
+    !isInSameTimeZone(props.location.utc_offset_minutes);
 
   return (
     <Button
       width='100%'
       borderRadius={0}
       {...getButtonProps()}
-      size={shouldShowLocalTime ? 'lg' : 'md'}
+      size={
+        shouldShowLocalTime
+          ? 'lg'
+          : props.tournament.tournamentStatus === 'finished'
+          ? 'sm'
+          : 'md'
+      }
     >
       <Stack spacing={1} alignItems='center'>
         <HStack>
-          <Icon as={FaBroadcastTower} />
+          {props.tournament.tournamentStatus === 'running' && (
+            <Icon as={FaBroadcastTower} />
+          )}
           <StatsHeading>
-            {formatTournamentStatus(props.tournament, utcOffset)}
+            {props.tournament.tournamentStatus === 'finished'
+              ? formatTournamentDate(props.tournament)
+              : formatTournamentStatus(props.tournament, utcOffset)}
           </StatsHeading>
         </HStack>
-        <StatsHeading headingProps={{ fontSize: 13, fontWeight: 'bold' }}>
-          {shouldShowLocalTime && (
+        {shouldShowLocalTime && (
+          <StatsHeading headingProps={{ fontSize: 13, fontWeight: 'bold' }}>
             <HStack>
               <Icon as={FaGlobeAmericas} />
               <Text>{`${getLocalTime(
                 props.location!.utc_offset_minutes
               )}`}</Text>
             </HStack>
-          )}
-        </StatsHeading>
+          </StatsHeading>
+        )}
       </Stack>
     </Button>
   );
