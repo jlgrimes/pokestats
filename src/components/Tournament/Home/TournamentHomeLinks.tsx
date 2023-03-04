@@ -37,18 +37,27 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
-    <Grid gridTemplateColumns='1fr 1fr' gap={2} rowGap={2}>
+    <Grid gridTemplateColumns='1fr 1fr 1fr' gap={2} rowGap={2}>
       <StreamLink tournament={props.tournament} />
       {props.tournament.tournamentStatus !== 'not-started' && (
-        <Button
-          {...commonProps}
-          leftIcon={<IoMdPodium />}
-          as={NextLink}
-          href={`${router.asPath}/standings`}
-        >
-          Standings
-        </Button>
+        <>
+          <Button
+            {...commonProps}
+            as={NextLink}
+            href={`${router.asPath}/standings`}
+          >
+            Standings
+          </Button>
+        </>
       )}
+      <Button
+        {...commonProps}
+        as={NextLink}
+        href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
+        target='_blank'
+      >
+        Pairings
+      </Button>
       {/* <Button
         {...commonProps}
         as={NextLink}
@@ -56,15 +65,6 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         target='_blank'
       >
         Event info <ExternalLinkIcon mx='1' />
-      </Button>
-      <Button
-        {...commonProps}
-        as={NextLink}
-        href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
-        isDisabled={props.tournament.tournamentStatus === 'not-started'}
-        target='_blank'
-      >
-        Pairings <ExternalLinkIcon mx='1' />
       </Button> */}
     </Grid>
   );
