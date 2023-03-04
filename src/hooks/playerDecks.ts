@@ -16,7 +16,7 @@ export const fetchPlayerDecks = async (filters: PlayerDecksFilters) => {
       defined_pokemon,
       identifiable_cards,
       supertype
-    ),user_submitted_was_admin,on_stream`
+    ),user_submitted_was_admin,user_who_submitted,on_stream`
   );
 
   if (filters.tournamentId) {

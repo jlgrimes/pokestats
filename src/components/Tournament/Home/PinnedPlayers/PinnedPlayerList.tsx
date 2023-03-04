@@ -1,4 +1,5 @@
 import { Button, Grid, Stack, Icon, useDisclosure } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { FaMapPin, FaPlus, FaStar, FaTwitter } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
@@ -13,6 +14,7 @@ interface PinnedPlayerListProps {
 }
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
+  const session = useSession();
   const { data: pinnedPlayerNames } = usePinnedPlayers(props.tournament.id);
 
   const { data: tournamentPerformance } = useFinalResults({
@@ -70,7 +72,11 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 key={`pinned-${pinnedPlayer?.name}`}
                 player={pinnedPlayer}
                 tournament={props.tournament}
-                shouldHideDecks={liveTournamentResults?.shouldHideDecks}
+                shouldHideDecks={
+                  liveTournamentResults?.shouldHideDecks &&
+                  pinnedPlayer.deck?.user_who_submitted !==
+                    session.data?.user?.email
+                }
                 isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
               />
             )

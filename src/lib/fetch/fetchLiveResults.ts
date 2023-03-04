@@ -102,7 +102,13 @@ export const getPlayerDeckObjects = async (
   const playerDecks = await fetchPlayerDecks({ tournamentId });
 
   const mappedDecks = playerDecks?.map(
-    ({ player_name, deck_archetype, user_submitted_was_admin, on_stream }) => {
+    ({
+      player_name,
+      deck_archetype,
+      user_submitted_was_admin,
+      on_stream,
+      user_who_submitted,
+    }) => {
       const deck: Record<string, any> | undefined = deckArchetypes?.find(
         deck => deck.id === deck_archetype.id
       );
@@ -114,6 +120,7 @@ export const getPlayerDeckObjects = async (
           name: deck?.name ?? null,
           defined_pokemon: deck?.defined_pokemon ?? null,
           supertype: deck?.supertype,
+          user_who_submitted,
           verified: user_submitted_was_admin,
           on_stream,
         },
