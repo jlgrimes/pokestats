@@ -2,6 +2,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { TournamentHomeView } from '../../../src/components/Tournament/Home/TournamentHomeView';
 import { fetchFinalResults } from '../../../src/hooks/finalResults/fetch';
 import { fetchPinnedPlayers } from '../../../src/hooks/pinnedPlayers';
+import { fetchTournamentMetadata } from '../../../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
   usePatchedTournaments,
@@ -46,6 +47,11 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   await queryClient.prefetchQuery({
     queryKey: ['all-pinned-players', tournament.id],
     queryFn: () => fetchPinnedPlayers(tournament.id),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['all-tournament-metadata'],
+    queryFn: () => fetchTournamentMetadata(),
   });
 
   return {

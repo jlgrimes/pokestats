@@ -53,10 +53,12 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       <Stack paddingX={6} spacing={4}>
         <Stack spacing={2} alignItems='center'>
           <Grid gridTemplateColumns={'5.5rem auto'} alignItems='center'>
-            {country && (
+            {country ? (
               <Box>
                 <CountryFlag countryCode={country} size='lg' />
               </Box>
+            ) : (
+              <Box></Box>
             )}
             <Stack spacing={1}>
               <Heading size='xl' color='gray.700' lineHeight={'2.35rem'}>
