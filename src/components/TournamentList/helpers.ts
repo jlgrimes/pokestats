@@ -71,7 +71,7 @@ export const getTournamentRange = (tournament: Tournament) => {
   return [parseISO(tournament.date.start), parseISO(tournament.date.end)];
 };
 
-export const formatTournamentDate = (tournament: Tournament) => {
+export const formatTournamentDate = (tournament: Tournament, verbose?: boolean) => {
   const [startDate, endDate] = getTournamentRange(tournament);
 
   // I want to use ordinal numbers but these guys won't let me :(
@@ -79,7 +79,7 @@ export const formatTournamentDate = (tournament: Tournament) => {
   return `${format(startDate, 'MMMM d')}-${format(
     endDate,
     `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM' : ''}d${
-      isThisYear(startDate) ? '' : ', y'
+      isThisYear(startDate) && !verbose ? '' : ', y'
     }`
   )}`;
 };

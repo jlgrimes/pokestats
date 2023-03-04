@@ -20,6 +20,7 @@ import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
+import { StatsHeading } from '../../common/StatsHeading';
 import { TopDecks } from '../../Home/TopDecks';
 import { formatTournamentDate } from '../../TournamentList/helpers';
 import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
@@ -57,9 +58,16 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
                 <CountryFlag countryCode={country} size='lg' />
               </Box>
             )}
-            <Heading size='xl' color='gray.700'>
-              {props.tournament.name}
-            </Heading>
+            <Stack spacing={1}>
+              <Heading size='xl' color='gray.700' lineHeight={'2.35rem'}>
+                {props.tournament.name}
+              </Heading>
+              <StatsHeading
+                headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+              >
+                {formatTournamentDate(props.tournament, true)}
+              </StatsHeading>
+            </Stack>
           </Grid>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />

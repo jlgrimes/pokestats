@@ -67,18 +67,14 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
     props.location &&
     !isInSameTimeZone(props.location.utc_offset_minutes);
 
+  if (props.tournament.tournamentStatus === 'finished') return <Box />;
+
   return (
     <Button
       width='100%'
       borderRadius={0}
       {...getButtonProps()}
-      size={
-        shouldShowLocalTime
-          ? 'lg'
-          : props.tournament.tournamentStatus === 'finished'
-          ? 'sm'
-          : 'md'
-      }
+      size={shouldShowLocalTime ? 'lg' : 'md'}
     >
       <Stack spacing={1} alignItems='center'>
         <HStack>
@@ -86,9 +82,7 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
             <Icon as={FaBroadcastTower} />
           )}
           <StatsHeading>
-            {props.tournament.tournamentStatus === 'finished'
-              ? formatTournamentDate(props.tournament)
-              : formatTournamentStatus(props.tournament, utcOffset)}
+            {formatTournamentStatus(props.tournament, utcOffset)}
           </StatsHeading>
         </HStack>
         {shouldShowLocalTime && (
