@@ -1,4 +1,12 @@
-import { Badge, Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Grid,
+  Heading,
+  HStack,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment } from 'react';
 import {
@@ -48,24 +56,16 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       )}
       <Stack paddingX={6} spacing={4}>
         <Stack spacing={2} alignItems='center'>
-          <Heading size='xl' color='gray.700' textAlign={'center'}>
-            {props.tournament.name}
-          </Heading>
-          {location && country && (
-            <HStack spacing={2}>
-              <CountryFlag countryCode={country} />
-              <Stack spacing={0}>
-                <Box>
-                  <Badge>
-                    <HStack>
-                      <FaCalendar />
-                      <Text>{formatTournamentDate(props.tournament)}</Text>
-                    </HStack>
-                  </Badge>
-                </Box>
-              </Stack>
-            </HStack>
-          )}
+          <Grid gridTemplateColumns={'5.5rem auto'} alignItems='center'>
+            {country && (
+              <Box>
+                <CountryFlag countryCode={country} size='lg' />
+              </Box>
+            )}
+            <Heading size='xl' color='gray.700'>
+              {props.tournament.name}
+            </Heading>
+          </Grid>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>

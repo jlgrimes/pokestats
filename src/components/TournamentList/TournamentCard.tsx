@@ -68,7 +68,7 @@ export const TournamentCard = ({
           >
             {countryCode ? (
               <Box>
-                <CountryFlag countryCode={countryCode} smol={!live} />
+                <CountryFlag countryCode={countryCode} size={!live ? 'sm' : 'md'} />
               </Box>
             ) : (
               <Box></Box>
