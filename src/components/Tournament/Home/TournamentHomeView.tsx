@@ -38,7 +38,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   return (
     <Stack spacing={4}>
       {props.tournament.tournamentStatus !== 'finished' ? (
-        <TournamentStatusBanner tournament={props.tournament} />
+        <TournamentStatusBanner
+          tournament={props.tournament}
+          location={location}
+        />
       ) : (
         // Empty Box preserves the padding we get from spacing
         <Box />
@@ -60,18 +63,6 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
                     </HStack>
                   </Badge>
                 </Box>
-                {!isInSameTimeZone(location.utc_offset_minutes) && (
-                  <Box>
-                    <Badge>
-                      <HStack>
-                        <FaRegClock />
-                        <Text>{`Local time: ${getLocalTime(
-                          location.utc_offset_minutes
-                        )}`}</Text>
-                      </HStack>
-                    </Badge>
-                  </Box>
-                )}
               </Stack>
             </HStack>
           )}

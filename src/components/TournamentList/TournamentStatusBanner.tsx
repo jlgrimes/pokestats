@@ -1,16 +1,23 @@
 import {
   Badge,
+  Box,
   Button,
   ButtonProps,
   Heading,
   HeadingProps,
   HStack,
+  Stack,
   Text,
+  Icon,
 } from '@chakra-ui/react';
-import { FaBroadcastTower } from 'react-icons/fa';
+import { FaBroadcastTower, FaGlobe, FaGlobeAmericas, FaRegClock } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
-import { useUtcOffset } from '../../hooks/tournamentMetadata';
+import {
+  LocationDataSchema,
+  useUtcOffset,
+} from '../../hooks/tournamentMetadata';
 import { StatsHeading } from '../common/StatsHeading';
+import { getLocalTime, isInSameTimeZone } from '../Tournament/Home/helpers';
 import {
   formatTournamentStatus,
   getTournamentStatusBadgeProps,
@@ -18,6 +25,7 @@ import {
 
 interface TournamentStatusBannerProps {
   tournament: Tournament;
+  location?: LocationDataSchema;
 }
 
 export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
@@ -28,7 +36,6 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
       return {
         variant: 'solid',
         colorScheme: 'green',
-        leftIcon: <FaBroadcastTower />,
       };
     }
 
@@ -49,11 +56,34 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
     return {};
   };
 
+  const shouldShowLocalTime =
+    props.location && !isInSameTimeZone(props.location.utc_offset_minutes);
+
   return (
-    <Button width='100%' borderRadius={0} {...getButtonProps()}>
-      <StatsHeading>
-        {formatTournamentStatus(props.tournament, utcOffset)}
-      </StatsHeading>
+    <Button
+      width='100%'
+      borderRadius={0}
+      {...getButtonProps()}
+      size={shouldShowLocalTime ? 'lg' : 'md'}
+    >
+      <Stack spacing={1} alignItems='center'>
+        <HStack>
+          <Icon as={FaBroadcastTower} />
+          <StatsHeading>
+            {formatTournamentStatus(props.tournament, utcOffset)}
+          </StatsHeading>
+        </HStack>
+        <StatsHeading headingProps={{ fontSize: 13, fontWeight: 'bold' }}>
+          {shouldShowLocalTime && (
+            <HStack>
+              <Icon as={FaGlobeAmericas} />
+              <Text>{`${getLocalTime(
+                props.location!.utc_offset_minutes
+              )}`}</Text>
+            </HStack>
+          )}
+        </StatsHeading>
+      </Stack>
     </Button>
   );
 };
