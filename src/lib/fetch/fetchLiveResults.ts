@@ -9,6 +9,7 @@ import { StandingsFilters } from '../../components/Tournament/Results/Filters/St
 import { fetchPlayerDecks } from '../../hooks/playerDecks';
 import { fetchTournaments } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
+import { getTournamentRoundSchema, TournamentRoundMapSchema } from '../tournament';
 import { getPokedataStandingsUrl } from '../url';
 
 const fetchDeckArchetypes = async () => {
@@ -397,10 +398,13 @@ export const fetchLiveResults = async (
     return parsedData[1].rounds[parsedData[1].rounds.length - 1].result;
   };
 
+  const tournamentRoundSchema: TournamentRoundMapSchema | undefined = tournament.players.masters ? getTournamentRoundSchema(tournament.players.masters) : undefined;
+  const dayOneRounds = tournamentRoundSchema?.rounds.dayOneSwissRounds ?? 9; // Default to 9 i guess
+
   return {
     tournamentStatus: tournament?.tournamentStatus ?? 'not-started',
     topCutStatus: getTopCutStatus(parsedData, tournament),
-    shouldHideDecks: roundNumber ? roundNumber < 9 : false,
+    shouldHideDecks: roundNumber ? roundNumber < dayOneRounds : false,
     numPlayers: parsedData.length,
     roundNumber,
     data: parsedData,

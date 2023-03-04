@@ -86,9 +86,9 @@ export interface Tournament {
   topCutStatus?: TopCutStatus;
   hasStaleData?: boolean;
   players: {
-    juniors: string | null;
-    seniors: string | null;
-    masters: string | null;
+    juniors: number | null;
+    seniors: number | null;
+    masters: number | null;
   };
   roundNumbers: {
     juniors: number | null;
