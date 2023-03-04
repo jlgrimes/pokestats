@@ -36,7 +36,6 @@ export interface StandingsRowProps {
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
-  const session = useSession();
   const getStandingsCellResultBackgroundColor = useCallback(() => {
     if (props.opponentResult) {
       return getResultBackgroundColor(props.opponentResult);
@@ -95,11 +94,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                 tournament={props.tournament}
                 player={props.result}
                 enableEdits={!!props.canEditDecks}
-                shouldHideDeck={
-                  props.shouldHideDeck &&
-                  session.data?.user?.email !==
-                    props.result.deck?.user_who_submitted
-                }
+                shouldHideDeck={props.shouldHideDeck}
                 onUnpinPlayer={props.onUnpinPlayer}
                 shouldHideMenu={props.translucent}
               />

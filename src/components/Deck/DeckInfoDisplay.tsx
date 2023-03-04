@@ -5,6 +5,7 @@ import {
   StackItem,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { memo } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
@@ -36,6 +37,8 @@ export const DeckInfoDisplay = memo(
     shouldHideMenu?: boolean;
   }) => {
     const archetypeModal = useDisclosure();
+    const session = useSession();
+
     return (
       <Grid
         gridTemplateColumns={shouldShowAsText ? 'auto 1fr' : '85px 1fr'}
@@ -48,7 +51,11 @@ export const DeckInfoDisplay = memo(
             deck={player.deck ?? undefined}
             archetypeModal={archetypeModal}
             shouldShowAsText={shouldShowAsText}
-            shouldHideDeck={shouldHideDeck}
+            shouldHideDeck={
+              shouldHideDeck &&
+              session.data?.user?.email !==
+                player.deck?.user_who_submitted
+            }
             shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           />
         </StackItem>
