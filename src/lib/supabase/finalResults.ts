@@ -38,18 +38,25 @@ export const loadFinalResults = async (
       if (!player) return {};
 
       return {
-        ...finalResult,
+        id: finalResult.id,
+        created_at: finalResult.created_at,
         name: player.name,
         placing: player.placing,
         record: player.record,
         resistances: player.resistances,
-        deck_list: player.deck?.list ?? null,
-        deck_archetype: player.deck?.list ? player.deck.id : null,
-        deck_supertype: player.deck?.supertype ?? null,
         rounds: player.rounds,
         tournament_id: tournamentId,
+        deck_list: player.deck?.list ?? null,
+        deck_archetype: player.deck?.id ?? null,
+        deck_supertype: player.deck?.supertype ?? null,
       };
     });
+
+    console.log(
+      rowsToBeUpserted.find(
+        row => Object.entries(row).find(([key, row]) => row === undefined)?.[0]
+      )
+    );
 
     const result = await supabase
       .from('Final Results')
