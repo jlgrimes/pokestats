@@ -58,7 +58,7 @@ const RecordNeeded = ({
 export const PlayerMatchupStatus = ({
   tournament,
   user,
-  shouldHideOpponentView
+  shouldHideOpponentView,
 }: {
   tournament: Tournament;
   user: StoredPlayerProfile | null;
@@ -116,10 +116,7 @@ export const PlayerMatchupStatus = ({
           {tournamentFinished && (
             <Heading size='sm' color='gray.700'>
               {`${ordinalSuffixOf(
-                getPercentile(
-                  playerResults.placing,
-                  parseInt(tournament.players.masters ?? '')
-                )
+                getPercentile(playerResults.placing, tournament.players.masters as number)
               )} percentile`}
             </Heading>
           )}
