@@ -52,7 +52,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       />
       <Stack paddingX={6} spacing={4}>
         <Stack spacing={2} alignItems='center'>
-          <Grid gridTemplateColumns={'5.5rem auto'} alignItems='center'>
+          <Grid gridTemplateColumns={'5.5rem auto'} alignItems='center' rowGap={2}>
             {country ? (
               <Box>
                 <CountryFlag countryCode={country} size='lg' />
@@ -60,16 +60,15 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
             ) : (
               <Box></Box>
             )}
-            <Stack spacing={1}>
-              <Heading size='xl' color='gray.700' lineHeight={'2.35rem'}>
-                {props.tournament.name}
-              </Heading>
-              <StatsHeading
-                headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
-              >
-                {formatTournamentDate(props.tournament, true)}
-              </StatsHeading>
-            </Stack>
+            <Heading size='xl' color='gray.700' lineHeight={'2.25rem'}>
+              {props.tournament.name}
+            </Heading>
+            <Box />
+            <StatsHeading
+              headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+            >
+              {formatTournamentDate(props.tournament, true)}
+            </StatsHeading>
           </Grid>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
