@@ -1,4 +1,4 @@
-import { Badge, HStack, Text } from '@chakra-ui/react';
+import { Badge, Box, HStack, Text } from '@chakra-ui/react';
 import { FaBroadcastTower } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import { useUtcOffset } from '../../hooks/tournamentMetadata';
@@ -14,6 +14,8 @@ interface TournamentStatusBadgeProps {
 
 export const TournamentStatusBadge = (props: TournamentStatusBadgeProps) => {
   const utcOffset = useUtcOffset(props.tournament.id);
+
+  if (props.tournament.tournamentStatus === 'finished') return <Box />;
 
   return (
     <span>
