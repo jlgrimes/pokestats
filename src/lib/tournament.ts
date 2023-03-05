@@ -104,7 +104,6 @@ export const ifPlayerDay2 = (player: Standing, tournament: Tournament) => {
   if (player.record.wins * 3 + player.record.ties >= 19) return true;
 
   const currentRoundNumber = tournament.roundNumbers.masters;
-  console.log(player.placing);
 
   return (
     roundSchema &&
