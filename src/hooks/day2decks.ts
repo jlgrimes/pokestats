@@ -1,5 +1,8 @@
-import { Deck } from '../../types/tournament';
+import { Deck, Standing } from '../../types/tournament';
 import { useLiveTournamentResults } from './tournamentResults';
+
+export const ifPlayerDay2 = (player: Standing) =>
+  player.record.wins * 3 + player.record.ties >= 19;
 
 export const useDay2Decks = (
   tournamentId: string,
