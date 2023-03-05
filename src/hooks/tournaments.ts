@@ -8,6 +8,7 @@ import {
 } from 'date-fns';
 import { useState } from 'react';
 import { Tournament } from '../../types/tournament';
+import { tournamentHasArrivedButNotLive } from '../components/TournamentList/helpers';
 import { patchTournamentsClient } from '../lib/patches';
 import {
   reallyShortenTournamentName,
@@ -32,6 +33,14 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
     ...tournament,
     name: shortenTournamentName(tournament),
   }));
+
+  data = data.filter(
+    tournament =>
+      !(
+        tournament.tournamentStatus === 'not-started' &&
+        !tournamentHasArrivedButNotLive(tournament)
+      )
+  );
 
   if (options?.onlyFinished) {
     data = data.filter(

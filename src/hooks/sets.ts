@@ -70,12 +70,6 @@ export const useTournamentRender = (
         ];
       }
 
-      if (
-        tournament.tournamentStatus === 'not-started' &&
-        !tournamentHasArrivedButNotLive(tournament)
-      )
-        return acc;
-
       return [...acc, { type: 'tournament', data: tournament }];
     }, []);
   return result.slice().reverse();
