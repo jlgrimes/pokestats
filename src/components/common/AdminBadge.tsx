@@ -1,6 +1,6 @@
 import { Badge } from '@chakra-ui/react';
 import { memo, useContext } from 'react';
-import { userMockContext } from '../../contexts/UserMockContext';
+import { userMockContext } from '../../contexts/MockUserContext';
 
 export const AdminBadge = memo(() => {
   const { shouldMockUser, setShouldMockUser } = useContext(userMockContext);

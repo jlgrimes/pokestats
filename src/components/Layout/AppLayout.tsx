@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Footer } from './Footer';
 import { BetaBanner } from './BetaBanner';
-import { userMockContext } from '../../contexts/UserMockContext';
+import { userMockContext } from '../../contexts/MockUserContext';
 
 const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },

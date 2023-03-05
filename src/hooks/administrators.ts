@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
-import { userMockContext } from '../contexts/UserMockContext';
+import { userMockContext } from '../contexts/MockUserContext';
 import supabase from '../lib/supabase/client';
 
 export const fetchAdministrators = async () => {
