@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import { differenceInDays } from 'date-fns';
 import { Tournament } from '../../types/tournament';
+import { tournamentHasArrivedButNotLive } from '../components/TournamentList/helpers';
 
 export const fetchSets = async () => {
   const res = await fetch(
@@ -53,18 +55,28 @@ export const useTournamentRender = (
 
   let setIdx = parsedSets?.findIndex(({ name }) => name === startingSet);
 
-  const result = tournaments.slice().reverse().reduce((acc: TournamentOrSet[], tournament) => {
-    const releaseDate = new Date(parsedSets[setIdx]?.releaseDate);
-    releaseDate.setDate(releaseDate.getDate() + 13);
-    if (new Date(tournament.date.start) >= releaseDate) {
-      setIdx += 1;
-      return [
-        ...acc,
-        { type: 'set', data: parsedSets[setIdx - 1] },
-        { type: 'tournament', data: tournament },
-      ];
-    }
-    return [...acc, { type: 'tournament', data: tournament }];
-  }, []);
+  const result = tournaments
+    .slice()
+    .reverse()
+    .reduce((acc: TournamentOrSet[], tournament) => {
+      const releaseDate = new Date(parsedSets[setIdx]?.releaseDate);
+      releaseDate.setDate(releaseDate.getDate() + 13);
+      if (new Date(tournament.date.start) >= releaseDate) {
+        setIdx += 1;
+        return [
+          ...acc,
+          { type: 'set', data: parsedSets[setIdx - 1] },
+          { type: 'tournament', data: tournament },
+        ];
+      }
+
+      if (
+        tournament.tournamentStatus === 'not-started' &&
+        !tournamentHasArrivedButNotLive(tournament)
+      )
+        return acc;
+
+      return [...acc, { type: 'tournament', data: tournament }];
+    }, []);
   return result.slice().reverse();
 };
