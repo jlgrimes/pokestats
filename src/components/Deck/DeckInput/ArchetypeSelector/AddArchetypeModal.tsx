@@ -62,11 +62,9 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
     identifiableCard1: string;
     identifiableCard2: string;
   }) => {
-    if (!supertype?.id) return;
-
     await mutateArchetypes.mutate({
       name,
-      supertypeId: supertype.id,
+      supertypeId: supertype?.id ?? null,
       pokemon1,
       pokemon2,
       identifiableCard1,
@@ -88,7 +86,6 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required('Required'),
-      supertype: Yup.string().required('Required'),
       pokemon1: Yup.string().required('Required'),
       identifiableCard1: Yup.string().required('Required'),
       identifiableCard2: Yup.string().required('Required'),

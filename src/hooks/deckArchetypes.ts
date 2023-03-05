@@ -136,7 +136,7 @@ const addArchetype = async ({
   identifiableCard2,
 }: {
   name: string;
-  supertypeId: number;
+  supertypeId: number | null;
   pokemon1: string;
   pokemon2: string;
   identifiableCard1: string;
