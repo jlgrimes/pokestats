@@ -29,7 +29,7 @@ export const useStreamLink = (tournamentId: string) => {
   const { data: tournamentMetadata, ...rest } =
     useTournamentMetadata(tournamentId);
   return {
-    data: tournamentMetadata?.find(({ type }) => type === 'stream')?.data ?? '',
+    data: tournamentMetadata?.find(({ type }) => type === 'stream')?.data ?? null,
     ...rest,
   };
 };

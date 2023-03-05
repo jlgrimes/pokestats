@@ -5,8 +5,8 @@ const streamIdMap: Record<string, number> = {
   limitless_tcg: 147518900,
 };
 
-export const fetchStreamInfo = async (streamUrl: string) => {
-  if (!streamUrl.includes('https://www.twitch.tv/')) return null;
+export const fetchStreamInfo = async (streamUrl: string | null) => {
+  if (!streamUrl || streamUrl.includes('https://www.twitch.tv/')) return null;
 
   const channel: string = streamUrl.split('https://www.twitch.tv/')[1];
   const streamId = streamIdMap[channel];
@@ -33,7 +33,7 @@ export const fetchStreamInfo = async (streamUrl: string) => {
  * @param streamUrl ex https://www.twitch.tv/pokemontcg
  * @returns
  */
-export const useStreamInfo = (streamUrl: string) => {
+export const useStreamInfo = (streamUrl: string | null) => {
   return useQuery({
     queryKey: ['twitch-stream-info', streamUrl],
     queryFn: () => fetchStreamInfo(streamUrl),

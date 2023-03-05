@@ -11,6 +11,7 @@ import {
   FaMagic,
   FaTwitch,
   FaUserFriends,
+  FaVideoSlash,
 } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
@@ -29,22 +30,23 @@ export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
     useStreamInfo(streamLink);
 
   const getStreamButtonText = useCallback(() => {
+    if (!streamLink) return 'No stream';
+
     if (streamInfo) return 'LIVE';
     return 'Offline';
   }, [streamInfo]);
-
-  if (!streamLink) return null;
 
   return (
     <Button
       variant={streamInfo ? 'solid' : 'ghost'}
       colorScheme={'purple'}
       size='md'
-      leftIcon={<FaTwitch />}
+      leftIcon={streamLink ? <FaTwitch /> : <FaVideoSlash />}
       as={NextLink}
-      href={streamLink}
-      target='_blank'
+      href={streamLink ?? '#'}
+      target={streamLink ?? '_blank'}
       isLoading={streamInfoLoading}
+      isDisabled={!streamLink}
     >
       {getStreamButtonText()}
     </Button>
