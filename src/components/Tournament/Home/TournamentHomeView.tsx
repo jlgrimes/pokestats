@@ -30,7 +30,7 @@ import { CountryFlag } from './CountryFlag';
 import { getLocalTime, isInSameTimeZone } from './helpers';
 import { MyTournamentView } from './MyTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
-import { TopCutView } from './TopCutView';
+import { TopCutViewController } from './TopCut/TopCutViewController';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
 
 export interface TournamentHomeViewProps {
@@ -81,7 +81,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
-        <TopCutView tournament={props.tournament} />
+        <TopCutViewController tournament={props.tournament} />
       )}
       {session.status === 'authenticated' && (
         <Fragment>
