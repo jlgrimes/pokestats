@@ -221,6 +221,7 @@ function mapResultsArray(
   roundNumber: number,
   playerDeckObjects: PlayerDeckObject[] | undefined,
   deckArchetypes: Deck[] | null,
+  tournamentStatus: TournamentStatus,
   shouldLoad?: LiveResultsLoadOptions
 ): Standing[] {
   const perfStart = performance.now();
@@ -235,16 +236,17 @@ function mapResultsArray(
         (player: Player) => player.name === currentOpponentName
       ) ?? {};
 
-    const currentOpponent = player.rounds[roundNumber]
-      ? {
-          ...currentOpponentPlayer,
-          deck: getPlayerDeck(
-            playerDeckObjects,
-            { name: player.rounds[roundNumber].name } as Player,
-            deckArchetypes
-          ),
-        }
-      : null;
+    const currentOpponent =
+      tournamentStatus === 'running' && player.rounds[roundNumber]
+        ? {
+            ...currentOpponentPlayer,
+            deck: getPlayerDeck(
+              playerDeckObjects,
+              { name: player.rounds[roundNumber].name } as Player,
+              deckArchetypes
+            ),
+          }
+        : null;
 
     return {
       name: player.name,
@@ -391,6 +393,7 @@ export const fetchLiveResults = async (
     roundNumber,
     playerDeckObjects,
     deckArchetypes,
+    tournament.tournamentStatus,
     options?.load
   );
   const endTime = performance.now();
