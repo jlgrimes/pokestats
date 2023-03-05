@@ -16,6 +16,7 @@ import {
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
+import { PlayerCard } from '../PlayerCard/PlayerCard';
 
 interface PinnedPlayerCardProps {
   player: Standing;
@@ -55,39 +56,12 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   }, [props.player.name, session.data?.user?.email, toast, refetch]);
 
   return (
-    <Card>
-      <CardBody paddingX={0} paddingY={2}>
-        <Stack spacing={0}>
-          <StandingsRow
-            result={props.player}
-            tournament={props.tournament}
-            onUnpinPlayer={onUnpinPlayer}
-            canEditDecks={userIsAdmin}
-            shouldHideDeck={props.shouldHideDecks}
-            isDeckLoading={props.isDeckLoading}
-          />
-          {props.player.currentOpponent && (
-            <Fragment>
-              <Heading
-                paddingLeft='2.65rem'
-                color='gray.400'
-                fontSize={14}
-                textTransform='uppercase'
-              >
-                vs
-              </Heading>
-              <StandingsRow
-                result={props.player.currentOpponent}
-                tournament={props.tournament}
-                canEditDecks={userIsAdmin}
-                shouldHideDeck={props.shouldHideDecks}
-                isDeckLoading={props.isDeckLoading}
-                translucent
-              />
-            </Fragment>
-          )}
-        </Stack>
-      </CardBody>
-    </Card>
+    <PlayerCard
+      player={props.player}
+      tournament={props.tournament}
+      shouldHideDecks={props.shouldHideDecks}
+      canEditDecks={userIsAdmin}
+      onUnpinPlayer={onUnpinPlayer}
+    />
   );
 };
