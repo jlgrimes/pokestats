@@ -1,10 +1,19 @@
 import { Badge } from '@chakra-ui/react';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
+import { userMockContext } from '../../contexts/UserMockContext';
 
-export const AdminBadge = memo(() => (
-  <Badge colorScheme={'pink'} marginLeft={2}>
-    Admin
-  </Badge>
-));
+export const AdminBadge = memo(() => {
+  const { shouldMockUser, setShouldMockUser } = useContext(userMockContext);
+
+  return (
+    <Badge
+      colorScheme={shouldMockUser ? 'blue' : 'pink'}
+      marginLeft={2}
+      onClick={() => setShouldMockUser(!shouldMockUser)}
+    >
+      {shouldMockUser ? 'User' : 'Admin'}
+    </Badge>
+  );
+});
 
 AdminBadge.displayName = 'AdminBadge';

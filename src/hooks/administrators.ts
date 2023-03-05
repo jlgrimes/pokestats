@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { useContext } from 'react';
+import { userMockContext } from '../contexts/UserMockContext';
 import supabase from '../lib/supabase/client';
 
 export const fetchAdministrators = async () => {
@@ -18,10 +20,15 @@ export const useUserIsAdmin = () => {
   const session = useSession();
   const email = session.data?.user?.email;
   const { data: administrators } = useAdministrators();
+  const { shouldMockUser } = useContext(userMockContext);
+
+  const userIsAdmin =
+    administrators?.some(admin => admin.email === email) ?? false;
 
   return {
     isLoading: !email || email.length === 0 || !administrators,
-    data: administrators?.some(admin => admin.email === email) ?? false,
+    data: userIsAdmin && !shouldMockUser,
+    isUserMocked: shouldMockUser,
   };
 };
 

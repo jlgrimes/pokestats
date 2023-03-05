@@ -11,10 +11,15 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AdminBadge } from '../../common/AdminBadge';
 
 export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
-  const { data: userIsAdmin } = useUserIsAdmin();
+  const { data: userIsAdmin, isUserMocked } = useUserIsAdmin();
 
   return (
-    <Stack direction='row' alignItems='center' justifyContent={'center'}>
+    <Stack
+      direction='row'
+      spacing={1}
+      alignItems='baseline'
+      justifyContent={'center'}
+    >
       <LinkBox>
         <LinkOverlay href={`/`} as={NextLink}>
           <HStack spacing={1} alignItems='baseline'>
@@ -38,10 +43,10 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
               </Heading>
             </Stack>
             <Badge>Beta</Badge>
-            {userIsAdmin && <AdminBadge />}
           </HStack>
         </LinkOverlay>
       </LinkBox>
+      {(userIsAdmin || isUserMocked) && <AdminBadge />}
     </Stack>
   );
 };
