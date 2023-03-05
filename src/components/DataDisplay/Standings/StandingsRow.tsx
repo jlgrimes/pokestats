@@ -19,7 +19,7 @@ import { memo, useCallback } from 'react';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
 import { ListViewerOpenButton } from '../../Deck/ListViewer/ListViewerOpenButton';
 import { useSession } from 'next-auth/react';
-import { ifPlayerDay2 } from '../../../hooks/day2decks';
+import { ifPlayerDay2 } from '../../../lib/tournament';
 
 export interface StandingsRowProps {
   result: Standing;
@@ -76,7 +76,9 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         display={'flex'}
         alignItems={'center'}
         color={props.result.drop && props.result.drop > 0 ? 'red.600' : 'auto'}
-        fontWeight={ifPlayerDay2(props.result) ? 'bold' : 'normal'}
+        fontWeight={
+          ifPlayerDay2(props.result, props.tournament) ? 'bold' : 'normal'
+        }
       >
         <RecordIcon
           standing={props.result}
