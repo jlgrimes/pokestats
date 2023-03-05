@@ -54,7 +54,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
 
   return (
     <Grid
-      gridTemplateColumns={`${props.singleDigitPlacing ? 1 : 2.65}rem 2.5fr ${
+      gridTemplateColumns={`${props.singleDigitPlacing ? 1.6 : 2.65}rem 2.5fr ${
         props.hideArchetype ? 2 : 7
       }rem 1fr`}
       gridTemplateRows='30px'

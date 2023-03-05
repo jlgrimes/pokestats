@@ -1,4 +1,4 @@
-import { Icon, Stack } from '@chakra-ui/react';
+import { Badge, Icon, Stack } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { FaTrophy } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../types/tournament';
@@ -20,7 +20,6 @@ export const TopCutView = (props: TopCutViewProps) => {
     () => liveTournamentResults?.data.slice(0, 8),
     [liveTournamentResults?.data]
   );
-  console.log(topCutPlayers);
 
   return (
     <CommonCard

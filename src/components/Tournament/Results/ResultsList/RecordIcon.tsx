@@ -28,10 +28,7 @@ export const RecordIcon = ({
   );
 
   const getCrownIcon = useCallback(() => {
-    if (
-      !(tournament.tournamentStatus === 'finished' || tournament.topCutStatus)
-    )
-      return null;
+    if (tournament.tournamentStatus !== 'finished') return null;
 
     const topCutComparator = {
       top8: 0,

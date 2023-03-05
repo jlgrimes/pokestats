@@ -36,7 +36,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
           {props.player.currentOpponent && (
             <Fragment>
               <Heading
-                paddingLeft='2.65rem'
+                paddingLeft={`${props.topCut ? 1.6 : 2.65}rem`}
                 color='gray.400'
                 fontSize={14}
                 textTransform='uppercase'
