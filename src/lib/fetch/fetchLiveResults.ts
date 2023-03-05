@@ -9,7 +9,10 @@ import { StandingsFilters } from '../../components/Tournament/Results/Filters/St
 import { fetchPlayerDecks } from '../../hooks/playerDecks';
 import { fetchTournaments } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
-import { getTournamentRoundSchema, TournamentRoundMapSchema } from '../tournament';
+import {
+  getTournamentRoundSchema,
+  TournamentRoundMapSchema,
+} from '../tournament';
 import { getPokedataStandingsUrl } from '../url';
 
 const fetchDeckArchetypes = async () => {
@@ -330,7 +333,20 @@ export const getTopCutStatus = (
   standings: Standing[],
   tournament: Tournament | null
 ) => {
-  if (!tournament || (standings[0]?.rounds?.length ?? 0) < 14) {
+  const tournamentRoundSchema: TournamentRoundMapSchema | undefined = tournament
+    ?.players.masters
+    ? getTournamentRoundSchema(tournament?.players.masters)
+    : undefined;
+
+  const topEightRoundNumber = tournamentRoundSchema
+    ? tournamentRoundSchema.rounds.dayOneSwissRounds +
+      tournamentRoundSchema.rounds.dayTwoSwissRounds
+    : 14;
+
+  if (
+    !tournament ||
+    (standings[0]?.rounds?.length ?? 0) < topEightRoundNumber
+  ) {
     return null;
   }
 
@@ -398,7 +414,10 @@ export const fetchLiveResults = async (
     return parsedData[1].rounds[parsedData[1].rounds.length - 1].result;
   };
 
-  const tournamentRoundSchema: TournamentRoundMapSchema | undefined = tournament.players.masters ? getTournamentRoundSchema(tournament.players.masters) : undefined;
+  const tournamentRoundSchema: TournamentRoundMapSchema | undefined = tournament
+    .players.masters
+    ? getTournamentRoundSchema(tournament.players.masters)
+    : undefined;
   const dayOneRounds = tournamentRoundSchema?.rounds.dayOneSwissRounds ?? 9; // Default to 9 i guess
 
   return {
