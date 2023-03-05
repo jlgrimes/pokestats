@@ -33,6 +33,7 @@ export interface StandingsRowProps {
   onUnpinPlayer?: () => void;
   translucent?: boolean;
   isDeckLoading?: boolean;
+  singleDigitPlacing?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -52,7 +53,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
 
   return (
     <Grid
-      gridTemplateColumns={`2.65rem 2.5fr ${
+      gridTemplateColumns={`${props.singleDigitPlacing ? 1 : 2.65}rem 2.5fr ${
         props.hideArchetype ? 2 : 7
       }rem 1fr`}
       gridTemplateRows='30px'

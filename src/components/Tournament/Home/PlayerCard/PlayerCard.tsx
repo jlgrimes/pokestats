@@ -10,6 +10,7 @@ export interface PlayerCardProps {
   isDeckLoading?: boolean;
   canEditDecks?: boolean;
   onUnpinPlayer?: () => void;
+  topCut?: boolean;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
@@ -24,6 +25,13 @@ export const PlayerCard = (props: PlayerCardProps) => {
             canEditDecks={props.canEditDecks}
             shouldHideDeck={props.shouldHideDecks}
             isDeckLoading={props.isDeckLoading}
+            // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
+            translucent={
+              props.topCut &&
+              props.tournament.tournamentStatus === 'running' &&
+              !props.player.currentOpponent
+            }
+            singleDigitPlacing={props.topCut}
           />
           {props.player.currentOpponent && (
             <Fragment>
@@ -41,7 +49,8 @@ export const PlayerCard = (props: PlayerCardProps) => {
                 canEditDecks={props.canEditDecks}
                 shouldHideDeck={props.shouldHideDecks}
                 isDeckLoading={props.isDeckLoading}
-                translucent
+                translucent={!props.topCut}
+                singleDigitPlacing={props.topCut}
               />
             </Fragment>
           )}
