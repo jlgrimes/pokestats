@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import { Deck } from '../../../../../types/tournament';
 import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
+import { ArchetypeEditButton } from './ArchetypeEditButton';
 import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 
 export interface ArchetypeSelectorProps {
@@ -19,6 +20,7 @@ export interface ArchetypeSelectorProps {
   isStreamDeck?: boolean;
   toggleIsStreamDeck?: () => void;
   isListUp: boolean;
+  shouldEnableEdits: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
@@ -45,7 +47,13 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
 
   return (
     <Fragment>
-      {renderDeckName()}
+      {props.shouldEnableEdits &&
+      !props.selectedArchetype?.id &&
+      props.modalControls.onOpen ? (
+        <ArchetypeEditButton onEditOpen={props.modalControls.onOpen} />
+      ) : (
+        renderDeckName()
+      )}
       {props.modalControls.isOpen && <ArchetypeSelectorModal {...props} />}
     </Fragment>
   );

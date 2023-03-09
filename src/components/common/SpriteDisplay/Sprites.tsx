@@ -24,7 +24,7 @@ export const Sprites = memo((props: SpritesProps) => (
         </Flex>
       ) : (
         props.pokemonNames?.map((name, idx) => (
-          <SingleSprite big={props.big} name={name} key={`sprite-${name}`} />
+          <SingleSprite big={props.big} name={name} key={Math.random()} />
         ))
       )}
     </Stack>

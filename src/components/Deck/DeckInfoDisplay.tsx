@@ -54,52 +54,23 @@ export const DeckInfoDisplay = memo(
                 outline: '2px solid',
                 outlineColor: player.deck?.id ? 'pink.100' : 'pink.500',
                 rounded: 'md',
+                onClick: archetypeModal.onOpen,
               }
             : {})}
         >
-          {!(enableEdits && !player.deck?.id) ? (
-            <DeckInput
-              tournamentId={tournament.id}
-              playerName={player.name}
-              deck={player.deck ?? undefined}
-              archetypeModal={archetypeModal}
-              shouldShowAsText={shouldShowAsText}
-              shouldHideDeck={
-                shouldHideDeck &&
-                session.data?.user?.email !== player.deck?.user_who_submitted
-              }
-              shouldHideVerifiedIcon={shouldHideVerifiedIcon}
-            />
-          ) : (
-            <Box
-              height='30px'
-              paddingY={0.5}
-              display='flex'
-              alignItems='center'
-              justifyContent={'center'}
-              gap={1}
-            >
-              <Text
-                fontSize={12}
-                textTransform={'uppercase'}
-                fontWeight='bold'
-                color='pink.500'
-              >
-                Report
-              </Text>
-              <IconButton
-                icon={<FaRegEdit />}
-                aria-label='edit'
-                variant={'ghost'}
-                width={4}
-                minWidth={0}
-                size='sm'
-                color='pink.500'
-                paddingX={0}
-                onClick={archetypeModal.onOpen}
-              />
-            </Box>
-          )}
+          <DeckInput
+            tournamentId={tournament.id}
+            playerName={player.name}
+            deck={player.deck ?? undefined}
+            archetypeModal={archetypeModal}
+            shouldShowAsText={shouldShowAsText}
+            shouldHideDeck={
+              shouldHideDeck &&
+              session.data?.user?.email !== player.deck?.user_who_submitted
+            }
+            shouldHideVerifiedIcon={shouldHideVerifiedIcon}
+            shouldEnableEdits={enableEdits}
+          />
           {enableEdits && player.deck?.id && (
             <IconButton
               zIndex={5}
@@ -114,7 +85,6 @@ export const DeckInfoDisplay = memo(
               size='sm'
               color='pink.300'
               paddingRight={0}
-              onClick={archetypeModal.onOpen}
             />
           )}
         </Box>

@@ -14,6 +14,7 @@ export default function DeckInput({
   shouldShowAsText,
   shouldHideDeck,
   shouldHideVerifiedIcon,
+  shouldEnableEdits
 }: {
   playerName: string;
   deck: Deck | undefined;
@@ -22,6 +23,7 @@ export default function DeckInput({
   shouldShowAsText?: boolean;
   shouldHideDeck?: boolean;
   shouldHideVerifiedIcon?: boolean;
+  shouldEnableEdits: boolean;
 }) {
   const deckId = deck?.id;
 
@@ -98,6 +100,7 @@ export default function DeckInput({
       toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
       isListUp={!!deck?.list}
       shouldHideVerifiedIcon={shouldHideVerifiedIcon}
+      shouldEnableEdits={shouldEnableEdits}
     />
   );
 }
