@@ -7,6 +7,7 @@ import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
 
 export default function SetupPage() {
   const router = useRouter();
+  const session = useSession();
   const { data: user, isLoading } = useSessionUserProfile();
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export default function SetupPage() {
     }
   }, [router, user, isLoading]);
 
-  return <SetupProfileController userProfile={user} />;
+  return <SetupProfileController userProfile={session.data?.user} />;
 }
 
 export async function getServerSideProps(context: any) {

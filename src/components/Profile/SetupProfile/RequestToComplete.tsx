@@ -59,7 +59,6 @@ export const RequestToComplete = ({
       padding='1.5rem'
       spacing={10}
       justifyContent='space-between'
-      height='100%'
     >
       <Heading color='gray.700'>Complete account setup</Heading>
       <Fade in={fadeIn}>

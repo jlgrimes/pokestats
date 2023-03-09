@@ -51,10 +51,9 @@ export const fetchUserProfile = async (session: Session) => {
 };
 
 export interface SessionUserProfile {
-  id: any;
-  name: any;
-  email: string | null | undefined;
-  image: string | null | undefined;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
 }
 
 export const useSessionUserProfile = () => {

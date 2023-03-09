@@ -11,10 +11,10 @@ import { signIn, useSession } from 'next-auth/react';
 import { FaSign, FaSignInAlt, FaTwitter, FaUser } from 'react-icons/fa';
 import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
-import { AppDrawerButton } from './AppDrawerButton';
+import { AppDrawerButton, UserStatus } from './AppDrawerButton';
 import { AppLogo } from './AppLogo';
 import { SHOULD_SHOW_COMING_SOON } from '../../../lib/coming-soon';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
 
@@ -23,6 +23,17 @@ export const AppBar = () => {
   const { data: userProfile, isLoading: profileIsLoading } =
     useSessionUserProfile();
   const router = useRouter();
+
+  const getUserStatus = useCallback((): UserStatus => {
+    if (session.status === 'authenticated') {
+      if (userProfile?.id) {
+        return 'setup';
+      }
+      return 'not-setup';
+    }
+
+    return 'logged-out';
+  }, [session.status, userProfile?.id]);
 
   return (
     <StickyHeader id='app-bar'>
@@ -33,7 +44,7 @@ export const AppBar = () => {
         justifyContent={SHOULD_SHOW_COMING_SOON ? 'center' : 'space-between'}
       >
         {!SHOULD_SHOW_COMING_SOON && (
-          <AppDrawerButton userProfile={userProfile} />
+          <AppDrawerButton userStatus={getUserStatus()} />
         )}
         {router.asPath !== '/' && <AppLogo />}
         {!SHOULD_SHOW_COMING_SOON &&

@@ -11,6 +11,7 @@ import {
   Icon,
   HStack,
 } from '@chakra-ui/react';
+import { Session } from 'next-auth';
 import NextLink from 'next/link';
 import { useRef } from 'react';
 import {
@@ -25,11 +26,9 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
 
-export const AppDrawerButton = ({
-  userProfile,
-}: {
-  userProfile: CombinedPlayerProfile | null | undefined;
-}) => {
+export type UserStatus = 'logged-out' | 'not-setup' | 'setup';
+
+export const AppDrawerButton = ({ userStatus }: { userStatus: UserStatus }) => {
   const { data: userIsAdmin } = useUserIsAdmin();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -74,15 +73,22 @@ export const AppDrawerButton = ({
                 <Heading size='lg'>Decks</Heading>
               </Link>
 
-              <HStack justifyContent={'end'} paddingRight={10}>
-                <Icon as={FaRegUser} />
-              </HStack>
-
-              <Link as={NextLink} href={'/profile'} onClick={onClose}>
-                <Heading size='lg'>
-                  {userProfile ? 'My profile' : 'Setup profile'}
-                </Heading>
-              </Link>
+              {userStatus !== 'logged-out' && (
+                <>
+                  <HStack justifyContent={'end'} paddingRight={10}>
+                    <Icon as={FaRegUser} />
+                  </HStack>
+                  <Link
+                    as={NextLink}
+                    href={userStatus === 'setup' ? '/profile' : 'setup-profile'}
+                    onClick={onClose}
+                  >
+                    <Heading size='lg'>
+                      {userStatus === 'setup' ? 'My profile' : 'Setup profile'}
+                    </Heading>
+                  </Link>
+                </>
+              )}
 
               <HStack justifyContent={'end'} paddingRight={10}>
                 <Icon as={FaRegQuestionCircle} />

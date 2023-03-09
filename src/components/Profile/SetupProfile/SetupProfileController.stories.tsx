@@ -19,14 +19,17 @@ const Template: ComponentStory<typeof SetupProfileController> = (
 
 export const Loading = Template.bind({});
 Loading.args = {
-  userProfile: null,
+  userProfile: {
+    name: 'Jared Grimes',
+    email: '',
+    image: '',
+  },
 };
 
 //👇 Each story then reuses that template
 export const FoundUser = Template.bind({});
 FoundUser.args = {
   userProfile: {
-    id: 'me',
     name: 'Jared Grimes',
     email: '',
     image: '',
@@ -36,7 +39,6 @@ FoundUser.args = {
 export const NotFoundUser = Template.bind({});
 NotFoundUser.args = {
   userProfile: {
-    id: 'me',
     name: 'Hingle McCringleberry',
     email: '',
     image: '',
