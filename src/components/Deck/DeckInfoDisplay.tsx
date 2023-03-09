@@ -53,7 +53,7 @@ export const DeckInfoDisplay = memo(
           !shouldShowIcon
             ? 'auto'
             : shouldShowAsText
-            ? 'auto 1fr 1fr'
+            ? 'auto 25px'
             : '80px 25px'
         }
         columnGap={1}
