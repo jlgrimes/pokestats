@@ -46,7 +46,7 @@ export const AppBar = () => {
         {!SHOULD_SHOW_COMING_SOON && (
           <AppDrawerButton userStatus={getUserStatus()} />
         )}
-        {router.asPath !== '/' && <AppLogo />}
+        {router.asPath !== '/' && router.asPath !== '/help' && <AppLogo />}
         {!SHOULD_SHOW_COMING_SOON &&
           (session.status !== 'unauthenticated' ? (
             <>

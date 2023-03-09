@@ -25,6 +25,7 @@ import { CombinedPlayerProfile } from '../../../../types/player';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
+import { IconCards } from '@tabler/icons-react';
 
 export type UserStatus = 'logged-out' | 'not-setup' | 'setup';
 
@@ -66,7 +67,7 @@ export const AppDrawerButton = ({ userStatus }: { userStatus: UserStatus }) => {
               </Link>
 
               <HStack justifyContent={'end'} paddingRight={10}>
-                <Icon as={FaRegListAlt} />
+                <Icon as={IconCards} />
               </HStack>
 
               <Link as={NextLink} href='/decks' onClick={onClose}>
