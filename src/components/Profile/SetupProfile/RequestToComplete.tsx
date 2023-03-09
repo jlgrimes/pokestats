@@ -6,7 +6,10 @@ import {
   Icon,
   Fade,
   Flex,
+  Link,
+  Box,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { FaCheck, FaEnvelope, FaSkull } from 'react-icons/fa';
@@ -16,6 +19,7 @@ import {
 } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
+import { useTwitterLink } from '../../../hooks/twitter';
 
 export const RequestToComplete = ({
   userProfile,
@@ -55,21 +59,34 @@ export const RequestToComplete = ({
   };
 
   return (
-    <Stack
-      padding='1.5rem'
-      spacing={10}
-      justifyContent='space-between'
-    >
+    <Stack padding='1.5rem' spacing={10} justifyContent='space-between'>
       <Heading color='gray.700'>Complete account setup</Heading>
       <Fade in={fadeIn}>
         <Stack>
-          <Text as='b'>{`Make sure you're logged in with the Google account you use with RK9.`}</Text>
-          <Text>{`The name on your Google account doesn't seem to match any players from RK9.`}</Text>
+          <Text as='b'>{`Make sure your Google account name matches your RK9 account name.`}</Text>
+          <Text>
+            {`We were unable to find you - please send us a request. If you have never attended a tournament, refresh this page once your first tournament is underway. If you have attended a tournament before, send a request + contact me `}
+            <Link
+              isExternal
+              href={useTwitterLink('jgrimseey')}
+              as={NextLink}
+              color='twitter.500'
+            >
+              @jgrimesey
+            </Link>
+            {` and we can figure this out. `}
+          </Text>
           <Flex flexWrap='wrap' gap={2} alignItems='baseline'>
-            <Text>{`Once your request is approved, you'll see the badge next to your profile pic changed from`}</Text>
-            <NotVerifiedIcon />
-            <Text>to</Text>
-            <VerifiedIcon />
+            <Text>
+              {`Once your request is approved, you'll see the badge next to your profile pic changed from`}{' '}
+              <Box paddingX={2} display='inline'>
+                <NotVerifiedIcon />
+              </Box>
+              to
+              <Box paddingX={2} display='inline'>
+                <VerifiedIcon />
+              </Box>
+            </Text>
           </Flex>
         </Stack>
       </Fade>
