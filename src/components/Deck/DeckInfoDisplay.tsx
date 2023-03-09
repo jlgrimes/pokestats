@@ -11,6 +11,7 @@ import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
 import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
 import DeckInput from './DeckInput/DeckInput';
+import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 
 export const DeckInfoDisplay = memo(
   ({
@@ -41,7 +42,7 @@ export const DeckInfoDisplay = memo(
 
     return (
       <Grid
-        gridTemplateColumns={shouldShowAsText ? 'auto 1fr' : '85px 1fr'}
+        gridTemplateColumns={shouldShowAsText ? 'auto 1fr 1fr' : '85px 1fr 1fr'}
         alignItems='center'
       >
         <StackItem>
@@ -53,14 +54,17 @@ export const DeckInfoDisplay = memo(
             shouldShowAsText={shouldShowAsText}
             shouldHideDeck={
               shouldHideDeck &&
-              session.data?.user?.email !==
-                player.deck?.user_who_submitted
+              session.data?.user?.email !== player.deck?.user_who_submitted
             }
             shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           />
         </StackItem>
 
-        {!shouldHideMenu && (
+        {player?.deck?.list && !disableList && (
+          <ListViewerOpenButton result={player} tournament={tournament} />
+        )}
+
+        {/* {!shouldHideMenu && (
           <StandingsInfoMenu
             result={player}
             tournament={tournament}
@@ -69,7 +73,7 @@ export const DeckInfoDisplay = memo(
             shouldHideOpponentView={shouldHideOpponentView}
             onUnpinPlayer={onUnpinPlayer}
           />
-        )}
+        )} */}
 
         {/* {player?.deck?.list && !disableList && (
           <ListViewerOpenButton result={player} tournament={tournament} />

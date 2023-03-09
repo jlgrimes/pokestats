@@ -56,11 +56,11 @@ export const StandingsInfoMenu = (props: StandingsInfoMenuProps) => {
               Remove from favorites
             </MenuItem>
           )}
-          {props.result.deck?.list && (
+          {/* {props.result.deck?.list && (
             <MenuItem fontSize='lg' onClick={onListOpen}>
               View deck list
             </MenuItem>
-          )}
+          )} */}
           {!props.shouldHideOpponentView && (
             <MenuItem fontSize='lg' onClick={onOpponentsOpen}>
               View matchups

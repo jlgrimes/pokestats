@@ -1,6 +1,13 @@
-import { Card, CardBody, Heading, Stack } from '@chakra-ui/react';
+import {
+  Card,
+  CardBody,
+  Heading,
+  Stack,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { Standing, Tournament } from '../../../../../types/tournament';
+import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
 
 export interface PlayerCardProps {
@@ -14,8 +21,14 @@ export interface PlayerCardProps {
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
+  const {
+    isOpen: isOpponentsOpen,
+    onOpen: onOpponentsOpen,
+    onClose: onOpponentsClose,
+  } = useDisclosure();
+
   return (
-    <Card>
+    <Card onClick={onOpponentsOpen}>
       <CardBody paddingX={0} paddingY={2}>
         <Stack spacing={0}>
           <StandingsRow
@@ -56,6 +69,12 @@ export const PlayerCard = (props: PlayerCardProps) => {
           )}
         </Stack>
       </CardBody>
+      <OpponentRoundList
+        player={props.player}
+        tournament={props.tournament}
+        modalOpen={isOpponentsOpen}
+        handleCloseModal={onOpponentsClose}
+      />
     </Card>
   );
 };
