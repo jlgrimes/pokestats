@@ -11,7 +11,8 @@ export const fetchArchetypes = async (): Promise<DeckTypeSchema[] | null> => {
       name,
       defined_pokemon,
       cover_cards
-    ),identifiable_cards`);
+    ),identifiable_cards`)
+    .order('created_at', { ascending: false });;
 
   if (res.data) {
     return res.data.map(archetype => {
