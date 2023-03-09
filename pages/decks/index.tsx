@@ -1,4 +1,4 @@
-import { Stack, StackItem, Switch } from '@chakra-ui/react';
+import { Button, Stack, StackItem, Switch, Text } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { CommonCard } from '../../src/components/common/CommonCard';
 import { findTournament } from '../../src/components/Deck/Analytics/Filter/helpers';
 import { formatTournamentDate } from '../../src/components/TournamentList/helpers';
+import { TournamentSelector } from '../../src/components/Deck/TournamentSelector';
 
 export default function DecksPage({
   defaultTournamentRange,
@@ -55,7 +56,7 @@ export default function DecksPage({
   const tournament = findTournament(tournamentRange[0], tournaments);
 
   return (
-    <CommonCard header={'Day two metagame'} subheader={tournament?.name} ghost>
+    <CommonCard header={'Day two metagame'} ghost>
       {/* <StackItem>
         <Switch
           checked={sortByMoves}
@@ -82,10 +83,26 @@ export default function DecksPage({
       {/* <OptionsMenu>
         <Switch></Switch>
       </OptionsMenu> */}
-      <MetaGameShareList
-        tournamentRange={tournamentRange}
-        sortByMoves={sortByMoves}
-      />
+      <Stack>
+        <TournamentSelector
+          tournaments={tournaments}
+          currentTournament={tournament}
+          setTournament={tournament =>
+            setTournamentRange([
+              parseInt(tournament.id),
+              parseInt(tournament.id),
+            ])
+          }
+        />
+        <MetaGameShareList
+          tournamentRange={tournamentRange}
+          sortByMoves={sortByMoves}
+        />
+        <Text paddingTop={4}>
+          Includes all reported and RK9 confirmed decks for day two of the
+          tournament. Reported decks may be inaccurate.
+        </Text>
+      </Stack>
     </CommonCard>
   );
 }
