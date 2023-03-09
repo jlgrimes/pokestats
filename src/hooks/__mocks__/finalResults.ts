@@ -1,3 +1,5 @@
+import { FinalResultsFilters } from '../finalResults/final-results-schema';
+
 export const useChampions = () => ({
   data: {
     '2': {
@@ -20,3 +22,19 @@ export const useChampions = () => ({
     },
   },
 });
+
+export const useFinalResults = (filters?: FinalResultsFilters) => {
+  if (filters?.playerName === 'Jared Grimes') {
+    return {
+      data: [
+        {
+          tournamentId: '2',
+        },
+      ],
+    };
+  }
+
+  return {
+    data: [],
+  };
+};

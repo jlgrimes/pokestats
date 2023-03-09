@@ -7,7 +7,10 @@ import EverythingDecorator from '../../../.storybook/decorators/EverythingDecora
 import { addDays } from 'date-fns';
 import { convertToDateString } from '../../lib/dates';
 import { HomePage, HomePageProps } from './HomePage';
-import { DARWIN_MOCK_TOURNAMENT } from '../../../tests/mocks';
+import {
+  DARWIN_MOCK_TOURNAMENT,
+  SYDNEY_MOCK_TOURNAMENT,
+} from '../../../tests/mocks';
 
 export default {
   component: HomePage,
@@ -21,28 +24,5 @@ const Template: ComponentStory<typeof HomePage> = (args: HomePageProps) => (
 //👇 Each story then reuses that template
 export const Live = Template.bind({});
 Live.args = {
-  tournaments: [
-    DARWIN_MOCK_TOURNAMENT,
-    {
-      id: '2',
-      name: 'Sydney Regional Championships',
-      date: {
-        start: '2023-02-04',
-        end: '2023-02-05',
-      },
-      tournamentStatus: 'finished',
-      players: {
-        juniors: null,
-        seniors: null,
-        masters: null,
-      },
-      roundNumbers: {
-        juniors: 1,
-        seniors: 1,
-        masters: 1,
-      },
-      lastUpdated: 'now',
-      rk9link: 'slug',
-    },
-  ],
+  tournaments: [DARWIN_MOCK_TOURNAMENT, SYDNEY_MOCK_TOURNAMENT],
 };

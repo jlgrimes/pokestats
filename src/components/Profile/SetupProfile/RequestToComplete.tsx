@@ -10,18 +10,21 @@ import {
 import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { FaCheck, FaEnvelope, FaSkull } from 'react-icons/fa';
-import { useUserSentAccountRequest } from '../../../hooks/user';
+import {
+  SessionUserProfile,
+  useUserSentAccountRequest,
+} from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 
 export const RequestToComplete = ({
-  session,
+  userProfile,
 }: {
-  session: Session | undefined;
+  userProfile: SessionUserProfile | undefined;
 }) => {
   const [fadeIn, setFadeIn] = useState(false);
   const { data: userSentRequest } = useUserSentAccountRequest(
-    session?.user?.email
+    userProfile?.email
   );
   const [requestSentStatus, setRequestSentStatus] =
     useState<'before' | 'sending' | 'sent' | 'sent-error'>('before');
@@ -40,8 +43,8 @@ export const RequestToComplete = ({
     setRequestSentStatus('sending');
     const { data, error } = await supabase.from('Account Requests').insert([
       {
-        email: session?.user?.email,
-        name: session?.user?.name,
+        email: userProfile?.email,
+        name: userProfile?.name,
       },
     ]);
     if (error) {

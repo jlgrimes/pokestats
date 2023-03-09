@@ -13,24 +13,28 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
+import { SessionUserProfile } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 
-export const RecommendedSuggestedUser = ({
-  session,
-  didNotAttendCallback,
-  accountMadeSuccessfullyCallback,
-}: {
-  session: Session | undefined;
+export interface RecommendedSuggestedUserProps {
+  userProfile: SessionUserProfile | undefined;
   didNotAttendCallback: () => void;
   accountMadeSuccessfullyCallback: () => void;
-}) => {
+}
+
+export const RecommendedSuggestedUser = (
+  props: RecommendedSuggestedUserProps
+) => {
+  const { userProfile, didNotAttendCallback, accountMadeSuccessfullyCallback } =
+    props;
+
   const queryClient = useQueryClient();
 
   const [elementFadedIn, setElementFadedIn] = useState(0);
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
   const { data: suggestedUserTournaments } = useFinalResults({
-    playerName: session?.user?.name,
+    playerName: userProfile?.name,
   });
   const { data: tournaments } = useTournaments();
 
@@ -39,24 +43,24 @@ export const RecommendedSuggestedUser = ({
   );
 
   const onIdentityConfirmClick = useCallback(async () => {
-    if (!session) return;
+    if (!userProfile) return;
 
     setIdentityConfirmationLoading(true);
     await supabase.from('Player Profiles').insert({
-      name: session.user?.name,
-      email: session.user?.email,
+      name: userProfile?.name,
+      email: userProfile?.email,
     });
 
     queryClient.setQueryData(
-      [`session-user-profile`, session.user?.email],
+      [`session-user-profile`, userProfile?.email],
       () => ({
-        name: session.user?.name,
-        email: session.user?.email,
+        name: userProfile?.name,
+        email: userProfile?.email,
       })
     );
     accountMadeSuccessfullyCallback();
     setIdentityConfirmationLoading(false);
-  }, [accountMadeSuccessfullyCallback, queryClient, session]);
+  }, [accountMadeSuccessfullyCallback, queryClient, userProfile]);
 
   useEffect(() => {
     const firstFade = setTimeout(() => {

@@ -18,7 +18,7 @@ export default function SetupPage() {
     }
   }, [router, user, isLoading]);
 
-  return <SetupProfileController />;
+  return <SetupProfileController userProfile={user} />;
 }
 
 export async function getServerSideProps(context: any) {
