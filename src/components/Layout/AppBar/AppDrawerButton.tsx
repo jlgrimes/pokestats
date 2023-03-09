@@ -94,8 +94,8 @@ export const AppDrawerButton = ({ userStatus }: { userStatus: UserStatus }) => {
                 <Icon as={FaRegQuestionCircle} />
               </HStack>
 
-              <Link as={NextLink} href={'/about'} onClick={onClose}>
-                <Heading size='lg'>About</Heading>
+              <Link as={NextLink} href={'/help'} onClick={onClose}>
+                <Heading size='lg'>Help</Heading>
               </Link>
             </Grid>
             <Stack spacing={4} padding='4.5rem 3.5rem'>

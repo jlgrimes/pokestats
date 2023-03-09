@@ -1,10 +1,19 @@
-import { Flex, Heading, Link, Stack, Text } from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  Highlight,
+  Link,
+  ListItem,
+  Stack,
+  Text,
+  UnorderedList,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useMemo } from 'react';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { useTwitterLink } from '../src/hooks/twitter';
 
-export default function AboutPage() {
+export default function HelpPage() {
   const myTwitter = useTwitterLink('jgrimesey');
   const tateTwitter = useTwitterLink('twhitesell42');
   const kashTwitter = useTwitterLink('KashMann27');
@@ -24,13 +33,83 @@ export default function AboutPage() {
         <Stack>
           <Heading size='md'>What is PokéStats Live?</Heading>
           <Text>
-            PokéStats Live is a live tournament tracking tool. Deck archetypes
-            can be reported in real time during tournaments, allowing for
-            comprehensive metagame analysis as soon Day 1.
+            PokéStats Live is a tournament companion app and deck analysis hub
+            for major Pokémon TCG events.
           </Text>
         </Stack>
         <Stack>
-          <Heading size='md'>Where is the data coming from?</Heading>
+          <Heading size='md'>
+            <Highlight
+              query='LIVE'
+              styles={{ px: '2', py: '1', rounded: 'full', bg: 'green.100' }}
+            >
+              {`Keep up with tournaments LIVE`}
+            </Highlight>
+          </Heading>
+          <Text>
+            With PokéStats Live, <b>view player deck choices</b> while the
+            tournament is live. Decks will show up if they are known, but will
+            be hidden if day one has not completed.
+          </Text>
+          <Text>
+            <b>{`Where's stream?`}</b> Right on the PokéStats Live home page!
+            Twitch streams for ongoing tournaments will be big and purple on
+            both the home page and tournament home pages.
+          </Text>
+          <Text>
+            Curious to what matchups your friend faced?{' '}
+            <b>View opponent matchups</b> straight from PokéStats Live just by
+            tapping on the player.
+          </Text>
+          <Text>
+            Pin your friends on your own tournament page with <b>Favorites</b>{' '}
+            so you can cheer them on each and every round. Current record, deck
+            archetype and opponent deck archetype are all available for each of
+            your favorites, so you can stop scrolling on the pairings page until
+            you hit their name.
+          </Text>
+        </Stack>
+        <Stack>
+          <Heading size='md'>
+            <Highlight
+              query='Analyze'
+              styles={{ px: '2', py: '1', rounded: 'full', bg: 'red.100' }}
+            >
+              {`Analyze post-tournament results`}
+            </Highlight>
+          </Heading>
+          <Text>
+            Get <b>comprehensive day two deck analysis</b> for each tournament.
+            See what percentage of people were playing each deck day two at a
+            glance. Find out how many people played three Lugia VSTAR vs two by
+            clicking on the card in the deck list viewer.
+          </Text>
+          <Text>
+            Tired of all those sideways deck photos on your vertically-oriented
+            phone? Now you can <b>view deck lists vertically</b> that perfectly
+            align with the viewport on your phone. Just screenshot and send, no
+            more holding and saving pictures to share a deck.
+          </Text>
+          <Text>
+            See <b>overall card usage per archetype</b> by going to Decks in the
+            sidebar, or by tapping on the decks at the bottom of each tournament
+            page. You can also see how the lists have changed over time by
+            viewing all results with that deck across the season.
+          </Text>
+        </Stack>
+        <Heading size='md'>FAQs</Heading>
+        <Stack>
+          <Heading size='sm'>Is this website by Pokémon?</Heading>
+          <Text>
+            This website is not affiliated with, sponsored or endorsed by, or in
+            any way associated with The Pokemon Company International
+            Inc/Nintendo/Creatures Inc./GAME FREAK Inc./RK9.gg. This website was
+            made solely for the community because I love this game and wanted to
+            make something cool!
+          </Text>
+        </Stack>
+        <Stack>
+          <Heading size='sm'>Where is the data coming from?</Heading>
           <Text>
             {`Player deck data by default originates from reported decks. Any player's deck archetype for any tournament can be submitted by the PokéStats team, which currently consists of `}
             <Link isExternal href={myTwitter} as={NextLink} color='twitter.500'>
@@ -76,7 +155,15 @@ export default function AboutPage() {
           </Text>
         </Stack>
         <Stack>
-          <Heading size='md'>What if someone reports the wrong deck?</Heading>
+          <Heading size='sm'>Is this only for the Masters division?</Heading>
+          <Text>
+            The only currently supported age division is Masters for the Trading
+            Card Game on PokéStats Live. We will work to support other age
+            divisions in the future.
+          </Text>
+        </Stack>
+        <Stack>
+          <Heading size='sm'>What if someone reports the wrong deck?</Heading>
           <Text>
             Ultimately, this is going to be based off the honor system. Even the
             PokéStats team can accidentally misreport a deck. All information
@@ -87,20 +174,31 @@ export default function AboutPage() {
           </Text>
         </Stack>
         <Stack>
-          <Heading size='md'>What if I have any questions?</Heading>
+          <Heading size='sm'>What if I have additional questions?</Heading>
           <Text>
             If you have any additional questions or encounter any problems with
-            the site, shoot me a message{' '}
-            <Link isExternal href={myTwitter} as={NextLink} color='twitter.500'>
-              @jgrimesey
+            the site, email us {` at `}
+            <Link
+              isExternal
+              href={'mailto:help@pokestats.live'}
+              as={NextLink}
+              color='blue.500'
+            >
+              help@pokestats.live
             </Link>
-            {`. I am the sole developer of this site, so if there's anything wrong, it's my fault!`}
           </Text>
         </Stack>
         <Stack>
           <Heading size='md'>Credits</Heading>
           <Text>
             {`What started off as me in the stats chat joking how we should redo PokéStats... well, turned into me redoing PokéStats! This project wouldn't be possible without the following members/groups:`}
+          </Text>
+          <Text>
+            {`Jared Grimes `}
+            <Link isExternal href={myTwitter} as={NextLink} color='twitter.500'>
+              @jgrimesey
+            </Link>
+            {` - me! I developed this site myself, so if you encounter anything wrong, there's nobody else to blame!`}
           </Text>
           <Text>
             <RK9Link /> - for all of the outstanding work allowing our
@@ -135,12 +233,6 @@ export default function AboutPage() {
           </Text>
         </Stack>
       </Stack>
-
-      <Text fontSize='xs'>
-        This website is not affiliated with, sponsored or endorsed by, or in any
-        way associated with The Pokemon Company International
-        Inc/Nintendo/Creatures Inc./GAME FREAK Inc./RK9.gg
-      </Text>
     </Stack>
   );
 }
