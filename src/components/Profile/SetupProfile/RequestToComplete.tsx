@@ -64,7 +64,7 @@ export const RequestToComplete = ({
       <Fade in={fadeIn}>
         <Stack>
           <Text as='b'>{`Make sure your Google account name matches your RK9 account name.`}</Text>
-          <Text>
+          <Box>
             {`We were unable to find you - please send us a request. If you have never attended a tournament, refresh this page once your first tournament is underway. If you have attended a tournament before, send a request + contact me `}
             <Link
               isExternal
@@ -75,9 +75,9 @@ export const RequestToComplete = ({
               @jgrimesey
             </Link>
             {` and we can figure this out. `}
-          </Text>
+          </Box>
           <Flex flexWrap='wrap' gap={2} alignItems='baseline'>
-            <Text>
+            <Box>
               {`Once your request is approved, you'll see the badge next to your profile pic changed from`}{' '}
               <Box paddingX={2} display='inline'>
                 <NotVerifiedIcon />
@@ -86,7 +86,7 @@ export const RequestToComplete = ({
               <Box paddingX={2} display='inline'>
                 <VerifiedIcon />
               </Box>
-            </Text>
+            </Box>
           </Flex>
         </Stack>
       </Fade>
