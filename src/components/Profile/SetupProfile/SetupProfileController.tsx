@@ -6,6 +6,7 @@ import {
   SessionUserProfile,
   useUserSentAccountRequest,
 } from '../../../hooks/user';
+import { FullPageLoader } from '../../common/FullPageLoader';
 import { AccountMadeSuccessfully } from './AccountMadeSuccessfully';
 import { RecommendedSuggestedUser } from './RecommendSuggestedUser';
 import { RequestToComplete } from './RequestToComplete';
@@ -42,7 +43,7 @@ export const SetupProfileController = (props: SetupProfileControllerProps) => {
     }
   }, [suggestedUser, userSentRequest]);
 
-  if (isLoading || !userProfile) return null;
+  if (isLoading || !userProfile) return <FullPageLoader />;
   if (screenState === 'recommended-suggested-user')
     return (
       <RecommendedSuggestedUser

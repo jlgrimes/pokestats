@@ -64,7 +64,8 @@ export const RequestToComplete = ({
       <Heading color='gray.700'>Complete account setup</Heading>
       <Fade in={fadeIn}>
         <Stack>
-          <Text>{`Send us a request to complete account setup. If you've already sent a request, hang tight!`}</Text>
+          <Text as='b'>{`Make sure you're logged in with the Google account you use with RK9.`}</Text>
+          <Text>{`The name on your Google account doesn't seem to match any players from RK9.`}</Text>
           <Flex flexWrap='wrap' gap={2} alignItems='baseline'>
             <Text>{`Once your request is approved, you'll see the badge next to your profile pic changed from`}</Text>
             <NotVerifiedIcon />
