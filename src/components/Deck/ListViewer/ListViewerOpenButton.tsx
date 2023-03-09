@@ -1,5 +1,5 @@
 import { IconButton, useDisclosure } from '@chakra-ui/react';
-import { FaListUl } from 'react-icons/fa';
+import { IconCards } from '@tabler/icons-react';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { ListViewerModal } from './ListViewerModal';
 
@@ -15,15 +15,14 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
     <>
       <IconButton
         aria-label='view-list'
-        variant={'ghost'}
+        variant={'unstyled'}
         onClick={e => {
           e.stopPropagation();
           onOpen();
         }}
-        size='md'
-        minWidth={6}
+        minWidth={0}
       >
-        <FaListUl />
+        <IconCards size={18} />
       </IconButton>
       {isOpen && (
         <ListViewerModal

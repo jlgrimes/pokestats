@@ -49,7 +49,7 @@ export const DeckInfoDisplay = memo(
     return (
       <Grid
         gridTemplateColumns={shouldShowAsText ? 'auto 25px' : '80px 25px'}
-        columnGap={1}
+        columnGap={2}
         alignItems='center'
       >
         <DeckInput
@@ -69,7 +69,7 @@ export const DeckInfoDisplay = memo(
           <IconButton
             icon={<FaRegEdit />}
             aria-label='edit'
-            variant={'ghost'}
+            variant={'unstyled'}
             size='sm'
             color='pink.500'
             minWidth={0}

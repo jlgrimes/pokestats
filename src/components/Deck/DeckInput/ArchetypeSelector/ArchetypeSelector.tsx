@@ -20,7 +20,7 @@ export interface ArchetypeSelectorProps {
   isStreamDeck?: boolean;
   toggleIsStreamDeck?: () => void;
   isListUp: boolean;
-  shouldEnableEdits: boolean;
+  shouldEnableEdits?: boolean;
 }
 
 export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
