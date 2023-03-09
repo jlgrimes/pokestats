@@ -6,8 +6,8 @@ export const DARWIN_MOCK_TOURNAMENT: Tournament = {
   id: '1',
   name: 'Darwin Regional Championships',
   date: {
-    start: convertToDateString(addDays(new Date(), -1)),
-    end: convertToDateString(addDays(new Date(), 1)),
+    start: '2023-03-04',
+    end: '2023-03-05',
   },
   tournamentStatus: 'running',
   players: {

@@ -27,8 +27,8 @@ Live.args = {
       id: '2',
       name: 'Sydney Regional Championships',
       date: {
-        start: convertToDateString(addDays(new Date(), -10)),
-        end: convertToDateString(addDays(new Date(), -1)),
+        start: '2023-02-04',
+        end: '2023-02-05',
       },
       tournamentStatus: 'finished',
       players: {
