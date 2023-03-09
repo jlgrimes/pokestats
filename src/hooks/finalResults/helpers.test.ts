@@ -65,6 +65,7 @@ describe('final results helpers', () => {
           placing: 1,
           record: { losses: 0, ties: 0, wins: 5 },
           resistances: { opp: 100, oppopp: 100, self: 100 },
+          rounds: [],
           tournamentId: '1',
         },
         {
@@ -79,6 +80,7 @@ describe('final results helpers', () => {
           placing: 1,
           record: { losses: 0, ties: 0, wins: 5 },
           resistances: { opp: 100, oppopp: 100, self: 100 },
+          rounds: [],
           tournamentId: '2',
         },
       ]);

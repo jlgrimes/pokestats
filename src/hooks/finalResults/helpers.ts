@@ -77,6 +77,7 @@ export const mapFinalResultsToStandings = (
     name: finalResult.name,
     placing: finalResult.placing,
     record: finalResult.record,
+    rounds: finalResult.rounds,
     resistances: finalResult.resistances,
     tournamentId: finalResult.tournament_id,
   }));
