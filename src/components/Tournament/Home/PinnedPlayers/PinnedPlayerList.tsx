@@ -1,6 +1,20 @@
-import { Button, Grid, Stack, Icon, useDisclosure } from '@chakra-ui/react';
+import {
+  Button,
+  Grid,
+  Stack,
+  Icon,
+  useDisclosure,
+  HStack,
+} from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { FaMapPin, FaPlus, FaStar, FaTwitter } from 'react-icons/fa';
+import {
+  FaHeart,
+  FaMapPin,
+  FaPlus,
+  FaRegEdit,
+  FaStar,
+  FaTwitter,
+} from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
@@ -57,11 +71,12 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       return 0;
     });
   const addPinPlayerModalControls = useDisclosure();
+  const editPinnedPlayers = useDisclosure();
 
   return (
     <CommonCard
       header='Favorites'
-      leftIcon={<Icon color='yellow.500' as={FaStar} />}
+      leftIcon={<Icon color='pink.500' as={FaHeart} />}
       ghost
     >
       <Stack>
@@ -74,19 +89,36 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 tournament={props.tournament}
                 shouldHideDecks={liveTournamentResults?.shouldHideDecks}
                 isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
+                isEditingPinned={editPinnedPlayers.isOpen}
               />
             )
         )}
-        <Button
-          variant='ghost'
-          leftIcon={<FaPlus />}
-          onClick={addPinPlayerModalControls.onOpen}
-          isDisabled={props.tournament.tournamentStatus === 'not-started'}
-          size={'sm'}
-          colorScheme='blackAlpha'
-        >
-          Add favorite player
-        </Button>
+        <HStack>
+          <Button
+            variant='ghost'
+            leftIcon={<FaPlus />}
+            onClick={addPinPlayerModalControls.onOpen}
+            isDisabled={props.tournament.tournamentStatus === 'not-started'}
+            size={'sm'}
+            colorScheme='blackAlpha'
+          >
+            Add favorite player
+          </Button>
+          {pinnedPlayers && pinnedPlayers.length > 0 && (
+            <Button
+              variant='ghost'
+              leftIcon={<FaRegEdit />}
+              onClick={editPinnedPlayers.onToggle}
+              isDisabled={props.tournament.tournamentStatus === 'not-started'}
+              size={'sm'}
+              colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
+            >
+              {editPinnedPlayers.isOpen
+                ? 'Stop editing'
+                : 'Edit favorite players'}
+            </Button>
+          )}
+        </HStack>
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}

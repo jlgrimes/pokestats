@@ -3,12 +3,15 @@ import {
   Card,
   CardBody,
   Heading,
+  HStack,
+  IconButton,
   Stack,
   Text,
   useToast,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment, useCallback } from 'react';
+import { FaHeartBroken } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
 import {
@@ -22,6 +25,7 @@ interface PinnedPlayerCardProps {
   player: Standing;
   tournament: Tournament;
   shouldHideDecks: boolean | undefined;
+  isEditingPinned: boolean;
   isDeckLoading?: boolean;
 }
 
@@ -56,12 +60,27 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   }, [props.player.name, session.data?.user?.email, toast, refetch]);
 
   return (
-    <PlayerCard
-      player={props.player}
-      tournament={props.tournament}
-      shouldHideDecks={props.shouldHideDecks}
-      canEditDecks={userIsAdmin}
-      onUnpinPlayer={onUnpinPlayer}
-    />
+    <HStack>
+      <PlayerCard
+        player={props.player}
+        tournament={props.tournament}
+        shouldHideDecks={props.shouldHideDecks}
+        canEditDecks={userIsAdmin}
+        onUnpinPlayer={onUnpinPlayer}
+      />
+      {props.isEditingPinned && (
+        <IconButton
+          size={'sm'}
+          variant='unstyled'
+          aria-label='unfavorite player'
+          icon={<FaHeartBroken />}
+          color='pink.700'
+          onClick={e => {
+            e.stopPropagation();
+            onUnpinPlayer();
+          }}
+        />
+      )}
+    </HStack>
   );
 };

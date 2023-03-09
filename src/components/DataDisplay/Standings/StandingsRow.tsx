@@ -55,7 +55,6 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
     props.result.currentMatchResult,
     props.tournament.tournamentStatus,
   ]);
-  console.log(props);
 
   return (
     <Box onClick={onOpen}>

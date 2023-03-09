@@ -2,10 +2,13 @@ import {
   Card,
   CardBody,
   Heading,
+  HStack,
+  IconButton,
   Stack,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Fragment } from 'react';
+import { FaHeartBroken } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
