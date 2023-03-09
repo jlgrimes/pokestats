@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Heading,
   Highlight,
@@ -10,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useMemo } from 'react';
+import { Banner } from '../src/components/common/Banner';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { useTwitterLink } from '../src/hooks/twitter';
 
@@ -30,6 +32,19 @@ export default function HelpPage() {
   return (
     <Stack>
       <AppLogo big />
+      <Banner>
+        <Box>
+          {`Need help with anything not covered here? Contact us at `}
+          <Link
+            isExternal
+            href={'mailto:help@pokestats.live'}
+            as={NextLink}
+            color='blue.500'
+          >
+            help@pokestats.live
+          </Link>
+        </Box>
+      </Banner>
       <Stack spacing={12} padding={4}>
         <Stack spacing={6}>
           <Stack>
@@ -179,21 +194,6 @@ export default function HelpPage() {
               have yet to be set in stone for if anyone is intentionally
               spreading misinformation about deck archetypes repeatedly, but
               rest assured there will be some procedure.
-            </Text>
-          </Stack>
-          <Stack>
-            <Heading size='sm'>What if I have additional questions?</Heading>
-            <Text>
-              If you have any additional questions or encounter any problems
-              with the site, email us {` at `}
-              <Link
-                isExternal
-                href={'mailto:help@pokestats.live'}
-                as={NextLink}
-                color='blue.500'
-              >
-                help@pokestats.live
-              </Link>
             </Text>
           </Stack>
           <Stack>
