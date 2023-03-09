@@ -1,6 +1,7 @@
 import {
   Box,
   Grid,
+  HStack,
   IconButton,
   Stack,
   StackItem,
@@ -42,55 +43,54 @@ export const DeckInfoDisplay = memo(
     const archetypeModal = useDisclosure();
     const session = useSession();
 
+    const shouldShowList = player?.deck?.list && !disableList;
+    const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
+    const shouldShowIcon = shouldShowList || shouldShowSmallEditIcon;
+
     return (
       <Grid
-        gridTemplateColumns={shouldShowAsText ? 'auto 1fr 1fr' : '85px 1fr 1fr'}
+        gridTemplateColumns={
+          !shouldShowIcon
+            ? 'auto'
+            : shouldShowAsText
+            ? 'auto 1fr 1fr'
+            : '80px 25px'
+        }
+        columnGap={1}
         alignItems='center'
       >
-        <Box
-          position={'relative'}
-          {...(enableEdits
-            ? {
-                outline: '2px solid',
-                outlineColor: player.deck?.id ? 'pink.100' : 'pink.500',
-                rounded: 'md',
-                onClick: archetypeModal.onOpen,
-              }
-            : {})}
-        >
-          <DeckInput
-            tournamentId={tournament.id}
-            playerName={player.name}
-            deck={player.deck ?? undefined}
-            archetypeModal={archetypeModal}
-            shouldShowAsText={shouldShowAsText}
-            shouldHideDeck={
-              shouldHideDeck &&
-              session.data?.user?.email !== player.deck?.user_who_submitted
-            }
-            shouldHideVerifiedIcon={shouldHideVerifiedIcon}
-            shouldEnableEdits={enableEdits}
+        <DeckInput
+          tournamentId={tournament.id}
+          playerName={player.name}
+          deck={player.deck ?? undefined}
+          archetypeModal={archetypeModal}
+          shouldShowAsText={shouldShowAsText}
+          shouldHideDeck={
+            shouldHideDeck &&
+            session.data?.user?.email !== player.deck?.user_who_submitted
+          }
+          shouldHideVerifiedIcon={shouldHideVerifiedIcon}
+          shouldEnableEdits={enableEdits}
+        />
+        {shouldShowSmallEditIcon && !shouldShowList && (
+          <IconButton
+            icon={<FaRegEdit />}
+            aria-label='edit'
+            variant={'ghost'}
+            size='sm'
+            color='pink.500'
+            minWidth={0}
+            onClick={e => {
+              e.stopPropagation();
+              archetypeModal.onOpen();
+            }}
           />
-          {enableEdits && player.deck?.id && (
-            <IconButton
-              zIndex={5}
-              position={'absolute'}
-              top={-3}
-              right={-2}
-              maxWidth={'2'}
-              icon={<FaRegEdit />}
-              aria-label='edit'
-              variant={'ghost'}
-              width={'100%'}
-              size='sm'
-              color='pink.300'
-              paddingRight={0}
-            />
-          )}
-        </Box>
+        )}
 
-        {player?.deck?.list && !disableList && (
+        {shouldShowList ? (
           <ListViewerOpenButton result={player} tournament={tournament} />
+        ) : (
+          <Box />
         )}
 
         {/* {!shouldHideMenu && (

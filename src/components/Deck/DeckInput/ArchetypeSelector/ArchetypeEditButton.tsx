@@ -13,7 +13,10 @@ export const ArchetypeEditButton = (props: ArchetypeEditButtonProps) => (
     alignItems='center'
     justifyContent={'center'}
     gap={1}
-    onClick={props.onEditOpen}
+    onClick={e => {
+      e.stopPropagation();
+      props.onEditOpen();
+    }}
   >
     <Text
       fontSize={12}
