@@ -45,17 +45,10 @@ export const DeckInfoDisplay = memo(
 
     const shouldShowList = player?.deck?.list && !disableList;
     const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
-    const shouldShowIcon = shouldShowList || shouldShowSmallEditIcon;
 
     return (
       <Grid
-        gridTemplateColumns={
-          !shouldShowIcon
-            ? 'auto'
-            : shouldShowAsText
-            ? 'auto 25px'
-            : '80px 25px'
-        }
+        gridTemplateColumns={shouldShowAsText ? 'auto 25px' : '80px 25px'}
         columnGap={1}
         alignItems='center'
       >
