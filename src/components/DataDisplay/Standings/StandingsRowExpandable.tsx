@@ -6,11 +6,7 @@ export const StandingsRowExpandable = memo((props: StandingsRowProps) => {
   const [showOpponentRecords, setShowOpponentRecords] = useState(false);
   return (
     <>
-      <StandingsRow
-        {...props}
-        rowExpanded={showOpponentRecords}
-        toggleRowExpanded={() => setShowOpponentRecords(true)}
-      />
+      <StandingsRow {...props} rowExpanded={showOpponentRecords} />
     </>
   );
 });

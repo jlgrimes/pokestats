@@ -21,14 +21,8 @@ export interface PlayerCardProps {
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
-  const {
-    isOpen: isOpponentsOpen,
-    onOpen: onOpponentsOpen,
-    onClose: onOpponentsClose,
-  } = useDisclosure();
-
   return (
-    <Card onClick={onOpponentsOpen}>
+    <Card>
       <CardBody paddingX={0} paddingY={2}>
         <Stack spacing={0}>
           <StandingsRow
@@ -69,12 +63,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
           )}
         </Stack>
       </CardBody>
-      <OpponentRoundList
-        player={props.player}
-        tournament={props.tournament}
-        modalOpen={isOpponentsOpen}
-        handleCloseModal={onOpponentsClose}
-      />
     </Card>
   );
 };
