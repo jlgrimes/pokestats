@@ -37,6 +37,7 @@ export interface StandingsRowProps {
   translucent?: boolean;
   isDeckLoading?: boolean;
   singleDigitPlacing?: boolean;
+  shouldDisableOpponentModal?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -57,7 +58,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   ]);
 
   return (
-    <Box onClick={onOpen}>
+    <Box
+      onClick={onOpen}
+      cursor={!props.shouldDisableOpponentModal ? 'pointer' : 'auto'}
+    >
       <Grid
         gridTemplateColumns={`${
           props.singleDigitPlacing ? 1.6 : 2.65
@@ -131,12 +135,14 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           <Record standing={props.result} />
         </Stack>
       </Grid>
-      <OpponentRoundList
-        player={props.result}
-        tournament={props.tournament}
-        modalOpen={isOpen}
-        handleCloseModal={onClose}
-      />
+      {!props.shouldDisableOpponentModal && (
+        <OpponentRoundList
+          player={props.result}
+          tournament={props.tournament}
+          modalOpen={isOpen}
+          handleCloseModal={onClose}
+        />
+      )}
     </Box>
   );
 });

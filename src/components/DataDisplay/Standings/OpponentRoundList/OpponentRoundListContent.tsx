@@ -71,6 +71,7 @@ export const OpponentRoundListContent = ({
                     opponentRoundNumber={opponents.length - idx}
                     opponentResult={result}
                     shouldHideDeck={liveResults?.shouldHideDecks}
+                    shouldDisableOpponentModal
                   />
                 </Fragment>
               )
