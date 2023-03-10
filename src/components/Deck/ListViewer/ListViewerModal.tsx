@@ -47,7 +47,11 @@ const ListModalBody = ({
   }, []);
 
   return (
-    <ModalBody padding={'3px 0 0'} height='100%' id='list-view-modal-body'>
+    <ModalBody
+      padding={'3px 0 0'}
+      minHeight={{ base: '100%', md: '600px' }}
+      id='list-view-modal-body'
+    >
       <ListView
         deckList={list}
         containerHeight={listGridHeight}
@@ -79,7 +83,11 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
   if (!props.result.deck?.list) return null;
 
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} size='full'>
+    <Modal
+      isOpen={props.isOpen}
+      onClose={props.onClose}
+      size={{ base: 'full', md: 'xl' }}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
