@@ -80,6 +80,11 @@ export async function getStaticProps({
   });
 
   await queryClient.prefetchQuery({
+    queryKey: ['tournaments'],
+    queryFn: () => fetchTournaments({ prefetch: true }),
+  });
+
+  await queryClient.prefetchQuery({
     queryKey: ['code-to-set-map'],
     queryFn: () => fetchCodeToSetMap(),
   });
