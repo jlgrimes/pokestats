@@ -24,6 +24,7 @@ export default function HelpPage() {
   const juTwitter = useTwitterLink('_JuHlien_');
   const simeyTwitter = useTwitterLink('simeydotme');
   const statsTwitter = useTwitterLink('pokestatstcg');
+  const jeremyTwitter = useTwitterLink('LiberoHS');
 
   const RK9Link = () => (
     <Link isExternal href={'https://rk9.gg/'} as={NextLink} color='blue.500'>
@@ -225,14 +226,13 @@ export default function HelpPage() {
               <Icon as={FaHeart} color='red.500' boxSize={3} ml={1} />
             </Box>
             <Box>
-              {`Jeremy Lim `}
               <Link
                 isExternal
-                href={myTwitter}
+                href={jeremyTwitter}
                 as={NextLink}
                 color='twitter.500'
               >
-                @LiberoHS
+                Jeremy Lim
               </Link>
               {
                 ' for being such a massive help in the early stages of the app, and for single handedly reporting all of Perth Regionals.'

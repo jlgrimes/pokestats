@@ -66,7 +66,7 @@ export const PlayerPerformanceList = ({
                     <Link
                       as={NextLink}
                       color='blue.600'
-                      href={`/tournaments/${performance.tournamentId}/standings`}
+                      href={`/tournaments/${performance.tournamentId}`}
                     >
                       <Text
                         fontSize='sm'

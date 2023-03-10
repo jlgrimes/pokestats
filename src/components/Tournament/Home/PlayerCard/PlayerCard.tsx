@@ -21,6 +21,7 @@ export interface PlayerCardProps {
   canEditDecks?: boolean;
   onUnpinPlayer?: () => void;
   topCut?: boolean;
+  shouldHideStanding?: boolean;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
@@ -42,6 +43,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
               !props.player.currentOpponent
             }
             singleDigitPlacing={props.topCut}
+            shouldHideStanding={props.shouldHideStanding}
           />
           {props.player.currentOpponent && (
             <Fragment>
