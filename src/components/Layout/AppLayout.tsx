@@ -55,7 +55,7 @@ export const AppLayout = ({
               }
               spacing={1}
             >
-              <Box maxWidth={'container.lg'}> {children}</Box>
+              {children}
               {/* <Footer /> */}
             </Stack>
           </ChakraProvider>

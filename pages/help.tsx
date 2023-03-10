@@ -32,7 +32,7 @@ export default function HelpPage() {
   );
 
   return (
-    <Stack>
+    <Stack maxWidth={'container.md'}>
       <AppLogo big />
       <Banner>
         <Box>
