@@ -4,8 +4,9 @@ import { FixedSizeList as List } from 'react-window';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { StandingsRowExpandable } from './StandingsRowExpandable';
-import { Fragment, memo } from 'react';
+import { Fragment, memo, useMemo, useCallback } from 'react';
 import { tableHeadingProps } from './props';
+import { VirtualizedRow } from './VirtualizedRow';
 
 export const StandingsList = memo(
   ({
@@ -19,22 +20,35 @@ export const StandingsList = memo(
   }) => {
     const { data: userIsAdmin } = useUserIsAdmin();
 
-    const VirtualizedRow = ({
-      index,
-      style,
-    }: {
-      index: number;
-      style: any;
-    }) => (
-      <Box style={style}>
-        <Divider marginBottom={2} />
-        <StandingsRowExpandable
-          result={results[index]}
+    const VirtualizedRowCallback = useCallback(
+      ({ index, style }: { index: number; style: any }) => (
+        <VirtualizedRow
+          index={index}
+          style={style}
+          standing={results[index]}
           tournament={tournament}
           canEditDecks={userIsAdmin}
           shouldHideDeck={shouldHideDecks}
         />
-      </Box>
+      ),
+      [results, shouldHideDecks, tournament, userIsAdmin]
+    );
+
+    const WindowCallback = useCallback(
+      ({ height, width }: { height: number; width: number }) => {
+        console.log('rendered');
+        return (
+          <List
+            height={height}
+            width={width}
+            itemSize={44}
+            itemCount={results.length}
+          >
+            {VirtualizedRowCallback}
+          </List>
+        );
+      },
+      [VirtualizedRowCallback, results.length]
     );
 
     return (
@@ -53,18 +67,7 @@ export const StandingsList = memo(
             Record
           </Text>
         </Grid> */}
-        <AutoSizer>
-          {({ height, width }) => (
-            <List
-              height={height}
-              width={width}
-              itemSize={44}
-              itemCount={results.length}
-            >
-              {VirtualizedRow}
-            </List>
-          )}
-        </AutoSizer>
+        <AutoSizer>{WindowCallback}</AutoSizer>
       </Stack>
     );
   }

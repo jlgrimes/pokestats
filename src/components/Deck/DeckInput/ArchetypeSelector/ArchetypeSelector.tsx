@@ -1,5 +1,5 @@
 import { UseDisclosureProps, Text } from '@chakra-ui/react';
-import { Fragment } from 'react';
+import { Fragment, memo } from 'react';
 import { Deck } from '../../../../../types/tournament';
 import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
@@ -23,7 +23,7 @@ export interface ArchetypeSelectorProps {
   shouldEnableEdits?: boolean;
 }
 
-export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
+const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {
   const renderDeckName = () => {
     if (props.shouldShowAsText) {
       return (
@@ -57,4 +57,8 @@ export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
       {props.modalControls.isOpen && <ArchetypeSelectorModal {...props} />}
     </Fragment>
   );
-}
+});
+
+ArchetypeSelector.displayName = 'ArchetypeSelector';
+
+export default ArchetypeSelector;
