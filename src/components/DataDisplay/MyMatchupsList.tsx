@@ -59,6 +59,7 @@ export const MyMatchupsList = memo(
                     tournament={tournament}
                     shouldHideDecks={shouldHideDecks}
                     shouldHideStanding
+                    canEditDecks={!round.opponent.deck?.name}
                   />
                 </Box>
               </Grid>
