@@ -36,19 +36,19 @@ export const AccountRequestCard = ({
 
   const handleLinkClick = async () => {
     setLinkUsersInProgress(true);
-    const { error: updateError } = await supabase
+    const { error: insertError } = await supabase
       .from('Player Profiles')
-      .update({
+      .insert({
+        name: associatedName,
         email: request.email,
-      })
-      .eq('name', associatedName);
+      });
 
-    if (updateError) {
+    if (insertError) {
       setLinkUsersInProgress(false);
       toast({
         status: 'error',
-        title: updateError.message,
-        description: updateError.details,
+        title: insertError.message,
+        description: insertError.details,
       });
       return;
     }
