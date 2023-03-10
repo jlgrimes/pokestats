@@ -27,7 +27,7 @@ export const formatTournamentStatus = (
   }
 
   if (tournament.tournamentStatus === 'running') {
-    return `${getRoundText(tournament)}`;
+    return `Live - ${getRoundText(tournament)}`;
   }
 
   if (tournament.tournamentStatus === 'not-started') {

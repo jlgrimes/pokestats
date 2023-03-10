@@ -63,7 +63,7 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
   };
 
   const shouldShowLocalTime =
-    props.tournament.tournamentStatus !== 'finished' &&
+    props.tournament.tournamentStatus === 'running' &&
     props.location &&
     !isInSameTimeZone(props.location.utc_offset_minutes);
 
@@ -78,9 +78,6 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
     >
       <Stack spacing={1} alignItems='center'>
         <HStack>
-          {props.tournament.tournamentStatus === 'running' && (
-            <Icon as={FaBroadcastTower} />
-          )}
           <StatsHeading>
             {formatTournamentStatus(props.tournament, utcOffset)}
           </StatsHeading>

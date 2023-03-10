@@ -13,9 +13,9 @@ export const BackToDecksButton = memo(() => {
         size='sm'
         variant='ghost'
         leftIcon={<FaChevronLeft />}
-        onClick={() => router.push('/decks')}
+        onClick={() => router.back()}
       >
-        All decks
+        Back
       </Button>
     </div>
   );
