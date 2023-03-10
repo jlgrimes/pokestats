@@ -19,6 +19,7 @@ import { StandingsRow } from './Standings/StandingsRow';
 import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
 import { StatsHeading } from '../common/StatsHeading';
 import { CommonCard } from '../common/CommonCard';
+import { getResultBackgroundColor } from './helpers';
 
 export const MyMatchupsList = memo(
   ({
@@ -60,6 +61,7 @@ export const MyMatchupsList = memo(
                     shouldHideDecks={shouldHideDecks}
                     shouldHideStanding
                     canEditDecks={!round.opponent.deck?.name}
+                    backgroundColor={getResultBackgroundColor(round.result)}
                   />
                 </Box>
               </Grid>

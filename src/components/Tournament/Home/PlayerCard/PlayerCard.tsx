@@ -22,11 +22,12 @@ export interface PlayerCardProps {
   onUnpinPlayer?: () => void;
   topCut?: boolean;
   shouldHideStanding?: boolean;
+  backgroundColor?: string;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
   return (
-    <Card>
+    <Card backgroundColor={props.backgroundColor}>
       <CardBody paddingX={0} paddingY={2}>
         <Stack spacing={0}>
           <StandingsRow
