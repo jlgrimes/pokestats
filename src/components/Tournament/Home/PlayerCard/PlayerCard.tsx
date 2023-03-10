@@ -27,7 +27,7 @@ export interface PlayerCardProps {
 
 export const PlayerCard = (props: PlayerCardProps) => {
   return (
-    <Card backgroundColor={props.backgroundColor}>
+    <Card backgroundColor={props.backgroundColor} width='100%'>
       <CardBody paddingX={0} paddingY={2}>
         <Stack spacing={0}>
           <StandingsRow

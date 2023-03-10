@@ -22,11 +22,12 @@ export const TournamentSelector = (props: TournamentSelectorProps) => {
 
   return (
     <Menu onClose={onClose} isOpen={isOpen} isLazy>
-      <Box>
+      <Box width='100%'>
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
           onClick={onOpen}
+          width='100%'
         >
           {props.tournaments && props.currentTournament ? (
             props.currentTournament.name

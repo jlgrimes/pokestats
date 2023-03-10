@@ -93,7 +93,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               />
             )
         )}
-        <HStack>
+        <HStack justifyContent={'space-around'}>
           <Button
             variant='ghost'
             leftIcon={<FaPlus />}

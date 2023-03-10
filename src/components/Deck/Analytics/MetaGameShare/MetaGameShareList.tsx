@@ -62,7 +62,7 @@ export const MetaGameShareList = memo(
     return (
       <CommonCard
         header={`Day Two Metagame`}
-        subheader={`${numberOfPlayers} Masters in Day Two`}
+        subheader={`${numberOfPlayers} Masters`}
         {...(shouldHideSlug
           ? {}
           : {
