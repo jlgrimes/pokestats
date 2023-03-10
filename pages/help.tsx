@@ -8,9 +8,11 @@ import {
   Stack,
   Text,
   UnorderedList,
+  Icon,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useMemo } from 'react';
+import { FaHeart } from 'react-icons/fa';
 import { Banner } from '../src/components/common/Banner';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { useTwitterLink } from '../src/hooks/twitter';
@@ -199,9 +201,6 @@ export default function HelpPage() {
           <Stack>
             <Heading size='md'>Credits</Heading>
             <Text>
-              {`What started off as me in the stats chat joking how we should redo PokéStats... well, turned into me redoing PokéStats! This project wouldn't be possible without the following members/groups:`}
-            </Text>
-            <Text>
               {`Jared Grimes `}
               <Link
                 isExternal
@@ -211,7 +210,7 @@ export default function HelpPage() {
               >
                 @jgrimesey
               </Link>
-              {` - me! I developed this site myself, so if you encounter anything wrong, there's nobody else to blame!`}
+              {` - me! I developed this site myself, so if you encounter anything wrong, there's nobody else to blame! What started off as me in the stats chat joking how we should redo PokéStats... well, turned into me redoing PokéStats! This project definitely wouldn't be possible without the following people and organizations:`}
             </Text>
             <Text>
               <RK9Link /> - for all of the outstanding work allowing our
@@ -219,6 +218,26 @@ export default function HelpPage() {
               be nearly what it is today without {`RK9's`} incredible
               infrastructure and reliability.
             </Text>
+            <Box>
+              Hadley Samarco for master-crafting the quality manager role,
+              catching a ton of bugs I thought only I caught, and withstanding
+              countless hours of hearing me rant about coding this site
+              <Icon as={FaHeart} color='red.500' boxSize={3} ml={1} />
+            </Box>
+            <Box>
+              {`Jeremy Lim `}
+              <Link
+                isExternal
+                href={myTwitter}
+                as={NextLink}
+                color='twitter.500'
+              >
+                @LiberoHS
+              </Link>
+              {
+                ' for being such a massive help in the early stages of the app, and for single handedly reporting all of Perth Regionals.'
+              }
+            </Box>
             <Text>
               {`Also massive thanks to `}
               <Link
@@ -238,7 +257,7 @@ export default function HelpPage() {
               >
                 @simeydotme
               </Link>
-              {` for the mind-boggling work on card effects (seriously, check this guy out), Ryan Shore for the immense amount of product design help, Hadley Samarco for master-crafting the quality manager role, the entirety of the `}
+              {` for the mind-boggling work on card effects (seriously, check this guy out), Ryan Shore for the immense amount of product design help, the entirety of the `}
               <Link
                 isExternal
                 href={statsTwitter}
