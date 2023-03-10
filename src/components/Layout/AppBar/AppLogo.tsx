@@ -42,7 +42,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
                 .live
               </Heading>
             </Stack>
-            <Badge>Beta</Badge>
+            {/* <Badge>Beta</Badge> */}
           </HStack>
         </LinkOverlay>
       </LinkBox>
