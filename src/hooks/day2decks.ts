@@ -1,16 +1,38 @@
-import { DeckArchetype } from '../../types/tournament';
+import { Deck, Standing } from '../../types/tournament';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const useDay2Decks = (tournamentId: string) => {
-  const { data: liveResults, isLoading } =
-    useLiveTournamentResults(tournamentId);
+export const useDay2Decks = (
+  tournamentId: string,
+  options?: { includeStanding: boolean }
+) => {
+  const { data: liveResults, isLoading } = useLiveTournamentResults(
+    tournamentId,
+    { load: { allRoundData: true } }
+  );
 
-  const data: DeckArchetype[] | undefined = liveResults?.data.reduce((acc: DeckArchetype[], curr: Record<string, any>) => {
-    if (curr.deck.list) {
-      return [...acc, curr.deck];
-    }
-    return acc;
-  }, []);
+  const data: Deck[] | undefined = liveResults?.data.reduce(
+    (acc: Deck[], curr: Record<string, any>) => {
+      if (!curr.day2) return acc;
+
+      if (curr.deck.name) {
+        return [
+          ...acc,
+          {
+            ...curr.deck,
+            ...(options?.includeStanding ? { standing: curr } : {}),
+          },
+        ];
+      }
+      return [
+        ...acc,
+        {
+          name: 'Unreported',
+          ...curr.deck,
+        },
+      ];
+    },
+    []
+  );
 
   return {
     data,

@@ -1,127 +1,64 @@
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Stack,
-  Input,
-  Image,
-  UseDisclosureProps,
-  Text,
-  Flex,
-} from '@chakra-ui/react';
-import { Fragment, useMemo, useState } from 'react';
-import { DeckArchetype } from '../../../../../types/tournament';
-import { useMostPopularArchetypes } from '../../../../hooks/deckArchetypes';
-import SpriteAndNameDisplay from '../../../common/SpriteAndNameDisplay';
-import SpriteDisplay from '../../../common/SpriteDisplay';
+import { UseDisclosureProps, Text } from '@chakra-ui/react';
+import { Fragment, memo } from 'react';
+import { Deck } from '../../../../../types/tournament';
+import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
+import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
+import { ArchetypeEditButton } from './ArchetypeEditButton';
+import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 
-interface ArchetypeSelectorProps {
-  selectedArchetype: number | undefined;
-  onChange: (value: number) => void;
+export interface ArchetypeSelectorProps {
+  selectedArchetype?: Deck;
+  onChange: (value: Deck) => void;
   modalControls: UseDisclosureProps;
   shouldShowAsText?: boolean;
   tournamentId: string;
   unownOverride?: string;
+  userIsAdmin: boolean;
+  deckIsVerified?: boolean;
+  shouldHideDeck?: boolean;
+  shouldHideVerifiedIcon?: boolean;
+  isStreamDeck?: boolean;
+  toggleIsStreamDeck?: () => void;
+  isListUp: boolean;
+  shouldEnableEdits?: boolean;
 }
 
-export default function ArchetypeSelector(props: ArchetypeSelectorProps) {
-  const mostPopularDecks = useMostPopularArchetypes(props.tournamentId);
-  const [filterQuery, setFilterQuery] = useState<string>('');
-  const modalControls = props.modalControls ?? {};
-
-  const handleArchetypeChange = (deckId: number) => {
-    props.onChange(deckId);
-    modalControls.onClose && modalControls.onClose();
-  };
-
-  const handleFilterChange = (e: Record<string, any>) => {
-    setFilterQuery(e.target.value);
-  };
-
-  const filteredDecks: DeckArchetype[] = useMemo(
-    () => [
-      ...(mostPopularDecks?.filter(({ name }) => {
-        return name.toLowerCase().includes(filterQuery.toLowerCase());
-      }) ?? []),
-      {
-        id: -1,
-        name: 'Other',
-        defined_pokemon: ['substitute'],
-        identifiable_cards: [],
-      },
-    ],
-    [mostPopularDecks, filterQuery]
-  );
-
+const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {
   const renderDeckName = () => {
     if (props.shouldShowAsText) {
       return (
-        <Text>
+        <Text fontSize='lg'>
           {props.selectedArchetype
-            ? mostPopularDecks?.find(
-                deck => deck.id === props.selectedArchetype
-              )?.name
+            ? props.selectedArchetype.name
             : 'Unknown deck'}
         </Text>
       );
     } else {
-      if (props.selectedArchetype) {
-        const displayedPokemonNames =
-          mostPopularDecks?.find(deck => deck.id === props.selectedArchetype)
-            ?.defined_pokemon ?? [];
-
-        return <SpriteDisplay pokemonNames={displayedPokemonNames} />;
-      } else {
-        return (
-          <Flex justifyContent={'center'}>
-            <Image
-              height='30px'
-              src={`https://img.pokemondb.net/sprites/diamond-pearl/normal/unown-${
-                props.unownOverride ?? 'qm'
-              }.png`}
-              alt='Unown'
-            />
-          </Flex>
-        );
-      }
+      return (
+        <SpriteDisplay
+          verified={!props.shouldHideVerifiedIcon && props.deckIsVerified}
+          pokemonNames={props.selectedArchetype?.defined_pokemon}
+          deckId={props.selectedArchetype?.id}
+          hidden={props.shouldHideDeck}
+        />
+      );
     }
   };
 
   return (
     <Fragment>
-      {renderDeckName()}
-      {modalControls.isOpen && (
-        <Modal
-          isOpen={modalControls.isOpen}
-          onClose={modalControls.onClose ?? (() => {})}
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Report deck</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Input
-                placeholder='Filter archetype'
-                onChange={handleFilterChange}
-              />
-              <Stack height={'220px'} overflowY={'scroll'} padding={4}>
-                {filteredDecks?.map(({ id, name, defined_pokemon }, idx) => (
-                  <div key={idx} onClick={() => handleArchetypeChange(id)}>
-                    <SpriteAndNameDisplay
-                      archetypeName={name}
-                      pokemonNames={defined_pokemon}
-                    />
-                  </div>
-                ))}
-              </Stack>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+      {props.shouldEnableEdits &&
+      !props.selectedArchetype?.id &&
+      props.modalControls.onOpen ? (
+        <ArchetypeEditButton onEditOpen={props.modalControls.onOpen} />
+      ) : (
+        renderDeckName()
       )}
+      {props.shouldEnableEdits && <ArchetypeSelectorModal {...props} />}
     </Fragment>
   );
-}
+});
+
+ArchetypeSelector.displayName = 'ArchetypeSelector';
+
+export default ArchetypeSelector;

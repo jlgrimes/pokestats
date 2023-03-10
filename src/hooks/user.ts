@@ -3,24 +3,27 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { StoredPlayerProfile } from '../../types/player';
 import supabase from '../lib/supabase/client';
+import { fetchPlayers } from './finalResults/fetch';
+import { useLiveTournamentResults } from './tournamentResults';
 
-export const useUserMatchesLoggedInUser = (name: string) => {
+export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
   const session = useSession();
-  return session.data?.user.name === name;
+
+  if (!name) return false;
+  return session.data?.user?.name === name;
 };
 
 export const fetchUserProfileFromEmail = async (email: string) => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
+    .select('id,name,email')
     .eq('email', email);
   const playerProfile = data?.[0];
 
   if (playerProfile) {
     return {
-      id: playerProfile?.id as string,
-      name: playerProfile?.name as string,
-      tournamentHistory: playerProfile?.tournament_history as string[],
+      id: playerProfile?.id,
+      name: playerProfile?.name,
       email: email,
     };
   }
@@ -31,58 +34,57 @@ export const fetchUserProfileFromEmail = async (email: string) => {
 export const fetchUserProfile = async (session: Session) => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
-    .eq('email', session.user.email);
+    .select('id,name,email')
+    .eq('email', session.user?.email);
   const playerProfile = data?.[0];
 
   if (playerProfile) {
     return {
-      id: playerProfile?.id as string,
-      name: playerProfile?.name as string,
-      tournamentHistory: playerProfile?.tournament_history as string[],
-      email: session.user.email,
-      image: session.user.image,
+      id: playerProfile?.id,
+      name: playerProfile?.name,
+      email: session.user?.email,
+      image: session.user?.image,
     };
   }
 
   return null;
 };
 
+export interface SessionUserProfile {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+}
+
 export const useSessionUserProfile = () => {
   const session = useSession();
 
-  return useQuery({
-    queryKey: [`session-user-profile`, session.data?.user.email],
+  const query = useQuery({
+    queryKey: [`session-user-profile`, session.data?.user?.email],
     queryFn: () => {
       if (session.data) {
         return fetchUserProfile(session.data);
       }
-      
+
       return null;
     },
   });
+
+  return {
+    data: query.data,
+    isLoading: session.status === 'loading' || query.isLoading,
+  };
 };
 
-export const fetchSuggestedUserProfile = async (name: string) => {
-  const { data } = await supabase
-    .from('Player Profiles')
-    .select('id,name,email,tournament_history')
-    .eq('name', name);
-  const playerProfile: StoredPlayerProfile | undefined = data?.[0];
-  return playerProfile;
-};
-
-/**
- * Suggested user profile based on name
- */
-export const useSuggestedUserProfile = () => {
-  const session = useSession();
-  const name = session.data?.user.name ?? '';
-
-  return useQuery({
-    queryKey: [`suggested-user-profile`, name],
-    queryFn: () => fetchSuggestedUserProfile(name),
+export const useUserIsInTournament = (
+  tournamentId: string,
+  playerName?: string
+) => {
+  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
+    load: { allRoundData: true },
   });
+
+  return liveResults?.data.some(({ name }) => name === playerName);
 };
 
 export const useAccountRequests = () => {
@@ -108,21 +110,23 @@ const fetchUserSentAccountRequest = async (email: string) => {
   return false;
 };
 
-export const useUserSentAccountRequest = (email: string | undefined) => {
+export const useUserSentAccountRequest = (email: string | null | undefined) => {
   return useQuery({
     queryKey: [`user-sent-account-request`],
-    queryFn: () => (email ? fetchUserSentAccountRequest(email) : {}),
+    queryFn: () => (email ? fetchUserSentAccountRequest(email) : false),
   });
 };
 
 // For admin view
 export const useNotSetupProfiles = () => {
   const fetchAllPlayerProfiles = async () => {
-    const res = await supabase
-      .from('Player Profiles')
-      .select('id,name,email,tournament_history')
-      .is('email', null);
-    return res.data;
+    const res = await supabase.from('Player Profiles').select('id,name,email');
+
+    const players = await fetchPlayers();
+
+    return players?.filter(
+      name => !res.data?.some(profile => profile.name === name)
+    );
   };
 
   return useQuery({
@@ -132,17 +136,14 @@ export const useNotSetupProfiles = () => {
 };
 
 export const fetchAllVerifiedUsers = async () => {
-  const res = await supabase
-    .from('Player Profiles')
-    .select('id,name,email,tournament_history')
-    .neq('email', null);
+  const res = await supabase.from('Player Profiles').select('id,name,email');
   return res.data;
 };
 
 export const fetchUser = async (email: string) => {
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
+    .select('id,name,email')
     .eq('email', email);
   return res.data?.[0];
 };

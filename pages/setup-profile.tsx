@@ -4,24 +4,22 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { SetupProfileController } from '../src/components/Profile/SetupProfile/SetupProfileController';
 import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
-import { parseUsername } from '../src/lib/strings';
 
 export default function SetupPage() {
-  const session = useSession();
   const router = useRouter();
-  const { data: user } = useSessionUserProfile();
+  const session = useSession();
+  const { data: user, isLoading } = useSessionUserProfile();
 
   useEffect(() => {
     if (user) {
-      router.push(`/player/${parseUsername(user.email)}`);
+      router.push(`/profile`);
     }
-  }, [router, user]);
+    if (!isLoading && user) {
+      router.push('/');
+    }
+  }, [router, user, isLoading]);
 
-  if (!session.data?.user) {
-    return null;
-  }
-
-  return <SetupProfileController />;
+  return <SetupProfileController userProfile={session.data?.user} />;
 }
 
 export async function getServerSideProps(context: any) {

@@ -11,59 +11,56 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
+import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
-import { useSuggestedUserProfile } from '../../../hooks/user';
+import { SessionUserProfile } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 
-export const RecommendedSuggestedUser = ({
-  session,
-  didNotAttendCallback,
-  accountMadeSuccessfullyCallback,
-}: {
-  session: Session;
+export interface RecommendedSuggestedUserProps {
+  userProfile: SessionUserProfile | undefined;
   didNotAttendCallback: () => void;
   accountMadeSuccessfullyCallback: () => void;
-}) => {
+}
+
+export const RecommendedSuggestedUser = (
+  props: RecommendedSuggestedUserProps
+) => {
+  const { userProfile, didNotAttendCallback, accountMadeSuccessfullyCallback } =
+    props;
+
   const queryClient = useQueryClient();
 
   const [elementFadedIn, setElementFadedIn] = useState(0);
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
-  const { data: suggestedUser } = useSuggestedUserProfile();
+  const { data: suggestedUserTournaments } = useFinalResults({
+    playerName: userProfile?.name,
+  });
   const { data: tournaments } = useTournaments();
 
-  const attendedTournaments = useMemo(
-    () =>
-      suggestedUser?.tournament_history.map(
-        id => tournaments?.find(tournament => tournament.id === id)?.name
-      ),
-    [suggestedUser?.tournament_history, tournaments]
+  const attendedTournaments = suggestedUserTournaments?.map(standing =>
+    tournaments?.find(({ id }) => id === standing.tournamentId)
   );
 
   const onIdentityConfirmClick = useCallback(async () => {
+    if (!userProfile) return;
+
     setIdentityConfirmationLoading(true);
-    await supabase
-      .from('Player Profiles')
-      .update({
-        email: session.user.email,
-      })
-      .eq('name', session.user.name);
+    await supabase.from('Player Profiles').insert({
+      name: userProfile?.name,
+      email: userProfile?.email,
+    });
 
     queryClient.setQueryData(
-      [`session-user-profile`, session.user.email],
+      [`session-user-profile`, userProfile?.email],
       () => ({
-        name: session.user.name,
-        email: session.user.email,
+        name: userProfile?.name,
+        email: userProfile?.email,
       })
     );
     accountMadeSuccessfullyCallback();
     setIdentityConfirmationLoading(false);
-  }, [
-    accountMadeSuccessfullyCallback,
-    queryClient,
-    session.user.name,
-    session.user.email,
-  ]);
+  }, [accountMadeSuccessfullyCallback, queryClient, userProfile]);
 
   useEffect(() => {
     const firstFade = setTimeout(() => {
@@ -90,7 +87,7 @@ export const RecommendedSuggestedUser = ({
           <Heading size='md'>Did you attend the following tournaments?</Heading>
           <List size='xl' color='gray.700'>
             {attendedTournaments?.map((tournament, idx) => (
-              <ListItem key={idx}>{tournament}</ListItem>
+              <ListItem key={idx}>{tournament?.name}</ListItem>
             ))}
           </List>
           <Text>

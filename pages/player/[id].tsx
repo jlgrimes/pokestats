@@ -19,20 +19,14 @@ import {
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
 import { parseUsername } from '../../src/lib/strings';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { fetchFinalResults } from '../../src/hooks/finalResults/fetch';
+import { fetchArchetypes } from '../../src/hooks/deckArchetypes';
+import { fetchTournaments } from '../../src/hooks/tournaments';
 
 function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
   // const twitterLink = useTwitterLink(user?.email);
   const userOwnsPage = useUserMatchesLoggedInUser(user?.name ?? '');
-
-  const session = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    // If user is on the page with their profile, and there is not a profile stored
-    if (session.data?.user.email === router.query.id && !user) {
-      router.push('/setup-profile');
-    }
-  }, [session.data?.user.email, router, user]);
 
   if (!user) {
     return <ProfileNotFound />;
@@ -40,7 +34,7 @@ function PlayerPage({ user }: { user: CombinedPlayerProfile | null }) {
 
   return (
     <>
-      <Stack padding='1.5rem 0' spacing={6}>
+      <Stack spacing={6}>
         <Stack spacing={4} alignItems={'center'} padding='0 1.5rem'>
           {/* <Avatar
             size={'xl'}
@@ -73,19 +67,36 @@ export async function getStaticProps(context: any) {
     `${username}@gmail.com`
   );
 
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['tournaments'],
+    queryFn: () => fetchTournaments({ prefetch: true }),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['deck-archetypes'],
+    queryFn: () => fetchArchetypes(),
+  });
+
+  if (combinedProfile?.name) {
+    await queryClient.prefetchQuery({
+      queryKey: ['final-results', { playerName: combinedProfile.name }],
+      queryFn: () => fetchFinalResults({ playerName: combinedProfile.name }),
+    });
+  }
+
   return {
     props: {
       user: combinedProfile,
+      dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 }
 
 export async function getStaticPaths() {
   const { data: playerProfiles } = await supabase
     .from('Player Profiles')
-    .select('id,name,email,tournament_history')
-    .neq('email', null);
+    .select('id,name,email');
 
   const paths = playerProfiles?.map(
     player => ({

@@ -12,7 +12,7 @@ export const formatRecordNeed = (
     wins: number;
     losses: number;
     ties: number;
-  },
+  }
 ) => {
   const matchPointsRemaining =
     matchPointRequirement - 3 * record.wins - record.ties;
@@ -45,4 +45,4 @@ export const madeDayTwo = (record: {
   }
 
   return undefined;
-}
+};

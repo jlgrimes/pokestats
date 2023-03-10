@@ -9,15 +9,7 @@ const moduleExports = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['limitlesstcg.s3.us-east-2.amazonaws.com']
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/pokedata/:path*',
-        destination: 'https://pokedata.ovh/:path*',
-      },
-    ]
+    domains: ['limitlesstcg.s3.us-east-2.amazonaws.com', 'countryflagsapi.com', 'images.pokemontcg.io']
   },
 
   sentry: {

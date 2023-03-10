@@ -2,10 +2,9 @@ import { Standing, Tournament } from "./tournament";
 
 export interface StoredPlayerProfile {
   // id stored in supabase
-  id: string;
+  id?: string;
   name: string;
   email: string;
-  tournament_history: string[]
 }
 
 export interface GooglePlayerProfile {
@@ -17,10 +16,9 @@ export interface GooglePlayerProfile {
 
 export interface CombinedPlayerProfile {
   id: string;
-  name: string;
-  tournamentHistory: string[],
-  email: string;
-  image: string;
+  name: string | null | undefined;
+  email: string | null | undefined;
+  image: string | null | undefined;
 };
 
 export interface PlayerTournamentPerformance {

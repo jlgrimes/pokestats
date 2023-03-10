@@ -12,7 +12,8 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "storybook-addon-next-router",
-    'storybook-addon-mock'
+    'storybook-addon-mock',
+    'storybook-addon-manual-mocks'
   ],
   "framework": "@storybook/react",
 }

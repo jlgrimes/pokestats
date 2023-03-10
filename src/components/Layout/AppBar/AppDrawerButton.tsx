@@ -1,43 +1,35 @@
 import {
   Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton,
-  Button,
   useDisclosure,
   IconButton,
   Stack,
-  Text,
   Link,
   Heading,
-  Divider,
   Grid,
   Icon,
+  HStack,
 } from '@chakra-ui/react';
-import { signOut } from 'next-auth/react';
+import { Session } from 'next-auth';
 import NextLink from 'next/link';
 import { useRef } from 'react';
 import {
   FaBars,
+  FaRegCalendar,
   FaRegListAlt,
-  FaRegStickyNote,
+  FaRegQuestionCircle,
   FaRegUser,
-  FaSignOutAlt,
 } from 'react-icons/fa';
 import { CombinedPlayerProfile } from '../../../../types/player';
 import { useUserIsAdmin } from '../../../hooks/administrators';
-import { parseUsername } from '../../../lib/strings';
 import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
+import { IconCards } from '@tabler/icons-react';
 
-export const AppDrawerButton = ({
-  userProfile,
-}: {
-  userProfile: CombinedPlayerProfile | null | undefined;
-}) => {
+export type UserStatus = 'logged-out' | 'not-setup' | 'setup';
+
+export const AppDrawerButton = ({ userStatus }: { userStatus: UserStatus }) => {
   const { data: userIsAdmin } = useUserIsAdmin();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -62,34 +54,49 @@ export const AppDrawerButton = ({
         <DrawerContent>
           <Stack justifyContent='space-between' height='100%'>
             <Grid
-              templateColumns='repeat(2, 1fr)'
+              paddingTop={'4.5rem'}
+              templateColumns='0.6fr 1fr'
               rowGap={'1.5rem'}
-              padding='4.5rem 3.5rem'
               alignItems={'center'}
             >
-              <Icon as={FaRegListAlt} />
-              <Link as={NextLink} href='/' onClick={onClose}>
+              <HStack justifyContent={'end'} paddingRight={10}>
+                <Icon as={FaRegCalendar} />
+              </HStack>
+              <Link as={NextLink} href='/tournaments' onClick={onClose}>
                 <Heading size='lg'>Tournaments</Heading>
               </Link>
 
-              <Icon as={FaRegUser} />
-              <Link
-                as={NextLink}
-                href={
-                  userProfile
-                    ? `/player/${parseUsername(userProfile.email)}`
-                    : `/setup-profile`
-                }
-                onClick={onClose}
-              >
-                <Heading size='lg'>
-                  {userProfile ? 'My profile' : 'Setup profile'}
-                </Heading>
+              <HStack justifyContent={'end'} paddingRight={10}>
+                <Icon as={IconCards} />
+              </HStack>
+
+              <Link as={NextLink} href='/decks' onClick={onClose}>
+                <Heading size='lg'>Decks</Heading>
               </Link>
 
-              <Icon as={FaRegStickyNote} />
-              <Link as={NextLink} href={'/about'} onClick={onClose}>
-                <Heading size='lg'>About</Heading>
+              {userStatus !== 'logged-out' && (
+                <>
+                  <HStack justifyContent={'end'} paddingRight={10}>
+                    <Icon as={FaRegUser} />
+                  </HStack>
+                  <Link
+                    as={NextLink}
+                    href={userStatus === 'setup' ? '/profile' : 'setup-profile'}
+                    onClick={onClose}
+                  >
+                    <Heading size='lg'>
+                      {userStatus === 'setup' ? 'My profile' : 'Setup profile'}
+                    </Heading>
+                  </Link>
+                </>
+              )}
+
+              <HStack justifyContent={'end'} paddingRight={10}>
+                <Icon as={FaRegQuestionCircle} />
+              </HStack>
+
+              <Link as={NextLink} href={'/help'} onClick={onClose}>
+                <Heading size='lg'>Help</Heading>
               </Link>
             </Grid>
             <Stack spacing={4} padding='4.5rem 3.5rem'>
@@ -97,6 +104,13 @@ export const AppDrawerButton = ({
                 <Stack>
                   <Heading size='lg'>Admin tools</Heading>
                   <AccountRequestLink onClose={onClose} />
+                  <Link
+                    as={NextLink}
+                    href='/admin/report-activity'
+                    onClick={onClose}
+                  >
+                    <Heading size='sm'>Reporting activity</Heading>
+                  </Link>
                 </Stack>
               )}
               <LogInOutButton />

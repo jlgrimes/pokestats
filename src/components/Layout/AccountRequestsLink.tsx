@@ -6,12 +6,15 @@ export const AccountRequestLink = ({ onClose }: { onClose: () => void }) => {
   const { data: accountRequests } = useAccountRequests();
 
   return (
-    <Stack direction='row' spacing={0} paddingRight={2}>
+    <Stack direction='row' paddingRight={2} alignItems='center'>
       <Link as={NextLink} href='/admin/account-requests' onClick={onClose}>
-        <Heading size='md'>Access requests</Heading>
+        <Heading size='sm'>Access requests</Heading>
       </Link>
       <div>
         <Badge
+          fontSize={
+            accountRequests && accountRequests.length > 0 ? '2rem' : 'auto'
+          }
           ml='1'
           colorScheme={
             accountRequests && accountRequests.length > 0 ? 'red' : 'green'

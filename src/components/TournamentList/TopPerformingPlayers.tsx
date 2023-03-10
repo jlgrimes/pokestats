@@ -7,7 +7,7 @@ import {
   Td,
 } from '@chakra-ui/react';
 import { useTopPerformingPlayers } from '../../hooks/tournamentResults';
-import SpriteDisplay from '../common/SpriteDisplay';
+import SpriteDisplay from '../common/SpriteDisplay/SpriteDisplay';
 import { PlayerNameLink } from '../Player/PlayerNameLink';
 
 export const TopPerformingPlayers = ({ tournamentId }: { tournamentId: string}) => {

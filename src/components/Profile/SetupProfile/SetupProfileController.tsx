@@ -1,19 +1,30 @@
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { useFinalResults } from '../../../hooks/finalResults';
 import {
-  useSuggestedUserProfile,
+  SessionUserProfile,
   useUserSentAccountRequest,
 } from '../../../hooks/user';
+import { FullPageLoader } from '../../common/FullPageLoader';
 import { AccountMadeSuccessfully } from './AccountMadeSuccessfully';
 import { RecommendedSuggestedUser } from './RecommendSuggestedUser';
 import { RequestToComplete } from './RequestToComplete';
 
-export const SetupProfileController = () => {
-  const session = useSession();
-  const { data: suggestedUser, isLoading } = useSuggestedUserProfile();
+export interface SetupProfileControllerProps {
+  userProfile?: SessionUserProfile | null;
+}
+
+export const SetupProfileController = (props: SetupProfileControllerProps) => {
+  const { userProfile } = props;
+
+  const { data: fetchedTournamentsForUser, isLoading } = useFinalResults({
+    playerName: userProfile?.name,
+  });
+  const suggestedUser =
+    fetchedTournamentsForUser && fetchedTournamentsForUser.length > 0;
   const { data: userSentRequest } = useUserSentAccountRequest(
-    session.data?.user.email
+    userProfile?.email
   );
   const [screenState, setScreenState] =
     useState<
@@ -25,20 +36,18 @@ export const SetupProfileController = () => {
     >(null);
 
   useEffect(() => {
-    if (userSentRequest) {
-      setScreenState('request-to-complete');
-    } else if (suggestedUser) {
+    if (suggestedUser) {
       setScreenState('recommended-suggested-user');
+    } else {
+      setScreenState('request-to-complete');
     }
   }, [suggestedUser, userSentRequest]);
 
-  if (isLoading) return null;
-  // TODO: replace with redirect back to something
-  if (session === null) return null;
+  if (isLoading || !userProfile) return <FullPageLoader />;
   if (screenState === 'recommended-suggested-user')
     return (
       <RecommendedSuggestedUser
-        session={session.data as Session}
+        userProfile={userProfile}
         didNotAttendCallback={() => setScreenState('request-to-complete')}
         accountMadeSuccessfullyCallback={() =>
           setScreenState('account-made-successfully')
@@ -46,7 +55,7 @@ export const SetupProfileController = () => {
       />
     );
   else if (screenState === 'request-to-complete')
-    return <RequestToComplete session={session.data as Session} />;
+    return <RequestToComplete userProfile={userProfile} />;
   else if (screenState === 'account-made-successfully')
     return <AccountMadeSuccessfully />;
 

@@ -3,63 +3,71 @@ import {
   Avatar,
   LinkOverlay,
   LinkBox,
-  Button,
   SkeletonCircle,
   IconButton,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
-import { FaSign, FaSignInAlt, FaTwitter } from 'react-icons/fa';
+import { FaSign, FaSignInAlt, FaTwitter, FaUser } from 'react-icons/fa';
 import { useSessionUserProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
-import { AppDrawerButton } from './AppDrawerButton';
+import { AppDrawerButton, UserStatus } from './AppDrawerButton';
 import { AppLogo } from './AppLogo';
-import { parseUsername } from '../../../lib/strings';
 import { SHOULD_SHOW_COMING_SOON } from '../../../lib/coming-soon';
+import React, { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { StickyHeader } from '../../common/Layout/StickyHeader';
 
 export const AppBar = () => {
-  const { data: session } = useSession();
-  const { data: userProfile, isLoading: isUserProfileLoading } =
+  const session = useSession();
+  const { data: userProfile, isLoading: profileIsLoading } =
     useSessionUserProfile();
+  const router = useRouter();
+
+  const getUserStatus = useCallback((): UserStatus => {
+    if (session.status === 'authenticated') {
+      if (userProfile?.id) {
+        return 'setup';
+      }
+      return 'not-setup';
+    }
+
+    return 'logged-out';
+  }, [session.status, userProfile?.id]);
 
   return (
-    <>
+    <StickyHeader id='app-bar'>
       <Stack
         direction={'row'}
         alignItems={'center'}
-        padding={'0.25rem 1.5rem 0.25rem'}
+        padding={'0.25rem 1.5rem'}
         justifyContent={SHOULD_SHOW_COMING_SOON ? 'center' : 'space-between'}
-        boxShadow='sm'
       >
         {!SHOULD_SHOW_COMING_SOON && (
-          <AppDrawerButton userProfile={userProfile} />
+          <AppDrawerButton userStatus={getUserStatus()} />
         )}
-        <AppLogo />
+        {router.asPath !== '/' && router.asPath !== '/help' && <AppLogo />}
         {!SHOULD_SHOW_COMING_SOON &&
-          (session ? (
+          (session.status !== 'unauthenticated' ? (
             <>
               <LinkBox>
                 <LinkOverlay
                   as={NextLink}
-                  href={
-                    userProfile
-                      ? `/player/${parseUsername(session.user.email)}`
-                      : `/setup-profile`
-                  }
+                  href={userProfile ? `/profile` : `/setup-profile`}
                 >
-                  <Stack direction={'row'} alignItems='baseline' spacing={-1.5}>
-                    {isUserProfileLoading ? (
+                  <Stack direction={'row'} alignItems='end' spacing={-1.5}>
+                    {!session.data?.user?.image ? (
                       <SkeletonCircle size='8' />
                     ) : (
                       <Avatar
                         size='sm'
-                        name={session.user?.name as string}
-                        src={session.user?.image as string}
+                        name={session.data?.user?.name ?? undefined}
+                        src={session.data?.user?.image}
                       />
                     )}
                     {userProfile ? (
                       <VerifiedIcon />
-                    ) : isUserProfileLoading ? (
+                    ) : profileIsLoading ? (
                       <SkeletonCircle size='4' />
                     ) : (
                       <NotVerifiedIcon />
@@ -70,14 +78,14 @@ export const AppBar = () => {
             </>
           ) : (
             <IconButton
-              size={'xs'}
+              size={'sm'}
               variant='outline'
               onClick={() => signIn('google')}
               aria-label='log in'
-              icon={<FaSignInAlt />}
+              icon={<FaUser />}
             />
           ))}
       </Stack>
-    </>
+    </StickyHeader>
   );
 };

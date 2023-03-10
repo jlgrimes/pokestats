@@ -6,49 +6,55 @@ import { formatRecord, madeDayTwo } from './helpers';
 
 export const Record = ({
   standing,
-  tournamentFinished,
   href,
   big,
+  normal,
 }: {
   standing: Standing;
-  tournamentFinished: boolean;
   href?: string;
   big?: boolean;
+  normal?: boolean;
 }) => {
   const renderRecordText = useCallback(() => {
     if (href) {
       return (
         <Link
           as={NextLink}
-          color={standing.drop ? 'red.600' : 'blue.600'}
+          color={standing.drop && standing.drop > 0 ? 'red.600' : 'blue.600'}
           href={href}
         >
-          <Text fontSize='sm'>{formatRecord(standing.record)}</Text>
+          <Text fontSize='md' whiteSpace={'nowrap'}>
+            {formatRecord(standing.record)}
+          </Text>
         </Link>
       );
     }
 
     if (big) {
       return (
-        <Heading color={standing.drop ? 'red.600' : 'gray.700'}>
+        <Heading
+          color={standing.drop && standing.drop > 0 ? 'red.600' : 'gray.700'}
+        >
           {formatRecord(standing.record)}
         </Heading>
       );
     }
 
-    return <Text fontSize='sm'>{formatRecord(standing.record)}</Text>;
-  }, [href, standing.record, standing.drop, big]);
-  
+    return (
+      <Text
+        fontSize={normal ? 'lg' : '0.95rem'}
+        fontFamily={normal ? 'inherit' : 'mono'}
+        whiteSpace={'nowrap'}
+      >
+        {formatRecord(standing.record)}
+      </Text>
+    );
+  }, [href, standing.record, standing.drop, big, normal]);
+
   return (
     <Stack
       direction='row'
-      color={
-        standing.drop
-          ? 'red.600'
-          : madeDayTwo(standing.record)
-          ? 'auto'
-          : 'gray.400'
-      }
+      color={standing.drop && standing.drop > 0 ? 'red.600' : 'auto'}
       spacing={1}
       alignItems={big ? 'baseline' : 'center'}
       justifyContent='space-between'

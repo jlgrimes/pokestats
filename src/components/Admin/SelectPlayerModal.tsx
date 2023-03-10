@@ -29,7 +29,7 @@ export const SelectPlayerModal = ({
   };
 
   const filteredPlayerProfiles = useMemo(() => {
-    return allPlayerProfiles?.filter(({ name }: { name: string }) =>
+    return allPlayerProfiles?.filter((name: string) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
   }, [filter, allPlayerProfiles]);
@@ -47,8 +47,8 @@ export const SelectPlayerModal = ({
           <Input placeholder='Filter name' onChange={handleFilterChange} />
           <Stack height={'220px'} overflowY={'scroll'} padding={4}>
             {filteredPlayerProfiles?.map((player, idx) => (
-              <div key={idx} onClick={() => handleSubmit(player.name)}>
-                {player.name}
+              <div key={idx} onClick={() => handleSubmit(player)}>
+                {player}
               </div>
             ))}
           </Stack>

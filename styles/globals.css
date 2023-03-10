@@ -27,3 +27,13 @@ a {
     background: black;
   }
 }
+
+.pixel-image {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.pac-container {
+  z-index: 999999;
+}
