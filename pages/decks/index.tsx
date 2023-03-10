@@ -50,7 +50,7 @@ export default function DecksPage({
         tournament: `${tournamentRange[0]}`.padStart(7, '0'),
       },
     });
-  }, [router, tournamentRange]);
+  }, [tournamentRange]);
 
   //   <Heading size='lg' noOfLines={3} color='gray.700'>
   //   {
