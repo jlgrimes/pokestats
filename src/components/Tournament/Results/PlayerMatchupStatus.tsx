@@ -95,14 +95,6 @@ export const PlayerMatchupStatus = ({
             <Heading size='sm' color='gray.700'>
               {`${ordinalSuffixOf(playerResults.placing)}`}
             </Heading>
-            {/* {tournamentFinished && (
-              <Heading size='sm' color='gray.700'>
-                {`Top ${getPercentile(
-                  playerResults.placing,
-                  tournament.players.masters as number
-                )}%`}
-              </Heading>
-            )} */}
           </Stack>
         </Stack>
         <Stack
@@ -121,6 +113,14 @@ export const PlayerMatchupStatus = ({
             shouldHideDeck={shouldHideDecks}
             shouldHideOpponentView={shouldHideOpponentView}
           />
+          {tournamentFinished && (
+            <Heading size='sm' color='gray.700'>
+              {`Top ${getPercentile(
+                playerResults.placing,
+                tournament.players.masters as number
+              )}%`}
+            </Heading>
+          )}
         </Stack>
       </Stack>
       {!tournamentFinished && (
