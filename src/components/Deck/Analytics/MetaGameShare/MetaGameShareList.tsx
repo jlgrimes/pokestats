@@ -11,10 +11,12 @@ export const MetaGameShareList = memo(
     tournamentRange,
     sortByMoves,
     preview,
+    shouldHideSlug,
   }: {
     tournamentRange: number[];
     sortByMoves?: boolean;
     preview?: boolean;
+    shouldHideSlug?: boolean;
   }) => {
     const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
@@ -61,7 +63,14 @@ export const MetaGameShareList = memo(
       <CommonCard
         header={`Day Two Metagame`}
         subheader={`${numberOfPlayers} Masters in Day Two`}
-        slug={`/decks?tournament=${`${tournamentRange[0]}`.padStart(7, '0')}`}
+        {...(shouldHideSlug
+          ? {}
+          : {
+              slug: `/decks?tournament=${`${tournamentRange[0]}`.padStart(
+                7,
+                '0'
+              )}`,
+            })}
         ghost
       >
         <Grid gridTemplateColumns={'1fr 1fr'}>
