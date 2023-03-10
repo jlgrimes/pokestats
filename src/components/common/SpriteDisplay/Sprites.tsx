@@ -16,7 +16,12 @@ export const Sprites = memo((props: SpritesProps) => (
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
       {!props.pokemonNames || props.pokemonNames.length === 0 ? (
         <Flex justifyContent={'center'}>
-          <Image height='30px' src={getLowResUnownUrl()} alt='Unown' />
+          <Image
+            height='38px'
+            src={getLowResUnownUrl()}
+            alt='Unown'
+            className='pixel-image'
+          />
         </Flex>
       ) : props.hidden ? (
         <Flex justifyContent={'center'} minWidth='2rem'>
