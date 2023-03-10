@@ -13,6 +13,7 @@ export const CountryFlag = memo((props: CountryFlagProps) => {
   return (
     <Box opacity={props.size === 'lg' ? '0.75' : '0.85'}>
       <NextImage
+        priority
         crossOrigin='anonymous'
         alt={`${props.countryCode} flag`}
         src={url}
