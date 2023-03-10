@@ -72,7 +72,7 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
   return (
     <Button
       width='100%'
-      borderRadius={0}
+      borderRadius={{ base: 0, sm: '3xl' }}
       {...getButtonProps()}
       size={shouldShowLocalTime ? 'lg' : 'md'}
     >

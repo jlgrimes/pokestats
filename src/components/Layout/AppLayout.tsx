@@ -1,4 +1,4 @@
-import { extendTheme, Stack } from '@chakra-ui/react';
+import { Box, extendTheme, Stack } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import { AppBar } from './AppBar/AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -45,6 +45,7 @@ export const AppLayout = ({
             {/* <BetaBanner /> */}
             <Stack
               height='100%'
+              alignItems='center'
               padding={
                 router.asPath.includes('tournaments') ||
                 router.asPath.includes('decks') ||
@@ -54,7 +55,7 @@ export const AppLayout = ({
               }
               spacing={1}
             >
-              {children}
+              <Box maxWidth={'container.lg'}> {children}</Box>
               {/* <Footer /> */}
             </Stack>
           </ChakraProvider>

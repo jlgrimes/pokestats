@@ -238,7 +238,7 @@ export default function HelpPage() {
               >
                 @simeydotme
               </Link>
-              {` for the mind-boggling work on card effects (seriously, check this guy out), Ryan Shore for the immense amount of product design help, the entirety of the `}
+              {` for the mind-boggling work on card effects (seriously, check this guy out), Ryan Shore for the immense amount of product design help, Hadley Samarco for master-crafting the quality manager role, the entirety of the `}
               <Link
                 isExternal
                 href={statsTwitter}
@@ -247,7 +247,7 @@ export default function HelpPage() {
               >
                 @pokestatstcg
               </Link>
-              {` team for the many ideas and support, and Noah Spinale.`}
+              {` team for the many ideas and support, all of the amazing beta testers who helped me along the way, and Noah Spinale.`}
             </Text>
           </Stack>
         </Stack>
