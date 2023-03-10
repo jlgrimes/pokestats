@@ -1,14 +1,21 @@
 import { Heading, Highlight, Stack, Text } from '@chakra-ui/react';
+import { formatDistanceStrict } from 'date-fns';
 
 export const ComingSoonPage = () => {
+  const distance = formatDistanceStrict(
+    new Date(),
+    new Date('2023-03-10T14:00:00-0500')
+  );
+  const liveText = `Live in ${distance}`;
+
   return (
     <Stack padding={6} justifyContent='center' spacing={12}>
       <Heading color='gray.700' letterSpacing={'normal'}>
         <Highlight
-          query='live them.'
-          styles={{ px: '2', py: '1', rounded: 'full', bg: 'red.100' }}
+          query={liveText}
+          styles={{ px: '2', py: '1', rounded: 'full', bg: 'green.100' }}
         >
-          {`You've watched Regionals. Now, prepare to live them.`}
+          {`You've been waiting long enough. ${liveText}`}
         </Highlight>
       </Heading>
       <Stack spacing={6}>
@@ -21,7 +28,6 @@ export const ComingSoonPage = () => {
           Find your next favorite deck along with the spice tech with post-game
           tournament statistics and metagame progression trends.
         </Text>
-        <Text fontSize='xl'>Coming this tournament season.</Text>
       </Stack>
     </Stack>
   );

@@ -1,5 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
+import { formatDistance, isBefore } from 'date-fns';
 import Script from 'next/script';
 import { Fragment, useEffect, useState } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
@@ -27,7 +28,10 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
     prewarmLiveTournamentData(queryClient, tournaments);
   }, []);
 
-  if (SHOULD_SHOW_COMING_SOON) {
+  if (
+    SHOULD_SHOW_COMING_SOON &&
+    isBefore(new Date(), new Date('2023-03-10T14:00:00-0500'))
+  ) {
     return <ComingSoonPage />;
   }
 
