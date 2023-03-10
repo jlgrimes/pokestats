@@ -75,11 +75,14 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
               >
                 {formatTournamentDate(props.tournament, true)}
               </StatsHeading>
-              <StatsHeading
-                headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
-              >
-                {`${props.tournament.players.masters} masters`}
-              </StatsHeading>
+              {props.tournament.players.masters &&
+                props.tournament.players.masters > 0 && (
+                  <StatsHeading
+                    headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+                  >
+                    {`${props.tournament.players.masters} masters`}
+                  </StatsHeading>
+                )}
             </Stack>
           </Grid>
         </Stack>
