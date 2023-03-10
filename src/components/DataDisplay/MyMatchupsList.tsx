@@ -50,7 +50,7 @@ export const MyMatchupsList = memo(
                   <StatsHeading
                     headingProps={{ color: 'gray.600', fontSize: 'lg' }}
                   >
-                    {idx + 1}
+                    {(player.rounds?.length ?? 0) - idx}
                   </StatsHeading>
                 </Box>
                 <Box flexGrow={1}>
