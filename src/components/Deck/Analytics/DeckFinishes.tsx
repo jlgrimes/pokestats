@@ -3,16 +3,14 @@ import NextLink from 'next/link';
 import { Fragment, memo } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
+import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';
 
 export const DeckFinishes = memo(
   ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
-    const filters =
-      deck.classification === 'supertype'
-        ? { supertypeId: deck.id }
-        : { deckId: deck.id };
+    const filters = getFinalResultsDeckFilters(deck);
 
     const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();

@@ -5,16 +5,18 @@ import {
 } from '../../components/Deck/ListViewer/helpers';
 import { useFinalResults } from './useFinalResults';
 
+export const getFinalResultsDeckFilters = (deck: Deck) =>
+  deck.classification === 'supertype'
+    ? { supertypeId: deck.id }
+    : { deckId: deck.id };
+
 export const useCardCounts = (
   deck: Deck,
   options?: { countCopies?: boolean }
 ) => {
-  const filters =
-    deck.classification === 'supertype'
-      ? { supertypeId: deck.id }
-      : { deckId: deck.id };
-
-  const { data: deckStandings } = useFinalResults(filters);
+  const { data: deckStandings } = useFinalResults(
+    getFinalResultsDeckFilters(deck)
+  );
 
   if (!deckStandings) return [];
 

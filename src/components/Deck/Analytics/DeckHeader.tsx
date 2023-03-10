@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react';
-import { Button, Heading, HStack, Image, Stack } from '@chakra-ui/react';
+import { Button, Heading, HStack, Stack } from '@chakra-ui/react';
+import Image from 'next/image';
 import { getCardImageUrl } from '../ListViewer/helpers';
 import { DeckCard, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
@@ -80,8 +81,8 @@ export const DeckHeader = memo(
           {identifiableCards?.map(card => (
             <Image
               key={`${card?.name} ${card?.set}`}
-              width={`${width}px`}
-              height={`${height}px`}
+              width={width}
+              height={height}
               src={getCardImageUrl(card as DeckCard, codeToSetMap, {
                 highRes: true,
               })}

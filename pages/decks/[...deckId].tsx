@@ -18,6 +18,7 @@ import {
   fetchFinalResults,
   fetchUniqueDecks,
 } from '../../src/hooks/finalResults/fetch';
+import { getFinalResultsDeckFilters } from '../../src/hooks/finalResults/useCardCounts';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
@@ -61,14 +62,27 @@ export async function getStaticProps({
 
   const queryClient = new QueryClient();
   let deck: Deck | null | undefined;
+  let filter = {};
 
   if (archetypeId) {
     deck = await fetchArchetype(archetypeId);
+    filter = { deckId: archetypeId };
   } else if (supertypeId) {
     deck = await fetchSupertype(supertypeId);
+    filter = { supertypeId };
   }
 
   if (!deck) return invalidDeckReturn;
+
+  await queryClient.prefetchQuery({
+    queryKey: ['final-results', filter],
+    queryFn: () => fetchFinalResults(filter),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['code-to-set-map'],
+    queryFn: () => fetchCodeToSetMap(),
+  });
 
   if (deck.supertype) {
     await queryClient.prefetchQuery({
