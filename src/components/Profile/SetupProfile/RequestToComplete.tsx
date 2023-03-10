@@ -68,7 +68,7 @@ export const RequestToComplete = ({
             {`We were unable to find you - please send us a request. If you have never attended a tournament, refresh this page once your first tournament is underway. If you have attended a tournament before, send a request + contact me `}
             <Link
               isExternal
-              href={useTwitterLink('jgrimseey')}
+              href={useTwitterLink('jgrimesey')}
               as={NextLink}
               color='twitter.500'
             >
