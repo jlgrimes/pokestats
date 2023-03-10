@@ -86,17 +86,15 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
+      {session.status === 'authenticated' && (
+        <MyTournamentView tournament={props.tournament} />
+      )}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
         <TopCutViewController tournament={props.tournament} />
       )}
       {session.status === 'authenticated' && (
-        <Fragment>
-          <MyTournamentView tournament={props.tournament} />
-          {props.tournament.tournamentStatus !== 'not-started' && (
-            <PinnedPlayerList tournament={props.tournament} />
-          )}
-        </Fragment>
+        <PinnedPlayerList tournament={props.tournament} />
       )}
       {props.tournament.tournamentStatus === 'finished' && (
         <TopDecks tournament={props.tournament} />
