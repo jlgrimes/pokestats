@@ -19,7 +19,8 @@ export const TournamentPageLayout = ({
   tournament: Tournament | null;
 }) => {
   const router = useRouter();
-  const slug = router.asPath.split('/').at(router.asPath.split('/').length - 1);
+  const splitPath = router.asPath && router.asPath.split('/');
+  const slug = splitPath ? splitPath.at(splitPath.length - 1) : undefined;
 
   if (!tournament) return null;
 

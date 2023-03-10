@@ -102,10 +102,8 @@ export const fetchFinalResults = async (
     query = query.eq('placing', filters.placing);
   }
 
-  const res = await query;
-  const finalResultsData: FinalResultsSchema[] | null = res.data as unknown as
-    | FinalResultsSchema[]
-    | null;
+  const res = await query.returns<FinalResultsSchema[]>();
+  const finalResultsData: FinalResultsSchema[] | null = res.data;
 
   let userReportedDecks: Deck[] | undefined | null = null;
   if (filters?.playerName) {
