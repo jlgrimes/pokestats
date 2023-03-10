@@ -55,8 +55,13 @@ export const TournamentCard = ({
   const live = tournament.tournamentStatus === 'running';
 
   return (
-    <LinkBox>
-      <Card paddingX={live ? 4 : 2} paddingY={live ? 6 : 4}>
+    <LinkBox height='100%'>
+      <Card
+        paddingX={live ? 4 : 2}
+        paddingY={live ? 6 : 4}
+        height='100%'
+        justifyContent={'center'}
+      >
         <Grid
           gridTemplateColumns={champion ? '3fr 2fr' : 'auto'}
           alignItems='center'
@@ -68,7 +73,10 @@ export const TournamentCard = ({
           >
             {countryCode ? (
               <Box>
-                <CountryFlag countryCode={countryCode} size={!live ? 'sm' : 'md'} />
+                <CountryFlag
+                  countryCode={countryCode}
+                  size={!live ? 'sm' : 'md'}
+                />
               </Box>
             ) : (
               <Box></Box>
