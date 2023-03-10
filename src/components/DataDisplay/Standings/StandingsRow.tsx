@@ -38,6 +38,7 @@ export interface StandingsRowProps {
   isDeckLoading?: boolean;
   singleDigitPlacing?: boolean;
   shouldDisableOpponentModal?: boolean;
+  shouldHideStanding?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -64,23 +65,27 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
     >
       <Grid
         gridTemplateColumns={`${
-          props.singleDigitPlacing ? 1.6 : 2.65
-        }rem 2.5fr ${props.hideArchetype ? 2 : 7}rem 1fr`}
+          props.shouldHideStanding
+            ? ''
+            : `${props.singleDigitPlacing ? 1.6 : 2.65}rem`
+        } 2.5fr ${props.hideArchetype ? 2 : 7}rem 1fr`}
         gridTemplateRows='30px'
         paddingRight={1}
         alignItems='center'
         textColor={props.translucent ? 'gray.400' : 'auto'}
       >
-        <GridItem paddingLeft={0} paddingRight={2}>
-          <Text
-            fontSize={props.result.placing >= 1000 ? 'sm' : '0.95rem'}
-            fontFamily={'mono'}
-            textAlign='right'
-          >
-            {props.opponentRoundNumber ??
-              (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
-          </Text>
-        </GridItem>
+        {!props.shouldHideStanding && (
+          <GridItem paddingLeft={0} paddingRight={2}>
+            <Text
+              fontSize={props.result.placing >= 1000 ? 'sm' : '0.95rem'}
+              fontFamily={'mono'}
+              textAlign='right'
+            >
+              {props.opponentRoundNumber ??
+                (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
+            </Text>
+          </GridItem>
+        )}
         <GridItem
           display={'flex'}
           alignItems={'center'}
@@ -90,6 +95,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           fontWeight={
             ifPlayerDay2(props.result, props.tournament) ? 'bold' : 'normal'
           }
+          paddingLeft={props.shouldHideStanding ? 2 : 0}
         >
           <RecordIcon
             standing={props.result}
