@@ -60,7 +60,7 @@ export const fetchDecksWithLists = async (
   const res = await supabase
     .from('Final Results')
     .select(`deck_archetype,deck_supertype,tournament_id`)
-    .not('deck_archetype', 'is', null);
+    .not('deck_list', 'is', null);
 
   if (res.data && tournamentRange) {
     return filterFinalResultsByTournament(res.data, tournamentRange);
