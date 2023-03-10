@@ -61,7 +61,7 @@ export const TournamentList = ({
             as={'b'}
             letterSpacing='0.05rem'
           >
-            🎉 {item.data?.name} ({item.data?.ptcgoCode}) becomes legal
+            🎉 {item.data?.name} ({item.data?.ptcgoCode}) became legal
           </Text>
         );
       })}
