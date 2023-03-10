@@ -54,7 +54,7 @@ const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {
       ) : (
         renderDeckName()
       )}
-      {props.modalControls.isOpen && <ArchetypeSelectorModal {...props} />}
+      {props.shouldEnableEdits && <ArchetypeSelectorModal {...props} />}
     </Fragment>
   );
 });
