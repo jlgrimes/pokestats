@@ -30,16 +30,27 @@ export default function DecksPage({
   ]);
   const [sortByMoves, setSortByMoves] = useState(false);
   const [showRange, setShowRange] = useState(false);
-  const { query } = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
-    if (query.tournament) {
+    if (router.query.tournament) {
       const tournamentId = parseInt(
-        Array.isArray(query.tournament) ? query.tournament[0] : query.tournament
+        Array.isArray(router.query.tournament)
+          ? router.query.tournament[0]
+          : router.query.tournament
       );
       setTournamentRange([tournamentId, tournamentId]);
     }
-  }, [query.tournament]);
+  }, [router.query.tournament]);
+
+  useEffect(() => {
+    router.replace({
+      query: {
+        ...router.query,
+        tournament: `${tournamentRange[0]}`.padStart(7, '0'),
+      },
+    });
+  }, [router, tournamentRange]);
 
   //   <Heading size='lg' noOfLines={3} color='gray.700'>
   //   {

@@ -69,11 +69,18 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
               {props.tournament.name}
             </Heading>
             <Box />
-            <StatsHeading
-              headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
-            >
-              {formatTournamentDate(props.tournament, true)}
-            </StatsHeading>
+            <Stack>
+              <StatsHeading
+                headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+              >
+                {formatTournamentDate(props.tournament, true)}
+              </StatsHeading>
+              <StatsHeading
+                headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+              >
+                {`${props.tournament.players.masters} masters`}
+              </StatsHeading>
+            </Stack>
           </Grid>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
