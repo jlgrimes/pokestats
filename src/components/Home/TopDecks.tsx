@@ -7,15 +7,7 @@ import { MetaGameShareList } from '../Deck/Analytics/MetaGameShare/MetaGameShare
 
 export const TopDecks = memo(({ tournament }: { tournament: Tournament }) => {
   const tourneyId = parseInt(tournament.id);
-  return (
-    <CommonCard
-      header={`Day Two Metagame`}
-      slug={`/decks?tournament=${tournament.id}`}
-      ghost
-    >
-      <MetaGameShareList tournamentRange={[tourneyId, tourneyId]} preview />
-    </CommonCard>
-  );
+  return <MetaGameShareList tournamentRange={[tourneyId, tourneyId]} preview />;
 });
 
 TopDecks.displayName = 'TopDecks';

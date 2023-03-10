@@ -67,7 +67,7 @@ export default function DecksPage({
   const tournament = findTournament(tournamentRange[0], tournaments);
 
   return (
-    <CommonCard header={'Day two metagame'} ghost>
+    <>
       {/* <StackItem>
         <Switch
           checked={sortByMoves}
@@ -114,7 +114,7 @@ export default function DecksPage({
           tournament. Reported decks may be inaccurate.
         </Text>
       </Stack>
-    </CommonCard>
+    </>
   );
 }
 
