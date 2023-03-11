@@ -45,41 +45,43 @@ export const PlayerPerformanceList = ({
   const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
-    <Stack spacing={4}>
-      {tournamentPerformance?.map((performance: Standing, idx) => {
-        if (!performance.tournamentId) return null;
+    <CommonCard header='my tournaments' ghost>
+      <Stack spacing={4}>
+        {tournamentPerformance?.map((performance: Standing, idx) => {
+          if (!performance.tournamentId) return null;
 
-        const tournament = tournaments?.find(
-          ({ id }) => id === performance.tournamentId
-        );
+          const tournament = tournaments?.find(
+            ({ id }) => id === performance.tournamentId
+          );
 
-        if (!tournament) return null;
+          if (!tournament) return null;
 
-        return (
-          <Stack
-            gridTemplateColumns={'1fr 1fr'}
-            key={`${performance.tournamentId}-${performance.name}`}
-          >
-            <TournamentCard tournament={tournament} />
-            <Box>
-              <PlayerCard
-                player={performance}
-                tournament={tournament}
-                shouldHideDecks={false}
-                canEditDecks
-              />
-            </Box>
-          </Stack>
-          // <CommonCard
-          //   header={reallyShortenTournamentName(tournament)}
-          //   subheader={formatTournamentDate(tournament)}
-          //   ghost
-          //   key={`${performance.tournamentId}-${performance.name}`}
-          // >
-          // </CommonCard>
-        );
-      })}
-    </Stack>
+          return (
+            <Stack
+              gridTemplateColumns={'1fr 1fr'}
+              key={`${performance.tournamentId}-${performance.name}`}
+            >
+              <TournamentCard tournament={tournament} />
+              <Box>
+                <PlayerCard
+                  player={performance}
+                  tournament={tournament}
+                  shouldHideDecks={false}
+                  canEditDecks
+                />
+              </Box>
+            </Stack>
+            // <CommonCard
+            //   header={reallyShortenTournamentName(tournament)}
+            //   subheader={formatTournamentDate(tournament)}
+            //   ghost
+            //   key={`${performance.tournamentId}-${performance.name}`}
+            // >
+            // </CommonCard>
+          );
+        })}
+      </Stack>
+    </CommonCard>
   );
 
   return (
