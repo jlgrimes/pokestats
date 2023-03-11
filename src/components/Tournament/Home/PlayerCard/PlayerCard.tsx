@@ -25,6 +25,7 @@ export interface PlayerCardProps {
   shouldHideName?: boolean;
   backgroundColor?: string;
   size?: 'sm' | 'md' | 'lg';
+  shouldHideOpponent?: boolean;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
@@ -52,7 +53,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
             shouldHideStanding={props.shouldHideStanding}
             shouldHideName={props.shouldHideName}
           />
-          {props.player.currentOpponent && (
+          {props.player.currentOpponent && !props.shouldHideOpponent && (
             <Fragment>
               <Heading
                 paddingLeft={`${props.topCut ? 1.6 : 2.65}rem`}

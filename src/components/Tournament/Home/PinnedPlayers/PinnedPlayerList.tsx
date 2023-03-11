@@ -28,6 +28,7 @@ import { PinPlayerModal } from './PinPlayerModal';
 
 interface PinnedPlayerListProps {
   tournament: Tournament;
+  isCompact?: boolean;
 }
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
@@ -81,6 +82,8 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       header='Favorites'
       leftIcon={<Icon color='pink.500' as={FaHeart} />}
       ghost
+      shouldRemovePadding={props.isCompact}
+      smallHeader={props.isCompact}
     >
       <Stack>
         {pinnedPlayers &&
@@ -95,38 +98,41 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                   shouldHideDecks={liveTournamentResults?.shouldHideDecks}
                   isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
                   isEditingPinned={editPinnedPlayers.isOpen}
+                  shouldHideOpponent={props.isCompact}
                 />
               )
           )
         ) : (
           <ComponentLoader isLiveComponent />
         )}
-        <HStack justifyContent={'space-around'}>
-          <Button
-            variant='ghost'
-            leftIcon={<FaPlus />}
-            onClick={addPinPlayerModalControls.onOpen}
-            isDisabled={props.tournament.tournamentStatus === 'not-started'}
-            size={'sm'}
-            colorScheme='blackAlpha'
-          >
-            Add favorite player
-          </Button>
-          {pinnedPlayers && pinnedPlayers.length > 0 && (
+        {!props.isCompact && (
+          <HStack justifyContent={'space-around'}>
             <Button
               variant='ghost'
-              leftIcon={<FaRegEdit />}
-              onClick={editPinnedPlayers.onToggle}
+              leftIcon={<FaPlus />}
+              onClick={addPinPlayerModalControls.onOpen}
               isDisabled={props.tournament.tournamentStatus === 'not-started'}
               size={'sm'}
-              colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
+              colorScheme='blackAlpha'
             >
-              {editPinnedPlayers.isOpen
-                ? 'Stop editing'
-                : 'Edit favorite players'}
+              Add favorite player
             </Button>
-          )}
-        </HStack>
+            {pinnedPlayers && pinnedPlayers.length > 0 && (
+              <Button
+                variant='ghost'
+                leftIcon={<FaRegEdit />}
+                onClick={editPinnedPlayers.onToggle}
+                isDisabled={props.tournament.tournamentStatus === 'not-started'}
+                size={'sm'}
+                colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
+              >
+                {editPinnedPlayers.isOpen
+                  ? 'Stop editing'
+                  : 'Edit favorite players'}
+              </Button>
+            )}
+          </HStack>
+        )}
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}

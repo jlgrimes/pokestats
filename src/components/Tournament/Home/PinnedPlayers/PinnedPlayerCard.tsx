@@ -27,6 +27,7 @@ interface PinnedPlayerCardProps {
   shouldHideDecks: boolean | undefined;
   isEditingPinned: boolean;
   isDeckLoading?: boolean;
+  shouldHideOpponent?: boolean;
 }
 
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
@@ -67,6 +68,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
         shouldHideDecks={props.shouldHideDecks}
         canEditDecks={userIsAdmin}
         onUnpinPlayer={onUnpinPlayer}
+        shouldHideOpponent={props.shouldHideOpponent}
       />
       {props.isEditingPinned && (
         <IconButton

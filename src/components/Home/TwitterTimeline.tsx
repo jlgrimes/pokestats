@@ -1,5 +1,4 @@
 import { Box, Link } from '@chakra-ui/react';
-import { CommonCard } from '../common/CommonCard';
 
 export const TwitterTimeline = () => (
   <Box

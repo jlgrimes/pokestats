@@ -18,7 +18,6 @@ import { MyMatchupRow } from './MyMatchupRow';
 import { StandingsRow } from './Standings/StandingsRow';
 import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
 import { StatsHeading } from '../common/StatsHeading';
-import { CommonCard } from '../common/CommonCard';
 import { getResultBackgroundColor } from './helpers';
 
 export const MyMatchupsList = memo(
