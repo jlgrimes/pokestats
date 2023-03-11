@@ -6,6 +6,7 @@ import {
   LinkBox,
   Grid,
   Box,
+  Flex,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Standing, Tournament } from '../../../types/tournament';
@@ -79,9 +80,9 @@ export const TournamentCard = ({
             </Grid>
             {champion && <ChampionDisplay champion={champion} />}
             {live && (
-              <Box alignItems={'center'}>
+              <Flex justifyContent={'center'} alignItems={'center'}>
                 <StreamLink tournament={tournament} />
-              </Box>
+              </Flex>
             )}
           </Grid>
           {live && <PinnedPlayerList tournament={tournament} isCompact />}
