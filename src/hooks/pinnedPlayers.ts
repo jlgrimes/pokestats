@@ -14,17 +14,7 @@ export const fetchPinnedPlayers = async (tournamentId?: string) => {
   }
 
   const res = await query;
-
-  return res.data?.filter(({ pinned_player_name }, idx) => {
-    const foundIdx = res.data.findIndex(
-      entry => entry.pinned_player_name === pinned_player_name
-    );
-
-    if (idx === foundIdx) return true;
-    if (foundIdx < 0) return true;
-
-    return false;
-  });
+  return res.data;
 };
 
 export const useAllPinnedPlayers = (tournamentId?: string) => {
@@ -40,10 +30,24 @@ export const usePinnedPlayers = (tournamentId?: string) => {
 
   const user = session.data?.user?.email;
 
+  const filteredPlayers = data?.filter(
+    pinnedPlayer => pinnedPlayer.user_account === user
+  );
+
+  const pinnedPlayers = filteredPlayers?.filter(
+    ({ pinned_player_name }, idx) => {
+      const foundIdx = filteredPlayers?.findIndex(
+        entry => entry.pinned_player_name === pinned_player_name
+      );
+
+      if (idx === foundIdx || foundIdx < 0) return true;
+
+      return false;
+    }
+  );
+
   return {
-    data: data
-      ?.filter(pinnedPlayer => pinnedPlayer.user_account === user)
-      .map(pinnedPlayer => pinnedPlayer.pinned_player_name),
+    data: pinnedPlayers?.map(pinnedPlayer => pinnedPlayer.pinned_player_name),
     ...rest,
   };
 };
