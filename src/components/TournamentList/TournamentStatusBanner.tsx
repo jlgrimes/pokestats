@@ -10,12 +10,7 @@ import {
   Text,
   Icon,
 } from '@chakra-ui/react';
-import {
-  FaBroadcastTower,
-  FaGlobe,
-  FaGlobeAmericas,
-  FaRegClock,
-} from 'react-icons/fa';
+import { FaGlobeAmericas } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import {
   LocationDataSchema,

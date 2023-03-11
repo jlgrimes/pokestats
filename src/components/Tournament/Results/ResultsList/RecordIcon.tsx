@@ -1,7 +1,6 @@
 import { HStack, Icon } from '@chakra-ui/react';
 import { useCallback, useMemo } from 'react';
 import {
-  FaBroadcastTower,
   FaChessBishop,
   FaChessKing,
   FaChessQueen,

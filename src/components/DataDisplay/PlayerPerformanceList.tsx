@@ -68,6 +68,7 @@ export const PlayerPerformanceList = ({
                 shouldHideDecks={false}
                 canEditDecks
                 shouldHideName
+                shouldHideStanding
               />
             </Box>
           </Grid>
