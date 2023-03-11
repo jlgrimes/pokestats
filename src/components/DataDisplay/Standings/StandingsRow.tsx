@@ -72,7 +72,6 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         } ${!props.shouldHideName ? '2.5fr' : ''} ${
           props.hideArchetype ? 2 : 7
         }rem 1fr`}
-        gridTemplateRows='30px'
         paddingRight={1}
         alignItems='center'
         textColor={props.translucent ? 'gray.400' : 'auto'}
