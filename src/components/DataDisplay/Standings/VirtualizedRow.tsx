@@ -23,11 +23,6 @@ export const VirtualizedRow = memo((props: VirtualizedRowProps) => {
         canEditDecks={props.canEditDecks}
         size='sm'
         shouldHideOpponent
-        result={
-          props.tournament.tournamentStatus === 'running'
-            ? props.standing.currentMatchResult
-            : undefined
-        }
       />
     </Box>
   );
