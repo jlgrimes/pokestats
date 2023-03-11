@@ -5,6 +5,8 @@ import {
   Icon,
   useDisclosure,
   HStack,
+  Box,
+  Flex,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import {
@@ -20,6 +22,7 @@ import { useFinalResults } from '../../../../hooks/finalResults';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { CommonCard } from '../../../common/CommonCard';
+import { ComponentLoader } from '../../../common/ComponentLoader';
 import { PinnedPlayerCard } from './PinnedPlayerCard';
 import { PinPlayerModal } from './PinPlayerModal';
 
@@ -80,18 +83,23 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       ghost
     >
       <Stack>
-        {pinnedPlayers?.map(
-          pinnedPlayer =>
-            pinnedPlayer && (
-              <PinnedPlayerCard
-                key={`pinned-${pinnedPlayer?.name}`}
-                player={pinnedPlayer}
-                tournament={props.tournament}
-                shouldHideDecks={liveTournamentResults?.shouldHideDecks}
-                isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
-                isEditingPinned={editPinnedPlayers.isOpen}
-              />
-            )
+        {pinnedPlayers &&
+        !(props.tournament.tournamentStatus === 'running' && isLoading) ? (
+          pinnedPlayers.map(
+            pinnedPlayer =>
+              pinnedPlayer && (
+                <PinnedPlayerCard
+                  key={`pinned-${pinnedPlayer?.name}`}
+                  player={pinnedPlayer}
+                  tournament={props.tournament}
+                  shouldHideDecks={liveTournamentResults?.shouldHideDecks}
+                  isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
+                  isEditingPinned={editPinnedPlayers.isOpen}
+                />
+              )
+          )
+        ) : (
+          <ComponentLoader isLiveComponent />
         )}
         <HStack justifyContent={'space-around'}>
           <Button

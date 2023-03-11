@@ -11,7 +11,6 @@ import {
   useDisclosure,
   UseDisclosureProps,
 } from '@chakra-ui/react';
-import PulseLoader from 'react-spinners/PulseLoader';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Player } from '../../Tournament/Results/ResultsList/Player/Player';
 import { getResultBackgroundColor } from '../helpers';
@@ -23,6 +22,7 @@ import { ListViewerOpenButton } from '../../Deck/ListViewer/ListViewerOpenButton
 import { useSession } from 'next-auth/react';
 import { ifPlayerDay2 } from '../../../lib/tournament';
 import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
+import { ComponentLoader } from '../../common/ComponentLoader';
 
 export interface StandingsRowProps {
   result: Standing;
@@ -122,9 +122,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                 />
               </Box>
             ) : (
-              <Box justifyContent={'center'} opacity={0.4}>
-                <PulseLoader size={5} />
-              </Box>
+              <ComponentLoader />
             )}
             {props.hideArchetype && props.result.deck?.list && (
               <ListViewerOpenButton
