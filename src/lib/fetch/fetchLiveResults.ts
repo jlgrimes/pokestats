@@ -216,6 +216,9 @@ const getPlayerDeck = (
   };
 };
 
+export const getRoundsArray = (player?: Player) =>
+  Object.values(player?.rounds ?? {});
+
 function mapResultsArray(
   resultsArray: any,
   roundNumber: number,
@@ -245,6 +248,7 @@ function mapResultsArray(
               { name: player.rounds[roundNumber].name } as Player,
               deckArchetypes
             ),
+            rounds: getRoundsArray(currentOpponentPlayer),
           }
         : null;
 
@@ -252,9 +256,7 @@ function mapResultsArray(
       name: player.name,
       placing: player.placing,
       record: player.record,
-      ...(shouldLoad?.allRoundData
-        ? { rounds: Object.values(player?.rounds ?? {}) }
-        : {}),
+      ...(shouldLoad?.allRoundData ? { rounds: getRoundsArray(player) } : {}),
       ...(currentMatchResult ? { currentMatchResult } : {}),
       resistances: player.resistances,
       day2,
