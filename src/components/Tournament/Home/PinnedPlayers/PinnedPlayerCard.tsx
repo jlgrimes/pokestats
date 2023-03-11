@@ -69,6 +69,11 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
         canEditDecks={userIsAdmin}
         onUnpinPlayer={onUnpinPlayer}
         shouldHideOpponent={props.shouldHideOpponent}
+        result={
+          props.tournament.tournamentStatus === 'running'
+            ? props.player.currentMatchResult
+            : undefined
+        }
       />
       {props.isEditingPinned && (
         <IconButton

@@ -9,7 +9,11 @@ import {
 } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { FaHeartBroken } from 'react-icons/fa';
-import { Standing, Tournament } from '../../../../../types/tournament';
+import {
+  MatchResult,
+  Standing,
+  Tournament,
+} from '../../../../../types/tournament';
 import { getResultBackgroundColor } from '../../../DataDisplay/helpers';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
@@ -27,18 +31,12 @@ export interface PlayerCardProps {
   size?: 'sm' | 'md' | 'lg';
   shouldHideOpponent?: boolean;
   shouldDisableOpponentModal?: boolean;
+  result?: MatchResult;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
   return (
-    <Card
-      backgroundColor={
-        props.tournament.tournamentStatus === 'running'
-          ? getResultBackgroundColor(props.player.currentMatchResult)
-          : 'auto'
-      }
-      width='100%'
-    >
+    <Card backgroundColor={getResultBackgroundColor(props.result)} width='100%'>
       <CardBody
         paddingX={0}
         paddingY={props.size === 'sm' ? 0 : props.size === 'md' ? 1 : 2}

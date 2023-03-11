@@ -36,6 +36,7 @@ export const RoundsList = (props: RoundsListProps) => {
                   size={rounds.length < 10 ? 'lg' : 'sm'}
                   shouldHideOpponent
                   shouldDisableOpponentModal={props.shouldDisableOpponentModal}
+                  result={round.result}
                 />
               </Box>
             </Grid>
