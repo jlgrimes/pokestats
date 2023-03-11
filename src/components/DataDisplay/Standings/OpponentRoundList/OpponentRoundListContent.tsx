@@ -22,6 +22,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
+import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
 import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
 import { StandingsRow } from '../StandingsRow';
 
@@ -39,6 +40,7 @@ export const OpponentRoundListContent = ({
     load: { allRoundData: true },
   });
   const { data: userIsAdmin } = useUserIsAdmin();
+  const userMatchesLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
   const opponents: { name: string; result: string }[] | undefined =
     player.rounds;
@@ -67,7 +69,7 @@ export const OpponentRoundListContent = ({
                   <StandingsRow
                     result={standing}
                     tournament={tournament}
-                    canEditDecks={userIsAdmin}
+                    canEditDecks={userIsAdmin || userMatchesLoggedInUser}
                     opponentRoundNumber={opponents.length - idx}
                     opponentResult={result}
                     shouldHideDeck={liveResults?.shouldHideDecks}
