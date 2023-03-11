@@ -46,7 +46,8 @@ export const CommonCard = memo(
             : {}
         }
         variant={ghost ? 'unstyled' : 'elevated'}
-        padding={3}
+        paddingX={2}
+        paddingY={3}
         gap={3}
       >
         {header && (

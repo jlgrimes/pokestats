@@ -10,6 +10,7 @@ import {
 import NextLink from 'next/link';
 import { Standing, Tournament } from '../../../types/tournament';
 import { useCountryCode } from '../../hooks/tournamentMetadata';
+import { CommonCard } from '../common/CommonCard';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
 import { PinnedPlayerList } from '../Tournament/Home/PinnedPlayers/PinnedPlayerList';
 import { StreamLink } from '../Tournament/TournamentLinks';
@@ -29,7 +30,13 @@ export const TournamentCard = ({
 
   return (
     <LinkBox height='100%'>
-      <Card paddingX={2} paddingY={4} height='100%' justifyContent={'center'}>
+      <CommonCard
+        slug={
+          tournament.tournamentStatus === 'running'
+            ? `/tournaments/${tournament.id}`
+            : undefined
+        }
+      >
         <Stack spacing={4}>
           <Grid
             gridTemplateColumns={
@@ -79,7 +86,7 @@ export const TournamentCard = ({
           </Grid>
           {live && <PinnedPlayerList tournament={tournament} isCompact />}
         </Stack>
-      </Card>
+      </CommonCard>
     </LinkBox>
   );
 };
