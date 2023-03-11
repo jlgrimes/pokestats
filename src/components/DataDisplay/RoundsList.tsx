@@ -7,6 +7,7 @@ interface RoundsListProps {
   rounds: PlayerRound[];
   tournament: Tournament;
   shouldHideDecks: boolean;
+  shouldDisableOpponentModal?: boolean;
 }
 
 export const RoundsList = (props: RoundsListProps) => {
@@ -34,6 +35,7 @@ export const RoundsList = (props: RoundsListProps) => {
                   canEditDecks={!round.opponent.deck?.name}
                   size={rounds.length < 10 ? 'lg' : 'sm'}
                   shouldHideOpponent
+                  shouldDisableOpponentModal={props.shouldDisableOpponentModal}
                 />
               </Box>
             </Grid>

@@ -26,6 +26,7 @@ export interface PlayerCardProps {
   shouldHideName?: boolean;
   size?: 'sm' | 'md' | 'lg';
   shouldHideOpponent?: boolean;
+  shouldDisableOpponentModal?: boolean;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
@@ -59,6 +60,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
             singleDigitPlacing={props.topCut}
             shouldHideStanding={props.shouldHideStanding}
             shouldHideName={props.shouldHideName}
+            shouldDisableOpponentModal={props.shouldDisableOpponentModal}
           />
           {props.player.currentOpponent && !props.shouldHideOpponent && (
             <Fragment>

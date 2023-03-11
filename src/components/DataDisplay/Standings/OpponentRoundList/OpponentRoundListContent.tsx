@@ -70,6 +70,7 @@ export const OpponentRoundListContent = ({
       rounds={rounds}
       tournament={tournament}
       shouldHideDecks={!!liveResults?.shouldHideDecks}
+      shouldDisableOpponentModal
     />
   ) : null;
 };
