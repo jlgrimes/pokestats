@@ -71,7 +71,10 @@ export const getTournamentRange = (tournament: Tournament) => {
   return [parseISO(tournament.date.start), parseISO(tournament.date.end)];
 };
 
-export const formatTournamentDate = (tournament: Tournament, verbose?: boolean) => {
+export const formatTournamentDate = (
+  tournament: Tournament,
+  verbose?: boolean
+) => {
   const [startDate, endDate] = getTournamentRange(tournament);
 
   // I want to use ordinal numbers but these guys won't let me :(
@@ -128,9 +131,9 @@ export const getMostRecentTournaments = (items: TournamentOrSet[]) => {
       tournament.data.tournamentStatus === 'running' &&
       !isTournamentLongGone(tournament.data as Tournament)
   );
-  const almostStartedTournaments = items.filter(tournament =>
-    almostStartedTournamentFilter(tournament)
-  );
+  const almostStartedTournaments = items
+    .filter(tournament => almostStartedTournamentFilter(tournament))
+    .reverse();
 
   return {
     highlightedTournamentsLength:
