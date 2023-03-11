@@ -31,6 +31,7 @@ import {
 } from '../../lib/tournament';
 import { formatTournamentDate } from '../TournamentList/helpers';
 import { TournamentCard } from '../TournamentList/TournamentCard';
+import { FullPageLoader } from '../common/FullPageLoader';
 
 export const PlayerPerformanceList = ({
   user,
@@ -38,11 +39,13 @@ export const PlayerPerformanceList = ({
   user: CombinedPlayerProfile | null | undefined;
 }) => {
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user?.name);
-  const { data: tournamentPerformance } = useFinalResults({
+  const { data: tournamentPerformance, isLoading } = useFinalResults({
     playerName: user?.name,
   });
   const { data: tournaments } = useTournaments();
   const { data: userIsAdmin } = useUserIsAdmin();
+
+  if (isLoading) return <FullPageLoader />;
 
   return (
     <CommonCard header='my tournaments' ghost>
