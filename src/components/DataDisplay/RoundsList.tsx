@@ -11,11 +11,11 @@ interface RoundsListProps {
 }
 
 export const RoundsList = (props: RoundsListProps) => {
-  const rounds = props.rounds.reverse();
+  const rounds = props.rounds.slice().reverse();
 
   return (
     <Stack spacing={rounds && rounds.length > 9 ? 1 : 2} paddingRight='2'>
-      {rounds?.reverse()?.map(
+      {rounds.map(
         (round, idx) =>
           round?.opponent && (
             <Grid gridTemplateColumns='30px auto' key={idx} alignItems='center'>

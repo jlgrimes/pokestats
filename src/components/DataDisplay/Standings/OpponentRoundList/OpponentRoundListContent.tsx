@@ -51,19 +51,16 @@ export const OpponentRoundListContent = ({
   const opponents: { name: string; result: MatchResult }[] | undefined =
     player.rounds;
 
-  const rounds = opponents
-    ?.slice(0)
-    .reverse()
-    .map(({ name, result }) => {
-      const standing = liveResults?.data.find(
-        standing => standing.name === cropPlayerName(name)
-      );
-      return {
-        opponent: standing,
-        name,
-        result,
-      };
-    });
+  const rounds = opponents?.map(({ name, result }) => {
+    const standing = liveResults?.data.find(
+      standing => standing.name === cropPlayerName(name)
+    );
+    return {
+      opponent: standing,
+      name,
+      result,
+    };
+  });
 
   return rounds ? (
     <RoundsList
