@@ -86,11 +86,12 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
   if (
     pinnedPlayers?.filter(player => player)?.length === 0 &&
-    !arePinnedPlayersLoading
+    !arePinnedPlayersLoading &&
+    !resultsAreLoading
   )
     return null;
 
-  return (
+  return pinnedPlayers && !resultsAreLoading ? (
     <CommonCard
       header='Favorites'
       leftIcon={<Icon color='pink.500' as={FaHeart} />}
@@ -99,23 +100,20 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       smallHeader={props.isCompact}
     >
       <Stack>
-        {pinnedPlayers && !resultsAreLoading ? (
-          pinnedPlayers.map(
-            pinnedPlayer =>
-              pinnedPlayer && (
-                <PinnedPlayerCard
-                  key={`pinned-${pinnedPlayer?.name}`}
-                  player={pinnedPlayer}
-                  tournament={props.tournament}
-                  shouldHideDecks={liveTournamentResults?.shouldHideDecks}
-                  isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
-                  isEditingPinned={editPinnedPlayers.isOpen}
-                  shouldHideOpponent={props.isCompact}
-                />
-              )
-          )
-        ) : (
-          <ComponentLoader isLiveComponent />
+        {pinnedPlayers.map(
+          pinnedPlayer =>
+            pinnedPlayer && (
+              <PinnedPlayerCard
+                key={`pinned-${pinnedPlayer?.name}`}
+                player={pinnedPlayer}
+                tournament={props.tournament}
+                shouldHideDecks={liveTournamentResults?.shouldHideDecks}
+                isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
+                isEditingPinned={editPinnedPlayers.isOpen}
+                shouldHideOpponent={props.isCompact}
+                size={props.isCompact ? 'md' : 'lg'}
+              />
+            )
         )}
         {!props.isCompact && (
           <HStack justifyContent={'space-around'}>
@@ -151,5 +149,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
         />
       </Stack>
     </CommonCard>
+  ) : (
+    <ComponentLoader isLiveComponent />
   );
 };
