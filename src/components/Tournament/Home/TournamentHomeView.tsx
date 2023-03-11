@@ -96,9 +96,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         props.tournament.tournamentStatus === 'finished') && (
         <TopCutViewController tournament={props.tournament} />
       )}
-      {session.status === 'authenticated' && (
-        <PinnedPlayerList tournament={props.tournament} />
-      )}
+      {session.status === 'authenticated' &&
+        props.tournament.tournamentStatus !== 'not-started' && (
+          <PinnedPlayerList tournament={props.tournament} />
+        )}
       {props.tournament.tournamentStatus === 'finished' && (
         <TopDecks tournament={props.tournament} />
       )}
