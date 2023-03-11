@@ -14,7 +14,7 @@ export const RoundsList = (props: RoundsListProps) => {
   const rounds = props.rounds.reverse();
 
   return (
-    <Stack spacing={rounds && rounds.length > 9 ? 1 : 2}>
+    <Stack spacing={rounds && rounds.length > 9 ? 1 : 2} paddingRight='2'>
       {rounds?.reverse()?.map(
         (round, idx) =>
           round?.opponent && (
@@ -33,7 +33,7 @@ export const RoundsList = (props: RoundsListProps) => {
                   shouldHideDecks={props.shouldHideDecks}
                   shouldHideStanding
                   canEditDecks={!round.opponent.deck?.name}
-                  size={rounds.length < 10 ? 'lg' : 'sm'}
+                  size={rounds.length < 10 ? 'md' : 'sm'}
                   shouldHideOpponent
                   shouldDisableOpponentModal={props.shouldDisableOpponentModal}
                   result={round.result}
