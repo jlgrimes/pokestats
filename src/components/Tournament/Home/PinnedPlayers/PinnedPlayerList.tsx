@@ -84,7 +84,11 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const addPinPlayerModalControls = useDisclosure();
   const editPinnedPlayers = useDisclosure();
 
-  if (pinnedPlayers?.length === 0 && !arePinnedPlayersLoading) return null;
+  if (
+    pinnedPlayers?.filter(player => player)?.length === 0 &&
+    !arePinnedPlayersLoading
+  )
+    return null;
 
   return (
     <CommonCard
