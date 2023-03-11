@@ -29,12 +29,7 @@ export const TournamentCard = ({
 
   return (
     <LinkBox height='100%'>
-      <Card
-        paddingX={2}
-        paddingY={live ? 6 : 4}
-        height='100%'
-        justifyContent={'center'}
-      >
+      <Card paddingX={2} paddingY={4} height='100%' justifyContent={'center'}>
         <Stack spacing={4}>
           <Grid
             gridTemplateColumns={
