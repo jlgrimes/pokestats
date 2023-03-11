@@ -62,7 +62,6 @@ export const MyMatchupsList = memo(
                     shouldHideDecks={shouldHideDecks}
                     shouldHideStanding
                     canEditDecks={!round.opponent.deck?.name}
-                    backgroundColor={getResultBackgroundColor(round.result)}
                     size={rounds.length < 10 ? 'lg' : 'sm'}
                   />
                 </Box>

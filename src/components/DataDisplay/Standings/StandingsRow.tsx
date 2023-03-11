@@ -133,7 +133,6 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           </Flex>
         </GridItem>
         <Stack
-          backgroundColor={getStandingsCellResultBackgroundColor()}
           height='100%'
           alignItems={'end'}
           justifyContent='center'

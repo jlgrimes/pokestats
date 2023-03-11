@@ -10,6 +10,7 @@ import {
 import { Fragment } from 'react';
 import { FaHeartBroken } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
+import { getResultBackgroundColor } from '../../../DataDisplay/helpers';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
 
@@ -23,14 +24,20 @@ export interface PlayerCardProps {
   topCut?: boolean;
   shouldHideStanding?: boolean;
   shouldHideName?: boolean;
-  backgroundColor?: string;
   size?: 'sm' | 'md' | 'lg';
   shouldHideOpponent?: boolean;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
   return (
-    <Card backgroundColor={props.backgroundColor} width='100%'>
+    <Card
+      backgroundColor={
+        props.tournament.tournamentStatus === 'running'
+          ? getResultBackgroundColor(props.player.currentMatchResult)
+          : 'auto'
+      }
+      width='100%'
+    >
       <CardBody
         paddingX={0}
         paddingY={props.size === 'sm' ? 0 : props.size === 'md' ? 1 : 2}
