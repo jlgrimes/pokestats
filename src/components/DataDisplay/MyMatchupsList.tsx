@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { usePlayerLiveResults } from '../../hooks/tournamentResults';
 import { Tournament } from '../../../types/tournament';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { MyMatchupRow } from './MyMatchupRow';
 import { StandingsRow } from './Standings/StandingsRow';
 import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
@@ -37,9 +37,11 @@ export const MyMatchupsList = memo(
       }
     );
 
+    const rounds = useMemo(() => player?.rounds?.reverse(), [player?.rounds]);
+
     return (
-      <Stack>
-        {player?.rounds?.reverse().map(
+      <Stack spacing={rounds && rounds.length > 9 ? 1 : 2}>
+        {rounds?.map(
           (round, idx) =>
             round?.opponent && (
               <Grid
@@ -51,7 +53,7 @@ export const MyMatchupsList = memo(
                   <StatsHeading
                     headingProps={{ color: 'gray.600', fontSize: 'lg' }}
                   >
-                    {(player.rounds?.length ?? 0) - idx}
+                    {(rounds?.length ?? 0) - idx}
                   </StatsHeading>
                 </Box>
                 <Box flexGrow={1}>
@@ -62,6 +64,7 @@ export const MyMatchupsList = memo(
                     shouldHideStanding
                     canEditDecks={!round.opponent.deck?.name}
                     backgroundColor={getResultBackgroundColor(round.result)}
+                    size={rounds.length < 10 ? 'lg' : 'sm'}
                   />
                 </Box>
               </Grid>

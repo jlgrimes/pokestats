@@ -24,12 +24,16 @@ export interface PlayerCardProps {
   shouldHideStanding?: boolean;
   shouldHideName?: boolean;
   backgroundColor?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
   return (
     <Card backgroundColor={props.backgroundColor} width='100%'>
-      <CardBody paddingX={0} paddingY={2}>
+      <CardBody
+        paddingX={0}
+        paddingY={props.size === 'sm' ? 0 : props.size === 'md' ? 1 : 2}
+      >
         <Stack spacing={0}>
           <StandingsRow
             result={props.player}
