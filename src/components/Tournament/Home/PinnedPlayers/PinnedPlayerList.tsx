@@ -33,16 +33,23 @@ interface PinnedPlayerListProps {
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const session = useSession();
-  const { data: pinnedPlayerNames } = usePinnedPlayers();
+  const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
+    usePinnedPlayers();
 
-  const { data: tournamentPerformance } = useFinalResults({
-    tournamentId: props.tournament.id,
-  });
+  const { data: tournamentPerformance, isLoading: areFinalResultsLoading } =
+    useFinalResults({
+      tournamentId: props.tournament.id,
+    });
 
   const { data: liveTournamentResults, isLoading } = useLiveTournamentResults(
     props.tournament.id,
     { load: { allRoundData: true } }
   );
+  const resultsAreLoading =
+    (props.tournament.tournamentStatus === 'running' && isLoading) ||
+    (props.tournament.tournamentStatus === 'finished' &&
+      areFinalResultsLoading);
+
   const pinnedPlayers = pinnedPlayerNames
     ?.map(name => {
       const finalStanding = tournamentPerformance?.find(
@@ -77,6 +84,8 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const addPinPlayerModalControls = useDisclosure();
   const editPinnedPlayers = useDisclosure();
 
+  if (pinnedPlayers?.length === 0 && !arePinnedPlayersLoading) return null;
+
   return (
     <CommonCard
       header='Favorites'
@@ -86,8 +95,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       smallHeader={props.isCompact}
     >
       <Stack>
-        {pinnedPlayers &&
-        !(props.tournament.tournamentStatus === 'running' && isLoading) ? (
+        {pinnedPlayers && !resultsAreLoading ? (
           pinnedPlayers.map(
             pinnedPlayer =>
               pinnedPlayer && (
