@@ -23,6 +23,7 @@ export const CommonCard = memo(
     loading,
     shouldRemovePadding,
     smallHeader,
+    slugText,
   }: {
     header?: string;
     subheader?: string;
@@ -33,6 +34,7 @@ export const CommonCard = memo(
     loading?: boolean;
     shouldRemovePadding?: boolean;
     smallHeader?: boolean;
+    slugText?: string;
   }) => {
     return (
       <Card
@@ -89,7 +91,7 @@ export const CommonCard = memo(
         <CardBody padding={0}>{children}</CardBody>
         {slug && (
           <CardFooter padding={0}>
-            <SeeMoreButton slug={slug} />
+            <SeeMoreButton slug={slug} text={slugText} />
           </CardFooter>
         )}
       </Card>

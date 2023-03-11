@@ -5,9 +5,11 @@ import { FaArrowRight } from 'react-icons/fa';
 export const SeeMoreButton = ({
   slug,
   loading,
+  text,
 }: {
   slug: string;
   loading?: boolean;
+  text?: string;
 }) => {
   const router = useRouter();
   const absolute = slug.includes('/');
@@ -24,7 +26,7 @@ export const SeeMoreButton = ({
         rightIcon={<FaArrowRight />}
         isDisabled={loading}
       >
-        See more
+        {text ?? `See more`}
       </Button>
     </GridItem>
   );

@@ -31,13 +31,7 @@ export const TournamentCard = ({
 
   return (
     <LinkBox height='100%'>
-      <CommonCard
-        slug={
-          tournament.tournamentStatus === 'running'
-            ? `/tournaments/${tournament.id}`
-            : undefined
-        }
-      >
+      <CommonCard>
         <Stack spacing={4}>
           <Grid
             gridTemplateColumns={
