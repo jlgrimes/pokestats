@@ -21,22 +21,20 @@ export default function ProfilePage({
 }) {
   const session = useSession();
   const router = useRouter();
-  const { data: user } = useSessionUserProfile();
+  const { data: user, isLoading } = useSessionUserProfile();
 
   useEffect(() => {
     // If user is on the page with their profile, and there is not a profile stored
-    if (session.status === 'authenticated' && !user) {
+    if (session.status === 'authenticated' && !isLoading && !user) {
       router.push('/setup-profile');
     }
 
     if (session.status === 'unauthenticated') {
       router.push('/');
     }
-  }, [session.status, router, user]);
+  }, [session.status, router, user, isLoading]);
 
-  return (
-    <PlayerPerformanceList user={user} />
-  );
+  return <PlayerPerformanceList user={user} />;
 }
 
 export async function getStaticProps() {
