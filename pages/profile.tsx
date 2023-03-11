@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { FaArrowRight, FaHistory, FaRegClock } from 'react-icons/fa';
+import { PlayerPerformanceList } from '../src/components/DataDisplay/PlayerPerformanceList';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { getFirstName } from '../src/components/Profile/helpers';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
@@ -34,23 +35,7 @@ export default function ProfilePage({
   }, [session.status, router, user]);
 
   return (
-    <Stack>
-      <Heading color='gray.700' padding={2}>
-        Hi, {getFirstName(session.data)}!
-      </Heading>
-      <MyMostRecentResults tournaments={tournaments} />
-      <Button
-        size='lg'
-        colorScheme={'blue'}
-        leftIcon={<FaHistory />}
-        onClick={() =>
-          session.data?.user?.email &&
-          router.push('/player/' + parseUsername(session.data?.user.email))
-        }
-      >
-        My tournament history
-      </Button>
-    </Stack>
+    <PlayerPerformanceList user={user} />
   );
 }
 
