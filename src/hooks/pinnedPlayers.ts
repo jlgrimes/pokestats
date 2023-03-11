@@ -4,23 +4,37 @@ import { Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchPinnedPlayers = async (tournamentId: string) => {
-  const res = await supabase
+export const fetchPinnedPlayers = async (tournamentId?: string) => {
+  let query = supabase
     .from('Pinned Players')
-    .select('pinned_player_name,user_account')
-    .eq('tournament_id', tournamentId);
+    .select('pinned_player_name,user_account');
 
-  return res.data;
+  if (tournamentId) {
+    query = query.eq('tournament_id', tournamentId);
+  }
+
+  const res = await query;
+
+  return res.data?.filter(({ pinned_player_name }, idx) => {
+    const foundIdx = res.data.findIndex(
+      entry => entry.pinned_player_name === pinned_player_name
+    );
+
+    if (idx === foundIdx) return true;
+    if (foundIdx < 0) return true;
+
+    return false;
+  });
 };
 
-export const useAllPinnedPlayers = (tournamentId: string) => {
+export const useAllPinnedPlayers = (tournamentId?: string) => {
   return useQuery({
     queryKey: ['all-pinned-players', tournamentId],
     queryFn: () => fetchPinnedPlayers(tournamentId),
   });
 };
 
-export const usePinnedPlayers = (tournamentId: string) => {
+export const usePinnedPlayers = (tournamentId?: string) => {
   const session = useSession();
   const { data, ...rest } = useAllPinnedPlayers(tournamentId);
 
@@ -61,7 +75,7 @@ export const addPinnedPlayer = async (
 
 export const useAvailablePinnedPlayerNames = (tournamentId: string) => {
   const { data: pinnedPlayers, isLoading: isPinnedPlayersLoading } =
-    usePinnedPlayers(tournamentId);
+    usePinnedPlayers();
   const { data: liveResults, isLoading: isLiveTournamentResultsLoading } =
     useLiveTournamentResults(tournamentId);
 

@@ -34,7 +34,7 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
   const { data: availablePinnedPlayerNames } = useAvailablePinnedPlayerNames(
     props.tournament.id
   );
-  const { refetch } = usePinnedPlayers(props.tournament.id);
+  const { refetch } = usePinnedPlayers();
 
   const handleSubmit = useCallback(
     async (player: string) => {

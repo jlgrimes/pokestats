@@ -33,7 +33,7 @@ interface PinnedPlayerCardProps {
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   const session = useSession();
   const toast = useToast();
-  const { refetch } = usePinnedPlayers(props.tournament.id);
+  const { refetch } = usePinnedPlayers();
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const onUnpinPlayer = useCallback(async () => {

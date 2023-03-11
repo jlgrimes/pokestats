@@ -33,7 +33,7 @@ interface PinnedPlayerListProps {
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const session = useSession();
-  const { data: pinnedPlayerNames } = usePinnedPlayers(props.tournament.id);
+  const { data: pinnedPlayerNames } = usePinnedPlayers();
 
   const { data: tournamentPerformance } = useFinalResults({
     tournamentId: props.tournament.id,
