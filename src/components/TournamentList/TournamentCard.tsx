@@ -39,6 +39,8 @@ export const TournamentCard = ({
             }
             alignItems='center'
             gap={2}
+            paddingX={live ? 1 : 0}
+            paddingY={live ? 3 : 0}
           >
             <Grid
               gridTemplateColumns={`${live ? 4 : 3.4}rem 4fr`}
