@@ -33,6 +33,7 @@ export const RoundsList = (props: RoundsListProps) => {
                   shouldHideStanding
                   canEditDecks={!round.opponent.deck?.name}
                   size={rounds.length < 10 ? 'lg' : 'sm'}
+                  shouldHideOpponent
                 />
               </Box>
             </Grid>

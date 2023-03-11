@@ -19,11 +19,17 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useState } from 'react';
-import { Standing, Tournament } from '../../../../../types/tournament';
+import {
+  MatchResult,
+  Standing,
+  Tournament,
+} from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
 import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
+import { PlayerCard } from '../../../Tournament/Home/PlayerCard/PlayerCard';
+import { RoundsList } from '../../RoundsList';
 import { StandingsRow } from '../StandingsRow';
 
 export const OpponentRoundListContent = ({
@@ -42,42 +48,28 @@ export const OpponentRoundListContent = ({
   const { data: userIsAdmin } = useUserIsAdmin();
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
-  const opponents: { name: string; result: string }[] | undefined =
+  const opponents: { name: string; result: MatchResult }[] | undefined =
     player.rounds;
 
-  return (
-    <Stack spacing='0.33rem'>
-      {opponents &&
-        opponents
-          .slice(0)
-          .reverse()
-          .map(({ name, result }) => {
-            const standing = liveResults?.data.find(
-              standing => standing.name === cropPlayerName(name)
-            );
-            return {
-              standing,
-              name,
-              result,
-            };
-          })
-          .map(
-            ({ standing, name, result }, idx) =>
-              standing && (
-                <Fragment key={idx}>
-                  <Divider gridColumn='1/-1' />
-                  <StandingsRow
-                    result={standing}
-                    tournament={tournament}
-                    canEditDecks={userIsAdmin || userMatchesLoggedInUser}
-                    opponentRoundNumber={opponents.length - idx}
-                    opponentResult={result}
-                    shouldHideDeck={liveResults?.shouldHideDecks}
-                    shouldDisableOpponentModal
-                  />
-                </Fragment>
-              )
-          )}
-    </Stack>
-  );
+  const rounds = opponents
+    ?.slice(0)
+    .reverse()
+    .map(({ name, result }) => {
+      const standing = liveResults?.data.find(
+        standing => standing.name === cropPlayerName(name)
+      );
+      return {
+        opponent: standing,
+        name,
+        result,
+      };
+    });
+
+  return rounds ? (
+    <RoundsList
+      rounds={rounds}
+      tournament={tournament}
+      shouldHideDecks={!!liveResults?.shouldHideDecks}
+    />
+  ) : null;
 };
