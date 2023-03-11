@@ -22,6 +22,7 @@ export interface PlayerCardProps {
   onUnpinPlayer?: () => void;
   topCut?: boolean;
   shouldHideStanding?: boolean;
+  shouldHideName?: boolean;
   backgroundColor?: string;
 }
 
@@ -45,6 +46,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
             }
             singleDigitPlacing={props.topCut}
             shouldHideStanding={props.shouldHideStanding}
+            shouldHideName={props.shouldHideName}
           />
           {props.player.currentOpponent && (
             <Fragment>

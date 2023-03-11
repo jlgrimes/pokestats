@@ -19,7 +19,9 @@ export const reallyShortenTournamentName = (tournament: Tournament) => {
   return shortenedName
     .replace('Pokémon', '')
     .replace('Regional Championship', 'Regionals')
-    .replace('International Championship', 'IC')
+    .replace('North America International Championship', 'NAIC')
+    .replace('Latin America International Championship', 'NAIC')
+    .replace('North America International Championship', 'NAIC')
     .replace('World Championships', 'Worlds')
     .replace('Special Championship', 'SPE')
     .trim();

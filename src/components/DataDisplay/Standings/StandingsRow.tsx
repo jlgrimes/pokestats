@@ -39,6 +39,7 @@ export interface StandingsRowProps {
   singleDigitPlacing?: boolean;
   shouldDisableOpponentModal?: boolean;
   shouldHideStanding?: boolean;
+  shouldHideName?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -68,7 +69,9 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           props.shouldHideStanding
             ? ''
             : `${props.singleDigitPlacing ? 1.6 : 2.65}rem`
-        } 2.5fr ${props.hideArchetype ? 2 : 7}rem 1fr`}
+        } ${!props.shouldHideName ? '2.5fr' : ''} ${
+          props.hideArchetype ? 2 : 7
+        }rem 1fr`}
         gridTemplateRows='30px'
         paddingRight={1}
         alignItems='center'
@@ -86,23 +89,25 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
             </Text>
           </GridItem>
         )}
-        <GridItem
-          display={'flex'}
-          alignItems={'center'}
-          color={
-            props.result.drop && props.result.drop > 0 ? 'red.600' : 'auto'
-          }
-          fontWeight={
-            ifPlayerDay2(props.result, props.tournament) ? 'bold' : 'normal'
-          }
-          paddingLeft={props.shouldHideStanding ? 2 : 0}
-        >
-          <RecordIcon
-            standing={props.result}
-            tournament={props.tournament as Tournament}
-          />
-          <Player name={props.result.name} />
-        </GridItem>
+        {!props.shouldHideName && (
+          <GridItem
+            display={'flex'}
+            alignItems={'center'}
+            color={
+              props.result.drop && props.result.drop > 0 ? 'red.600' : 'auto'
+            }
+            fontWeight={
+              ifPlayerDay2(props.result, props.tournament) ? 'bold' : 'normal'
+            }
+            paddingLeft={props.shouldHideStanding ? 2 : 0}
+          >
+            <RecordIcon
+              standing={props.result}
+              tournament={props.tournament as Tournament}
+            />
+            <Player name={props.result.name} />
+          </GridItem>
+        )}
 
         <GridItem paddingLeft={2}>
           <Flex justifyContent={'center'}>

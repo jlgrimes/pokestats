@@ -9,6 +9,8 @@ import {
   Th,
   Text,
   Stack,
+  Grid,
+  Box,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
@@ -22,6 +24,13 @@ import { useFinalResults } from '../../hooks/finalResults';
 import { useTournaments } from '../../hooks/tournaments';
 import { Standing } from '../../../types/tournament';
 import { CommonCard } from '../common/CommonCard';
+import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
+import {
+  reallyShortenTournamentName,
+  shortenTournamentName,
+} from '../../lib/tournament';
+import { formatTournamentDate } from '../TournamentList/helpers';
+import { TournamentCard } from '../TournamentList/TournamentCard';
 
 export const PlayerPerformanceList = ({
   user,
@@ -34,6 +43,45 @@ export const PlayerPerformanceList = ({
   });
   const { data: tournaments } = useTournaments();
   const { data: userIsAdmin } = useUserIsAdmin();
+
+  return (
+    <Stack>
+      {tournamentPerformance?.map((performance: Standing, idx) => {
+        if (!performance.tournamentId) return null;
+
+        const tournament = tournaments?.find(
+          ({ id }) => id === performance.tournamentId
+        );
+
+        if (!tournament) return null;
+
+        return (
+          <Grid
+            gridTemplateColumns={'1fr 1fr'}
+            key={`${performance.tournamentId}-${performance.name}`}
+          >
+            <TournamentCard tournament={tournament} />
+            <Box>
+              <PlayerCard
+                player={performance}
+                tournament={tournament}
+                shouldHideDecks={false}
+                canEditDecks
+                shouldHideName
+              />
+            </Box>
+          </Grid>
+          // <CommonCard
+          //   header={reallyShortenTournamentName(tournament)}
+          //   subheader={formatTournamentDate(tournament)}
+          //   ghost
+          //   key={`${performance.tournamentId}-${performance.name}`}
+          // >
+          // </CommonCard>
+        );
+      })}
+    </Stack>
+  );
 
   return (
     <CommonCard header='my tournaments' ghost>
