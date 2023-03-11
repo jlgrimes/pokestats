@@ -22,18 +22,16 @@ import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
 import { Record } from '../../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
 import { OpponentRoundListContent } from './OpponentRoundListContent';
-
-export const OpponentRoundList = ({
-  tournament,
-  player,
-  modalOpen,
-  handleCloseModal,
-}: {
+interface OpponentRoundListProps {
   tournament: Tournament;
   player: Standing;
   modalOpen: boolean;
   handleCloseModal: () => void;
-}) => {
+}
+
+export const OpponentRoundList = (props: OpponentRoundListProps) => {
+  const { tournament, player, modalOpen, handleCloseModal } = props;
+
   const isMobile = useIsMobile();
   const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
 
