@@ -20,10 +20,10 @@ export const getLocalTime = (utcOffsetMinutes: number) => {
   const now = new Date();
 
   if (now.getDay() !== offsetTimezone(now, utcOffsetMinutes).getDay()) {
-    return format(offsetTimezone(now, utcOffsetMinutes), 'eee LLL d K:mm aaa');
+    return format(offsetTimezone(now, utcOffsetMinutes), 'eee LLL d h:mm aaa');
   }
 
-  return format(offsetTimezone(now, utcOffsetMinutes), 'K:mm aaa');
+  return format(offsetTimezone(now, utcOffsetMinutes), 'h:mm aaa');
 };
 
 export const getLocalizedTournamentTime = (
