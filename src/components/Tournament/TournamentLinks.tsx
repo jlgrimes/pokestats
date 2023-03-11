@@ -19,7 +19,10 @@ import {
   useStreamLink,
   useTournamentMetadata,
 } from '../../hooks/tournamentMetadata';
-import { useStreamInfo } from '../../hooks/twitch/useStreamInfo';
+import {
+  ID_MAP_UNREGISTERED,
+  useStreamInfo,
+} from '../../hooks/twitch/useStreamInfo';
 import { useSessionUserProfile, useUserIsInTournament } from '../../hooks/user';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
@@ -31,6 +34,8 @@ export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
 
   const getStreamButtonText = useCallback(() => {
     if (!streamLink) return 'No stream';
+
+    if (streamInfo === ID_MAP_UNREGISTERED) return 'Stream';
 
     if (streamInfo) return 'LIVE';
     return 'Offline';

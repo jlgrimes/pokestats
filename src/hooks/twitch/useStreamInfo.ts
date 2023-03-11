@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+export const ID_MAP_UNREGISTERED = '__id-map_unregistered__';
+
 const streamIdMap: Record<string, number> = {
   pokemontcg: 109828129,
   limitless_tcg: 147518900,
@@ -12,11 +14,9 @@ export const fetchStreamInfo = async (streamUrl: string | null) => {
   }
 
   const channel: string = streamUrl.split('https://www.twitch.tv/')[1];
-  console.log(channel);
   const streamId = streamIdMap[channel];
-  console.log(streamId);
 
-  if (!streamId) return null;
+  if (!streamId) return ID_MAP_UNREGISTERED;
 
   const res = await fetch(
     `https://api.twitch.tv/helix/streams?user_id=${streamId}`,
