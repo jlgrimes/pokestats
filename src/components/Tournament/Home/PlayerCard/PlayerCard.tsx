@@ -36,7 +36,10 @@ export interface PlayerCardProps {
 
 export const PlayerCard = (props: PlayerCardProps) => {
   return (
-    <Card backgroundColor={getResultBackgroundColor(props.result)} width='100%'>
+    <Card
+      backgroundColor={getResultBackgroundColor(props.result)}
+      width='100%'
+    >
       <CardBody
         paddingX={0}
         paddingY={props.size === 'sm' ? 0 : props.size === 'md' ? 1 : 2}

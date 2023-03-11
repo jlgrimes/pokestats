@@ -1,6 +1,7 @@
 import { Box, Divider } from '@chakra-ui/react';
 import { memo } from 'react';
 import { Standing, Tournament } from '../../../../types/tournament';
+import { PlayerCard } from '../../Tournament/Home/PlayerCard/PlayerCard';
 import { StandingsRowExpandable } from './StandingsRowExpandable';
 
 interface VirtualizedRowProps {
@@ -15,12 +16,13 @@ interface VirtualizedRowProps {
 export const VirtualizedRow = memo((props: VirtualizedRowProps) => {
   return (
     <Box style={props.style}>
-      <Divider marginBottom={2} />
-      <StandingsRowExpandable
-        result={props.standing}
+      <PlayerCard
+        player={props.standing}
         tournament={props.tournament}
+        shouldHideDecks={props.shouldHideDeck}
         canEditDecks={props.canEditDecks}
-        shouldHideDeck={props.shouldHideDeck}
+        size='sm'
+        shouldHideOpponent
       />
     </Box>
   );
