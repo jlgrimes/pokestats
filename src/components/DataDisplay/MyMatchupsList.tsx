@@ -1,24 +1,7 @@
-import {
-  TableContainer,
-  Table,
-  Tbody,
-  Tr,
-  Thead,
-  Th,
-  Stack,
-  HStack,
-  Box,
-  Heading,
-  Grid,
-} from '@chakra-ui/react';
 import { usePlayerLiveResults } from '../../hooks/tournamentResults';
 import { Tournament } from '../../../types/tournament';
 import { memo, useMemo } from 'react';
-import { MyMatchupRow } from './MyMatchupRow';
-import { StandingsRow } from './Standings/StandingsRow';
-import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
-import { StatsHeading } from '../common/StatsHeading';
-import { getResultBackgroundColor } from './helpers';
+import { RoundsList } from './RoundsList';
 
 export const MyMatchupsList = memo(
   ({
@@ -36,40 +19,13 @@ export const MyMatchupsList = memo(
       }
     );
 
-    const rounds = useMemo(() => player?.rounds?.reverse(), [player?.rounds]);
-
-    return (
-      <Stack spacing={rounds && rounds.length > 9 ? 1 : 2}>
-        {rounds?.map(
-          (round, idx) =>
-            round?.opponent && (
-              <Grid
-                gridTemplateColumns='30px auto'
-                key={idx}
-                alignItems='center'
-              >
-                <Box display='flex' justifyContent={'center'}>
-                  <StatsHeading
-                    headingProps={{ color: 'gray.600', fontSize: 'lg' }}
-                  >
-                    {(rounds?.length ?? 0) - idx}
-                  </StatsHeading>
-                </Box>
-                <Box flexGrow={1}>
-                  <PlayerCard
-                    player={round.opponent}
-                    tournament={tournament}
-                    shouldHideDecks={shouldHideDecks}
-                    shouldHideStanding
-                    canEditDecks={!round.opponent.deck?.name}
-                    size={rounds.length < 10 ? 'lg' : 'sm'}
-                  />
-                </Box>
-              </Grid>
-            )
-        )}
-      </Stack>
-    );
+    return player?.rounds ? (
+      <RoundsList
+        rounds={player.rounds}
+        tournament={tournament}
+        shouldHideDecks={!!shouldHideDecks}
+      />
+    ) : null;
   }
 );
 
