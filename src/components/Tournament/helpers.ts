@@ -6,7 +6,7 @@ export const getRoundText = (tournament: Tournament) => {
   if (tournament.topCutStatus === 'top4') return 'Top 4';
   if (tournament.topCutStatus === 'finals') return 'Finals';
 
-  return `Round ${tournament.roundNumbers.masters}`;
+  return `Round ${tournament.roundNumbers.masters ?? ''}`;
 };
 
 export const getStandingsBadgeProps = (tournament: Tournament): BadgeProps => {
