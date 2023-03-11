@@ -3,13 +3,18 @@ import { useQuery } from '@tanstack/react-query';
 const streamIdMap: Record<string, number> = {
   pokemontcg: 109828129,
   limitless_tcg: 147518900,
+  gamescopag: 698723542,
 };
 
 export const fetchStreamInfo = async (streamUrl: string | null) => {
-  if (!streamUrl || streamUrl.includes('https://www.twitch.tv/')) return null;
+  if (!streamUrl || !streamUrl.includes('https://www.twitch.tv/')) {
+    return null;
+  }
 
   const channel: string = streamUrl.split('https://www.twitch.tv/')[1];
+  console.log(channel);
   const streamId = streamIdMap[channel];
+  console.log(streamId);
 
   if (!streamId) return null;
 
