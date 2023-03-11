@@ -45,7 +45,7 @@ export const PlayerPerformanceList = ({
   const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
-    <Stack>
+    <Stack spacing={4}>
       {tournamentPerformance?.map((performance: Standing, idx) => {
         if (!performance.tournamentId) return null;
 
@@ -56,7 +56,7 @@ export const PlayerPerformanceList = ({
         if (!tournament) return null;
 
         return (
-          <Grid
+          <Stack
             gridTemplateColumns={'1fr 1fr'}
             key={`${performance.tournamentId}-${performance.name}`}
           >
@@ -67,11 +67,9 @@ export const PlayerPerformanceList = ({
                 tournament={tournament}
                 shouldHideDecks={false}
                 canEditDecks
-                shouldHideName
-                shouldHideStanding
               />
             </Box>
-          </Grid>
+          </Stack>
           // <CommonCard
           //   header={reallyShortenTournamentName(tournament)}
           //   subheader={formatTournamentDate(tournament)}
