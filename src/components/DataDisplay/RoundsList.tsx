@@ -15,7 +15,7 @@ export const RoundsList = (props: RoundsListProps) => {
 
   return (
     <Stack spacing={rounds && rounds.length > 9 ? 1 : 2}>
-      {rounds?.map(
+      {rounds?.reverse()?.map(
         (round, idx) =>
           round?.opponent && (
             <Grid gridTemplateColumns='30px auto' key={idx} alignItems='center'>
