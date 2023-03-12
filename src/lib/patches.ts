@@ -68,14 +68,7 @@ export const getPatchedTournament = async (
       : tournamentFromApi.tournamentStatus,
     topCutStatus,
     hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,
-    subStatus:
-      tournamentFromApi.roundNumbers.masters === 9 &&
-      liveResults?.data.every(player => {
-        console.log(player.rounds);
-        return player.rounds && player.rounds?.length <= 9;
-      })
-        ? 'after-day-one'
-        : null,
+    subStatus: getTournamentSubStatus(tournamentFromApi),
   };
 
   return patchedTournament;
