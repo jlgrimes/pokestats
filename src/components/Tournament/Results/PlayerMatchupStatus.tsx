@@ -123,14 +123,14 @@ export const PlayerMatchupStatus = ({
           )}
         </Stack>
       </Stack>
-      {!tournamentFinished && (
+      {/* {!tournamentFinished && (
         <RecordNeeded
           record={playerResults.record}
           objective='day 2'
           matchPointsNeeded={19}
           roundsLeft={9 - (playerResults.rounds?.length ?? 0)}
         />
-      )}
+      )} */}
     </Stack>
   ) : (
     renderLoadingSkeleton()
