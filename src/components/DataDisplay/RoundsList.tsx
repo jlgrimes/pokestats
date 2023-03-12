@@ -9,6 +9,7 @@ interface RoundsListProps {
   tournament: Tournament;
   shouldHideDecks: boolean;
   shouldDisableOpponentModal?: boolean;
+  canEditDecks?: boolean;
 }
 
 export const RoundsList = (props: RoundsListProps) => {
@@ -33,7 +34,9 @@ export const RoundsList = (props: RoundsListProps) => {
                   tournament={props.tournament}
                   shouldHideDecks={props.shouldHideDecks}
                   shouldHideStanding
-                  canEditDecks={!round.opponent.deck?.name}
+                  canEditDecks={
+                    props.canEditDecks && !round.opponent.deck?.name
+                  }
                   size={rounds.length < 10 ? 'md' : 'sm'}
                   shouldHideOpponent
                   shouldDisableOpponentModal={props.shouldDisableOpponentModal}

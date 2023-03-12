@@ -24,6 +24,7 @@ export const MyMatchupsList = memo(
         rounds={player.rounds}
         tournament={tournament}
         shouldHideDecks={!!shouldHideDecks}
+        canEditDecks
       />
     ) : null;
   }
