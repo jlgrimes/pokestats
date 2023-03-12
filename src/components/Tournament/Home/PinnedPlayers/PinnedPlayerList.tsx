@@ -92,7 +92,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   )
     return null;
 
-  if (!props.isCompact && resultsAreLoading)
+  if (props.isCompact && resultsAreLoading)
     return <ComponentLoader isLiveComponent />;
 
   return (
@@ -104,7 +104,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       smallHeader={props.isCompact}
     >
       <Stack>
-        {(props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
+        {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
           <ComponentLoader isLiveComponent />
         ) : (
           pinnedPlayers.map(
