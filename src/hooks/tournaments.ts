@@ -72,12 +72,12 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   }
 
   // Add "after day one" tournament status
-  data = data.map(tournament => {
-    return {
-      ...tournament,
-      subStatus: getTournamentSubStatus(tournament),
-    };
-  });
+  // data = data.map(tournament => {
+  //   return {
+  //     ...tournament,
+  //     subStatus: getTournamentSubStatus(tournament),
+  //   };
+  // });
 
   return data.slice().reverse();
 };
