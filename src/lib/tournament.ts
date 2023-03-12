@@ -1,5 +1,6 @@
 import { getYear, parseISO } from 'date-fns';
 import { Standing, Tournament } from '../../types/tournament';
+import { Player } from './fetch/fetchLiveResults';
 
 export const shortenTournamentName = (tournament: Tournament) => {
   const tournamentStartYear = getYear(parseISO(tournament.date.start));
@@ -97,7 +98,7 @@ export const getTournamentRoundSchema = (numberOfPlayers: number) =>
       numberOfPlayers < schema.playerRange[1]
   );
 
-export const ifPlayerDay2 = (player: Standing, tournament: Tournament) => {
+export const ifPlayerDay2 = (player: Standing | Player, tournament: Tournament) => {
   if (!tournament.players.masters || !tournament.roundNumbers.masters)
     return false;
 

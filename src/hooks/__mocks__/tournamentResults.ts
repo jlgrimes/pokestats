@@ -3,10 +3,15 @@ import { Standing } from '../../../types/tournament';
 const FAKE_PLAYER: Standing = {
   name: 'Jared Grimes',
   placing: 1,
+  deck: {
+    id: 2,
+    name: 'Lost Box Kyogre',
+    defined_pokemon: ['Comfey', 'Kyogre'],
+  },
   record: {
-    wins: 3,
+    wins: 5,
     ties: 0,
-    losses: 1,
+    losses: 4,
   },
   rounds: [
     {
@@ -20,7 +25,7 @@ const FAKE_PLAYER: Standing = {
           ties: 0,
           losses: 4,
         },
-      }
+      },
     },
   ],
 };

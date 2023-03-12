@@ -12,6 +12,7 @@ import { fetchTournaments } from '../../hooks/tournaments';
 import supabase from '../supabase/client';
 import {
   getTournamentRoundSchema,
+  ifPlayerDay2,
   TournamentRoundMapSchema,
 } from '../tournament';
 import { getPokedataStandingsUrl } from '../url';
@@ -142,7 +143,7 @@ export const getPlayerDeckObjects = async (
   return mappedDecks;
 };
 
-interface Player {
+export interface Player {
   name: string;
   placing: number;
   record: { wins: number; losses: number; ties: number };
@@ -225,14 +226,14 @@ function mapResultsArray(
   roundNumber: number,
   playerDeckObjects: PlayerDeckObject[] | undefined,
   deckArchetypes: Deck[] | null,
-  tournamentStatus: TournamentStatus,
+  tournament: Tournament,
   shouldLoad?: LiveResultsLoadOptions
 ): Standing[] {
   const perfStart = performance.now();
 
   const mappedArray: Standing[] = resultsArray.map((player: Player) => {
     const currentMatchResult = player.rounds[roundNumber]?.result;
-    const day2 = player.record.wins * 3 + player.record.ties >= 19;
+    const day2 = ifPlayerDay2(player, tournament);
 
     const currentOpponentName = player.rounds[roundNumber]?.name;
     const currentOpponentPlayer =
@@ -241,7 +242,7 @@ function mapResultsArray(
       ) ?? {};
 
     const currentOpponent =
-      tournamentStatus === 'running' && player.rounds[roundNumber]
+      tournament.tournamentStatus === 'running' && player.rounds[roundNumber]
         ? {
             ...currentOpponentPlayer,
             deck: getPlayerDeck(
@@ -396,7 +397,7 @@ export const fetchLiveResults = async (
     roundNumber,
     playerDeckObjects,
     deckArchetypes,
-    tournament.tournamentStatus,
+    tournament,
     options?.load
   );
   const endTime = performance.now();
