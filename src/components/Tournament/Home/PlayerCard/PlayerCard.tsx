@@ -9,7 +9,7 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { FaHeartBroken } from 'react-icons/fa';
 import {
   MatchResult,
@@ -35,29 +35,39 @@ export interface PlayerCardProps {
   shouldHideOpponent?: boolean;
   shouldDisableOpponentModal?: boolean;
   result?: MatchResult;
+  shouldMoveResultLast?: boolean;
 }
 
 export const PlayerCard = (props: PlayerCardProps) => {
+  const ResultLetter = () => (
+    <Box
+      display='flex'
+      justifyContent={props.shouldMoveResultLast ? 'center' : 'left'}
+      alignItems='center'
+    >
+      <StatsHeading
+        headingProps={{
+          color: getResultBackgroundColor(props.result).replace('100', '500'),
+          fontSize: 'lg',
+        }}
+      >
+        {props.result}
+      </StatsHeading>
+    </Box>
+  );
+
   return (
     <Grid
       width='100%'
-      gridTemplateColumns={props.result ? '25px auto' : 'auto'}
+      gridTemplateColumns={
+        props.result
+          ? props.shouldMoveResultLast
+            ? 'auto 25px'
+            : '25px auto'
+          : 'auto'
+      }
     >
-      {props.result && (
-        <Box display='flex' justifyContent={'left'} alignItems='center'>
-          <StatsHeading
-            headingProps={{
-              color: getResultBackgroundColor(props.result).replace(
-                '100',
-                '500'
-              ),
-              fontSize: 'lg',
-            }}
-          >
-            {props.result}
-          </StatsHeading>
-        </Box>
-      )}
+      {props.result && !props.shouldMoveResultLast && <ResultLetter />}
       <Card
         backgroundColor={getResultBackgroundColor(props.result)}
         width='100%'
@@ -106,6 +116,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
           </Stack>
         </CardBody>
       </Card>
+      {props.result && props.shouldMoveResultLast && <ResultLetter />}
     </Grid>
   );
 };

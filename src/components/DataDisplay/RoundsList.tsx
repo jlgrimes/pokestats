@@ -19,11 +19,7 @@ export const RoundsList = (props: RoundsListProps) => {
       {rounds.map(
         (round, idx) =>
           round?.opponent && (
-            <Grid
-              gridTemplateColumns='25px auto'
-              key={idx}
-              alignItems='center'
-            >
+            <Grid gridTemplateColumns='25px auto' key={idx} alignItems='center'>
               <Box display='flex' justifyContent={'center'}>
                 <StatsHeading
                   headingProps={{ color: 'gray.600', fontSize: 'lg' }}
@@ -42,6 +38,7 @@ export const RoundsList = (props: RoundsListProps) => {
                   shouldHideOpponent
                   shouldDisableOpponentModal={props.shouldDisableOpponentModal}
                   result={round.result}
+                  shouldMoveResultLast
                 />
               </Box>
             </Grid>
