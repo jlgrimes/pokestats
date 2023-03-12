@@ -1,8 +1,9 @@
-import { Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { Banner } from '../common/Banner';
+import { StatsHeading } from '../common/StatsHeading';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
 import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';
@@ -28,10 +29,22 @@ export default function TournamentView({
     decksVisible: [],
   });
 
-  const { data: liveResults } = useLiveTournamentResults(tournament.id, {
-    load: { allRoundData: true },
-    filters: standingsFilters,
-  });
+  const { data: liveResults, isLoading } = useLiveTournamentResults(
+    tournament.id,
+    {
+      load: { allRoundData: true },
+      filters: standingsFilters,
+    }
+  );
+
+  if (!isLoading && liveResults?.data.length === 0)
+    return (
+      <Flex justifyContent={'center'} alignItems='center' padding='6'>
+        <Heading size='md' color='gray.600'>
+          {`Sorry, we're unable to retrieve standings right now. Please try again later.`}
+        </Heading>
+      </Flex>
+    );
 
   return (
     <Stack height='100%'>
