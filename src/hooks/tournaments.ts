@@ -23,6 +23,15 @@ interface FetchTournamentsOptions {
   tournamentId?: string;
 }
 
+export const getTournamentSubStatus = (tournament: Tournament) => {
+  const afterDayOne =
+    tournament.lastUpdated &&
+    tournament.roundNumbers.masters === 9 &&
+    differenceInHours(new Date(tournament.lastUpdated), new Date()) >= 1;
+
+  return afterDayOne ? 'after-day-one' : null;
+};
+
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   const url = options?.prefetch
     ? 'https://pokedata.ovh/standings/tournaments.json'
@@ -64,14 +73,9 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
 
   // Add "after day one" tournament status
   data = data.map(tournament => {
-    const afterDayOne =
-      tournament.lastUpdated &&
-      tournament.roundNumbers.masters === 9 &&
-      differenceInHours(new Date(tournament.lastUpdated), new Date()) >= 1;
-
     return {
       ...tournament,
-      subStatus: afterDayOne ? 'after-day-one' : null,
+      subStatus: getTournamentSubStatus(tournament),
     };
   });
 

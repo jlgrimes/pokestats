@@ -3,6 +3,7 @@
 import { differenceInDays, differenceInHours, parseISO } from 'date-fns';
 import { Tournament } from '../../types/tournament';
 import { tournamentFallsOnCurrentDate } from '../components/TournamentList/helpers';
+import { getTournamentSubStatus } from '../hooks/tournaments';
 import {
   fetchLiveResults,
   getTopCutStatus,
@@ -67,6 +68,7 @@ export const getPatchedTournament = async (
       : tournamentFromApi.tournamentStatus,
     topCutStatus,
     hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,
+    subStatus: getTournamentSubStatus(tournamentFromApi),
   };
 
   return patchedTournament;
