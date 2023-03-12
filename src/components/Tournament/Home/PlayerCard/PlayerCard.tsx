@@ -41,8 +41,23 @@ export const PlayerCard = (props: PlayerCardProps) => {
   return (
     <Grid
       width='100%'
-      gridTemplateColumns={props.result ? 'auto 25px' : 'auto'}
+      gridTemplateColumns={props.result ? '25px auto' : 'auto'}
     >
+      {props.result && (
+        <Box display='flex' justifyContent={'left'} alignItems='center'>
+          <StatsHeading
+            headingProps={{
+              color: getResultBackgroundColor(props.result).replace(
+                '100',
+                '500'
+              ),
+              fontSize: 'lg',
+            }}
+          >
+            {props.result}
+          </StatsHeading>
+        </Box>
+      )}
       <Card
         backgroundColor={getResultBackgroundColor(props.result)}
         width='100%'
@@ -91,21 +106,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
           </Stack>
         </CardBody>
       </Card>
-      {props.result && (
-        <Box display='flex' justifyContent={'center'} alignItems='center'>
-          <StatsHeading
-            headingProps={{
-              color: getResultBackgroundColor(props.result).replace(
-                '100',
-                '500'
-              ),
-              fontSize: 'lg',
-            }}
-          >
-            {props.result}
-          </StatsHeading>
-        </Box>
-      )}
     </Grid>
   );
 };
