@@ -36,7 +36,6 @@ export const StandingsList = memo(
 
     const WindowCallback = useCallback(
       ({ height, width }: { height: number; width: number }) => {
-        console.log('rendered');
         return (
           <List
             height={height}

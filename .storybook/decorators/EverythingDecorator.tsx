@@ -10,7 +10,14 @@ import { SessionProvider } from 'next-auth/react';
 
 export default function EverythingDecorator(Story: any) {
   return (
-    <SessionProvider session={null}>
+    <SessionProvider
+      session={{
+        user: {
+          name: 'Jared Grimes',
+        },
+        expires: 'never',
+      }}
+    >
       <AppLayout>
         <Story />
       </AppLayout>

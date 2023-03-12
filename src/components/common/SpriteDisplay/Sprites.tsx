@@ -17,10 +17,11 @@ export const Sprites = memo((props: SpritesProps) => (
       {!props.pokemonNames || props.pokemonNames.length === 0 ? (
         <Flex justifyContent={'center'}>
           <Image
-            height='38px'
+            height='30px'
             src={getLowResUnownUrl()}
             alt='Unown'
             className='pixel-image'
+            transform={'scale(1.5)'}
           />
         </Flex>
       ) : props.hidden ? (

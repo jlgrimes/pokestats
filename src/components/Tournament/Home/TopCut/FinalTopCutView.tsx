@@ -3,9 +3,6 @@ import { useMemo } from 'react';
 import { FaTrophy } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
-import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
-import { CommonCard } from '../../../common/CommonCard';
-import { PlayerCard } from '../PlayerCard/PlayerCard';
 import { TopCutView } from './TopCutView';
 
 interface TopCutViewProps {

@@ -19,20 +19,21 @@ import {
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
-import { PlayerCard } from '../PlayerCard/PlayerCard';
+import { PlayerCard, PlayerCardProps } from '../PlayerCard/PlayerCard';
 
-interface PinnedPlayerCardProps {
+interface PinnedPlayerCardProps extends PlayerCardProps {
   player: Standing;
   tournament: Tournament;
   shouldHideDecks: boolean | undefined;
   isEditingPinned: boolean;
   isDeckLoading?: boolean;
+  shouldHideOpponent?: boolean;
 }
 
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   const session = useSession();
   const toast = useToast();
-  const { refetch } = usePinnedPlayers(props.tournament.id);
+  const { refetch } = usePinnedPlayers();
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const onUnpinPlayer = useCallback(async () => {
@@ -62,11 +63,15 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   return (
     <HStack>
       <PlayerCard
-        player={props.player}
-        tournament={props.tournament}
-        shouldHideDecks={props.shouldHideDecks}
         canEditDecks={userIsAdmin}
         onUnpinPlayer={onUnpinPlayer}
+        shouldHideOpponent={props.shouldHideOpponent}
+        result={
+          props.tournament.tournamentStatus === 'running'
+            ? props.player.currentMatchResult
+            : undefined
+        }
+        {...props}
       />
       {props.isEditingPinned && (
         <IconButton

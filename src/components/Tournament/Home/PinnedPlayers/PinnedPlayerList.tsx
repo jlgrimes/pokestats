@@ -28,20 +28,28 @@ import { PinPlayerModal } from './PinPlayerModal';
 
 interface PinnedPlayerListProps {
   tournament: Tournament;
+  isCompact?: boolean;
 }
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const session = useSession();
-  const { data: pinnedPlayerNames } = usePinnedPlayers(props.tournament.id);
+  const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
+    usePinnedPlayers();
 
-  const { data: tournamentPerformance } = useFinalResults({
-    tournamentId: props.tournament.id,
-  });
+  const { data: tournamentPerformance, isLoading: areFinalResultsLoading } =
+    useFinalResults({
+      tournamentId: props.tournament.id,
+    });
 
   const { data: liveTournamentResults, isLoading } = useLiveTournamentResults(
     props.tournament.id,
     { load: { allRoundData: true } }
   );
+  const resultsAreLoading =
+    (props.tournament.tournamentStatus === 'running' && isLoading) ||
+    (props.tournament.tournamentStatus === 'finished' &&
+      areFinalResultsLoading);
+
   const pinnedPlayers = pinnedPlayerNames
     ?.map(name => {
       const finalStanding = tournamentPerformance?.find(
@@ -76,15 +84,29 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const addPinPlayerModalControls = useDisclosure();
   const editPinnedPlayers = useDisclosure();
 
+  if (
+    props.isCompact &&
+    pinnedPlayers?.filter(player => player)?.length === 0 &&
+    !arePinnedPlayersLoading &&
+    !resultsAreLoading
+  )
+    return null;
+
+  if (props.isCompact && resultsAreLoading)
+    return <ComponentLoader isLiveComponent />;
+
   return (
     <CommonCard
       header='Favorites'
       leftIcon={<Icon color='pink.500' as={FaHeart} />}
       ghost
+      shouldRemovePadding={props.isCompact}
+      smallHeader={props.isCompact}
     >
       <Stack>
-        {pinnedPlayers &&
-        !(props.tournament.tournamentStatus === 'running' && isLoading) ? (
+        {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
+          <ComponentLoader isLiveComponent />
+        ) : (
           pinnedPlayers.map(
             pinnedPlayer =>
               pinnedPlayer && (
@@ -95,38 +117,40 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                   shouldHideDecks={liveTournamentResults?.shouldHideDecks}
                   isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
                   isEditingPinned={editPinnedPlayers.isOpen}
+                  shouldHideOpponent={props.isCompact}
+                  size={props.isCompact ? 'md' : 'lg'}
                 />
               )
           )
-        ) : (
-          <ComponentLoader isLiveComponent />
         )}
-        <HStack justifyContent={'space-around'}>
-          <Button
-            variant='ghost'
-            leftIcon={<FaPlus />}
-            onClick={addPinPlayerModalControls.onOpen}
-            isDisabled={props.tournament.tournamentStatus === 'not-started'}
-            size={'sm'}
-            colorScheme='blackAlpha'
-          >
-            Add favorite player
-          </Button>
-          {pinnedPlayers && pinnedPlayers.length > 0 && (
+        {!props.isCompact && (
+          <HStack justifyContent={'space-around'}>
             <Button
               variant='ghost'
-              leftIcon={<FaRegEdit />}
-              onClick={editPinnedPlayers.onToggle}
+              leftIcon={<FaPlus />}
+              onClick={addPinPlayerModalControls.onOpen}
               isDisabled={props.tournament.tournamentStatus === 'not-started'}
               size={'sm'}
-              colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
+              colorScheme='blackAlpha'
             >
-              {editPinnedPlayers.isOpen
-                ? 'Stop editing'
-                : 'Edit favorite players'}
+              Add favorite player
             </Button>
-          )}
-        </HStack>
+            {pinnedPlayers && pinnedPlayers.length > 0 && (
+              <Button
+                variant='ghost'
+                leftIcon={<FaRegEdit />}
+                onClick={editPinnedPlayers.onToggle}
+                isDisabled={props.tournament.tournamentStatus === 'not-started'}
+                size={'sm'}
+                colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
+              >
+                {editPinnedPlayers.isOpen
+                  ? 'Stop editing'
+                  : 'Edit favorite players'}
+              </Button>
+            )}
+          </HStack>
+        )}
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}

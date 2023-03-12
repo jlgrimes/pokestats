@@ -22,6 +22,10 @@ export const formatTournamentStatus = (
   tournament: Tournament,
   utcOffset?: number
 ) => {
+  if (tournament.subStatus === 'after-day-one') {
+    return 'End of day one';
+  }
+
   if (tournament.tournamentStatus === 'finished') {
     return 'Completed';
   }
@@ -45,16 +49,33 @@ export const formatTournamentStatus = (
 export const getTournamentStatusBadgeProps = (
   tournament: Tournament
 ): BadgeProps => {
-  if (tournament.tournamentStatus === 'finished') {
-    return {};
+  if (tournament.subStatus === 'after-day-one') {
+    return {
+      variant: 'solid',
+      colorScheme: 'green',
+      opacity: 0.6,
+    };
   }
 
   if (tournament.tournamentStatus === 'running') {
-    return { colorScheme: 'green', variant: 'solid' };
+    return {
+      variant: 'solid',
+      colorScheme: 'green',
+    };
   }
 
   if (tournament.tournamentStatus === 'not-started') {
-    return { colorScheme: 'purple' };
+    return {
+      variant: 'solid',
+      colorScheme: 'purple',
+    };
+  }
+
+  if (tournament.tournamentStatus === 'finished') {
+    return {
+      variant: 'solid',
+      colorScheme: 'blackAlpha',
+    };
   }
 
   return {};

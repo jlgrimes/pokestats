@@ -75,6 +75,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         paddingRight={1}
         alignItems='center'
         textColor={props.translucent ? 'gray.400' : 'auto'}
+        minHeight='41px'
       >
         {!props.shouldHideStanding && (
           <GridItem paddingLeft={0} paddingRight={2}>
@@ -133,7 +134,6 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           </Flex>
         </GridItem>
         <Stack
-          backgroundColor={getStandingsCellResultBackgroundColor()}
           height='100%'
           alignItems={'end'}
           justifyContent='center'

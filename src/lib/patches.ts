@@ -1,8 +1,9 @@
 // these are all the functions to use when the API is wrong
 
-import { differenceInDays, parseISO } from 'date-fns';
+import { differenceInDays, differenceInHours, parseISO } from 'date-fns';
 import { Tournament } from '../../types/tournament';
 import { tournamentFallsOnCurrentDate } from '../components/TournamentList/helpers';
+import { getTournamentSubStatus } from '../hooks/tournaments';
 import {
   fetchLiveResults,
   getTopCutStatus,
@@ -53,6 +54,11 @@ export const getPatchedTournament = async (
       liveResults.data &&
       liveResults.data.length > 0);
 
+  const afterDayOne =
+    tournamentFromApi.lastUpdated &&
+    tournamentFromApi.roundNumbers.masters === 9 &&
+    differenceInHours(new Date(tournamentFromApi.lastUpdated), new Date()) >= 1;
+
   const patchedTournament: Tournament = {
     ...tournamentFromApi,
     tournamentStatus: tournamentShouldBeRunning
@@ -62,6 +68,7 @@ export const getPatchedTournament = async (
       : tournamentFromApi.tournamentStatus,
     topCutStatus,
     hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,
+    subStatus: getTournamentSubStatus(tournamentFromApi),
   };
 
   return patchedTournament;

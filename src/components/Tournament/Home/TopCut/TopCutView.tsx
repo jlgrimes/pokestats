@@ -34,6 +34,11 @@ export const TopCutView = (props: TopCutViewProps) => {
                   tournament={props.tournament}
                   shouldHideDecks={false}
                   topCut
+                  result={
+                    props.tournament.tournamentStatus === 'running'
+                      ? player.currentMatchResult
+                      : undefined
+                  }
                 />
               )
           )}

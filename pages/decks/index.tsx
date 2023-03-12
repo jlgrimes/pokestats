@@ -1,4 +1,4 @@
-import { Button, Stack, StackItem, Switch, Text } from '@chakra-ui/react';
+import { Box, Button, Stack, StackItem, Switch, Text } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { DateRangeSlider } from '../../src/components/Deck/Analytics/Filter/DateRangeSlider';
@@ -110,10 +110,10 @@ export default function DecksPage({
           sortByMoves={sortByMoves}
           shouldHideSlug
         />
-        <Text paddingTop={4}>
+        <Box paddingX={4} paddingTop={4}>
           Includes all reported and RK9 confirmed decks for day two of the
           tournament. Reported decks may be inaccurate.
-        </Text>
+        </Box>
       </Stack>
     </>
   );

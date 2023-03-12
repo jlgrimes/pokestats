@@ -45,9 +45,11 @@ export interface PlayerResistances {
   oppopp: number;
 }
 
+export type MatchResult = 'W' | 'L' | 'T';
+
 export interface PlayerRound {
   name: string;
-  result: 'W' | 'L' | 'T';
+  result: MatchResult;
   opponent?: Standing;
 }
 
@@ -57,7 +59,7 @@ export interface Standing {
   placing: number;
   record: PlayerRecord;
   resistances?: PlayerResistances;
-  currentMatchResult?: 'W' | 'L' | 'T';
+  currentMatchResult?: MatchResult;
   rounds?: PlayerRound[];
   day2?: boolean;
   outOfDay2?: boolean;
@@ -97,4 +99,5 @@ export interface Tournament {
   };
   lastUpdated: string | null;
   rk9link: string;
+  subStatus: 'after-day-one' | 'lunch-time' | null;
 }
