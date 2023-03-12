@@ -49,10 +49,10 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
     >
       <Stack spacing={1} alignItems='center'>
         <HStack>
-          {props.tournament.afterDayOne && <Icon as={IoMdMoon} />}
           <StatsHeading>
             {formatTournamentStatus(props.tournament, utcOffset)}
           </StatsHeading>
+          {props.tournament.afterDayOne && <Icon as={FaBed} />}
         </HStack>
         {shouldShowLocalTime && (
           <StatsHeading headingProps={{ fontSize: 13, fontWeight: 'bold' }}>
