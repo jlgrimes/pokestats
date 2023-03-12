@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { Banner } from '../common/Banner';
+import { FullPageLoader } from '../common/FullPageLoader';
 import { StatsHeading } from '../common/StatsHeading';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
@@ -36,6 +37,8 @@ export default function TournamentView({
       filters: standingsFilters,
     }
   );
+
+  if (isLoading) return <FullPageLoader />;
 
   if (!isLoading && liveResults?.data.length === 0)
     return (

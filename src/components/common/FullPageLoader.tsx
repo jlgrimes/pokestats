@@ -8,8 +8,8 @@ export const FullPageLoader = () => (
     display={'flex'}
     justifyContent='center'
     width='100%'
-    color='gray.500'
+    opacity={0.4}
   >
-    <PropagateLoader color='#63b3ed' />
+    <PropagateLoader />
   </Box>
 );
