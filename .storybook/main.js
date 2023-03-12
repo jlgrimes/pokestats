@@ -16,4 +16,8 @@ module.exports = {
     'storybook-addon-manual-mocks'
   ],
   "framework": "@storybook/react",
+  webpackFinal: (config) => {
+    config.resolve.alias['next-auth/react'] = require.resolve('../__mocks__/next-auth.ts');
+    return config;
+  },
 }
