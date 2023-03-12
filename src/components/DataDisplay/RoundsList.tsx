@@ -1,7 +1,8 @@
-import { Box, Grid, Stack } from '@chakra-ui/react';
+import { Box, Flex, Grid, HStack, Stack } from '@chakra-ui/react';
 import { PlayerRound, Standing, Tournament } from '../../../types/tournament';
 import { StatsHeading } from '../common/StatsHeading';
 import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
+import { getResultBackgroundColor } from './helpers';
 
 interface RoundsListProps {
   rounds: PlayerRound[];
@@ -14,11 +15,15 @@ export const RoundsList = (props: RoundsListProps) => {
   const rounds = props.rounds.slice().reverse();
 
   return (
-    <Stack spacing={rounds && rounds.length > 9 ? 1 : 2} paddingRight='2'>
+    <Stack spacing={rounds && rounds.length > 9 ? 1 : 2}>
       {rounds.map(
         (round, idx) =>
           round?.opponent && (
-            <Grid gridTemplateColumns='30px auto' key={idx} alignItems='center'>
+            <Grid
+              gridTemplateColumns='25px auto'
+              key={idx}
+              alignItems='center'
+            >
               <Box display='flex' justifyContent={'center'}>
                 <StatsHeading
                   headingProps={{ color: 'gray.600', fontSize: 'lg' }}
