@@ -52,6 +52,35 @@ export const usePinnedPlayers = (tournamentId?: string) => {
   };
 };
 
+export const useMostPopularPinned = () => {
+  const { data: pinnedPlayers } = useAllPinnedPlayers();
+
+  const popular: Record<string, number> | undefined = pinnedPlayers?.reduce(
+    (acc: Record<string, number>, curr) => {
+      if (acc[curr.pinned_player_name]) {
+        return {
+          ...acc,
+          [curr.pinned_player_name]: acc[curr.pinned_player_name] + 1,
+        };
+      }
+
+      return {
+        ...acc,
+        [curr.pinned_player_name]: 1,
+      };
+    },
+    {}
+  );
+
+  if (!popular) return null;
+
+  return Object.entries(popular).sort((a, b) => {
+    if (a[1] < b[1]) return 1;
+    if (a[1] > b[1]) return -1;
+    return 0;
+  });
+};
+
 export const deletePinnedPlayer = async (
   userEmail: string,
   pinnedPlayerToRemove: string
