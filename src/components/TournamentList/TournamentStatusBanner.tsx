@@ -10,7 +10,8 @@ import {
   Text,
   Icon,
 } from '@chakra-ui/react';
-import { FaGlobeAmericas } from 'react-icons/fa';
+import { FaBed, FaGlobeAmericas, FaMoon } from 'react-icons/fa';
+import { IoMdMoon } from 'react-icons/io';
 import { Tournament } from '../../../types/tournament';
 import {
   LocationDataSchema,
@@ -32,31 +33,6 @@ interface TournamentStatusBannerProps {
 export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
   const utcOffset = useUtcOffset(props.tournament.id);
 
-  const getButtonProps = (): Partial<ButtonProps> => {
-    if (props.tournament.tournamentStatus === 'running') {
-      return {
-        variant: 'solid',
-        colorScheme: 'green',
-      };
-    }
-
-    if (props.tournament.tournamentStatus === 'not-started') {
-      return {
-        variant: 'solid',
-        colorScheme: 'purple',
-      };
-    }
-
-    if (props.tournament.tournamentStatus === 'finished') {
-      return {
-        variant: 'solid',
-        colorScheme: 'blackAlpha',
-      };
-    }
-
-    return {};
-  };
-
   const shouldShowLocalTime =
     props.tournament.tournamentStatus === 'running' &&
     props.location &&
@@ -68,11 +44,12 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
     <Button
       width='100%'
       borderRadius={{ base: 0, sm: '3xl' }}
-      {...getButtonProps()}
+      {...getTournamentStatusBadgeProps(props.tournament)}
       size={shouldShowLocalTime ? 'lg' : 'md'}
     >
       <Stack spacing={1} alignItems='center'>
         <HStack>
+          {props.tournament.afterDayOne && <Icon as={IoMdMoon} />}
           <StatsHeading>
             {formatTournamentStatus(props.tournament, utcOffset)}
           </StatsHeading>

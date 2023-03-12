@@ -1,13 +1,14 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import {
   addDays,
+  differenceInHours,
   isAfter,
   isBefore,
   isWithinInterval,
   parseISO,
 } from 'date-fns';
 import { useState } from 'react';
-import { Tournament } from '../../types/tournament';
+import { Tournament, TournamentStatus } from '../../types/tournament';
 import { tournamentHasArrivedButNotLive } from '../components/TournamentList/helpers';
 import { patchTournamentsClient } from '../lib/patches';
 import {
@@ -60,6 +61,19 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   if (options?.tournamentId) {
     data = data.filter(tournament => tournament.id === options.tournamentId);
   }
+
+  // Add "after day one" tournament status
+  data = data.map(tournament => {
+    const afterDayOne =
+      tournament.lastUpdated &&
+      tournament.roundNumbers.masters === 9 &&
+      differenceInHours(new Date(tournament.lastUpdated), new Date()) >= 1;
+
+    return {
+      ...tournament,
+      afterDayOne,
+    };
+  });
 
   return data.slice().reverse();
 };

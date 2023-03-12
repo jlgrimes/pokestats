@@ -73,8 +73,6 @@ export const TournamentLinks = memo(
       variant: 'outline',
     };
 
-    const tournamentLive = tournament.tournamentStatus === 'running';
-
     return (
       <HStack>
         {/* {userIsInTournament && (
