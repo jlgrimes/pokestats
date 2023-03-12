@@ -39,6 +39,13 @@ const DeckInput = memo(
     }, [deck]);
 
     const handleArchetypeSelect = async (newValue: Deck) => {
+      if (!session.data?.user?.email) {
+        toast({
+          status: 'error',
+          title: 'Error submitting deck',
+        });
+      }
+
       if (deckId) {
         const { error } = await supabase
           .from('Player Decks')
