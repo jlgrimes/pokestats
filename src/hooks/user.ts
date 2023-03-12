@@ -9,11 +9,6 @@ import { useLiveTournamentResults } from './tournamentResults';
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
   const session = useSession();
 
-  console.log('=== Checking if user name matches... ===');
-  console.log('name', name);
-  console.log('session.data?.user?.name', session.data?.user?.name);
-  console.log(session.data?.user?.name === name);
-
   if (!name) return false;
   return session.data?.user?.name === name;
 };
