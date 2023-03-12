@@ -40,11 +40,7 @@ export interface PlayerCardProps {
 
 export const PlayerCard = (props: PlayerCardProps) => {
   const ResultLetter = () => (
-    <Box
-      display='flex'
-      justifyContent={props.shouldMoveResultLast ? 'center' : 'left'}
-      alignItems='center'
-    >
+    <Box display='flex' justifyContent={'center'} alignItems='center'>
       <StatsHeading
         headingProps={{
           color: getResultBackgroundColor(props.result).replace('100', '500'),
@@ -57,22 +53,13 @@ export const PlayerCard = (props: PlayerCardProps) => {
   );
 
   return (
-    <Grid
-      width='100%'
-      gridTemplateColumns={
-        props.result
-          ? props.shouldMoveResultLast
-            ? 'auto 25px'
-            : '25px auto'
-          : 'auto'
-      }
-    >
-      {props.result && !props.shouldMoveResultLast && <ResultLetter />}
-      <Card
-        backgroundColor={getResultBackgroundColor(props.result)}
-        width='100%'
-      >
-        <CardBody paddingX={0} paddingY={props.size === 'sm' ? 0 : 1}>
+    <Card backgroundColor={getResultBackgroundColor(props.result)} width='100%'>
+      <CardBody paddingX={0} paddingY={props.size === 'sm' ? 0 : 1}>
+        <Grid
+          width='100%'
+          gridTemplateColumns={props.result ? '25px auto' : 'auto'}
+        >
+          {props.result && <ResultLetter />}
           <Stack spacing={0}>
             <StandingsRow
               result={props.player}
@@ -114,9 +101,8 @@ export const PlayerCard = (props: PlayerCardProps) => {
               </Fragment>
             )}
           </Stack>
-        </CardBody>
-      </Card>
-      {props.result && props.shouldMoveResultLast && <ResultLetter />}
-    </Grid>
+        </Grid>
+      </CardBody>
+    </Card>
   );
 };
