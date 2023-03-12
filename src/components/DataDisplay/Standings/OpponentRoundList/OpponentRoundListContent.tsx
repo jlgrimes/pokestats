@@ -68,6 +68,8 @@ export const OpponentRoundListContent = ({
       tournament={tournament}
       shouldHideDecks={!!liveResults?.shouldHideDecks}
       shouldDisableOpponentModal
+      canEditDecks={userMatchesLoggedInUser}
+      userIsAdmin={userIsAdmin}
     />
   ) : null;
 };

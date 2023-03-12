@@ -10,6 +10,7 @@ interface RoundsListProps {
   shouldHideDecks: boolean;
   shouldDisableOpponentModal?: boolean;
   canEditDecks?: boolean;
+  userIsAdmin?: boolean;
 }
 
 export const RoundsList = (props: RoundsListProps) => {
@@ -35,7 +36,8 @@ export const RoundsList = (props: RoundsListProps) => {
                   shouldHideDecks={props.shouldHideDecks}
                   shouldHideStanding
                   canEditDecks={
-                    props.canEditDecks && !round.opponent.deck?.name
+                    props.userIsAdmin ||
+                    (props.canEditDecks && !round.opponent.deck?.name)
                   }
                   size={rounds.length < 10 ? 'md' : 'sm'}
                   shouldHideOpponent
