@@ -8,11 +8,13 @@ import {
   Box,
   Flex,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import { Standing, Tournament } from '../../../types/tournament';
 import { useCountryCode } from '../../hooks/tournamentMetadata';
 import { CommonCard } from '../common/CommonCard';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
+import { MyTournamentView } from '../Tournament/Home/MyTournamentView';
 import { PinnedPlayerList } from '../Tournament/Home/PinnedPlayers/PinnedPlayerList';
 import { StreamLink } from '../Tournament/TournamentLinks';
 import { ChampionDisplay } from './ChampionDisplay';
@@ -26,6 +28,7 @@ export const TournamentCard = ({
   tournament: Tournament;
   champion?: Standing;
 }) => {
+  const session = useSession();
   const countryCode = useCountryCode(tournament.id);
   const live = tournament.tournamentStatus === 'running';
 
@@ -81,6 +84,9 @@ export const TournamentCard = ({
               </Flex>
             )}
           </Grid>
+          {session.status === 'authenticated' && live && (
+            <MyTournamentView tournament={tournament} />
+          )}
           {live && <PinnedPlayerList tournament={tournament} isCompact />}
         </Stack>
       </CommonCard>
