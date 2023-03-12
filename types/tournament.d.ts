@@ -99,5 +99,5 @@ export interface Tournament {
   };
   lastUpdated: string | null;
   rk9link: string;
-  afterDayOne?: boolean;
+  subStatus: 'after-day-one' | 'lunch-time' | null;
 }

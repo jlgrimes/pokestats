@@ -22,7 +22,7 @@ export const formatTournamentStatus = (
   tournament: Tournament,
   utcOffset?: number
 ) => {
-  if (tournament.afterDayOne) {
+  if (tournament.subStatus === 'after-day-one') {
     return 'End of day one';
   }
 
@@ -49,11 +49,11 @@ export const formatTournamentStatus = (
 export const getTournamentStatusBadgeProps = (
   tournament: Tournament
 ): BadgeProps => {
-  if (tournament.afterDayOne) {
+  if (tournament.subStatus === 'after-day-one') {
     return {
       variant: 'solid',
       colorScheme: 'green',
-      opacity: 0.7,
+      opacity: 0.6,
     };
   }
 

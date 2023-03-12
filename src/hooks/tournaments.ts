@@ -71,7 +71,7 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
 
     return {
       ...tournament,
-      afterDayOne,
+      subStatus: afterDayOne ? 'after-day-one' : null,
     };
   });
 

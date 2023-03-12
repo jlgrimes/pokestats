@@ -52,7 +52,9 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
           <StatsHeading>
             {formatTournamentStatus(props.tournament, utcOffset)}
           </StatsHeading>
-          {props.tournament.afterDayOne && <Icon as={FaBed} />}
+          {props.tournament.subStatus === 'after-day-one' && (
+            <Icon as={FaBed} />
+          )}
         </HStack>
         {shouldShowLocalTime && (
           <StatsHeading headingProps={{ fontSize: 13, fontWeight: 'bold' }}>
