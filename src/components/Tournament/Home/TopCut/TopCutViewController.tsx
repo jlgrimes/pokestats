@@ -1,4 +1,5 @@
 import { Tournament } from '../../../../../types/tournament';
+import { useFinalResults } from '../../../../hooks/finalResults';
 import { FinalTopCutView } from './FinalTopCutView';
 import { LiveTopCutView } from './LiveTopCutView';
 
@@ -7,7 +8,16 @@ interface TopCutViewControllerProps {
 }
 
 export const TopCutViewController = (props: TopCutViewControllerProps) => {
-  if (props.tournament.tournamentStatus === 'running') {
+  const { data: finalTournamentResults } = useFinalResults({
+    tournamentId: props.tournament.id,
+  });
+
+  if (
+    props.tournament.tournamentStatus === 'running' ||
+    (props.tournament.tournamentStatus === 'finished' &&
+      finalTournamentResults &&
+      finalTournamentResults.length === 0)
+  ) {
     return <LiveTopCutView tournament={props.tournament} />;
   }
 
