@@ -9,7 +9,7 @@ import { useLiveTournamentResults } from './tournamentResults';
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
   const session = useSession();
 
-  if (!name) return false;
+  if (!name || !session.data?.user?.name) return false;
   return session.data?.user?.name === name;
 };
 
