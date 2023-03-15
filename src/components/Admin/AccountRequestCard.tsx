@@ -1,9 +1,12 @@
 import { CheckIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Button,
+  ButtonGroup,
   Card,
   CardHeader,
+  Grid,
   Heading,
+  HStack,
   Stack,
   Text,
   useDisclosure,
@@ -120,24 +123,33 @@ export const AccountRequestCard = ({
         {associatedName ?? 'Associate with RK9 player'}
       </Button>
       <Button
-        colorScheme={'green'}
-        isLoading={linkUsersInProgress}
-        loadingText='Link users'
-        isDisabled={!associatedName}
-        onClick={handleLinkClick}
-        rightIcon={<FaLink />}
+        onClick={() => {
+          setAssociatedName(request.name)
+        }}
       >
-        Link users
+        {'Override name to saved (for upcoming)'}
       </Button>
-      <Button
-        colorScheme={'red'}
-        isLoading={bootInProgress}
-        loadingText='Bootin'
-        onClick={handleBootClick}
-        rightIcon={<GiLeatherBoot />}
-      >
-        Give em the boot!
-      </Button>
+      <Grid gridTemplateColumns={'1fr 1fr'}>
+        <Button
+          colorScheme={'green'}
+          isLoading={linkUsersInProgress}
+          loadingText='Link users'
+          isDisabled={!associatedName}
+          onClick={handleLinkClick}
+          rightIcon={<FaLink />}
+        >
+          Link users
+        </Button>
+        <Button
+          colorScheme={'red'}
+          isLoading={bootInProgress}
+          loadingText='Bootin'
+          onClick={handleBootClick}
+          rightIcon={<GiLeatherBoot />}
+        >
+          Give em the boot!
+        </Button>
+      </Grid>
       {modalControls.isOpen && (
         <SelectPlayerModal
           modalControls={modalControls}
