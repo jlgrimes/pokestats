@@ -10,7 +10,7 @@ export const RoundTabs = ({
   maxRound: number;
 }) => {
   return (
-    <HStack overflowX={'scroll'} flexDirection='row-reverse'>
+    <HStack width='90vw' overflowX={'scroll'} flexDirection='row-reverse'>
       <Tabs
         variant={'solid-rounded'}
         colorScheme='blue'

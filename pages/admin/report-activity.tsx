@@ -38,7 +38,7 @@ export default function ReportActivity() {
   }, [userIsAdmin, userIsAdminLoading, router]);
 
   return (
-    <Stack>
+    <Stack width='90vw'>
       <Heading size='sm'>Reporting activity</Heading>
       <TableContainer>
         <Table size={'sm'}>
