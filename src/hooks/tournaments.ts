@@ -44,19 +44,17 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
     name: shortenTournamentName(tournament),
   }));
 
-  data = data.filter(
-    tournament =>
-      !(
-        tournament.tournamentStatus === 'not-started' &&
-        !tournamentHasArrivedButNotLive(tournament)
-      )
-  );
-
   if (options?.onlyFinished) {
     data = data.filter(
       tournament => tournament.tournamentStatus === 'finished'
     );
   }
+
+  data = data.filter(
+    tournament =>
+      tournament.date.start &&
+      isAfter(parseISO(tournament.date.start), parseISO('2022-05-09'))
+  );
 
   if (options?.excludeUpcoming) {
     data = data.filter(

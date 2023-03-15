@@ -1,4 +1,6 @@
+import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { TournamentPriorHelper } from '../../src/components/Tournament/TournamentPriorHelper';
 import { TournamentList } from '../../src/components/TournamentList/TournamentList';
 import { fetchFinalResults } from '../../src/hooks/finalResults/fetch';
 import {
@@ -14,7 +16,12 @@ export default function TournamentPage({
 }) {
   const { data: patchedTournaments } = usePatchedTournaments(tournaments);
 
-  return <TournamentList tournaments={patchedTournaments ?? tournaments} />;
+  return (
+    <Stack>
+      <TournamentList tournaments={patchedTournaments ?? tournaments} />
+      <TournamentPriorHelper />
+    </Stack>
+  );
 }
 
 export async function getStaticProps() {
