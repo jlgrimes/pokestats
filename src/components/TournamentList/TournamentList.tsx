@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useChampions } from '../../hooks/finalResults';
 import { useTournamentRender } from '../../hooks/sets';
-import { getMostRecentTournaments } from './helpers';
+import { getTournaments } from './helpers';
 import { TournamentCard } from './TournamentCard';
 
 export const TournamentList = ({
@@ -15,16 +15,7 @@ export const TournamentList = ({
 }) => {
   const { data: champions } = useChampions();
   const items = useTournamentRender(tournaments);
-  const getParsedItems = useCallback(() => {
-    if (mostRecent) {
-      return getMostRecentTournaments(items);
-    }
-    return {
-      highlightedTournamentsLength: 0,
-      items,
-    };
-  }, [items, mostRecent]);
-  const parsedItems = getParsedItems();
+  const parsedItems = getTournaments(items, mostRecent);
 
   return (
     <Grid gap={2} gridTemplateColumns='1fr 1fr'>

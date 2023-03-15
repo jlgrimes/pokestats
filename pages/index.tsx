@@ -7,7 +7,7 @@ import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { HomePage } from '../src/components/Home/HomePage';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
-import { getMostRecentTournaments } from '../src/components/TournamentList/helpers';
+import { getTournaments } from '../src/components/TournamentList/helpers';
 import { fetchFinalResults } from '../src/hooks/finalResults/fetch';
 import { TournamentOrSet } from '../src/hooks/sets';
 import { fetchTournamentMetadata } from '../src/hooks/tournamentMetadata';
@@ -62,11 +62,12 @@ export async function getStaticProps() {
     queryFn: () => fetchFinalResults({ placing: 1 }),
   });
 
-  const tournies = getMostRecentTournaments(
+  const tournies = getTournaments(
     tournaments.map(
       tournament =>
         ({ type: 'tournament', data: tournament } as TournamentOrSet)
-    )
+    ),
+    true
   ).items.map(({ data }) => data as Tournament);
 
   for (const tournament of getTournamentsThatNeedToBePatched(tournies))

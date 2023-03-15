@@ -130,7 +130,10 @@ export const tournamentFallsOnCurrentDate = (tournament: Tournament) => {
   });
 };
 
-export const getMostRecentTournaments = (items: TournamentOrSet[]) => {
+export const getTournaments = (
+  items: TournamentOrSet[],
+  mostRecent?: boolean
+) => {
   const finishedTournaments = items.filter(
     tournament => tournament.data.tournamentStatus === 'finished'
   );
@@ -141,9 +144,7 @@ export const getMostRecentTournaments = (items: TournamentOrSet[]) => {
   const upcomingTournaments = items.filter(tournament => {
     return (
       tournament.data.tournamentStatus === 'not-started' &&
-      differenceInDays(parseISO(tournament.data.date?.start), new Date()) <=
-        7 &&
-      !almostStartedTournamentFilter(tournament)
+      !tournamentHasArrivedButNotLive(tournament.data as unknown as Tournament)
     );
   });
 
@@ -162,7 +163,8 @@ export const getMostRecentTournaments = (items: TournamentOrSet[]) => {
     items: [
       ...liveTournaments,
       ...almostStartedTournaments,
-      ...finishedTournaments.slice(0, 2),
+      ...(mostRecent ? [] : upcomingTournaments),
+      ...(mostRecent ? finishedTournaments.slice(0, 2) : finishedTournaments),
       // ...upcomingTournaments,
     ],
   };
