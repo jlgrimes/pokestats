@@ -4,6 +4,7 @@ import { Tournament } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { Banner } from '../common/Banner';
 import { FullPageLoader } from '../common/FullPageLoader';
+import { SorryText } from '../common/SorryText';
 import { StatsHeading } from '../common/StatsHeading';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
@@ -42,11 +43,9 @@ export default function TournamentView({
 
   if (!isLoading && liveResults?.data.length === 0)
     return (
-      <Flex justifyContent={'center'} alignItems='center' padding='6'>
-        <Heading size='md' color='gray.600'>
-          {`Sorry, we're unable to retrieve standings right now. Please try again later.`}
-        </Heading>
-      </Flex>
+      <SorryText>
+        {`Sorry, we're unable to retrieve standings right now. Please try again later.`}
+      </SorryText>
     );
 
   return (

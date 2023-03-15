@@ -32,6 +32,7 @@ import {
 import { formatTournamentDate } from '../TournamentList/helpers';
 import { TournamentCard } from '../TournamentList/TournamentCard';
 import { FullPageLoader } from '../common/FullPageLoader';
+import { SorryText } from '../common/SorryText';
 
 export const PlayerPerformanceList = ({
   user,
@@ -48,8 +49,11 @@ export const PlayerPerformanceList = ({
   if (isLoading) return <FullPageLoader />;
 
   return (
-    <CommonCard header='my tournaments' ghost>
+    <CommonCard header='my past tournaments' ghost>
       <Stack spacing={4}>
+        {(!tournamentPerformance || tournamentPerformance.length === 0) && (
+          <SorryText>{`We don't have any tournaments for you right now. If you're attending an upcoming tournament, please check back then to see it here!`}</SorryText>
+        )}
         {tournamentPerformance?.map((performance: Standing, idx) => {
           if (!performance.tournamentId) return null;
 
