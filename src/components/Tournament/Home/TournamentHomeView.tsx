@@ -44,6 +44,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   const country = useCountryCode(props.tournament?.id ?? '');
 
   if (!props.tournament) return null;
+  console.log(props.tournament)
 
   return (
     <Stack spacing={4}>

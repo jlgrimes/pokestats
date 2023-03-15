@@ -7,6 +7,7 @@ import {
   HStack,
   Box,
   Flex,
+  Text,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import {
@@ -84,6 +85,8 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const addPinPlayerModalControls = useDisclosure();
   const editPinnedPlayers = useDisclosure();
 
+  const filteredPlayers = pinnedPlayers?.filter(player => player);
+
   if (
     props.isCompact &&
     pinnedPlayers?.filter(player => player)?.length === 0 &&
@@ -123,7 +126,33 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               )
           )
         )}
-        {!props.isCompact && (
+        {filteredPlayers?.length === 0 && (
+          <Stack paddingX={4} paddingY={2} spacing={4}>
+            {pinnedPlayerNames && pinnedPlayerNames.length === 0 && (
+              <Text fontWeight={'bold'} color='gray.600'>
+                Keep up with your friends or anyone attending by adding a
+                favorite player!
+              </Text>
+            )}
+            {pinnedPlayerNames && pinnedPlayerNames.length > 0 && (
+              <Text fontWeight={'bold'} color='gray.600'>
+                None of your favorite players are attending this tournament.
+              </Text>
+            )}
+            <Box>
+              <Button
+                leftIcon={<FaPlus />}
+                onClick={addPinPlayerModalControls.onOpen}
+                isDisabled={props.tournament.tournamentStatus === 'not-started'}
+                size={'sm'}
+                colorScheme='pink'
+              >
+                Add favorite
+              </Button>
+            </Box>
+          </Stack>
+        )}
+        {!props.isCompact && filteredPlayers && filteredPlayers.length > 0 && (
           <HStack justifyContent={'space-around'}>
             <Button
               variant='ghost'
@@ -133,7 +162,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               size={'sm'}
               colorScheme='blackAlpha'
             >
-              Add favorite player
+              Add favorite
             </Button>
             {pinnedPlayers && pinnedPlayers.length > 0 && (
               <Button
@@ -144,9 +173,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 size={'sm'}
                 colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
               >
-                {editPinnedPlayers.isOpen
-                  ? 'Stop editing'
-                  : 'Edit favorite players'}
+                {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit favorites'}
               </Button>
             )}
           </HStack>
