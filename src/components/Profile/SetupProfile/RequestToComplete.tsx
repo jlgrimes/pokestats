@@ -16,15 +16,15 @@ import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { FaCheck, FaEnvelope, FaSearch, FaSkull } from 'react-icons/fa';
 import {
+  fetchUnusedPlayers,
+  normalizeName,
   SessionUserProfile,
+  useNotSetupProfiles,
   useSessionUserProfile,
   useUserSentAccountRequest,
 } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
-import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 import { useTwitterLink } from '../../../hooks/twitter';
-import { fetchFinalResults } from '../../../hooks/finalResults/fetch';
-import { useRouter } from 'next/router';
 
 export const RequestToComplete = ({
   userProfile,
@@ -38,7 +38,6 @@ export const RequestToComplete = ({
   );
   const toast = useToast();
   const { refetch } = useSessionUserProfile();
-  const router = useRouter();
   const [requestSentStatus, setRequestSentStatus] =
     useState<'before' | 'sending' | 'sent' | 'sent-error' | 'succeed'>(
       'before'
@@ -58,11 +57,12 @@ export const RequestToComplete = ({
   const handleSendRequest = async () => {
     setRequestSentStatus('sending');
 
-    const finalResultsWithPlayerName = await fetchFinalResults({
-      playerName: fullNameVal,
-    });
+    const unusedNames = await fetchUnusedPlayers();
+    const finalResultsName = unusedNames?.find(
+      name => normalizeName(name) === normalizeName(fullNameVal)
+    );
 
-    if (finalResultsWithPlayerName && finalResultsWithPlayerName?.length > 0) {
+    if (finalResultsName) {
       try {
         await supabase
           .from('Account Requests')
@@ -70,7 +70,7 @@ export const RequestToComplete = ({
           .eq('email', userProfile?.email);
 
         await supabase.from('Player Profiles').insert({
-          name: fullNameVal,
+          name: finalResultsName,
           email: userProfile?.email,
         });
 

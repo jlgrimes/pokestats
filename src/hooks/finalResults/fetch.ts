@@ -2,7 +2,7 @@ import { FinalResultsSchema } from '../../../types/final-results';
 import { Deck, Standing } from '../../../types/tournament';
 import supabase from '../../lib/supabase/client';
 import { fetchPlayerDecks } from '../playerDecks';
-import { fetchAllVerifiedUsers } from '../user';
+import { fetchAllVerifiedUsers, normalizeName } from '../user';
 import {
   FinalResultsDeckSchema,
   FinalResultsFilters,
@@ -50,7 +50,7 @@ export const fetchUniqueDecks = async () => {
 export const fetchPlayers = async () => {
   const res = await supabase.from('Final Results').select('name');
   const uniqueNames: string[] = Array.from(
-    new Set(res.data?.map(({ name }) => name) ?? [])
+    new Set(res.data?.map(({ name }) => normalizeName(name)) ?? [])
   );
   return uniqueNames;
 };

@@ -118,21 +118,27 @@ export const useUserSentAccountRequest = (email: string | null | undefined) => {
   });
 };
 
+export const normalizeName = (name: string) =>
+  name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+export const fetchUnusedPlayers = async () => {
+  const res = await supabase.from('Player Profiles').select('id,name,email');
+
+  const players = await fetchPlayers();
+
+  return players?.filter(
+    name =>
+      !res.data?.some(
+        profile => normalizeName(profile.name) === normalizeName(name)
+      )
+  );
+};
+
 // For admin view
 export const useNotSetupProfiles = () => {
-  const fetchAllPlayerProfiles = async () => {
-    const res = await supabase.from('Player Profiles').select('id,name,email');
-
-    const players = await fetchPlayers();
-
-    return players?.filter(
-      name => !res.data?.some(profile => profile.name === name)
-    );
-  };
-
   return useQuery({
     queryKey: [`all-player-profiles`],
-    queryFn: fetchAllPlayerProfiles,
+    queryFn: fetchUnusedPlayers,
   });
 };
 
