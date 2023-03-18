@@ -71,6 +71,7 @@ export const useSessionUserProfile = () => {
   });
 
   return {
+    ...query,
     data: query.data,
     isLoading: session.status === 'loading' || query.isLoading,
   };
