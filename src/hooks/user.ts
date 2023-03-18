@@ -119,7 +119,10 @@ export const useUserSentAccountRequest = (email: string | null | undefined) => {
 };
 
 export const normalizeName = (name: string) =>
-  name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 
 export const fetchUnusedPlayers = async () => {
   const res = await supabase.from('Player Profiles').select('id,name,email');
