@@ -40,7 +40,10 @@ export const RequestToComplete = ({
   const { refetch } = useSessionUserProfile();
   const router = useRouter();
   const [requestSentStatus, setRequestSentStatus] =
-    useState<'before' | 'sending' | 'sent' | 'sent-error' | 'succeed'>('before');
+    useState<'before' | 'sending' | 'sent' | 'sent-error' | 'succeed'>(
+      'before'
+    );
+  const myTwitter = useTwitterLink('jgrimesey');
 
   useEffect(() => {
     setFadeIn(true);
@@ -60,18 +63,30 @@ export const RequestToComplete = ({
     });
 
     if (finalResultsWithPlayerName && finalResultsWithPlayerName?.length > 0) {
-      await supabase.from('Player Profiles').insert({
-        name: fullNameVal,
-        email: userProfile?.email,
-      });
+      try {
+        await supabase
+          .from('Account Requests')
+          .delete()
+          .eq('email', userProfile?.email);
 
-      await refetch();
-      setRequestSentStatus('succeed');
+        await supabase.from('Player Profiles').insert({
+          name: fullNameVal,
+          email: userProfile?.email,
+        });
 
-      return toast({
-        status: 'success',
-        title: 'Account successfully created!',
-      });
+        await refetch();
+        setRequestSentStatus('succeed');
+
+        return toast({
+          status: 'success',
+          title: 'Account successfully created!',
+        });
+      } catch {
+        return toast({
+          status: 'error',
+          title: 'Something went wrong.',
+        });
+      }
     }
 
     const { data, error } = await supabase.from('Account Requests').insert([
@@ -123,8 +138,9 @@ export const RequestToComplete = ({
           </Flex> */}
           <Input
             placeholder='Full name as it shows on RK9'
-            value={fullNameVal}
+            value={fullNameVal || userSentRequest || ''}
             onChange={e => setFullNameVal(e.target.value)}
+            isDisabled={requestSentStatus === 'sent'}
           />
           <Stack direction={{ base: 'column', sm: 'row' }}>
             <Button
@@ -156,6 +172,23 @@ export const RequestToComplete = ({
                 : 'Submit'}
             </Button>
           </Stack>
+          {requestSentStatus === 'sent' && (
+            <Stack>
+              <Text>{`We couldn't find anyone with that name on RK9. `}</Text>
+              <Box>
+                {`We went ahead and made a request for you. In the meantime, you can message `}
+                <Link
+                  isExternal
+                  href={myTwitter}
+                  as={NextLink}
+                  color='twitter.500'
+                >
+                  @jgrimesey
+                </Link>
+                {` on Twitter and we can figure this out.`}
+              </Box>
+            </Stack>
+          )}
         </Stack>
       </Fade>
     </Stack>

@@ -103,12 +103,12 @@ export const useAccountRequests = () => {
 const fetchUserSentAccountRequest = async (email: string) => {
   const { data } = await supabase
     .from('Account Requests')
-    .select('*')
+    .select('entered_name')
     .eq('email', email);
   if (data?.length && data.length > 0) {
-    return true;
+    return data[0].entered_name;
   }
-  return false;
+  return null;
 };
 
 export const useUserSentAccountRequest = (email: string | null | undefined) => {
