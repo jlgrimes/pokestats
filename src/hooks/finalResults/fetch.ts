@@ -26,7 +26,8 @@ export const fetchDecksByPlayer = async (name: string) => {
       supertype
     )`
     )
-    .eq('player_name', name);
+
+    .ilike('player_name', name);
   return res.data;
 };
 
@@ -96,7 +97,7 @@ export const fetchFinalResults = async (
     query = query.eq('deck_supertype', filters.supertypeId);
   }
   if (filters?.playerName) {
-    query = query.eq('name', filters.playerName);
+    query = query.ilike('name', filters.playerName);
   }
   if (filters?.placing) {
     query = query.eq('placing', filters.placing);
