@@ -16,6 +16,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useIsMobile } from '../../../../hooks/device';
 import { useUserIsFollowingPlayer } from '../../../../hooks/pinnedPlayers';
@@ -37,6 +38,7 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
 
   const isMobile = useIsMobile();
   const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
+  const session = useSession();
   const { data: userIsFollowing } = useUserIsFollowingPlayer(player.name);
 
   return (
@@ -49,14 +51,16 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
               <Stack spacing={0}>
                 <Flex wrap='wrap' alignItems={'center'}>
                   <Text mr='2'>{player.name}</Text>
-                  <Button
-                    size='xs'
-                    borderRadius={32}
-                    colorScheme='blue'
-                    variant={userIsFollowing ? 'solid' : 'outline'}
-                  >
-                    {userIsFollowing ? 'Following' : 'Follow'}
-                  </Button>
+                  {session.data?.user?.name !== player.name && (
+                    <Button
+                      size='xs'
+                      borderRadius={32}
+                      colorScheme='blue'
+                      variant={userIsFollowing ? 'solid' : 'outline'}
+                    >
+                      {userIsFollowing ? 'Following' : 'Follow'}
+                    </Button>
+                  )}
                 </Flex>
                 <HStack alignItems='center'>
                   <HStack spacing={0}>
