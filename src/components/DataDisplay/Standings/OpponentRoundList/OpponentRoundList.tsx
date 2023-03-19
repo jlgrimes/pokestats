@@ -50,7 +50,7 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
               <Stack spacing={0}>
                 <Flex wrap='wrap' alignItems={'center'}>
                   <Text mr='2'>{player.name}</Text>
-                  <FollowButton player={player} tournament={tournament} />
+                  <FollowButton playerName={player.name} />
                 </Flex>
                 <HStack alignItems='center'>
                   <HStack spacing={0}>

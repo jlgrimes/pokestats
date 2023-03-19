@@ -49,7 +49,7 @@ export const PlayerPerformanceList = ({
   if (isLoading) return <FullPageLoader />;
 
   return (
-    <CommonCard header='my past tournaments' ghost>
+    <CommonCard header='Tournaments' ghost>
       <Stack spacing={4}>
         {(!tournamentPerformance || tournamentPerformance.length === 0) && (
           <Stack>

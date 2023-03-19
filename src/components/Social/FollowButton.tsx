@@ -1,6 +1,7 @@
 import { Button, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useCallback } from 'react';
+import { StoredPlayerProfile } from '../../../types/player';
 import { Standing, Tournament } from '../../../types/tournament';
 import {
   addPinnedPlayer,
@@ -9,15 +10,14 @@ import {
 } from '../../hooks/pinnedPlayers';
 
 interface FollowButtonProps {
-  player: Standing;
-  tournament: Tournament;
+  playerName: string;
 }
 
 export const FollowButton = (props: FollowButtonProps) => {
   const session = useSession();
   const toast = useToast();
   const { data: userIsFollowing, refetch } = useUserIsFollowingPlayer(
-    props.player.name
+    props.playerName
   );
 
   const handleClick = useCallback(async () => {
@@ -31,27 +31,27 @@ export const FollowButton = (props: FollowButtonProps) => {
     if (userIsFollowing) {
       const res = await deletePinnedPlayer(
         session.data.user.email,
-        props.player.name
+        props.playerName
       );
 
       if (res.error) {
         return toast({
           status: 'error',
-          title: `Error unfollowing ${props.player.name}`,
+          title: `Error unfollowing ${props.playerName}`,
           description: res.error.message,
         });
       }
     } else {
       const res = await addPinnedPlayer(
-        props.tournament.id,
+        '',
         session.data.user.email,
-        props.player.name
+        props.playerName
       );
 
       if (res.error) {
         return toast({
           status: 'error',
-          title: `Error following ${props.player.name}`,
+          title: `Error following ${props.playerName}`,
           description: res.error.message,
         });
       }
@@ -62,12 +62,11 @@ export const FollowButton = (props: FollowButtonProps) => {
     session.data?.user?.email,
     refetch,
     toast,
-    props.tournament.id,
     userIsFollowing,
-    props.player.name,
+    props.playerName,
   ]);
 
-  if (session.data?.user?.name === props.player.name) return null;
+  if (session.data?.user?.name === props.playerName) return null;
 
   return (
     <Button

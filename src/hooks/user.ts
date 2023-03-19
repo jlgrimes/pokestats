@@ -160,3 +160,19 @@ export const fetchUser = async (email: string) => {
     .eq('email', email);
   return res.data?.[0];
 };
+
+export const fetchPlayerProfile = async (username: string) => {
+  const res = await supabase
+    .from('Player Profiles')
+    .select('id,name,email')
+    .eq('username', username);
+
+  return res.data?.[0] ?? null;
+};
+
+export const usePlayerProfile = (username: string) => {
+  return useQuery({
+    queryKey: ['player-profile', username],
+    queryFn: () => fetchPlayerProfile(username),
+  });
+};
