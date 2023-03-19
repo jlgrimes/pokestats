@@ -16,6 +16,7 @@ import { CommonCard } from '../common/CommonCard';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
 import { MyTournamentView } from '../Tournament/Home/MyTournamentView';
 import { PinnedPlayerList } from '../Tournament/Home/PinnedPlayers/PinnedPlayerList';
+import { TopCutViewController } from '../Tournament/Home/TopCut/TopCutViewController';
 import { StreamLink } from '../Tournament/TournamentLinks';
 import { ChampionDisplay } from './ChampionDisplay';
 import { formatTournamentDate } from './helpers';
@@ -87,7 +88,12 @@ export const TournamentCard = ({
           {session.status === 'authenticated' && live && (
             <MyTournamentView tournament={tournament} />
           )}
-          {live && <PinnedPlayerList tournament={tournament} isCompact />}
+          {live && !tournament.topCutStatus && (
+            <PinnedPlayerList tournament={tournament} isCompact />
+          )}
+          {live && tournament.topCutStatus && (
+            <TopCutViewController tournament={tournament} />
+          )}
         </Stack>
       </CommonCard>
     </LinkBox>
