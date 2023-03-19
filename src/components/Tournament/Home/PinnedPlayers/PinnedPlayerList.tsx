@@ -100,8 +100,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
   return (
     <CommonCard
-      header='Favorites'
-      leftIcon={<Icon color='pink.500' as={FaHeart} />}
+      header='Following'
       ghost
       shouldRemovePadding={props.isCompact}
       smallHeader={props.isCompact}
@@ -130,13 +129,13 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
           <Stack paddingX={4} paddingY={2} spacing={4}>
             {pinnedPlayerNames && pinnedPlayerNames.length === 0 && (
               <Text fontWeight={'bold'} color='gray.600'>
-                Keep up with your friends or anyone attending by adding a
-                favorite player!
+                Keep up with your friends or anyone attending by following a
+                player!
               </Text>
             )}
             {pinnedPlayerNames && pinnedPlayerNames.length > 0 && (
               <Text fontWeight={'bold'} color='gray.600'>
-                None of your favorite players are attending this tournament.
+                None of your following are attending this tournament.
               </Text>
             )}
             <Box>
@@ -147,7 +146,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 size={'sm'}
                 colorScheme='pink'
               >
-                Add favorite
+                Follow player
               </Button>
             </Box>
           </Stack>
@@ -162,7 +161,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               size={'sm'}
               colorScheme='blackAlpha'
             >
-              Add favorite
+              Follow player
             </Button>
             {pinnedPlayers && pinnedPlayers.length > 0 && (
               <Button
@@ -173,7 +172,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 size={'sm'}
                 colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
               >
-                {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit favorites'}
+                {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
               </Button>
             )}
           </HStack>
