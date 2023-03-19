@@ -26,7 +26,7 @@ export const fetchPinnedPlayers = async (
 
 export const useAllPinnedPlayers = (tournamentId?: string, name?: string) => {
   return useQuery({
-    queryKey: ['all-pinned-players', tournamentId, name],
+    queryKey: ['all-pinned-players'],
     queryFn: () => fetchPinnedPlayers(tournamentId, name),
   });
 };
