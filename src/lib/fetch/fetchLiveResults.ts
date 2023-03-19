@@ -241,18 +241,17 @@ function mapResultsArray(
         (player: Player) => player.name === currentOpponentName
       ) ?? {};
 
-    const currentOpponent =
-      tournament.tournamentStatus === 'running' && player.rounds[roundNumber]
-        ? {
-            ...currentOpponentPlayer,
-            deck: getPlayerDeck(
-              playerDeckObjects,
-              { name: player.rounds[roundNumber].name } as Player,
-              deckArchetypes
-            ),
-            rounds: getRoundsArray(currentOpponentPlayer),
-          }
-        : null;
+    const currentOpponent = player.rounds[roundNumber]
+      ? {
+          ...currentOpponentPlayer,
+          deck: getPlayerDeck(
+            playerDeckObjects,
+            { name: player.rounds[roundNumber].name } as Player,
+            deckArchetypes
+          ),
+          rounds: getRoundsArray(currentOpponentPlayer),
+        }
+      : null;
 
     return {
       name: player.name,
