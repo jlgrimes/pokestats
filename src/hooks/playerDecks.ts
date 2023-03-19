@@ -9,15 +9,18 @@ interface PlayerDecksFilters {
 }
 
 export const fetchPlayerDecks = async (filters: PlayerDecksFilters) => {
-  let query = supabase.from('Player Decks').select(
-    `id,player_name,deck_archetype (
+  let query = supabase
+    .from('Player Decks')
+    .select(
+      `id,player_name,deck_archetype (
       id,
       name,
       defined_pokemon,
       identifiable_cards,
       supertype
     ),user_submitted_was_admin,user_who_submitted,on_stream`
-  );
+    )
+    .order('created_at', { ascending: false });
 
   if (filters.tournamentId) {
     query = query.eq('tournament_id', filters.tournamentId);

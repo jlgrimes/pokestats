@@ -2,10 +2,12 @@ import { useDisclosure, UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
+import { useUserIsAdmin } from '../../../hooks/administrators';
 import { usePlayerDecks } from '../../../hooks/playerDecks';
 import { useLiveTournamentPlayers } from '../../../hooks/tournamentResults';
 import supabase from '../../../lib/supabase/client';
 import { ArchetypeSelectorModal } from '../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
+import { handleDeckSubmit } from '../../Deck/DeckInput/helpers';
 import { PlayerSelectModal } from './PinnedPlayers/PlayerSelectModal';
 
 interface ReportModalProps {
@@ -16,7 +18,8 @@ interface ReportModalProps {
 export const ReportModal = (props: ReportModalProps) => {
   const session = useSession();
   const toast = useToast();
-  const { data: playerDecks } = usePlayerDecks(props.tournament.id);
+  const { data: playerDecks, refetch } = usePlayerDecks(props.tournament.id);
+  const { data: userIsAdmin } = useUserIsAdmin();
 
   const { data: playerNames } = useLiveTournamentPlayers(props.tournament.id);
 
@@ -35,49 +38,18 @@ export const ReportModal = (props: ReportModalProps) => {
 
   const handleDeckSelect = async (deck: Deck) => {
     setIsStreamDeck(false);
-
-    if (playerDecks.find(playerDeck => playerDeck.name === selectedPlayer)) {
-      const { error } = await supabase
-        .from('Player Decks')
-        .update({ deck_archetype: deck.id, on_stream: isStreamDeck })
-        .match({
-          player_name: selectedPlayer,
-          tournament_id: props.tournament.id,
-        });
-      if (error) {
-        return toast({
-          status: 'error',
-          title: `Error updating deck for ${selectedPlayer}`,
-          description: error.message,
-        });
-      }
-
-      return toast({
-        status: 'success',
-        title: `Submitted deck for ${selectedPlayer}`,
-      });
-    } else {
-      const { error } = await supabase.from('Player Decks').insert({
-        player_name: selectedPlayer,
-        tournament_id: props.tournament.id,
-        deck_archetype: deck.id,
-        on_stream: isStreamDeck,
-        user_who_submitted: session.data?.user?.email,
-        user_submitted_was_admin: true,
-      });
-      if (error) {
-        return toast({
-          status: 'error',
-          title: `Error adding deck for ${selectedPlayer}`,
-          description: error.message,
-        });
-      }
-
-      return toast({
-        status: 'success',
-        title: `Submitted deck for ${selectedPlayer}`,
-      });
-    }
+    await handleDeckSubmit(
+      deck,
+      playerDecks.find(playerDeck => playerDeck.name === selectedPlayer)
+        ?.deck ?? undefined,
+      selectedPlayer,
+      session.data?.user?.email,
+      props.tournament.id,
+      isStreamDeck,
+      userIsAdmin,
+      toast
+    );
+    refetch();
   };
 
   return (

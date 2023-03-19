@@ -5,6 +5,7 @@ import { Deck } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
+import { handleDeckSubmit } from './helpers';
 
 const DeckInput = memo(
   ({
@@ -39,58 +40,16 @@ const DeckInput = memo(
     }, [deck]);
 
     const handleArchetypeSelect = async (newValue: Deck) => {
-      if (!session.data?.user?.email) {
-        toast({
-          status: 'error',
-          title: 'Error submitting deck',
-        });
-      }
-
-      if (deckId) {
-        const { error } = await supabase
-          .from('Player Decks')
-          .update({ deck_archetype: newValue.id, on_stream: isStreamDeck })
-          .match({ player_name: playerName, tournament_id: tournamentId });
-
-        if (error) {
-          toast({
-            status: 'error',
-            title: error.message,
-            description: error.details,
-          });
-        } else {
-          toast({
-            status: 'success',
-            title: 'Player deck reported successfully!',
-            description: 'Thanks for contributing!',
-          });
-          setSelectedDeck(newValue);
-        }
-      } else {
-        const { error } = await supabase.from('Player Decks').insert({
-          deck_archetype: newValue.id,
-          player_name: playerName,
-          tournament_id: tournamentId,
-          user_who_submitted: session.data?.user?.email,
-          user_submitted_was_admin: userIsAdmin,
-          on_stream: isStreamDeck,
-        });
-
-        if (error) {
-          toast({
-            status: 'error',
-            title: error.message,
-            description: error.details,
-          });
-        } else {
-          toast({
-            status: 'success',
-            title: 'Player deck reported successfully!',
-            description: 'Thanks for contributing!',
-          });
-          setSelectedDeck(newValue);
-        }
-      }
+      handleDeckSubmit(
+        newValue,
+        deck,
+        playerName,
+        session.data?.user?.email,
+        tournamentId,
+        !!isStreamDeck,
+        userIsAdmin,
+        toast
+      );
     };
 
     return (
