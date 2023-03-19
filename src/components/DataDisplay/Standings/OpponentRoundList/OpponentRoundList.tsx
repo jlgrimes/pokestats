@@ -1,7 +1,9 @@
 import {
+  Button,
   Card,
   CardBody,
   Divider,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -16,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useIsMobile } from '../../../../hooks/device';
+import { useUserIsFollowingPlayer } from '../../../../hooks/pinnedPlayers';
 import { usePlayerLiveResults } from '../../../../hooks/tournamentResults';
 import { ordinalSuffixOf } from '../../../../lib/strings';
 import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
@@ -34,6 +37,7 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
 
   const isMobile = useIsMobile();
   const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
+  const { data: userIsFollowing } = useUserIsFollowingPlayer(player.name);
 
   return (
     <Modal isOpen={modalOpen} onClose={handleCloseModal} size='md'>
@@ -41,11 +45,19 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
       <ModalContent margin={isMobile ? 'auto' : 0}>
         <ModalHeader padding={'0.5rem 2rem'}>
           <HStack>
-            <Grid gridTemplateColumns={'2fr 1fr'} alignItems='center'>
+            <Grid gridTemplateColumns={'3fr 1fr'} alignItems='center'>
               <Stack spacing={0}>
-                <HStack>
-                  <Text>{player.name}</Text>
-                </HStack>
+                <Flex wrap='wrap' alignItems={'center'}>
+                  <Text mr='2'>{player.name}</Text>
+                  <Button
+                    size='xs'
+                    borderRadius={32}
+                    colorScheme='blue'
+                    variant={userIsFollowing ? 'solid' : 'outline'}
+                  >
+                    {userIsFollowing ? 'Following' : 'Follow'}
+                  </Button>
+                </Flex>
                 <HStack alignItems='center'>
                   <HStack spacing={0}>
                     <RecordIcon standing={player} tournament={tournament} />
@@ -61,6 +73,7 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
                 disableList
                 // Since we're pulling from post-tournament
                 shouldHideDeck={shouldHideDecks}
+                shouldDisableDeckExtras
               />
             </Grid>
           </HStack>

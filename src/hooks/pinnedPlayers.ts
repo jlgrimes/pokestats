@@ -4,7 +4,10 @@ import { Standing } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchPinnedPlayers = async (tournamentId?: string) => {
+export const fetchPinnedPlayers = async (
+  tournamentId?: string,
+  userAccountEmail?: string
+) => {
   let query = supabase
     .from('Pinned Players')
     .select('pinned_player_name,user_account');
@@ -13,14 +16,18 @@ export const fetchPinnedPlayers = async (tournamentId?: string) => {
     query = query.eq('tournament_id', tournamentId);
   }
 
+  if (userAccountEmail) {
+    query = query.eq('user_account', userAccountEmail);
+  }
+
   const res = await query;
   return res.data;
 };
 
-export const useAllPinnedPlayers = (tournamentId?: string) => {
+export const useAllPinnedPlayers = (tournamentId?: string, name?: string) => {
   return useQuery({
-    queryKey: ['all-pinned-players', tournamentId],
-    queryFn: () => fetchPinnedPlayers(tournamentId),
+    queryKey: ['all-pinned-players', tournamentId, name],
+    queryFn: () => fetchPinnedPlayers(tournamentId, name),
   });
 };
 
@@ -48,6 +55,19 @@ export const usePinnedPlayers = (tournamentId?: string) => {
 
   return {
     data: pinnedPlayers?.map(pinnedPlayer => pinnedPlayer.pinned_player_name),
+    ...rest,
+  };
+};
+
+export const useUserIsFollowingPlayer = (playerName: string) => {
+  const session = useSession();
+  const email = session.data?.user?.email;
+  const { data, ...rest } = useAllPinnedPlayers(undefined, email ?? undefined);
+
+  return {
+    data: data
+      ? data.some(player => player.pinned_player_name === playerName)
+      : null,
     ...rest,
   };
 };
