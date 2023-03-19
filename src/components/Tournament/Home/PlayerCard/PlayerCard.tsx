@@ -75,7 +75,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
             flexDirection={isCurrentlyPlayingInTopCut ? 'row' : 'column'}
             padding={isCurrentlyPlayingInTopCut ? 3 : 0}
             justifyContent='space-evenly'
-            alignItems={'center'}
+            alignItems={isCurrentlyPlayingInTopCut ? 'center' : 'auto'}
           >
             <StandingsRow
               result={props.player}
