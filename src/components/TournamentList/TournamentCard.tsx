@@ -36,7 +36,7 @@ export const TournamentCard = ({
   return (
     <LinkBox height='100%'>
       <CommonCard>
-        <Stack spacing={4}>
+        <Stack>
           <Grid
             gridTemplateColumns={
               champion ? '3fr 2fr' : live ? '3fr 1fr' : 'auto'
