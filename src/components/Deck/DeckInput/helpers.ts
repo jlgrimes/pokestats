@@ -12,15 +12,24 @@ export const handleDeckSubmit = async (
   userIsAdmin: boolean,
   toast: CreateToastFnReturn
 ) => {
-  if (userIsAdmin && existingDeck?.id) {
+  if (userIsAdmin && existingDeck?.id && selectedPlayer) {
+    const res = await supabase
+      .from('Player Decks')
+      .select(`user_who_submitted`)
+      .ilike('player_name', selectedPlayer)
+      .eq('tournament_id', tournamentId)
+      .order('created_at', { ascending: false });
+
+    const userReported = res.data && res.data.at(0)?.user_who_submitted;
+    console.log(userReported)
     const { error } = await supabase.from('Shit List').insert({
-      user_who_reported: deck.user_who_submitted,
+      user_who_reported: userReported,
       reported_deck: existingDeck?.id,
       correct_deck: deck.id,
     });
 
     if (error) {
-      toast({
+      return toast({
         status: 'error',
         title: error.message,
         description: error.details,
@@ -28,7 +37,7 @@ export const handleDeckSubmit = async (
     } else {
       toast({
         status: 'warning',
-        title: 'Added ' + deck.user_who_submitted + ' to the shit list',
+        title: 'Added ' + userReported + ' to the shit list',
       });
     }
   }

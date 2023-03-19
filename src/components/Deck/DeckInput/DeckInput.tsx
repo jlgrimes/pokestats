@@ -40,7 +40,7 @@ const DeckInput = memo(
     }, [deck]);
 
     const handleArchetypeSelect = async (newValue: Deck) => {
-      handleDeckSubmit(
+      await handleDeckSubmit(
         newValue,
         deck,
         playerName,
@@ -50,6 +50,7 @@ const DeckInput = memo(
         userIsAdmin,
         toast
       );
+      setSelectedDeck(newValue);
     };
 
     return (
