@@ -2,8 +2,8 @@ import { BadgeProps } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
 
 export const getRoundText = (tournament: Tournament) => {
-  if (tournament.topCutStatus === 'top8') return 'Top 8';
-  if (tournament.topCutStatus === 'top4') return 'Top 4';
+  if (tournament.topCutStatus === 'top8') return 'Top Eight';
+  if (tournament.topCutStatus === 'top4') return 'Top Four';
   if (tournament.topCutStatus === 'finals') return 'Finals';
 
   return `Round ${tournament.roundNumbers.masters ?? ''}`;

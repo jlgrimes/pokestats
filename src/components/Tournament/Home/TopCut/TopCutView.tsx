@@ -4,6 +4,7 @@ import { FaTrophy } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { CommonCard } from '../../../common/CommonCard';
+import { getRoundText } from '../../helpers';
 import { PlayerCard } from '../PlayerCard/PlayerCard';
 
 interface TopCutViewProps {
@@ -15,7 +16,7 @@ interface TopCutViewProps {
 export const TopCutView = (props: TopCutViewProps) => {
   return (
     <CommonCard
-      header='Top cut'
+      header={props.tournament.topCutStatus ? getRoundText(props.tournament) : 'Top cut'}
       ghost
       leftIcon={<Icon color='yellow.500' as={FaTrophy} />}
     >
