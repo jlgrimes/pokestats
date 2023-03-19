@@ -24,11 +24,12 @@ export const TopCutView = (props: TopCutViewProps) => {
         {props.players &&
           props.players.map(
             (player: Standing) =>
-              !props.players!.some(
-                otherPlayer =>
-                  player.name === otherPlayer.currentOpponent?.name &&
-                  player.placing > otherPlayer?.placing
-              ) && (
+              (props.tournament.tournamentStatus === 'finished' ||
+                !props.players!.some(
+                  otherPlayer =>
+                    player.name === otherPlayer.currentOpponent?.name &&
+                    player.placing > otherPlayer?.placing
+                )) && (
                 <PlayerCard
                   key={`top-cut-${player.name}`}
                   player={player}

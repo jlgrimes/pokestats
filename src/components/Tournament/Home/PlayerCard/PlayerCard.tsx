@@ -163,26 +163,28 @@ export const PlayerCard = (props: PlayerCardProps) => {
               shouldHideName={props.shouldHideName}
               shouldDisableOpponentModal={props.shouldDisableOpponentModal}
             />
-            {props.player.currentOpponent && !props.shouldHideOpponent && (
-              <Fragment>
-                <Heading
-                  color='gray.400'
-                  fontSize={14}
-                  textTransform='uppercase'
-                >
-                  vs
-                </Heading>
-                <StandingsRow
-                  result={props.player.currentOpponent}
-                  tournament={props.tournament}
-                  canEditDecks={props.canEditDecks}
-                  shouldHideDeck={props.shouldHideDecks}
-                  isDeckLoading={props.isDeckLoading}
-                  translucent={!props.topCut}
-                  isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
-                />
-              </Fragment>
-            )}
+            {props.tournament.tournamentStatus === 'running' &&
+              props.player.currentOpponent &&
+              !props.shouldHideOpponent && (
+                <Fragment>
+                  <Heading
+                    color='gray.400'
+                    fontSize={14}
+                    textTransform='uppercase'
+                  >
+                    vs
+                  </Heading>
+                  <StandingsRow
+                    result={props.player.currentOpponent}
+                    tournament={props.tournament}
+                    canEditDecks={props.canEditDecks}
+                    shouldHideDeck={props.shouldHideDecks}
+                    isDeckLoading={props.isDeckLoading}
+                    translucent={!props.topCut}
+                    isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
+                  />
+                </Fragment>
+              )}
           </Stack>
         </Grid>
       </CardBody>
