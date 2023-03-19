@@ -16,7 +16,7 @@ interface TopCutViewProps {
 export const TopCutView = (props: TopCutViewProps) => {
   return (
     <CommonCard
-      header={props.tournament.topCutStatus ? getRoundText(props.tournament) : 'Top cut'}
+      header={'Top cut'}
       ghost
       leftIcon={<Icon color='yellow.500' as={FaTrophy} />}
     >
