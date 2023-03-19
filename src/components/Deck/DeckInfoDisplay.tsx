@@ -28,6 +28,7 @@ export const DeckInfoDisplay = memo(
     shouldHideOpponentView,
     onUnpinPlayer,
     shouldHideMenu,
+    shouldDisableDeckExtras,
   }: {
     player: Standing;
     tournament: Tournament;
@@ -39,6 +40,7 @@ export const DeckInfoDisplay = memo(
     shouldHideOpponentView?: boolean;
     onUnpinPlayer?: () => void;
     shouldHideMenu?: boolean;
+    shouldDisableDeckExtras?: boolean;
   }) => {
     const archetypeModal = useDisclosure();
     const session = useSession();
@@ -48,7 +50,13 @@ export const DeckInfoDisplay = memo(
 
     return (
       <Grid
-        gridTemplateColumns={shouldShowAsText ? 'auto 25px' : '80px 25px'}
+        gridTemplateColumns={
+          shouldDisableDeckExtras && !shouldShowList && !shouldShowSmallEditIcon
+            ? 'auto'
+            : shouldShowAsText
+            ? 'auto 25px'
+            : '80px 25px'
+        }
         columnGap={2}
         alignItems='center'
       >

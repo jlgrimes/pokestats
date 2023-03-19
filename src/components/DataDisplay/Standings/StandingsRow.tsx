@@ -36,7 +36,7 @@ export interface StandingsRowProps {
   onUnpinPlayer?: () => void;
   translucent?: boolean;
   isDeckLoading?: boolean;
-  singleDigitPlacing?: boolean;
+  isCurrentlyPlayingInTopCut?: boolean;
   shouldDisableOpponentModal?: boolean;
   shouldHideStanding?: boolean;
   shouldHideName?: boolean;
@@ -65,19 +65,19 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       cursor={!props.shouldDisableOpponentModal ? 'pointer' : 'auto'}
     >
       <Grid
-        gridTemplateColumns={`${
-          props.shouldHideStanding
-            ? ''
-            : `${props.singleDigitPlacing ? 1.6 : 2.65}rem`
-        } ${!props.shouldHideName ? '2.5fr' : ''} ${
-          props.hideArchetype ? 2 : 7
-        }rem 1fr`}
+        gridTemplateColumns={
+          props.isCurrentlyPlayingInTopCut
+            ? 'auto'
+            : `${props.shouldHideStanding ? '' : `2.65rem`} ${
+                !props.shouldHideName ? '2.5fr' : ''
+              } ${props.hideArchetype ? 2 : 7}rem 1fr`
+        }
         paddingRight={1}
         alignItems='center'
         textColor={props.translucent ? 'gray.400' : 'auto'}
         minHeight='41px'
       >
-        {!props.shouldHideStanding && (
+        {!props.shouldHideStanding && !props.isCurrentlyPlayingInTopCut && (
           <GridItem paddingLeft={0} paddingRight={2}>
             <Text
               fontSize={props.result.placing >= 1000 ? 'sm' : '0.95rem'}
@@ -120,6 +120,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                   shouldHideDeck={props.shouldHideDeck}
                   onUnpinPlayer={props.onUnpinPlayer}
                   shouldHideMenu={props.translucent}
+                  shouldDisableDeckExtras={props.isCurrentlyPlayingInTopCut}
                 />
               </Box>
             ) : (
@@ -133,15 +134,17 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
             )}
           </Flex>
         </GridItem>
-        <Stack
-          height='100%'
-          alignItems={'end'}
-          justifyContent='center'
-          padding={1}
-          paddingRight={2}
-        >
-          <Record standing={props.result} />
-        </Stack>
+        {!props.isCurrentlyPlayingInTopCut && (
+          <Stack
+            height='100%'
+            alignItems={'end'}
+            justifyContent='center'
+            padding={1}
+            paddingRight={2}
+          >
+            <Record standing={props.result} />
+          </Stack>
+        )}
       </Grid>
       {!props.shouldDisableOpponentModal && (
         <OpponentRoundList

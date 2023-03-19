@@ -52,15 +52,31 @@ export const PlayerCard = (props: PlayerCardProps) => {
     </Box>
   );
 
+  const isInTopCut =
+    props.topCut && props.tournament.tournamentStatus === 'running';
+
+  const isCurrentlyPlayingInTopCut =
+    isInTopCut && !!props.player.currentOpponent;
+  const hasLostInTopCut = isInTopCut && !props.player.currentOpponent;
+
   return (
     <Card backgroundColor={getResultBackgroundColor(props.result)} width='100%'>
-      <CardBody paddingX={0} paddingY={props.size === 'sm' ? 0 : 1}>
+      <CardBody
+        paddingX={0}
+        paddingY={props.size === 'sm' ? 0 : 1}
+      >
         <Grid
           width='100%'
           gridTemplateColumns={props.result ? '25px auto' : 'auto'}
         >
           {props.result && <ResultLetter />}
-          <Stack spacing={0}>
+          <Stack
+            spacing={0}
+            flexDirection={isCurrentlyPlayingInTopCut ? 'row' : 'column'}
+            padding={isCurrentlyPlayingInTopCut ? 3 : 0}
+            justifyContent='space-evenly'
+            alignItems={'center'}
+          >
             <StandingsRow
               result={props.player}
               tournament={props.tournament}
@@ -69,12 +85,8 @@ export const PlayerCard = (props: PlayerCardProps) => {
               shouldHideDeck={props.shouldHideDecks}
               isDeckLoading={props.isDeckLoading}
               // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
-              translucent={
-                props.topCut &&
-                props.tournament.tournamentStatus === 'running' &&
-                !props.player.currentOpponent
-              }
-              singleDigitPlacing={props.topCut}
+              translucent={hasLostInTopCut}
+              isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
               shouldHideStanding={props.shouldHideStanding}
               shouldHideName={props.shouldHideName}
               shouldDisableOpponentModal={props.shouldDisableOpponentModal}
@@ -82,7 +94,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
             {props.player.currentOpponent && !props.shouldHideOpponent && (
               <Fragment>
                 <Heading
-                  paddingLeft={`${props.topCut ? 1.6 : 2.65}rem`}
                   color='gray.400'
                   fontSize={14}
                   textTransform='uppercase'
@@ -96,7 +107,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
                   shouldHideDeck={props.shouldHideDecks}
                   isDeckLoading={props.isDeckLoading}
                   translucent={!props.topCut}
-                  singleDigitPlacing={props.topCut}
+                  isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
                 />
               </Fragment>
             )}
