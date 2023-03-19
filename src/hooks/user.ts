@@ -34,7 +34,7 @@ export const fetchUserProfileFromEmail = async (email: string) => {
 export const fetchUserProfile = async (session: Session) => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,email')
+    .select('id,name,email,username')
     .eq('email', session.user?.email);
   const playerProfile = data?.[0];
 
@@ -44,6 +44,7 @@ export const fetchUserProfile = async (session: Session) => {
       name: playerProfile?.name,
       email: session.user?.email,
       image: session.user?.image,
+      username: playerProfile.username,
     };
   }
 
@@ -164,7 +165,7 @@ export const fetchUser = async (email: string) => {
 export const fetchPlayerProfile = async (username: string) => {
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,email')
+    .select('id,name,email,username')
     .eq('username', username);
 
   return res.data?.[0] ?? null;

@@ -7,6 +7,7 @@ import { FaArrowRight, FaHistory, FaRegClock } from 'react-icons/fa';
 import { PlayerPerformanceList } from '../src/components/DataDisplay/PlayerPerformanceList';
 import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { getFirstName } from '../src/components/Profile/helpers';
+import { PlayerProfilePage } from '../src/components/Profile/PlayerProfilePage';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
 import { fetchDecksWithLists } from '../src/hooks/finalResults/fetch';
 import { fetchTournaments } from '../src/hooks/tournaments';
@@ -34,7 +35,7 @@ export default function ProfilePage({
     }
   }, [session.status, router, user, isLoading]);
 
-  return <PlayerPerformanceList user={user} />;
+  return user && <PlayerProfilePage profile={user} />;
 }
 
 export async function getStaticProps() {

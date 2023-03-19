@@ -18,6 +18,7 @@ export interface CombinedPlayerProfile {
   id: string;
   name: string | null | undefined;
   email: string | null | undefined;
+  username: string | null | undefined;
   image?: string | null | undefined;
 };
 
