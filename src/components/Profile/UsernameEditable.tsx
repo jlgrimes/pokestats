@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import { CombinedPlayerProfile } from '../../../types/player';
 import { useSessionUserProfile } from '../../hooks/user';
 import supabase from '../../lib/supabase/client';
+import { Username } from './Username';
 
 interface UsernameEditableProps {
   profile: CombinedPlayerProfile;
@@ -114,11 +115,7 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
   return (
     <>
       {props.profile.username ? (
-        <Heading
-          size='lg'
-          color='gray.500'
-          fontWeight='semibold'
-        >{`@${props.profile.username}`}</Heading>
+        <Username>{props.profile.username}</Username>
       ) : null}
       {userIsLoggedInUser && !props.profile.username && (
         <Button

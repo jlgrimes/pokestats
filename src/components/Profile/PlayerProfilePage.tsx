@@ -13,6 +13,7 @@ import { useFinalResults } from '../../hooks/finalResults';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { PlayerPerformanceList } from '../DataDisplay/PlayerPerformanceList';
 import { FollowButton } from '../Social/FollowButton';
+import { Username } from './Username';
 import { UsernameEditable } from './UsernameEditable';
 
 interface PlayerProfilePageProps {
@@ -21,6 +22,7 @@ interface PlayerProfilePageProps {
 
 export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
   const session = useSession();
+  const userIsLoggedInUser = session.data?.user?.name === props.profile.name;
 
   const { isLoading: finalResultsAreLoading } = useFinalResults({
     playerName: props.profile.name,
@@ -34,7 +36,12 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
       <Stack spacing={0} alignItems='center'>
         <Heading>{props.profile.name}</Heading>
         <HStack>
-          <UsernameEditable profile={props.profile} />
+          {props.profile.username &&
+            (userIsLoggedInUser ? (
+              <UsernameEditable profile={props.profile} />
+            ) : (
+              <Username>{props.profile.username}</Username>
+            ))}
           {props.profile.name && (
             <FollowButton playerName={props.profile.name} />
           )}
