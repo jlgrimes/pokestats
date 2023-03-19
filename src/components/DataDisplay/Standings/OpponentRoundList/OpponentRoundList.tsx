@@ -23,6 +23,7 @@ import { useUserIsFollowingPlayer } from '../../../../hooks/pinnedPlayers';
 import { usePlayerLiveResults } from '../../../../hooks/tournamentResults';
 import { ordinalSuffixOf } from '../../../../lib/strings';
 import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
+import { FollowButton } from '../../../Social/FollowButton';
 import { Record } from '../../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
 import { OpponentRoundListContent } from './OpponentRoundListContent';
@@ -38,8 +39,6 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
 
   const isMobile = useIsMobile();
   const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
-  const session = useSession();
-  const { data: userIsFollowing } = useUserIsFollowingPlayer(player.name);
 
   return (
     <Modal isOpen={modalOpen} onClose={handleCloseModal} size='md'>
@@ -51,16 +50,7 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
               <Stack spacing={0}>
                 <Flex wrap='wrap' alignItems={'center'}>
                   <Text mr='2'>{player.name}</Text>
-                  {session.data?.user?.name !== player.name && (
-                    <Button
-                      size='xs'
-                      borderRadius={32}
-                      colorScheme='blue'
-                      variant={userIsFollowing ? 'solid' : 'outline'}
-                    >
-                      {userIsFollowing ? 'Following' : 'Follow'}
-                    </Button>
-                  )}
+                  <FollowButton player={player} tournament={tournament} />
                 </Flex>
                 <HStack alignItems='center'>
                   <HStack spacing={0}>
