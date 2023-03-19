@@ -64,7 +64,10 @@ export const FollowButton = (props: FollowButtonProps) => {
     toast,
     props.tournament.id,
     userIsFollowing,
+    props.player.name,
   ]);
+
+  if (session.data?.user?.name === props.player.name) return null;
 
   return (
     <Button
