@@ -73,7 +73,7 @@ export const FollowButton = (props: FollowButtonProps) => {
       size='xs'
       borderRadius={32}
       colorScheme='blue'
-      variant={userIsFollowing ? 'solid' : 'outline'}
+      variant={userIsFollowing ? 'outline' : 'solid'}
       onClick={handleClick}
     >
       {userIsFollowing ? 'Following' : 'Follow'}
