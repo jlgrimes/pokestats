@@ -6,6 +6,7 @@ import {
   HStack,
   LinkOverlay,
   Stack,
+  useColorMode,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
@@ -24,6 +25,8 @@ export const IndividualShareCard = memo(
     count: number;
     tournamentRange: number[];
   }) => {
+    const { colorMode } = useColorMode();
+
     return (
       <CommonCard>
         <Stack direction={'column'} alignItems={'baseline'}>
@@ -46,7 +49,10 @@ export const IndividualShareCard = memo(
                   }/${deck.id}`
             }
           >
-            <Heading color='gray.700' size={'sm'}>
+            <Heading
+              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+              size={'sm'}
+            >
               {deck.name}
             </Heading>
           </LinkOverlay>

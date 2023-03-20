@@ -1,18 +1,17 @@
-import { useContext } from 'react';
-import { darkModeContext } from '../../contexts/DarkModeContext';
+import { ColorMode, useColorMode } from '@chakra-ui/react';
 import styles from './styles.module.css';
 
 export const DarkModeToggle = () => {
-  const { darkMode, setDarkMode } = useContext(darkModeContext);
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <div className={styles[`container--toggle`]}>
-      {!darkMode ? (
+      {colorMode === 'light' ? (
         <input
           type='checkbox'
           id='toggle'
           className={styles['toggle--checkbox']}
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={toggleColorMode}
           checked
         />
       ) : (
@@ -20,7 +19,7 @@ export const DarkModeToggle = () => {
           type='checkbox'
           id='toggle'
           className={styles['toggle--checkbox']}
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={toggleColorMode}
         />
       )}
       <label htmlFor='toggle' className={styles[`toggle--label`]}>

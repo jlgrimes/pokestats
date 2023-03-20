@@ -1,4 +1,4 @@
-import { Stack, Text } from '@chakra-ui/react';
+import { Stack, Text, useColorMode } from '@chakra-ui/react';
 
 export const Banner = ({
   title,
@@ -9,11 +9,13 @@ export const Banner = ({
   children: JSX.Element;
   color?: string;
 }) => {
+  const { colorMode } = useColorMode();
+
   return (
     <Stack
       paddingX={4}
       paddingY={2}
-      backgroundColor={`${color ?? 'blue'}.50`}
+      backgroundColor={`${color ?? 'blue'}.${colorMode === 'dark' ? 800 : 50}`}
       borderRadius={4}
       spacing={0}
       // outline='solid'

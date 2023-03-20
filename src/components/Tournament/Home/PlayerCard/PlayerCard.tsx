@@ -7,6 +7,7 @@ import {
   HStack,
   IconButton,
   Stack,
+  useColorMode,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Fragment, useMemo } from 'react';
@@ -41,20 +42,26 @@ export interface PlayerCardProps {
 export const inverseResult = (result?: MatchResult) =>
   !result ? undefined : result === 'W' ? 'L' : result === 'L' ? 'W' : 'T';
 
-const ResultLetter = ({ result }: { result?: MatchResult }) => (
-  <Box display='flex' justifyContent={'center'} alignItems='center'>
-    <StatsHeading
-      headingProps={{
-        color: getResultBackgroundColor(result).replace('100', '500'),
-        fontSize: 'lg',
-      }}
-    >
-      {result}
-    </StatsHeading>
-  </Box>
-);
+const ResultLetter = ({ result }: { result?: MatchResult }) => {
+  const { colorMode } = useColorMode();
+
+  return (
+    <Box display='flex' justifyContent={'center'} alignItems='center'>
+      <StatsHeading
+        headingProps={{
+          color: getResultBackgroundColor(result)?.replace('100', '500'),
+          fontSize: 'lg',
+        }}
+      >
+        {result}
+      </StatsHeading>
+    </Box>
+  );
+};
 
 export const PlayerCard = (props: PlayerCardProps) => {
+  const { colorMode } = useColorMode();
+
   const isInTopCut =
     props.topCut && props.tournament.tournamentStatus === 'running';
 
@@ -66,7 +73,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
     return (
       <HStack alignItems={'stretch'} spacing={3}>
         <Card
-          backgroundColor={getResultBackgroundColor(props.result)}
+          backgroundColor={getResultBackgroundColor(props.result, colorMode)}
           width='100%'
         >
           <CardBody
@@ -101,7 +108,8 @@ export const PlayerCard = (props: PlayerCardProps) => {
             </Stack>
             <Card
               backgroundColor={getResultBackgroundColor(
-                inverseResult(props.result)
+                inverseResult(props.result),
+                colorMode
               )}
               width='100%'
             >
@@ -135,7 +143,10 @@ export const PlayerCard = (props: PlayerCardProps) => {
   }
 
   return (
-    <Card backgroundColor={getResultBackgroundColor(props.result)} width='100%'>
+    <Card
+      backgroundColor={getResultBackgroundColor(props.result, colorMode)}
+      width='100%'
+    >
       <CardBody paddingX={0} paddingY={props.size === 'sm' ? 0 : 1}>
         <Grid
           width='100%'

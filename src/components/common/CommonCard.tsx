@@ -7,6 +7,7 @@ import {
   HStack,
   Skeleton,
   Text,
+  useColorMode,
 } from '@chakra-ui/react';
 import { memo } from 'react';
 import { SeeMoreButton } from '../Deck/Analytics/SeeMoreButton';
@@ -36,6 +37,8 @@ export const CommonCard = memo(
     smallHeader?: boolean;
     slugText?: string;
   }) => {
+    const { colorMode } = useColorMode();
+
     return (
       <Card
         style={
@@ -62,7 +65,7 @@ export const CommonCard = memo(
             {!loading ? (
               <StatsHeading
                 headingProps={{
-                  color: 'gray.600',
+                  color: colorMode === 'dark' ? 'gray.400' : 'gray.600',
                   size: smallHeader ? 'xs' : 'sm',
                 }}
               >

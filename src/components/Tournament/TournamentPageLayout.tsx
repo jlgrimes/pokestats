@@ -1,4 +1,11 @@
-import { Badge, Box, Heading, HStack, Stack } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Heading,
+  HStack,
+  Stack,
+  useColorMode,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { Tournament } from '../../../types/tournament';
@@ -18,6 +25,8 @@ export const TournamentPageLayout = ({
   children: ReactNode;
   tournament: Tournament | null;
 }) => {
+  const { colorMode } = useColorMode();
+
   const router = useRouter();
   const splitPath = router.asPath && router.asPath.split('/');
   const slug = splitPath ? splitPath.at(splitPath.length - 1) : undefined;
@@ -27,7 +36,10 @@ export const TournamentPageLayout = ({
   return (
     <Stack spacing={0} height='100%' overflow='hidden'>
       <Stack paddingX={4} paddingTop={4} paddingBottom={2}>
-        <Heading size='lg' color='gray.700'>
+        <Heading
+          size='lg'
+          color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+        >
           {`${tournament.name} ${capitalize(slug as string)}`}
         </Heading>
         <TournamentStatusBadge tournament={tournament} size='md' />

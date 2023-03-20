@@ -5,12 +5,15 @@ import {
   LinkBox,
   Badge,
   HStack,
+  useColorMode,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AdminBadge } from '../../common/AdminBadge';
 
 export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
+  const { colorMode } = useColorMode();
+
   const { data: userIsAdmin, isUserMocked } = useUserIsAdmin();
 
   return (
@@ -25,7 +28,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
           <HStack spacing={1} alignItems='baseline'>
             <Stack direction={'row'} alignItems='center' spacing={0}>
               <Heading
-                color={'gray.700'}
+                color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
                 letterSpacing={'wider'}
                 size={big ? 'xl' : smol ? 'sm' : 'md'}
                 fontWeight={'black'}

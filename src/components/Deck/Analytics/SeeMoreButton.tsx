@@ -1,4 +1,4 @@
-import { Button, GridItem } from '@chakra-ui/react';
+import { Button, GridItem, useColorMode } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FaArrowRight } from 'react-icons/fa';
 
@@ -11,13 +11,15 @@ export const SeeMoreButton = ({
   loading?: boolean;
   text?: string;
 }) => {
+  const { colorMode } = useColorMode();
+
   const router = useRouter();
   const absolute = slug.includes('/');
 
   return (
     <GridItem gridColumn={'1/-1'}>
       <Button
-        color='gray.600'
+        color={colorMode === 'dark' ? 'gray.400' : 'gray.600'}
         size='md'
         variant='ghost'
         onClick={() =>

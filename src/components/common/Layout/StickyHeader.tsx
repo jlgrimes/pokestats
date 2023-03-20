@@ -1,8 +1,10 @@
-import { Stack } from '@chakra-ui/react';
+import { Stack, useColorMode } from '@chakra-ui/react';
 import { memo, useEffect, useState } from 'react';
 
 export const StickyHeader = memo(
   ({ id, children }: { id: string; children: JSX.Element }) => {
+    const { colorMode } = useColorMode();
+
     const height = '3rem';
 
     const [scrollTop, setScrollTop] = useState(0);
@@ -32,7 +34,7 @@ export const StickyHeader = memo(
         <Stack
           id={id}
           height={height}
-          background={'white'}
+          background={colorMode === 'dark' ? 'gray.800' : 'white'}
           position={stickyHeaderStyle ? 'fixed' : 'relative'}
           top={0}
           left={0}

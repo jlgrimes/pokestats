@@ -1,4 +1,11 @@
-import { Divider, Grid, Heading, Link, Stack } from '@chakra-ui/react';
+import {
+  Divider,
+  Grid,
+  Heading,
+  Link,
+  Stack,
+  useColorMode,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Fragment, memo } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
@@ -10,6 +17,8 @@ import { formatTournamentDate } from '../../TournamentList/helpers';
 
 export const DeckFinishes = memo(
   ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
+    const { colorMode } = useColorMode();
+
     const filters = getFinalResultsDeckFilters(deck);
 
     const { data: deckStandings } = useFinalResults(filters);
@@ -46,7 +55,7 @@ export const DeckFinishes = memo(
                     >
                       <Heading
                         size='sm'
-                        color='gray.700'
+                        color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
                         paddingX={onlyShowRecent ? 8 : 2}
                         paddingTop={onlyShowRecent ? 0 : 3}
                       >

@@ -6,6 +6,7 @@ import {
   HStack,
   Stack,
   Text,
+  useColorMode,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Fragment } from 'react';
@@ -38,6 +39,8 @@ export interface TournamentHomeViewProps {
 }
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
+  const { colorMode } = useColorMode();
+
   const { data: userIsAdmin } = useUserIsAdmin();
   const session = useSession();
   const { data: location } = useLocation(props.tournament?.id ?? '');
@@ -65,7 +68,11 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
             ) : (
               <Box></Box>
             )}
-            <Heading size='xl' color='gray.700' lineHeight={'2.25rem'}>
+            <Heading
+              size='xl'
+              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+              lineHeight={'2.25rem'}
+            >
               {props.tournament.name}
             </Heading>
             <Box />

@@ -7,6 +7,7 @@ import {
   Grid,
   Box,
   Flex,
+  useColorMode,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
@@ -29,6 +30,8 @@ export const TournamentCard = ({
   tournament: Tournament;
   champion?: Standing;
 }) => {
+  const { colorMode } = useColorMode();
+
   const session = useSession();
   const countryCode = useCountryCode(tournament.id);
   const live = tournament.tournamentStatus === 'running';
@@ -61,7 +64,10 @@ export const TournamentCard = ({
                 <Box></Box>
               )}
               <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
-                <Heading size={live ? 'md' : 'sm'} color='gray.700'>
+                <Heading
+                  size={live ? 'md' : 'sm'}
+                  color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+                >
                   {tournament.name}
                 </Heading>
               </LinkOverlay>

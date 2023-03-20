@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { Button, Heading, HStack, Stack } from '@chakra-ui/react';
+import { Button, Heading, HStack, Stack, useColorMode } from '@chakra-ui/react';
 import Image from 'next/image';
 import { getCardImageUrl } from '../ListViewer/helpers';
 import { DeckCard, Deck } from '../../../../types/tournament';
@@ -14,6 +14,8 @@ import { BackToDecksButton } from './BackToDecksButton';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
+    const { colorMode } = useColorMode();
+
     const { data: deckStandings } = useFinalResults(
       deck.classification === 'supertype'
         ? { supertypeId: deck.id }
@@ -63,7 +65,11 @@ export const DeckHeader = memo(
               justifyContent='start'
             >
               <HStack>
-                <Heading color='gray.700' size='md' letterSpacing={'wide'}>
+                <Heading
+                  color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+                  size='md'
+                  letterSpacing={'wide'}
+                >
                   {deck.name}
                 </Heading>
                 <SpriteDisplay pokemonNames={deck.defined_pokemon} />
@@ -90,7 +96,9 @@ export const DeckHeader = memo(
             />
           ))}
         </HStack>
-        <Heading color='gray.700'>{deck.name}</Heading>
+        <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
+          {deck.name}
+        </Heading>
         <DeckVariants deck={deck} />
       </Stack>
     );
