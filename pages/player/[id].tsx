@@ -4,7 +4,7 @@ import { PlayerProfilePage } from '../../src/components/Profile/PlayerProfilePag
 import { usePlayerProfile } from '../../src/hooks/user';
 
 export default function Page({ username }: { username: string }) {
-  const { data, isLoading } = usePlayerProfile(username);
+  const { data, isLoading } = usePlayerProfile({ username });
 
   if (isLoading) return <FullPageLoader />;
 

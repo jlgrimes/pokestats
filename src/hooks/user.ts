@@ -162,18 +162,29 @@ export const fetchUser = async (email: string) => {
   return res.data?.[0];
 };
 
-export const fetchPlayerProfile = async (username: string) => {
-  const res = await supabase
-    .from('Player Profiles')
-    .select('id,name,email,username')
-    .eq('username', username);
+export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
+  let query = supabase.from('Player Profiles').select('id,name,email,username');
 
+  if (filters?.username) {
+    query = query.eq('username', filters.username);
+  }
+
+  if (filters?.name) {
+    query = query.eq('name', filters.name);
+  }
+
+  const res = await query;
   return res.data?.[0] ?? null;
 };
 
-export const usePlayerProfile = (username: string) => {
+interface PlayerProfileFilters {
+  username?: string;
+  name?: string;
+}
+
+export const usePlayerProfile = (filters?: PlayerProfileFilters) => {
   return useQuery({
-    queryKey: ['player-profile', username],
-    queryFn: () => fetchPlayerProfile(username),
+    queryKey: ['player-profile', filters?.username, filters?.name],
+    queryFn: () => fetchPlayerProfile(filters),
   });
 };

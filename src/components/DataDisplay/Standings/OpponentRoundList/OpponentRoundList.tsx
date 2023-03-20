@@ -21,8 +21,10 @@ import { Standing, Tournament } from '../../../../../types/tournament';
 import { useIsMobile } from '../../../../hooks/device';
 import { useUserIsFollowingPlayer } from '../../../../hooks/pinnedPlayers';
 import { usePlayerLiveResults } from '../../../../hooks/tournamentResults';
+import { usePlayerProfile } from '../../../../hooks/user';
 import { ordinalSuffixOf } from '../../../../lib/strings';
 import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
+import { Username } from '../../../Profile/Username';
 import { FollowButton } from '../../../Social/FollowButton';
 import { Record } from '../../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
@@ -39,6 +41,7 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
 
   const isMobile = useIsMobile();
   const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
+  const { data: playerProfile } = usePlayerProfile({ name: player.name });
 
   return (
     <Modal isOpen={modalOpen} onClose={handleCloseModal} size='md'>
@@ -46,12 +49,21 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
       <ModalContent margin={isMobile ? 'auto' : 0}>
         <ModalHeader padding={'0.5rem 2rem'}>
           <HStack>
-            <Grid gridTemplateColumns={'3fr 1fr'} alignItems='center'>
+            <Grid gridTemplateColumns={'2.5fr 1fr'} pr={4}>
               <Stack spacing={0}>
                 <Flex wrap='wrap' alignItems={'center'}>
                   <Text mr='2'>{player.name}</Text>
-                  <FollowButton playerName={player.name} />
                 </Flex>
+                <HStack>
+                  {playerProfile?.username && (
+                    <Username small isLink>
+                      {playerProfile?.username}
+                    </Username>
+                  )}
+                  <FollowButton playerName={player.name} />
+                </HStack>
+              </Stack>
+              <Stack spacing={0}>
                 <HStack alignItems='center'>
                   <HStack spacing={0}>
                     <RecordIcon standing={player} tournament={tournament} />
@@ -59,16 +71,16 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
                   </HStack>
                   <Record standing={player} normal />
                 </HStack>
+                <DeckInfoDisplay
+                  tournament={tournament}
+                  player={player}
+                  enableEdits={false}
+                  disableList
+                  // Since we're pulling from post-tournament
+                  shouldHideDeck={shouldHideDecks}
+                  shouldDisableDeckExtras
+                />s
               </Stack>
-              <DeckInfoDisplay
-                tournament={tournament}
-                player={player}
-                enableEdits={false}
-                disableList
-                // Since we're pulling from post-tournament
-                shouldHideDeck={shouldHideDecks}
-                shouldDisableDeckExtras
-              />
             </Grid>
           </HStack>
         </ModalHeader>
