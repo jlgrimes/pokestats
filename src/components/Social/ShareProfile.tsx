@@ -16,7 +16,6 @@ export const ShareProfile = (props: ShareProfileProps) => {
     if (isMobile && !!navigator.share) {
       navigator.share({
         title: document.title,
-        text: 'Hello World',
         url: window.location.href,
       });
     } else {

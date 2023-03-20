@@ -1,4 +1,5 @@
 import { Text } from '@chakra-ui/react';
+import Head from 'next/head';
 import { FullPageLoader } from '../../src/components/common/FullPageLoader';
 import { PlayerProfilePage } from '../../src/components/Profile/PlayerProfilePage';
 import { usePlayerProfile } from '../../src/hooks/user';
@@ -17,7 +18,19 @@ export default function Page({ username }: { username: string }) {
 
   if (!data) return <Text>Something went wrong.</Text>;
 
-  return <PlayerProfilePage profile={data} />;
+  return (
+    <>
+      <Head>
+        <title>{username} on PokéStats Live</title>
+        <meta name='twitter:card' content='summary'></meta>
+        <meta
+          property='og:title'
+          content={`Follow ${username} on PokéStats Live`}
+        />
+      </Head>
+      <PlayerProfilePage profile={data} />
+    </>
+  );
 }
 
 export const getServerSideProps = (context: any) => {
