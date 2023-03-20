@@ -37,7 +37,7 @@ export default function Page({ username }: { username: string }) {
           name='twitter:title'
           content={`Follow ${username} on PokéStats Live`}
         />
-        <meta name='twitter:image' content='/live.png' />
+        <meta name='twitter:image' content='https://keujidcnlmekgfajgnjq.supabase.co/storage/v1/object/sign/images/live.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbGl2ZS5wbmciLCJpYXQiOjE2NzkzNTQ2MjUsImV4cCI6MTcxMDg5MDYyNX0.2Aq8Ayu5MAeYAWbbxd99jBVj9VWSFIRflWvV-GTbfIk&t=2023-03-20T23%3A23%3A45.653Z' />
         {/* <meta
           name='twitter:description'
           content={`View ${username}'s player profile on PokéStats Live.`}
