@@ -177,6 +177,18 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
   return res.data?.[0] ?? null;
 };
 
+const fetchAllTakenUsernames = async () => {
+  const res = await supabase.from('Player Profiles').select('username');
+  return res.data?.map(({ username }) => username) ?? null;
+};
+
+export const useAllTakenUsernames = () => {
+  return useQuery({
+    queryKey: ['all-taken-usernames'],
+    queryFn: () => fetchAllTakenUsernames(),
+  });
+};
+
 interface PlayerProfileFilters {
   username?: string;
   name?: string;

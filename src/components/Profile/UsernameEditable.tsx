@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { FaCheck, FaCross, FaTimes, FaWindowClose } from 'react-icons/fa';
 import * as Yup from 'yup';
 import { CombinedPlayerProfile } from '../../../types/player';
-import { useSessionUserProfile } from '../../hooks/user';
+import { useAllTakenUsernames, useSessionUserProfile } from '../../hooks/user';
 import supabase from '../../lib/supabase/client';
 import { Username } from './Username';
 
@@ -30,6 +30,7 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { refetch } = useSessionUserProfile();
   const router = useRouter();
+  const { data: takenUsernames } = useAllTakenUsernames();
 
   const userIsLoggedInUser = session.data?.user?.name === props.profile.name;
 
@@ -38,6 +39,13 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
   }: {
     pokestatsUsername: string;
   }) => {
+    if (takenUsernames?.some(username => username === pokestatsUsername)) {
+      return toast({
+        status: 'error',
+        title: 'That username is taken! Try another one',
+      });
+    }
+
     const { error } = await supabase
       .from('Player Profiles')
       .update({ username: pokestatsUsername })
