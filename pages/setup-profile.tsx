@@ -1,5 +1,5 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { SetupProfileController } from '../src/components/Profile/SetupProfile/SetupProfileController';
@@ -8,14 +8,11 @@ import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
 export default function SetupPage() {
   const router = useRouter();
   const session = useSession();
-  const { data: user, isLoading } = useSessionUserProfile();
+  const { data: user, isLoading, refetch } = useSessionUserProfile();
 
   useEffect(() => {
     if (user) {
-      router.push(`/profile`);
-    }
-    if (!isLoading && user) {
-      router.push('/');
+      location.assign('/profile');
     }
   }, [router, user, isLoading]);
 

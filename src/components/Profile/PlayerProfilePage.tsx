@@ -47,7 +47,7 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
           {userIsLoggedInUser && props.profile.username && (
             <ShareProfile username={props.profile.username} />
           )}
-          {props.profile.name && (
+          {!userIsLoggedInUser && props.profile.name && (
             <FollowButton playerName={props.profile.name} />
           )}
         </HStack>
