@@ -32,7 +32,8 @@ export const TournamentList = ({
             <Box
               key={idx}
               gridColumn={
-                isTournamentUpcoming && !isAboutToStart ? 'auto' : '1/-1'
+                // isTournamentUpcoming && !isAboutToStart ? 'auto' : '1/-1'
+                '1/-1'
               }
             >
               <TournamentCard
