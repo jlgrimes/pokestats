@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /profile
+
+# Allow all crawlers
+User-agent: *
+Allow: /

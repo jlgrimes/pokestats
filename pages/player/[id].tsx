@@ -19,7 +19,7 @@ export default function Page({ username }: { username: string }) {
   if (!data) return <Text>Something went wrong.</Text>;
 
   return (
-    <>
+    <div>
       <Head>
         <title>{username} - PokéStats Live</title>
         <meta property='og:type' content='website' />
@@ -29,17 +29,17 @@ export default function Page({ username }: { username: string }) {
           name='twitter:title'
           content={`Follow ${username} on PokéStats Live`}
         />
-        <meta
+        {/* <meta
           name='twitter:description'
           content={`View ${username}'s player profile on PokéStats Live.`}
         />
         <meta
           name='twitter:image'
           content='http://1.bp.blogspot.com/-RqEPz32fWg0/XYveSw2AQbI/AAAAAAAAPtY/HQ9ivK9BRSQTT433qkQ9Pq4RypyIj2UUgCK4BGAYYCw/s1218/4.jpg'
-        />
+        /> */}
       </Head>
       <PlayerProfilePage profile={data} />
-    </>
+    </div>
   );
 }
 
