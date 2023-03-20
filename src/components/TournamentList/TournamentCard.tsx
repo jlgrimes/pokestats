@@ -64,12 +64,23 @@ export const TournamentCard = ({
                 <Box></Box>
               )}
               <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
-                <Heading
-                  size={live ? 'md' : 'sm'}
-                  color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
-                >
-                  {tournament.name}
-                </Heading>
+                <Stack spacing={1}>
+                  <Heading
+                    size={live ? 'md' : 'sm'}
+                    color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+                  >
+                    {tournament.name}
+                  </Heading>
+                  {!live && (
+                    <Heading
+                      size={'xs'}
+                      color='gray.500'
+                      fontWeight={'semibold'}
+                    >
+                      {formatTournamentDate(tournament)}
+                    </Heading>
+                  )}
+                </Stack>
               </LinkOverlay>
               <Box />
               <Stack spacing={live ? 3 : 1} paddingTop={live ? 1 : 0}>
@@ -77,11 +88,6 @@ export const TournamentCard = ({
                   tournament={tournament}
                   size={live ? 'sm' : 'xs'}
                 />
-                {!live && (
-                  <Heading size={'xs'} color='gray.500' fontWeight={'semibold'}>
-                    {formatTournamentDate(tournament)}
-                  </Heading>
-                )}
               </Stack>
             </Grid>
             {champion && <ChampionDisplay champion={champion} />}
