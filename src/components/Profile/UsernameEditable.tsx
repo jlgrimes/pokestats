@@ -86,7 +86,7 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
   if (isEditing)
     return (
       <form onSubmit={formik.handleSubmit}>
-        <HStack>
+        <HStack alignItems={'baseline'}>
           <FormControl isInvalid={!!formik.errors.pokestatsUsername}>
             <Input
               name='pokestatsUsername'
