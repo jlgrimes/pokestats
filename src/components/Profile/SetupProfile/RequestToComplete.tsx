@@ -10,6 +10,7 @@ import {
   Box,
   Input,
   useToast,
+  useColorMode,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Session } from 'next-auth';
@@ -31,6 +32,8 @@ export const RequestToComplete = ({
 }: {
   userProfile: SessionUserProfile | undefined;
 }) => {
+  const { colorMode } = useColorMode();
+
   const [fadeIn, setFadeIn] = useState(false);
   const [fullNameVal, setFullNameVal] = useState('');
   const { data: userSentRequest } = useUserSentAccountRequest(
@@ -107,7 +110,9 @@ export const RequestToComplete = ({
     <Stack padding='1.5rem' spacing={10} justifyContent='space-between'>
       <Fade in={fadeIn}>
         <Stack spacing={6}>
-          <Heading color='gray.700'>Complete account setup</Heading>
+          <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
+            Complete account setup
+          </Heading>
           {/* <Text as='b'>{`Make sure your Google account name matches your RK9 account name.`}</Text> */}
           <Text>
             Please enter your full name <b>exactly as it shows on RK9.</b>

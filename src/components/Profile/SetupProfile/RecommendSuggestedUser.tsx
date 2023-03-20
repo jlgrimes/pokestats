@@ -6,6 +6,7 @@ import {
   Fade,
   List,
   ListItem,
+  useColorMode,
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
@@ -25,6 +26,8 @@ export interface RecommendedSuggestedUserProps {
 export const RecommendedSuggestedUser = (
   props: RecommendedSuggestedUserProps
 ) => {
+  const { colorMode } = useColorMode();
+
   const { userProfile, didNotAttendCallback, accountMadeSuccessfullyCallback } =
     props;
 
@@ -80,7 +83,9 @@ export const RecommendedSuggestedUser = (
       height='100%'
     >
       <Fade in={elementFadedIn >= 0}>
-        <Heading color='gray.700'>{`Complete account setup`}</Heading>
+        <Heading
+          color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+        >{`Complete account setup`}</Heading>
       </Fade>
       <Fade in={elementFadedIn >= 1}>
         <Stack spacing={8}>
