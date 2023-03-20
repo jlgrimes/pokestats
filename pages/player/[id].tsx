@@ -3,6 +3,8 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { FullPageLoader } from '../../src/components/common/FullPageLoader';
 import { PlayerProfilePage } from '../../src/components/Profile/PlayerProfilePage';
+import { fetchFinalResults } from '../../src/hooks/finalResults/fetch';
+import { fetchTournamentMetadata } from '../../src/hooks/tournamentMetadata';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import {
   fetchAllTakenUsernames,
@@ -49,11 +51,7 @@ export default function Page({ username }: { username: string }) {
   );
 }
 
-export const getStaticProps = async ({
-  params,
-}: {
-  params: { id: string };
-}) => {
+export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -61,13 +59,18 @@ export const getStaticProps = async ({
     queryFn: () => fetchTournaments({ prefetch: true }),
   });
 
+  await queryClient.prefetchQuery({
+    queryKey: ['all-tournament-metadata'],
+    queryFn: () => fetchTournamentMetadata(),
+  });
+
   const playerProfile = await fetchPlayerProfile({ username: params.id });
 
-  queryClient.setQueryData(
+  await queryClient.setQueryData(
     ['player-profile', params.id, null],
     () => playerProfile
   );
-  queryClient.setQueryData(
+  await queryClient.setQueryData(
     ['player-profile', null, playerProfile?.name],
     () => playerProfile
   );
@@ -80,6 +83,7 @@ export const getStaticProps = async ({
           playerName: playerProfile.name,
         },
       ],
+      queryFn: () => fetchFinalResults({ playerName: playerProfile.name }),
     });
   }
 
@@ -88,8 +92,9 @@ export const getStaticProps = async ({
       username: params.id,
       dehydratedState: dehydrate(queryClient),
     },
+    revalidate: 10,
   };
-};
+}
 
 export async function getStaticPaths() {
   const users = await fetchAllTakenUsernames();

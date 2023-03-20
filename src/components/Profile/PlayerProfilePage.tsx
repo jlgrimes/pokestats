@@ -10,6 +10,7 @@ import {
 import { useSession } from 'next-auth/react';
 import { CombinedPlayerProfile } from '../../../types/player';
 import { useFinalResults } from '../../hooks/finalResults';
+import { ComponentLoader } from '../common/ComponentLoader';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { PlayerPerformanceList } from '../DataDisplay/PlayerPerformanceList';
 import { FollowButton } from '../Social/FollowButton';
@@ -29,8 +30,7 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
     playerName: props.profile.name,
   });
 
-  if (finalResultsAreLoading || session.status === 'loading')
-    return <FullPageLoader />;
+  if (finalResultsAreLoading) return <FullPageLoader />;
 
   return (
     <Stack>
@@ -44,11 +44,16 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
               <Username>{props.profile.username}</Username>
             )
           )}
-          {userIsLoggedInUser && props.profile.username && (
-            <ShareProfile username={props.profile.username} />
-          )}
-          {!userIsLoggedInUser && props.profile.name && (
-            <FollowButton playerName={props.profile.name} />
+          {session.status === 'loading' && <ComponentLoader />}
+          {session.status !== 'loading' && (
+            <>
+              {userIsLoggedInUser && props.profile.username && (
+                <ShareProfile username={props.profile.username} />
+              )}
+              {!userIsLoggedInUser && props.profile.name && (
+                <FollowButton playerName={props.profile.name} />
+              )}
+            </>
           )}
         </HStack>
       </Stack>
