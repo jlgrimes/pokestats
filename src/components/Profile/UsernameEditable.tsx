@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaCheck, FaCross, FaTimes, FaWindowClose } from 'react-icons/fa';
 import * as Yup from 'yup';
@@ -28,6 +29,7 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
   const toast = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const { refetch } = useSessionUserProfile();
+  const router = useRouter();
 
   const userIsLoggedInUser = session.data?.user?.name === props.profile.name;
 
@@ -49,12 +51,7 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
       });
     }
 
-    await refetch();
-    setIsEditing(false);
-    return toast({
-      status: 'success',
-      title: 'Set your username to ' + pokestatsUsername + '!',
-    });
+    router.push(`/player/${pokestatsUsername}`);
   };
 
   const formik = useFormik({

@@ -37,12 +37,13 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
       <Stack spacing={0} alignItems='center'>
         <Heading>{props.profile.name}</Heading>
         <HStack>
-          {props.profile.username &&
-            (userIsLoggedInUser ? (
-              <UsernameEditable profile={props.profile} />
-            ) : (
+          {userIsLoggedInUser ? (
+            <UsernameEditable profile={props.profile} />
+          ) : (
+            props.profile.username && (
               <Username>{props.profile.username}</Username>
-            ))}
+            )
+          )}
           {userIsLoggedInUser && props.profile.username && (
             <ShareProfile username={props.profile.username} />
           )}
