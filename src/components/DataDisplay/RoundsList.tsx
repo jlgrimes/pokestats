@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, HStack, Stack } from '@chakra-ui/react';
+import { Box, Flex, Grid, HStack, Stack, useColorMode } from '@chakra-ui/react';
 import { PlayerRound, Standing, Tournament } from '../../../types/tournament';
 import { StatsHeading } from '../common/StatsHeading';
 import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
@@ -14,6 +14,8 @@ interface RoundsListProps {
 }
 
 export const RoundsList = (props: RoundsListProps) => {
+  const { colorMode } = useColorMode();
+
   const rounds = props.rounds.slice().reverse();
 
   return (
@@ -24,7 +26,10 @@ export const RoundsList = (props: RoundsListProps) => {
             <Grid gridTemplateColumns='25px auto' key={idx} alignItems='center'>
               <Box display='flex' justifyContent={'center'}>
                 <StatsHeading
-                  headingProps={{ color: 'gray.600', fontSize: 'lg' }}
+                  headingProps={{
+                    color: colorMode === 'dark' ? 'gray.400' : 'gray.600',
+                    fontSize: 'lg',
+                  }}
                 >
                   {(rounds?.length ?? 0) - idx}
                 </StatsHeading>
