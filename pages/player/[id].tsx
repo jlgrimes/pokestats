@@ -22,6 +22,7 @@ export default function Page({ username }: { username: string }) {
     <>
       <Head>
         <title>{username} - PokéStats Live</title>
+        <meta property='og:type' content='website' />
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:site' content='@pokestatstcg' />
         <meta
