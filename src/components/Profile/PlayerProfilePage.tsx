@@ -13,6 +13,7 @@ import { useFinalResults } from '../../hooks/finalResults';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { PlayerPerformanceList } from '../DataDisplay/PlayerPerformanceList';
 import { FollowButton } from '../Social/FollowButton';
+import { ShareProfile } from '../Social/ShareProfile';
 import { Username } from './Username';
 import { UsernameEditable } from './UsernameEditable';
 
@@ -42,6 +43,9 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
             ) : (
               <Username>{props.profile.username}</Username>
             ))}
+          {userIsLoggedInUser && props.profile.username && (
+            <ShareProfile username={props.profile.username} />
+          )}
           {props.profile.name && (
             <FollowButton playerName={props.profile.name} />
           )}
