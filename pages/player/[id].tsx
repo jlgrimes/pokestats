@@ -21,10 +21,11 @@ export default function Page({ username }: { username: string }) {
   return (
     <>
       <Head>
-        <title>{username} on PokéStats Live</title>
-        <meta name='twitter:card' content='summary'></meta>
+        <title>{username} - PokéStats Live</title>
+        <meta name='twitter:card' content='summary' />
+        <meta name='twitter:site' content='@pokestatstcg' />
         <meta
-          property='og:title'
+          name='twitter:title'
           content={`Follow ${username} on PokéStats Live`}
         />
       </Head>
