@@ -15,8 +15,8 @@ export const ShareProfile = (props: ShareProfileProps) => {
 
     if (isMobile && !!navigator.share) {
       navigator.share({
-        title: document.title,
-        url: window.location.href,
+        title: `Follow ${props.username} on PokéStats Live`,
+        url,
       });
     } else {
       navigator.clipboard.writeText(url);

@@ -1,5 +1,5 @@
-import { Button, useToast } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { Button, Modal, useToast } from '@chakra-ui/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 import { StoredPlayerProfile } from '../../../types/player';
 import { Standing, Tournament } from '../../../types/tournament';
@@ -22,10 +22,7 @@ export const FollowButton = (props: FollowButtonProps) => {
 
   const handleClick = useCallback(async () => {
     if (!session.data?.user?.email) {
-      return toast({
-        status: 'error',
-        title: 'Session invalid',
-      });
+      return signIn('google');
     }
 
     if (userIsFollowing) {
