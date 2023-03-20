@@ -17,7 +17,7 @@ import { ShareProfile } from '../Social/ShareProfile';
 import { Username } from './Username';
 import { UsernameEditable } from './UsernameEditable';
 
-interface PlayerProfilePageProps {
+export interface PlayerProfilePageProps {
   profile: CombinedPlayerProfile;
 }
 
