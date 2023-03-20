@@ -29,7 +29,13 @@ import { IconCards } from '@tabler/icons-react';
 
 export type UserStatus = 'logged-out' | 'not-setup' | 'setup';
 
-export const AppDrawerButton = ({ userStatus }: { userStatus: UserStatus }) => {
+export const AppDrawerButton = ({
+  userStatus,
+  userProfile,
+}: {
+  userStatus: UserStatus;
+  userProfile: CombinedPlayerProfile | null | undefined;
+}) => {
   const { data: userIsAdmin } = useUserIsAdmin();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -81,7 +87,13 @@ export const AppDrawerButton = ({ userStatus }: { userStatus: UserStatus }) => {
                   </HStack>
                   <Link
                     as={NextLink}
-                    href={userStatus === 'setup' ? '/profile' : 'setup-profile'}
+                    href={
+                      userStatus === 'setup'
+                        ? userProfile?.username
+                          ? `/player/${userProfile.username}`
+                          : `/profile`
+                        : 'setup-profile'
+                    }
                     onClick={onClose}
                   >
                     <Heading size='lg'>

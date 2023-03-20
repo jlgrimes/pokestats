@@ -44,7 +44,7 @@ export const AppBar = () => {
         padding={'0.25rem 1.5rem'}
         justifyContent={'space-between'}
       >
-        {<AppDrawerButton userStatus={getUserStatus()} />}
+        {<AppDrawerButton userStatus={getUserStatus()} userProfile={userProfile} />}
         {router.asPath !== '/' && router.asPath !== '/help' && <AppLogo />}
         <HStack spacing={4}>
           <DarkModeToggle />
@@ -53,7 +53,13 @@ export const AppBar = () => {
               <LinkBox>
                 <LinkOverlay
                   as={NextLink}
-                  href={userProfile ? `/profile` : `/setup-profile`}
+                  href={
+                    userProfile
+                      ? userProfile.username
+                        ? `/player/${userProfile.username}`
+                        : `/profile`
+                      : `/setup-profile`
+                  }
                 >
                   <Stack direction={'row'} alignItems='end' spacing={-1.5}>
                     {!session.data?.user?.image ? (
