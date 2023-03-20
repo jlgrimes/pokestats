@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react';
 import Head from 'next/head';
 import { FullPageLoader } from '../../src/components/common/FullPageLoader';
 import { PlayerProfilePage } from '../../src/components/Profile/PlayerProfilePage';
-import { usePlayerProfile } from '../../src/hooks/user';
+import { fetchAllTakenUsernames, usePlayerProfile } from '../../src/hooks/user';
 
 export default function Page({ username }: { username: string }) {
   const { data, isLoading } = usePlayerProfile({ username });
@@ -43,11 +43,20 @@ export default function Page({ username }: { username: string }) {
   );
 }
 
-export const getServerSideProps = (context: any) => {
-  console.log(context.params.id);
+export const getStaticProps = ({ params }: { params: { id: string } }) => {
   return {
     props: {
-      username: context.params.id,
+      username: params.id,
     },
   };
 };
+
+export async function getStaticPaths() {
+  const users = await fetchAllTakenUsernames();
+  const paths = users?.map(username => ({ params: { id: username } }));
+
+  return {
+    paths,
+    fallback: false, // can also be true or 'blocking'
+  };
+}
