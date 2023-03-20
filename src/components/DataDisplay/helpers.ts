@@ -2,9 +2,9 @@ import { ColorMode } from '@chakra-ui/react';
 
 export const getResultBackgroundColor = (
   matchResult: string | undefined,
-  darkMode?: ColorMode
+  colorMode?: ColorMode
 ) => {
-  if (darkMode)
+  if (colorMode === 'dark')
     return matchResult === 'W'
       ? 'green.800'
       : matchResult === 'T'
