@@ -8,7 +8,7 @@ interface CountryFlagProps {
 }
 
 export const CountryFlag = memo((props: CountryFlagProps) => {
-  const url = `https://countryflagsapi.com/png/${props.countryCode}`;
+  const url = `https://flagsapi.com/${props.countryCode}/flat/64.png`;
 
   return (
     <Box opacity={props.size === 'lg' ? '0.75' : '0.85'}>

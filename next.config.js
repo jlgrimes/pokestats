@@ -9,7 +9,7 @@ const moduleExports = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['limitlesstcg.s3.us-east-2.amazonaws.com', 'countryflagsapi.com', 'images.pokemontcg.io']
+    domains: ['limitlesstcg.s3.us-east-2.amazonaws.com', 'flagsapi.com', 'images.pokemontcg.io']
   },
 
   sentry: {
