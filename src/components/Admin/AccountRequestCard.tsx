@@ -113,6 +113,7 @@ export const AccountRequestCard = ({
         <Text>{format(parseISO(request.created_at), 'k:mm:ss MMM d y')}</Text>
         <Heading size={'md'}>{request.email}</Heading>
         <Text>Name: {request.name}</Text>
+        <Text>Entered Name: {request.entered_name}</Text>
       </CardHeader>
       <Button
         onClick={() => {

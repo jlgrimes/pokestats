@@ -90,7 +90,10 @@ export const useUserIsInTournament = (
 
 export const useAccountRequests = () => {
   const fetchUserAccountRequests = async () => {
-    const { data } = await supabase.from('Account Requests').select('*');
+    const { data } = await supabase
+      .from('Account Requests')
+      .select('*')
+      .order('created_at', { ascending: false });
     return data;
   };
 
