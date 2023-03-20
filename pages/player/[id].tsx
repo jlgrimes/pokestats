@@ -1,8 +1,14 @@
 import { Text } from '@chakra-ui/react';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { FullPageLoader } from '../../src/components/common/FullPageLoader';
 import { PlayerProfilePage } from '../../src/components/Profile/PlayerProfilePage';
-import { fetchAllTakenUsernames, usePlayerProfile } from '../../src/hooks/user';
+import { fetchTournaments } from '../../src/hooks/tournaments';
+import {
+  fetchAllTakenUsernames,
+  usePlayerProfile,
+  fetchPlayerProfile,
+} from '../../src/hooks/user';
 
 export default function Page({ username }: { username: string }) {
   const { data, isLoading } = usePlayerProfile({ username });
@@ -43,10 +49,44 @@ export default function Page({ username }: { username: string }) {
   );
 }
 
-export const getStaticProps = ({ params }: { params: { id: string } }) => {
+export const getStaticProps = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['tournaments'],
+    queryFn: () => fetchTournaments({ prefetch: true }),
+  });
+
+  const playerProfile = await fetchPlayerProfile({ username: params.id });
+
+  queryClient.setQueryData(
+    ['player-profile', params.id, null],
+    () => playerProfile
+  );
+  queryClient.setQueryData(
+    ['player-profile', null, playerProfile?.name],
+    () => playerProfile
+  );
+
+  if (playerProfile?.name) {
+    await queryClient.prefetchQuery({
+      queryKey: [
+        'final-results',
+        {
+          playerName: playerProfile.name,
+        },
+      ],
+    });
+  }
+
   return {
     props: {
       username: params.id,
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };
