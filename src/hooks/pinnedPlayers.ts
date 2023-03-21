@@ -65,7 +65,9 @@ export const useUserIsFollowingPlayer = (playerName: string) => {
   const { data, ...rest } = useAllPinnedPlayers(undefined, email ?? undefined);
 
   return {
-    data: data
+    data: !email
+      ? false
+      : data
       ? data.some(player => player.pinned_player_name === playerName)
       : null,
     ...rest,
