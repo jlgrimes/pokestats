@@ -92,7 +92,7 @@ export const AppDrawerButton = ({
                         ? userProfile?.username
                           ? `/player/${userProfile.username}`
                           : `/profile`
-                        : 'setup-profile'
+                        : '/setup-profile'
                     }
                     onClick={onClose}
                   >
