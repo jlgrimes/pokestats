@@ -77,7 +77,7 @@ export const PlayerPerformanceList = ({
                   player={performance}
                   tournament={tournament}
                   shouldHideDecks={false}
-                  canEditDecks
+                  canEditDecks={userMatchesLoggedInUser || userIsAdmin}
                 />
               </Box>
             </Stack>
