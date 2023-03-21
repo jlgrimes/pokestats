@@ -25,13 +25,17 @@ export default function ProfilePage({
   const { data: user, isLoading } = useSessionUserProfile();
 
   useEffect(() => {
-    // If user is on the page with their profile, and there is not a profile stored
-    if (session.status === 'authenticated' && !isLoading && !user) {
-      router.push('/setup-profile');
-    }
+    try {
+      // If user is on the page with their profile, and there is not a profile stored
+      if (session.status === 'authenticated' && !isLoading && !user) {
+        router.push('/setup-profile');
+      }
 
-    if (session.status === 'unauthenticated') {
-      router.push('/');
+      if (session.status === 'unauthenticated') {
+        router.push('/');
+      }
+    } catch (err) {
+      console.log(err);
     }
   }, [session.status, router, user, isLoading]);
 
