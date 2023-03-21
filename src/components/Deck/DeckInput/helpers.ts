@@ -48,7 +48,7 @@ export const handleDeckSubmit = async (
     deck_archetype: deck.id,
     on_stream: isStreamDeck,
     user_who_submitted: sessionUserEmail,
-    user_submitted_was_admin: true,
+    user_submitted_was_admin: userIsAdmin,
   });
   if (error) {
     return toast({
