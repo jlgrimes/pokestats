@@ -28,8 +28,8 @@ export const TournamentPageLayout = ({
   const { colorMode } = useColorMode();
 
   const router = useRouter();
-  const splitPath = router.asPath && router.asPath.split('/');
-  const slug = splitPath ? splitPath.at(splitPath.length - 1) : undefined;
+  const splitPath = router.asPath ? router.asPath.split('/') : '';
+  const slug = splitPath ? splitPath.at(splitPath.length - 1) : '/';
 
   if (!tournament) return null;
 
