@@ -19,6 +19,7 @@ import { CombinedPlayerProfile } from '../../../types/player';
 import { useAllTakenUsernames, useSessionUserProfile } from '../../hooks/user';
 import supabase from '../../lib/supabase/client';
 import { Username } from './Username';
+import { profanity } from '@2toad/profanity';
 
 interface UsernameEditableProps {
   profile: CombinedPlayerProfile;
@@ -39,6 +40,13 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
   }: {
     pokestatsUsername: string;
   }) => {
+    if (profanity.exists(pokestatsUsername)) {
+      return toast({
+        status: 'error',
+        title: 'Watch your mouth!',
+      });
+    }
+
     if (takenUsernames?.some(username => username === pokestatsUsername)) {
       return toast({
         status: 'error',
@@ -72,10 +80,13 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
         .min(5, 'Username must be at least 5 characters')
         .max(20, 'Username cannot exceed 20 characters')
         .matches(/^[^.]*$/, {
-          message: 'No period',
+          message: 'No period allowed',
+        })
+        .matches(/^[^ ]*$/, {
+          message: 'No spaces allowed',
         })
         .matches(/^[^!@#$%^&*+=<>:;|~]*$/, {
-          message: 'No symbols',
+          message: 'No symbols allowed',
         }),
     }),
     validateOnChange: false,

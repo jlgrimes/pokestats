@@ -13,6 +13,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@2toad/profanity": "^2.2.0",
     "@chakra-ui/icons": "^2.0.13",
     "@chakra-ui/react": "^2.4.3",
     "@emotion/react": "^11.10.5",
