@@ -21,9 +21,12 @@ export const handleDeckSubmit = async (
       .order('created_at', { ascending: false });
 
     if (tournament.tournamentStatus === 'finished') {
+      const supertype =
+        deck.supertype?.id && deck.supertype.id >= 0 ? deck.supertype.id : null;
+
       const { error } = await supabase
         .from('Final Results')
-        .update({ deck_archetype: deck.id, deck_supertype: deck.supertype?.id })
+        .update({ deck_archetype: deck.id, deck_supertype: supertype })
         .match({ name: selectedPlayer, tournament_id: tournament.id });
 
       if (error)
