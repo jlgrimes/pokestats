@@ -10,20 +10,25 @@ export const ShareProfile = (props: ShareProfileProps) => {
   const isMobile = useIsMobile();
   const toast = useToast();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const url = `https://pokestats.live/player/${props.username}`;
 
     if (isMobile && !!navigator.share) {
       try {
-        navigator.share({
+        await navigator.share({
           title: `Follow ${props.username} on PokéStats Live`,
           url: window.location.href,
         });
-      } catch {
-        console.log('Share aborted');
+      } catch (err) {
+        console.log(err);
       }
     } else {
-      navigator.clipboard.writeText(url);
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch (err) {
+        console.log(err);
+      }
+
       toast({
         status: 'info',
         title: 'Player link copied to clipboard',
