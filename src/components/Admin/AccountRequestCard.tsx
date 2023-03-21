@@ -125,10 +125,10 @@ export const AccountRequestCard = ({
       </Button>
       <Button
         onClick={() => {
-          setAssociatedName(request.name)
+          setAssociatedName(request.entered_name);
         }}
       >
-        {'Override name to saved (for upcoming)'}
+        {'Associate with the name they inputted'}
       </Button>
       <Grid gridTemplateColumns={'1fr 1fr'}>
         <Button
