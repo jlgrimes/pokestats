@@ -14,10 +14,14 @@ export const ShareProfile = (props: ShareProfileProps) => {
     const url = `https://pokestats.live/player/${props.username}`;
 
     if (isMobile && !!navigator.share) {
-      navigator.share({
-        title: `Follow ${props.username} on PokéStats Live`,
-        url: window.location.href,
-      });
+      try {
+        navigator.share({
+          title: `Follow ${props.username} on PokéStats Live`,
+          url: window.location.href,
+        });
+      } catch {
+        console.log('Share aborted');
+      }
     } else {
       navigator.clipboard.writeText(url);
       toast({
