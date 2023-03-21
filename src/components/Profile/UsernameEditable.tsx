@@ -47,7 +47,11 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
       });
     }
 
-    if (takenUsernames?.some(username => username === pokestatsUsername)) {
+    if (
+      takenUsernames?.some(
+        username => username.toLowerCase() === pokestatsUsername.toLowerCase()
+      )
+    ) {
       return toast({
         status: 'error',
         title: 'That username is taken! Try another one',
