@@ -14,6 +14,7 @@ export const ListView = ({
   handleCardClick: (card: DeckCard) => void;
 }) => {
   const codeToSetMap = useCodeToSetMap();
+  console.log(deckList)
   const flatDeckList = useMemo(() => getCompressedList(deckList, true), [deckList]);
 
   const heightWidthRatio = 1.396;

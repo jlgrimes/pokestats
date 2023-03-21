@@ -43,10 +43,11 @@ export const isSpecialCard = (card: Partial<DeckCard>) => {
   if (!card.name || !card.set) return false;
 
   return (
-    ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Inteleon', 'Oranguru'].some(
-      cardType => card.name!.includes(cardType)
+    ['ex', 'EX', 'GX', 'V', 'VSTAR', 'VMAX', 'Oranguru'].some(cardType =>
+      card.name!.includes(cardType)
     ) ||
-    ['SHF', 'PR'].some(specialSet => card.set!.includes(specialSet)) ||
+    (['SHF', 'PR'].some(specialSet => card.set!.includes(specialSet)) &&
+      card.name !== 'Inteleon') ||
     card.number?.includes('GG')
   );
 };
