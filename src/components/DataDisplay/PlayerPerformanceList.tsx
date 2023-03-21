@@ -51,12 +51,19 @@ export const PlayerPerformanceList = ({
   return (
     <CommonCard header='Tournaments' ghost>
       <Stack spacing={4}>
-        {(!tournamentPerformance || tournamentPerformance.length === 0) && (
-          <Stack>
-            <Text>{`We couldn't find any tournaments you've attended. We currently only support tournaments May 21, 2022 and onwards.`}</Text>
-            <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
-          </Stack>
-        )}
+        {userMatchesLoggedInUser &&
+          (!tournamentPerformance || tournamentPerformance.length === 0) && (
+            <Stack>
+              <Text>{`We couldn't find any tournaments you've attended. We currently only support tournaments May 21, 2022 and onwards.`}</Text>
+              <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
+            </Stack>
+          )}
+        {!userMatchesLoggedInUser &&
+          (!tournamentPerformance || tournamentPerformance.length === 0) && (
+            <Stack>
+              <Text>{`No tournaments for ${user?.name} were found. We currently only support tournaments May 21, 2022 and onwards.`}</Text>
+            </Stack>
+          )}
         {tournamentPerformance?.map((performance: Standing, idx) => {
           if (!performance.tournamentId) return null;
 
