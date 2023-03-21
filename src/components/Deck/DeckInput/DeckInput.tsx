@@ -1,7 +1,7 @@
 import { UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { memo, useEffect, useState } from 'react';
-import { Deck } from '../../../../types/tournament';
+import { Deck, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
@@ -11,7 +11,7 @@ const DeckInput = memo(
   ({
     playerName,
     deck,
-    tournamentId,
+    tournament,
     archetypeModal,
     shouldShowAsText,
     shouldHideDeck,
@@ -20,7 +20,7 @@ const DeckInput = memo(
   }: {
     playerName: string;
     deck: Deck | undefined;
-    tournamentId: string;
+    tournament: Tournament;
     archetypeModal: UseDisclosureProps;
     shouldShowAsText?: boolean;
     shouldHideDeck?: boolean;
@@ -45,7 +45,7 @@ const DeckInput = memo(
         deck,
         playerName,
         session.data?.user?.email,
-        tournamentId,
+        tournament,
         !!isStreamDeck,
         userIsAdmin,
         toast
@@ -59,7 +59,7 @@ const DeckInput = memo(
         onChange={handleArchetypeSelect}
         modalControls={archetypeModal}
         shouldShowAsText={shouldShowAsText}
-        tournamentId={tournamentId}
+        tournamentId={tournament.id}
         unownOverride={playerName === 'Isaiah Cheville' ? 'z' : undefined}
         userIsAdmin={userIsAdmin}
         deckIsVerified={deck?.verified}

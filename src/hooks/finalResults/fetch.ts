@@ -27,7 +27,8 @@ export const fetchDecksByPlayer = async (name: string) => {
     )`
     )
 
-    .ilike('player_name', name);
+    .ilike('player_name', name)
+    .order('created_at', { ascending: false });
   return res.data;
 };
 

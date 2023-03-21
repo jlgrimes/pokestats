@@ -1,5 +1,5 @@
 import { CreateToastFnReturn } from '@chakra-ui/react';
-import { Deck, Standing } from '../../../../types/tournament';
+import { Deck, Standing, Tournament } from '../../../../types/tournament';
 import supabase from '../../../lib/supabase/client';
 
 export const handleDeckSubmit = async (
@@ -7,7 +7,7 @@ export const handleDeckSubmit = async (
   existingDeck: Deck | undefined,
   selectedPlayer: string | undefined,
   sessionUserEmail: string | null | undefined,
-  tournamentId: string,
+  tournament: Tournament,
   isStreamDeck: boolean,
   userIsAdmin: boolean,
   toast: CreateToastFnReturn
@@ -17,11 +17,25 @@ export const handleDeckSubmit = async (
       .from('Player Decks')
       .select(`user_who_submitted`)
       .ilike('player_name', selectedPlayer)
-      .eq('tournament_id', tournamentId)
+      .eq('tournament_id', tournament.id)
       .order('created_at', { ascending: false });
 
+    if (tournament.tournamentStatus === 'finished') {
+      const { error } = await supabase
+        .from('Final Results')
+        .update({ deck_archetype: deck.id, deck_supertype: deck.supertype?.id })
+        .match({ name: selectedPlayer, tournament_id: tournament.id });
+
+      if (error)
+        return toast({
+          status: 'error',
+          title: error.message,
+          description: error.details,
+        });
+    }
+
     const userReported = res.data && res.data.at(0)?.user_who_submitted;
-    console.log(userReported)
+
     const { error } = await supabase.from('Shit List').insert({
       user_who_reported: userReported,
       reported_deck: existingDeck?.id,
@@ -44,7 +58,7 @@ export const handleDeckSubmit = async (
 
   const { error } = await supabase.from('Player Decks').insert({
     player_name: selectedPlayer,
-    tournament_id: tournamentId,
+    tournament_id: tournament.id,
     deck_archetype: deck.id,
     on_stream: isStreamDeck,
     user_who_submitted: sessionUserEmail,

@@ -44,7 +44,7 @@ export const ReportModal = (props: ReportModalProps) => {
         ?.deck ?? undefined,
       selectedPlayer,
       session.data?.user?.email,
-      props.tournament.id,
+      props.tournament,
       isStreamDeck,
       userIsAdmin,
       toast
