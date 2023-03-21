@@ -59,7 +59,6 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
       });
     }
 
-    await fetch(`/api/revalidate?username=${pokestatsUsername}`);
     router.push(`/player/${pokestatsUsername}`);
   };
 
