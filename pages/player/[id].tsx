@@ -101,7 +101,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 
 export async function getStaticPaths() {
   const users = await fetchAllTakenUsernames();
-  const paths = users?.map(username => ({ params: { id: username } }));
+  const paths = users?.map(username => ({ params: { id: username.toLowerCase() } }));
 
   return {
     paths,

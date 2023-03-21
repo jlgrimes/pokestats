@@ -166,11 +166,11 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
   let query = supabase.from('Player Profiles').select('id,name,email,username');
 
   if (filters?.username) {
-    query = query.eq('username', filters.username);
+    query = query.ilike('username', filters.username);
   }
 
   if (filters?.name) {
-    query = query.eq('name', filters.name);
+    query = query.ilike('name', filters.name);
   }
 
   const res = await query;
