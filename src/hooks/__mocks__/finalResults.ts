@@ -29,6 +29,13 @@ export const useFinalResults = (filters?: FinalResultsFilters) => {
       data: [
         {
           tournamentId: '2',
+          placing: 1,
+          record: { wins: 10, losses: 0, ties: 0 },
+          name: 'Jared Grimes',
+          deck_archetype: {
+            name: 'Clefairy box',
+            defined_pokemon: ['clefairy']
+          }
         },
       ],
     };
