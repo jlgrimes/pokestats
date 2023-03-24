@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { FaArrowRight, FaHistory, FaRegClock } from 'react-icons/fa';
 import { PlayerPerformanceList } from '../src/components/DataDisplay/PlayerPerformanceList';
-import { MyMostRecentResults } from '../src/components/Home/MyMostRecentResults';
 import { getFirstName } from '../src/components/Profile/helpers';
 import { PlayerProfilePage } from '../src/components/Profile/PlayerProfilePage';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';

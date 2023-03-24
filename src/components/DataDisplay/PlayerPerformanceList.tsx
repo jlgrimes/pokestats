@@ -33,6 +33,7 @@ import { formatTournamentDate } from '../TournamentList/helpers';
 import { TournamentCard } from '../TournamentList/TournamentCard';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { SorryText } from '../common/SorryText';
+import { CurrentTournamentResults } from '../Profile/CurrentTournamentResults/CurrentTournamentResults';
 
 export const PlayerPerformanceList = ({
   user,
@@ -59,12 +60,13 @@ export const PlayerPerformanceList = ({
               <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
             </Stack>
           )}
-        {!userMatchesLoggedInUser &&
+        {/* {!userMatchesLoggedInUser &&
           (!tournamentPerformance || tournamentPerformance.length === 0) && (
             <Stack>
               <Text>{`No tournaments for ${user?.name} were found. We currently only support tournaments May 21, 2022 and onwards.`}</Text>
             </Stack>
-          )}
+          )} */}
+        {user?.name && <CurrentTournamentResults playerName={user.name} />}
         {tournamentPerformance?.map((performance: Standing, idx) => {
           if (!performance.tournamentId) return null;
 

@@ -19,12 +19,23 @@ const Template: ComponentStory<typeof PlayerProfilePage> = (args: PlayerProfileP
   <PlayerProfilePage {...args} />
 );
 
-export const Profile = Template.bind({});
-Profile.args = {
+export const MyLiveProfile = Template.bind({});
+MyLiveProfile.args = {
   profile: {
     id: 'jared',
     name: 'Jared Grimes',
     username: 'jared',
+    email: '',
+    image: '',
+  },
+};
+
+export const OtherLiveProfile = Template.bind({});
+OtherLiveProfile.args = {
+  profile: {
+    id: 'mahone',
+    name: 'Andrew Mahone',
+    username: 'TrickyGym',
     email: '',
     image: '',
   },

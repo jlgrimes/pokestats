@@ -9,25 +9,32 @@ import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
 
 interface MyTournamentViewProps {
   tournament: Tournament;
+  playerName?: string;
 }
 
 export const MyTournamentView = (props: MyTournamentViewProps) => {
   const session = useSession();
   const { player: playerResults, isLoading } = usePlayerLiveResults(
     props.tournament.id,
-    session.data?.user?.name
+    props.playerName ?? session.data?.user?.name
   );
 
   if (!props.tournament || !playerResults) return null;
+
+  const user = props.playerName
+    ? ({
+        name: props.playerName,
+      } as StoredPlayerProfile)
+    : (session.data?.user as StoredPlayerProfile);
 
   return (
     <Stack spacing={6}>
       <PlayerMatchupStatus
         tournament={props.tournament}
-        user={session.data?.user as StoredPlayerProfile}
+        user={user}
         shouldHideOpponentView
       />
-      <MyMatchupsList tournament={props.tournament} user={session.data?.user} />
+      <MyMatchupsList tournament={props.tournament} user={user} />
     </Stack>
   );
 };
