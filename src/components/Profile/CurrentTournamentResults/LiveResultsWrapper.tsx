@@ -29,6 +29,7 @@ export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
     <TournamentCard
       tournament={props.tournament}
       playerName={props.playerName}
+      disableFollowing
     />
   );
 };

@@ -28,10 +28,12 @@ export const TournamentCard = ({
   champion,
   // For live results
   playerName,
+  disableFollowing,
 }: {
   tournament: Tournament;
   champion?: Standing;
   playerName?: string;
+  disableFollowing?: boolean;
 }) => {
   const { colorMode } = useColorMode();
 
@@ -44,24 +46,14 @@ export const TournamentCard = ({
       <CommonCard>
         <Stack>
           <Grid
-            gridTemplateColumns={
-              champion ? '3fr 2fr' : live ? '3fr 1fr' : 'auto'
-            }
+            gridTemplateColumns={champion || live ? '3fr 2fr' : 'auto'}
             alignItems='center'
             gap={2}
-            paddingX={live ? 1 : 0}
-            paddingY={live ? 3 : 0}
           >
-            <Grid
-              gridTemplateColumns={`${live ? 4 : 3.4}rem 4fr`}
-              alignItems='center'
-            >
+            <Grid gridTemplateColumns={`3.4rem 4fr`} alignItems='center'>
               {countryCode ? (
                 <Box>
-                  <CountryFlag
-                    countryCode={countryCode}
-                    size={!live ? 'sm' : 'md'}
-                  />
+                  <CountryFlag countryCode={countryCode} size={'sm'} />
                 </Box>
               ) : (
                 <Box></Box>
@@ -69,7 +61,7 @@ export const TournamentCard = ({
               <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
                 <Stack spacing={1}>
                   <Heading
-                    size={live ? 'md' : 'sm'}
+                    size={'sm'}
                     color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
                   >
                     {tournament.name}
@@ -86,12 +78,7 @@ export const TournamentCard = ({
                 </Stack>
               </LinkOverlay>
               <Box />
-              <Stack spacing={live ? 3 : 1} paddingTop={live ? 1 : 0}>
-                <TournamentStatusBadge
-                  tournament={tournament}
-                  size={live ? 'sm' : 'xs'}
-                />
-              </Stack>
+              <TournamentStatusBadge tournament={tournament} size={'xs'} />
             </Grid>
             {champion && <ChampionDisplay champion={champion} />}
             {live && (
@@ -100,13 +87,13 @@ export const TournamentCard = ({
               </Flex>
             )}
           </Grid>
-          {session.status === 'authenticated' && live && (
+          {/* {session.status === 'authenticated' && live && (
             <MyTournamentView tournament={tournament} playerName={playerName} />
-          )}
-          {live && !tournament.topCutStatus && (
+          )} */}
+          {live && !tournament.topCutStatus && !disableFollowing && (
             <PinnedPlayerList tournament={tournament} isCompact />
           )}
-          {live && tournament.topCutStatus && (
+          {live && tournament.topCutStatus && !disableFollowing && (
             <TopCutViewController tournament={tournament} />
           )}
         </Stack>
