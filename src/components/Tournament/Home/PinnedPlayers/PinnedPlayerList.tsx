@@ -8,6 +8,7 @@ import {
   Box,
   Flex,
   Text,
+  useColorMode
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import {
@@ -33,6 +34,7 @@ interface PinnedPlayerListProps {
 }
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
+  const { colorMode } = useColorMode();
   const session = useSession();
   const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
     usePinnedPlayers();
@@ -159,7 +161,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               onClick={addPinPlayerModalControls.onOpen}
               isDisabled={props.tournament.tournamentStatus === 'not-started'}
               size={'sm'}
-              colorScheme='blackAlpha'
+              colorScheme={colorMode === 'dark' ? 'white' : 'blackAlpha'}
             >
               Follow player
             </Button>
@@ -170,7 +172,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 onClick={editPinnedPlayers.onToggle}
                 isDisabled={props.tournament.tournamentStatus === 'not-started'}
                 size={'sm'}
-                colorScheme={editPinnedPlayers.isOpen ? 'pink' : 'blackAlpha'}
+                colorScheme={editPinnedPlayers.isOpen ? 'pink' : colorMode === 'dark' ? 'white' : 'blackAlpha'}
               >
                 {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
               </Button>
