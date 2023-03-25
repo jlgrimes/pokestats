@@ -161,7 +161,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               onClick={addPinPlayerModalControls.onOpen}
               isDisabled={props.tournament.tournamentStatus === 'not-started'}
               size={'sm'}
-              colorScheme={colorMode === 'dark' ? 'white' : 'blackAlpha'}
+              colorScheme={colorMode === 'dark' ? 'whiteAlpha' : 'blackAlpha'}
             >
               Follow player
             </Button>
@@ -172,7 +172,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 onClick={editPinnedPlayers.onToggle}
                 isDisabled={props.tournament.tournamentStatus === 'not-started'}
                 size={'sm'}
-                colorScheme={editPinnedPlayers.isOpen ? 'pink' : colorMode === 'dark' ? 'white' : 'blackAlpha'}
+                colorScheme={editPinnedPlayers.isOpen ? 'pink' : colorMode === 'dark' ? 'whiteAlpha' : 'blackAlpha'}
               >
                 {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
               </Button>
