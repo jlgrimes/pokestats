@@ -42,6 +42,7 @@ export const PlayerPerformanceList = ({
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user?.name);
   const { data: tournamentPerformance, isLoading } = useFinalResults({
     playerName: user?.name,
+    additionalNames: user?.additional_names
   });
   const { data: tournaments } = useTournaments();
   const { data: userIsAdmin } = useUserIsAdmin();
