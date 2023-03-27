@@ -43,6 +43,8 @@ export const handleDeckSubmit = async (
       user_who_reported: userReported,
       reported_deck: existingDeck?.id,
       correct_deck: deck.id,
+      tournament_id: tournament.id,
+      reported_player: selectedPlayer
     });
 
     if (error) {
