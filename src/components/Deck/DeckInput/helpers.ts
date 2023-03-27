@@ -15,7 +15,7 @@ export const handleDeckSubmit = async (
   if (userIsAdmin && existingDeck?.id && selectedPlayer) {
     const res = await supabase
       .from('Player Decks')
-      .select(`user_who_submitted`)
+      .select(`user_who_submitted,user_who_submitted_was_admin`)
       .ilike('player_name', selectedPlayer)
       .eq('tournament_id', tournament.id)
       .order('created_at', { ascending: false });
@@ -37,6 +37,13 @@ export const handleDeckSubmit = async (
         });
     }
 
+    if (res.data && res.data.at(0)?.user_who_submitted_was_admin) {
+      return toast({
+        status: 'info',
+        title: 'You are overriding an admin report. Cool!',
+      });
+    }
+
     const userReported = res.data && res.data.at(0)?.user_who_submitted;
 
     const { error } = await supabase.from('Shit List').insert({
@@ -44,7 +51,7 @@ export const handleDeckSubmit = async (
       reported_deck: existingDeck?.id,
       correct_deck: deck.id,
       tournament_id: tournament.id,
-      reported_player: selectedPlayer
+      reported_player: selectedPlayer,
     });
 
     if (error) {
