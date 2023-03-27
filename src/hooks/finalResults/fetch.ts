@@ -97,15 +97,24 @@ export const fetchFinalResults = async (
   if (filters?.supertypeId) {
     query = query.eq('deck_supertype', filters.supertypeId);
   }
+
   if (filters?.playerName) {
-    query = query.ilike('name', filters.playerName);
+    if (filters.additionalNames) {
+      const nameQueryString = [filters.playerName, ...filters.additionalNames]
+        .map(name => `name.eq.${name}`)
+        .join(',');
+      query = query.or(nameQueryString);
+    } else {
+      query = query.ilike('name', filters.playerName);
+    }
   }
+
   if (filters?.placing) {
     query = query.eq('placing', filters.placing);
   }
 
   const res = await query.returns<FinalResultsSchema[]>();
-  const finalResultsData: FinalResultsSchema[] | null = res.data;
+  let finalResultsData: FinalResultsSchema[] | null = res.data;
 
   let userReportedDecks: Deck[] | undefined | null = null;
   if (filters?.playerName) {
@@ -132,6 +141,13 @@ export const fetchFinalResults = async (
   }
 
   if (!finalResultsData) return null;
+
+  if (filters?.additionalNames && filters.playerName) {
+    finalResultsData = finalResultsData.map(result => ({
+      ...result,
+      name: filters.playerName as string,
+    }));
+  }
 
   const finalResultsAsStandings = mapFinalResultsToStandings(finalResultsData);
 

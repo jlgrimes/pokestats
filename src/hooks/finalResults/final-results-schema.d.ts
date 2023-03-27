@@ -9,5 +9,6 @@ export interface FinalResultsFilters {
   deckId?: number | null;
   supertypeId?: number;
   playerName?: string | null;
+  additionalNames?: string[] | null;
   placing?: number;
 }

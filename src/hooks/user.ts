@@ -129,14 +129,22 @@ export const normalizeName = (name: string) =>
     .replace(/[\u0300-\u036f]/g, '');
 
 export const fetchUnusedPlayers = async () => {
-  const res = await supabase.from('Player Profiles').select('id,name,email');
+  const res = await supabase
+    .from('Player Profiles')
+    .select('id,name,email,additional_names');
 
   const players = await fetchPlayers();
 
   return players?.filter(
     name =>
       !res.data?.some(
-        profile => normalizeName(profile.name) === normalizeName(name)
+        profile =>
+          normalizeName(profile.name) === normalizeName(name) ||
+          (profile.additional_names &&
+            profile.additional_names.some(
+              (additionalName: string) =>
+                normalizeName(additionalName) === normalizeName(name)
+            ))
       )
   );
 };
@@ -163,7 +171,7 @@ export const fetchUser = async (email: string) => {
 };
 
 export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
-  let query = supabase.from('Player Profiles').select('id,name,email,username');
+  let query = supabase.from('Player Profiles').select('id,name,email,username,additional_names');
 
   if (filters?.username) {
     query = query.ilike('username', filters.username);

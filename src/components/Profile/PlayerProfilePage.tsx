@@ -28,6 +28,7 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
 
   const { isLoading: finalResultsAreLoading } = useFinalResults({
     playerName: props.profile.name,
+    additionalNames: props.profile.additional_names
   });
 
   if (finalResultsAreLoading) return <FullPageLoader />;
