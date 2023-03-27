@@ -1,4 +1,4 @@
-import { Heading, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Heading, Skeleton, Stack, Text, useColorMode } from '@chakra-ui/react';
 import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
@@ -66,6 +66,7 @@ export const PlayerMatchupStatus = ({
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
   const session = useSession();
+  const { colorMode } = useColorMode();
   const {
     player: playerResults,
     shouldHideDecks,
@@ -92,7 +93,10 @@ export const PlayerMatchupStatus = ({
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Record standing={playerResults} big />
             <RecordIcon standing={playerResults} tournament={tournament} />
-            <Heading size='sm' color='gray.700'>
+            <Heading
+              size='sm'
+              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+            >
               {`${ordinalSuffixOf(playerResults.placing)}`}
             </Heading>
           </Stack>
