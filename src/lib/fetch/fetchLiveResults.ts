@@ -24,11 +24,11 @@ const fetchDeckArchetypes = async () => {
     .from('Deck Archetypes')
     .select('id,name,defined_pokemon,identifiable_cards,supertype');
 
-  console.log(
-    'fetchDeckArchetypes:',
-    (performance.now() - perfStart) / 1000,
-    'sec'
-  );
+  // console.log(
+  //   'fetchDeckArchetypes:',
+  //   (performance.now() - perfStart) / 1000,
+  //   'sec'
+  // );
 
   return res.data;
 };
@@ -90,11 +90,11 @@ const updatePlayerProfilesWithTournament = async (
       onConflict: 'name',
     });
 
-  console.log(
-    'done updating players:',
-    (performance.now() - perfStart) / 1000,
-    'sec'
-  );
+  // console.log(
+  //   'done updating players:',
+  //   (performance.now() - perfStart) / 1000,
+  //   'sec'
+  // );
 
   return { error };
 };
@@ -134,11 +134,11 @@ export const getPlayerDeckObjects = async (
     }
   );
 
-  console.log(
-    'getPlayerDeckObjects:',
-    (performance.now() - perfStart) / 1000,
-    'sec'
-  );
+  // console.log(
+  //   'getPlayerDeckObjects:',
+  //   (performance.now() - perfStart) / 1000,
+  //   'sec'
+  // );
 
   return mappedDecks;
 };
@@ -271,11 +271,11 @@ function mapResultsArray(
     };
   });
 
-  console.log(
-    'mapResultsArray:',
-    (performance.now() - perfStart) / 1000,
-    'sec'
-  );
+  // console.log(
+  //   'mapResultsArray:',
+  //   (performance.now() - perfStart) / 1000,
+  //   'sec'
+  // );
 
   return mappedArray;
 }
@@ -301,7 +301,7 @@ export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
     }))
     .filter((player: Standing) => player.placing !== 9999);
 
-  console.log('getPokedata:', (performance.now() - perfStart) / 1000, 'sec');
+  // console.log('getPokedata:', (performance.now() - perfStart) / 1000, 'sec');
 
   return data;
 };
@@ -401,13 +401,13 @@ export const fetchLiveResults = async (
   );
   const endTime = performance.now();
 
-  console.log(
-    'Finished for',
-    tournamentId,
-    '. Total time:',
-    (endTime - startTime) / 1000,
-    'sec'
-  );
+  // console.log(
+  //   'Finished for',
+  //   tournamentId,
+  //   '. Total time:',
+  //   (endTime - startTime) / 1000,
+  //   'sec'
+  // );
 
   // Safeguard for finals has finished
   const getFinalsHasFinished = () => {
