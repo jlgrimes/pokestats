@@ -1,5 +1,5 @@
 export const getSpriteUrl = (name: string, regionFlag?: string) =>
-  `https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen8-v3/${name}${
+  `https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen9/${name}${
     regionFlag ?? ''
   }.png`;
 
