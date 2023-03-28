@@ -37,7 +37,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
 
   return (
     <>
-      <Script src='https://platform.twitter.com/widgets.js' />
+      {/* <Script src='https://platform.twitter.com/widgets.js' /> */}
       <HomePage tournaments={patchedTournaments ?? tournaments} />
     </>
   );
