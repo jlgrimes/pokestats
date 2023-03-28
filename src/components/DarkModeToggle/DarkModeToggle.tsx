@@ -11,7 +11,7 @@ export const DarkModeToggle = () => {
         type='checkbox'
         id='toggle'
         className={styles['toggle--checkbox']}
-        onClick={toggleColorMode}
+        onChange={toggleColorMode}
         checked={colorMode === 'light'}
       />
       <label htmlFor='toggle' className={styles[`toggle--label`]}>
