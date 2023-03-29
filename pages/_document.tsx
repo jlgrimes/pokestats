@@ -11,11 +11,6 @@ export default class Document extends NextDocument {
         <body>
           {/* 👇 Here's the script */}
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <Script
-            async
-            src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3066736963130742'
-            crossOrigin='anonymous'
-          />
           <Main />
           <NextScript />
         </body>
