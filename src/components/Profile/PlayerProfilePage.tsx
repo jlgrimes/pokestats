@@ -30,6 +30,7 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
     playerName: props.profile.name,
     additionalNames: props.profile.additional_names
   });
+  console.log(finalResultsAreLoading)
 
   if (finalResultsAreLoading) return <FullPageLoader />;
 

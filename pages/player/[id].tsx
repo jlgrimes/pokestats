@@ -84,9 +84,14 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
         'final-results',
         {
           playerName: playerProfile.name,
+          additionalNames: playerProfile.additional_names,
         },
       ],
-      queryFn: () => fetchFinalResults({ playerName: playerProfile.name }),
+      queryFn: () =>
+        fetchFinalResults({
+          playerName: playerProfile.name,
+          additionalNames: playerProfile.additional_names,
+        }),
     });
   }
 
@@ -101,7 +106,9 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 
 export async function getStaticPaths() {
   const users = await fetchAllTakenUsernames();
-  const paths = users?.map(username => ({ params: { id: username.toLowerCase() } }));
+  const paths = users?.map(username => ({
+    params: { id: username.toLowerCase() },
+  }));
 
   return {
     paths,

@@ -5,6 +5,7 @@ import {
   FaChessKing,
   FaChessQueen,
   FaChessRook,
+  FaDumpsterFire,
   FaRunning,
   FaTrash,
   FaTwitch,
@@ -78,7 +79,7 @@ export const RecordIcon = ({
       }
 
       if (showTrashIcon) {
-        return <Icon {...commonIconProps} color='red.600' as={FaTrash} />;
+        return <Icon {...commonIconProps} color='red.600' as={FaDumpsterFire} />;
       }
 
       return <Icon {...commonIconProps} color='red.600' as={FaRunning} />;
