@@ -4,6 +4,7 @@ import {
   Heading,
   HStack,
   Stack,
+  Text,
   useColorMode,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -42,6 +43,7 @@ export const TournamentPageLayout = ({
         >
           {`${tournament.name} ${capitalize(slug as string)}`}
         </Heading>
+        <Text fontSize='sm'>Standings are unofficial and may not be accurate.</Text>
         <TournamentStatusBadge tournament={tournament} size='md' />
         {/* <Stack>
           <TournamentLinks tournament={tournament} />
