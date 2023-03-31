@@ -34,6 +34,7 @@ import { TournamentCard } from '../TournamentList/TournamentCard';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { SorryText } from '../common/SorryText';
 import { CurrentTournamentResults } from '../Profile/CurrentTournamentResults/CurrentTournamentResults';
+import { TournamentInfo } from '../TournamentList/TournamentInfo';
 
 export const PlayerPerformanceList = ({
   user,
@@ -51,7 +52,7 @@ export const PlayerPerformanceList = ({
   if (isLoading) return <FullPageLoader />;
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={8} py={6} px={2}>
       {userMatchesLoggedInUser &&
         (!tournamentPerformance || tournamentPerformance.length === 0) && (
           <Stack>
@@ -81,18 +82,14 @@ export const PlayerPerformanceList = ({
         if (!tournament) return null;
 
         return (
-          <Stack
-            gridTemplateColumns={'1fr 1fr'}
-            key={`${performance.tournamentId}-${performance.name}`}
-          >
-            <CommonCard ghost header={reallyShortenTournamentName(tournament)}>
-              <PlayerCard
-                player={performance}
-                tournament={tournament}
-                shouldHideDecks={false}
-                canEditDecks={userMatchesLoggedInUser || userIsAdmin}
-              />
-            </CommonCard>
+          <Stack key={`${performance.tournamentId}-${performance.name}`}>
+            <TournamentInfo tournament={tournament} />
+            <PlayerCard
+              player={performance}
+              tournament={tournament}
+              shouldHideDecks={false}
+              canEditDecks={userMatchesLoggedInUser || userIsAdmin}
+            />
           </Stack>
           // <CommonCard
           //   header={reallyShortenTournamentName(tournament)}

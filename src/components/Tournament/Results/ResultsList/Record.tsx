@@ -1,4 +1,4 @@
-import { Stack, Text, Link, Heading } from '@chakra-ui/react';
+import { Stack, Text, Link, Heading, useColorMode } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
 import { Standing } from '../../../../../types/tournament';
@@ -15,6 +15,8 @@ export const Record = ({
   big?: boolean;
   normal?: boolean;
 }) => {
+  const { colorMode } = useColorMode();
+
   const renderRecordText = useCallback(() => {
     if (href) {
       return (
@@ -33,7 +35,7 @@ export const Record = ({
     if (big) {
       return (
         <Heading
-          color={standing.drop && standing.drop > 0 ? 'red.600' : 'gray.700'}
+          color={standing.drop && standing.drop > 0 ? 'red.600' : 'auto'}
         >
           {formatRecord(standing.record)}
         </Heading>

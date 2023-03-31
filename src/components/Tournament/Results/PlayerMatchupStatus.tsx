@@ -39,23 +39,23 @@ export const PlayerMatchupStatus = ({
   if (!user) return renderLoadingSkeleton();
 
   return !isLoading && playerResults && user ? (
-    <Stack alignItems={'center'} spacing={4}>
-      <Stack spacing={0} alignItems='center'>
-        <Stack direction={'row'} alignItems='center'>
-          <DeckInfoDisplay
-            tournament={tournament}
-            player={playerResults}
-            enableEdits={!!isLoggedInUser}
-            shouldHideDeck={shouldHideDecks}
-            shouldHideOpponentView={shouldHideOpponentView}
-            shouldDisableDeckExtras={!isLoggedInUser}
-          />
+    <Stack alignItems={'center'} spacing={4} py={1}>
+      <Stack direction={'row'} alignItems='center'>
+        <DeckInfoDisplay
+          tournament={tournament}
+          player={playerResults}
+          enableEdits={!!isLoggedInUser}
+          shouldHideDeck={shouldHideDecks}
+          shouldHideOpponentView={shouldHideOpponentView}
+          shouldDisableDeckExtras={!isLoggedInUser}
+        />
+        <Stack direction={'row'} alignItems='baseline'>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Record standing={playerResults} big />
             <RecordIcon standing={playerResults} tournament={tournament} />
             <Heading
               size='sm'
-              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+              color={colorMode === 'dark' ? 'gray.500' : 'gray.700'}
             >
               {`${ordinalSuffixOf(playerResults.placing)}`}
             </Heading>
@@ -63,7 +63,7 @@ export const PlayerMatchupStatus = ({
           {tournamentFinished && (
             <Heading
               size='sm'
-              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+              color={colorMode === 'dark' ? 'gray.500' : 'gray.700'}
             >
               {`Top ${getPercentile(
                 playerResults.placing,

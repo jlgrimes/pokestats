@@ -4,12 +4,12 @@ import {
   useLiveTournamentPlayers,
   useLiveTournamentResults,
 } from '../../../hooks/tournamentResults';
-import { reallyShortenTournamentName } from '../../../lib/tournament';
 import { CommonCard } from '../../common/CommonCard';
 import { ComponentLoader } from '../../common/ComponentLoader';
 import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { MyTournamentView } from '../../Tournament/Home/MyTournamentView';
 import { TournamentCard } from '../../TournamentList/TournamentCard';
+import { TournamentInfo } from '../../TournamentList/TournamentInfo';
 
 interface LiveResultsWrapperProps {
   tournament: Tournament;
@@ -30,14 +30,13 @@ export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
   if (!playerIsInLiveTournament) return null;
 
   return (
-    <Box px={3} py={2}>
-      <CommonCard header={reallyShortenTournamentName(props.tournament)}>
-        <MyTournamentView
-          tournament={props.tournament}
-          playerName={props.playerName}
-        />
-      </CommonCard>
-    </Box>
+    <Stack>
+      <TournamentInfo tournament={props.tournament} />
+      <MyTournamentView
+        tournament={props.tournament}
+        playerName={props.playerName}
+      />
+    </Stack>
     // <TournamentCard
     //   tournament={props.tournament}
     //   playerName={props.playerName}

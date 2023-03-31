@@ -33,7 +33,7 @@ export const MyTournamentView = (props: MyTournamentViewProps) => {
     : (session.data?.user as StoredPlayerProfile);
 
   return (
-    <Stack spacing={6}>
+    <Stack spacing={3}>
       <PlayerMatchupStatus
         tournament={props.tournament}
         user={user}

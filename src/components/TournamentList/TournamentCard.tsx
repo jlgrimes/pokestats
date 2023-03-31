@@ -21,6 +21,7 @@ import { TopCutViewController } from '../Tournament/Home/TopCut/TopCutViewContro
 import { StreamLink } from '../Tournament/TournamentLinks';
 import { ChampionDisplay } from './ChampionDisplay';
 import { formatTournamentDate } from './helpers';
+import { TournamentInfo } from './TournamentInfo';
 import { TournamentStatusBadge } from './TournamentStatusBadge';
 
 export const TournamentCard = ({
@@ -58,24 +59,11 @@ export const TournamentCard = ({
               ) : (
                 <Box></Box>
               )}
-              <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
-                <Stack spacing={1}>
-                  <Heading
-                    size={'sm'}
-                    color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
-                  >
-                    {tournament.name}
-                  </Heading>
-                  {!live && (
-                    <Heading
-                      size={'xs'}
-                      color='gray.500'
-                      fontWeight={'semibold'}
-                    >
-                      {formatTournamentDate(tournament)}
-                    </Heading>
-                  )}
-                </Stack>
+              <LinkOverlay
+                as={NextLink}
+                href={`/tournaments/${tournament.id}`}
+              >
+                <TournamentInfo tournament={tournament} />
               </LinkOverlay>
               <Box />
               <TournamentStatusBadge tournament={tournament} size={'xs'} />
@@ -88,10 +76,7 @@ export const TournamentCard = ({
             )}
           </Grid>
           {session.status === 'authenticated' && live && (
-            <MyTournamentView
-              tournament={tournament}
-              playerName={playerName}
-            />
+            <MyTournamentView tournament={tournament} playerName={playerName} />
           )}
           {live && !tournament.topCutStatus && !disableFollowing && (
             <PinnedPlayerList tournament={tournament} isCompact />

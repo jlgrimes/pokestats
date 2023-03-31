@@ -18,6 +18,7 @@ import {
   FaRegEdit,
   FaStar,
   FaTwitter,
+  FaUserFriends,
 } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
@@ -103,6 +104,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   return (
     <CommonCard
       header='Following'
+      leftIcon={<Icon as={FaUserFriends} color='blue.500' />}
       ghost
       shouldRemovePadding={props.isCompact}
       smallHeader={props.isCompact}
