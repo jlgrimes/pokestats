@@ -171,7 +171,7 @@ export const fetchUser = async (email: string) => {
 };
 
 export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
-  let query = supabase.from('Player Profiles').select('id,name,email,username,additional_names');
+  let query = supabase.from('Player Profiles').select('id,name,email,username,additional_names,preferred_name');
 
   if (filters?.username) {
     query = query.ilike('username', filters.username);

@@ -1,11 +1,11 @@
-import { Standing, Tournament } from "./tournament";
+import { Standing, Tournament } from './tournament';
 
 export interface StoredPlayerProfile {
   // id stored in supabase
   id?: string;
   name: string;
   email: string;
-  username: string | null
+  username: string | null;
 }
 
 export interface GooglePlayerProfile {
@@ -22,7 +22,8 @@ export interface CombinedPlayerProfile {
   username: string | null | undefined;
   image?: string | null | undefined;
   additional_names?: string[] | null | undefined;
-};
+  preferred_name?: string | null | undefined;
+}
 
 export interface PlayerTournamentPerformance {
   tournament: Tournament;

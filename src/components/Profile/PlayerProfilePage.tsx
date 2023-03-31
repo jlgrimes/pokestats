@@ -36,7 +36,7 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
   return (
     <Stack>
       <Stack spacing={0} alignItems='center'>
-        <Heading>{props.profile.name}</Heading>
+        <Heading>{props.profile.preferred_name ?? props.profile.name}</Heading>
         <HStack>
           {userIsLoggedInUser ? (
             <UsernameEditable profile={props.profile} />
