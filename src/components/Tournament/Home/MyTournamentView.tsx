@@ -15,7 +15,7 @@ interface MyTournamentViewProps {
 
 export const MyTournamentView = (props: MyTournamentViewProps) => {
   const session = useSession();
-  const { player: playerResults, isLoading } = usePlayerLiveResults(
+  const { player: playerResults } = usePlayerLiveResults(
     props.tournament.id,
     props.playerName ?? session.data?.user?.name
   );

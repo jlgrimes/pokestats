@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
 import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
@@ -48,6 +48,29 @@ export const DeckInfoDisplay = memo(
     const shouldShowList = player?.deck?.list && !disableList;
     const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
 
+    const ifShouldHideDeck = useCallback(() => {
+      if (tournament.tournamentStatus === 'finished') return false;
+
+      // If you are the player, or the player has played against you, show the deck
+      if (
+        session.status === 'authenticated' &&
+        (session.data?.user?.name === player.name ||
+          player.rounds?.some(
+            round => round.opponent?.name === session.data?.user?.name
+          ))
+      ) {
+        return false;
+      }
+
+      return shouldHideDeck;
+    }, [
+      player,
+      session.data?.user?.name,
+      session.status,
+      shouldHideDeck,
+      tournament.tournamentStatus,
+    ]);
+
     return (
       <Grid
         gridTemplateColumns={
@@ -66,10 +89,7 @@ export const DeckInfoDisplay = memo(
           deck={player.deck ?? undefined}
           archetypeModal={archetypeModal}
           shouldShowAsText={shouldShowAsText}
-          shouldHideDeck={
-            shouldHideDeck &&
-            session.data?.user?.email !== player.deck?.user_who_submitted
-          }
+          shouldHideDeck={ifShouldHideDeck()}
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           shouldEnableEdits={enableEdits}
         />
