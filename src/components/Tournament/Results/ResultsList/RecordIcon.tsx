@@ -67,6 +67,10 @@ export const RecordIcon = ({
   const getIcon = useCallback(() => {
     const showTrashIcon = standing.name === 'Noah Spinale';
 
+    if (showTrashIcon) {
+      return <Icon {...commonIconProps} color='red.600' as={FaDumpsterFire} />;
+    }
+
     if (getCrownIcon()) {
       return getCrownIcon();
     }
@@ -76,10 +80,6 @@ export const RecordIcon = ({
         return (
           <Icon {...commonIconProps} color='red.600' as={FaUserAltSlash} />
         );
-      }
-
-      if (showTrashIcon) {
-        return <Icon {...commonIconProps} color='red.600' as={FaDumpsterFire} />;
       }
 
       return <Icon {...commonIconProps} color='red.600' as={FaRunning} />;
