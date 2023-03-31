@@ -15,10 +15,12 @@ export const PlayerMatchupStatus = ({
   tournament,
   user,
   shouldHideOpponentView,
+  isLoggedInUser,
 }: {
   tournament: Tournament;
   user: StoredPlayerProfile | null;
   shouldHideOpponentView?: boolean;
+  isLoggedInUser?: boolean;
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
   const session = useSession();
@@ -36,12 +38,18 @@ export const PlayerMatchupStatus = ({
 
   if (!user) return renderLoadingSkeleton();
 
-  const isCurrentUser = session.data?.user?.email === user.email;
-
   return !isLoading && playerResults && user ? (
     <Stack alignItems={'center'} spacing={4}>
       <Stack spacing={0} alignItems='center'>
-        <Stack direction={'row'} alignItems='baseline'>
+        <Stack direction={'row'} alignItems='center'>
+          <DeckInfoDisplay
+            tournament={tournament}
+            player={playerResults}
+            enableEdits={!!isLoggedInUser}
+            shouldHideDeck={shouldHideDecks}
+            shouldHideOpponentView={shouldHideOpponentView}
+            shouldDisableDeckExtras={!isLoggedInUser}
+          />
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
             <Record standing={playerResults} big />
             <RecordIcon standing={playerResults} tournament={tournament} />
@@ -52,13 +60,6 @@ export const PlayerMatchupStatus = ({
               {`${ordinalSuffixOf(playerResults.placing)}`}
             </Heading>
           </Stack>
-          <DeckInfoDisplay
-            tournament={tournament}
-            player={playerResults}
-            enableEdits={isCurrentUser}
-            shouldHideDeck={shouldHideDecks}
-            shouldHideOpponentView={shouldHideOpponentView}
-          />
           {tournamentFinished && (
             <Heading
               size='sm'

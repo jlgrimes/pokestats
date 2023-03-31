@@ -43,7 +43,7 @@ export const PlayerPerformanceList = ({
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user?.name);
   const { data: tournamentPerformance, isLoading } = useFinalResults({
     playerName: user?.name,
-    additionalNames: user?.additional_names
+    additionalNames: user?.additional_names,
   });
   const { data: tournaments } = useTournaments();
   const { data: userIsAdmin } = useUserIsAdmin();
@@ -51,57 +51,59 @@ export const PlayerPerformanceList = ({
   if (isLoading) return <FullPageLoader />;
 
   return (
-    <CommonCard header='Tournaments' ghost>
-      <Stack spacing={4}>
-        {userMatchesLoggedInUser &&
-          (!tournamentPerformance || tournamentPerformance.length === 0) && (
-            <Stack>
-              <Text>{`We couldn't find any tournaments you've attended. We currently only support tournaments May 21, 2022 and onwards.`}</Text>
-              <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
-            </Stack>
-          )}
-        {/* {!userMatchesLoggedInUser &&
+    <Stack spacing={4}>
+      {userMatchesLoggedInUser &&
+        (!tournamentPerformance || tournamentPerformance.length === 0) && (
+          <Stack>
+            <Text>{`We couldn't find any tournaments you've attended. We currently only support tournaments May 21, 2022 and onwards.`}</Text>
+            <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
+          </Stack>
+        )}
+      {/* {!userMatchesLoggedInUser &&
           (!tournamentPerformance || tournamentPerformance.length === 0) && (
             <Stack>
               <Text>{`No tournaments for ${user?.name} were found. We currently only support tournaments May 21, 2022 and onwards.`}</Text>
             </Stack>
           )} */}
-        {user?.name && <CurrentTournamentResults playerName={user.name} />}
-        {tournamentPerformance?.map((performance: Standing, idx) => {
-          if (!performance.tournamentId) return null;
+      {user?.name && (
+        <CurrentTournamentResults
+          playerName={user.name}
+          isLoggedInUser={userMatchesLoggedInUser}
+        />
+      )}
+      {tournamentPerformance?.map((performance: Standing, idx) => {
+        if (!performance.tournamentId) return null;
 
-          const tournament = tournaments?.find(
-            ({ id }) => id === performance.tournamentId
-          );
+        const tournament = tournaments?.find(
+          ({ id }) => id === performance.tournamentId
+        );
 
-          if (!tournament) return null;
+        if (!tournament) return null;
 
-          return (
-            <Stack
-              gridTemplateColumns={'1fr 1fr'}
-              key={`${performance.tournamentId}-${performance.name}`}
-            >
-              <TournamentCard tournament={tournament} />
-              <Box>
-                <PlayerCard
-                  player={performance}
-                  tournament={tournament}
-                  shouldHideDecks={false}
-                  canEditDecks={userMatchesLoggedInUser || userIsAdmin}
-                />
-              </Box>
-            </Stack>
-            // <CommonCard
-            //   header={reallyShortenTournamentName(tournament)}
-            //   subheader={formatTournamentDate(tournament)}
-            //   ghost
-            //   key={`${performance.tournamentId}-${performance.name}`}
-            // >
-            // </CommonCard>
-          );
-        })}
-      </Stack>
-    </CommonCard>
+        return (
+          <Stack
+            gridTemplateColumns={'1fr 1fr'}
+            key={`${performance.tournamentId}-${performance.name}`}
+          >
+            <CommonCard ghost header={reallyShortenTournamentName(tournament)}>
+              <PlayerCard
+                player={performance}
+                tournament={tournament}
+                shouldHideDecks={false}
+                canEditDecks={userMatchesLoggedInUser || userIsAdmin}
+              />
+            </CommonCard>
+          </Stack>
+          // <CommonCard
+          //   header={reallyShortenTournamentName(tournament)}
+          //   subheader={formatTournamentDate(tournament)}
+          //   ghost
+          //   key={`${performance.tournamentId}-${performance.name}`}
+          // >
+          // </CommonCard>
+        );
+      })}
+    </Stack>
   );
 
   return (

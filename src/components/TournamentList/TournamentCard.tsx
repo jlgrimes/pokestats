@@ -87,9 +87,12 @@ export const TournamentCard = ({
               </Flex>
             )}
           </Grid>
-          {/* {session.status === 'authenticated' && live && (
-            <MyTournamentView tournament={tournament} playerName={playerName} />
-          )} */}
+          {session.status === 'authenticated' && live && (
+            <MyTournamentView
+              tournament={tournament}
+              playerName={playerName}
+            />
+          )}
           {live && !tournament.topCutStatus && !disableFollowing && (
             <PinnedPlayerList tournament={tournament} isCompact />
           )}

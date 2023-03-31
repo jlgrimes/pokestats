@@ -11,6 +11,7 @@ import { LiveResultsWrapper } from './LiveResultsWrapper';
 
 interface CurrentTournamentResultsProps {
   playerName: string;
+  isLoggedInUser: boolean;
 }
 
 export const CurrentTournamentResults = memo(
@@ -29,6 +30,7 @@ export const CurrentTournamentResults = memo(
       <LiveResultsWrapper
         tournament={currentlyRunningTournament}
         playerName={props.playerName}
+        isLoggedInUser={props.isLoggedInUser}
       />
     ) : null;
   }

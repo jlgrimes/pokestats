@@ -1,16 +1,20 @@
-import { Stack } from '@chakra-ui/react';
+import { Box, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
 import {
   useLiveTournamentPlayers,
   useLiveTournamentResults,
 } from '../../../hooks/tournamentResults';
+import { reallyShortenTournamentName } from '../../../lib/tournament';
+import { CommonCard } from '../../common/CommonCard';
 import { ComponentLoader } from '../../common/ComponentLoader';
+import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { MyTournamentView } from '../../Tournament/Home/MyTournamentView';
 import { TournamentCard } from '../../TournamentList/TournamentCard';
 
 interface LiveResultsWrapperProps {
   tournament: Tournament;
   playerName: string;
+  isLoggedInUser: boolean;
 }
 
 export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
@@ -26,10 +30,18 @@ export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
   if (!playerIsInLiveTournament) return null;
 
   return (
-    <TournamentCard
-      tournament={props.tournament}
-      playerName={props.playerName}
-      disableFollowing
-    />
+    <Box px={3} py={2}>
+      <CommonCard header={reallyShortenTournamentName(props.tournament)}>
+        <MyTournamentView
+          tournament={props.tournament}
+          playerName={props.playerName}
+        />
+      </CommonCard>
+    </Box>
+    // <TournamentCard
+    //   tournament={props.tournament}
+    //   playerName={props.playerName}
+    //   disableFollowing
+    // />
   );
 };
