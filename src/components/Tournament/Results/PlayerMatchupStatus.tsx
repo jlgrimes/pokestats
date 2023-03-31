@@ -60,7 +60,10 @@ export const PlayerMatchupStatus = ({
             shouldHideOpponentView={shouldHideOpponentView}
           />
           {tournamentFinished && (
-            <Heading size='sm' color='gray.700'>
+            <Heading
+              size='sm'
+              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+            >
               {`Top ${getPercentile(
                 playerResults.placing,
                 tournament.players.masters as number
