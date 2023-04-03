@@ -67,6 +67,19 @@ const FAKE_PLAYER: Standing = {
       result: 'W',
       opponent: MOCK_NOAH,
     },
+    {
+      name: 'Jared Grimes',
+      result: 'W',
+      opponent: {
+        name: 'Azul GG',
+        placing: 999,
+        record: {
+          wins: 1,
+          ties: 0,
+          losses: 8,
+        },
+      }
+    },
   ],
 };
 
