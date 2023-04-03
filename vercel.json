@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/load-all-tournaments",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/load-all-final-results",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}
