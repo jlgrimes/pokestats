@@ -17,22 +17,23 @@ import { useNotSetupProfiles } from '../../hooks/user';
 export const SelectPlayerModal = ({
   modalControls,
   handleSubmit,
+  unusedPlayers,
 }: {
   modalControls: UseDisclosureProps;
   handleSubmit: (name: string) => void;
+  unusedPlayers: string[];
 }) => {
   const [filter, setFilter] = useState('');
-  const { data: allPlayerProfiles } = useNotSetupProfiles();
 
   const handleFilterChange = (e: Record<string, any>) => {
     setFilter(e.target.value);
   };
 
   const filteredPlayerProfiles = useMemo(() => {
-    return allPlayerProfiles?.filter((name: string) =>
+    return unusedPlayers?.filter((name: string) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
-  }, [filter, allPlayerProfiles]);
+  }, [filter, unusedPlayers]);
 
   return (
     <Modal

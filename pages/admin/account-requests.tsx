@@ -8,13 +8,18 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { AccountRequestCard } from '../../src/components/Admin/AccountRequestCard';
 import { useUserIsAdmin } from '../../src/hooks/administrators';
-import { useAccountRequests } from '../../src/hooks/user';
+import { fetchUnusedPlayers, useAccountRequests } from '../../src/hooks/user';
 
-export default function AccountRequestsPage() {
+interface AccountRequestsPageProps {
+  unusedPlayers: string[];
+}
+
+export default function AccountRequestsPage(props: AccountRequestsPageProps) {
   const { data: userIsAdmin, isLoading: userIsAdminLoading } = useUserIsAdmin();
   const router = useRouter();
   const { data: accountRequests } = useAccountRequests();
@@ -31,8 +36,23 @@ export default function AccountRequestsPage() {
         {accountRequests?.length} request{accountRequests?.length !== 1 && 's'}
       </Heading>
       {accountRequests?.map((request, idx) => (
-        <AccountRequestCard request={request} key={idx} />
+        <AccountRequestCard
+          request={request}
+          key={idx}
+          unusedPlayers={props.unusedPlayers}
+        />
       ))}
     </Stack>
   );
+}
+
+export async function getStaticProps() {
+  const unusedPlayers = await fetchUnusedPlayers();
+
+  return {
+    props: {
+      unusedPlayers,
+    },
+    revalidate: 10,
+  };
 }

@@ -21,8 +21,10 @@ import { SelectPlayerModal } from './SelectPlayerModal';
 
 export const AccountRequestCard = ({
   request,
+  unusedPlayers
 }: {
   request: Record<string, any>;
+  unusedPlayers: string[]
 }) => {
   const modalControls = useDisclosure();
   const [associatedName, setAssociatedName] = useState<string | null>(null);
@@ -155,6 +157,7 @@ export const AccountRequestCard = ({
         <SelectPlayerModal
           modalControls={modalControls}
           handleSubmit={handleModalSubmit}
+          unusedPlayers={unusedPlayers}
         />
       )}
     </Card>
