@@ -97,7 +97,12 @@ export interface Tournament {
     seniors: number | null;
     masters: number | null;
   };
-  lastUpdated: string | null;
+  lastUpdated?: string | null;
   rk9link: string;
   subStatus: 'after-day-one' | 'lunch-time' | null;
+  winners?: {
+    juniors: number | null;
+    seniors: number | null;
+    masters: number | null;
+  };
 }

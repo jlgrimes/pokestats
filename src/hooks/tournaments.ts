@@ -10,7 +10,8 @@ import {
 import { useState } from 'react';
 import { Tournament, TournamentStatus } from '../../types/tournament';
 import { tournamentHasArrivedButNotLive } from '../components/TournamentList/helpers';
-import { patchTournamentsClient } from '../lib/patches';
+import { getPatchedTournament, patchTournamentsClient } from '../lib/patches';
+import supabase from '../lib/supabase/client';
 import {
   reallyShortenTournamentName,
   shortenTournamentName,
@@ -32,7 +33,9 @@ export const getTournamentSubStatus = (tournament: Tournament) => {
   return afterDayOne ? 'after-day-one' : null;
 };
 
-export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
+export const fetchPokedataTournaments = async (
+  options?: FetchTournamentsOptions
+) => {
   const url = options?.prefetch
     ? 'https://pokedata.ovh/standings/tournaments.json'
     : '/api/tournaments';
@@ -77,7 +80,52 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
     };
   });
 
+  let i = 0;
+  for await (const tournament of data) {
+    if (tournament?.tournamentStatus === 'running') {
+      const newTournament = await getPatchedTournament(
+        tournament,
+        undefined,
+        options?.prefetch
+      );
+
+      if (newTournament) {
+        data[i] = newTournament;
+      }
+    }
+    i++;
+  }
+
   return data.slice().reverse();
+};
+
+export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
+  let query = supabase
+    .from('Tournaments')
+    .select(
+      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus'
+    );
+
+  if (options?.excludeUpcoming) {
+    query = query.neq('tournamentStatus', 'finished');
+  }
+
+  if (options?.onlyFinished) {
+    query = query.eq('tournamentStatus', 'finished');
+  }
+
+  if (options?.tournamentId) {
+    query = query.eq('id', parseInt(options.tournamentId));
+  }
+
+  const res = await query;
+
+  if (!res.data) return [];
+
+  return res.data.map(tournament => ({
+    ...tournament,
+    id: String(tournament.id).padStart(7, '0'),
+  }));
 };
 
 export const useTournaments = (options?: FetchTournamentsOptions) => {

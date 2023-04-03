@@ -21,13 +21,6 @@ import { prewarmLiveTournamentData } from '../src/lib/fetch/cache-prewarm';
 import { Tournament } from '../types/tournament';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
-  const { data: patchedTournaments } = usePatchedTournaments(tournaments);
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    prewarmLiveTournamentData(queryClient, tournaments);
-  }, []);
-
   if (
     SHOULD_SHOW_COMING_SOON &&
     isBefore(new Date(), new Date('2023-03-10T14:00:00-0500'))
@@ -38,7 +31,7 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   return (
     <>
       {/* <Script src='https://platform.twitter.com/widgets.js' /> */}
-      <HomePage tournaments={patchedTournaments ?? tournaments} />
+      <HomePage tournaments={tournaments} />
     </>
   );
 }
@@ -61,24 +54,11 @@ export async function getStaticProps() {
     ],
     queryFn: () => fetchFinalResults({ placing: 1 }),
   });
-
-  const tournies = getTournaments(
-    tournaments.map(
-      tournament =>
-        ({ type: 'tournament', data: tournament } as TournamentOrSet)
-    ),
-    true
-  ).items.map(({ data }) => data as Tournament);
-
-  for (const tournament of getTournamentsThatNeedToBePatched(tournies))
-    await queryClient.prefetchQuery({
-      queryKey: ['patched-tournament', tournament.id],
-      queryFn: () => tournament,
-    });
+  console.log(tournaments);
 
   return {
     props: {
-      tournaments: tournies,
+      tournaments,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
