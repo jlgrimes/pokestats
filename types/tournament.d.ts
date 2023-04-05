@@ -19,6 +19,7 @@ export interface Deck {
   identifiable_cards?: string[];
   count?: number;
   list?: DeckList;
+  listImagePath?: string;
   user_who_submitted?: string;
   verified?: boolean;
   tournament_id?: string;

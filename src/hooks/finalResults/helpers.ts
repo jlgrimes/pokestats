@@ -71,6 +71,10 @@ export const mapFinalResultsToStandings = (
             ? {
                 list: finalResult.deck_list,
               }
+            : finalResult.uploaded_list_path
+            ? {
+                listImagePath: finalResult.uploaded_list_path,
+              }
             : {}),
         }
       : null,
@@ -97,7 +101,7 @@ export const addUserReportedDecksToFinalResults = (
 
     return {
       ...finalResult,
-      deck: userReportedDeck,
+      deck: { ...finalResult.deck, ...userReportedDeck },
     };
   });
 };

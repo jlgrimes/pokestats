@@ -83,7 +83,7 @@ export const fetchFinalResults = async (
       defined_pokemon,
       identifiable_cards,
       supertype
-    ),deck_supertype`
+    ),deck_supertype,uploaded_list_path`
     )
     .order('tournament_id', { ascending: false })
     .order('placing', { ascending: true });

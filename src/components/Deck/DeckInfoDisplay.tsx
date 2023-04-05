@@ -47,7 +47,7 @@ export const DeckInfoDisplay = memo(
     const session = useSession();
 
     const userIsLoggedInUser = player.name === session.data?.user?.name;
-    const shouldShowList = player?.deck?.list && !disableList;
+    const shouldShowList = player?.deck?.list || player.deck?.listImagePath && !disableList;
     const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
 
     const ifShouldHideDeck = useCallback(() => {

@@ -54,7 +54,6 @@ export async function getStaticProps() {
     ],
     queryFn: () => fetchFinalResults({ placing: 1 }),
   });
-  console.log(tournaments);
 
   return {
     props: {

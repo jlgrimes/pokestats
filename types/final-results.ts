@@ -15,4 +15,5 @@ export interface FinalResultsSchema {
   tournament_id: string;
   deck_list: DeckList | null;
   deck_archetype: Deck | null;
+  uploaded_list_path: string | null;
 }

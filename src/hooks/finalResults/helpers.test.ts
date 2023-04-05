@@ -18,6 +18,7 @@ describe('final results helpers', () => {
           tournament_id: '1',
           deck_list: null,
           deck_archetype: null,
+          uploaded_list_path: null
         },
         {
           name: 'Jared',
@@ -28,6 +29,7 @@ describe('final results helpers', () => {
           tournament_id: '2',
           deck_list: null,
           deck_archetype: null,
+          uploaded_list_path: null
         },
       ];
 
