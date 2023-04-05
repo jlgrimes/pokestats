@@ -44,17 +44,20 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
       >
         <IconCards size={18} />
       </IconButton>
-      {imageOpen && (
-        <Modal isOpen onClose={onImageClose} size='4xl' allowPinchZoom>
-          <ModalOverlay />
-          <ModalContent>
-            <Image
-              src={`https://keujidcnlmekgfajgnjq.supabase.co/storage/v1/object/public/uploaded-deck-lists/${props.result.deck?.listImagePath}`}
-              alt='deck list'
-            />
-          </ModalContent>
-        </Modal>
-      )}
+      <Modal
+        isOpen={imageOpen}
+        onClose={onImageClose}
+        size='4xl'
+        allowPinchZoom
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <Image
+            src={`https://keujidcnlmekgfajgnjq.supabase.co/storage/v1/object/public/uploaded-deck-lists/${props.result.deck?.listImagePath}`}
+            alt='deck list'
+          />
+        </ModalContent>
+      </Modal>
       {isOpen && (
         <ListViewerModal
           isOpen={isOpen}
