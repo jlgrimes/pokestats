@@ -99,7 +99,7 @@ export const DeckInfoDisplay = memo(
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           shouldEnableEdits={enableEdits}
         />
-        {shouldShowSmallEditIcon && !shouldShowList && (
+        {shouldShowSmallEditIcon && !player.deck?.list && (
           <IconButton
             icon={<FaRegEdit />}
             aria-label='edit'
