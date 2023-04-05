@@ -14,6 +14,7 @@ import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
 import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
 import DeckInput from './DeckInput/DeckInput';
+import { UploadListButton } from './ImageListViewer/UploadListButton';
 import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
 
 export const DeckInfoDisplay = memo(
@@ -45,6 +46,7 @@ export const DeckInfoDisplay = memo(
     const archetypeModal = useDisclosure();
     const session = useSession();
 
+    const userIsLoggedInUser = player.name === session.data?.user?.name;
     const shouldShowList = player?.deck?.list && !disableList;
     const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
 
@@ -74,6 +76,7 @@ export const DeckInfoDisplay = memo(
     return (
       <Grid
         gridTemplateColumns={
+          userIsLoggedInUser ? 'auto 15px 50px' :
           shouldDisableDeckExtras && !shouldShowList && !shouldShowSmallEditIcon
             ? 'auto'
             : shouldShowAsText
@@ -110,6 +113,8 @@ export const DeckInfoDisplay = memo(
 
         {shouldShowList ? (
           <ListViewerOpenButton result={player} tournament={tournament} />
+        ) : userIsLoggedInUser ? (
+          <UploadListButton />
         ) : (
           <Box />
         )}
