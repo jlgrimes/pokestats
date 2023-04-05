@@ -49,6 +49,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         onClose={onImageClose}
         size='4xl'
         allowPinchZoom
+        blockScrollOnMount={false}
       >
         <ModalOverlay />
         <ModalContent>
