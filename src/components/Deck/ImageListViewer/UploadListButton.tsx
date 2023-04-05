@@ -6,25 +6,38 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react';
 import { IconFileUpload } from '@tabler/icons-react';
-import { useRef } from 'react';
+import { ChangeEvent, useRef } from 'react';
 import supabase from '../../../lib/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 
-export const UploadListButton = () => {
+interface UploadListButtonProps {
+  placing: number;
+  tournamentId: string;
+}
+
+export const UploadListButton = (props: UploadListButtonProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = async (e: Event) => {
+  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return console.error('No file');
 
     const ext = file.name.split('.')[1];
-    const fileName = uuidv4()
+    const fileName = uuidv4();
     const { data, error } = await supabase.storage
       .from('uploaded-deck-lists')
       .upload(`${fileName}.${ext}`, file, {
         cacheControl: '3600',
         upsert: false,
       });
+
+    const path = data?.path;
+
+    const res = await supabase
+      .from('Final Results')
+      .update({ uploaded_list_path: path })
+      .match({ placing: props.placing, tournament_id: props.tournamentId });
+    console.log(res)
   };
 
   return (

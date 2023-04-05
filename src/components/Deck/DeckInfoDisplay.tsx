@@ -76,8 +76,11 @@ export const DeckInfoDisplay = memo(
     return (
       <Grid
         gridTemplateColumns={
-          userIsLoggedInUser ? 'auto 15px 50px' :
-          shouldDisableDeckExtras && !shouldShowList && !shouldShowSmallEditIcon
+          userIsLoggedInUser
+            ? 'auto 15px 50px'
+            : shouldDisableDeckExtras &&
+              !shouldShowList &&
+              !shouldShowSmallEditIcon
             ? 'auto'
             : shouldShowAsText
             ? 'auto 25px'
@@ -113,8 +116,11 @@ export const DeckInfoDisplay = memo(
 
         {shouldShowList ? (
           <ListViewerOpenButton result={player} tournament={tournament} />
-        ) : userIsLoggedInUser ? (
-          <UploadListButton />
+        ) : userIsLoggedInUser && tournament.tournamentStatus === 'finished' ? (
+          <UploadListButton
+            placing={player.placing}
+            tournamentId={tournament.id}
+          />
         ) : (
           <Box />
         )}
