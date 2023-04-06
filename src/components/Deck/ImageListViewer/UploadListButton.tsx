@@ -4,11 +4,15 @@ import {
   IconButton,
   InputGroup,
   InputLeftElement,
+  useToast,
 } from '@chakra-ui/react';
 import { IconFileUpload } from '@tabler/icons-react';
 import { ChangeEvent, useRef } from 'react';
 import supabase from '../../../lib/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
+import { useFinalResults } from '../../../hooks/finalResults';
+import { useSession } from 'next-auth/react';
+import { usePlayerProfile, useSessionUserProfile } from '../../../hooks/user';
 
 interface UploadListButtonProps {
   placing: number;
@@ -17,6 +21,13 @@ interface UploadListButtonProps {
 
 export const UploadListButton = (props: UploadListButtonProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { data: profile } = useSessionUserProfile();
+  const { refetch } = useFinalResults({
+    playerName: profile?.name,
+    additionalNames: profile?.additionalNames,
+  });
+  const toast = useToast();
 
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = (e.target as HTMLInputElement).files?.[0];
@@ -37,7 +48,12 @@ export const UploadListButton = (props: UploadListButtonProps) => {
       .from('Final Results')
       .update({ uploaded_list_path: path })
       .match({ placing: props.placing, tournament_id: props.tournamentId });
-    console.log(res)
+
+    refetch();
+    toast({
+      status: 'success',
+      title: 'Deck uploaded successfully!',
+    });
   };
 
   return (
