@@ -3,7 +3,7 @@ import { Tournament } from '../../../types/tournament';
 import { AppLogo } from '../Layout/AppBar/AppLogo';
 import { HomeIcons } from './HomeIcons';
 import { RecentTournaments } from './RecentTournaments';
-import { TwitterTimeline } from './TwitterTimeline';
+import { Adsense } from '@ctrl/react-adsense';
 
 export interface HomePageProps {
   tournaments: Tournament[];
@@ -17,7 +17,13 @@ export const HomePage = (props: HomePageProps) => {
         <HomeIcons />
       </Stack>
       <RecentTournaments tournaments={props.tournaments} />
-      <TwitterTimeline />
+      <Adsense
+        client='ca-pub-3066736963130742'
+        slot='5583671963'
+        style={{ display: 'block' }}
+        format='auto'
+      />
+      {/* <TwitterTimeline /> */}
       {/* <TopDecks tournament={mostRecentFinishedTournament} /> */}
     </Stack>
   );
