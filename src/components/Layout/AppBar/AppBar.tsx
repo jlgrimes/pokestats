@@ -52,9 +52,8 @@ export const AppBar = () => {
           />
         }
         {router.asPath !== '/' && router.asPath !== '/help' && <AppLogo />}
-        <SearchBar />
+        <SearchBar shouldCollapsePlaceholder={router.asPath !== '/' && router.asPath !== '/help'} />
         <HStack spacing={4}>
-          <DarkModeToggle />
           {session.status !== 'unauthenticated' ? (
             <>
               <LinkBox>

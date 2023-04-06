@@ -10,6 +10,7 @@ import {
   Grid,
   Icon,
   HStack,
+  Box,
 } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import NextLink from 'next/link';
@@ -26,6 +27,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
 import { IconCards } from '@tabler/icons-react';
+import { DarkModeToggle } from '../../DarkModeToggle/DarkModeToggle';
 
 export type UserStatus = 'logged-out' | 'not-setup' | 'setup';
 
@@ -125,7 +127,12 @@ export const AppDrawerButton = ({
                   </Link>
                 </Stack>
               )}
-              <LogInOutButton />
+              <Stack spacing={0}>
+                <Box ml='-3'>
+                  <DarkModeToggle />
+                </Box>
+                <LogInOutButton />
+              </Stack>
             </Stack>
           </Stack>
         </DrawerContent>

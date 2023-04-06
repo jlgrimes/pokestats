@@ -55,7 +55,7 @@ const fetchAllUserProfiles = async () => {
   const { data } = await supabase
     .from('Player Profiles')
     .select('id,name,email,username')
-    .not('username', 'is', 'null');
+    .order('username', { ascending: true });
 
   return data;
 };

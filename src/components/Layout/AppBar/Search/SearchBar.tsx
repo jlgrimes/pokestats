@@ -3,6 +3,9 @@ import {
   Box,
   Button,
   Card,
+  Grid,
+  HStack,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
@@ -17,11 +20,19 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useState } from 'react';
-import { usePlayerProfiles } from '../../../../hooks/user';
+import { useTournaments } from '../../../../hooks/tournaments';
+import { normalizeName, usePlayerProfiles } from '../../../../hooks/user';
+import { FollowButton } from '../../../Social/FollowButton';
+import { TournamentCard } from '../../../TournamentList/TournamentCard';
 
-export const SearchBar = () => {
+interface SearchBarProps {
+  shouldCollapsePlaceholder: boolean;
+}
+
+export const SearchBar = (props: SearchBarProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: playerProfiles } = usePlayerProfiles();
+  const { data: tournaments } = useTournaments();
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -36,24 +47,47 @@ export const SearchBar = () => {
       : playerProfiles
           ?.filter(
             player =>
-              player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              player.username.toLowerCase().includes(searchQuery.toLowerCase())
+              normalizeName(player.name).includes(normalizeName(searchQuery)) ||
+              player.username?.toLowerCase().includes(searchQuery.toLowerCase())
           )
-          .slice(0, 5);
+          .slice(0, 4);
+
+  const tournamentResults =
+    searchQuery.length === 0
+      ? []
+      : tournaments
+          ?.filter(tournament =>
+            tournament.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .slice(0, 2);
+
+  const shouldShowSearchResults =
+    (playerProfileResults && playerProfileResults.length > 0) ||
+    (tournamentResults && tournamentResults.length > 0);
 
   return (
     <>
-      <Button
-        variant='outline'
-        leftIcon={<SearchIcon />}
-        flexGrow={1}
-        justifyContent='flex-start'
-        onClick={onOpen}
-      >
-        <Text fontWeight='normal' color='gray'>
-          Search anything
-        </Text>
-      </Button>
+      {props.shouldCollapsePlaceholder ? (
+        <IconButton
+          variant='outline'
+          icon={<SearchIcon />}
+          aria-label='app search'
+          onClick={onOpen}
+        />
+      ) : (
+        <Button
+          variant='outline'
+          leftIcon={<SearchIcon />}
+          flexGrow={1}
+          justifyContent='flex-start'
+          onClick={onOpen}
+          maxWidth={'30rem'}
+        >
+          <Text fontWeight='normal' color='gray'>
+            Search anything
+          </Text>
+        </Button>
+      )}
       <Modal isOpen={isOpen} onClose={handleClose} size='xs'>
         <ModalOverlay />
         <ModalContent padding={2}>
@@ -69,26 +103,62 @@ export const SearchBar = () => {
               onChange={e => setSearchQuery(e.target.value)}
             />
           </InputGroup>
-          <Stack paddingX={4} paddingY={4}>
-            {playerProfileResults?.map(player => (
-              <LinkBox key={player.id}>
-                <LinkOverlay
-                  as={NextLink}
-                  href={`/player/${player.username}`}
-                  onClick={handleClose}
-                >
-                  <Card paddingY={2} paddingX={4}>
-                    <Text fontWeight='semibold' fontSize='md'>
-                      {player.name}
-                    </Text>
-                    <Text fontSize='sm' fontWeight='medium' opacity='0.7'>
-                      {player.username}
-                    </Text>
+          {shouldShowSearchResults && (
+            <Stack paddingX={4} paddingY={4}>
+              {playerProfileResults?.map(player =>
+                player.username ? (
+                  <LinkBox key={player.id}>
+                    <Card paddingY={2} paddingX={4}>
+                      <HStack justifyContent='space-between'>
+                        <LinkOverlay
+                          as={NextLink}
+                          href={`/player/${player.username}`}
+                          onClick={handleClose}
+                        >
+                          <Stack spacing={0}>
+                            <Text fontWeight='semibold' fontSize='md'>
+                              {player.name}
+                            </Text>
+                            <Text
+                              fontSize='sm'
+                              fontWeight='medium'
+                              opacity='0.7'
+                            >
+                              {player.username}
+                            </Text>
+                          </Stack>
+                        </LinkOverlay>
+                        <Box onClick={e => e.stopPropagation()}>
+                          <FollowButton playerName={player.name} />
+                        </Box>
+                      </HStack>
+                    </Card>
+                  </LinkBox>
+                ) : (
+                  <Card
+                    variant='filled'
+                    paddingY={2}
+                    paddingX={4}
+                    key={player.id}
+                  >
+                    <HStack justifyContent='space-between'>
+                      <Text fontWeight='semibold' fontSize='md'>
+                        {player.name}
+                      </Text>
+                      <Box>
+                        <FollowButton playerName={player.name} />
+                      </Box>
+                    </HStack>
                   </Card>
-                </LinkOverlay>
-              </LinkBox>
-            ))}
-          </Stack>
+                )
+              )}
+              {tournamentResults?.map(tournament => (
+                <Box key={tournament.id} onClick={handleClose}>
+                  <TournamentCard tournament={tournament} />
+                </Box>
+              ))}
+            </Stack>
+          )}
         </ModalContent>
       </Modal>
     </>
