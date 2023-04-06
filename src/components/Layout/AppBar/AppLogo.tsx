@@ -27,15 +27,17 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
         <LinkOverlay href={`/`} as={NextLink}>
           <HStack spacing={1} alignItems='baseline'>
             <Stack direction={'row'} alignItems='center' spacing={0}>
-              <Heading
-                color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
-                letterSpacing={'wider'}
-                size={big ? 'xl' : smol ? 'sm' : 'md'}
-                fontWeight={'black'}
-                lineHeight={'taller'}
-              >
-                pokéstats
-              </Heading>
+              {big && (
+                <Heading
+                  color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
+                  letterSpacing={'wider'}
+                  size={big ? 'xl' : smol ? 'sm' : 'md'}
+                  fontWeight={'black'}
+                  lineHeight={'taller'}
+                >
+                  pokéstats
+                </Heading>
+              )}
               <Heading
                 letterSpacing={'wider'}
                 size={big ? 'xl' : smol ? 'sm' : 'md'}

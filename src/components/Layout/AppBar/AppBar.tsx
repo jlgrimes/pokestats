@@ -18,6 +18,7 @@ import React, { useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
 import { DarkModeToggle } from '../../DarkModeToggle/DarkModeToggle';
+import { SearchBar } from './Search/SearchBar';
 
 export const AppBar = () => {
   const session = useSession();
@@ -44,8 +45,14 @@ export const AppBar = () => {
         padding={'0.25rem 1.5rem'}
         justifyContent={'space-between'}
       >
-        {<AppDrawerButton userStatus={getUserStatus()} userProfile={userProfile} />}
+        {
+          <AppDrawerButton
+            userStatus={getUserStatus()}
+            userProfile={userProfile}
+          />
+        }
         {router.asPath !== '/' && router.asPath !== '/help' && <AppLogo />}
+        <SearchBar />
         <HStack spacing={4}>
           <DarkModeToggle />
           {session.status !== 'unauthenticated' ? (

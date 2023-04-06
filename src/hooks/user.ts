@@ -51,6 +51,21 @@ export const fetchUserProfile = async (session: Session) => {
   return null;
 };
 
+const fetchAllUserProfiles = async () => {
+  const { data } = await supabase
+    .from('Player Profiles')
+    .select('id,name,email,username')
+    .not('username', 'is', 'null');
+
+  return data;
+};
+
+export const usePlayerProfiles = () => {
+  return useQuery({
+    queryKey: ['player-profiles'],
+    queryFn: fetchAllUserProfiles,
+  });
+};
 export interface SessionUserProfile {
   name?: string | null;
   email?: string | null;
@@ -171,7 +186,9 @@ export const fetchUser = async (email: string) => {
 };
 
 export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
-  let query = supabase.from('Player Profiles').select('id,name,email,username,additional_names,preferred_name');
+  let query = supabase
+    .from('Player Profiles')
+    .select('id,name,email,username,additional_names,preferred_name');
 
   if (filters?.username) {
     query = query.ilike('username', filters.username);
