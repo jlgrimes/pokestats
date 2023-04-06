@@ -51,8 +51,14 @@ export const AppBar = () => {
             userProfile={userProfile}
           />
         }
-        {router.asPath !== '/' && router.asPath !== '/help' && <AppLogo />}
-        <SearchBar shouldCollapsePlaceholder={router.asPath !== '/' && router.asPath !== '/help'} />
+        <HStack width='full' justifyContent='center'>
+          {router.asPath !== '/' && router.asPath !== '/help' && <AppLogo />}
+          <SearchBar
+            shouldCollapsePlaceholder={
+              router.asPath !== '/' && router.asPath !== '/help'
+            }
+          />
+        </HStack>
         <HStack spacing={4}>
           {session.status !== 'unauthenticated' ? (
             <>
