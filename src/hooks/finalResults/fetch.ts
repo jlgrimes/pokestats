@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { FinalResultsSchema } from '../../../types/final-results';
 import { Deck, Standing } from '../../../types/tournament';
 import supabase from '../../lib/supabase/client';
@@ -55,6 +56,13 @@ export const fetchPlayers = async () => {
   );
   return uniqueNames;
 };
+
+export const useFinalResultsPlayers = () => {
+  return useQuery({
+    queryKey: ['final-results-players'],
+    queryFn: fetchPlayers
+  })
+}
 
 export const fetchDecksWithLists = async (
   tournamentRange?: number[]

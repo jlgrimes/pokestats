@@ -19,7 +19,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useFinalResultsPlayers } from '../../../../hooks/finalResults/fetch';
 import { useTournaments } from '../../../../hooks/tournaments';
 import { normalizeName, usePlayerProfiles } from '../../../../hooks/user';
 import { FollowButton } from '../../../Social/FollowButton';
@@ -31,6 +32,7 @@ interface SearchBarProps {
 
 export const SearchBar = (props: SearchBarProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: names } = useFinalResultsPlayers();
   const { data: playerProfiles } = usePlayerProfiles();
   const { data: tournaments } = useTournaments();
 
@@ -41,10 +43,39 @@ export const SearchBar = (props: SearchBarProps) => {
     onClose();
   };
 
+  const additionalNames = useMemo(
+    () =>
+      playerProfiles?.reduce(
+        (acc: string[], curr) =>
+          curr.additional_names ? [...acc, ...curr.additional_names] : acc,
+        []
+      ),
+    [playerProfiles]
+  );
+
+  const playerList = useMemo(
+    () =>
+      names
+        ?.map(
+          name =>
+            playerProfiles?.find(player => player.name === name) || {
+              name,
+              username: null,
+            }
+        )
+        .filter(player => !additionalNames?.includes(player.name))
+        .sort((a, b) => {
+          if (a.username) return -1;
+          if (b.username) return 1;
+          return 0;
+        }),
+    [names, playerProfiles, additionalNames]
+  );
+
   const playerProfileResults =
     searchQuery.length === 0
       ? []
-      : playerProfiles
+      : playerList
           ?.filter(
             player =>
               normalizeName(player.name).includes(normalizeName(searchQuery)) ||
@@ -107,7 +138,7 @@ export const SearchBar = (props: SearchBarProps) => {
             <Stack paddingX={4} paddingY={4}>
               {playerProfileResults?.map(player =>
                 player.username ? (
-                  <LinkBox key={player.id}>
+                  <LinkBox key={player.name}>
                     <Card paddingY={2} paddingX={4}>
                       <HStack justifyContent='space-between'>
                         <LinkOverlay
@@ -139,7 +170,7 @@ export const SearchBar = (props: SearchBarProps) => {
                     variant='filled'
                     paddingY={2}
                     paddingX={4}
-                    key={player.id}
+                    key={player.name}
                   >
                     <HStack justifyContent='space-between'>
                       <Text fontWeight='semibold' fontSize='md'>

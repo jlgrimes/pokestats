@@ -54,7 +54,7 @@ export const fetchUserProfile = async (session: Session) => {
 const fetchAllUserProfiles = async () => {
   const { data } = await supabase
     .from('Player Profiles')
-    .select('id,name,email,username')
+    .select('id,name,email,username,additional_names,preferred_name')
     .order('username', { ascending: true });
 
   return data;
