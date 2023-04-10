@@ -174,7 +174,7 @@ export const SubmissionView = ({
             ...modalControls,
             onClose: () => {},
           }}
-          tournamentId={tournament.id}
+          tournament={tournament}
           onChange={handleUnknownSubmission}
           userIsAdmin
           // Hard code

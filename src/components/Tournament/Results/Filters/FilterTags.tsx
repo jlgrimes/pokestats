@@ -34,7 +34,7 @@ export const FilterTags = ({
   ) => void;
   tournament: Tournament;
 }) => {
-  const { data: archetypes } = useMostPopularArchetypes(tournament.id);
+  const { data: archetypes } = useMostPopularArchetypes(tournament);
 
   const tagProps: Partial<TagProps> = {
     size: 'lg',

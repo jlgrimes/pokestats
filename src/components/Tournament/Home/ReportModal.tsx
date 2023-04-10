@@ -65,7 +65,7 @@ export const ReportModal = (props: ReportModalProps) => {
           />
           <ArchetypeSelectorModal
             onChange={handleDeckSelect}
-            tournamentId={props.tournament.id}
+            tournament={props.tournament}
             modalControls={archetypeModalControls}
             userIsAdmin={true}
             isListUp={false}

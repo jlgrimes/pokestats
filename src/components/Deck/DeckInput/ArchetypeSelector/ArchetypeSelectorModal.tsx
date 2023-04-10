@@ -33,7 +33,7 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
   const [selectedArchetype, setSelectedArchetype] = useState<Deck | null>(null);
   const [filterQuery, setFilterQuery] = useState<string>('');
   const { data: mostPopularDecks, refetchArchetypes } =
-    useMostPopularArchetypes(props.tournamentId, {
+    useMostPopularArchetypes(props.tournament, {
       shouldIncludeDecksNotPlayed: true,
     });
   const addArchetypeModalControls = useDisclosure();

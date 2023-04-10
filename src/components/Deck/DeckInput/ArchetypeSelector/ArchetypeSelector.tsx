@@ -1,6 +1,6 @@
 import { UseDisclosureProps, Text } from '@chakra-ui/react';
 import { Fragment, memo } from 'react';
-import { Deck } from '../../../../../types/tournament';
+import { Deck, Tournament } from '../../../../../types/tournament';
 import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
 import { ArchetypeEditButton } from './ArchetypeEditButton';
@@ -11,7 +11,7 @@ export interface ArchetypeSelectorProps {
   onChange: (value: Deck) => void;
   modalControls: UseDisclosureProps;
   shouldShowAsText?: boolean;
-  tournamentId: string;
+  tournament: Tournament;
   unownOverride?: string;
   userIsAdmin: boolean;
   deckIsVerified?: boolean;

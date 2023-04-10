@@ -1,18 +1,28 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Deck, Standing } from '../../types/tournament';
+import { Deck, Standing, Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
+import { FormatSchema, useCurrentFormat } from './formats';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchArchetypes = async (): Promise<DeckTypeSchema[] | null> => {
-  const res = await supabase.from('Deck Archetypes')
-    .select(`id,name,defined_pokemon,supertype (
+export const fetchArchetypes = async (format?: FormatSchema): Promise<DeckTypeSchema[] | null> => {
+  let query = supabase
+    .from('Deck Archetypes')
+    .select(
+      `id,name,defined_pokemon,supertype (
       id,
       name,
       defined_pokemon,
       cover_cards
-    ),identifiable_cards`)
-    .order('created_at', { ascending: false });;
+    ),identifiable_cards`
+    )
+    .order('created_at', { ascending: false });
+
+  if (format) {
+    query = query.eq('format', format.id);
+  }
+
+  const res = await query;
 
   if (res.data) {
     return res.data.map(archetype => {
@@ -62,8 +72,11 @@ export const useVariants = (supertypeId: number | undefined) => {
   });
 };
 
-export const useArchetypes = () => {
-  return useQuery({ queryKey: ['deck-archetypes'], queryFn: fetchArchetypes });
+export const useArchetypes = (format?: FormatSchema) => {
+  return useQuery({
+    queryKey: ['deck-archetypes', format?.format, format?.rotation],
+    queryFn: () => fetchArchetypes(format),
+  });
 };
 
 export interface SupertypeSchema {
@@ -192,18 +205,19 @@ interface MostPopularArchetypesOptions {
 }
 
 export const useMostPopularArchetypes = (
-  tournamentId: string,
+  tournament?: Tournament,
   options?: MostPopularArchetypesOptions
 ) => {
   const { data: liveResults, isLoading: liveResultsIsLoading } =
-    useLiveTournamentResults(tournamentId, {
+    useLiveTournamentResults(tournament?.id ?? '', {
       load: { allRoundData: true },
     });
+  const { data: format } = useCurrentFormat(tournament ?? ({} as Tournament));
   const {
     data: archetypes,
     refetch,
     isLoading: archetypesIsLoading,
-  } = useArchetypes();
+  } = useArchetypes(format);
 
   const playerDeckCounts = liveResults?.data?.reduce(
     (

@@ -150,7 +150,6 @@ export const fetchUnusedPlayers = async () => {
     .select('id,name,email,additional_names');
 
   const players = await fetchPlayers();
-  console.log(players.length)
 
   return players?.filter(
     name =>
