@@ -17,6 +17,7 @@ const DeckInput = memo(
     shouldHideDeck,
     shouldHideVerifiedIcon,
     shouldEnableEdits,
+    shouldHideSpecificArchetype
   }: {
     playerName: string;
     deck: Deck | undefined;
@@ -26,6 +27,7 @@ const DeckInput = memo(
     shouldHideDeck?: boolean;
     shouldHideVerifiedIcon?: boolean;
     shouldEnableEdits: boolean;
+    shouldHideSpecificArchetype?: boolean;
   }) => {
     const deckId = deck?.id;
 
@@ -64,6 +66,7 @@ const DeckInput = memo(
         userIsAdmin={userIsAdmin}
         deckIsVerified={deck?.verified}
         shouldHideDeck={shouldHideDeck}
+        shouldHideSpecificArchetype={shouldHideSpecificArchetype}
         isStreamDeck={!!isStreamDeck}
         toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
         isListUp={!!deck?.list}

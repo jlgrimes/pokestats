@@ -21,6 +21,7 @@ export interface ArchetypeSelectorProps {
   toggleIsStreamDeck?: () => void;
   isListUp: boolean;
   shouldEnableEdits?: boolean;
+  shouldHideSpecificArchetype?: boolean;
 }
 
 const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {
@@ -40,6 +41,7 @@ const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {
           pokemonNames={props.selectedArchetype?.defined_pokemon}
           deckId={props.selectedArchetype?.id}
           hidden={props.shouldHideDeck}
+          shouldBlurSecondSprite={props.shouldHideSpecificArchetype}
         />
       );
     }

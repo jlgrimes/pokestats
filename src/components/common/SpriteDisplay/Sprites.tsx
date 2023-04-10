@@ -30,7 +30,7 @@ export const Sprites = memo((props: SpritesProps) => (
         </Flex>
       ) : (
         props.pokemonNames?.map((name, idx) => (
-          <SingleSprite big={props.big} name={name} key={Math.random()} />
+          <SingleSprite big={props.big} name={name} key={Math.random()} shouldBlur={props.shouldBlurSecondSprite && idx === 1} />
         ))
       )}
     </Stack>

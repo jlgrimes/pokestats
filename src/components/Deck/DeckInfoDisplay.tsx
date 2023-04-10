@@ -47,13 +47,12 @@ export const DeckInfoDisplay = memo(
     const session = useSession();
 
     const userIsLoggedInUser = player.name === session.data?.user?.name;
-    const shouldShowList = player?.deck?.list || player.deck?.listImagePath && !disableList;
+    const shouldShowList =
+      player?.deck?.list || (player.deck?.listImagePath && !disableList);
     const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
 
-    const ifShouldHideDeck = useCallback(() => {
-      if (tournament.tournamentStatus === 'finished') return false;
-
-      // If you are the player, or the player has played against you, show the deck
+    const isSomeoneYouPlayed = useCallback(() => {
+      // If you are the player, or the player has played against you
       if (
         session.status === 'authenticated' &&
         (session.data?.user?.name === player.name ||
@@ -61,17 +60,23 @@ export const DeckInfoDisplay = memo(
             round => round.opponent?.name === session.data?.user?.name
           ))
       ) {
-        return false;
+        return true;
       }
 
-      return shouldHideDeck;
-    }, [
-      player,
-      session.data?.user?.name,
-      session.status,
-      shouldHideDeck,
-      tournament.tournamentStatus,
-    ]);
+      return false;
+    }, [player.name, player.rounds, session.data?.user?.name, session.status]);
+
+    const ifShouldHideDeck = useCallback(() => {
+      if (tournament.tournamentStatus === 'finished') return false;
+
+      return !isSomeoneYouPlayed() && shouldHideDeck;
+    }, [shouldHideDeck, tournament.tournamentStatus, isSomeoneYouPlayed]);
+
+    const ifShouldBlurSpecificAArchetype = useCallback(() => {
+      if (tournament.tournamentStatus === 'finished') return false;
+
+      return !isSomeoneYouPlayed();
+    }, [isSomeoneYouPlayed, tournament.tournamentStatus]);
 
     return (
       <Grid
@@ -96,6 +101,7 @@ export const DeckInfoDisplay = memo(
           archetypeModal={archetypeModal}
           shouldShowAsText={shouldShowAsText}
           shouldHideDeck={ifShouldHideDeck()}
+          shouldHideSpecificArchetype={ifShouldBlurSpecificAArchetype()}
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           shouldEnableEdits={enableEdits}
         />

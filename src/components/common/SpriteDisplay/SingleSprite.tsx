@@ -35,6 +35,7 @@ export const SingleSprite = memo((props: SingleSpriteProps) => {
           getRegionFlag(props.name)
         )}
         alt={props.name}
+        filter={props.shouldBlur ? `blur(0.9rem) grayscale(1)` : undefined}
       />
     </StackItem>
   );
