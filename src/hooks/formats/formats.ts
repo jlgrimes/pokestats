@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { differenceInDays, isBefore, parseISO } from 'date-fns';
-import { Tournament } from '../../types/tournament';
-import supabase from '../lib/supabase/client';
+import { Tournament } from '../../../types/tournament';
+import supabase from '../../lib/supabase/client';
+import { getTournamentFormat } from './helpers';
 
 export const fetchFormats = async () => {
   const res = await supabase
@@ -39,30 +40,7 @@ export const useCurrentFormat = (tournament?: Tournament) => {
     }
   }
 
-  let mostRecentFormat;
-  for (const format of formats.data) {
-    if (!mostRecentFormat) {
-      mostRecentFormat = format;
-    } else {
-      const tournamentIsBefore = isBefore(
-        parseISO(format.start_date),
-        parseISO(tournament.date.start)
-      );
-      const tournamentIsCloserToDate =
-        differenceInDays(
-          parseISO(tournament.date.start),
-          parseISO(format.start_date)
-        ) <
-        differenceInDays(
-          parseISO(tournament.date.start),
-          parseISO(mostRecentFormat.start_date)
-        );
-
-      if (tournamentIsBefore && tournamentIsCloserToDate) {
-        mostRecentFormat = format;
-      }
-    }
-  }
+  const mostRecentFormat = getTournamentFormat(formats.data, tournament);
 
   return {
     ...formats,

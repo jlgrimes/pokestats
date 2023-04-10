@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Deck, Standing, Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
-import { FormatSchema, useCurrentFormat } from './formats';
+import { FormatSchema, useCurrentFormat } from './formats/formats';
 import { useLiveTournamentResults } from './tournamentResults';
 
 export const fetchArchetypes = async (format?: FormatSchema): Promise<DeckTypeSchema[] | null> => {
