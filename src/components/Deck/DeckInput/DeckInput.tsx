@@ -59,7 +59,7 @@ const DeckInput = memo(
         onChange={handleArchetypeSelect}
         modalControls={archetypeModal}
         shouldShowAsText={shouldShowAsText}
-        tournamentId={tournament.id}
+        tournament={tournament}
         unownOverride={playerName === 'Isaiah Cheville' ? 'z' : undefined}
         userIsAdmin={userIsAdmin}
         deckIsVerified={deck?.verified}

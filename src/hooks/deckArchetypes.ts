@@ -19,7 +19,7 @@ export const fetchArchetypes = async (format?: FormatSchema): Promise<DeckTypeSc
     .order('created_at', { ascending: false });
 
   if (format) {
-    query = query.eq('format', format.id);
+    query = query.or(`format.eq.${format.id},name.eq.Other`);
   }
 
   const res = await query;
