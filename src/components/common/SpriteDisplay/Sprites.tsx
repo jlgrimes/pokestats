@@ -6,42 +6,54 @@ import { getLowResUnownUrl } from '../helpers';
 import { SingleSprite } from './SingleSprite';
 import { SpritesProps } from './SpriteDisplayProps';
 
-export const Sprites = memo((props: SpritesProps) => (
-  <Stack
-    direction='row'
-    alignItems={'baseline'}
-    spacing={-0.5}
-    minWidth={props.squishWidth ? 0 : '4.6rem'}
-  >
-    <Stack direction={'row'} spacing={1} alignItems={'center'}>
-      {!props.pokemonNames || props.pokemonNames.length === 0 ? (
-        <Flex justifyContent={'center'}>
-          <Image
-            height='30px'
-            src={getLowResUnownUrl()}
-            alt='Unown'
-            className='pixel-image'
-            transform={'scale(1.5)'}
-          />
-        </Flex>
-      ) : props.hidden ? (
-        <Flex justifyContent={'center'} minWidth='2rem'>
-          <Icon as={FaRegEyeSlash} />
-        </Flex>
-      ) : (
-        props.pokemonNames?.map((name, idx) => (
-          <SingleSprite big={props.big} name={name} key={Math.random()} shouldBlur={props.shouldBlurSecondSprite && idx === 1} />
-        ))
+export const Sprites = memo((props: SpritesProps) => {
+  const names =
+    (props.shouldBlurSecondSprite && props.pokemonNames)
+      ? [props.pokemonNames[0]]
+      : props.pokemonNames;
+
+  return (
+    <Stack
+      direction='row'
+      alignItems={'baseline'}
+      spacing={-0.5}
+      minWidth={props.squishWidth ? 0 : '4.6rem'}
+    >
+      <Stack direction={'row'} spacing={1} alignItems={'center'}>
+        {!props.pokemonNames || props.pokemonNames.length === 0 ? (
+          <Flex justifyContent={'center'}>
+            <Image
+              height='30px'
+              src={getLowResUnownUrl()}
+              alt='Unown'
+              className='pixel-image'
+              transform={'scale(1.5)'}
+            />
+          </Flex>
+        ) : props.hidden ? (
+          <Flex justifyContent={'center'} minWidth='2rem'>
+            <Icon as={FaRegEyeSlash} />
+          </Flex>
+        ) : (
+          names?.map((name, idx) => (
+            <SingleSprite
+              big={props.big}
+              name={name}
+              key={Math.random()}
+              shouldBlur={props.shouldBlurSecondSprite && idx === 1}
+            />
+          ))
+        )}
+      </Stack>
+      {props.verified !== undefined && (
+        <StackItem>
+          {!props.shouldHideVerification && props.verified && (
+            <VerifiedIcon subtle />
+          )}
+        </StackItem>
       )}
     </Stack>
-    {props.verified !== undefined && (
-      <StackItem>
-        {!props.shouldHideVerification && props.verified && (
-          <VerifiedIcon subtle />
-        )}
-      </StackItem>
-    )}
-  </Stack>
-));
+  );
+});
 
 Sprites.displayName = 'Sprites';
