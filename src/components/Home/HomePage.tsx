@@ -17,12 +17,12 @@ export const HomePage = (props: HomePageProps) => {
         <HomeIcons />
       </Stack>
       <RecentTournaments tournaments={props.tournaments} />
-      <Adsense
+      {/* <Adsense
         client='ca-pub-3066736963130742'
         slot='5583671963'
         style={{ display: 'block' }}
         format='auto'
-      />
+      /> */}
       {/* <TwitterTimeline /> */}
       {/* <TopDecks tournament={mostRecentFinishedTournament} /> */}
     </Stack>

@@ -12,13 +12,13 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <AppLayout dehydratedState={pageProps.dehydratedState}>
-        <Head>
+        {/* <Head>
           <script
             async
             src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3066736963130742'
             crossOrigin='anonymous'
           ></script>
-        </Head>
+        </Head> */}
         <Component {...pageProps} />
         <Analytics />
       </AppLayout>
