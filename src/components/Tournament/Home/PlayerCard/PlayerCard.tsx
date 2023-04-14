@@ -178,13 +178,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
               props.player.currentOpponent &&
               !props.shouldHideOpponent && (
                 <Fragment>
-                  <Heading
-                    color='gray.400'
-                    fontSize={14}
-                    textTransform='uppercase'
-                  >
-                    vs
-                  </Heading>
                   <StandingsRow
                     result={props.player.currentOpponent}
                     tournament={props.tournament}
@@ -193,6 +186,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
                     isDeckLoading={props.isDeckLoading}
                     translucent={!props.topCut}
                     isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
+                    shouldReplacePlacementWithVs
                   />
                 </Fragment>
               )}

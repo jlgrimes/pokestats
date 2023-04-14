@@ -40,6 +40,7 @@ export interface StandingsRowProps {
   shouldDisableOpponentModal?: boolean;
   shouldHideStanding?: boolean;
   shouldHideName?: boolean;
+  shouldReplacePlacementWithVs?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -85,8 +86,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
               fontFamily={'mono'}
               textAlign={'right'}
             >
-              {props.opponentRoundNumber ??
-                (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
+              {props.shouldReplacePlacementWithVs
+                ? 'vs'
+                : props.opponentRoundNumber ??
+                  (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
             </Text>
           </GridItem>
         )}
