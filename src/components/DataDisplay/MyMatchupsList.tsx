@@ -1,7 +1,7 @@
 import { PlayerLiveResultsSchema, usePlayerLiveResults } from '../../hooks/tournamentResults';
 import { Tournament } from '../../../types/tournament';
 import { memo } from 'react';
-import { RoundsList } from './RoundsList';
+import { RoundsList } from './Rounds/RoundsList';
 import { CombinedPlayerProfile } from '../../../types/player';
 
 export const MyMatchupsList = memo(

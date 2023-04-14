@@ -29,7 +29,7 @@ import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
 import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
 import { PlayerCard } from '../../../Tournament/Home/PlayerCard/PlayerCard';
-import { RoundsList } from '../../RoundsList';
+import { RoundsList } from '../../Rounds/RoundsList';
 import { StandingsRow } from '../StandingsRow';
 
 export const OpponentRoundListContent = ({

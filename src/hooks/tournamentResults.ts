@@ -245,5 +245,5 @@ export const usePlayerIsMeOrMyOpponent = (player: Standing) => {
   if (!player.rounds) return false;
 
   if (player.name === userName) return true;
-  return player.rounds.some(({ opponent }) => opponent?.name === userName);
+  return player.rounds.some(({ name }) => name === userName);
 };
