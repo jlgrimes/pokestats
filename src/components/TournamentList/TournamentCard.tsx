@@ -45,7 +45,7 @@ export const TournamentCard = ({
   return (
     <LinkBox height='100%'>
       <CommonCard>
-        <Stack>
+        <Stack spacing={4}>
           <Grid
             gridTemplateColumns={champion || live ? '3fr 2fr' : 'auto'}
             alignItems='center'
