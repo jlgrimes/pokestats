@@ -89,6 +89,7 @@ export const PlayerPerformanceList = ({
               tournament={tournament}
               shouldHideDecks={false}
               canEditDecks={userMatchesLoggedInUser || userIsAdmin}
+              isPlayerMeOrMyOpponent={false}
             />
           </Stack>
           // <CommonCard
@@ -171,6 +172,7 @@ export const PlayerPerformanceList = ({
                         tournament={tournament}
                         player={performance}
                         enableEdits={userMatchesLoggedInUser || userIsAdmin}
+                        isPlayerMeOrMyOpponent={false}
                       />
                     </Td>
                   </Tr>

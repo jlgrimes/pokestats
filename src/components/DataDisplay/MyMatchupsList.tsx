@@ -2,8 +2,6 @@ import { usePlayerLiveResults } from '../../hooks/tournamentResults';
 import { Tournament } from '../../../types/tournament';
 import { memo, useMemo } from 'react';
 import { RoundsList } from './RoundsList';
-import { useSession } from 'next-auth/react';
-import { useSessionUserProfile } from '../../hooks/user';
 
 export const MyMatchupsList = memo(
   ({
@@ -15,8 +13,6 @@ export const MyMatchupsList = memo(
     user: Record<string, any> | undefined;
     isLoggedInUser: boolean;
   }) => {
-    const { data: playerProfile } = useSessionUserProfile();
-
     const { player, shouldHideDecks } = usePlayerLiveResults(
       tournament.id,
       user?.name,
@@ -27,7 +23,7 @@ export const MyMatchupsList = memo(
 
     return player?.rounds ? (
       <RoundsList
-        rounds={player.rounds}
+        player={player}
         tournament={tournament}
         shouldHideDecks={!!shouldHideDecks}
         canEditDecks={isLoggedInUser}

@@ -30,10 +30,12 @@ export const DeckInfoDisplay = memo(
     onUnpinPlayer,
     shouldHideMenu,
     shouldDisableDeckExtras,
+    isPlayerMeOrMyOpponent,
   }: {
     player: Standing;
     tournament: Tournament;
     enableEdits: boolean;
+    isPlayerMeOrMyOpponent: boolean;
     shouldShowAsText?: boolean;
     disableList?: boolean;
     shouldHideDeck?: boolean;
@@ -51,32 +53,17 @@ export const DeckInfoDisplay = memo(
       player?.deck?.list || (player.deck?.listImagePath && !disableList);
     const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
 
-    const isSomeoneYouPlayed = useCallback(() => {
-      // If you are the player, or the player has played against you
-      if (
-        session.status === 'authenticated' &&
-        (session.data?.user?.name === player.name ||
-          player.rounds?.some(
-            round => round.opponent?.name === session.data?.user?.name
-          ))
-      ) {
-        return true;
-      }
-
-      return false;
-    }, [player.name, player.rounds, session.data?.user?.name, session.status]);
-
     const ifShouldHideDeck = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
 
-      return !isSomeoneYouPlayed() && shouldHideDeck;
-    }, [shouldHideDeck, tournament.tournamentStatus, isSomeoneYouPlayed]);
+      return !isPlayerMeOrMyOpponent && shouldHideDeck;
+    }, [shouldHideDeck, tournament.tournamentStatus, isPlayerMeOrMyOpponent]);
 
     const ifShouldBlurSpecificAArchetype = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
 
-      return !isSomeoneYouPlayed();
-    }, [isSomeoneYouPlayed, tournament.tournamentStatus]);
+      return !isPlayerMeOrMyOpponent;
+    }, [tournament.tournamentStatus, isPlayerMeOrMyOpponent]);
 
     return (
       <Grid

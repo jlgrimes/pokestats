@@ -1,17 +1,19 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { PlayerTournamentPerformance } from '../../types/player';
-import { Standing } from '../../types/tournament';
+import { PlayerRound, Standing } from '../../types/tournament';
 import { StandingsFilters } from '../components/Tournament/Results/Filters/StandingsFilterMenu';
 import {
   fetchLiveResults,
   FetchLiveResultsOptions,
   FetchLoggedInPlayerOptions,
   LiveResults,
+  Player,
 } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
 import { useTournaments } from './tournaments';
+import { useUserMatchesLoggedInUser } from './user';
 
 export const useTournamentResults = (tournamentName: string) => {
   const fetchResults = async () => {
@@ -227,6 +229,17 @@ export const useLiveTournamentPlayers = (tournamentId: string) => {
 
   return {
     data: liveResults?.data.map(({ name }) => name),
-    isLoading: isLiveTournamentResultsLoading
+    isLoading: isLiveTournamentResultsLoading,
   };
+};
+
+export const usePlayerIsMeOrMyOpponent = (player: Standing) => {
+  const session = useSession();
+  const userName = session.data?.user?.name;
+
+  if (!userName) return false;
+  if (!player.rounds) return false;
+
+  if (player.name === userName) return true;
+  return player.rounds.some(({ opponent }) => opponent?.name === userName);
 };

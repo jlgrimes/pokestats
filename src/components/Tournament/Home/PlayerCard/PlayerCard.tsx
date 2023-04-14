@@ -37,6 +37,7 @@ export interface PlayerCardProps {
   shouldDisableOpponentModal?: boolean;
   result?: MatchResult;
   shouldMoveResultLast?: boolean;
+  isPlayerMeOrMyOpponent: boolean;
 }
 
 export const inverseResult = (result?: MatchResult) =>
@@ -95,6 +96,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
               shouldHideStanding={props.shouldHideStanding}
               shouldHideName={props.shouldHideName}
               shouldDisableOpponentModal={props.shouldDisableOpponentModal}
+              isPlayerMeOrMyOpponent={false}
             />
           </CardBody>
         </Card>
@@ -132,6 +134,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
                     isDeckLoading={props.isDeckLoading}
                     translucent={!props.topCut}
                     isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
+                    isPlayerMeOrMyOpponent={false}
                   />
                 </Grid>
               </CardBody>
@@ -173,6 +176,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
               shouldHideStanding={props.shouldHideStanding}
               shouldHideName={props.shouldHideName}
               shouldDisableOpponentModal={props.shouldDisableOpponentModal}
+              isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
             />
             {props.tournament.tournamentStatus === 'running' &&
               props.player.currentOpponent &&
@@ -187,6 +191,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
                     translucent={!props.topCut}
                     isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
                     shouldReplacePlacementWithVs
+                    isPlayerMeOrMyOpponent={false}
                   />
                 </Fragment>
               )}

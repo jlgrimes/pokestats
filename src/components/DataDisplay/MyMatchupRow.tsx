@@ -55,6 +55,7 @@ export const MyMatchupRow = memo(
             enableEdits={!round.opponent.deck?.name}
             shouldHideDeck={shouldHideDeck}
             shouldHideVerifiedIcon
+            isPlayerMeOrMyOpponent={true}
           />
         </Td>
       </Tr>

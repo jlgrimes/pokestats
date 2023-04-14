@@ -16,11 +16,12 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useIsMobile } from '../../../../hooks/device';
-import { useUserIsFollowingPlayer } from '../../../../hooks/pinnedPlayers';
-import { usePlayerLiveResults } from '../../../../hooks/tournamentResults';
+import {
+  usePlayerIsMeOrMyOpponent,
+  usePlayerLiveResults,
+} from '../../../../hooks/tournamentResults';
 import { usePlayerProfile } from '../../../../hooks/user';
 import { ordinalSuffixOf } from '../../../../lib/strings';
 import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
@@ -42,6 +43,7 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
   const isMobile = useIsMobile();
   const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
   const { data: playerProfile } = usePlayerProfile({ name: player.name });
+  const isMyOpponent = usePlayerIsMeOrMyOpponent(props.player);
 
   return (
     <Modal isOpen={modalOpen} onClose={handleCloseModal} size='md'>
@@ -79,7 +81,8 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
                   // Since we're pulling from post-tournament
                   shouldHideDeck={shouldHideDecks}
                   shouldDisableDeckExtras
-                />s
+                  isPlayerMeOrMyOpponent={isMyOpponent}
+                />
               </Stack>
             </Grid>
           </HStack>

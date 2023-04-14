@@ -23,6 +23,7 @@ export const VirtualizedRow = memo((props: VirtualizedRowProps) => {
         canEditDecks={props.canEditDecks}
         size='sm'
         shouldHideOpponent
+        isPlayerMeOrMyOpponent={false}
       />
     </Box>
   );

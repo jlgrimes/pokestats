@@ -17,7 +17,8 @@ export const MyTournamentView = (props: MyTournamentViewProps) => {
   const session = useSession();
   const { player: playerResults } = usePlayerLiveResults(
     props.tournament.id,
-    props.playerName ?? session.data?.user?.name
+    props.playerName ?? session.data?.user?.name,
+    { load: { opponentRoundData: true } }
   );
 
   const isLoggedInUser = useUserMatchesLoggedInUser(

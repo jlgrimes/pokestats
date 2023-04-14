@@ -64,7 +64,10 @@ export const OpponentRoundListContent = ({
 
   return rounds ? (
     <RoundsList
-      rounds={rounds}
+      player={{
+        ...player,
+        rounds,
+      }}
       tournament={tournament}
       shouldHideDecks={!!liveResults?.shouldHideDecks}
       shouldDisableOpponentModal

@@ -19,7 +19,6 @@ import { Record } from '../../Tournament/Results/ResultsList/Record';
 import { memo, useCallback } from 'react';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
 import { ListViewerOpenButton } from '../../Deck/ListViewer/ListViewerOpenButton';
-import { useSession } from 'next-auth/react';
 import { ifPlayerDay2 } from '../../../lib/tournament';
 import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
 import { ComponentLoader } from '../../common/ComponentLoader';
@@ -27,6 +26,7 @@ import { ComponentLoader } from '../../common/ComponentLoader';
 export interface StandingsRowProps {
   result: Standing;
   tournament: Tournament;
+  isPlayerMeOrMyOpponent: boolean;
   canEditDecks?: boolean;
   rowExpanded?: boolean;
   opponentRoundNumber?: number;
@@ -132,6 +132,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                   onUnpinPlayer={props.onUnpinPlayer}
                   shouldHideMenu={props.translucent}
                   shouldDisableDeckExtras={props.isCurrentlyPlayingInTopCut}
+                  isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
                 />
               </Box>
             ) : (
