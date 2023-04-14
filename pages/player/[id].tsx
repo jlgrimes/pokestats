@@ -74,7 +74,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     () => playerProfile
   );
   await queryClient.setQueryData(
-    ['player-profile', null, playerProfile?.name],
+    ['player-profile', null, playerProfile?.name ?? null],
     () => playerProfile
   );
 

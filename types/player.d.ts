@@ -22,7 +22,7 @@ export interface CombinedPlayerProfile {
   email: string | null | undefined;
   username: string | null | undefined;
   image?: string | null | undefined;
-  additional_names?: string[] | null | undefined;
+  additional_names: string[];
   preferred_name?: string | null | undefined;
 }
 

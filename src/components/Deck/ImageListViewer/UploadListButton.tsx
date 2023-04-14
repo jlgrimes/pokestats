@@ -25,7 +25,7 @@ export const UploadListButton = (props: UploadListButtonProps) => {
   const { data: profile } = useSessionUserProfile();
   const { refetch } = useFinalResults({
     playerName: profile?.name,
-    additionalNames: profile?.additionalNames,
+    additionalNames: profile?.additional_names,
   });
   const toast = useToast();
 

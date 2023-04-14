@@ -15,9 +15,9 @@ export default {
   decorators: [EverythingDecorator],
 };
 //👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof PlayerProfilePage> = (args: PlayerProfilePageProps) => (
-  <PlayerProfilePage {...args} />
-);
+const Template: ComponentStory<typeof PlayerProfilePage> = (
+  args: PlayerProfilePageProps
+) => <PlayerProfilePage {...args} />;
 
 export const MyLiveProfile = Template.bind({});
 MyLiveProfile.args = {
@@ -27,6 +27,7 @@ MyLiveProfile.args = {
     username: 'jared',
     email: '',
     image: '',
+    additional_names: [],
   },
 };
 
@@ -38,5 +39,6 @@ OtherLiveProfile.args = {
     username: 'TrickyGym',
     email: '',
     image: '',
+    additional_names: [],
   },
 };

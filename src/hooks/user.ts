@@ -48,7 +48,7 @@ export const fetchUserProfile = async (session: Session) => {
       email: session.user?.email,
       image: session.user?.image,
       username: playerProfile.username,
-      additionalNames: playerProfile.additional_names,
+      additional_names: playerProfile.additional_names ?? [],
     };
   }
 
@@ -189,7 +189,9 @@ export const fetchUser = async (email: string) => {
   return res.data?.[0];
 };
 
-export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
+export const fetchPlayerProfile = async (
+  filters?: PlayerProfileFilters
+): Promise<CombinedPlayerProfile | null> => {
   let query = supabase
     .from('Player Profiles')
     .select('id,name,email,username,additional_names,preferred_name');
@@ -199,10 +201,17 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
   }
   const res = await query;
 
-  const user: CombinedPlayerProfile | null = res.data?.find(
-    ({ name, additional_names }) =>
-      name === filters?.name || additional_names?.includes(filters?.name)
-  ) ?? null;
+  let user: CombinedPlayerProfile | null = null;
+
+  if (filters?.name) {
+    user =
+      res.data?.find(
+        ({ name, additional_names }) =>
+          name === filters?.name || additional_names?.includes(filters?.name)
+      ) ?? null;
+  } else {
+    user = res.data?.[0] ?? null;
+  }
 
   return user;
 };
