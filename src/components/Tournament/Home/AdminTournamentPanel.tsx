@@ -46,6 +46,7 @@ export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
         <AddArchetypeModal
           isOpen={addArchetypeModalControls.isOpen}
           onClose={addArchetypeModalControls.onClose}
+          tournament={props.tournament}
         />
       </Grid>
     </CommonCard>

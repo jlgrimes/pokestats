@@ -97,6 +97,7 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
                   isOpen={addArchetypeModalControls.isOpen}
                   onClose={addArchetypeModalControls.onClose}
                   handleArchetypeChange={() => refetchArchetypes()}
+                  tournament={props.tournament}
                 />
               </HStack>
             )}

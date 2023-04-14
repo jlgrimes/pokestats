@@ -148,6 +148,7 @@ const addArchetype = async ({
   pokemon2,
   identifiableCard1,
   identifiableCard2,
+  format
 }: {
   name: string;
   supertypeId: number | null;
@@ -155,6 +156,7 @@ const addArchetype = async ({
   pokemon2: string;
   identifiableCard1: string;
   identifiableCard2: string;
+  format: number
 }) => {
   const result = await supabase.from('Deck Archetypes').insert([
     {
@@ -166,6 +168,7 @@ const addArchetype = async ({
       identifiable_cards: [identifiableCard1, identifiableCard2].filter(
         card => card.length > 0
       ),
+      format
     },
   ]);
   if (result.error) {

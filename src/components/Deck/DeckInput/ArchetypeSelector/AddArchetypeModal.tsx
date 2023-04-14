@@ -37,17 +37,21 @@ import * as Yup from 'yup';
 import { getSpriteUrl } from '../../../common/helpers';
 import { useIsMobile } from '../../../../hooks/device';
 import { Fragment, useRef, useState } from 'react';
+import { useCurrentFormat } from '../../../../hooks/formats/formats';
+import { Tournament } from '../../../../../types/tournament';
 
 interface AddArchetypeModalProps {
   isOpen: boolean;
   onClose: () => void;
   handleArchetypeChange?: (name: string) => void;
+  tournament: Tournament;
 }
 
 export default function AddArchetypeModal(props: AddArchetypeModalProps) {
   const { data: supertypes } = useSupertypes();
   const mutateArchetypes = useMutateArchetypes(props.onClose);
   const isMobile = useIsMobile();
+  const { data: format } = useCurrentFormat(props.tournament);
 
   const handleSubmit = async ({
     name,
@@ -69,6 +73,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
       pokemon2,
       identifiableCard1,
       identifiableCard2,
+      format: format?.id
     });
     props.handleArchetypeChange && props.handleArchetypeChange(name);
   };
@@ -110,7 +115,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
       <ModalOverlay />
       <ModalContent margin={isMobile ? 'auto' : 0}>
         <form onSubmit={formik.handleSubmit}>
-          <ModalHeader>Add archetype</ModalHeader>
+          <ModalHeader>Add archetype - {format?.rotation} block</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack>
