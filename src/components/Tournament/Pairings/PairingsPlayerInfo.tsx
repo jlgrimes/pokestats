@@ -19,6 +19,7 @@ export const PairingsPlayerInfo = ({
           player={player}
           tournament={tournament}
           enableEdits={isUserAdmin}
+          isPlayerMeOrMyOpponent={true}
         />
       </StackItem>
     </Stack>

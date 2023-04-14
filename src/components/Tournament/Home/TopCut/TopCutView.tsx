@@ -41,6 +41,7 @@ export const TopCutView = (props: TopCutViewProps) => {
                       ? player.currentMatchResult
                       : undefined
                   }
+                  isPlayerMeOrMyOpponent={false}
                 />
               )
           )}
