@@ -31,6 +31,7 @@ export default async function handler(
 
     res.status(200).json(data);
   } catch (err) {
+    console.error(err)
     return res.status(500);
   } finally {
     res.end();
