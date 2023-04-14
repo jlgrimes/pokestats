@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { StoredPlayerProfile } from '../../types/player';
+import { CombinedPlayerProfile, StoredPlayerProfile } from '../../types/player';
 import supabase from '../lib/supabase/client';
 import { fetchPlayers } from './finalResults/fetch';
 import { useLiveTournamentResults } from './tournamentResults';
@@ -199,7 +199,7 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
   }
   const res = await query;
 
-  const user: StoredPlayerProfile | null = res.data?.find(
+  const user: CombinedPlayerProfile | null = res.data?.find(
     ({ name, additional_names }) =>
       name === filters?.name || additional_names?.includes(filters?.name)
   ) ?? null;

@@ -1,6 +1,5 @@
 import { Stack } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { StoredPlayerProfile } from '../../../../types/player';
 import { Tournament } from '../../../../types/tournament';
 import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
 import {

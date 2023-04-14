@@ -27,13 +27,10 @@ import { TournamentStatusBadge } from './TournamentStatusBadge';
 export const TournamentCard = ({
   tournament,
   champion,
-  // For live results
-  playerName,
   disableFollowing,
 }: {
   tournament: Tournament;
   champion?: Standing;
-  playerName?: string;
   disableFollowing?: boolean;
 }) => {
   const { colorMode } = useColorMode();
@@ -76,7 +73,7 @@ export const TournamentCard = ({
             )}
           </Grid>
           {session.status === 'authenticated' && live && (
-            <MyTournamentView tournament={tournament} playerName={playerName} />
+            <MyTournamentView tournament={tournament} />
           )}
           {live && !tournament.topCutStatus && !disableFollowing && (
             <PinnedPlayerList tournament={tournament} isCompact />

@@ -5,7 +5,7 @@ import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Record } from './ResultsList/Record';
-import { StoredPlayerProfile } from '../../../../types/player';
+import { CombinedPlayerProfile } from '../../../../types/player';
 import { useSession } from 'next-auth/react';
 import { RecordIcon } from './ResultsList/RecordIcon';
 import { getPercentile } from './helpers';
@@ -19,7 +19,7 @@ export const PlayerMatchupStatus = ({
   livePlayerResults,
 }: {
   tournament: Tournament;
-  user: StoredPlayerProfile | null;
+  user: CombinedPlayerProfile | null;
   shouldHideOpponentView?: boolean;
   isLoggedInUser?: boolean;
   livePlayerResults: PlayerLiveResultsSchema;

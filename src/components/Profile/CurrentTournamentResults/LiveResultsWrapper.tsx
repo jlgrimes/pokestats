@@ -1,15 +1,9 @@
-import { Box, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import { CombinedPlayerProfile } from '../../../../types/player';
 import { Tournament } from '../../../../types/tournament';
-import {
-  useLiveTournamentPlayers,
-  useLiveTournamentResults,
-} from '../../../hooks/tournamentResults';
-import { CommonCard } from '../../common/CommonCard';
+import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
 import { ComponentLoader } from '../../common/ComponentLoader';
-import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { MyTournamentView } from '../../Tournament/Home/MyTournamentView';
-import { TournamentCard } from '../../TournamentList/TournamentCard';
 import { TournamentInfo } from '../../TournamentList/TournamentInfo';
 
 interface LiveResultsWrapperProps {
@@ -35,10 +29,7 @@ export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
   return (
     <Stack>
       <TournamentInfo tournament={props.tournament} />
-      <MyTournamentView
-        tournament={props.tournament}
-        playerName={playerInLiveTournament.name}
-      />
+      <MyTournamentView tournament={props.tournament} />
     </Stack>
   );
 };
