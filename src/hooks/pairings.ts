@@ -59,13 +59,13 @@ export const usePairings = (
   if (options?.roundNumber) {
     ret = {
       round: options.roundNumber,
-      tables: data.at(options.roundNumber - 1)?.tables,
+      tables: data[options.roundNumber - 1]?.tables,
       maxRound: data.length,
     };
   } else {
     ret = {
       round: data.length,
-      tables: data.at(data.length - 1)?.tables,
+      tables: data[data.length - 1]?.tables,
       maxRound: data.length,
     };
   }

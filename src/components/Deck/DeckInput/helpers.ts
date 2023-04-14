@@ -37,14 +37,14 @@ export const handleDeckSubmit = async (
         });
     }
 
-    if (res.data && res.data.at(0)?.user_who_submitted_was_admin) {
+    if (res.data && res.data[0].user_who_submitted_was_admin) {
       return toast({
         status: 'info',
         title: 'You are overriding an admin report. Cool!',
       });
     }
 
-    const userReported = res.data && res.data.at(0)?.user_who_submitted;
+    const userReported = res.data && res.data[0]?.user_who_submitted;
 
     const { error } = await supabase.from('Shit List').insert({
       user_who_reported: userReported,

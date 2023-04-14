@@ -1,5 +1,6 @@
 import { PairingSubmission } from '../../../../../types/pairings';
 import { PlayerDeck } from '../../../../../types/player-deck';
+import * as Sentry from '@sentry/browser';
 
 const getDeductedPlayerDeckRow = (
   name: string,
@@ -55,67 +56,67 @@ export const getRowsForSubmittedPairing = (
   let playerDeckRowsToInsert: PlayerDeck[] = [];
   let pairingSubmissionRowsToRemove: PairingSubmission[] = [];
 
-  for (const i of [0, 1]) {
-    if (pairingSubmissionMap[playerNames[i]]) {
-      // throw error
-      if (pairingSubmissionMap[playerNames[i]].length < 2)
-        return nullSubmission;
+  try {
+    for (const i of [0, 1]) {
+      if (pairingSubmissionMap[playerNames[i]]) {
+        // throw error
+        if (pairingSubmissionMap[playerNames[i]].length < 2)
+          return nullSubmission;
 
-      pairingSubmissionRowsToRemove = pairingSubmissionMap[playerNames[i]];
+        pairingSubmissionRowsToRemove = pairingSubmissionMap[playerNames[i]];
 
-      const potentialDecks = pairingSubmissionMap[playerNames[i]];
-      const deductedPlayerDeckIdx = potentialDecks.findIndex(submission =>
-        deckIds.includes(submission.deck_archetype)
-      );
-      const deductedPlayerDeck = potentialDecks.at(
-        deductedPlayerDeckIdx
-      )?.deck_archetype;
+        const potentialDecks = pairingSubmissionMap[playerNames[i]];
+        const deductedPlayerDeckIdx = potentialDecks.findIndex(submission =>
+          deckIds.includes(submission.deck_archetype)
+        );
+        const deductedPlayerDeck =
+          potentialDecks[deductedPlayerDeckIdx].deck_archetype;
 
-      const earlierOpponent = potentialDecks.at(
-        (deductedPlayerDeckIdx + 1) % 2
-      );
-      const earlierOpponentDeck = earlierOpponent?.deck_archetype;
-      const earlierOpponentName =
-        earlierOpponent?.player1_name === playerNames[i]
-          ? earlierOpponent.player2_name
-          : earlierOpponent?.player1_name;
+        const earlierOpponent = potentialDecks[(deductedPlayerDeckIdx + 1) % 2];
+        const earlierOpponentDeck = earlierOpponent?.deck_archetype;
+        const earlierOpponentName =
+          earlierOpponent?.player1_name === playerNames[i]
+            ? earlierOpponent.player2_name
+            : earlierOpponent?.player1_name;
 
-      const submittedOpponentDeck = deckIds.at(
-        (deckIds.findIndex(id => id === deductedPlayerDeck) + 1) % 2
-      );
-      const submittedDecksAreSame =
-        earlierOpponentDeck === submittedOpponentDeck;
+        const submittedOpponentDeck =
+          deckIds[(deckIds.findIndex(id => id === deductedPlayerDeck) + 1) % 2];
+        const submittedDecksAreSame =
+          earlierOpponentDeck === submittedOpponentDeck;
 
-      if (
-        !deductedPlayerDeck ||
-        !earlierOpponentDeck ||
-        !earlierOpponentName ||
-        !submittedOpponentDeck ||
-        submittedDecksAreSame
-      )
-        return nullSubmission;
+        if (
+          !deductedPlayerDeck ||
+          !earlierOpponentDeck ||
+          !earlierOpponentName ||
+          !submittedOpponentDeck ||
+          submittedDecksAreSame
+        )
+          return nullSubmission;
 
-      playerDeckRowsToInsert = [
-        getDeductedPlayerDeckRow(
-          playerNames[i],
-          deductedPlayerDeck,
-          tournamentId,
-          username
-        ),
-        getDeductedPlayerDeckRow(
-          playerNames[(i + 1) % 2],
-          submittedOpponentDeck,
-          tournamentId,
-          username
-        ),
-        getDeductedPlayerDeckRow(
-          earlierOpponentName,
-          earlierOpponentDeck,
-          tournamentId,
-          username
-        ),
-      ];
+        playerDeckRowsToInsert = [
+          getDeductedPlayerDeckRow(
+            playerNames[i],
+            deductedPlayerDeck,
+            tournamentId,
+            username
+          ),
+          getDeductedPlayerDeckRow(
+            playerNames[(i + 1) % 2],
+            submittedOpponentDeck,
+            tournamentId,
+            username
+          ),
+          getDeductedPlayerDeckRow(
+            earlierOpponentName,
+            earlierOpponentDeck,
+            tournamentId,
+            username
+          ),
+        ];
+      }
     }
+  } catch (err) {
+    Sentry.captureException(err);
   }
 
   return {

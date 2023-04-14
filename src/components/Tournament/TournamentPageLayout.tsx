@@ -30,7 +30,7 @@ export const TournamentPageLayout = ({
 
   const router = useRouter();
   const splitPath: string[] = router.asPath ? router.asPath.split('/') : [];
-  const slug = splitPath ? splitPath.at(splitPath.length - 1) : '/';
+  const slug = splitPath ? splitPath[splitPath.length - 1] : '/';
 
   if (!tournament) return null;
 

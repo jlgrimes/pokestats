@@ -14,7 +14,7 @@ export async function getStaticProps({
 }) {
   const splitQueryParam = params.cardId.split('-');
   const name = splitQueryParam.slice(0, splitQueryParam.length - 1).join(' ');
-  const set = splitQueryParam.at(splitQueryParam.length - 1) ?? '';
+  const set = splitQueryParam[splitQueryParam.length - 1] ?? '';
 
   const results = await fetchCards(name, set);
 

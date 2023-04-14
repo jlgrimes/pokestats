@@ -92,12 +92,12 @@ export const CardCounts = ({
           .map(({ card, count }, idx) => {
             const isInGroup =
               (count === numberOfDecks || count <= techCardDeckInstanceMax) &&
-              (cardCounts.at(idx + 1)?.count === count ||
-                cardCounts.at(idx - 1)?.count === count);
+              (cardCounts[idx + 1]?.count === count ||
+                cardCounts[idx - 1]?.count === count);
             const firstInGroup =
               (count === numberOfDecks || count <= techCardDeckInstanceMax) &&
-              cardCounts.at(idx + 1)?.count === count &&
-              cardCounts.at(idx - 1)?.count !== count;
+              cardCounts[idx + 1]?.count === count &&
+              cardCounts[idx - 1]?.count !== count;
 
             if (firstInGroup) {
               return (
@@ -124,8 +124,8 @@ export const CardCounts = ({
             }
 
             const firstInGroupWithNoStat =
-              cardCounts.at(idx - 1)?.count === numberOfDecks &&
-              cardCounts.at(idx - 1)?.count !== count;
+              cardCounts[idx - 1]?.count === numberOfDecks &&
+              cardCounts[idx - 1]?.count !== count;
 
             if (firstInGroupWithNoStat && !onlyPopularTechs) {
               return (

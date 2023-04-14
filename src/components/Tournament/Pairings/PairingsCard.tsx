@@ -46,14 +46,14 @@ export const PairingsCard = ({
           <Heading size='md'>
             {pairing.table}
           </Heading>
-          {players.at(0) && (
+          {players[0] && (
             <PairingsPlayerInfo
               player={players[0]}
               tournament={tournament}
               isUserAdmin={isUserAdmin}
             />
           )}
-          {players.at(1) && (
+          {players[1] && (
             <PairingsPlayerInfo
               player={players[1]}
               tournament={tournament}

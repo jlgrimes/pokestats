@@ -29,7 +29,7 @@ export const fetchStreamInfo = async (streamUrl: string | null) => {
   );
   const data: Record<string, any> = await res.json();
 
-  return data.data?.at(0) ?? null;
+  return data.data?.[0] ?? null;
 };
 
 /**
