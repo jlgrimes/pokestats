@@ -429,7 +429,7 @@ export const fetchLiveResults = async (
   return {
     tournamentStatus: tournament?.tournamentStatus ?? 'not-started',
     topCutStatus: getTopCutStatus(parsedData, tournament),
-    shouldHideDecks: roundNumber ? roundNumber < dayOneRounds : false,
+    shouldHideDecks: roundNumber ? roundNumber < dayOneRounds : true,
     numPlayers: parsedData.length,
     roundNumber,
     data: parsedData,
