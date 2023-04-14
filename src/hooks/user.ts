@@ -7,7 +7,7 @@ import { fetchPlayers } from './finalResults/fetch';
 import { useLiveTournamentResults } from './tournamentResults';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
-  const { data: profile } = usePlayerProfile();
+  const { data: profile } = usePlayerProfile({ name });
 
   if (!name || !profile?.name) return false;
   return (
