@@ -40,10 +40,5 @@ export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
         playerName={playerInLiveTournament.name}
       />
     </Stack>
-    // <TournamentCard
-    //   tournament={props.tournament}
-    //   playerName={props.playerName}
-    //   disableFollowing
-    // />
   );
 };

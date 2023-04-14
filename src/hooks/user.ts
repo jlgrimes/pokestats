@@ -7,10 +7,13 @@ import { fetchPlayers } from './finalResults/fetch';
 import { useLiveTournamentResults } from './tournamentResults';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
-  const session = useSession();
+  const { data: profile } = usePlayerProfile();
 
-  if (!name || !session.data?.user?.name) return false;
-  return session.data?.user?.name === name;
+  if (!name || !profile?.name) return false;
+  return (
+    profile.name === name ||
+    !!profile.additional_names?.some(additionalName => additionalName === name)
+  );
 };
 
 export const fetchUserProfileFromEmail = async (email: string) => {
@@ -194,13 +197,14 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters) => {
   if (filters?.username) {
     query = query.ilike('username', filters.username);
   }
-
-  if (filters?.name) {
-    query = query.ilike('name', filters.name);
-  }
-
   const res = await query;
-  return res.data?.[0] ?? null;
+
+  const user: StoredPlayerProfile | null = res.data?.find(
+    ({ name, additional_names }) =>
+      name === filters?.name || additional_names?.includes(filters?.name)
+  ) ?? null;
+
+  return user;
 };
 
 export const fetchAllTakenUsernames = async () => {
@@ -220,7 +224,7 @@ export const useAllTakenUsernames = () => {
 
 interface PlayerProfileFilters {
   username?: string;
-  name?: string;
+  name?: string | null;
 }
 
 export const usePlayerProfile = (filters?: PlayerProfileFilters) => {

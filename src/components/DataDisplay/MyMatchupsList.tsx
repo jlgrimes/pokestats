@@ -1,25 +1,22 @@
-import { usePlayerLiveResults } from '../../hooks/tournamentResults';
-import { Tournament } from '../../../types/tournament';
+import { PlayerLiveResultsSchema, usePlayerLiveResults } from '../../hooks/tournamentResults';
+import { Standing, Tournament } from '../../../types/tournament';
 import { memo, useMemo } from 'react';
 import { RoundsList } from './RoundsList';
+import { StoredPlayerProfile } from '../../../types/player';
 
 export const MyMatchupsList = memo(
   ({
     tournament,
     user,
     isLoggedInUser,
+    livePlayerResults,
   }: {
     tournament: Tournament;
-    user: Record<string, any> | undefined;
+    user: StoredPlayerProfile;
     isLoggedInUser: boolean;
+    livePlayerResults: PlayerLiveResultsSchema;
   }) => {
-    const { player, shouldHideDecks } = usePlayerLiveResults(
-      tournament.id,
-      user?.name,
-      {
-        load: { opponentRoundData: true },
-      }
-    );
+    const { player, shouldHideDecks } = livePlayerResults;
 
     return player?.rounds ? (
       <RoundsList

@@ -319,6 +319,7 @@ export interface LiveResultsLoadOptions {
 
 export interface FetchLoggedInPlayerOptions {
   load?: LoggedInPlayerLoadOptions;
+  additionalNames?: string[] | null;
 }
 
 export interface LoggedInPlayerLoadOptions {

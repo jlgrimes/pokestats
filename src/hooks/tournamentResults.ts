@@ -105,15 +105,17 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
   }));
 };
 
+export interface PlayerLiveResultsSchema {
+  player: Standing | undefined;
+  shouldHideDecks: boolean | undefined;
+  isLoading: boolean;
+}
+
 export const usePlayerLiveResults = (
   tournamentId: string,
   name?: string | null,
   options?: FetchLoggedInPlayerOptions
-): {
-  player: Standing | undefined;
-  shouldHideDecks: boolean | undefined;
-  isLoading: boolean;
-} => {
+): PlayerLiveResultsSchema => {
   const { data: liveResults, isLoading } = useLiveTournamentResults(
     tournamentId,
     {
@@ -129,7 +131,9 @@ export const usePlayerLiveResults = (
     };
 
   const player = liveResults?.data.find(
-    (result: Standing) => result.name === name
+    (result: Standing) =>
+      result.name === name ||
+      (options?.additionalNames && options.additionalNames.includes(result.name))
   );
 
   if (options?.load?.opponentRoundData && player?.rounds) {

@@ -6,6 +6,7 @@ export interface StoredPlayerProfile {
   name: string;
   email: string;
   username: string | null;
+  additional_names: string[] | null;
 }
 
 export interface GooglePlayerProfile {

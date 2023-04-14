@@ -1,9 +1,9 @@
 import { Heading, Skeleton, Stack, Text, useColorMode } from '@chakra-ui/react';
-import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
+import { PlayerLiveResultsSchema, usePlayerLiveResults } from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
 import { ordinalSuffixOf } from '../../../lib/strings';
-import { Tournament } from '../../../../types/tournament';
+import { Standing, Tournament } from '../../../../types/tournament';
 import { Record } from './ResultsList/Record';
 import { StoredPlayerProfile } from '../../../../types/player';
 import { useSession } from 'next-auth/react';
@@ -16,11 +16,13 @@ export const PlayerMatchupStatus = ({
   user,
   shouldHideOpponentView,
   isLoggedInUser,
+  livePlayerResults,
 }: {
   tournament: Tournament;
   user: StoredPlayerProfile | null;
   shouldHideOpponentView?: boolean;
   isLoggedInUser?: boolean;
+  livePlayerResults: PlayerLiveResultsSchema;
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
   const session = useSession();
@@ -29,7 +31,7 @@ export const PlayerMatchupStatus = ({
     player: playerResults,
     shouldHideDecks,
     isLoading,
-  } = usePlayerLiveResults(tournament.id, user?.name);
+  } = livePlayerResults;
 
   const renderLoadingSkeleton = useCallback(
     () => <Skeleton height={63.9} />,

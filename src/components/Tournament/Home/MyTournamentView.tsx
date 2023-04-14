@@ -3,35 +3,33 @@ import { useSession } from 'next-auth/react';
 import { StoredPlayerProfile } from '../../../../types/player';
 import { Tournament } from '../../../../types/tournament';
 import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
-import { useUserMatchesLoggedInUser } from '../../../hooks/user';
+import {
+  usePlayerProfile,
+  useUserMatchesLoggedInUser,
+} from '../../../hooks/user';
 import { CommonCard } from '../../common/CommonCard';
 import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
 
 interface MyTournamentViewProps {
   tournament: Tournament;
-  playerName?: string;
 }
 
 export const MyTournamentView = (props: MyTournamentViewProps) => {
   const session = useSession();
-  const { player: playerResults } = usePlayerLiveResults(
+  const { data: user } = usePlayerProfile({ name: session.data?.user?.name });
+  const livePlayerResults = usePlayerLiveResults(
     props.tournament.id,
-    props.playerName ?? session.data?.user?.name,
-    { load: { opponentRoundData: true } }
+    user?.name,
+    {
+      load: { opponentRoundData: true },
+      additionalNames: user?.additional_names,
+    }
   );
 
-  const isLoggedInUser = useUserMatchesLoggedInUser(
-    props.playerName || session.data?.user?.name
-  );
+  const isLoggedInUser = useUserMatchesLoggedInUser(user?.name);
 
-  if (!props.tournament || !playerResults) return null;
-
-  const user = props.playerName
-    ? ({
-        name: props.playerName,
-      } as StoredPlayerProfile)
-    : (session.data?.user as StoredPlayerProfile);
+  if (!props.tournament || !livePlayerResults.player || !user) return null;
 
   return (
     <Stack spacing={3}>
@@ -40,11 +38,13 @@ export const MyTournamentView = (props: MyTournamentViewProps) => {
         user={user}
         shouldHideOpponentView
         isLoggedInUser={isLoggedInUser}
+        livePlayerResults={livePlayerResults}
       />
       <MyMatchupsList
         tournament={props.tournament}
         user={user}
         isLoggedInUser={isLoggedInUser}
+        livePlayerResults={livePlayerResults}
       />
     </Stack>
   );
