@@ -82,6 +82,7 @@ export const DeckFinishes = memo(
                       } as Deck,
                     }}
                     tournament={tournament}
+                    isPlayerMeOrMyOpponent={false}
                   />
                   <Divider gridColumn={'1/-1'} />
                 </Fragment>

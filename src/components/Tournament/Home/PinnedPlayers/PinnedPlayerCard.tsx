@@ -18,16 +18,22 @@ import {
   deletePinnedPlayer,
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
+import { usePlayerIsMeOrMyOpponent } from '../../../../hooks/tournamentResults';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
-import { PlayerCard, PlayerCardProps } from '../PlayerCard/PlayerCard';
+import {
+  PlayerCard,
+  PlayerCardProps,
+  PlayerCardSize,
+} from '../PlayerCard/PlayerCard';
 
-interface PinnedPlayerCardProps extends PlayerCardProps {
+interface PinnedPlayerCardProps {
   player: Standing;
   tournament: Tournament;
   shouldHideDecks: boolean | undefined;
   isEditingPinned: boolean;
   isDeckLoading?: boolean;
   shouldHideOpponent?: boolean;
+  size?: PlayerCardSize;
 }
 
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
@@ -35,6 +41,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   const toast = useToast();
   const { refetch } = usePinnedPlayers();
   const { data: userIsAdmin } = useUserIsAdmin();
+  const isMeOrMyOpponent = usePlayerIsMeOrMyOpponent(props.player);
 
   const onUnpinPlayer = useCallback(async () => {
     if (!session.data?.user?.email) {
@@ -71,7 +78,11 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
             ? props.player.currentMatchResult
             : undefined
         }
-        {...props}
+        isPlayerMeOrMyOpponent={isMeOrMyOpponent}
+        player={props.player}
+        tournament={props.tournament}
+        size={props.size}
+        shouldHideDecks={props.shouldHideDecks}
       />
       {props.isEditingPinned && (
         <IconButton

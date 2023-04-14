@@ -22,6 +22,8 @@ import { getResultBackgroundColor } from '../../../DataDisplay/helpers';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
 
+export type PlayerCardSize = 'sm' | 'md' | 'lg';
+
 export interface PlayerCardProps {
   player: Standing;
   tournament: Tournament;
@@ -32,7 +34,7 @@ export interface PlayerCardProps {
   topCut?: boolean;
   shouldHideStanding?: boolean;
   shouldHideName?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: PlayerCardSize;
   shouldHideOpponent?: boolean;
   shouldDisableOpponentModal?: boolean;
   result?: MatchResult;
