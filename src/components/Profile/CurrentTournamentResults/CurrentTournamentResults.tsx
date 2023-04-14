@@ -8,9 +8,10 @@ import {
 import { TournamentCard } from '../../TournamentList/TournamentCard';
 import { ComponentLoader } from '../../common/ComponentLoader';
 import { LiveResultsWrapper } from './LiveResultsWrapper';
+import { CombinedPlayerProfile } from '../../../../types/player';
 
 interface CurrentTournamentResultsProps {
-  playerName: string;
+  user: CombinedPlayerProfile;
   isLoggedInUser: boolean;
 }
 
@@ -29,7 +30,7 @@ export const CurrentTournamentResults = memo(
     return !loading && currentlyRunningTournament ? (
       <LiveResultsWrapper
         tournament={currentlyRunningTournament}
-        playerName={props.playerName}
+        user={props.user}
         isLoggedInUser={props.isLoggedInUser}
       />
     ) : null;

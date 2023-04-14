@@ -68,7 +68,7 @@ export const PlayerPerformanceList = ({
           )} */}
       {user?.name && (
         <CurrentTournamentResults
-          playerName={user.name}
+          user={user}
           isLoggedInUser={userMatchesLoggedInUser}
         />
       )}

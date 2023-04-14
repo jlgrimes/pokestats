@@ -1,4 +1,5 @@
 import { Box, Stack } from '@chakra-ui/react';
+import { CombinedPlayerProfile } from '../../../../types/player';
 import { Tournament } from '../../../../types/tournament';
 import {
   useLiveTournamentPlayers,
@@ -13,7 +14,7 @@ import { TournamentInfo } from '../../TournamentList/TournamentInfo';
 
 interface LiveResultsWrapperProps {
   tournament: Tournament;
-  playerName: string;
+  user: CombinedPlayerProfile;
   isLoggedInUser: boolean;
 }
 
@@ -22,19 +23,21 @@ export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
     load: { allRoundData: true },
   });
 
-  const playerIsInLiveTournament = data?.data.find(
-    standing => standing.name === props.playerName
+  const playerInLiveTournament = data?.data.find(
+    standing =>
+      standing.name === props.user.name ||
+      props.user.additional_names?.includes(standing.name)
   );
 
   if (isLoading) return <ComponentLoader />;
-  if (!playerIsInLiveTournament) return null;
+  if (!playerInLiveTournament) return null;
 
   return (
     <Stack>
       <TournamentInfo tournament={props.tournament} />
       <MyTournamentView
         tournament={props.tournament}
-        playerName={props.playerName}
+        playerName={playerInLiveTournament.name}
       />
     </Stack>
     // <TournamentCard
