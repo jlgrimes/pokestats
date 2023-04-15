@@ -67,15 +67,12 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     queryFn: () => fetchTournamentMetadata(),
   });
 
-  const playerProfile = await fetchPlayerProfile({ username: params.id });
+  const playerProfiles = await fetchPlayerProfile({ username: params.id });
 
-  await queryClient.setQueryData(
-    ['player-profile', params.id, null],
-    () => playerProfile
-  );
-  await queryClient.setQueryData(
-    ['player-profile', null, playerProfile?.name ?? null],
-    () => playerProfile
+  await queryClient.setQueryData(['player-profile'], () => playerProfiles);
+
+  const playerProfile = playerProfiles?.find(
+    ({ username }) => username === params.id
   );
 
   if (playerProfile?.name) {
