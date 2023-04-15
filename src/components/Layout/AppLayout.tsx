@@ -6,6 +6,7 @@ import {
   DehydratedState,
   Hydrate,
   QueryClient,
+  QueryClientConfig,
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -20,6 +21,15 @@ const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
 });
 
+const queryClientConfig: QueryClientConfig = {
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+};
+
 export const AppLayout = ({
   children,
   dehydratedState,
@@ -27,7 +37,7 @@ export const AppLayout = ({
   children: ReactNode;
   dehydratedState?: DehydratedState;
 }) => {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient(queryClientConfig));
   const router = useRouter();
   const [shouldMockUser, setShouldMockUser] = useState(false);
 
