@@ -55,7 +55,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         location={location}
       />
       <Stack paddingX={6} spacing={4}>
-        <Stack spacing={2} alignItems='center'>
+        <Stack spacing={2}>
           <Stack>
             <Heading
               size='xl'
