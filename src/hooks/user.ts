@@ -199,24 +199,17 @@ export const fetchPlayerProfile = async (
     .from('Player Profiles')
     .select('id,name,email,username,additional_names,preferred_name');
 
+  if (filters?.name) {
+    query = query.or(
+      `name.eq.${filters.name},additional_names.cs.{"${filters.name}"}`
+    );
+  }
+
   if (filters?.username) {
     query = query.ilike('username', filters.username);
   }
   const res = await query;
-
-  let user: CombinedPlayerProfile | null = null;
-
-  if (filters?.name) {
-    user =
-      res.data?.find(
-        ({ name, additional_names }) =>
-          name === filters?.name || additional_names?.includes(filters?.name)
-      ) ?? null;
-  } else {
-    user = res.data?.[0] ?? null;
-  }
-
-  return user;
+  return (res.data?.[0] as CombinedPlayerProfile) ?? null;
 };
 
 export const fetchAllTakenUsernames = async () => {
