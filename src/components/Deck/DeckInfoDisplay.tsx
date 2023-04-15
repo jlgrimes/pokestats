@@ -61,9 +61,14 @@ export const DeckInfoDisplay = memo(
 
     const ifShouldBlurSpecificAArchetype = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
+      if (tournament.topCutStatus) return false;
 
       return !isPlayerMeOrMyOpponent;
-    }, [tournament.tournamentStatus, isPlayerMeOrMyOpponent]);
+    }, [
+      tournament.tournamentStatus,
+      isPlayerMeOrMyOpponent,
+      tournament.topCutStatus,
+    ]);
 
     return (
       <Grid
