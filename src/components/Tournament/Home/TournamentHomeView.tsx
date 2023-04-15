@@ -56,41 +56,43 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       />
       <Stack paddingX={6} spacing={4}>
         <Stack spacing={2} alignItems='center'>
-          <Grid
-            gridTemplateColumns={'auto 3rem'}
-            alignItems='center'
-            rowGap={2}
-          >
-            <Stack>
-              <Heading
-                size='xl'
-                color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
-                lineHeight={'2.25rem'}
-              >
-                {props.tournament.name}
-              </Heading>
-              <StatsHeading
-                headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
-              >
-                {formatTournamentDate(props.tournament, true)}
-              </StatsHeading>
-              {props.tournament.players.masters &&
-                props.tournament.players.masters > 0 && (
-                  <StatsHeading
-                    headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
-                  >
-                    {`${props.tournament.players.masters} masters`}
-                  </StatsHeading>
-                )}
-            </Stack>
-            {country ? (
-              <Box>
-                <CountryFlag countryCode={country} size='lg' />
-              </Box>
-            ) : (
-              <Box></Box>
-            )}
-          </Grid>
+          <Stack>
+            <Heading
+              size='xl'
+              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+              lineHeight={'2.25rem'}
+            >
+              {props.tournament.name}
+            </Heading>
+            <Grid
+              gridTemplateColumns={'5rem auto'}
+              alignItems='center'
+              rowGap={2}
+            >
+              {country ? (
+                <Box>
+                  <CountryFlag countryCode={country} size='lg' />
+                </Box>
+              ) : (
+                <Box></Box>
+              )}
+              <Stack spacing={1}>
+                <StatsHeading
+                  headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+                >
+                  {formatTournamentDate(props.tournament, true)}
+                </StatsHeading>
+                {props.tournament.players.masters &&
+                  props.tournament.players.masters > 0 && (
+                    <StatsHeading
+                      headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+                    >
+                      {`${props.tournament.players.masters} masters`}
+                    </StatsHeading>
+                  )}
+              </Stack>
+            </Grid>
+          </Stack>
         </Stack>
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>

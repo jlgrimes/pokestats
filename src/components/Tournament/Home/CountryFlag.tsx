@@ -17,8 +17,8 @@ export const CountryFlag = memo((props: CountryFlagProps) => {
         crossOrigin='anonymous'
         alt={`${props.countryCode} flag`}
         src={url}
-        height={props.size === 'sm' ? 20 : props.size === 'lg' ? 35 : 25}
-        width={props.size === 'sm' ? 40 : props.size === 'lg' ? 70 : 50}
+        height={props.size === 'sm' ? 20 : props.size === 'lg' ? 30 : 25}
+        width={props.size === 'sm' ? 40 : props.size === 'lg' ? 60 : 50}
       />
     </Box>
   );
