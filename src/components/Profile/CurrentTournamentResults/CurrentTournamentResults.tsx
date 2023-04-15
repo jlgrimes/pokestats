@@ -21,18 +21,23 @@ export const CurrentTournamentResults = memo(
       useTournaments();
     const { data: tournaments, isLoading: patchedTournamentsLoading } =
       usePatchedTournaments(notPatchedTournaments ?? []);
-    const currentlyRunningTournament = tournaments.find(
+    const currentlyRunningTournaments = tournaments.filter(
       tournament => tournament.tournamentStatus === 'running'
     );
 
     const loading = tournamentsLoading || patchedTournamentsLoading;
 
-    return !loading && currentlyRunningTournament ? (
-      <LiveResultsWrapper
-        tournament={currentlyRunningTournament}
-        user={props.user}
-        isLoggedInUser={props.isLoggedInUser}
-      />
+    return !loading && currentlyRunningTournaments.length > 0 ? (
+      <Stack>
+        {currentlyRunningTournaments.map(tournament => (
+          <LiveResultsWrapper
+            key={tournament.id}
+            tournament={tournament}
+            user={props.user}
+            isLoggedInUser={props.isLoggedInUser}
+          />
+        ))}
+      </Stack>
     ) : null;
   }
 );

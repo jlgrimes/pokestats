@@ -10,13 +10,13 @@ import { CommonCard } from '../../common/CommonCard';
 import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
 
-interface MyTournamentViewProps {
+interface PlayerTournamentViewProps {
   tournament: Tournament;
+  playerName: string;
 }
 
-export const MyTournamentView = (props: MyTournamentViewProps) => {
-  const session = useSession();
-  const { data: user } = usePlayerProfile({ name: session.data?.user?.name });
+export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
+  const { data: user } = usePlayerProfile({ name: props.playerName });
   const livePlayerResults = usePlayerLiveResults(
     props.tournament.id,
     user?.name,

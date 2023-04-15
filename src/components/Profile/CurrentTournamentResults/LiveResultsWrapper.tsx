@@ -3,7 +3,7 @@ import { CombinedPlayerProfile } from '../../../../types/player';
 import { Tournament } from '../../../../types/tournament';
 import { useLiveTournamentResults } from '../../../hooks/tournamentResults';
 import { ComponentLoader } from '../../common/ComponentLoader';
-import { MyTournamentView } from '../../Tournament/Home/MyTournamentView';
+import { PlayerTournamentView } from '../../Tournament/Home/PlayerTournamentView';
 import { TournamentInfo } from '../../TournamentList/TournamentInfo';
 
 interface LiveResultsWrapperProps {
@@ -29,7 +29,12 @@ export const LiveResultsWrapper = (props: LiveResultsWrapperProps) => {
   return (
     <Stack>
       <TournamentInfo tournament={props.tournament} />
-      <MyTournamentView tournament={props.tournament} />
+      {props.user.name && (
+        <PlayerTournamentView
+          tournament={props.tournament}
+          playerName={props.user.name}
+        />
+      )}
     </Stack>
   );
 };

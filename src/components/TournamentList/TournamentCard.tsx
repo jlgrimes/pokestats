@@ -15,7 +15,7 @@ import { Standing, Tournament } from '../../../types/tournament';
 import { useCountryCode } from '../../hooks/tournamentMetadata';
 import { CommonCard } from '../common/CommonCard';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
-import { MyTournamentView } from '../Tournament/Home/MyTournamentView';
+import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
 import { PinnedPlayerList } from '../Tournament/Home/PinnedPlayers/PinnedPlayerList';
 import { TopCutViewController } from '../Tournament/Home/TopCut/TopCutViewController';
 import { StreamLink } from '../Tournament/TournamentLinks';
@@ -56,10 +56,7 @@ export const TournamentCard = ({
               ) : (
                 <Box></Box>
               )}
-              <LinkOverlay
-                as={NextLink}
-                href={`/tournaments/${tournament.id}`}
-              >
+              <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
                 <TournamentInfo tournament={tournament} />
               </LinkOverlay>
               <Box />
@@ -72,9 +69,14 @@ export const TournamentCard = ({
               </Flex>
             )}
           </Grid>
-          {session.status === 'authenticated' && live && (
-            <MyTournamentView tournament={tournament} />
-          )}
+          {session.status === 'authenticated' &&
+            live &&
+            session.data.user?.name && (
+              <PlayerTournamentView
+                tournament={tournament}
+                playerName={session.data.user.name}
+              />
+            )}
           {live && !tournament.topCutStatus && !disableFollowing && (
             <PinnedPlayerList tournament={tournament} isCompact />
           )}
