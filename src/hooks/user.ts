@@ -192,6 +192,9 @@ export const fetchUser = async (email: string) => {
 export const fetchPlayerProfile = async (
   filters?: PlayerProfileFilters
 ): Promise<CombinedPlayerProfile | null> => {
+  // No filters, shouldn't return anything
+  if (!filters?.username && !filters?.name) return null;
+
   let query = supabase
     .from('Player Profiles')
     .select('id,name,email,username,additional_names,preferred_name');
