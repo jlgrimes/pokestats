@@ -191,7 +191,7 @@ export const fetchUser = async (email: string) => {
 
 export const fetchPlayerProfile = async (
   filters?: PlayerProfileFilters
-): Promise<CombinedPlayerProfile | null> => {
+): Promise<CombinedPlayerProfile[] | null> => {
   // No filters, shouldn't return anything
   if (!filters?.username && !filters?.name) return null;
 
@@ -199,17 +199,8 @@ export const fetchPlayerProfile = async (
     .from('Player Profiles')
     .select('id,name,email,username,additional_names,preferred_name');
 
-  if (filters?.name) {
-    query = query.or(
-      `name.eq.${filters.name},additional_names.cs.{"${filters.name}"}`
-    );
-  }
-
-  if (filters?.username) {
-    query = query.ilike('username', filters.username);
-  }
   const res = await query;
-  return (res.data?.[0] as CombinedPlayerProfile) ?? null;
+  return (res.data as CombinedPlayerProfile[]) ?? null;
 };
 
 export const fetchAllTakenUsernames = async () => {
@@ -233,8 +224,26 @@ interface PlayerProfileFilters {
 }
 
 export const usePlayerProfile = (filters?: PlayerProfileFilters) => {
-  return useQuery({
-    queryKey: ['player-profile', filters?.username, filters?.name],
+  const { data, ...rest } = useQuery({
+    queryKey: ['player-profile'],
     queryFn: () => fetchPlayerProfile(filters),
   });
+
+  let user: CombinedPlayerProfile | null = null;
+
+  if (filters?.name) {
+    user =
+      data?.find(
+        ({ name, additional_names }) =>
+          name === filters?.name ||
+          additional_names?.includes(filters.name as string)
+      ) ?? null;
+  } else if (filters?.username) {
+    user = data?.find(({ username }) => username === filters.username) ?? null;
+  }
+
+  return {
+    ...rest,
+    data: user,
+  };
 };
