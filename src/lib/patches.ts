@@ -68,7 +68,7 @@ export const getPatchedTournament = async (
       : tournamentFromApi.tournamentStatus,
     topCutStatus,
     hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,
-    subStatus: getTournamentSubStatus(tournamentFromApi),
+    subStatus: tournamentFromApi.subStatus,
   };
 
   return patchedTournament;
