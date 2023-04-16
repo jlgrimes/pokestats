@@ -164,7 +164,7 @@ export const getTournaments = (
       ...liveTournaments,
       ...almostStartedTournaments,
       ...(mostRecent ? [] : upcomingTournaments),
-      ...(mostRecent ? finishedTournaments.slice(0, 2) : finishedTournaments),
+      ...(mostRecent ? finishedTournaments.slice(0, 4) : finishedTournaments),
       // ...upcomingTournaments,
     ],
   };
