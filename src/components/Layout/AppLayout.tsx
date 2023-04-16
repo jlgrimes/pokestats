@@ -1,4 +1,4 @@
-import { Box, extendTheme, Stack } from '@chakra-ui/react';
+import { Box, Container, extendTheme, Stack } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import { AppBar } from './AppBar/AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -55,7 +55,7 @@ export const AppLayout = ({
             </Head>
             <AppBar />
             {/* <BetaBanner /> */}
-            <Stack
+            <Container
               height='100%'
               alignItems='center'
               padding={
@@ -65,11 +65,10 @@ export const AppLayout = ({
                   ? 0
                   : 4
               }
-              spacing={1}
             >
               {children}
               {/* <Footer /> */}
-            </Stack>
+            </Container>
           </ChakraProvider>
         </userMockContext.Provider>
       </Hydrate>
