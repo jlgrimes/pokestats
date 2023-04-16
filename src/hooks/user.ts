@@ -195,7 +195,7 @@ export const fetchUnusedPlayers = async (shouldLoadFromLive?: boolean) => {
 export const useNotSetupProfiles = () => {
   return useQuery({
     queryKey: [`all-player-profiles`],
-    queryFn: fetchUnusedPlayers,
+    queryFn: () => fetchUnusedPlayers(),
   });
 };
 
