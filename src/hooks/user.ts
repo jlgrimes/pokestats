@@ -2,9 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { CombinedPlayerProfile, StoredPlayerProfile } from '../../types/player';
+import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
 import { fetchPlayers } from './finalResults/fetch';
 import { useLiveTournamentResults } from './tournamentResults';
+import { fetchTournaments } from './tournaments';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
   const { data: profile } = usePlayerProfile({ name });
@@ -147,12 +149,28 @@ export const normalizeName = (name: string) =>
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
-export const fetchUnusedPlayers = async () => {
+export const fetchUnusedPlayers = async (shouldLoadFromLive?: boolean) => {
   const res = await supabase
     .from('Player Profiles')
     .select('id,name,email,additional_names');
 
-  const players = await fetchPlayers();
+  let players = await fetchPlayers();
+
+  if (shouldLoadFromLive) {
+    const tournaments = await fetchTournaments();
+    const liveTournaments = tournaments.filter(
+      ({ tournamentStatus }) => tournamentStatus === 'running'
+    );
+
+    for await (const tournament of liveTournaments) {
+      const liveResults = await fetchLiveResults(tournament.id, {
+        prefetch: true,
+      });
+      const livePlayers = liveResults.data.map(standing => standing.name);
+
+      players = [...players, ...livePlayers];
+    }
+  }
 
   return players?.filter(
     name =>
