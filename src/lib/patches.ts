@@ -1,6 +1,11 @@
 // these are all the functions to use when the API is wrong
 
-import { differenceInDays, differenceInHours, parseISO } from 'date-fns';
+import {
+  differenceInDays,
+  differenceInHours,
+  isAfter,
+  parseISO,
+} from 'date-fns';
 import { Tournament } from '../../types/tournament';
 import { tournamentFallsOnCurrentDate } from '../components/TournamentList/helpers';
 import { getTournamentSubStatus } from '../hooks/tournaments';
@@ -12,6 +17,41 @@ import {
 
 export const isTournamentLongGone = (tournament: Tournament) =>
   differenceInDays(new Date(), parseISO(tournament.date.end)) > 4;
+
+const getTournamentIsComplete = (
+  tournament: Tournament,
+  liveResults: LiveResults
+) =>
+  tournament.roundNumbers.masters ===
+    (liveResults.data[0].rounds?.length ?? 0) &&
+  (liveResults.data[1].rounds?.length ?? 0) ===
+    (liveResults.data[0].rounds?.length ?? 0) &&
+  (liveResults.data[1].rounds?.length ?? 0) >
+    (liveResults.data[2].rounds?.length ?? 0);
+
+export const getTournamentShouldBeRunning = (
+  tournament: Tournament,
+  liveResults: LiveResults
+) => {
+  if (
+    tournament.tournamentStatus === 'finished' &&
+    isAfter(new Date(), parseISO(tournament.date.end))
+  )
+    return false;
+
+  // Tournament is complete if finals has happened and has completed.
+  const butTournamentIsRunning = !getTournamentIsComplete(
+    tournament,
+    liveResults
+  );
+
+  return (
+    (tournament && butTournamentIsRunning) ||
+    (tournament.tournamentStatus === 'not-started' &&
+      liveResults.data &&
+      liveResults.data.length > 0)
+  );
+};
 
 export const getPatchedTournament = async (
   tournamentFromApi: Tournament | null,
@@ -36,23 +76,8 @@ export const getPatchedTournament = async (
 
   const tournamentApiSaysCompleted =
     tournamentFromApi?.tournamentStatus === 'finished';
-  // Tournament is complete if finals has happened and has completed.
-  const tournamentIsComplete =
-    tournamentFromApi.roundNumbers.masters ===
-      (liveResults.data[0].rounds?.length ?? 0) &&
-    (liveResults.data[1].rounds?.length ?? 0) ===
-      (liveResults.data[0].rounds?.length ?? 0) &&
-    (liveResults.data[1].rounds?.length ?? 0) >
-      (liveResults.data[2].rounds?.length ?? 0);
 
-  const butTournamentIsRunning = !tournamentIsComplete;
   const topCutStatus = getTopCutStatus(liveResults.data, tournamentFromApi);
-
-  const tournamentShouldBeRunning =
-    (tournamentApiSaysCompleted && butTournamentIsRunning) ||
-    (tournamentFromApi.tournamentStatus === 'not-started' &&
-      liveResults.data &&
-      liveResults.data.length > 0);
 
   const afterDayOne =
     tournamentFromApi.lastUpdated &&
@@ -61,13 +86,18 @@ export const getPatchedTournament = async (
 
   const patchedTournament: Tournament = {
     ...tournamentFromApi,
-    tournamentStatus: tournamentShouldBeRunning
+    tournamentStatus: getTournamentShouldBeRunning(
+      tournamentFromApi,
+      liveResults
+    )
       ? 'running'
       : isTournamentLongGone(tournamentFromApi)
       ? 'finished'
       : tournamentFromApi.tournamentStatus,
     topCutStatus,
-    hasStaleData: tournamentApiSaysCompleted && !tournamentIsComplete,
+    hasStaleData:
+      tournamentApiSaysCompleted &&
+      !getTournamentIsComplete(tournamentFromApi, liveResults),
     subStatus: tournamentFromApi.subStatus,
   };
 
