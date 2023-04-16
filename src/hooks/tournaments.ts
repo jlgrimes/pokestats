@@ -10,7 +10,12 @@ import {
 import { useState } from 'react';
 import { Tournament, TournamentStatus } from '../../types/tournament';
 import { tournamentHasArrivedButNotLive } from '../components/TournamentList/helpers';
-import { getPatchedTournament, patchTournamentsClient } from '../lib/patches';
+import {
+  getPatchedTournament,
+  getTournamentShouldBeFinished,
+  getTournamentShouldBeRunning,
+  patchTournamentsClient,
+} from '../lib/patches';
 import supabase from '../lib/supabase/client';
 import {
   reallyShortenTournamentName,
@@ -143,6 +148,8 @@ export const getTournamentsThatNeedToBePatched = (
   tournamentList: Tournament[]
 ) =>
   tournamentList.filter(tournament => {
+    if (getTournamentShouldBeFinished(tournament)) return false;
+
     return isWithinInterval(new Date(), {
       start: addDays(parseISO(tournament.date.start), -1),
       end: addDays(parseISO(tournament.date.end), 1),

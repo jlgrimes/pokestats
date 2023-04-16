@@ -29,15 +29,18 @@ const getTournamentIsComplete = (
   (liveResults.data[1].rounds?.length ?? 0) >
     (liveResults.data[2].rounds?.length ?? 0);
 
+export const getTournamentShouldBeFinished = (tournament: Tournament) => {
+  return (
+    tournament.tournamentStatus === 'finished' &&
+    isAfter(new Date(), parseISO(tournament.date.end))
+  );
+};
+
 export const getTournamentShouldBeRunning = (
   tournament: Tournament,
   liveResults: LiveResults
 ) => {
-  if (
-    tournament.tournamentStatus === 'finished' &&
-    isAfter(new Date(), parseISO(tournament.date.end))
-  )
-    return false;
+  if (getTournamentShouldBeFinished(tournament)) return false;
 
   // Tournament is complete if finals has happened and has completed.
   const butTournamentIsRunning = !getTournamentIsComplete(
