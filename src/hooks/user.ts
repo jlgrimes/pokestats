@@ -9,7 +9,12 @@ import { useLiveTournamentResults } from './tournamentResults';
 import { fetchTournaments } from './tournaments';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
-  const { data: profile } = usePlayerProfile({ name });
+  const session = useSession();
+  const { data: profile } = usePlayerProfile({
+    name: session.data?.user?.name,
+  });
+
+  if (!session.data?.user?.name) return false;
 
   if (!name || !profile?.name) return false;
   return (
