@@ -104,7 +104,8 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
     .from('Tournaments')
     .select(
       'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus'
-    );
+    )
+    .order('date->end', { ascending: false });
 
   if (options?.excludeUpcoming) {
     query = query.neq('tournamentStatus', 'finished');
