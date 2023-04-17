@@ -8,9 +8,17 @@ export const useCodeToSetMap = (): Record<string, string> => {
     queryKey: ['code-to-set-map'],
     queryFn: () => fetchCodeToSetMap(),
   });
+  console.log(sets);
 
   return sets?.data?.reduce(
     (acc: Record<string, string>, set: Record<string, any>) => {
+      if (set.id === 'sv1') {
+        return {
+          ...acc,
+          SVI: 'sv1',
+        };
+      }
+
       // TODO: stupid fix for trainer gallery please actually change this
       if (acc[set.ptcgoCode]) {
         return acc;
