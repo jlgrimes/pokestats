@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import { getSession, signIn } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
+import supabase from '../src/lib/supabase/client';
 
 export default function Login() {
   return (
@@ -8,14 +9,11 @@ export default function Login() {
       <Button
         variant={'outline'}
         leftIcon={<FcGoogle />}
-        onClick={() => signIn('google')}
-      >
-        Sign In
-      </Button>{' '}
-      <Button
-        variant={'outline'}
-        leftIcon={<FcGoogle />}
-        onClick={() => signIn('twitter')}
+        onClick={() =>
+          supabase.auth.signInWithOAuth({
+            provider: 'google',
+          })
+        }
       >
         Sign In
       </Button>

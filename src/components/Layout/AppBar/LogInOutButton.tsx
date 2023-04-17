@@ -1,6 +1,6 @@
 import { Button, Stack } from '@chakra-ui/react';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { useSession } from 'next-auth/react';
+import supabase from '../../../lib/supabase/client';
 
 export const LogInOutButton = () => {
   const { data: session } = useSession();
@@ -11,7 +11,11 @@ export const LogInOutButton = () => {
         <Button
           colorScheme={'blue'}
           aria-label={'Log in'}
-          onClick={() => signIn('google')}
+          onClick={() =>
+            supabase.auth.signInWithOAuth({
+              provider: 'google',
+            })
+          }
         >
           Sign up
         </Button>
@@ -20,7 +24,7 @@ export const LogInOutButton = () => {
         <Button
           variant='outline'
           aria-label={'Log out'}
-          onClick={() => signOut()}
+          onClick={() => supabase.auth.signOut()}
         >
           Log out
         </Button>
@@ -28,7 +32,11 @@ export const LogInOutButton = () => {
         <Button
           variant='outline'
           aria-label={'Log in'}
-          onClick={() => signIn('google')}
+          onClick={() =>
+            supabase.auth.signInWithOAuth({
+              provider: 'google',
+            })
+          }
         >
           Log in
         </Button>

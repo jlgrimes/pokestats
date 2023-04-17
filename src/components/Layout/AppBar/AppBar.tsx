@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
 import { DarkModeToggle } from '../../DarkModeToggle/DarkModeToggle';
 import { SearchBar } from './Search/SearchBar';
+import supabase from '../../../lib/supabase/client';
 
 export const AppBar = () => {
   const session = useSession();
@@ -98,7 +99,11 @@ export const AppBar = () => {
             <IconButton
               size={'sm'}
               variant='outline'
-              onClick={() => signIn('google')}
+              onClick={() =>
+                supabase.auth.signInWithOAuth({
+                  provider: 'google',
+                })
+              }
               aria-label='log in'
               icon={<FaUser />}
             />
