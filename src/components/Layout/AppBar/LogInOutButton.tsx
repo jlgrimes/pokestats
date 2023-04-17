@@ -1,13 +1,13 @@
 import { Button, Stack } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { useUser } from '@supabase/auth-helpers-react';
 import supabase from '../../../lib/supabase/client';
 
 export const LogInOutButton = () => {
-  const { data: session } = useSession();
+  const user = useUser();
 
   return (
     <Stack>
-      {!session && (
+      {!user?.email && (
         <Button
           colorScheme={'blue'}
           aria-label={'Log in'}
@@ -23,7 +23,7 @@ export const LogInOutButton = () => {
           Sign up
         </Button>
       )}
-      {session ? (
+      {user?.email ? (
         <Button
           variant='outline'
           aria-label={'Log out'}

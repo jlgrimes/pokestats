@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FaHatWizard } from 'react-icons/fa';
 import { PairingSubmission } from '../../../../../types/pairings';
 import { Deck, Tournament } from '../../../../../types/tournament';
-import { useSessionUserProfile } from '../../../../hooks/user';
+import { useSessionPlayerProfile } from '../../../../hooks/user';
 import supabase from '../../../../lib/supabase/client';
 import { ArchetypeSelectorModal } from '../../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
 import { getRowsForSubmittedPairing } from './helpers';
@@ -34,7 +34,7 @@ export const SubmissionView = ({
   refetchData: () => {};
   addToUpdateLog: (name: string) => void;
 }) => {
-  const { data: user } = useSessionUserProfile();
+  const { data: user } = useSessionPlayerProfile();
   const modalControls = useDisclosure();
   const toast = useToast();
   const [decksToAdd, setDecksToAdd] = useState<number[]>([]);

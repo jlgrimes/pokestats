@@ -16,24 +16,23 @@ import { useState } from 'react';
 import { FaCheck, FaCross, FaTimes, FaWindowClose } from 'react-icons/fa';
 import * as Yup from 'yup';
 import { CombinedPlayerProfile } from '../../../types/player';
-import { useAllTakenUsernames, useSessionUserProfile } from '../../hooks/user';
+import { useAllTakenUsernames, usePlayerProfile } from '../../hooks/user';
 import supabase from '../../lib/supabase/client';
 import { Username } from './Username';
 import { profanity } from '@2toad/profanity';
+import { useUser } from '@supabase/auth-helpers-react';
 
 interface UsernameEditableProps {
   profile: CombinedPlayerProfile;
 }
 
 export const UsernameEditable = (props: UsernameEditableProps) => {
-  const session = useSession();
   const toast = useToast();
   const [isEditing, setIsEditing] = useState(false);
-  const { refetch } = useSessionUserProfile();
   const router = useRouter();
   const { data: takenUsernames } = useAllTakenUsernames();
-
-  const userIsLoggedInUser = session.data?.user?.name === props.profile.name;
+  const { data: profile } = usePlayerProfile();
+  const userIsLoggedInUser = profile?.name === props.profile.name;
 
   const handleSubmit = async ({
     pokestatsUsername,
@@ -61,7 +60,7 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
     const { error } = await supabase
       .from('Player Profiles')
       .update({ username: pokestatsUsername })
-      .match({ name: session.data?.user?.name });
+      .match({ name: profile?.name });
 
     if (error) {
       return toast({

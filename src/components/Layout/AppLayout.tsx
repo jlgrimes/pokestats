@@ -1,5 +1,5 @@
-import { Box, Container, extendTheme, Stack } from '@chakra-ui/react';
-import React, { ReactNode, useCallback, useEffect } from 'react';
+import { Container, extendTheme } from '@chakra-ui/react';
+import React, { ReactNode } from 'react';
 import { AppBar } from './AppBar/AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
 import {
@@ -13,11 +13,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Footer } from './Footer';
-import { BetaBanner } from './BetaBanner';
 import { userMockContext } from '../../contexts/MockUserContext';
-import { useSession } from 'next-auth/react';
-import supabase from '../../lib/supabase/client';
 
 const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
@@ -43,25 +39,7 @@ export const AppLayout = ({
 }) => {
   const [queryClient] = useState(() => new QueryClient(queryClientConfig));
   const router = useRouter();
-  const session = useSession();
   const [shouldMockUser, setShouldMockUser] = useState(false);
-
-  const checkForOldSession = useCallback(async () => {
-    const supaSession = await supabase.auth.getSession();
-    if (!supaSession.data.session && session?.data?.user?.name) {
-      console.log(window.location.origin)
-      supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin,
-        },
-      });
-    }
-  }, [session?.data?.user?.name]);
-
-  useEffect(() => {
-    checkForOldSession();
-  }, [checkForOldSession]);
 
   return (
     <QueryClientProvider client={queryClient}>

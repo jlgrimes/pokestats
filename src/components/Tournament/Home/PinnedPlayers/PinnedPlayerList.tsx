@@ -10,7 +10,6 @@ import {
   Text,
   useColorMode
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import {
   FaHeart,
   FaMapPin,
@@ -24,6 +23,7 @@ import { Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
+import { useSessionPlayerProfile } from '../../../../hooks/user';
 import { CommonCard } from '../../../common/CommonCard';
 import { ComponentLoader } from '../../../common/ComponentLoader';
 import { PinnedPlayerCard } from './PinnedPlayerCard';
@@ -36,7 +36,6 @@ interface PinnedPlayerListProps {
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const { colorMode } = useColorMode();
-  const session = useSession();
   const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
     usePinnedPlayers();
 

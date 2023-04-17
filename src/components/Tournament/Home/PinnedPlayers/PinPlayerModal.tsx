@@ -12,8 +12,8 @@ import {
   UseDisclosureProps,
   useToast,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useCallback } from 'react';
 import { Tournament } from '../../../../../types/tournament';
 import {
   addPinnedPlayer,
@@ -28,7 +28,7 @@ interface PinPlayerModalProps {
 }
 
 export const PinPlayerModal = (props: PinPlayerModalProps) => {
-  const session = useSession();
+  const user = useUser();
   const toast = useToast();
 
   const { data: availablePinnedPlayerNames } = useAvailablePinnedPlayerNames(
@@ -38,7 +38,7 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
 
   const handleSubmit = useCallback(
     async (player: string) => {
-      if (!session.data?.user?.email) {
+      if (!user?.email) {
         return toast({
           status: 'error',
           title: 'Session invalid',
@@ -47,7 +47,7 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
 
       const res = await addPinnedPlayer(
         props.tournament.id,
-        session.data.user.email,
+        user.email,
         player
       );
 
@@ -67,13 +67,7 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
       props.modalControls.onClose && props.modalControls.onClose();
       await refetch();
     },
-    [
-      session.data?.user?.email,
-      refetch,
-      toast,
-      props.modalControls,
-      props.tournament.id,
-    ]
+    [user?.email, refetch, toast, props.modalControls, props.tournament.id]
   );
 
   return (

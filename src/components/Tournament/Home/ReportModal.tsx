@@ -1,11 +1,10 @@
 import { useDisclosure, UseDisclosureProps, useToast } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { useUser } from '@supabase/auth-helpers-react';
 import { Fragment, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { usePlayerDecks } from '../../../hooks/playerDecks';
 import { useLiveTournamentPlayers } from '../../../hooks/tournamentResults';
-import supabase from '../../../lib/supabase/client';
 import { ArchetypeSelectorModal } from '../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
 import { handleDeckSubmit } from '../../Deck/DeckInput/helpers';
 import { PlayerSelectModal } from './PinnedPlayers/PlayerSelectModal';
@@ -16,7 +15,7 @@ interface ReportModalProps {
 }
 
 export const ReportModal = (props: ReportModalProps) => {
-  const session = useSession();
+  const user = useUser();
   const toast = useToast();
   const { data: playerDecks, refetch } = usePlayerDecks(props.tournament.id);
   const { data: userIsAdmin } = useUserIsAdmin();
@@ -43,7 +42,7 @@ export const ReportModal = (props: ReportModalProps) => {
       playerDecks.find(playerDeck => playerDeck.name === selectedPlayer)
         ?.deck ?? undefined,
       selectedPlayer,
-      session.data?.user?.email,
+      user?.email,
       props.tournament,
       isStreamDeck,
       userIsAdmin,

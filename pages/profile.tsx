@@ -1,17 +1,11 @@
-import { Button, Heading, Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { FaArrowRight, FaHistory, FaRegClock } from 'react-icons/fa';
-import { PlayerPerformanceList } from '../src/components/DataDisplay/PlayerPerformanceList';
-import { getFirstName } from '../src/components/Profile/helpers';
 import { PlayerProfilePage } from '../src/components/Profile/PlayerProfilePage';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
 import { fetchDecksWithLists } from '../src/hooks/finalResults/fetch';
 import { fetchTournaments } from '../src/hooks/tournaments';
-import { useSessionUserProfile } from '../src/hooks/user';
-import { parseUsername } from '../src/lib/strings';
+import { useSessionPlayerProfile } from '../src/hooks/user';
 import { Tournament } from '../types/tournament';
 
 export default function ProfilePage({
@@ -19,24 +13,23 @@ export default function ProfilePage({
 }: {
   tournaments: Tournament[];
 }) {
-  const session = useSession();
   const router = useRouter();
-  const { data: user, isLoading } = useSessionUserProfile();
+  const { data: user, isLoading, isAuthenticated } = useSessionPlayerProfile();
 
   useEffect(() => {
     try {
       // If user is on the page with their profile, and there is not a profile stored
-      if (session.status === 'authenticated' && !isLoading && !user) {
+      if (isAuthenticated && !isLoading && !user) {
         router.push('/setup-profile');
       }
 
-      if (session.status === 'unauthenticated') {
+      if (isAuthenticated) {
         router.push('/');
       }
     } catch (err) {
       console.log(err);
     }
-  }, [session.status, router, user, isLoading]);
+  }, [isAuthenticated, router, user, isLoading]);
 
   return user && <PlayerProfilePage profile={user} />;
 }

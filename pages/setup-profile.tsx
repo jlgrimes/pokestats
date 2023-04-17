@@ -1,14 +1,13 @@
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { getSession, signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { SetupProfileController } from '../src/components/Profile/SetupProfile/SetupProfileController';
-import { fetchUserProfile, useSessionUserProfile } from '../src/hooks/user';
+import { fetchUserProfile, useSessionPlayerProfile } from '../src/hooks/user';
 
 export default function SetupPage() {
   const router = useRouter();
-  const session = useSession();
-  const { data: user, isLoading, refetch } = useSessionUserProfile();
+  const { data: user, isLoading } = useSessionPlayerProfile();
 
   useEffect(() => {
     if (user) {
@@ -16,16 +15,20 @@ export default function SetupPage() {
     }
   }, [router, user, isLoading]);
 
-  return <SetupProfileController userProfile={session.data?.user} />;
+  return <SetupProfileController userProfile={user} />;
 }
 
 export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
-
+  const supabase = createServerSupabaseClient(context);
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   const queryClient = new QueryClient();
+
   if (session) {
     await queryClient.prefetchQuery([`session-user-profile`], () =>
-      fetchUserProfile(session)
+      fetchUserProfile(session.user)
     );
   }
 

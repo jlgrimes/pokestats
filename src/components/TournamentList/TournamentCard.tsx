@@ -23,6 +23,7 @@ import { ChampionDisplay } from './ChampionDisplay';
 import { formatTournamentDate } from './helpers';
 import { TournamentInfo } from './TournamentInfo';
 import { TournamentStatusBadge } from './TournamentStatusBadge';
+import { useSessionPlayerProfile } from '../../hooks/user';
 
 export const TournamentCard = ({
   tournament,
@@ -33,9 +34,7 @@ export const TournamentCard = ({
   champion?: Standing;
   disableFollowing?: boolean;
 }) => {
-  const { colorMode } = useColorMode();
-
-  const session = useSession();
+  const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const countryCode = useCountryCode(tournament.id);
   const live = tournament.tournamentStatus === 'running';
 
@@ -69,14 +68,12 @@ export const TournamentCard = ({
               </Flex>
             )}
           </Grid>
-          {session.status === 'authenticated' &&
-            live &&
-            session.data.user?.name && (
-              <PlayerTournamentView
-                tournament={tournament}
-                playerName={session.data.user.name}
-              />
-            )}
+          {isAuthenticated && live && profile?.name && (
+            <PlayerTournamentView
+              tournament={tournament}
+              playerName={profile.name}
+            />
+          )}
           {live && !tournament.topCutStatus && !disableFollowing && (
             <PinnedPlayerList tournament={tournament} isCompact />
           )}

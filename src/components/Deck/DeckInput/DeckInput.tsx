@@ -1,9 +1,8 @@
 import { UseDisclosureProps, useToast } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { useUser } from '@supabase/auth-helpers-react';
 import { memo, useEffect, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
-import supabase from '../../../lib/supabase/client';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
 import { handleDeckSubmit } from './helpers';
 
@@ -17,7 +16,7 @@ const DeckInput = memo(
     shouldHideDeck,
     shouldHideVerifiedIcon,
     shouldEnableEdits,
-    shouldHideSpecificArchetype
+    shouldHideSpecificArchetype,
   }: {
     playerName: string;
     deck: Deck | undefined;
@@ -32,7 +31,7 @@ const DeckInput = memo(
     const deckId = deck?.id;
 
     const { data: userIsAdmin } = useUserIsAdmin();
-    const session = useSession();
+    const user = useUser();
     const [selectedDeck, setSelectedDeck] = useState<Deck | undefined>(deck);
     const [isStreamDeck, setIsStreamDeck] = useState(deck?.on_stream);
     const toast = useToast();
@@ -46,7 +45,7 @@ const DeckInput = memo(
         newValue,
         deck,
         playerName,
-        session.data?.user?.email,
+        user?.email,
         tournament,
         !!isStreamDeck,
         userIsAdmin,

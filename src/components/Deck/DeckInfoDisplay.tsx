@@ -8,10 +8,10 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import { memo, useCallback } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../types/tournament';
+import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
 import DeckInput from './DeckInput/DeckInput';
 import { UploadListButton } from './ImageListViewer/UploadListButton';
@@ -46,9 +46,8 @@ export const DeckInfoDisplay = memo(
     shouldDisableDeckExtras?: boolean;
   }) => {
     const archetypeModal = useDisclosure();
-    const session = useSession();
+    const userIsLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
-    const userIsLoggedInUser = player.name === session.data?.user?.name;
     const shouldShowList =
       player?.deck?.list || (player.deck?.listImagePath && !disableList);
     const shouldShowSmallEditIcon = enableEdits && player.deck?.id;

@@ -8,7 +8,6 @@ import {
   Text,
   useColorMode,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import { Fragment } from 'react';
 import {
   FaCalendar,
@@ -33,6 +32,8 @@ import { PlayerTournamentView } from './PlayerTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
 import { TopCutViewController } from './TopCut/TopCutViewController';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useSessionPlayerProfile } from '../../../hooks/user';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -40,9 +41,8 @@ export interface TournamentHomeViewProps {
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   const { colorMode } = useColorMode();
-
+  const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const { data: userIsAdmin } = useUserIsAdmin();
-  const session = useSession();
   const { data: location } = useLocation(props.tournament?.id ?? '');
   const country = useCountryCode(props.tournament?.id ?? '');
 
@@ -97,17 +97,17 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         <TournamentHomeLinks tournament={props.tournament} />
       </Stack>
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
-      {session.status === 'authenticated' && session.data.user?.name && (
+      {isAuthenticated && profile?.name && (
         <PlayerTournamentView
           tournament={props.tournament}
-          playerName={session.data.user.name}
+          playerName={profile.name}
         />
       )}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
         <TopCutViewController tournament={props.tournament} />
       )}
-      {session.status === 'authenticated' &&
+      {isAuthenticated &&
         props.tournament.tournamentStatus !== 'not-started' && (
           <PinnedPlayerList tournament={props.tournament} />
         )}
