@@ -102,6 +102,9 @@ export const AppBar = () => {
               onClick={() =>
                 supabase.auth.signInWithOAuth({
                   provider: 'google',
+                  options: {
+                    redirectTo: window.location.origin,
+                  },
                 })
               }
               aria-label='log in'

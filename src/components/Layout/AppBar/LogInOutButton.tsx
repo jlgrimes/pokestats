@@ -14,6 +14,9 @@ export const LogInOutButton = () => {
           onClick={() =>
             supabase.auth.signInWithOAuth({
               provider: 'google',
+              options: {
+                redirectTo: window.location.origin,
+              },
             })
           }
         >
@@ -35,6 +38,9 @@ export const LogInOutButton = () => {
           onClick={() =>
             supabase.auth.signInWithOAuth({
               provider: 'google',
+              options: {
+                redirectTo: window.location.origin,
+              },
             })
           }
         >
