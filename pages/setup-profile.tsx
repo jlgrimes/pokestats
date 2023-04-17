@@ -19,11 +19,11 @@ export default function SetupPage() {
 }
 
 export async function getServerSideProps(context: any) {
-  const supabase = createServerSupabaseClient(context);
+  const supabaseClient = createServerSupabaseClient(context);
   // Check if we have a session
   const {
     data: { session },
-  } = await supabase.auth.getSession();
+  } = await supabaseClient.auth.getSession();
   const queryClient = new QueryClient();
 
   if (session) {

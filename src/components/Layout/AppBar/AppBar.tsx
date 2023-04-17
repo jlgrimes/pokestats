@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
 import { SearchBar } from './Search/SearchBar';
 import supabase from '../../../lib/supabase/client';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 export const AppBar = () => {
   const {
@@ -26,6 +27,7 @@ export const AppBar = () => {
     isAuthenticated,
   } = useSessionPlayerProfile();
   const router = useRouter();
+  const supabaseClient = useSupabaseClient();
 
   const getUserStatus = useCallback((): UserStatus => {
     if (!isAuthenticated) {
@@ -100,7 +102,7 @@ export const AppBar = () => {
               size={'sm'}
               variant='outline'
               onClick={() =>
-                supabase.auth.signInWithOAuth({
+                supabaseClient.auth.signInWithOAuth({
                   provider: 'google',
                   options: {
                     redirectTo: window.location.origin,

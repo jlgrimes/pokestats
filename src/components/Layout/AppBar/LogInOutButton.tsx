@@ -1,9 +1,9 @@
 import { Button, Stack } from '@chakra-ui/react';
-import { useUser } from '@supabase/auth-helpers-react';
-import supabase from '../../../lib/supabase/client';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 
 export const LogInOutButton = () => {
   const user = useUser();
+  const supabaseClient = useSupabaseClient();
 
   return (
     <Stack>
@@ -12,7 +12,7 @@ export const LogInOutButton = () => {
           colorScheme={'blue'}
           aria-label={'Log in'}
           onClick={() =>
-            supabase.auth.signInWithOAuth({
+            supabaseClient.auth.signInWithOAuth({
               provider: 'google',
               options: {
                 redirectTo: window.location.origin,
@@ -27,7 +27,7 @@ export const LogInOutButton = () => {
         <Button
           variant='outline'
           aria-label={'Log out'}
-          onClick={() => supabase.auth.signOut()}
+          onClick={() => supabaseClient.auth.signOut()}
         >
           Log out
         </Button>
@@ -36,7 +36,7 @@ export const LogInOutButton = () => {
           variant='outline'
           aria-label={'Log in'}
           onClick={() =>
-            supabase.auth.signInWithOAuth({
+            supabaseClient.auth.signInWithOAuth({
               provider: 'google',
               options: {
                 redirectTo: window.location.origin,
