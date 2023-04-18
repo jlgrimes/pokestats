@@ -11,11 +11,13 @@ import {
   fetchAllTakenUsernames,
   usePlayerProfile,
   fetchPlayerProfile,
+  useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
 
 export default function Page({ username }: { username: string }) {
   const router = useRouter();
   const { data, isLoading } = usePlayerProfile({ username });
+  const userIsLoggedInUser = useUserMatchesLoggedInUser(data?.name);
 
   if (router.isFallback || isLoading) return <FullPageLoader />;
 
@@ -49,7 +51,10 @@ export default function Page({ username }: { username: string }) {
         />
          */}
       </Head>
-      <PlayerProfilePage profile={data} />
+      <PlayerProfilePage
+        profile={data}
+        userIsLoggedInUser={userIsLoggedInUser}
+      />
     </div>
   );
 }

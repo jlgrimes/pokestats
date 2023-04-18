@@ -22,16 +22,12 @@ export default function ProfilePage({
       if (isAuthenticated && !isLoading && !user) {
         router.push('/setup-profile');
       }
-
-      if (isAuthenticated) {
-        router.push('/');
-      }
     } catch (err) {
       console.log(err);
     }
   }, [isAuthenticated, router, user, isLoading]);
 
-  return user && <PlayerProfilePage profile={user} />;
+  return user && <PlayerProfilePage profile={user} userIsLoggedInUser />;
 }
 
 export async function getStaticProps() {

@@ -22,11 +22,11 @@ import { UsernameEditable } from './UsernameEditable';
 
 export interface PlayerProfilePageProps {
   profile: CombinedPlayerProfile;
+  userIsLoggedInUser: boolean;
 }
 
 export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
   const sessionContext = useSessionContext();
-  const userIsLoggedInUser = useUserMatchesLoggedInUser(props.profile.name);
 
   const { isLoading: finalResultsAreLoading } = useFinalResults({
     playerName: props.profile.name,
@@ -40,8 +40,11 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
       <Stack spacing={0} alignItems='center'>
         <Heading>{props.profile.preferred_name ?? props.profile.name}</Heading>
         <HStack>
-          {userIsLoggedInUser ? (
-            <UsernameEditable profile={props.profile} />
+          {props.userIsLoggedInUser ? (
+            <UsernameEditable
+              profile={props.profile}
+              userIsLoggedInUser={props.userIsLoggedInUser}
+            />
           ) : (
             props.profile.username && (
               <Username>{props.profile.username}</Username>
@@ -50,10 +53,10 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
           {sessionContext.isLoading && <ComponentLoader />}
           {!sessionContext.isLoading && (
             <>
-              {userIsLoggedInUser && props.profile.username && (
+              {props.userIsLoggedInUser && props.profile.username && (
                 <ShareProfile username={props.profile.username} />
               )}
-              {!userIsLoggedInUser && props.profile.name && (
+              {!props.userIsLoggedInUser && props.profile.name && (
                 <FollowButton playerName={props.profile.name} />
               )}
             </>
