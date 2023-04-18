@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Button, Grid, useDisclosure } from '@chakra-ui/react';
+import { Button, Grid, HStack, Text, useDisclosure } from '@chakra-ui/react';
+import { IconExternalLink } from '@tabler/icons-react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, useMemo } from 'react';
@@ -45,7 +46,10 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
         target='_blank'
       >
-        Pairings
+        <HStack spacing={1.5}>
+          <Text>Pairings</Text>
+          <IconExternalLink size={16} />
+        </HStack>
       </Button>
       <Button
         {...commonProps}
