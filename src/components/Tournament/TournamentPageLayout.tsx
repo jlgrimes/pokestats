@@ -29,7 +29,7 @@ export const TournamentPageLayout = ({
   const { colorMode } = useColorMode();
 
   const router = useRouter();
-  const splitPath: string[] = router.asPath ? router.asPath.split('/') : [];
+  const splitPath: string[] = router.route ? router.route.split('/') : [];
   const slug = splitPath ? splitPath[splitPath.length - 1] : '/';
 
   if (!tournament) return null;
@@ -43,7 +43,9 @@ export const TournamentPageLayout = ({
         >
           {`${tournament.name} ${capitalize(slug as string)}`}
         </Heading>
-        <Text fontSize='sm'>Standings are unofficial and may not be accurate.</Text>
+        <Text fontSize='sm'>
+          Standings are unofficial and may not be accurate.
+        </Text>
         <TournamentStatusBadge tournament={tournament} size='md' />
         {/* <Stack>
           <TournamentLinks tournament={tournament} />

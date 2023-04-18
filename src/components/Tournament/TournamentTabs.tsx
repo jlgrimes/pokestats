@@ -35,7 +35,7 @@ export const TournamentTabs = memo(
         }
         defaultIndex={tabs.findIndex(
           ({ slug }) =>
-            router.asPath.substring(router.asPath.lastIndexOf('/') + 1) === slug
+            router.route.substring(router.route.lastIndexOf('/') + 1) === slug
         )}
       >
         <TabList>
