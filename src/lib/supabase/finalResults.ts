@@ -7,7 +7,7 @@ export const loadFinalResults = async (
 ) => {
   const { data: finalResultsData } = await supabase
     .from('Final Results')
-    .select('id,created_at,name')
+    .select('id,created_at,name,placing')
     .eq('tournament_id', tournamentId);
 
   // We've already inserted final results for this tournament.
@@ -33,7 +33,9 @@ export const loadFinalResults = async (
 
   if (dataExists) {
     const rowsToBeUpserted = finalResultsData.map(finalResult => {
-      const player = playerData.find(({ name }) => name === finalResult.name);
+      const player = playerData.find(
+        ({ placing }) => placing === finalResult.placing
+      );
 
       if (!player) return {};
 
