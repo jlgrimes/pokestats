@@ -1,13 +1,15 @@
 import { fetchLiveResults } from '../fetch/fetchLiveResults';
 import supabase from './client';
+import { FormatSchema } from '../../hooks/formats/formats';
 
 export const loadFinalResults = async (
   tournamentId: string,
-  shouldUpdate?: boolean
+  shouldUpdate?: boolean,
+  format?: FormatSchema
 ) => {
   const { data: finalResultsData } = await supabase
     .from('Final Results')
-    .select('id,created_at,name,placing')
+    .select('*')
     .eq('tournament_id', tournamentId);
 
   // We've already inserted final results for this tournament.
@@ -40,8 +42,7 @@ export const loadFinalResults = async (
       if (!player) return {};
 
       return {
-        id: finalResult.id,
-        created_at: finalResult.created_at,
+        ...finalResult,
         name: player.name,
         placing: player.placing,
         record: player.record,
@@ -54,15 +55,10 @@ export const loadFinalResults = async (
       };
     });
 
-    console.log(
-      rowsToBeUpserted.find(
-        row => Object.entries(row).find(([key, row]) => row === undefined)?.[0]
-      )
-    );
-
     const result = await supabase
       .from('Final Results')
       .upsert(rowsToBeUpserted);
+    console.log(result);
     return result;
   } else {
     // Fire away!
@@ -76,6 +72,7 @@ export const loadFinalResults = async (
       deck_archetype: player.deck?.id ?? null,
       deck_supertype: player.deck?.supertype ?? null,
       rounds: player.rounds,
+      uploaded_list_path: null,
     }));
 
     const result = await supabase

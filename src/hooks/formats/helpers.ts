@@ -1,8 +1,11 @@
-import { differenceInDays, isAfter } from "date-fns";
-import { Tournament } from "../../../types/tournament";
-import { FormatSchema } from "./formats";
+import { differenceInDays, isAfter } from 'date-fns';
+import { Tournament } from '../../../types/tournament';
+import { FormatSchema } from './formats';
 
-export const getTournamentFormat = (formats: FormatSchema[], tournament: Tournament) => {
+export const getTournamentFormat = (
+  formats: FormatSchema[],
+  tournament: Tournament
+): FormatSchema | undefined => {
   let mostRecentFormat;
   for (const format of formats) {
     if (!mostRecentFormat) {
@@ -28,4 +31,4 @@ export const getTournamentFormat = (formats: FormatSchema[], tournament: Tournam
     }
   }
   return mostRecentFormat;
-}
+};
