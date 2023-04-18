@@ -1,3 +1,4 @@
+import { User } from '@supabase/supabase-js';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -12,14 +13,14 @@ import { RecommendedSuggestedUser } from './RecommendSuggestedUser';
 import { RequestToComplete } from './RequestToComplete';
 
 export interface SetupProfileControllerProps {
-  userProfile?: SessionUserProfile | null;
+  userProfile?: User | null;
 }
 
 export const SetupProfileController = (props: SetupProfileControllerProps) => {
   const { userProfile } = props;
 
   const { data: fetchedTournamentsForUser, isLoading } = useFinalResults({
-    playerName: userProfile?.name,
+    playerName: userProfile?.user_metadata.name,
   });
   const suggestedUser =
     fetchedTournamentsForUser && fetchedTournamentsForUser.length > 0;

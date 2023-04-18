@@ -8,6 +8,7 @@ import {
   ListItem,
   useColorMode,
 } from '@chakra-ui/react';
+import { User } from '@supabase/supabase-js';
 import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -18,7 +19,7 @@ import { SessionUserProfile } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 
 export interface RecommendedSuggestedUserProps {
-  userProfile: SessionUserProfile | undefined;
+  userProfile: User | undefined;
   didNotAttendCallback: () => void;
   accountMadeSuccessfullyCallback: () => void;
 }
@@ -37,7 +38,7 @@ export const RecommendedSuggestedUser = (
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
   const { data: suggestedUserTournaments } = useFinalResults({
-    playerName: userProfile?.name,
+    playerName: userProfile?.user_metadata.name,
   });
   const { data: tournaments } = useTournaments();
 
@@ -50,14 +51,14 @@ export const RecommendedSuggestedUser = (
 
     setIdentityConfirmationLoading(true);
     await supabase.from('Player Profiles').insert({
-      name: userProfile?.name,
+      name: userProfile?.user_metadata.name,
       email: userProfile?.email,
     });
 
     queryClient.setQueryData(
       [`session-user-profile`, userProfile?.email],
       () => ({
-        name: userProfile?.name,
+        name: userProfile?.user_metadata.name,
         email: userProfile?.email,
       })
     );

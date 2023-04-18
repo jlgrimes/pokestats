@@ -77,9 +77,10 @@ export const usePlayerProfiles = () => {
   });
 };
 export interface SessionUserProfile {
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
+  email: string | null;
+  user_metadata: {
+    name: string;
+  }
 }
 
 export const useUserIsInTournament = (

@@ -26,11 +26,12 @@ import {
 } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
 import { useTwitterLink } from '../../../hooks/twitter';
+import { User } from '@supabase/supabase-js';
 
 export const RequestToComplete = ({
   userProfile,
 }: {
-  userProfile: SessionUserProfile | undefined;
+  userProfile: User | undefined;
 }) => {
   const { colorMode } = useColorMode();
 
@@ -95,7 +96,7 @@ export const RequestToComplete = ({
     const { data, error } = await supabase.from('Account Requests').insert([
       {
         email: userProfile?.email,
-        name: userProfile?.name,
+        name: userProfile?.user_metadata.name,
         entered_name: fullNameVal,
       },
     ]);

@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -7,13 +8,14 @@ import { fetchUserProfile, useSessionPlayerProfile } from '../src/hooks/user';
 
 export default function SetupPage() {
   const router = useRouter();
-  const { data: user, isLoading } = useSessionPlayerProfile();
+  const { data: profile, isLoading } = useSessionPlayerProfile();
+  const user = useUser();
 
   useEffect(() => {
-    if (user) {
+    if (profile) {
       location.assign('/profile');
     }
-  }, [router, user, isLoading]);
+  }, [router, profile, isLoading]);
 
   return <SetupProfileController userProfile={user} />;
 }
