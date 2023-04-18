@@ -20,9 +20,14 @@ const Template: ComponentStory<typeof SetupProfileController> = (
 export const Loading = Template.bind({});
 Loading.args = {
   userProfile: {
-    name: 'Jared Grimes',
+    id: '',
+    aud: '',
+    app_metadata: {},
+    created_at: '',
+    user_metadata: {
+      name: 'Jared Grimes'
+    },
     email: '',
-    image: '',
   },
 };
 
@@ -30,17 +35,27 @@ Loading.args = {
 export const FoundUser = Template.bind({});
 FoundUser.args = {
   userProfile: {
-    name: 'Jared Grimes',
+    id: '',
+    aud: '',
+    app_metadata: {},
+    created_at: '',
+    user_metadata: {
+      name: 'Jared Grimes'
+    },
     email: '',
-    image: '',
   },
 };
 
 export const NotFoundUser = Template.bind({});
 NotFoundUser.args = {
   userProfile: {
-    name: 'Hingle McCringleberry',
+    id: '',
+    aud: '',
+    app_metadata: {},
+    created_at: '',
+    user_metadata: {
+      name: 'Bob NotFound'
+    },
     email: '',
-    image: '',
   },
 };
