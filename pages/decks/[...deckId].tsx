@@ -22,6 +22,7 @@ import { getFinalResultsDeckFilters } from '../../src/hooks/finalResults/useCard
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
+import { fetchFormats } from '../../src/hooks/formats/formats';
 
 export default function DeckPage({
   deck,
@@ -62,17 +63,26 @@ export async function getStaticProps({
 
   const queryClient = new QueryClient();
   let deck: Deck | null | undefined;
-  let filter = {};
 
   if (archetypeId) {
     deck = await fetchArchetype(archetypeId);
-    filter = { deckId: archetypeId };
   } else if (supertypeId) {
     deck = await fetchSupertype(supertypeId);
-    filter = { supertypeId };
   }
 
   if (!deck) return invalidDeckReturn;
+
+  const formats = await fetchFormats();
+
+  await queryClient.setQueryData(['formats'], () => formats);
+
+  const filter = getFinalResultsDeckFilters(
+    {
+      ...deck,
+      classification: supertypeId ? 'supertype' : 'archetype',
+    },
+    formats ? formats[formats.length - 1].id : null
+  );
 
   await queryClient.prefetchQuery({
     queryKey: ['final-results', filter],

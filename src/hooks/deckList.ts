@@ -8,7 +8,6 @@ export const useCodeToSetMap = (): Record<string, string> => {
     queryKey: ['code-to-set-map'],
     queryFn: () => fetchCodeToSetMap(),
   });
-  console.log(sets);
 
   return sets?.data?.reduce(
     (acc: Record<string, string>, set: Record<string, any>) => {

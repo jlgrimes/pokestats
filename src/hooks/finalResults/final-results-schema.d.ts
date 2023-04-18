@@ -11,4 +11,5 @@ export interface FinalResultsFilters {
   playerName?: string | null;
   additionalNames?: string[] | null;
   placing?: number;
+  format?: number;
 }

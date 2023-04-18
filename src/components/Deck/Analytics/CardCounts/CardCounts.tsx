@@ -11,10 +11,11 @@ import {
   Stat,
   StatNumber,
 } from '@chakra-ui/react';
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Deck } from '../../../../../types/tournament';
 import { useCardCounts } from '../../../../hooks/finalResults';
 import { fixPercentage } from '../../ListViewer/CardViewer.tsx/helpers';
+import { FormatContext } from '../DeckAnalyticsContainer';
 import { SingleCardCountDisplay } from './SingleCardCountDisplay';
 
 export const CardCounts = ({
@@ -24,7 +25,9 @@ export const CardCounts = ({
   deck: Deck;
   onlyPopularTechs?: boolean;
 }) => {
-  let cardCounts = useCardCounts(deck);
+  const viewedFormat = useContext(FormatContext);
+
+  let cardCounts = useCardCounts(deck, viewedFormat);
   // This is assuming each archetype unanimously runs a card.
   // If this isn't the case, you need to redefine what the archetype is.
   const numberOfDecks = cardCounts[0]?.count;

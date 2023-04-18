@@ -28,16 +28,17 @@ export const useFormats = () => {
 export const useCurrentFormat = (tournament?: Tournament) => {
   const formats = useFormats();
 
-  if (!formats?.data) return {
-    ...formats,
-    data: undefined
-  };
+  if (!formats?.data)
+    return {
+      ...formats,
+      data: undefined,
+    };
 
   if (!tournament?.date) {
     return {
       ...formats,
-      data: formats.data[0]
-    }
+      data: formats.data[0],
+    };
   }
 
   const mostRecentFormat = getTournamentFormat(formats.data, tournament);
@@ -46,4 +47,9 @@ export const useCurrentFormat = (tournament?: Tournament) => {
     ...formats,
     data: mostRecentFormat,
   };
+};
+
+export const useMostRecentFormat = () => {
+  const formats = useFormats();
+  return formats.data ? formats.data[formats.data.length - 1] : null;
 };

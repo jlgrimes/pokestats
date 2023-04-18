@@ -7,19 +7,21 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { Fragment, memo } from 'react';
+import { Fragment, memo, useContext } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';
+import { FormatContext } from './DeckAnalyticsContainer';
 
 export const DeckFinishes = memo(
   ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
     const { colorMode } = useColorMode();
 
-    const filters = getFinalResultsDeckFilters(deck);
+    const format = useContext(FormatContext);
+    const filters = getFinalResultsDeckFilters(deck, format);
 
     const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();

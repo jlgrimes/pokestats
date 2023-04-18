@@ -60,9 +60,9 @@ export const fetchPlayers = async () => {
 export const useFinalResultsPlayers = () => {
   return useQuery({
     queryKey: ['final-results-players'],
-    queryFn: fetchPlayers
-  })
-}
+    queryFn: fetchPlayers,
+  });
+};
 
 export const fetchDecksWithLists = async (
   tournamentRange?: number[]
@@ -90,7 +90,8 @@ export const fetchFinalResults = async (
       name,
       defined_pokemon,
       identifiable_cards,
-      supertype
+      supertype,
+      format
     ),deck_supertype,uploaded_list_path`
     )
     .order('tournament_id', { ascending: false })
@@ -104,6 +105,9 @@ export const fetchFinalResults = async (
   }
   if (filters?.supertypeId) {
     query = query.eq('deck_supertype', filters.supertypeId);
+  }
+  if (filters?.format) {
+    query = query.eq('deck_archetype.format', filters.format);
   }
 
   if (filters?.playerName) {

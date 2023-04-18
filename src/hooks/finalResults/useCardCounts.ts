@@ -5,17 +5,23 @@ import {
 } from '../../components/Deck/ListViewer/helpers';
 import { useFinalResults } from './useFinalResults';
 
-export const getFinalResultsDeckFilters = (deck: Deck) =>
-  deck.classification === 'supertype'
-    ? { supertypeId: deck.id }
-    : { deckId: deck.id };
+export const getFinalResultsDeckFilters = (deck: Deck, format?: number) => {
+  const filters: Record<string, any> = {};
+
+  if (deck.classification === 'supertype') filters.supertypeId = deck.id;
+  if (deck.classification === 'archetype') filters.deckId = deck.id;
+  if (format) filters.format = format;
+
+  return filters;
+};
 
 export const useCardCounts = (
   deck: Deck,
+  format: number | undefined,
   options?: { countCopies?: boolean }
 ) => {
   const { data: deckStandings } = useFinalResults(
-    getFinalResultsDeckFilters(deck)
+    getFinalResultsDeckFilters(deck, format)
   );
 
   if (!deckStandings) return [];
