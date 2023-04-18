@@ -11,13 +11,7 @@ import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { capitalize } from '../../lib/strings';
-import {
-  getTournamentStatusBadgeProps,
-  formatTournamentStatus,
-} from '../TournamentList/helpers';
 import { TournamentStatusBadge } from '../TournamentList/TournamentStatusBadge';
-import { TournamentLinks } from './TournamentLinks';
-import { TournamentTabs } from './TournamentTabs';
 
 export const TournamentPageLayout = ({
   children,
@@ -47,10 +41,6 @@ export const TournamentPageLayout = ({
           Standings are unofficial and may not be accurate.
         </Text>
         <TournamentStatusBadge tournament={tournament} size='md' />
-        {/* <Stack>
-          <TournamentLinks tournament={tournament} />
-          <TournamentTabs tournament={tournament} />
-        </Stack> */}
       </Stack>
       {children}
     </Stack>
