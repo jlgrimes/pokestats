@@ -1,3 +1,4 @@
+import { useUser } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { Standing } from '../../types/tournament';
@@ -32,13 +33,11 @@ export const useAllPinnedPlayers = (tournamentId?: string, name?: string) => {
 };
 
 export const usePinnedPlayers = (tournamentId?: string) => {
-  const session = useSession();
+  const user = useUser();
   const { data, ...rest } = useAllPinnedPlayers(tournamentId);
 
-  const user = session.data?.user?.email;
-
   const filteredPlayers = data?.filter(
-    pinnedPlayer => pinnedPlayer.user_account === user
+    pinnedPlayer => pinnedPlayer.user_account === user?.email
   );
 
   const pinnedPlayers = filteredPlayers?.filter(
@@ -60,8 +59,8 @@ export const usePinnedPlayers = (tournamentId?: string) => {
 };
 
 export const useUserIsFollowingPlayer = (playerName: string) => {
-  const session = useSession();
-  const email = session.data?.user?.email;
+  const user = useUser();
+  const email = user?.email;
   const { data, ...rest } = useAllPinnedPlayers(undefined, email ?? undefined);
 
   return {

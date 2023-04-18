@@ -1,6 +1,5 @@
+import { User, useSession, useUser } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
-import { Session } from 'next-auth';
-import { useSession } from 'next-auth/react';
 import { CombinedPlayerProfile, StoredPlayerProfile } from '../../types/player';
 import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
 import supabase from '../lib/supabase/client';
@@ -9,12 +8,12 @@ import { useLiveTournamentResults } from './tournamentResults';
 import { fetchTournaments } from './tournaments';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
-  const session = useSession();
+  const user = useUser();
   const { data: profile } = usePlayerProfile({
-    name: session.data?.user?.name,
+    email: user?.email,
   });
 
-  if (!session.data?.user?.name) return false;
+  if (!user?.email) return false;
 
   if (!name || !profile?.name) return false;
   return (
@@ -41,21 +40,21 @@ export const fetchUserProfileFromEmail = async (email: string) => {
   return null;
 };
 
-export const fetchUserProfile = async (session: Session) => {
+export const fetchUserProfile = async (user: User) => {
   const { data } = await supabase
     .from('Player Profiles')
     .select('id,name,email,username,additional_names')
-    .eq('email', session.user?.email);
+    .eq('email', user?.email);
   const playerProfile = data?.[0];
 
   if (playerProfile) {
     return {
       id: playerProfile?.id,
       name: playerProfile?.name,
-      email: session.user?.email,
-      image: session.user?.image,
+      email: user?.email,
       username: playerProfile.username,
       additional_names: playerProfile.additional_names ?? [],
+      image: user.user_metadata.avatar_url,
     };
   }
 
@@ -83,30 +82,9 @@ export interface SessionUserProfile {
   image?: string | null;
 }
 
-export const useSessionUserProfile = () => {
-  const session = useSession();
-
-  const query = useQuery({
-    queryKey: [`session-user-profile`, session.data?.user?.email],
-    queryFn: () => {
-      if (session.data) {
-        return fetchUserProfile(session.data);
-      }
-
-      return null;
-    },
-  });
-
-  return {
-    ...query,
-    data: query.data,
-    isLoading: session.status === 'loading' || query.isLoading,
-  };
-};
-
 export const useUserIsInTournament = (
   tournamentId: string,
-  playerName?: string
+  playerName?: string | null
 ) => {
   const { data: liveResults } = useLiveTournamentResults(tournamentId, {
     load: { allRoundData: true },
@@ -212,17 +190,13 @@ export const fetchUser = async (email: string) => {
   return res.data?.[0];
 };
 
-export const fetchPlayerProfile = async (
-  filters?: PlayerProfileFilters
-): Promise<CombinedPlayerProfile[] | null> => {
-  // No filters, shouldn't return anything
-  if (!filters?.username && !filters?.name) return null;
-
-  let query = supabase
+export const fetchPlayerProfile = async (): Promise<
+  CombinedPlayerProfile[] | null
+> => {
+  const res = await supabase
     .from('Player Profiles')
     .select('id,name,email,username,additional_names,preferred_name');
 
-  const res = await query;
   return (res.data as CombinedPlayerProfile[]) ?? null;
 };
 
@@ -244,12 +218,31 @@ export const useAllTakenUsernames = () => {
 interface PlayerProfileFilters {
   username?: string;
   name?: string | null;
+  email?: string;
 }
+
+export const useSessionPlayerProfile = () => {
+  const session = useSession();
+  const profile = usePlayerProfile({ email: session?.user?.email });
+
+  const data = profile.data
+    ? {
+        ...profile.data,
+        image: session?.user.user_metadata.avatar_url,
+      }
+    : null;
+
+  return {
+    ...profile,
+    data,
+    isAuthenticated: !!session?.access_token,
+  };
+};
 
 export const usePlayerProfile = (filters?: PlayerProfileFilters) => {
   const { data, ...rest } = useQuery({
     queryKey: ['player-profile'],
-    queryFn: () => fetchPlayerProfile(filters),
+    queryFn: () => fetchPlayerProfile(),
   });
 
   let user: CombinedPlayerProfile | null = null;
@@ -263,6 +256,13 @@ export const usePlayerProfile = (filters?: PlayerProfileFilters) => {
       ) ?? null;
   } else if (filters?.username) {
     user = data?.find(({ username }) => username === filters.username) ?? null;
+  } else if (filters?.email) {
+    user = data?.find(({ email }) => email === filters.email) ?? null;
+  } else {
+    return {
+      ...rest,
+      data: null,
+    };
   }
 
   return {

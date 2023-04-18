@@ -1,18 +1,10 @@
-import {
-  FormControl,
-  FormLabel,
-  IconButton,
-  InputGroup,
-  InputLeftElement,
-  useToast,
-} from '@chakra-ui/react';
+import { FormControl, InputGroup, useToast } from '@chakra-ui/react';
 import { IconFileUpload } from '@tabler/icons-react';
 import { ChangeEvent, useRef } from 'react';
 import supabase from '../../../lib/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import { useFinalResults } from '../../../hooks/finalResults';
-import { useSession } from 'next-auth/react';
-import { usePlayerProfile, useSessionUserProfile } from '../../../hooks/user';
+import { useSessionPlayerProfile } from '../../../hooks/user';
 
 interface UploadListButtonProps {
   placing: number;
@@ -22,7 +14,7 @@ interface UploadListButtonProps {
 export const UploadListButton = (props: UploadListButtonProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data: profile } = useSessionUserProfile();
+  const { data: profile } = useSessionPlayerProfile();
   const { refetch } = useFinalResults({
     playerName: profile?.name,
     additionalNames: profile?.additional_names,

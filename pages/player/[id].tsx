@@ -67,7 +67,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     queryFn: () => fetchTournamentMetadata(),
   });
 
-  const playerProfiles = await fetchPlayerProfile({ username: params.id });
+  const playerProfiles = await fetchPlayerProfile();
 
   await queryClient.setQueryData(['player-profile'], () => playerProfiles);
 

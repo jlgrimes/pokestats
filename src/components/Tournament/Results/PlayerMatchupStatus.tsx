@@ -1,12 +1,14 @@
 import { Heading, Skeleton, Stack, Text, useColorMode } from '@chakra-ui/react';
-import { PlayerLiveResultsSchema, usePlayerLiveResults } from '../../../hooks/tournamentResults';
+import {
+  PlayerLiveResultsSchema,
+  usePlayerLiveResults,
+} from '../../../hooks/tournamentResults';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { Record } from './ResultsList/Record';
 import { CombinedPlayerProfile } from '../../../../types/player';
-import { useSession } from 'next-auth/react';
 import { RecordIcon } from './ResultsList/RecordIcon';
 import { getPercentile } from './helpers';
 import { useCallback } from 'react';
@@ -25,7 +27,6 @@ export const PlayerMatchupStatus = ({
   livePlayerResults: PlayerLiveResultsSchema;
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
-  const session = useSession();
   const { colorMode } = useColorMode();
   const {
     player: playerResults,

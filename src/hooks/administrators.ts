@@ -1,3 +1,4 @@
+import { useUser } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
@@ -17,8 +18,8 @@ export const useAdministrators = () => {
 };
 
 export const useUserIsAdmin = () => {
-  const session = useSession();
-  const email = session.data?.user?.email;
+  const user = useUser();
+  const email = user?.email;
   const { data: administrators } = useAdministrators();
   const { shouldMockUser } = useContext(userMockContext);
 

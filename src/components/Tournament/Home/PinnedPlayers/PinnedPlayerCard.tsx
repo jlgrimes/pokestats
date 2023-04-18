@@ -1,16 +1,6 @@
-import {
-  Box,
-  Card,
-  CardBody,
-  Heading,
-  HStack,
-  IconButton,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import { Fragment, useCallback } from 'react';
+import { HStack, IconButton, useToast } from '@chakra-ui/react';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useCallback } from 'react';
 import { FaHeartBroken } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
@@ -19,12 +9,7 @@ import {
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
 import { usePlayerIsMeOrMyOpponent } from '../../../../hooks/tournamentResults';
-import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
-import {
-  PlayerCard,
-  PlayerCardProps,
-  PlayerCardSize,
-} from '../PlayerCard/PlayerCard';
+import { PlayerCard, PlayerCardSize } from '../PlayerCard/PlayerCard';
 
 interface PinnedPlayerCardProps {
   player: Standing;
@@ -37,24 +22,21 @@ interface PinnedPlayerCardProps {
 }
 
 export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
-  const session = useSession();
+  const user = useUser();
   const toast = useToast();
   const { refetch } = usePinnedPlayers();
   const { data: userIsAdmin } = useUserIsAdmin();
   const isMeOrMyOpponent = usePlayerIsMeOrMyOpponent(props.player);
 
   const onUnpinPlayer = useCallback(async () => {
-    if (!session.data?.user?.email) {
+    if (!user?.email) {
       return toast({
         status: 'error',
         title: 'Session invalid',
       });
     }
 
-    const res = await deletePinnedPlayer(
-      session.data.user.email,
-      props.player.name
-    );
+    const res = await deletePinnedPlayer(user.email, props.player.name);
 
     if (res.error) {
       return toast({
@@ -65,7 +47,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
     }
 
     await refetch();
-  }, [props.player.name, session.data?.user?.email, toast, refetch]);
+  }, [props.player.name, user?.email, toast, refetch]);
 
   return (
     <HStack>

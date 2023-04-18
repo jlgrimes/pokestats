@@ -1,35 +1,32 @@
-import { Button, Modal, useToast } from '@chakra-ui/react';
-import { signIn, useSession } from 'next-auth/react';
+import { Button, useToast } from '@chakra-ui/react';
+import { signIn } from 'next-auth/react';
 import { useCallback } from 'react';
-import { StoredPlayerProfile } from '../../../types/player';
-import { Standing, Tournament } from '../../../types/tournament';
 import {
   addPinnedPlayer,
   deletePinnedPlayer,
   useUserIsFollowingPlayer,
 } from '../../hooks/pinnedPlayers';
+import { usePlayerProfile } from '../../hooks/user';
 
 interface FollowButtonProps {
   playerName: string;
 }
 
 export const FollowButton = (props: FollowButtonProps) => {
-  const session = useSession();
+  const { data: profile } = usePlayerProfile();
+
   const toast = useToast();
   const { data: userIsFollowing, refetch } = useUserIsFollowingPlayer(
     props.playerName
   );
 
   const handleClick = useCallback(async () => {
-    if (!session.data?.user?.email) {
+    if (!profile?.email) {
       return signIn('google');
     }
 
     if (userIsFollowing) {
-      const res = await deletePinnedPlayer(
-        session.data.user.email,
-        props.playerName
-      );
+      const res = await deletePinnedPlayer(profile.email, props.playerName);
 
       if (res.error) {
         return toast({
@@ -39,11 +36,7 @@ export const FollowButton = (props: FollowButtonProps) => {
         });
       }
     } else {
-      const res = await addPinnedPlayer(
-        '',
-        session.data.user.email,
-        props.playerName
-      );
+      const res = await addPinnedPlayer('', profile.email, props.playerName);
 
       if (res.error) {
         return toast({
@@ -55,15 +48,9 @@ export const FollowButton = (props: FollowButtonProps) => {
     }
 
     await refetch();
-  }, [
-    session.data?.user?.email,
-    refetch,
-    toast,
-    userIsFollowing,
-    props.playerName,
-  ]);
+  }, [profile?.email, refetch, toast, userIsFollowing, props.playerName]);
 
-  if (session.data?.user?.name === props.playerName) return null;
+  if (profile?.name === props.playerName) return null;
 
   return (
     <Button

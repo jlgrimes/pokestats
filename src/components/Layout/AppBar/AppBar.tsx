@@ -8,26 +8,29 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
-import { FaSign, FaSignInAlt, FaTwitter, FaUser } from 'react-icons/fa';
-import { useSessionUserProfile } from '../../../hooks/user';
+import { FaUser } from 'react-icons/fa';
+import { useSessionPlayerProfile } from '../../../hooks/user';
 import { NotVerifiedIcon, VerifiedIcon } from '../../Player/Icons';
 import { AppDrawerButton, UserStatus } from './AppDrawerButton';
 import { AppLogo } from './AppLogo';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
-import { DarkModeToggle } from '../../DarkModeToggle/DarkModeToggle';
 import { SearchBar } from './Search/SearchBar';
+import supabase from '../../../lib/supabase/client';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 export const AppBar = () => {
-  const session = useSession();
-  const { data: userProfile, isLoading: profileIsLoading } =
-    useSessionUserProfile();
+  const {
+    data: userProfile,
+    isLoading: profileIsLoading,
+    isAuthenticated,
+  } = useSessionPlayerProfile();
   const router = useRouter();
+  const supabaseClient = useSupabaseClient();
 
   const getUserStatus = useCallback((): UserStatus => {
-    if (session.status === 'authenticated') {
+    if (!isAuthenticated) {
       if (userProfile?.id) {
         return 'setup';
       }
@@ -35,7 +38,7 @@ export const AppBar = () => {
     }
 
     return 'logged-out';
-  }, [session.status, userProfile?.id]);
+  }, [isAuthenticated, userProfile?.id]);
 
   return (
     <StickyHeader id='app-bar'>
@@ -60,7 +63,7 @@ export const AppBar = () => {
           />
         </HStack>
         <HStack spacing={4}>
-          {session.status !== 'unauthenticated' ? (
+          {isAuthenticated ? (
             <>
               <LinkBox>
                 <LinkOverlay
@@ -74,13 +77,13 @@ export const AppBar = () => {
                   }
                 >
                   <Stack direction={'row'} alignItems='end' spacing={-1.5}>
-                    {!session.data?.user?.image ? (
+                    {!userProfile?.image ? (
                       <SkeletonCircle size='8' />
                     ) : (
                       <Avatar
                         size='sm'
-                        name={session.data?.user?.name ?? undefined}
-                        src={session.data?.user?.image}
+                        name={userProfile?.name ?? undefined}
+                        src={userProfile?.image}
                       />
                     )}
                     {userProfile ? (
@@ -98,7 +101,14 @@ export const AppBar = () => {
             <IconButton
               size={'sm'}
               variant='outline'
-              onClick={() => signIn('google')}
+              onClick={() =>
+                supabaseClient.auth.signInWithOAuth({
+                  provider: 'google',
+                  options: {
+                    redirectTo: window.location.origin,
+                  },
+                })
+              }
               aria-label='log in'
               icon={<FaUser />}
             />

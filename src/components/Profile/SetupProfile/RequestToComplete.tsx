@@ -21,7 +21,7 @@ import {
   normalizeName,
   SessionUserProfile,
   useNotSetupProfiles,
-  useSessionUserProfile,
+  useSessionPlayerProfile,
   useUserSentAccountRequest,
 } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
@@ -40,7 +40,7 @@ export const RequestToComplete = ({
     userProfile?.email
   );
   const toast = useToast();
-  const { refetch } = useSessionUserProfile();
+  const { refetch } = useSessionPlayerProfile();
   const [requestSentStatus, setRequestSentStatus] =
     useState<'before' | 'sending' | 'sent' | 'sent-error' | 'succeed'>(
       'before'

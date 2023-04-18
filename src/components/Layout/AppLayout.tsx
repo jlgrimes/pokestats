@@ -1,4 +1,4 @@
-import { Box, Container, extendTheme, Stack } from '@chakra-ui/react';
+import { Container, extendTheme } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import { AppBar } from './AppBar/AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -13,8 +13,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Footer } from './Footer';
-import { BetaBanner } from './BetaBanner';
 import { userMockContext } from '../../contexts/MockUserContext';
 
 const theme = extendTheme({

@@ -1,26 +1,33 @@
 import { Button, Stack } from '@chakra-ui/react';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 
 export const LogInOutButton = () => {
-  const { data: session } = useSession();
+  const user = useUser();
+  const supabaseClient = useSupabaseClient();
 
   return (
     <Stack>
-      {!session && (
+      {!user?.email && (
         <Button
           colorScheme={'blue'}
           aria-label={'Log in'}
-          onClick={() => signIn('google')}
+          onClick={() =>
+            supabaseClient.auth.signInWithOAuth({
+              provider: 'google',
+              options: {
+                redirectTo: window.location.origin,
+              },
+            })
+          }
         >
           Sign up
         </Button>
       )}
-      {session ? (
+      {user?.email ? (
         <Button
           variant='outline'
           aria-label={'Log out'}
-          onClick={() => signOut()}
+          onClick={() => supabaseClient.auth.signOut()}
         >
           Log out
         </Button>
@@ -28,7 +35,14 @@ export const LogInOutButton = () => {
         <Button
           variant='outline'
           aria-label={'Log in'}
-          onClick={() => signIn('google')}
+          onClick={() =>
+            supabaseClient.auth.signInWithOAuth({
+              provider: 'google',
+              options: {
+                redirectTo: window.location.origin,
+              },
+            })
+          }
         >
           Log in
         </Button>

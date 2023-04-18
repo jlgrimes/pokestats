@@ -1,18 +1,7 @@
 import { Button, ButtonProps, HStack, IconButton } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { memo, useCallback } from 'react';
-import {
-  FaChartLine,
-  FaChess,
-  FaDice,
-  FaDog,
-  FaInfo,
-  FaInfoCircle,
-  FaMagic,
-  FaTwitch,
-  FaUserFriends,
-  FaVideoSlash,
-} from 'react-icons/fa';
+import { FaInfo, FaTwitch, FaVideoSlash } from 'react-icons/fa';
 import { Tournament } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import {
@@ -23,7 +12,7 @@ import {
   ID_MAP_UNREGISTERED,
   useStreamInfo,
 } from '../../hooks/twitch/useStreamInfo';
-import { useSessionUserProfile, useUserIsInTournament } from '../../hooks/user';
+import { useSessionPlayerProfile } from '../../hooks/user';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
 
@@ -61,11 +50,7 @@ export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
 export const TournamentLinks = memo(
   ({ tournament }: { tournament: Tournament }) => {
     const { data: isAdmin } = useUserIsAdmin();
-    const { data: userProfile } = useSessionUserProfile();
-    const userIsInTournament = useUserIsInTournament(
-      tournament.id,
-      userProfile?.name
-    );
+    const { data: userProfile } = useSessionPlayerProfile();
 
     const RK9ButtonProps: Partial<ButtonProps> = {
       size: 'md',
