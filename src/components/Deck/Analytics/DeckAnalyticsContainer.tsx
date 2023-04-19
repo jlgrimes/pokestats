@@ -2,13 +2,14 @@ import { Stack, StackItem } from '@chakra-ui/react';
 import { createContext, useEffect, useState } from 'react';
 import { Deck } from '../../../../types/tournament';
 import {
+  FormatSchema,
   useCurrentFormat,
   useMostRecentFormat,
 } from '../../../hooks/formats/formats';
 import { BackToDecksButton } from './BackToDecksButton';
 import { DeckHeader } from './DeckHeader';
 
-export const FormatContext = createContext<number | undefined>(undefined);
+export const FormatContext = createContext<FormatSchema | null | undefined>(undefined);
 
 export const DeckAnalyticsContainer = ({
   children,
@@ -20,10 +21,10 @@ export const DeckAnalyticsContainer = ({
   compactTitle?: boolean;
 }) => {
   const mostRecentFormat = useMostRecentFormat();
-  const [viewedFormat, setViewedFormat] = useState();
+  const [viewedFormat, setViewedFormat] = useState<FormatSchema | null>();
 
   useEffect(() => {
-    setViewedFormat(mostRecentFormat?.id);
+    setViewedFormat(mostRecentFormat);
   }, [mostRecentFormat]);
 
   return (

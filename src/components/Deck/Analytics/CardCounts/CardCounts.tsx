@@ -27,7 +27,7 @@ export const CardCounts = ({
 }) => {
   const viewedFormat = useContext(FormatContext);
 
-  let cardCounts = useCardCounts(deck, viewedFormat);
+  let cardCounts = useCardCounts(deck, viewedFormat?.id);
   // This is assuming each archetype unanimously runs a card.
   // If this isn't the case, you need to redefine what the archetype is.
   const numberOfDecks = cardCounts[0]?.count;

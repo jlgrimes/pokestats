@@ -21,7 +21,7 @@ export const DeckFinishes = memo(
     const { colorMode } = useColorMode();
 
     const format = useContext(FormatContext);
-    const filters = getFinalResultsDeckFilters(deck, format);
+    const filters = getFinalResultsDeckFilters(deck, format?.id);
 
     const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();

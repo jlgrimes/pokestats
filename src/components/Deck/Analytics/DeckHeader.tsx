@@ -20,7 +20,7 @@ export const DeckHeader = memo(
     const format = useContext(FormatContext);
 
     const { data: deckStandings } = useFinalResults(
-      getFinalResultsDeckFilters(deck, format)
+      getFinalResultsDeckFilters(deck, format?.id)
     );
     const codeToSetMap = useCodeToSetMap();
     const router = useRouter();

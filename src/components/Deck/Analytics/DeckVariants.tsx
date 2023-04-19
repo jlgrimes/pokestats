@@ -16,7 +16,7 @@ import { FormatContext } from './DeckAnalyticsContainer';
 
 export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
   const format = useContext(FormatContext);
-  const { data: variants } = useVariants(deck.supertype?.id, format);
+  const { data: variants } = useVariants(deck.supertype?.id, format?.id);
   const variantsExcludingSelf = variants?.filter(({ id }) => id !== deck.id);
 
   if (!(variantsExcludingSelf && variantsExcludingSelf.length > 0)) return null;
