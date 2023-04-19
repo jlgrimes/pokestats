@@ -1,5 +1,13 @@
 import { memo, useContext, useMemo } from 'react';
-import { Button, Heading, HStack, Stack, useColorMode } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Stack,
+  Tag,
+  useColorMode,
+} from '@chakra-ui/react';
 import Image from 'next/image';
 import { getCardImageUrl } from '../ListViewer/helpers';
 import { DeckCard, Deck } from '../../../../types/tournament';
@@ -97,9 +105,12 @@ export const DeckHeader = memo(
             />
           ))}
         </HStack>
-        <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
-          {deck.name}
-        </Heading>
+        <HStack>
+          <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
+            {deck.name}
+          </Heading>
+          <Tag>{format?.rotation} Block</Tag>
+        </HStack>
         <DeckVariants deck={deck} />
       </Stack>
     );
