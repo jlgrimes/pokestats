@@ -61,26 +61,17 @@ export const fetchUserProfile = async (user: User) => {
   return null;
 };
 
-const fetchAllUserProfiles = async () => {
-  const { data } = await supabase
-    .from('Player Profiles')
-    .select('id,name,email,username,additional_names,preferred_name')
-    .order('username', { ascending: true });
-
-  return data;
-};
-
 export const usePlayerProfiles = () => {
   return useQuery({
     queryKey: ['player-profiles'],
-    queryFn: fetchAllUserProfiles,
+    queryFn: fetchPlayerProfile,
   });
 };
 export interface SessionUserProfile {
   email: string | null;
   user_metadata: {
     name: string;
-  }
+  };
 }
 
 export const useUserIsInTournament = (
@@ -241,10 +232,7 @@ export const useSessionPlayerProfile = () => {
 };
 
 export const usePlayerProfile = (filters?: PlayerProfileFilters) => {
-  const { data, ...rest } = useQuery({
-    queryKey: ['player-profile'],
-    queryFn: () => fetchPlayerProfile(),
-  });
+  const { data, ...rest } = usePlayerProfiles();
 
   let user: CombinedPlayerProfile | null = null;
 
