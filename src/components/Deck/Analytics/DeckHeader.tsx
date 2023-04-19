@@ -105,12 +105,12 @@ export const DeckHeader = memo(
             />
           ))}
         </HStack>
-        <HStack flexWrap={'wrap'}>
-          <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
-            {deck.name}
-          </Heading>
-          <Tag>{format?.rotation} Block</Tag>
-        </HStack>
+        <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
+          {deck.name}
+          <Tag ml={2} mt={2}>
+            {format?.rotation} Block
+          </Tag>
+        </Heading>
         <DeckVariants deck={deck} />
       </Stack>
     );
