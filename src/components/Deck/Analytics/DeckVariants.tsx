@@ -19,7 +19,11 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
   const { data: variants } = useVariants(deck.supertype?.id, format?.id);
   const variantsExcludingSelf = variants?.filter(({ id }) => id !== deck.id);
 
-  if (!(variantsExcludingSelf && variantsExcludingSelf.length > 0)) return null;
+  if (
+    !(variantsExcludingSelf && variantsExcludingSelf.length > 0) ||
+    variants?.length === 1
+  )
+    return null;
 
   return (
     <HStack flexWrap={'wrap'} rowGap={1}>

@@ -105,7 +105,7 @@ export const DeckHeader = memo(
             />
           ))}
         </HStack>
-        <HStack>
+        <HStack flexWrap={'wrap'}>
           <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
             {deck.name}
           </Heading>
