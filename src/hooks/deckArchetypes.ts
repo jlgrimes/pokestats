@@ -62,16 +62,31 @@ export const fetchVariants = async (supertypeId: number | undefined) => {
 
   const res = await supabase
     .from('Deck Archetypes')
-    .select('id,name,defined_pokemon')
+    .select('id,name,defined_pokemon,format')
     .eq('supertype', supertypeId);
   return res.data;
 };
 
-export const useVariants = (supertypeId: number | undefined) => {
-  return useQuery({
+export const useVariants = (
+  supertypeId: number | undefined,
+  format?: number
+) => {
+  const { data, ...rest } = useQuery({
     queryKey: ['deck-variants', supertypeId],
     queryFn: () => fetchVariants(supertypeId),
   });
+
+  if (data && format) {
+    return {
+      data: data.filter(variant => variant.format === format),
+      ...rest,
+    };
+  }
+
+  return {
+    data,
+    ...rest,
+  };
 };
 
 export const useArchetypes = (format?: FormatSchema) => {
@@ -122,12 +137,20 @@ export const fetchSupertype = async (
   if (res.data) {
     const deck = res.data[0];
 
-    return {
+    const info = {
       id: deck.id,
       name: deck.name,
-      supertype: deck.id,
       defined_pokemon: deck.defined_pokemon,
       identifiable_cards: deck.cover_cards,
+    };
+
+    return {
+      ...info,
+      supertype: {
+        ...info,
+        type: 'supertype',
+        cover_cards: info.identifiable_cards,
+      },
     };
   }
 
