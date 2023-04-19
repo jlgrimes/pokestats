@@ -18,8 +18,8 @@ export interface GooglePlayerProfile {
 
 export interface CombinedPlayerProfile {
   id: string;
-  name: string | null | undefined;
-  email: string | null | undefined;
+  name: string;
+  email: string;
   username: string | null | undefined;
   image?: string | null | undefined;
   additional_names: string[];
