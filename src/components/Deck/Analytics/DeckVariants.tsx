@@ -27,7 +27,7 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
         Variants:
       </Heading>
       {variantsExcludingSelf.map(variant => (
-        <LinkBox key={`variant-${variant.name}`}>
+        <LinkBox key={`variant-${variant.id}`}>
           <LinkOverlay
             as={NextLink}
             href={`/decks/${deck.supertype?.id}/${variant.id}`}

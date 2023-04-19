@@ -79,7 +79,7 @@ export async function getStaticProps({
   const filter = getFinalResultsDeckFilters(
     {
       ...deck,
-      classification: supertypeId ? 'supertype' : 'archetype',
+      classification: archetypeId ? 'archetype' : 'supertype',
     },
     formats ? formats[formats.length - 1].id : null
   );
@@ -101,7 +101,7 @@ export async function getStaticProps({
 
   if (deck.supertype) {
     await queryClient.prefetchQuery({
-      queryKey: ['deck-variants', deck.supertype],
+      queryKey: ['deck-variants', deck.supertype.id ?? null],
       queryFn: () => fetchVariants(deck!.supertype!.id),
     });
   }
