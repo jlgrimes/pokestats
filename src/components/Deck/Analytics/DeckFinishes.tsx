@@ -26,7 +26,10 @@ export const DeckFinishes = memo(
     const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();
 
-    const mostRecentTournamentId = deckStandings?.[0]?.tournamentId;
+    const mostRecentFinishedTournaments = tournaments?.filter(
+      ({ tournamentStatus }) => tournamentStatus === 'finished'
+    );
+    const mostRecentTournamentId = mostRecentFinishedTournaments?.[0].id;
 
     return (
       <Stack spacing={1}>
@@ -34,10 +37,10 @@ export const DeckFinishes = memo(
           deckStandings
             ?.filter(standing =>
               onlyShowRecent
-                ? standing.tournamentId === mostRecentTournamentId
+                ? standing.tournamentId === mostRecentTournamentId &&
+                  standing.deck?.list
                 : true
             )
-            .slice(0, onlyShowRecent ? 5 : undefined)
             .map((standing, idx) => {
               const tournament = tournaments.find(
                 ({ id }) => id === standing.tournamentId
@@ -45,7 +48,9 @@ export const DeckFinishes = memo(
 
               const shouldShowHeading =
                 idx === 0 ||
-                deckStandings[idx - 1].tournamentId !== standing.tournamentId;
+                (!onlyShowRecent &&
+                  deckStandings[idx - 1].tournamentId !==
+                    standing.tournamentId);
 
               return (
                 <Fragment key={standing.name + standing.tournamentId}>
