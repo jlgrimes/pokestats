@@ -58,7 +58,7 @@ export const loadFinalResults = async (
     const result = await supabase
       .from('Final Results')
       .upsert(rowsToBeUpserted);
-    console.log(result);
+
     return result;
   } else {
     // Fire away!

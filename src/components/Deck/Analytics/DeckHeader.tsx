@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useContext, useMemo } from 'react';
 import { Button, Heading, HStack, Stack, useColorMode } from '@chakra-ui/react';
 import Image from 'next/image';
 import { getCardImageUrl } from '../ListViewer/helpers';
@@ -11,15 +11,16 @@ import { useRouter } from 'next/router';
 import { StickyHeader } from '../../common/Layout/StickyHeader';
 import { DeckVariants } from './DeckVariants';
 import { BackToDecksButton } from './BackToDecksButton';
+import { FormatContext } from './DeckAnalyticsContainer';
+import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
     const { colorMode } = useColorMode();
+    const format = useContext(FormatContext);
 
     const { data: deckStandings } = useFinalResults(
-      deck.classification === 'supertype'
-        ? { supertypeId: deck.id }
-        : { deckId: deck.id }
+      getFinalResultsDeckFilters(deck, format)
     );
     const codeToSetMap = useCodeToSetMap();
     const router = useRouter();
@@ -28,8 +29,9 @@ export const DeckHeader = memo(
       () =>
         deck.identifiable_cards
           ?.map(cardName => {
-            return deckStandings?.[0]?.deck?.list?.pokemon.find(
-              ({ name, set }) => {
+            return deckStandings
+              ?.find(standing => !!standing.deck?.list)
+              ?.deck?.list?.pokemon.find(({ name, set }) => {
                 // Hard code to get the right Inteleon
                 if (
                   name === 'Inteleon' &&
@@ -41,8 +43,7 @@ export const DeckHeader = memo(
                   return false;
                 }
                 return name === cardName;
-              }
-            );
+              });
           })
           .filter(card => card),
       [deck.identifiable_cards, deckStandings]
