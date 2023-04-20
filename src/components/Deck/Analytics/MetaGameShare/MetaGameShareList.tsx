@@ -65,31 +65,31 @@ export const MetaGameShareList = memo(
                 slug: `/decks?tournament=${tournament.id}`,
               })}
           ghost
-          rightElement={
-            <HStack padding={2}>
-              <Text color='gray.500' fontWeight='semibold' fontSize='md'>
-                Drilldown
-              </Text>
-              <Switch
-                isChecked={shouldDrillDown}
-                onChange={() => setShouldDrillDown(!shouldDrillDown)}
-              />
-            </HStack>
-          }
         >
-          {isLoading ? (
-            <Box height={'50rem'}>
-              <ComponentLoader />
-            </Box>
-          ) : decks.length === 0 ? (
-            <NoDataDisplay />
-          ) : (
-            <Stack>
+          <Stack>
+            <Grid gridTemplateColumns='1.1fr 1fr 1fr' paddingX={3}>
+              <HStack padding={2}>
+                <Text color='gray.500' fontWeight='semibold' fontSize='sm'>
+                  Drilldown
+                </Text>
+                <Switch
+                  isChecked={shouldDrillDown}
+                  onChange={() => setShouldDrillDown(!shouldDrillDown)}
+                />
+              </HStack>
               <MetaGameSortToggles
                 sortBy={sort.sortBy}
                 sortOrder={sort.sortOrder}
                 setSort={(sortBy, sortOrder) => setSort({ sortBy, sortOrder })}
               />
+            </Grid>
+            {isLoading ? (
+              <Box height={'50rem'}>
+                <ComponentLoader />
+              </Box>
+            ) : decks.length === 0 ? (
+              <NoDataDisplay />
+            ) : (
               <Grid gridTemplateColumns={'1fr 1fr'} gap={2} rowGap={2}>
                 {decks
                   .slice(0, preview ? 4 : undefined)
@@ -106,8 +106,8 @@ export const MetaGameShareList = memo(
                     );
                   })}
               </Grid>
-            </Stack>
-          )}
+            )}
+          </Stack>
         </CommonCard>
       </ShouldDrillDownMetaShareContext.Provider>
     );

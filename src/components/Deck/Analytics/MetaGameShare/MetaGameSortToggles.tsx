@@ -1,4 +1,5 @@
 import { Box, Button, Grid, useColorMode } from '@chakra-ui/react';
+import { Fragment } from 'react';
 import {
   FaSortAmountDown,
   FaSortAmountDownAlt,
@@ -18,11 +19,9 @@ export const MetaGameSortToggles = (props: MetaGameSortTogglesProps) => {
 
   const invertOrder = (order: 'asc' | 'desc') =>
     order === 'asc' ? 'desc' : 'asc';
-  console.log(props);
 
   return (
-    <Grid gridTemplateColumns='1.1fr 1fr 1fr' paddingX={3}>
-      <Box />
+    <Fragment>
       <Button
         color={props.sortBy === 'played' ? activeColor : inactiveColor}
         size='sm'
@@ -65,6 +64,6 @@ export const MetaGameSortToggles = (props: MetaGameSortTogglesProps) => {
       >
         Converted
       </Button>
-    </Grid>
+    </Fragment>
   );
 };
