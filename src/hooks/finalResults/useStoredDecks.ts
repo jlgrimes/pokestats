@@ -62,13 +62,14 @@ export const useStoredDecks = (options?: {
         }
 
         const realId = deckId.replace('archetype', '');
-        const archetype = decks?.find(({ deck_archetype }) => {
+        const deck = decks?.find(({ deck_archetype }) => {
           return deck_archetype?.id && parseInt(realId) === deck_archetype.id;
-        })?.deck_archetype;
+        });
 
         return {
           deck: {
-            ...archetype,
+            ...(deck?.deck_archetype ?? {}),
+            supertype: deck?.deck_supertype,
             type: 'archetype',
           },
           count,
@@ -82,7 +83,7 @@ export const useStoredDecks = (options?: {
     return {
       isLoading,
       data: ret.filter(({ deck }) => deck.id !== 'unreported'),
-      numberReported: decks.filter((deck) => deck.deck_archetype).length,
+      numberReported: decks.filter(deck => deck.deck_archetype).length,
     };
   }
 
