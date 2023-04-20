@@ -35,23 +35,29 @@ export const useStoredDecks = (options?: {
       ?.map(([deckId, count]) => {
         if (deckId.includes('supertype')) {
           const realId = deckId.replace('supertype', '');
+          const supertype = decks?.find(({ deck_supertype }) => {
+            return deck_supertype?.id && parseInt(realId) === deck_supertype.id;
+          })?.deck_supertype;
 
           return {
-            deck: decks?.find(({ deck_supertype }) => {
-              return (
-                deck_supertype?.id && parseInt(realId) === deck_supertype.id
-              );
-            })?.deck_supertype as DeckTypeSchema,
+            deck: {
+              ...supertype,
+              type: 'supertype',
+            },
             count,
           };
         }
 
         const realId = deckId.replace('archetype', '');
+        const archetype = decks?.find(({ deck_archetype }) => {
+          return deck_archetype?.id && parseInt(realId) === deck_archetype.id;
+        })?.deck_archetype;
 
         return {
-          deck: decks?.find(({ deck_archetype }) => {
-            return deck_archetype?.id && parseInt(realId) === deck_archetype.id;
-          })?.deck_archetype as DeckTypeSchema,
+          deck: {
+            ...archetype,
+            type: 'archetype',
+          },
           count,
         };
       })
