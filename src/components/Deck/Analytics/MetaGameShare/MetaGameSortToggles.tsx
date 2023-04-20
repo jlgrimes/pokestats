@@ -14,7 +14,7 @@ interface MetaGameSortTogglesProps {
 
 export const MetaGameSortToggles = (props: MetaGameSortTogglesProps) => {
   const { colorMode } = useColorMode();
-  const activeColor = 'black';
+  const activeColor = colorMode === 'dark' ? 'gray.100' : 'gray.900';
   const inactiveColor = colorMode === 'dark' ? 'gray.600' : 'gray.400';
 
   const invertOrder = (order: 'asc' | 'desc') =>
