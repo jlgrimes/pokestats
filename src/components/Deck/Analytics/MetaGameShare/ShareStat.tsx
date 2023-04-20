@@ -20,7 +20,9 @@ export const ShareStat = memo(
       <Stat
         stat={metaShare}
         label={
-          deck.count && deck.count <= 20 ? 'played' : `${deck.count} played`
+          (deck.count && deck.count <= 20) || deck.name === 'Other'
+            ? 'played'
+            : `${deck.count} played`
         }
       />
     );

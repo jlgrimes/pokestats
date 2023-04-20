@@ -100,8 +100,8 @@ export const useStoredDecks = (options?: {
         };
       })
       .sort((a, b) => {
-        if (a.count <= 20) return 1;
-        if (b.count <= 20) return -1;
+        if (a.count <= 20 || a.deck.name === 'Other') return 1;
+        if (b.count <= 20 || b.deck.name === 'Other') return -1;
 
         if (sortBy === 'converted') {
           if (sortOrder === 'desc') {

@@ -44,7 +44,7 @@ export const IndividualShareCard = memo(
               : 'other'
           }/${deck.id}`;
 
-    if (count <= 20)
+    if (count <= 20 || deck.name === 'Other')
       return (
         <CommonCard>
           <Grid
