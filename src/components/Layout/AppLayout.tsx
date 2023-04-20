@@ -65,7 +65,6 @@ export const AppLayout = ({
               }
             >
               {children}
-              {/* <Footer /> */}
             </Container>
           </ChakraProvider>
         </userMockContext.Provider>
