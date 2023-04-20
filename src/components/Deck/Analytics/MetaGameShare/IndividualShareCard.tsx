@@ -37,7 +37,7 @@ export const IndividualShareCard = memo(
     return (
       <CommonCard>
         <Grid
-          gridTemplateColumns='2fr 1fr 1fr'
+          gridTemplateColumns='1.5fr 1fr 1fr'
           paddingX={2}
           gap={2}
           alignItems='center'

@@ -16,7 +16,7 @@ export const ShareStat = memo(
     const metaShare = getMetaShare(deck, decks);
     if (!metaShare) return null;
 
-    return <Stat stat={metaShare} label='Played' />;
+    return <Stat stat={metaShare} label={`${deck.count} played`} />;
   }
 );
 
