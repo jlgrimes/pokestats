@@ -1,5 +1,6 @@
 import { memo, useContext } from 'react';
 import {
+  Box,
   Card,
   CardBody,
   Grid,
@@ -34,28 +35,32 @@ export const IndividualShareCard = memo(
     const { data: formats } = useFormats();
     const format = getTournamentFormat(formats ?? [], tournament);
 
-    return (
-      <CommonCard>
-        <Grid
-          gridTemplateColumns='1.5fr 1fr 1fr'
-          paddingX={2}
-          gap={2}
-          alignItems='center'
-        >
-          <Stack>
+    const link =
+      deck.type === 'supertype'
+        ? `/decks/${deck.id}`
+        : `/decks/${
+            deck.supertype?.id && deck.supertype.id > 0
+              ? deck.supertype.id
+              : 'other'
+          }/${deck.id}`;
+
+    if (count <= 20)
+      return (
+        <CommonCard>
+          <Grid
+            gridTemplateColumns={'2fr 1fr'}
+            paddingX={2}
+            gap={2}
+            alignItems='center'
+          >
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+            <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
             <LinkOverlay
+              gridColumn={'1/-1'}
               as={NextLink}
               href={
                 {
-                  pathname:
-                    deck.type === 'supertype'
-                      ? `/decks/${deck.id}`
-                      : `/decks/${
-                          deck.supertype?.id && deck.supertype.id > 0
-                            ? deck.supertype.id
-                            : 'other'
-                        }/${deck.id}`,
+                  pathname: link,
                   query: { format: format?.id },
                 } as any
               }
@@ -67,14 +72,46 @@ export const IndividualShareCard = memo(
                 {deck.name}
               </Heading>
             </LinkOverlay>
-          </Stack>
-          <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
-          <ConversionStat
-            deck={{ ...deck, count }}
-            tournamentId={tournament.id}
-          />
-        </Grid>
-      </CommonCard>
+          </Grid>
+        </CommonCard>
+      );
+
+    return (
+      <Box gridColumn={'1/-1'}>
+        <CommonCard>
+          <Grid
+            gridTemplateColumns={'1.5fr 1fr 1fr'}
+            paddingX={2}
+            gap={2}
+            alignItems='center'
+          >
+            <Stack>
+              <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+              <LinkOverlay
+                as={NextLink}
+                href={
+                  {
+                    pathname: link,
+                    query: { format: format?.id },
+                  } as any
+                }
+              >
+                <Heading
+                  color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}
+                  size={'sm'}
+                >
+                  {deck.name}
+                </Heading>
+              </LinkOverlay>
+            </Stack>
+            <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
+            <ConversionStat
+              deck={{ ...deck, count }}
+              tournamentId={tournament.id}
+            />
+          </Grid>
+        </CommonCard>
+      </Box>
     );
   }
 );
