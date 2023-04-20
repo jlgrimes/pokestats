@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { Deck } from '../../../types/tournament';
 import {
+  getConversionRate,
+  getDay2Decks,
+} from '../../components/Deck/Analytics/MetaGameShare/ConversionStat';
+import {
   DeckTypeSchema,
   useArchetypes,
   useSupertypes,
@@ -27,7 +31,11 @@ export const useStoredDecks = (options?: {
   const sortOrder = options?.sortOrder ?? 'desc';
 
   const { data: decks, isLoading } = useQuery({
-    queryKey: ['decks-with-lists', options?.tournamentId, options?.shouldDrillDown],
+    queryKey: [
+      'decks-with-lists',
+      options?.tournamentId,
+      options?.shouldDrillDown,
+    ],
     queryFn: () => fetchDecksWithLists(options?.tournamentId),
   });
 
@@ -52,6 +60,7 @@ export const useStoredDecks = (options?: {
               defined_pokemon: ['Unown'],
             },
             count,
+            day2Conversion: 0,
           };
         }
 
@@ -61,38 +70,61 @@ export const useStoredDecks = (options?: {
             return deck_supertype?.id && parseInt(realId) === deck_supertype.id;
           })?.deck_supertype;
 
+          const deck = {
+            ...supertype,
+            type: 'supertype',
+          };
+
           return {
-            deck: {
-              ...supertype,
-              type: 'supertype',
-            },
+            deck,
             count,
+            day2Conversion: getConversionRate(deck, decks),
           };
         }
 
         const realId = deckId.replace('archetype', '');
-        const deck = decks?.find(({ deck_archetype }) => {
+        const found = decks?.find(({ deck_archetype }) => {
           return deck_archetype?.id && parseInt(realId) === deck_archetype.id;
         });
 
+        const deck = {
+          ...(found?.deck_archetype ?? {}),
+          supertype: found?.deck_supertype,
+          type: 'archetype',
+        };
+
         return {
-          deck: {
-            ...(deck?.deck_archetype ?? {}),
-            supertype: deck?.deck_supertype,
-            type: 'archetype',
-          },
+          deck,
           count,
+          day2Conversion: getConversionRate(deck, decks),
         };
       })
       .sort((a, b) => {
-        if (sortOrder === 'desc') {
-          if (a.count < b.count) return 1;
-          if (b.count < a.count) return -1;
+        if (a.count <= 20) return 1;
+        if (b.count <= 20) return -1;
+
+        if (sortBy === 'converted') {
+          if (sortOrder === 'desc') {
+            if (a.day2Conversion < b.day2Conversion) return 1;
+            if (b.day2Conversion < a.day2Conversion) return -1;
+          }
+
+          if (sortOrder === 'asc') {
+            if (a.day2Conversion > b.day2Conversion) return 1;
+            if (b.day2Conversion > a.day2Conversion) return -1;
+          }
         }
 
-        if (sortOrder === 'asc') {
-          if (a.count > b.count) return 1;
-          if (b.count > a.count) return -1;
+        if (sortBy === 'played') {
+          if (sortOrder === 'desc') {
+            if (a.count < b.count) return 1;
+            if (b.count < a.count) return -1;
+          }
+
+          if (sortOrder === 'asc') {
+            if (a.count > b.count) return 1;
+            if (b.count > a.count) return -1;
+          }
         }
 
         return 0;
