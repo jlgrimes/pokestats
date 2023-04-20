@@ -4,7 +4,7 @@ import NextLink from 'next/link';
 import { useTwitterLink } from '../hooks/twitter';
 
 export const Footer = () => {
-  const myTwitter = useTwitterLink('pokestatstcg');
+  const myTwitter = useTwitterLink('jgrimesey');
 
   return (
     <Stack padding={6} justifyContent={'center'} alignItems='center'>

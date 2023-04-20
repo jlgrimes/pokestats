@@ -1,10 +1,11 @@
 import { createContext, memo, useContext, useMemo, useState } from 'react';
-import { Grid, Spinner } from '@chakra-ui/react';
+import { Box, Grid, HStack, Spinner, Switch, Text } from '@chakra-ui/react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
 import { getMetaDiff } from './helpers';
 import { NoDataDisplay } from './NoDataDisplay';
 import { CommonCard } from '../../../common/CommonCard';
+import { ComponentLoader } from '../../../common/ComponentLoader';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
@@ -33,10 +34,6 @@ export const MetaGameShareList = memo(
       () => decks.reduce((acc, deck) => acc + deck.count, 0),
       [decks]
     );
-
-    if (isLoading) return <Spinner />;
-    if (decks.length === 0) return <NoDataDisplay />;
-
     return (
       <ShouldDrillDownMetaShareContext.Provider value={shouldDrillDown}>
         <CommonCard
@@ -53,21 +50,42 @@ export const MetaGameShareList = memo(
                 )}`,
               })}
           ghost
+          rightElement={
+            <HStack padding={2}>
+              <Text color='gray.500' fontWeight='semibold' fontSize='md'>
+                Drilldown
+              </Text>
+              <Switch
+                isChecked={shouldDrillDown}
+                onChange={() => setShouldDrillDown(!shouldDrillDown)}
+              />
+            </HStack>
+          }
         >
-          <Grid gridTemplateColumns={'1fr 1fr'}>
-            {decks.slice(0, preview ? 4 : undefined).map(({ deck, count }) => {
-              return (
-                deck?.id && (
-                  <IndividualShareCard
-                    key={`${deck.name}${deck.id}`}
-                    deck={deck}
-                    count={count}
-                    tournamentRange={tournamentRange}
-                  />
-                )
-              );
-            })}
-          </Grid>
+          {isLoading ? (
+            <Box height={'50rem'}>
+              <ComponentLoader />
+            </Box>
+          ) : decks.length === 0 ? (
+            <NoDataDisplay />
+          ) : (
+            <Grid gridTemplateColumns={'1fr 1fr'}>
+              {decks
+                .slice(0, preview ? 4 : undefined)
+                .map(({ deck, count }) => {
+                  return (
+                    deck?.id && (
+                      <IndividualShareCard
+                        key={`${deck.name}${deck.id}`}
+                        deck={deck}
+                        count={count}
+                        tournamentRange={tournamentRange}
+                      />
+                    )
+                  );
+                })}
+            </Grid>
+          )}
         </CommonCard>
       </ShouldDrillDownMetaShareContext.Provider>
     );

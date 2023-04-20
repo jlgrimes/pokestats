@@ -25,6 +25,7 @@ export const CommonCard = memo(
     shouldRemovePadding,
     smallHeader,
     slugText,
+    rightElement,
   }: {
     header?: string;
     subheader?: string;
@@ -36,6 +37,7 @@ export const CommonCard = memo(
     shouldRemovePadding?: boolean;
     smallHeader?: boolean;
     slugText?: string;
+    rightElement?: JSX.Element;
   }) => {
     const { colorMode } = useColorMode();
 
@@ -55,42 +57,45 @@ export const CommonCard = memo(
         paddingY={3}
         gap={3}
       >
-        {header && (
-          <CardHeader
-            padding={0}
-            display='flex'
-            flexDirection={'column'}
-            gap={1}
-          >
-            {!loading ? (
-              <StatsHeading
-                headingProps={{
-                  color: colorMode === 'dark' ? 'gray.400' : 'gray.600',
-                  size: smallHeader ? 'xs' : 'sm',
-                }}
-              >
-                {leftIcon ? (
-                  <HStack>
-                    {leftIcon}
-                    <Text>{header}</Text>
-                  </HStack>
-                ) : (
-                  header
-                )}
-              </StatsHeading>
-            ) : (
-              <Skeleton height='6' width='70' />
-            )}
-            {subheader &&
-              (!loading ? (
-                <Heading color='gray.500' size='sm' fontWeight={'semibold'}>
-                  {subheader}
-                </Heading>
+        <HStack justifyContent='space-between'>
+          {header && (
+            <CardHeader
+              padding={0}
+              display='flex'
+              flexDirection={'column'}
+              gap={1}
+            >
+              {!loading ? (
+                <StatsHeading
+                  headingProps={{
+                    color: colorMode === 'dark' ? 'gray.400' : 'gray.600',
+                    size: smallHeader ? 'xs' : 'sm',
+                  }}
+                >
+                  {leftIcon ? (
+                    <HStack>
+                      {leftIcon}
+                      <Text>{header}</Text>
+                    </HStack>
+                  ) : (
+                    header
+                  )}
+                </StatsHeading>
               ) : (
                 <Skeleton height='6' width='70' />
-              ))}
-          </CardHeader>
-        )}
+              )}
+              {subheader &&
+                (!loading ? (
+                  <Heading color='gray.500' size='sm' fontWeight={'semibold'}>
+                    {subheader}
+                  </Heading>
+                ) : (
+                  <Skeleton height='6' width='70' />
+                ))}
+            </CardHeader>
+          )}
+          {rightElement ?? null}
+        </HStack>
         <CardBody padding={0}>{children}</CardBody>
         {slug && (
           <CardFooter padding={0}>
