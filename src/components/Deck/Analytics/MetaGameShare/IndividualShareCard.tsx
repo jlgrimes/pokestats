@@ -48,13 +48,17 @@ export const IndividualShareCard = memo(
           <LinkOverlay
             as={NextLink}
             href={
-              deck.type === 'supertype'
-                ? `/decks/${deck.id}`
-                : `/decks/${
-                    deck.supertype?.id && deck.supertype.id > 0
-                      ? deck.supertype.id
-                      : 'other'
-                  }/${deck.id}`
+              {
+                pathname:
+                  deck.type === 'supertype'
+                    ? `/decks/${deck.id}`
+                    : `/decks/${
+                        deck.supertype?.id && deck.supertype.id > 0
+                          ? deck.supertype.id
+                          : 'other'
+                      }/${deck.id}`,
+                query: { format: format?.id },
+              } as any
             }
           >
             <Heading
