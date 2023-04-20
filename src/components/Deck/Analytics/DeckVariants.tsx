@@ -8,6 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { memo, useContext } from 'react';
 import { Deck } from '../../../../types/tournament';
 import { useVariants } from '../../../hooks/deckArchetypes';
@@ -15,6 +16,7 @@ import SpriteDisplay from '../../common/SpriteDisplay/SpriteDisplay';
 import { FormatContext } from './DeckAnalyticsContainer';
 
 export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
+  const router = useRouter();
   const format = useContext(FormatContext);
   const { data: variants } = useVariants(deck.supertype?.id, format?.id);
   const variantsExcludingSelf = variants?.filter(({ id }) => id !== deck.id);
@@ -34,7 +36,14 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
         <LinkBox key={`variant-${variant.id}`}>
           <LinkOverlay
             as={NextLink}
-            href={`/decks/${deck.supertype?.id}/${variant.id}`}
+            href={
+              {
+                pathname: `/decks/${deck.supertype?.id}/${variant.id}`,
+                query: {
+                  format: router.query.format,
+                },
+              } as any
+            }
           >
             <Tag>
               <HStack spacing={1}>
