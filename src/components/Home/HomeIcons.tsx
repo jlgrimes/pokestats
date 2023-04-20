@@ -1,12 +1,18 @@
 import NextLink from 'next/link';
 import { Button, ButtonGroup, HStack } from '@chakra-ui/react';
-import { FaHeart, FaRegQuestionCircle } from 'react-icons/fa';
+import {
+  FaHeart,
+  FaInfo,
+  FaInfoCircle,
+  FaRegQuestionCircle,
+} from 'react-icons/fa';
+import { IconInfoCircle, IconInfoCircleFilled } from '@tabler/icons-react';
 
 export const HomeIcons = () => (
   <HStack justifyContent={'center'}>
     <ButtonGroup size='sm'>
-      <Button as={NextLink} href='/help' leftIcon={<FaRegQuestionCircle />}>
-        Help
+      <Button as={NextLink} href='/help' leftIcon={<FaInfoCircle />}>
+        About
       </Button>
       <Button
         colorScheme='pink'

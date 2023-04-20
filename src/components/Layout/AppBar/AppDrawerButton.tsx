@@ -17,6 +17,7 @@ import NextLink from 'next/link';
 import { useRef } from 'react';
 import {
   FaBars,
+  FaInfo,
   FaRegCalendar,
   FaRegListAlt,
   FaRegQuestionCircle,
@@ -106,13 +107,22 @@ export const AppDrawerButton = ({
               )}
 
               <HStack justifyContent={'end'} paddingRight={10}>
-                <Icon as={FaRegQuestionCircle} />
+                <Icon as={FaInfo} />
               </HStack>
 
-              <Link as={NextLink} href={'/help'} onClick={onClose}>
-                <Heading size='lg'>Help</Heading>
+              <Link as={NextLink} href={'/about'} onClick={onClose}>
+                <Heading size='lg'>About</Heading>
               </Link>
             </Grid>
+            <Stack padding='2rem 3.5rem' spacing={6}>
+              <Link as={NextLink} href={'/contact-us'} onClick={onClose}>
+                <Heading size='md'>Contact Us</Heading>
+              </Link>
+
+              <Link as={NextLink} href={'/privacy-policy'} onClick={onClose}>
+                <Heading size='md'>Privacy Policy</Heading>
+              </Link>
+            </Stack>
             <Stack spacing={4} padding='4.5rem 3.5rem'>
               {userIsAdmin && (
                 <Stack>

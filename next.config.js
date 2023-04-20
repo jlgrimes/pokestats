@@ -11,7 +11,14 @@ const moduleExports = {
   images: {
     domains: ['limitlesstcg.s3.us-east-2.amazonaws.com', 'flagsapi.com', 'images.pokemontcg.io', 'keujidcnlmekgfajgnjq.supabase.co', 'archives.bulbagarden.net']
   },
-
+  async rewrites() {
+    return [
+      {
+        source: '/privacy-policy',
+        destination: '/privacy-policy.html'
+      }
+    ]
+  },
   sentry: {
     // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
     // for client-side builds. (This will be the default starting in
