@@ -65,7 +65,7 @@ export const DeckFinishes = memo(
                       <Heading
                         size='sm'
                         color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
-                        paddingX={onlyShowRecent ? 8 : 2}
+                        paddingX={2}
                         paddingTop={onlyShowRecent ? 0 : 3}
                       >
                         {tournament.name}
@@ -73,7 +73,7 @@ export const DeckFinishes = memo(
                       <Heading
                         size='xs'
                         color='gray.500'
-                        paddingX={onlyShowRecent ? 8 : 2}
+                        paddingX={2}
                         paddingY={1}
                       >
                         {formatTournamentDate(tournament)}

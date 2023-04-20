@@ -86,6 +86,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
               fontFamily={'mono'}
               textAlign={'right'}
             >
+              <RecordIcon
+                standing={props.result}
+                tournament={props.tournament as Tournament}
+              />
               {props.shouldReplacePlacementWithVs
                 ? 'vs'
                 : props.opponentRoundNumber ??
@@ -105,10 +109,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
             }
             paddingLeft={props.shouldHideStanding ? 2 : 0}
           >
-            <RecordIcon
+            {/* <RecordIcon
               standing={props.result}
               tournament={props.tournament as Tournament}
-            />
+            /> */}
             <Text
               fontSize='md'
               textAlign={

@@ -1,6 +1,6 @@
-import { Stack, StackItem } from '@chakra-ui/react';
+import { Container, Stack, StackItem } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, Fragment, useEffect, useState } from 'react';
 import { Deck } from '../../../../types/tournament';
 import {
   FormatSchema,
@@ -40,10 +40,12 @@ export const DeckAnalyticsContainer = ({
 
   return (
     <FormatContext.Provider value={viewedFormat}>
-      <Stack spacing={4}>
-        <DeckHeader deck={deck} compact={compactTitle} />
-        <Stack>{children}</Stack>
-      </Stack>
+      <Container>
+        <Stack spacing={4}>
+          <DeckHeader deck={deck} compact={compactTitle} />
+          <Fragment>{children}</Fragment>
+        </Stack>
+      </Container>
     </FormatContext.Provider>
   );
 };

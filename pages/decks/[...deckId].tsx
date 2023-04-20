@@ -23,6 +23,7 @@ import { fetchTournaments } from '../../src/hooks/tournaments';
 import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
 import { fetchFormats } from '../../src/hooks/formats/formats';
+import { Container, Stack } from '@chakra-ui/react';
 
 export default function DeckPage({
   deck,
