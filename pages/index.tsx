@@ -61,20 +61,16 @@ export async function getStaticProps() {
 
   const mostRecentFinishedTournament =
     getMostRecentFinishedTournament(tournaments);
-  const tournamentRange = [
-    parseInt(mostRecentFinishedTournament.id),
-    parseInt(mostRecentFinishedTournament.id),
-  ];
 
   await queryClient.prefetchQuery({
     queryKey: [
       'decks-with-lists',
       {
-        tournamentRange,
+        tournamentId: mostRecentFinishedTournament.id,
         shouldDrillDown: false,
       },
     ],
-    queryFn: () => fetchDecksWithLists(tournamentRange),
+    queryFn: () => fetchDecksWithLists(mostRecentFinishedTournament.id),
   });
 
   return {
