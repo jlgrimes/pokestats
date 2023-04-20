@@ -40,7 +40,7 @@ export const DeckAnalyticsContainer = ({
 
   return (
     <FormatContext.Provider value={viewedFormat}>
-      <Container>
+      <Container maxW='2xl'>
         <Stack spacing={4}>
           <DeckHeader deck={deck} compact={compactTitle} />
           <Fragment>{children}</Fragment>
