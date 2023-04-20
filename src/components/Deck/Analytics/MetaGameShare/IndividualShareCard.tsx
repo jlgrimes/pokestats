@@ -2,6 +2,7 @@ import { memo } from 'react';
 import {
   Card,
   CardBody,
+  Grid,
   Heading,
   HStack,
   LinkOverlay,
@@ -36,13 +37,13 @@ export const IndividualShareCard = memo(
           paddingX={4}
           paddingY={2}
         >
-          <HStack>
+          <Grid gridTemplateColumns='5.2rem auto'>
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />
             <ShareStat
               deck={{ ...deck, count }}
               tournamentRange={tournamentRange}
             />
-          </HStack>
+          </Grid>
           <LinkOverlay
             as={NextLink}
             href={
