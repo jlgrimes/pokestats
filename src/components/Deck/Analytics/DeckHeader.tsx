@@ -21,6 +21,7 @@ import { DeckVariants } from './DeckVariants';
 import { BackToDecksButton } from './BackToDecksButton';
 import { FormatContext } from './DeckAnalyticsContainer';
 import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
+import { FormatTag } from '../Format/FormatTag';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
@@ -107,9 +108,7 @@ export const DeckHeader = memo(
         </HStack>
         <Heading color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}>
           {deck.name}
-          <Tag ml={2} mt={2}>
-            {format?.rotation} Block
-          </Tag>
+          {format && <FormatTag format={format} />}
         </Heading>
         <DeckVariants deck={deck} />
       </Stack>
