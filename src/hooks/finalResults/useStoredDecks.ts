@@ -16,6 +16,7 @@ export const useStoredDecks = (options?: {
     deck: DeckTypeSchema;
     count: number;
   }[];
+  numberReported: number;
 } => {
   const { data: decks, isLoading } = useQuery({
     queryKey: ['decks-with-lists', options],
@@ -26,6 +27,7 @@ export const useStoredDecks = (options?: {
     return {
       data: [],
       isLoading,
+      numberReported: 0,
     };
 
   const deckCounts = getDeckCounts(decks, options?.shouldDrillDown);
@@ -33,6 +35,17 @@ export const useStoredDecks = (options?: {
   if (deckCounts) {
     const ret = Object.entries(deckCounts ?? {})
       ?.map(([deckId, count]) => {
+        if (deckId === 'unreported') {
+          return {
+            deck: {
+              id: 'unreported',
+              name: 'Unreported',
+              defined_pokemon: ['Unown'],
+            },
+            count,
+          };
+        }
+
         if (deckId.includes('supertype')) {
           const realId = deckId.replace('supertype', '');
           const supertype = decks?.find(({ deck_supertype }) => {
@@ -68,12 +81,14 @@ export const useStoredDecks = (options?: {
       });
     return {
       isLoading,
-      data: ret,
+      data: ret.filter(({ deck }) => deck.id !== 'unreported'),
+      numberReported: decks.filter((deck) => deck.deck_archetype).length,
     };
   }
 
   return {
     data: [],
     isLoading,
+    numberReported: 0,
   };
 };

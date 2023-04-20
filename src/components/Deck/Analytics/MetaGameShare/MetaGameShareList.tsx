@@ -6,6 +6,7 @@ import { getMetaDiff } from './helpers';
 import { NoDataDisplay } from './NoDataDisplay';
 import { CommonCard } from '../../../common/CommonCard';
 import { ComponentLoader } from '../../../common/ComponentLoader';
+import { useTournaments } from '../../../../hooks/tournaments';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
@@ -25,22 +26,24 @@ export const MetaGameShareList = memo(
   }) => {
     const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
-    let { data: decks, isLoading } = useStoredDecks({
+    const {
+      data: decks,
+      isLoading,
+      numberReported,
+    } = useStoredDecks({
       tournamentRange,
       shouldDrillDown,
     });
-
-    const numberOfPlayers = useMemo(
-      () => decks.reduce((acc, deck) => acc + deck.count, 0),
-      [decks]
+    const { data: tournaments } = useTournaments();
+    const currentTournament = tournaments?.find(
+      ({ id }) => id === `${tournamentRange[0]}`.padStart(7, '0')
     );
+
     return (
       <ShouldDrillDownMetaShareContext.Provider value={shouldDrillDown}>
         <CommonCard
-          header={
-            tournamentName ? `${tournamentName} Day Two Decks` : `Day Two Decks`
-          }
-          subheader={`${numberOfPlayers} Masters`}
+          header={tournamentName ? `${tournamentName} Decks` : `Decks`}
+          subheader={`${currentTournament?.players.masters} Masters, ${numberReported} known`}
           {...(shouldHideSlug
             ? {}
             : {

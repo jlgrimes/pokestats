@@ -64,9 +64,8 @@ export const fetchDecksWithLists = async (
   let query = supabase
     .from('Final Results')
     .select(
-      `deck_archetype(id,name,defined_pokemon),deck_supertype(id,name,defined_pokemon),tournament_id`
-    )
-    .not('deck_list', 'is', null);
+      `deck_archetype(id,name,defined_pokemon),deck_supertype(id,name,defined_pokemon),tournament_id,day2`
+    );
 
   if (tournamentRange) {
     query = query.eq('tournament_id', `${tournamentRange[0]}`.padStart(7, '0'));
