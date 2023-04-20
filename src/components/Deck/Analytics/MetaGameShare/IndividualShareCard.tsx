@@ -86,7 +86,7 @@ export const IndividualShareCard = memo(
       <Box gridColumn={'1/-1'}>
         <CommonCard>
           <Grid
-            gridTemplateColumns={'1.5fr 1fr 1fr'}
+            gridTemplateColumns={'auto 6rem 6rem'}
             paddingX={2}
             gap={2}
             alignItems='center'

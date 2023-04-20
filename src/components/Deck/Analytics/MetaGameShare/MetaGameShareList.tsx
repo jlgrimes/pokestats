@@ -67,8 +67,8 @@ export const MetaGameShareList = memo(
           ghost
         >
           <Stack>
-            <Grid gridTemplateColumns='1.1fr 1fr 1fr' paddingX={3}>
-              <HStack padding={2}>
+            <Grid gridTemplateColumns='auto 7rem 7rem' paddingX={3}>
+              <HStack>
                 <Text color='gray.500' fontWeight='semibold' fontSize='sm'>
                   Drilldown
                 </Text>
