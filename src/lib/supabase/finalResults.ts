@@ -52,6 +52,7 @@ export const loadFinalResults = async (
         deck_list: player.deck?.list ?? null,
         deck_archetype: player.deck?.id ?? null,
         deck_supertype: player.deck?.supertype ?? null,
+        day2: player.day2 ?? null,
       };
     });
 
