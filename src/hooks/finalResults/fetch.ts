@@ -59,7 +59,7 @@ export const useFinalResultsPlayers = () => {
 };
 
 export const fetchDecksWithLists = async (
-  tournamentRange?: number[]
+  tournamentId?:string
 ): Promise<FinalResultsDeckSchema[] | null> => {
   let query = supabase
     .from('Final Results')
@@ -67,8 +67,8 @@ export const fetchDecksWithLists = async (
       `deck_archetype(id,name,defined_pokemon),deck_supertype(id,name,defined_pokemon),tournament_id,day2`
     );
 
-  if (tournamentRange) {
-    query = query.eq('tournament_id', `${tournamentRange[0]}`.padStart(7, '0'));
+  if (tournamentId) {
+    query = query.eq('tournament_id', tournamentId);
   }
 
   const res = await query;

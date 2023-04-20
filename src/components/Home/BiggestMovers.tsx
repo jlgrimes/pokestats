@@ -8,11 +8,7 @@ export const BiggestMovers = memo(
     const tourneyId = parseInt(tournament.id);
     return (
       <CommonCard header='Big moves 🏃' slug={`/decks`} ghost>
-        <MetaGameShareList
-          tournamentRange={[tourneyId, tourneyId]}
-          sortByMoves
-          preview
-        />
+        <MetaGameShareList tournament={tournament} sortByMoves preview />
       </CommonCard>
     );
   }

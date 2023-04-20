@@ -7,22 +7,21 @@ import { NoDataDisplay } from './NoDataDisplay';
 import { CommonCard } from '../../../common/CommonCard';
 import { ComponentLoader } from '../../../common/ComponentLoader';
 import { useTournaments } from '../../../../hooks/tournaments';
+import { Tournament } from '../../../../../types/tournament';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
 export const MetaGameShareList = memo(
   ({
-    tournamentRange,
     sortByMoves,
     preview,
     shouldHideSlug,
-    tournamentName,
+    tournament,
   }: {
-    tournamentRange: number[];
+    tournament: Tournament;
     sortByMoves?: boolean;
     preview?: boolean;
     shouldHideSlug?: boolean;
-    tournamentName?: string;
   }) => {
     const [shouldDrillDown, setShouldDrillDown] = useState(false);
 
@@ -31,26 +30,19 @@ export const MetaGameShareList = memo(
       isLoading,
       numberReported,
     } = useStoredDecks({
-      tournamentRange,
+      tournamentId: tournament.id,
       shouldDrillDown,
     });
-    const { data: tournaments } = useTournaments();
-    const currentTournament = tournaments?.find(
-      ({ id }) => id === `${tournamentRange[0]}`.padStart(7, '0')
-    );
 
     return (
       <ShouldDrillDownMetaShareContext.Provider value={shouldDrillDown}>
         <CommonCard
-          header={tournamentName ? `${tournamentName} Decks` : `Decks`}
-          subheader={`${currentTournament?.players.masters} Masters, ${numberReported} known`}
+          header={tournament.name ? `${tournament.name} Decks` : `Decks`}
+          subheader={`${tournament.players.masters} Masters, ${numberReported} known`}
           {...(shouldHideSlug
             ? {}
             : {
-                slug: `/decks?tournament=${`${tournamentRange[0]}`.padStart(
-                  7,
-                  '0'
-                )}`,
+                slug: `/decks?tournament=${tournament.id}`,
               })}
           ghost
           rightElement={
@@ -82,7 +74,7 @@ export const MetaGameShareList = memo(
                         key={`${deck.name}${deck.id}`}
                         deck={deck}
                         count={count}
-                        tournamentRange={tournamentRange}
+                        tournament={tournament}
                       />
                     )
                   );

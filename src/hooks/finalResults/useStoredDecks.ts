@@ -8,7 +8,7 @@ import { fetchDecksWithLists } from './fetch';
 import { getDeckCounts } from './helpers';
 
 export const useStoredDecks = (options?: {
-  tournamentRange?: number[];
+  tournamentId?: string;
   shouldDrillDown?: boolean;
 }): {
   isLoading: boolean;
@@ -20,7 +20,7 @@ export const useStoredDecks = (options?: {
 } => {
   const { data: decks, isLoading } = useQuery({
     queryKey: ['decks-with-lists', options],
-    queryFn: () => fetchDecksWithLists(options?.tournamentRange),
+    queryFn: () => fetchDecksWithLists(options?.tournamentId),
   });
 
   if (!decks)

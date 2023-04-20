@@ -12,10 +12,7 @@ export default function DecksPage({ tournament }: { tournament: Tournament }) {
     <TournamentPageLayout tournament={tournament}>
       <Stack paddingX={4}>
         <Heading size={'md'}>Day 2 Metagame</Heading>
-        <MetaGameShareList
-          tournamentRange={[parseInt(tournament.id), parseInt(tournament.id)]}
-          sortByMoves={false}
-        />
+        <MetaGameShareList tournament={tournament} sortByMoves={false} />
       </Stack>
     </TournamentPageLayout>
   );

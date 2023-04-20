@@ -7,16 +7,10 @@ import { getMetaDiff, getMetaShare } from './helpers';
 import { ShouldDrillDownMetaShareContext } from './MetaGameShareList';
 
 export const ShareStat = memo(
-  ({
-    deck,
-    tournamentRange,
-  }: {
-    deck: DeckTypeSchema;
-    tournamentRange: number[];
-  }) => {
+  ({ deck, tournamentId }: { deck: DeckTypeSchema; tournamentId: string }) => {
     const shouldDrillDown = useContext(ShouldDrillDownMetaShareContext);
     const { data: decks } = useStoredDecks({
-      tournamentRange,
+      tournamentId,
       shouldDrillDown,
     });
 

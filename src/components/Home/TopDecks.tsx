@@ -5,12 +5,7 @@ import { MetaGameShareList } from '../Deck/Analytics/MetaGameShare/MetaGameShare
 
 export const TopDecks = memo(({ tournament }: { tournament: Tournament }) => {
   const tourneyId = parseInt(tournament.id);
-  return (
-    <MetaGameShareList
-      tournamentRange={[tourneyId, tourneyId]}
-      tournamentName={reallyShortenTournamentName(tournament)}
-    />
-  );
+  return <MetaGameShareList tournament={tournament} />;
 });
 
 TopDecks.displayName = 'TopDecks';

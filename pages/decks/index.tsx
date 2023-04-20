@@ -105,11 +105,13 @@ export default function DecksPage({
             ])
           }
         />
-        <MetaGameShareList
-          tournamentRange={tournamentRange}
-          sortByMoves={sortByMoves}
-          shouldHideSlug
-        />
+        {tournament && (
+          <MetaGameShareList
+            tournament={tournament}
+            sortByMoves={sortByMoves}
+            shouldHideSlug
+          />
+        )}
         <Box paddingX={4} paddingTop={4}>
           Includes all reported and RK9 confirmed decks for day two of the
           tournament. Reported decks may be inaccurate.

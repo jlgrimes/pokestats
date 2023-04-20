@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import {
   Card,
   CardBody,
@@ -11,22 +11,27 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
-import { Deck } from '../../../../../types/tournament';
+import { Deck, Tournament } from '../../../../../types/tournament';
 import { ShareStat } from './ShareStat';
 import { CommonCard } from '../../../common/CommonCard';
 import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
+import { FormatContext } from '../DeckAnalyticsContainer';
+import { useFormats } from '../../../../hooks/formats/formats';
+import { getTournamentFormat } from '../../../../hooks/formats/helpers';
 
 export const IndividualShareCard = memo(
   ({
     deck,
     count,
-    tournamentRange,
+    tournament,
   }: {
     deck: DeckTypeSchema;
     count: number;
-    tournamentRange: number[];
+    tournament: Tournament;
   }) => {
     const { colorMode } = useColorMode();
+    const { data: formats } = useFormats();
+    const format = getTournamentFormat(formats ?? [], tournament);
 
     return (
       <CommonCard>
@@ -38,10 +43,7 @@ export const IndividualShareCard = memo(
         >
           <Grid gridTemplateColumns='5.2rem auto'>
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-            <ShareStat
-              deck={{ ...deck, count }}
-              tournamentRange={tournamentRange}
-            />
+            <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
           </Grid>
           <LinkOverlay
             as={NextLink}
