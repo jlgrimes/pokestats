@@ -27,15 +27,10 @@ export const DeckFinishes = memo(
 
     const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();
-    const currentFormat = useContext(FormatContext);
-    const { data: formats } = useFormats();
 
-    const mostRecentFinishedTournaments = tournaments?.filter(
-      tournament =>
-        tournament.tournamentStatus === 'finished' &&
-        getTournamentFormat(formats ?? [], tournament)?.id === currentFormat?.id
-    );
-    const mostRecentTournamentId = mostRecentFinishedTournaments?.[0]?.id;
+    const mostRecentTournamentId = deckStandings?.find(
+      standing => standing.deck?.list
+    )?.tournamentId;
 
     return (
       <Stack spacing={1}>
@@ -48,6 +43,7 @@ export const DeckFinishes = memo(
                 : true
             )
             .map((standing, idx) => {
+              console.log(standing);
               const tournament = tournaments.find(
                 ({ id }) => id === standing.tournamentId
               ) as Tournament;
