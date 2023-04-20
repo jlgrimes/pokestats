@@ -66,7 +66,7 @@ export const ConversionStat = memo(
     return (
       <Stat
         stat={conversionRate}
-        label={`${getDay2Decks(deck, decks)} day two'd`}
+        label={`${getDay2Decks(deck, decks)} day two`}
         isInactive={isInactive}
       />
     );
