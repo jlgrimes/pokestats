@@ -63,13 +63,7 @@ export async function getStaticProps() {
     getMostRecentFinishedTournament(tournaments);
 
   await queryClient.prefetchQuery({
-    queryKey: [
-      'decks-with-lists',
-      {
-        tournamentId: mostRecentFinishedTournament.id,
-        shouldDrillDown: false,
-      },
-    ],
+    queryKey: ['decks-with-lists', mostRecentFinishedTournament.id, false],
     queryFn: () => fetchDecksWithLists(mostRecentFinishedTournament.id),
   });
 

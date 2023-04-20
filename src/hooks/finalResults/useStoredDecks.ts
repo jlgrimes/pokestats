@@ -12,6 +12,8 @@ import { getDeckCounts } from './helpers';
 export const useStoredDecks = (options?: {
   tournamentId?: string;
   shouldDrillDown?: boolean;
+  sortBy?: 'played' | 'converted';
+  sortOrder?: 'asc' | 'desc';
 }): {
   isLoading: boolean;
   data: {
@@ -21,8 +23,11 @@ export const useStoredDecks = (options?: {
   decks: FinalResultsDeckSchema[];
   numberReported: number;
 } => {
+  const sortBy = options?.sortBy ?? 'played';
+  const sortOrder = options?.sortOrder ?? 'desc';
+
   const { data: decks, isLoading } = useQuery({
-    queryKey: ['decks-with-lists', options],
+    queryKey: ['decks-with-lists', options?.tournamentId, options?.shouldDrillDown],
     queryFn: () => fetchDecksWithLists(options?.tournamentId),
   });
 
@@ -80,8 +85,16 @@ export const useStoredDecks = (options?: {
         };
       })
       .sort((a, b) => {
-        if (a.count < b.count) return 1;
-        if (b.count < a.count) return -1;
+        if (sortOrder === 'desc') {
+          if (a.count < b.count) return 1;
+          if (b.count < a.count) return -1;
+        }
+
+        if (sortOrder === 'asc') {
+          if (a.count > b.count) return 1;
+          if (b.count > a.count) return -1;
+        }
+
         return 0;
       });
     return {

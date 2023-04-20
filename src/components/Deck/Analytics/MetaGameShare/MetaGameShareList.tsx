@@ -1,5 +1,14 @@
 import { createContext, memo, useContext, useMemo, useState } from 'react';
-import { Box, Grid, HStack, Spinner, Switch, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Grid,
+  HStack,
+  Spinner,
+  Stack,
+  Switch,
+  Text,
+} from '@chakra-ui/react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
 import { getMetaDiff } from './helpers';
@@ -8,6 +17,8 @@ import { CommonCard } from '../../../common/CommonCard';
 import { ComponentLoader } from '../../../common/ComponentLoader';
 import { useTournaments } from '../../../../hooks/tournaments';
 import { Tournament } from '../../../../../types/tournament';
+import { FaSortAmountUp } from 'react-icons/fa';
+import { MetaGameSortToggles } from './MetaGameSortToggles';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
@@ -24,6 +35,13 @@ export const MetaGameShareList = memo(
     shouldHideSlug?: boolean;
   }) => {
     const [shouldDrillDown, setShouldDrillDown] = useState(false);
+    const [sort, setSort] = useState<{
+      sortBy: 'played' | 'converted';
+      sortOrder: 'asc' | 'desc';
+    }>({
+      sortBy: 'played',
+      sortOrder: 'desc',
+    });
 
     const {
       data: decks,
@@ -32,6 +50,8 @@ export const MetaGameShareList = memo(
     } = useStoredDecks({
       tournamentId: tournament.id,
       shouldDrillDown,
+      sortBy: sort.sortBy,
+      sortOrder: sort.sortOrder,
     });
 
     return (
@@ -64,22 +84,29 @@ export const MetaGameShareList = memo(
           ) : decks.length === 0 ? (
             <NoDataDisplay />
           ) : (
-            <Grid gridTemplateColumns={'1fr 1fr'} gap={2} rowGap={2}>
-              {decks
-                .slice(0, preview ? 4 : undefined)
-                .map(({ deck, count }) => {
-                  return (
-                    deck?.id && (
-                      <IndividualShareCard
-                        key={`${deck.name}${deck.id}`}
-                        deck={deck}
-                        count={count}
-                        tournament={tournament}
-                      />
-                    )
-                  );
-                })}
-            </Grid>
+            <Stack>
+              <MetaGameSortToggles
+                sortBy={sort.sortBy}
+                sortOrder={sort.sortOrder}
+                setSort={(sortBy, sortOrder) => setSort({ sortBy, sortOrder })}
+              />
+              <Grid gridTemplateColumns={'1fr 1fr'} gap={2} rowGap={2}>
+                {decks
+                  .slice(0, preview ? 4 : undefined)
+                  .map(({ deck, count }) => {
+                    return (
+                      deck?.id && (
+                        <IndividualShareCard
+                          key={`${deck.name}${deck.id}`}
+                          deck={deck}
+                          count={count}
+                          tournament={tournament}
+                        />
+                      )
+                    );
+                  })}
+              </Grid>
+            </Stack>
           )}
         </CommonCard>
       </ShouldDrillDownMetaShareContext.Provider>
