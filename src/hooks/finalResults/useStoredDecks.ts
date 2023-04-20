@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import { Deck } from '../../../types/tournament';
 import {
   DeckTypeSchema,
   useArchetypes,
   useSupertypes,
 } from '../deckArchetypes';
 import { fetchDecksWithLists } from './fetch';
+import { FinalResultsDeckSchema } from './final-results-schema';
 import { getDeckCounts } from './helpers';
 
 export const useStoredDecks = (options?: {
@@ -16,6 +18,7 @@ export const useStoredDecks = (options?: {
     deck: DeckTypeSchema;
     count: number;
   }[];
+  decks: FinalResultsDeckSchema[];
   numberReported: number;
 } => {
   const { data: decks, isLoading } = useQuery({
@@ -26,6 +29,7 @@ export const useStoredDecks = (options?: {
   if (!decks)
     return {
       data: [],
+      decks: [],
       isLoading,
       numberReported: 0,
     };
@@ -82,6 +86,7 @@ export const useStoredDecks = (options?: {
       });
     return {
       isLoading,
+      decks,
       data: ret.filter(({ deck }) => deck.id !== 'unreported'),
       numberReported: decks.filter(deck => deck.deck_archetype).length,
     };
@@ -89,6 +94,7 @@ export const useStoredDecks = (options?: {
 
   return {
     data: [],
+    decks: [],
     isLoading,
     numberReported: 0,
   };

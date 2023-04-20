@@ -2,6 +2,7 @@ export interface FinalResultsDeckSchema {
   deck_archetype: Deck;
   deck_supertype: Deck;
   tournament_id: string;
+  day2?: boolean;
 }
 
 export interface FinalResultsFilters {

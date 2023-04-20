@@ -18,6 +18,7 @@ import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 import { FormatContext } from '../DeckAnalyticsContainer';
 import { useFormats } from '../../../../hooks/formats/formats';
 import { getTournamentFormat } from '../../../../hooks/formats/helpers';
+import { ConversionStat } from './ConversionStat';
 
 export const IndividualShareCard = memo(
   ({
@@ -35,40 +36,43 @@ export const IndividualShareCard = memo(
 
     return (
       <CommonCard>
-        <Stack
-          direction={'column'}
-          alignItems={'baseline'}
-          spacing={4}
-          padding={2}
+        <Grid
+          gridTemplateColumns='2fr 1fr 1fr'
+          paddingX={2}
+          alignItems='center'
         >
-          <Grid gridTemplateColumns='5.2rem auto'>
+          <Stack>
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-            <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
-          </Grid>
-          <LinkOverlay
-            as={NextLink}
-            href={
-              {
-                pathname:
-                  deck.type === 'supertype'
-                    ? `/decks/${deck.id}`
-                    : `/decks/${
-                        deck.supertype?.id && deck.supertype.id > 0
-                          ? deck.supertype.id
-                          : 'other'
-                      }/${deck.id}`,
-                query: { format: format?.id },
-              } as any
-            }
-          >
-            <Heading
-              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
-              size={'sm'}
+            <LinkOverlay
+              as={NextLink}
+              href={
+                {
+                  pathname:
+                    deck.type === 'supertype'
+                      ? `/decks/${deck.id}`
+                      : `/decks/${
+                          deck.supertype?.id && deck.supertype.id > 0
+                            ? deck.supertype.id
+                            : 'other'
+                        }/${deck.id}`,
+                  query: { format: format?.id },
+                } as any
+              }
             >
-              {deck.name}
-            </Heading>
-          </LinkOverlay>
-        </Stack>
+              <Heading
+                color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}
+                size={'sm'}
+              >
+                {deck.name}
+              </Heading>
+            </LinkOverlay>
+          </Stack>
+          <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
+          <ConversionStat
+            deck={{ ...deck, count }}
+            tournamentId={tournament.id}
+          />
+        </Grid>
       </CommonCard>
     );
   }
