@@ -1,15 +1,17 @@
 import { Stack, StackItem } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { createContext, useEffect, useState } from 'react';
 import { Deck } from '../../../../types/tournament';
 import {
   FormatSchema,
-  useCurrentFormat,
+  useFormats,
   useMostRecentFormat,
 } from '../../../hooks/formats/formats';
 import { BackToDecksButton } from './BackToDecksButton';
 import { DeckHeader } from './DeckHeader';
 
-export const FormatContext = createContext<FormatSchema | null | undefined>(undefined);
+export const FormatContext =
+  createContext<FormatSchema | null | undefined>(undefined);
 
 export const DeckAnalyticsContainer = ({
   children,
@@ -20,12 +22,21 @@ export const DeckAnalyticsContainer = ({
   deck: Deck;
   compactTitle?: boolean;
 }) => {
+  const { data: formats } = useFormats();
   const mostRecentFormat = useMostRecentFormat();
   const [viewedFormat, setViewedFormat] = useState<FormatSchema | null>();
+  const router = useRouter();
 
   useEffect(() => {
-    setViewedFormat(mostRecentFormat);
-  }, [mostRecentFormat]);
+    const foundFormat = formats?.find(
+      ({ id }) => id === parseInt(router.query.format as string)
+    );
+    if (foundFormat) {
+      setViewedFormat(foundFormat);
+    } else {
+      setViewedFormat(mostRecentFormat);
+    }
+  }, [formats, router.query.format, mostRecentFormat]);
 
   return (
     <FormatContext.Provider value={viewedFormat}>

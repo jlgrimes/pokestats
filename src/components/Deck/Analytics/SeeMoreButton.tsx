@@ -23,7 +23,9 @@ export const SeeMoreButton = ({
         size='md'
         variant='ghost'
         onClick={() =>
-          router.push(absolute ? slug : router.asPath + '/' + slug)
+          router.push(
+            absolute ? slug : router.asPath.split('?')[0] + '/' + slug
+          )
         }
         rightIcon={<FaArrowRight />}
         isDisabled={loading}
