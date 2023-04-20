@@ -1,6 +1,7 @@
 import { Box, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
 import { getMostRecentFinishedTournament } from '../../hooks/tournaments';
+import { Footer } from '../Footer';
 import { AppLogo } from '../Layout/AppBar/AppLogo';
 import { HomeIcons } from './HomeIcons';
 import { RecentTournaments } from './RecentTournaments';
@@ -31,6 +32,7 @@ export const HomePage = (props: HomePageProps) => {
       {mostRecentFinishedTournament && (
         <TopDecks tournament={mostRecentFinishedTournament} />
       )}
+      <Footer />
     </Stack>
   );
 };
