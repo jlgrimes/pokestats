@@ -1,14 +1,20 @@
 import { Box, Stack } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
+import { getMostRecentFinishedTournament } from '../../hooks/tournaments';
 import { AppLogo } from '../Layout/AppBar/AppLogo';
 import { HomeIcons } from './HomeIcons';
 import { RecentTournaments } from './RecentTournaments';
+import { TopDecks } from './TopDecks';
 
 export interface HomePageProps {
   tournaments: Tournament[];
 }
 
 export const HomePage = (props: HomePageProps) => {
+  const mostRecentFinishedTournament = getMostRecentFinishedTournament(
+    props.tournaments
+  );
+
   return (
     <Stack>
       <Stack spacing={0}>
@@ -22,7 +28,9 @@ export const HomePage = (props: HomePageProps) => {
         style={{ display: 'block' }}
         format='auto'
       /> */}
-      {/* <TopDecks tournament={mostRecentFinishedTournament} /> */}
+      {mostRecentFinishedTournament && (
+        <TopDecks tournament={mostRecentFinishedTournament} />
+      )}
     </Stack>
   );
 };

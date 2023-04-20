@@ -7,32 +7,32 @@ export const getDeckCounts = (
   shouldDrillDown?: boolean
 ) =>
   decks?.reduce((acc: Record<string, number>, curr) => {
-    if (!shouldDrillDown && curr.deck_supertype) {
-      if (acc[`supertype${curr.deck_supertype}`]) {
+    if (!shouldDrillDown && curr.deck_supertype?.id) {
+      if (acc[`supertype${curr.deck_supertype.id}`]) {
         return {
           ...acc,
-          [`supertype${curr.deck_supertype}`]:
-            acc[`supertype${curr.deck_supertype}`] + 1,
+          [`supertype${curr.deck_supertype.id}`]:
+            acc[`supertype${curr.deck_supertype.id}`] + 1,
         };
       }
 
       return {
         ...acc,
-        [`supertype${curr.deck_supertype}`]: 1,
+        [`supertype${curr.deck_supertype.id}`]: 1,
       };
     }
 
-    if (acc[`archetype${curr.deck_archetype}`]) {
+    if (acc[`archetype${curr.deck_archetype.id}`]) {
       return {
         ...acc,
-        [`archetype${curr.deck_archetype}`]:
-          acc[`archetype${curr.deck_archetype}`] + 1,
+        [`archetype${curr.deck_archetype.id}`]:
+          acc[`archetype${curr.deck_archetype.id}`] + 1,
       };
     }
 
     return {
       ...acc,
-      [`archetype${curr.deck_archetype}`]: 1,
+      [`archetype${curr.deck_archetype.id}`]: 1,
     };
   }, {});
 

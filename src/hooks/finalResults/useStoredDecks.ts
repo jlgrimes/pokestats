@@ -17,15 +17,12 @@ export const useStoredDecks = (options?: {
     count: number;
   }[];
 } => {
-  const { data: archetypes } = useArchetypes();
-  const { data: supertypes } = useSupertypes();
-
   const { data: decks, isLoading } = useQuery({
     queryKey: ['decks-with-lists', options],
     queryFn: () => fetchDecksWithLists(options?.tournamentRange),
   });
 
-  if (!decks || !archetypes)
+  if (!decks)
     return {
       data: [],
       isLoading,
@@ -40,9 +37,11 @@ export const useStoredDecks = (options?: {
           const realId = deckId.replace('supertype', '');
 
           return {
-            deck: supertypes?.find(({ id }) => {
-              return parseInt(realId) === id;
-            }) as DeckTypeSchema,
+            deck: decks?.find(({ deck_supertype }) => {
+              return (
+                deck_supertype?.id && parseInt(realId) === deck_supertype.id
+              );
+            })?.deck_supertype as DeckTypeSchema,
             count,
           };
         }
@@ -50,9 +49,9 @@ export const useStoredDecks = (options?: {
         const realId = deckId.replace('archetype', '');
 
         return {
-          deck: archetypes?.find(({ id }) => {
-            return parseInt(realId) === id;
-          }) as DeckTypeSchema,
+          deck: decks?.find(({ deck_archetype }) => {
+            return deck_archetype?.id && parseInt(realId) === deck_archetype.id;
+          })?.deck_archetype as DeckTypeSchema,
           count,
         };
       })

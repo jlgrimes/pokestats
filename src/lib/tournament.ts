@@ -21,9 +21,11 @@ export const reallyShortenTournamentName = (tournament: Tournament) => {
     .replace('Pokémon', '')
     .replace('Regional Championships', 'Regionals')
     .replace('Regional Championship', 'Regionals')
-    .replace('North America International Championship', 'NAIC')
+    .replace('North America International Championships', 'NAIC')
     .replace('Latin America International Championship', 'NAIC')
     .replace('North America International Championship', 'NAIC')
+    .replace('Europe International Championships', 'EUIC')
+    .replace('Europe International Championship', 'EUIC')
     .replace('World Championships', 'Worlds')
     .replace('Special Championship', 'SPE')
     .trim();
@@ -99,7 +101,10 @@ export const getTournamentRoundSchema = (numberOfPlayers: number) =>
       numberOfPlayers < schema.playerRange[1]
   );
 
-export const ifPlayerDay2 = (player: Standing | Player, tournament: Tournament) => {
+export const ifPlayerDay2 = (
+  player: Standing | Player,
+  tournament: Tournament
+) => {
   if (!tournament.players.masters || !tournament.roundNumbers.masters)
     return false;
 

@@ -10,8 +10,6 @@ import {
 } from './final-results-schema';
 import {
   addUserReportedDecksToFinalResults,
-  filterFinalResultsByTournament,
-  getDeckCounts,
   mapFinalResultsToStandings,
 } from './helpers';
 
@@ -41,10 +39,6 @@ export const fetchUniqueDecks = async () => {
 
   if (!res.data) return [];
 
-  const deckCounts = getDeckCounts(
-    res.data.map(({ deck_archetype }) => deck_archetype)
-  );
-
   const uniqueDecks = Array.from(new Set(res.data ?? []));
   return uniqueDecks;
 };
@@ -67,15 +61,18 @@ export const useFinalResultsPlayers = () => {
 export const fetchDecksWithLists = async (
   tournamentRange?: number[]
 ): Promise<FinalResultsDeckSchema[] | null> => {
-  const res = await supabase
+  let query = supabase
     .from('Final Results')
-    .select(`deck_archetype,deck_supertype,tournament_id`)
+    .select(
+      `deck_archetype(id,name,defined_pokemon),deck_supertype(id,name,defined_pokemon),tournament_id`
+    )
     .not('deck_list', 'is', null);
 
-  if (res.data && tournamentRange) {
-    return filterFinalResultsByTournament(res.data, tournamentRange);
+  if (tournamentRange) {
+    query = query.eq('tournament_id', `${tournamentRange[0]}`.padStart(7, '0'));
   }
 
+  const res = await query;
   return res.data;
 };
 

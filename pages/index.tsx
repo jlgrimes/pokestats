@@ -8,11 +8,15 @@ import { HomePage } from '../src/components/Home/HomePage';
 import { RecentTournaments } from '../src/components/Home/RecentTournaments';
 import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
 import { getTournaments } from '../src/components/TournamentList/helpers';
-import { fetchFinalResults } from '../src/hooks/finalResults/fetch';
+import {
+  fetchDecksWithLists,
+  fetchFinalResults,
+} from '../src/hooks/finalResults/fetch';
 import { TournamentOrSet } from '../src/hooks/sets';
 import { fetchTournamentMetadata } from '../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
+  getMostRecentFinishedTournament,
   getTournamentsThatNeedToBePatched,
   usePatchedTournaments,
 } from '../src/hooks/tournaments';
@@ -53,6 +57,24 @@ export async function getStaticProps() {
       },
     ],
     queryFn: () => fetchFinalResults({ placing: 1 }),
+  });
+
+  const mostRecentFinishedTournament =
+    getMostRecentFinishedTournament(tournaments);
+  const tournamentRange = [
+    parseInt(mostRecentFinishedTournament.id),
+    parseInt(mostRecentFinishedTournament.id),
+  ];
+
+  await queryClient.prefetchQuery({
+    queryKey: [
+      'decks-with-lists',
+      {
+        tournamentRange,
+        shouldDrillDown: false,
+      },
+    ],
+    queryFn: () => fetchDecksWithLists(tournamentRange),
   });
 
   return {

@@ -8,7 +8,7 @@ export interface RecentTournamentsProps {
 }
 
 export const RecentTournaments = memo((props: RecentTournamentsProps) => (
-  <CommonCard slug='/tournaments' ghost>
+  <CommonCard header='Tournaments' slug='/tournaments' ghost>
     <TournamentList tournaments={props.tournaments} mostRecent />
   </CommonCard>
 ));

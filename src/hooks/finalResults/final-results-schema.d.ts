@@ -1,6 +1,6 @@
 export interface FinalResultsDeckSchema {
-  deck_archetype: number;
-  deck_supertype: number;
+  deck_archetype: Deck;
+  deck_supertype: Deck;
   tournament_id: string;
 }
 
