@@ -44,7 +44,15 @@ export const getConversionRate = (
 };
 
 export const ConversionStat = memo(
-  ({ deck, tournamentId }: { deck: DeckTypeSchema; tournamentId: string }) => {
+  ({
+    deck,
+    tournamentId,
+    isInactive,
+  }: {
+    deck: DeckTypeSchema;
+    tournamentId: string;
+    isInactive?: boolean;
+  }) => {
     const shouldDrillDown = useContext(ShouldDrillDownMetaShareContext);
     const { decks } = useStoredDecks({
       tournamentId,
@@ -59,6 +67,7 @@ export const ConversionStat = memo(
       <Stat
         stat={conversionRate}
         label={`${getDay2Decks(deck, decks)} day two'd`}
+        isInactive={isInactive}
       />
     );
   }

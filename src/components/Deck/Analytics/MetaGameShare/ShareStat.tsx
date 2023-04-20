@@ -6,7 +6,15 @@ import { getMetaShare } from './helpers';
 import { ShouldDrillDownMetaShareContext } from './MetaGameShareList';
 
 export const ShareStat = memo(
-  ({ deck, tournamentId }: { deck: DeckTypeSchema; tournamentId: string }) => {
+  ({
+    deck,
+    tournamentId,
+    isInactive,
+  }: {
+    deck: DeckTypeSchema;
+    tournamentId: string;
+    isInactive?: boolean;
+  }) => {
     const shouldDrillDown = useContext(ShouldDrillDownMetaShareContext);
     const { data: decks } = useStoredDecks({
       tournamentId,
@@ -24,6 +32,7 @@ export const ShareStat = memo(
             ? 'played'
             : `${deck.count} played`
         }
+        isInactive={isInactive}
       />
     );
   }

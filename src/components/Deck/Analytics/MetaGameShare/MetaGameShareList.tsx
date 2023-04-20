@@ -101,6 +101,7 @@ export const MetaGameShareList = memo(
                           deck={deck}
                           count={count}
                           tournament={tournament}
+                          sortBy={sort.sortBy}
                         />
                       )
                     );

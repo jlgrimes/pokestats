@@ -26,10 +26,12 @@ export const IndividualShareCard = memo(
     deck,
     count,
     tournament,
+    sortBy,
   }: {
     deck: DeckTypeSchema;
     count: number;
     tournament: Tournament;
+    sortBy: 'played' | 'converted';
   }) => {
     const { colorMode } = useColorMode();
     const { data: formats } = useFormats();
@@ -54,7 +56,11 @@ export const IndividualShareCard = memo(
             alignItems='center'
           >
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-            <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
+            <ShareStat
+              deck={{ ...deck, count }}
+              tournamentId={tournament.id}
+              isInactive={true}
+            />
             <LinkOverlay
               gridColumn={'1/-1'}
               as={NextLink}
@@ -104,10 +110,15 @@ export const IndividualShareCard = memo(
                 </Heading>
               </LinkOverlay>
             </Stack>
-            <ShareStat deck={{ ...deck, count }} tournamentId={tournament.id} />
+            <ShareStat
+              deck={{ ...deck, count }}
+              tournamentId={tournament.id}
+              isInactive={sortBy !== 'played'}
+            />
             <ConversionStat
               deck={{ ...deck, count }}
               tournamentId={tournament.id}
+              isInactive={sortBy !== 'converted'}
             />
           </Grid>
         </CommonCard>
