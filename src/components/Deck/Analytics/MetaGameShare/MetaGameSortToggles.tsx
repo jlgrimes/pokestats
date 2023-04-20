@@ -25,7 +25,7 @@ export const MetaGameSortToggles = (props: MetaGameSortTogglesProps) => {
       <Box />
       <Button
         color={props.sortBy === 'played' ? activeColor : inactiveColor}
-        size='xs'
+        size='sm'
         variant='ghost'
         leftIcon={
           props.sortBy === 'played' && props.sortOrder === 'asc' ? (
@@ -46,7 +46,7 @@ export const MetaGameSortToggles = (props: MetaGameSortTogglesProps) => {
       </Button>
       <Button
         color={props.sortBy === 'converted' ? activeColor : inactiveColor}
-        size='xs'
+        size='sm'
         variant='ghost'
         leftIcon={
           props.sortBy === 'converted' && props.sortOrder === 'asc' ? (
