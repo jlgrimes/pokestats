@@ -34,8 +34,7 @@ export const IndividualShareCard = memo(
           direction={'column'}
           alignItems={'baseline'}
           spacing={4}
-          paddingX={4}
-          paddingY={2}
+          padding={2}
         >
           <Grid gridTemplateColumns='5.2rem auto'>
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />

@@ -69,7 +69,7 @@ export const MetaGameShareList = memo(
           ) : decks.length === 0 ? (
             <NoDataDisplay />
           ) : (
-            <Grid gridTemplateColumns={'1fr 1fr'}>
+            <Grid gridTemplateColumns={'1fr 1fr'} gap={2} rowGap={2}>
               {decks
                 .slice(0, preview ? 4 : undefined)
                 .map(({ deck, count }) => {
