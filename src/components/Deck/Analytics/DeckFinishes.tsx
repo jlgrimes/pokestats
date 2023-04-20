@@ -11,6 +11,8 @@ import { Fragment, memo, useContext } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
+import { useFormats } from '../../../hooks/formats/formats';
+import { getTournamentFormat } from '../../../hooks/formats/helpers';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';
@@ -25,11 +27,15 @@ export const DeckFinishes = memo(
 
     const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();
+    const currentFormat = useContext(FormatContext);
+    const { data: formats } = useFormats();
 
     const mostRecentFinishedTournaments = tournaments?.filter(
-      ({ tournamentStatus }) => tournamentStatus === 'finished'
+      tournament =>
+        tournament.tournamentStatus === 'finished' &&
+        getTournamentFormat(formats ?? [], tournament)?.id === currentFormat?.id
     );
-    const mostRecentTournamentId = mostRecentFinishedTournaments?.[0].id;
+    const mostRecentTournamentId = mostRecentFinishedTournaments?.[0]?.id;
 
     return (
       <Stack spacing={1}>
