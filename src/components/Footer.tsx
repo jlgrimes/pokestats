@@ -1,14 +1,26 @@
-import { HStack, Icon, IconButton, Link, Stack, Text } from '@chakra-ui/react';
+import {
+  HStack,
+  Icon,
+  IconButton,
+  Link,
+  Stack,
+  Text,
+  useColorMode,
+} from '@chakra-ui/react';
 import { FaGithub, FaTwitter } from 'react-icons/fa';
 import NextLink from 'next/link';
 import { useTwitterLink } from '../hooks/twitter';
 
 export const Footer = () => {
   const myTwitter = useTwitterLink('jgrimesey');
+  const { colorMode } = useColorMode();
 
   return (
     <Stack padding={6} justifyContent={'center'} alignItems='center'>
-      <Text fontSize={'sm'} color='gray.700'>
+      <Text
+        fontSize={'sm'}
+        color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
+      >
         Made by Jared Grimes
       </Text>
       <HStack spacing={4}>
