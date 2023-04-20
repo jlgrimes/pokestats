@@ -29,7 +29,13 @@ export const IndividualShareCard = memo(
 
     return (
       <CommonCard>
-        <Stack direction={'column'} alignItems={'baseline'}>
+        <Stack
+          direction={'column'}
+          alignItems={'baseline'}
+          spacing={4}
+          paddingX={4}
+          paddingY={2}
+        >
           <HStack>
             <SpriteDisplay pokemonNames={deck.defined_pokemon} />
             <ShareStat
