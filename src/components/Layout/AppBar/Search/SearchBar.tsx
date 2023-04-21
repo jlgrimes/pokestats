@@ -109,73 +109,81 @@ export const SearchBar = (props: SearchBarProps) => {
     [names, playerProfiles, additionalNames]
   );
 
-  const searchResults: SearchResultSchema[] = [
-    ...getRelevantSearchResults(
-      playerList,
-      'player',
-      player => player.name,
-      searchQuery
-    ),
-    ...getRelevantSearchResults(
-      playerList,
-      'player',
-      player => player.username,
-      searchQuery
-    ),
-    ...getRelevantSearchResults(
-      tournaments,
-      'tournament',
-      tournament => tournament.name,
-      searchQuery
-    ),
-    ...getRelevantSearchResults(
-      archetypes,
-      'archetype',
-      archetype => archetype.name,
-      searchQuery
-    ),
-    ...getRelevantSearchResults(
-      archetypes,
-      'archetype',
-      archetype => archetype.supertype?.name,
-      searchQuery
-    ),
-    ...getRelevantSearchResults(
-      supertypes,
-      'supertype',
-      supertype => supertype.name,
-      searchQuery
-    ),
-  ];
-  const optimizedSearchResults = searchResults
-    .sort((a, b) => {
-      const trueLength = searchQuery.length;
+  const searchResults: SearchResultSchema[] = useMemo(
+    () => [
+      ...getRelevantSearchResults(
+        playerList,
+        'player',
+        player => player.name,
+        searchQuery
+      ),
+      ...getRelevantSearchResults(
+        playerList,
+        'player',
+        player => player.username,
+        searchQuery
+      ),
+      ...getRelevantSearchResults(
+        tournaments,
+        'tournament',
+        tournament => tournament.name,
+        searchQuery
+      ),
+      ...getRelevantSearchResults(
+        archetypes,
+        'archetype',
+        archetype => archetype.name,
+        searchQuery
+      ),
+      ...getRelevantSearchResults(
+        archetypes,
+        'archetype',
+        archetype => archetype.supertype?.name,
+        searchQuery
+      ),
+      ...getRelevantSearchResults(
+        supertypes,
+        'supertype',
+        supertype => supertype.name,
+        searchQuery
+      ),
+    ],
+    [archetypes, playerList, searchQuery, supertypes, tournaments]
+  );
 
-      if (!a.match) return 1;
-      if (!b.match) return -1;
+  const optimizedSearchResults = useMemo(
+    () =>
+      searchResults
+        .sort((a, b) => {
+          const trueLength = searchQuery.length;
 
-      if (
-        Math.abs(a.match.length - trueLength) <
-        Math.abs(b.match.length - trueLength)
-      )
-        return -1;
-      if (
-        Math.abs(a.match.length - trueLength) >
-        Math.abs(b.match.length - trueLength)
-      )
-        return 1;
-      return 0;
-    })
-    .filter((result, idx) => {
-      return !searchResults
-        .slice(0, idx)
-        .some((existingResult, existingIdx) => {
-          return (
-            existingResult.type === result.type &&
-            existingResult.data.id === result.data.id
-          );
-        });
-    });
+          if (!a.match) return 1;
+          if (!b.match) return -1;
+
+          if (
+            Math.abs(a.match.length - trueLength) <
+            Math.abs(b.match.length - trueLength)
+          )
+            return -1;
+          if (
+            Math.abs(a.match.length - trueLength) >
+            Math.abs(b.match.length - trueLength)
+          )
+            return 1;
+          return 0;
+        })
+        .filter((result, idx) => {
+          return !searchResults
+            .slice(0, idx)
+            .some((existingResult, existingIdx) => {
+              return (
+                existingResult.type === result.type &&
+                existingResult.data.id === result.data.id
+              );
+            });
+        }),
+    [searchQuery.length, searchResults]
+  );
 
   const shouldShowSearchResults = optimizedSearchResults.length > 0;
 
