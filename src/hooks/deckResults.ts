@@ -98,7 +98,7 @@ export const fetchDeckResults = async (
 };
 
 export const calculateWinPercentage = (deck: DeckTypeSchema) =>
-  ((deck.data?.wins ?? 0 * 3) + (deck.data?.ties ?? 0)) / (deck.count ?? 1);
+  ((deck.data?.wins ?? 0) + (deck.data?.ties ?? 0) / 2) / (deck.count ?? 1);
 
 export const useDeckResults = (
   options: FetchDeckResultsOptions,
