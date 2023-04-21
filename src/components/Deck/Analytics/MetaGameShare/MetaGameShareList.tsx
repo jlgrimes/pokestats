@@ -9,6 +9,9 @@ import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
+export const shouldHide = (deck: DeckTypeSchema, num?: number) =>
+  !!(deck.count && deck.count <= (num ?? 20)) || deck.name === 'Other';
+
 export const MetaGameShareList = memo(
   ({
     sortByMoves,
@@ -42,15 +45,12 @@ export const MetaGameShareList = memo(
       sortOrder: sort.sortOrder,
     });
 
-    const shouldHide = (deck: DeckTypeSchema) =>
-      !!(deck.count && deck.count <= 20) || deck.name === 'Other';
-
     const columns: DeckCompareColumnType<'played' | 'converted'>[] = [
       {
         name: 'played',
         calculation: (deck, decks) => getMetaShare(deck, decks),
         label: deck => `${deck.count} played`,
-        shouldHide,
+        shouldHide: (deck: DeckTypeSchema) => shouldHide(deck),
       },
       ...(!tournament.name.includes(' Cup')
         ? [
@@ -60,7 +60,7 @@ export const MetaGameShareList = memo(
                 getConversionRate(deck, allDecks),
               label: (deck: DeckTypeSchema) =>
                 `${getDay2Decks(deck, allDecks)} day two`,
-              shouldHide,
+              shouldHide: (deck: DeckTypeSchema) => shouldHide(deck),
             },
           ]
         : []),
@@ -82,6 +82,7 @@ export const MetaGameShareList = memo(
         setSort={(sortBy: 'played' | 'converted', sortOrder: 'asc' | 'desc') =>
           setSort({ sortBy, sortOrder })
         }
+        shouldHideDeck={deck => shouldHide(deck)}
       />
     );
   }

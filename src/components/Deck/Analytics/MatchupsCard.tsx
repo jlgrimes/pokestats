@@ -9,7 +9,7 @@ import {
 import { DeckCompareColumnType } from '../../common/DeckCompare/DeckCompareSortToggles';
 import { DeckCompareTable } from '../../common/DeckCompare/DeckCompareTable';
 import { FormatContext } from './DeckAnalyticsContainer';
-import { DeckFinishes } from './DeckFinishes';
+import { shouldHide } from './MetaGameShare/MetaGameShareList';
 
 interface MatchupsCardProps {
   deck: Deck;
@@ -38,8 +38,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
       name: 'win rate',
       label: (deck: DeckTypeSchema) => `${deck.data?.wins} won`,
       calculation: calculateWinPercentage,
-      shouldHide: (deck: DeckTypeSchema) =>
-        !!(deck.name === 'Other' || (deck.count && deck.count <= 10)),
+      shouldHide: (deck: DeckTypeSchema) => shouldHide(deck, 10),
     },
   ];
 
@@ -58,6 +57,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
         setSort({ sortBy, sortOrder })
       }
       columns={columns}
+      shouldHideDeck={(deck: DeckTypeSchema) => shouldHide(deck, 10)}
     />
   );
 

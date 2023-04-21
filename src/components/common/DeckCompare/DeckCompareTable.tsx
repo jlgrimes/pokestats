@@ -21,6 +21,7 @@ export interface DeckCompareTableProps<T>
   setShouldDrillDown: (shouldDrillDown: boolean) => void;
   isLoading: boolean;
   format: number;
+  shouldHideDeck?: (deck: DeckTypeSchema) => boolean;
 }
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
@@ -67,20 +68,24 @@ export const DeckCompareTable = <T extends string>(
             <NoDataDisplay />
           ) : (
             <Grid gridTemplateColumns={'1fr 1fr'} gap={2} rowGap={2}>
-              {props.decks.map(deck => {
-                return (
-                  deck?.id && (
-                    <IndividualShareCard
-                      key={`${deck.name}${deck.id}`}
-                      decks={props.decks}
-                      deck={deck}
-                      columns={props.columns}
-                      sortBy={props.sortBy}
-                      format={props.format}
-                    />
-                  )
-                );
-              })}
+              {props.decks
+                .filter(
+                  deck => !(props.shouldHideDeck && props.shouldHideDeck(deck))
+                )
+                .map(deck => {
+                  return (
+                    deck?.id && (
+                      <IndividualShareCard
+                        key={`${deck.name}${deck.id}`}
+                        decks={props.decks}
+                        deck={deck}
+                        columns={props.columns}
+                        sortBy={props.sortBy}
+                        format={props.format}
+                      />
+                    )
+                  );
+                })}
             </Grid>
           )}
         </Stack>
