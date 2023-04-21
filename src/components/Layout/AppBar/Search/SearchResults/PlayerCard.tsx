@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { CombinedPlayerProfile } from '../../../../../../types/player';
 import { FollowButton } from '../../../../Social/FollowButton';
+import { SingleSprite } from '../../../../common/SpriteDisplay/SingleSprite';
 
 interface PlayerResultProps {
   player: CombinedPlayerProfile;
@@ -36,6 +37,10 @@ export const PlayerCard = (props: PlayerResultProps) => {
                 </Text>
               </Stack>
             </LinkOverlay>
+            {props.player.username === 'null' && <SingleSprite name='type-null' />}
+            {props.player.username === 'jolt' && <SingleSprite name='jolteon' />}
+            {props.player.username === 'noah' && <SingleSprite name='trubbish' />}
+            {props.player.username === 'jared' && <SingleSprite name='arceus' />}
             <Box onClick={e => e.stopPropagation()}>
               <FollowButton playerName={props.player.name} />
             </Box>
