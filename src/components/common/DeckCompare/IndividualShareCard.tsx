@@ -38,24 +38,46 @@ export const IndividualShareCard = memo(
             gap={2}
             alignItems='center'
           >
-            <Grid gridTemplateColumns={'1.5rem auto'} gap={2} rowGap={2}>
-              <Box />
-              <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
-              <Heading color='gray.400' fontSize={14} textTransform='uppercase'>
-                vs
-              </Heading>
-              <LinkOverlay
-                as={NextLink}
-                href={getDeckHref(props.deck, props.format) as any}
-              >
+            {props.isComparison && (
+              <Grid gridTemplateColumns={'1.5rem auto'} gap={2} rowGap={2}>
+                <Box />
+                <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
                 <Heading
-                  color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}
-                  size={'sm'}
+                  color='gray.400'
+                  fontSize={14}
+                  textTransform='uppercase'
                 >
-                  {props.deck.name}
+                  vs
                 </Heading>
-              </LinkOverlay>
-            </Grid>
+                <LinkOverlay
+                  as={NextLink}
+                  href={getDeckHref(props.deck, props.format) as any}
+                >
+                  <Heading
+                    color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}
+                    size={'sm'}
+                  >
+                    {props.deck.name}
+                  </Heading>
+                </LinkOverlay>
+              </Grid>
+            )}
+            {!props.isComparison && (
+              <Stack>
+                <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
+                <LinkOverlay
+                  as={NextLink}
+                  href={getDeckHref(props.deck, props.format) as any}
+                >
+                  <Heading
+                    color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}
+                    size={'sm'}
+                  >
+                    {props.deck.name}
+                  </Heading>
+                </LinkOverlay>
+              </Stack>
+            )}
             {props.columns.map(column => (
               <GenericStat
                 key={`${props.deck}-${column.name}`}
