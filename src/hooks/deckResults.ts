@@ -175,8 +175,8 @@ export const useDeckResults = (
         };
       })
       .sort((a, b) => {
-        if (a.count <= 20 || a.name === 'Other') return 1;
-        if (b.count <= 20 || b.name === 'Other') return -1;
+        if (a.count <= 10 || a.name === 'Other') return 1;
+        if (b.count <= 10 || b.name === 'Other') return -1;
 
         if (sortOrder === 'desc') {
           if (calculateWinPercentage(a) < calculateWinPercentage(b)) return 1;
