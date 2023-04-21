@@ -48,7 +48,7 @@ export function getRelevantSearchResults<T>(
 
       return normalizeName(relevantString).includes(normalizeName(searchQuery));
     })
-    .map((data: T) => ({ type, data }))
+    .map((data: T) => ({ type, data, match: getRelevantString(data) }))
     .slice(0, 4);
 }
 
@@ -134,8 +134,37 @@ export const SearchBar = (props: SearchBarProps) => {
       searchQuery
     ),
   ];
+  const optimizedSearchResults = searchResults
+    .sort((a, b) => {
+      const trueLength = searchQuery.length;
 
-  const shouldShowSearchResults = searchResults.length > 0;
+      if (!a.match) return 1;
+      if (!b.match) return -1;
+
+      if (
+        Math.abs(a.match.length - trueLength) <
+        Math.abs(b.match.length - trueLength)
+      )
+        return -1;
+      if (
+        Math.abs(a.match.length - trueLength) >
+        Math.abs(b.match.length - trueLength)
+      )
+        return 1;
+      return 0;
+    })
+    .filter((result, idx) => {
+      return !searchResults
+        .slice(0, idx)
+        .some((existingResult, existingIdx) => {
+          return (
+            existingResult.type === result.type &&
+            existingResult.data.id === result.data.id
+          );
+        });
+    });
+
+  const shouldShowSearchResults = optimizedSearchResults.length > 0;
 
   return (
     <>
@@ -177,7 +206,7 @@ export const SearchBar = (props: SearchBarProps) => {
           </InputGroup>
           {shouldShowSearchResults && (
             <Stack paddingX={4} paddingY={4}>
-              {searchResults.map((result, idx) => (
+              {optimizedSearchResults.map((result, idx) => (
                 <SearchResult
                   key={`search-result-${idx}`}
                   result={result}
