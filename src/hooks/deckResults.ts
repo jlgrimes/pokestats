@@ -1,7 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { Deck, Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
-import { DeckTypeSchema } from './deckArchetypes';
+import {
+  DeckTypeSchema,
+  DeckClassification,
+  SupertypeSchema,
+} from './deckArchetypes';
 
 interface FetchDeckResultsOptions {
   archetype?: number;
@@ -42,7 +46,9 @@ export const fetchDeckResults = async (
 ): Promise<DeckTypeSchema[]> => {
   let query = supabase
     .from('Deck Results')
-    .select('opponent_deck(id,name,defined_pokemon), result, deck_archetype');
+    .select(
+      'opponent_deck(id,name,defined_pokemon,supertype(id,name,defined_pokemon)), result, deck_archetype'
+    );
 
   if (options.archetype) {
     query = query.eq('deck_archetype', options.archetype);
@@ -62,9 +68,11 @@ export const fetchDeckResults = async (
         id: number;
         name: string;
         defined_pokemon: string[];
+        supertype: SupertypeSchema;
       };
       result: string;
       deck_archetype: number;
+      supertype: number;
     }[]
   >();
 
@@ -77,13 +85,17 @@ export const fetchDeckResults = async (
       data: {
         result: row.result,
       },
+      supertype: row.opponent_deck.supertype,
     })) ?? []
   );
 };
 
-export const useDeckResults = (options: FetchDeckResultsOptions) => {
+export const useDeckResults = (
+  options: FetchDeckResultsOptions,
+  shouldDrilldown: boolean
+) => {
   const { data, ...rest } = useQuery({
-    queryKey: ['deck-results', options],
+    queryKey: ['deck-results', options, shouldDrilldown],
     queryFn: () => fetchDeckResults(options),
   });
 
@@ -96,20 +108,30 @@ export const useDeckResults = (options: FetchDeckResultsOptions) => {
               wins: number;
               ties: number;
               count: number;
-              deck: curr;
+              deck: {
+                type: DeckClassification;
+                id: number;
+                name: string;
+                defined_pokemon: string[];
+              };
             }
           >,
           curr: DeckTypeSchema
         ) => {
-          if (!acc[curr.id]) {
+          const identifier = shouldDrilldown
+            ? curr.id
+            : curr.supertype?.id ?? 0;
+
+          if (!acc[identifier]) {
             return {
               ...acc,
-              [curr.id]: {
+              [identifier]: {
                 wins: curr.data?.result === 'W' ? 1 : 0,
                 ties: curr.data?.result === 'T' ? 1 : 0,
                 count: 1,
                 deck: {
-                  id: curr.id,
+                  type: curr.type,
+                  id: identifier,
                   name: curr.name,
                   defined_pokemon: curr.defined_pokemon,
                 },
@@ -119,11 +141,11 @@ export const useDeckResults = (options: FetchDeckResultsOptions) => {
 
           return {
             ...acc,
-            [curr.id]: {
-              ...acc[curr.id],
-              wins: acc[curr.id].wins + (curr.data?.result === 'W' ? 1 : 0),
-              ties: acc[curr.id].ties + (curr.data?.result === 'T' ? 1 : 0),
-              count: acc[curr.id].count + 1,
+            [identifier]: {
+              ...acc[identifier],
+              wins: acc[identifier].wins + (curr.data?.result === 'W' ? 1 : 0),
+              ties: acc[identifier].ties + (curr.data?.result === 'T' ? 1 : 0),
+              count: acc[identifier].count + 1,
             },
           };
         },
@@ -132,16 +154,26 @@ export const useDeckResults = (options: FetchDeckResultsOptions) => {
     : [];
 
   return {
-    data: Object.values(collapsedDecks).map(({ wins, ties, count, deck }) => {
-      return {
-        ...deck,
-        count,
-        data: {
-          wins,
-          ties,
-        },
-      };
-    }),
+    data: Object.values(collapsedDecks)
+      .filter(({ deck }) => {
+        if (deck.name === 'Other') return false;
+
+        if (deck.type === 'supertype') {
+          return options.supertype?.id && deck.id !== options.supertype?.id;
+        }
+
+        return deck.id !== options.archetype;
+      })
+      .map(({ wins, ties, count, deck }) => {
+        return {
+          ...deck,
+          count,
+          data: {
+            wins,
+            ties,
+          },
+        };
+      }),
     ...rest,
   };
 };

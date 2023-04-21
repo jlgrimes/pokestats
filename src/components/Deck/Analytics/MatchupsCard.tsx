@@ -16,9 +16,6 @@ interface MatchupsCardProps {
 
 export const MatchupsCard = (props: MatchupsCardProps) => {
   const format = useContext(FormatContext);
-  const filters = getDeckResultsFilters(props.deck, format?.id);
-  const { data, isLoading } = useDeckResults(filters);
-  console.log(data);
 
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
   const [sort, setSort] = useState<{
@@ -28,6 +25,8 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
     sortBy: 'win rate',
     sortOrder: 'desc',
   });
+  const filters = getDeckResultsFilters(props.deck, format?.id);
+  const { data, isLoading } = useDeckResults(filters, shouldDrillDown);
 
   const columns: DeckCompareColumnType<'win rate'>[] = [
     {
@@ -37,14 +36,14 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
         ((deck.data?.wins ?? 0 * 3) + (deck.data?.ties ?? 0)) /
         (deck.count ?? 1),
       shouldHide: (deck: DeckTypeSchema) =>
-        !!(deck.name === 'Other' || (deck.count && deck.count <= 20)),
+        !!(deck.name === 'Other' || (deck.count && deck.count <= 10)),
     },
   ];
 
   return (
     <DeckCompareTable
-      header='Matchups'
-      subheader='Cope and seethe Twitter'
+      header={'Deck matchups'}
+      subheader='Numbers are not 100% accurate and only reflect reported/known decks.'
       decks={data ?? []}
       shouldDrillDown={shouldDrillDown}
       setShouldDrillDown={setShouldDrillDown}
