@@ -5,8 +5,8 @@ import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 
 export type DeckCompareColumnType<T> = {
   name: T;
-  label: (value: number) => string;
-  shouldHide: (value: number) => boolean;
+  label: (deck: DeckTypeSchema, decks: DeckTypeSchema[]) => string;
+  shouldHide: (deck: DeckTypeSchema, decks: DeckTypeSchema[]) => boolean;
   calculation: (deck: DeckTypeSchema, decks: DeckTypeSchema[]) => number;
 };
 

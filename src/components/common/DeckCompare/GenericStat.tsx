@@ -16,10 +16,14 @@ export const GenericStat = memo(
     isInactive?: boolean;
   }) => {
     const stat = column.calculation(deck, decks);
-    if (!stat || column.shouldHide(stat)) return null;
+    if (!stat || column.shouldHide(deck, decks)) return null;
 
     return (
-      <Stat stat={stat} label={column.label(stat)} isInactive={isInactive} />
+      <Stat
+        stat={stat}
+        label={column.label(deck, decks)}
+        isInactive={isInactive}
+      />
     );
   }
 );

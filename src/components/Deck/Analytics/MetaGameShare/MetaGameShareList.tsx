@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { IndividualShareCard } from './IndividualShareCard';
-import { getMetaDiff } from './helpers';
+import { getMetaDiff, getMetaShare } from './helpers';
 import { NoDataDisplay } from './NoDataDisplay';
 import { CommonCard } from '../../../common/CommonCard';
 import { ComponentLoader } from '../../../common/ComponentLoader';
@@ -19,6 +19,10 @@ import { useTournaments } from '../../../../hooks/tournaments';
 import { Tournament } from '../../../../../types/tournament';
 import { FaSortAmountUp } from 'react-icons/fa';
 import { MetaGameSortToggles } from './MetaGameSortToggles';
+import { DeckCompareTable } from '../../../common/DeckCompare/DeckCompareTable';
+import { DeckCompareColumnType } from '../../../common/DeckCompare/DeckCompareSortToggles';
+import { getDay2Decks } from '../../../../hooks/stats';
+import { getConversionRate } from './ConversionStat';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
@@ -45,6 +49,7 @@ export const MetaGameShareList = memo(
 
     const {
       data: decks,
+      decks: allDecks,
       isLoading,
       numberReported,
     } = useStoredDecks({
@@ -54,63 +59,38 @@ export const MetaGameShareList = memo(
       sortOrder: sort.sortOrder,
     });
 
+    const columns: DeckCompareColumnType<'played' | 'converted'>[] = [
+      {
+        name: 'played',
+        calculation: (deck, decks) => getMetaShare(deck, decks),
+        label: deck => `${deck.count} played`,
+        shouldHide: deck => !!(deck.count && deck.count <= 20),
+      },
+      {
+        name: 'converted',
+        calculation: deck => getConversionRate(deck, allDecks),
+        label: deck => `${getDay2Decks(deck, allDecks)} day two`,
+        shouldHide: deck => !!(deck.count && deck.count <= 20),
+      },
+    ];
+
     return (
-      <ShouldDrillDownMetaShareContext.Provider value={shouldDrillDown}>
-        <CommonCard
-          header={tournament.name ? `${tournament.name} Decks` : `Decks`}
-          subheader={`${tournament.players.masters} Masters, ${numberReported} known`}
-          {...(shouldHideSlug
-            ? {}
-            : {
-                slug: `/decks?tournament=${tournament.id}`,
-              })}
-          ghost
-        >
-          <Stack>
-            <Grid gridTemplateColumns='auto 7rem 7rem' paddingX={3}>
-              <HStack>
-                <Text color='gray.500' fontWeight='semibold' fontSize='sm'>
-                  Drilldown
-                </Text>
-                <Switch
-                  isChecked={shouldDrillDown}
-                  onChange={() => setShouldDrillDown(!shouldDrillDown)}
-                />
-              </HStack>
-              <MetaGameSortToggles
-                sortBy={sort.sortBy}
-                sortOrder={sort.sortOrder}
-                setSort={(sortBy, sortOrder) => setSort({ sortBy, sortOrder })}
-              />
-            </Grid>
-            {isLoading ? (
-              <Box height={'50rem'}>
-                <ComponentLoader />
-              </Box>
-            ) : decks.length === 0 ? (
-              <NoDataDisplay />
-            ) : (
-              <Grid gridTemplateColumns={'1fr 1fr'} gap={2} rowGap={2}>
-                {decks
-                  .slice(0, preview ? 4 : undefined)
-                  .map(({ deck, count }) => {
-                    return (
-                      deck?.id && (
-                        <IndividualShareCard
-                          key={`${deck.name}${deck.id}`}
-                          deck={deck}
-                          count={count}
-                          tournament={tournament}
-                          sortBy={sort.sortBy}
-                        />
-                      )
-                    );
-                  })}
-              </Grid>
-            )}
-          </Stack>
-        </CommonCard>
-      </ShouldDrillDownMetaShareContext.Provider>
+      <DeckCompareTable
+        header={tournament.name ? `${tournament.name} Decks` : `Decks`}
+        subheader={`${tournament.players.masters} Masters, ${numberReported} known`}
+        slug={shouldHideSlug ? `/decks?tournament=${tournament.id}` : undefined}
+        decks={decks}
+        shouldDrillDown={shouldDrillDown}
+        setShouldDrillDown={setShouldDrillDown}
+        isLoading={isLoading}
+        tournament={tournament}
+        sortBy={sort.sortBy}
+        sortOrder={sort.sortOrder}
+        columns={columns}
+        setSort={(sortBy: 'played' | 'converted', sortOrder: 'asc' | 'desc') =>
+          setSort({ sortBy, sortOrder })
+        }
+      />
     );
   }
 );

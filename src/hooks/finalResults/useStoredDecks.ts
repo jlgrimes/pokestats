@@ -20,10 +20,7 @@ export const useStoredDecks = (options?: {
   sortOrder?: 'asc' | 'desc';
 }): {
   isLoading: boolean;
-  data: {
-    deck: DeckTypeSchema;
-    count: number;
-  }[];
+  data: DeckTypeSchema[],
   decks: FinalResultsDeckSchema[];
   numberReported: number;
 } => {
@@ -132,7 +129,9 @@ export const useStoredDecks = (options?: {
     return {
       isLoading,
       decks,
-      data: ret.filter(({ deck }) => deck.id !== 'unreported'),
+      data: ret
+        .filter(({ deck }) => deck.id !== 'unreported')
+        .map(({ deck }) => deck),
       numberReported: decks.filter(deck => deck.deck_archetype).length,
     };
   }
