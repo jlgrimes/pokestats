@@ -66,6 +66,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
       }
       columns={columns}
       shouldHideDeck={(deck: DeckTypeSchema) => shouldHide(deck, 10)}
+      isComparison
     />
   );
 
