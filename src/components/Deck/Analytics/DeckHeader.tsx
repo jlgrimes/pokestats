@@ -91,7 +91,7 @@ export const DeckHeader = memo(
     }
 
     return (
-      <Stack>
+      <Stack paddingX={4}>
         <BackToDecksButton />
         <HStack spacing={0}>
           {identifiableCards?.map(card => (
