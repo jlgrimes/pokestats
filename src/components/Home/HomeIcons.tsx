@@ -11,7 +11,7 @@ import { IconInfoCircle, IconInfoCircleFilled } from '@tabler/icons-react';
 export const HomeIcons = () => (
   <HStack justifyContent={'center'}>
     <ButtonGroup size='sm'>
-      <Button as={NextLink} href='/help' leftIcon={<FaInfoCircle />}>
+      <Button as={NextLink} href='/about' leftIcon={<FaInfoCircle />}>
         About
       </Button>
       <Button
