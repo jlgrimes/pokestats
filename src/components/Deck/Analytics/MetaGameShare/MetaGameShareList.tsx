@@ -52,7 +52,7 @@ export const MetaGameShareList = memo(
         label: deck => `${deck.count} played`,
         shouldHide,
       },
-      ...(!tournament.name.includes('Cup')
+      ...(!tournament.name.includes(' Cup')
         ? [
             {
               name: 'converted' as 'played' | 'converted',
