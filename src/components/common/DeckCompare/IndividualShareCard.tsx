@@ -24,7 +24,7 @@ interface IndividualCardProps<T> {
   deck: DeckTypeSchema;
   decks: DeckTypeSchema[];
   columns: DeckCompareColumnType<T>[];
-  tournament: Tournament;
+  format: number;
   sortBy: T;
 }
 
@@ -57,7 +57,7 @@ export const IndividualShareCard = memo(
                 href={
                   {
                     pathname: link,
-                    query: { format: props.tournament.format },
+                    query: { format: props.format },
                   } as any
                 }
               >

@@ -20,8 +20,15 @@ export const loadDeckResults = async (
 
   const { data: finalResultsData } = await supabase
     .from('Final Results')
-    .select('name,deck_archetype,rounds')
-    .eq('tournament_id', tournament.id);
+    .select('name,deck_archetype(id,supertype),rounds')
+    .eq('tournament_id', tournament.id)
+    .returns<
+      {
+        name: string;
+        deck_archetype?: { id: number; supertype: number | null };
+        rounds: { name: string; result: string }[];
+      }[]
+    >();
 
   if (!finalResultsData) {
     console.log('No final results data for this tournament.');
@@ -49,13 +56,16 @@ export const loadDeckResults = async (
         continue;
       }
 
-      if (!row.deck_archetype || !opponentResult.deck_archetype) continue;
+      if (!row.deck_archetype?.id || !opponentResult.deck_archetype?.id)
+        continue;
 
       rowsToBeUpserted.push({
         tournament_id: tournament.id,
-        deck_archetype: row.deck_archetype,
-        opponent_deck: opponentResult.deck_archetype,
+        deck_archetype: row.deck_archetype.id,
+        opponent_deck: opponentResult.deck_archetype.id,
         result: opponent.result,
+        deck_supertype: row.deck_archetype?.supertype ?? null,
+        format: tournament.format ?? null,
       });
     }
   }

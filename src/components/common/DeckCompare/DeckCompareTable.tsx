@@ -20,7 +20,7 @@ export interface DeckCompareTableProps<T>
   shouldDrillDown: boolean;
   setShouldDrillDown: (shouldDrillDown: boolean) => void;
   isLoading: boolean;
-  tournament: Tournament;
+  format: number;
 }
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
@@ -75,8 +75,8 @@ export const DeckCompareTable = <T extends string>(
                       decks={props.decks}
                       deck={deck}
                       columns={props.columns}
-                      tournament={props.tournament}
                       sortBy={props.sortBy}
+                      format={props.format}
                     />
                   )
                 );

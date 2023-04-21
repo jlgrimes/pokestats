@@ -100,7 +100,7 @@ export interface SupertypeSchema {
   id: number;
   name: string;
   defined_pokemon: string[];
-  cover_cards: string[];
+  cover_cards?: string[];
 }
 
 export type DeckClassification = 'archetype' | 'supertype';
@@ -109,7 +109,7 @@ export interface DeckTypeSchema extends SupertypeSchema {
   type: DeckClassification;
   supertype?: SupertypeSchema;
   count?: number;
-  data?: Record<string, number>
+  data?: Record<string, any>
 }
 
 export const fetchSupertypes = async () => {

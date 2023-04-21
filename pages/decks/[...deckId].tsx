@@ -24,6 +24,7 @@ import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
 import { fetchFormats } from '../../src/hooks/formats/formats';
 import { Container, Stack } from '@chakra-ui/react';
+import { MatchupsCard } from '../../src/components/Deck/Analytics/MatchupsCard';
 
 export default function DeckPage({
   deck,
@@ -40,6 +41,7 @@ export default function DeckPage({
         {slug === null && (
           <Fragment>
             <RecentFinishesCard deck={deck} />
+            {deck && <MatchupsCard deck={deck} />}
             <PopularTechsCard deck={deck} />
           </Fragment>
         )}
