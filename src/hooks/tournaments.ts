@@ -183,5 +183,6 @@ export const usePatchedTournaments = (tournamentList: Tournament[]) => {
 
 export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>
   tournaments.find(
-    ({ tournamentStatus }) => tournamentStatus === 'finished'
+    ({ name, tournamentStatus }) =>
+      tournamentStatus === 'finished' && !name.includes('Cup')
   ) as Tournament;
