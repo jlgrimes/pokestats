@@ -42,6 +42,7 @@ export const DeckFinishes = memo(
                   standing.deck?.list
                 : true
             )
+            .slice(0, onlyShowRecent ? 10 : -1)
             .map((standing, idx) => {
               const tournament = tournaments.find(
                 ({ id }) => id === standing.tournamentId
