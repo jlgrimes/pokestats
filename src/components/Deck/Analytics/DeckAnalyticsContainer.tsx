@@ -40,12 +40,10 @@ export const DeckAnalyticsContainer = ({
 
   return (
     <FormatContext.Provider value={viewedFormat}>
-      <Container maxW='2xl'>
-        <Stack spacing={4}>
-          <DeckHeader deck={deck} compact={compactTitle} />
-          <Fragment>{children}</Fragment>
-        </Stack>
-      </Container>
+      <Stack spacing={4}>
+        <DeckHeader deck={deck} compact={compactTitle} />
+        <Fragment>{children}</Fragment>
+      </Stack>
     </FormatContext.Provider>
   );
 };
