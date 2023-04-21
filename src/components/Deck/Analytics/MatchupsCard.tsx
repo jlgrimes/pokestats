@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 import {
+  calculateWinPercentage,
   getDeckResultsFilters,
   useDeckResults,
 } from '../../../hooks/deckResults';
@@ -26,15 +27,13 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
     sortOrder: 'desc',
   });
   const filters = getDeckResultsFilters(props.deck, format?.id);
-  const { data, isLoading } = useDeckResults(filters, shouldDrillDown);
+  const { data, isLoading } = useDeckResults(filters, shouldDrillDown, sort.sortOrder);
 
   const columns: DeckCompareColumnType<'win rate'>[] = [
     {
       name: 'win rate',
       label: (deck: DeckTypeSchema) => `${deck.data?.wins} won`,
-      calculation: (deck: DeckTypeSchema) =>
-        ((deck.data?.wins ?? 0 * 3) + (deck.data?.ties ?? 0)) /
-        (deck.count ?? 1),
+      calculation: calculateWinPercentage,
       shouldHide: (deck: DeckTypeSchema) =>
         !!(deck.name === 'Other' || (deck.count && deck.count <= 10)),
     },
@@ -42,7 +41,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
 
   return (
     <DeckCompareTable
-      header={'Deck matchups'}
+      header={`${props.deck.name} matchups`}
       subheader='Numbers are not 100% accurate and only reflect reported/known decks.'
       decks={data ?? []}
       shouldDrillDown={shouldDrillDown}

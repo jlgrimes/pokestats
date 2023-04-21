@@ -42,7 +42,8 @@ export const getDeckResultsFilters = (
 };
 
 export const fetchDeckResults = async (
-  options: FetchDeckResultsOptions
+  options: FetchDeckResultsOptions,
+  shouldDrilldown: boolean
 ): Promise<DeckTypeSchema[]> => {
   let query = supabase
     .from('Deck Results')
@@ -78,25 +79,35 @@ export const fetchDeckResults = async (
 
   return (
     res.data?.map(row => ({
-      type: options.supertype ? 'supertype' : 'archetype',
-      id: row.opponent_deck.id,
-      name: row.opponent_deck.name,
-      defined_pokemon: row.opponent_deck.defined_pokemon,
+      type: shouldDrilldown ? 'archetype' : 'supertype',
+      id: shouldDrilldown
+        ? row.opponent_deck.id
+        : row.opponent_deck.supertype?.id ?? row.opponent_deck.id,
+      name: shouldDrilldown
+        ? row.opponent_deck.name
+        : row.opponent_deck.supertype?.name ?? row.opponent_deck.name,
+      defined_pokemon: shouldDrilldown
+        ? row.opponent_deck.defined_pokemon
+        : row.opponent_deck.supertype?.defined_pokemon ??
+          row.opponent_deck.defined_pokemon,
       data: {
         result: row.result,
       },
-      supertype: row.opponent_deck.supertype,
     })) ?? []
   );
 };
 
+export const calculateWinPercentage = (deck: DeckTypeSchema) =>
+  ((deck.data?.wins ?? 0 * 3) + (deck.data?.ties ?? 0)) / (deck.count ?? 1);
+
 export const useDeckResults = (
   options: FetchDeckResultsOptions,
-  shouldDrilldown: boolean
+  shouldDrilldown: boolean,
+  sortOrder: 'asc' | 'desc'
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: ['deck-results', options, shouldDrilldown],
-    queryFn: () => fetchDeckResults(options),
+    queryFn: () => fetchDeckResults(options, shouldDrilldown),
   });
 
   const collapsedDecks = data
@@ -118,9 +129,7 @@ export const useDeckResults = (
           >,
           curr: DeckTypeSchema
         ) => {
-          const identifier = shouldDrilldown
-            ? curr.id
-            : curr.supertype?.id ?? 0;
+          const identifier = curr.id;
 
           if (!acc[identifier]) {
             return {
@@ -155,15 +164,6 @@ export const useDeckResults = (
 
   return {
     data: Object.values(collapsedDecks)
-      .filter(({ deck }) => {
-        if (deck.name === 'Other') return false;
-
-        if (deck.type === 'supertype') {
-          return options.supertype?.id && deck.id !== options.supertype?.id;
-        }
-
-        return deck.id !== options.archetype;
-      })
       .map(({ wins, ties, count, deck }) => {
         return {
           ...deck,
@@ -173,6 +173,22 @@ export const useDeckResults = (
             ties,
           },
         };
+      })
+      .sort((a, b) => {
+        if (a.count <= 20 || a.name === 'Other') return 1;
+        if (b.count <= 20 || b.name === 'Other') return -1;
+
+        if (sortOrder === 'desc') {
+          if (calculateWinPercentage(a) < calculateWinPercentage(b)) return 1;
+          if (calculateWinPercentage(b) < calculateWinPercentage(a)) return -1;
+        }
+
+        if (sortOrder === 'asc') {
+          if (calculateWinPercentage(a) > calculateWinPercentage(b)) return 1;
+          if (calculateWinPercentage(b) > calculateWinPercentage(a)) return -1;
+        }
+
+        return 0;
       }),
     ...rest,
   };
