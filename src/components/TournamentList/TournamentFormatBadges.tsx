@@ -6,8 +6,8 @@ export const TournamentFormatBadges = (props: TournamentStatusBadgeProps) => (
     <Badge fontSize={props.size}>
       {props.tournament.format.rotation} Block-on
     </Badge>
-    <Badge fontSize={props.size}>
+    {/* <Badge fontSize={props.size}>
       {props.tournament.format.format}
-    </Badge>
+    </Badge> */}
   </HStack>
 );
