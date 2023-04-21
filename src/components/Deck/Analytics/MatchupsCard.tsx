@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 import {
+  calculateTieRate,
   calculateWinPercentage,
   getDeckResultsFilters,
   useDeckResults,
@@ -20,7 +21,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
 
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
   const [sort, setSort] = useState<{
-    sortBy: 'win rate';
+    sortBy: 'win rate' | 'tie rate';
     sortOrder: 'asc' | 'desc';
   }>({
     sortBy: 'win rate',
@@ -30,14 +31,21 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
   const { data, isLoading } = useDeckResults(
     filters,
     shouldDrillDown,
+    sort.sortBy,
     sort.sortOrder
   );
 
-  const columns: DeckCompareColumnType<'win rate'>[] = [
+  const columns: DeckCompareColumnType<'win rate' | 'tie rate'>[] = [
     {
       name: 'win rate',
       label: (deck: DeckTypeSchema) => `${deck.data?.wins} won`,
       calculation: calculateWinPercentage,
+      shouldHide: (deck: DeckTypeSchema) => shouldHide(deck, 10),
+    },
+    {
+      name: 'tie rate',
+      label: (deck: DeckTypeSchema) => `${deck.data?.ties} tied`,
+      calculation: calculateTieRate,
       shouldHide: (deck: DeckTypeSchema) => shouldHide(deck, 10),
     },
   ];
@@ -45,7 +53,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
   return (
     <DeckCompareTable
       header={`${props.deck.name} matchups`}
-      subheader='Only reflects decks reported through pokestats.live or revealed through deck lists. Ties are not included because IDs exist.'
+      subheader='Only reflects decks reported through pokestats.live or revealed through deck lists.'
       decks={data ?? []}
       shouldDrillDown={shouldDrillDown}
       setShouldDrillDown={setShouldDrillDown}
@@ -53,7 +61,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
       format={format?.id ?? 1}
       sortBy={sort.sortBy}
       sortOrder={sort.sortOrder}
-      setSort={(sortBy: 'win rate', sortOrder: 'asc' | 'desc') =>
+      setSort={(sortBy: 'win rate' | 'tie rate', sortOrder: 'asc' | 'desc') =>
         setSort({ sortBy, sortOrder })
       }
       columns={columns}

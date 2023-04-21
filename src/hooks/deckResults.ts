@@ -98,11 +98,15 @@ export const fetchDeckResults = async (
 };
 
 export const calculateWinPercentage = (deck: DeckTypeSchema) =>
-  (deck.data?.wins ?? 0) / (deck.count ?? 1);
+  (deck.data?.wins ?? 0) / ((deck.count ?? 1) - (deck.data?.ties ?? 0));
+
+export const calculateTieRate = (deck: DeckTypeSchema) =>
+  (deck.data?.ties ?? 0) / (deck.count ?? 1);
 
 export const useDeckResults = (
   options: FetchDeckResultsOptions,
   shouldDrilldown: boolean,
+  sortBy: 'win rate' | 'tie rate',
   sortOrder: 'asc' | 'desc'
 ) => {
   const { data, ...rest } = useQuery({
@@ -184,16 +188,31 @@ export const useDeckResults = (
         if (a.count <= 10 || a.name === 'Other') return 1;
         if (b.count <= 10 || b.name === 'Other') return -1;
 
-        if (sortOrder === 'desc') {
-          if (calculateWinPercentage(a) < calculateWinPercentage(b)) return 1;
-          if (calculateWinPercentage(b) < calculateWinPercentage(a)) return -1;
+        if (sortBy === 'win rate') {
+          if (sortOrder === 'desc') {
+            if (calculateWinPercentage(a) < calculateWinPercentage(b)) return 1;
+            if (calculateWinPercentage(b) < calculateWinPercentage(a))
+              return -1;
+          }
+
+          if (sortOrder === 'asc') {
+            if (calculateWinPercentage(a) > calculateWinPercentage(b)) return 1;
+            if (calculateWinPercentage(b) > calculateWinPercentage(a))
+              return -1;
+          }
         }
 
-        if (sortOrder === 'asc') {
-          if (calculateWinPercentage(a) > calculateWinPercentage(b)) return 1;
-          if (calculateWinPercentage(b) > calculateWinPercentage(a)) return -1;
-        }
+        if (sortBy === 'tie rate') {
+          if (sortOrder === 'desc') {
+            if (calculateTieRate(a) < calculateTieRate(b)) return 1;
+            if (calculateTieRate(b) < calculateTieRate(a)) return -1;
+          }
 
+          if (sortOrder === 'asc') {
+            if (calculateTieRate(a) > calculateTieRate(b)) return 1;
+            if (calculateTieRate(b) > calculateTieRate(a)) return -1;
+          }
+        }
         return 0;
       }),
     ...rest,
