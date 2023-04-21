@@ -31,7 +31,7 @@ export const DeckCompareSortToggles = <T extends string>(
     <Fragment>
       {props.columns.map(column => (
         <Button
-          key={`column-toggle-${column}`}
+          key={`column-toggle-${column.name}`}
           color={props.sortBy === column.name ? activeColor : inactiveColor}
           size='sm'
           variant='ghost'
