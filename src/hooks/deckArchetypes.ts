@@ -34,8 +34,6 @@ export const fetchArchetypes = async (
       format: FormatSchema;
     }[]
   >();
-  console.log(res)
-
 
   if (res.data) {
     return res.data.map(archetype => {
