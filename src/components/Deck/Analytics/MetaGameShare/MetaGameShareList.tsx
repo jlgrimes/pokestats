@@ -52,12 +52,18 @@ export const MetaGameShareList = memo(
         label: deck => `${deck.count} played`,
         shouldHide,
       },
-      {
-        name: 'converted',
-        calculation: deck => getConversionRate(deck, allDecks),
-        label: deck => `${getDay2Decks(deck, allDecks)} day two`,
-        shouldHide,
-      },
+      ...(!tournament.name.includes('Cup')
+        ? [
+            {
+              name: 'converted' as 'played' | 'converted',
+              calculation: (deck: DeckTypeSchema) =>
+                getConversionRate(deck, allDecks),
+              label: (deck: DeckTypeSchema) =>
+                `${getDay2Decks(deck, allDecks)} day two`,
+              shouldHide,
+            },
+          ]
+        : []),
     ];
 
     return (
