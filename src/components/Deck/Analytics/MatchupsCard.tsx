@@ -27,7 +27,11 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
     sortOrder: 'desc',
   });
   const filters = getDeckResultsFilters(props.deck, format?.id);
-  const { data, isLoading } = useDeckResults(filters, shouldDrillDown, sort.sortOrder);
+  const { data, isLoading } = useDeckResults(
+    filters,
+    shouldDrillDown,
+    sort.sortOrder
+  );
 
   const columns: DeckCompareColumnType<'win rate'>[] = [
     {
@@ -42,7 +46,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
   return (
     <DeckCompareTable
       header={`${props.deck.name} matchups`}
-      subheader='Only reflects decks reported through pokestats.live or revealed through deck lists.'
+      subheader='Only reflects decks reported through pokestats.live or revealed through deck lists. Ties are not included because IDs exist.'
       decks={data ?? []}
       shouldDrillDown={shouldDrillDown}
       setShouldDrillDown={setShouldDrillDown}
