@@ -19,6 +19,7 @@ import { useFormats } from '../../../hooks/formats/formats';
 import { getTournamentFormat } from '../../../hooks/formats/helpers';
 import { DeckCompareColumnType } from './DeckCompareSortToggles';
 import { GenericStat } from './GenericStat';
+import { getDeckHref } from './helpers';
 
 interface IndividualCardProps<T> {
   deck: DeckTypeSchema;
@@ -31,15 +32,6 @@ interface IndividualCardProps<T> {
 export const IndividualShareCard = memo(
   <T extends string>(props: IndividualCardProps<T>) => {
     const { colorMode } = useColorMode();
-
-    const link =
-      props.deck.type === 'supertype'
-        ? `/decks/${props.deck.id}`
-        : `/decks/${
-            props.deck.supertype?.id && props.deck.supertype.id > 0
-              ? props.deck.supertype.id
-              : 'other'
-          }/${props.deck.id}`;
 
     return (
       <Box gridColumn={'1/-1'}>
@@ -54,12 +46,7 @@ export const IndividualShareCard = memo(
               <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
               <LinkOverlay
                 as={NextLink}
-                href={
-                  {
-                    pathname: link,
-                    query: { format: props.format },
-                  } as any
-                }
+                href={getDeckHref(props.deck, props.format) as any}
               >
                 <Heading
                   color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}

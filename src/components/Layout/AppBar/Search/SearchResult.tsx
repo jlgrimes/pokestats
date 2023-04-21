@@ -34,7 +34,11 @@ export const SearchResult = (props: SearchResultProps) => {
   }
 
   if (props.result.type === 'archetype' || props.result.type === 'supertype') {
-    return <ArchetypeCard deck={props.result.data as DeckTypeSchema} />;
+    return (
+      <Box onClick={props.handleClose}>
+        <ArchetypeCard deck={props.result.data as DeckTypeSchema} />
+      </Box>
+    );
   }
 
   return null;
