@@ -46,7 +46,20 @@ export function getRelevantSearchResults<T>(
       const relevantString = getRelevantString(el);
       if (!relevantString) return false;
 
-      return normalizeName(relevantString).includes(normalizeName(searchQuery));
+      const wordBlocks = normalizeName(searchQuery).split(' ');
+
+      const normalizedWord = normalizeName(relevantString);
+
+      let currentIdx = 0;
+      for (const block of wordBlocks) {
+        if (normalizedWord.includes(block, currentIdx)) {
+          currentIdx = normalizedWord.indexOf(block);
+        } else {
+          return false;
+        }
+      }
+
+      return true;
     })
     .map((data: T) => ({ type, data, match: getRelevantString(data) }))
     .slice(0, 4);
