@@ -29,10 +29,12 @@ export const TournamentCard = ({
   tournament,
   champion,
   disableFollowing,
+  shouldHideStatus,
 }: {
   tournament: Tournament;
   champion?: Standing;
   disableFollowing?: boolean;
+  shouldHideStatus?: boolean;
 }) => {
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const countryCode = useCountryCode(tournament.id);
@@ -59,7 +61,9 @@ export const TournamentCard = ({
                 <TournamentInfo tournament={tournament} />
               </LinkOverlay>
               <Box />
-              <TournamentStatusBadge tournament={tournament} size={'xs'} />
+              {!shouldHideStatus && (
+                <TournamentStatusBadge tournament={tournament} size={'xs'} />
+              )}
             </Grid>
             {champion && <ChampionDisplay champion={champion} />}
             {live && (

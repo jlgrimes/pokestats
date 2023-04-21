@@ -16,7 +16,7 @@ export const fetchArchetypes = async (
       name,
       defined_pokemon,
       cover_cards
-    ),identifiable_cards`
+    ),identifiable_cards,format(id,format,rotation,start_date)`
     )
     .order('created_at', { ascending: false });
 
@@ -24,7 +24,18 @@ export const fetchArchetypes = async (
     query = query.or(`format.eq.${format.id},name.eq.Other`);
   }
 
-  const res = await query;
+  const res = await query.returns<
+    {
+      id: number;
+      name: string;
+      defined_pokemon: string[];
+      supertype: SupertypeSchema;
+      identifiable_cards: string[];
+      format: FormatSchema;
+    }[]
+  >();
+  console.log(res)
+
 
   if (res.data) {
     return res.data.map(archetype => {
@@ -109,7 +120,8 @@ export interface DeckTypeSchema extends SupertypeSchema {
   type: DeckClassification;
   supertype?: SupertypeSchema;
   count?: number;
-  data?: Record<string, any>
+  data?: Record<string, any>;
+  format?: FormatSchema;
 }
 
 export const fetchSupertypes = async () => {

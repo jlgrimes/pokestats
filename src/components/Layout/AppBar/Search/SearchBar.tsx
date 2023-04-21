@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   Grid,
+  Heading,
   HStack,
   IconButton,
   Input,
@@ -20,14 +21,35 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useMemo, useState } from 'react';
+import { Tournament } from '../../../../../types/tournament';
+import { useArchetypes, useSupertypes } from '../../../../hooks/deckArchetypes';
 import { useFinalResultsPlayers } from '../../../../hooks/finalResults/fetch';
 import { useTournaments } from '../../../../hooks/tournaments';
 import { normalizeName, usePlayerProfiles } from '../../../../hooks/user';
-import { FollowButton } from '../../../Social/FollowButton';
-import { TournamentCard } from '../../../TournamentList/TournamentCard';
+import { SearchResultSchema, SearchResultType } from './search-types';
+import { SearchResult } from './SearchResult';
 
 interface SearchBarProps {
   shouldCollapsePlaceholder: boolean;
+}
+
+export function getRelevantSearchResults<T>(
+  arr: T[] | null | undefined,
+  type: SearchResultType,
+  getRelevantString: (el: T) => string | null | undefined,
+  searchQuery: string
+) {
+  if (!arr || searchQuery.length === 0) return [];
+
+  return arr
+    .filter((el: T) => {
+      const relevantString = getRelevantString(el);
+      if (!relevantString) return false;
+
+      return normalizeName(relevantString).includes(normalizeName(searchQuery));
+    })
+    .map((data: T) => ({ type, data }))
+    .slice(0, 4);
 }
 
 export const SearchBar = (props: SearchBarProps) => {
@@ -35,6 +57,8 @@ export const SearchBar = (props: SearchBarProps) => {
   const { data: names } = useFinalResultsPlayers();
   const { data: playerProfiles } = usePlayerProfiles();
   const { data: tournaments } = useTournaments();
+  const { data: archetypes } = useArchetypes();
+  const { data: supertypes } = useSupertypes();
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -72,29 +96,46 @@ export const SearchBar = (props: SearchBarProps) => {
     [names, playerProfiles, additionalNames]
   );
 
-  const playerProfileResults =
-    searchQuery.length === 0
-      ? []
-      : playerList
-          ?.filter(
-            player =>
-              normalizeName(player.name).includes(normalizeName(searchQuery)) ||
-              player.username?.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-          .slice(0, 4);
+  const searchResults: SearchResultSchema[] = [
+    ...getRelevantSearchResults(
+      playerList,
+      'player',
+      player => player.name,
+      searchQuery
+    ),
+    ...getRelevantSearchResults(
+      playerList,
+      'player',
+      player => player.username,
+      searchQuery
+    ),
+    ...getRelevantSearchResults(
+      tournaments,
+      'tournament',
+      tournament => tournament.name,
+      searchQuery
+    ),
+    ...getRelevantSearchResults(
+      archetypes,
+      'archetype',
+      archetype => archetype.name,
+      searchQuery
+    ),
+    ...getRelevantSearchResults(
+      archetypes,
+      'archetype',
+      archetype => archetype.supertype?.name,
+      searchQuery
+    ),
+    ...getRelevantSearchResults(
+      supertypes,
+      'supertype',
+      supertype => supertype.name,
+      searchQuery
+    ),
+  ];
 
-  const tournamentResults =
-    searchQuery.length === 0
-      ? []
-      : tournaments
-          ?.filter(tournament =>
-            tournament.name.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-          .slice(0, 2);
-
-  const shouldShowSearchResults =
-    (playerProfileResults && playerProfileResults.length > 0) ||
-    (tournamentResults && tournamentResults.length > 0);
+  const shouldShowSearchResults = searchResults.length > 0;
 
   return (
     <>
@@ -136,57 +177,12 @@ export const SearchBar = (props: SearchBarProps) => {
           </InputGroup>
           {shouldShowSearchResults && (
             <Stack paddingX={4} paddingY={4}>
-              {playerProfileResults?.map(player =>
-                player.username ? (
-                  <LinkBox key={player.name}>
-                    <Card paddingY={2} paddingX={4}>
-                      <HStack justifyContent='space-between'>
-                        <LinkOverlay
-                          as={NextLink}
-                          href={`/player/${player.username}`}
-                          onClick={handleClose}
-                        >
-                          <Stack spacing={0}>
-                            <Text fontWeight='semibold' fontSize='md'>
-                              {player.name}
-                            </Text>
-                            <Text
-                              fontSize='sm'
-                              fontWeight='medium'
-                              opacity='0.7'
-                            >
-                              {player.username}
-                            </Text>
-                          </Stack>
-                        </LinkOverlay>
-                        <Box onClick={e => e.stopPropagation()}>
-                          <FollowButton playerName={player.name} />
-                        </Box>
-                      </HStack>
-                    </Card>
-                  </LinkBox>
-                ) : (
-                  <Card
-                    variant='filled'
-                    paddingY={2}
-                    paddingX={4}
-                    key={player.name}
-                  >
-                    <HStack justifyContent='space-between'>
-                      <Text fontWeight='semibold' fontSize='md'>
-                        {player.name}
-                      </Text>
-                      <Box>
-                        <FollowButton playerName={player.name} />
-                      </Box>
-                    </HStack>
-                  </Card>
-                )
-              )}
-              {tournamentResults?.map(tournament => (
-                <Box key={tournament.id} onClick={handleClose}>
-                  <TournamentCard tournament={tournament} />
-                </Box>
+              {searchResults.map((result, idx) => (
+                <SearchResult
+                  key={`search-result-${idx}`}
+                  result={result}
+                  handleClose={handleClose}
+                />
               ))}
             </Stack>
           )}
