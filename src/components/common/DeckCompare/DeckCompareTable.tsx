@@ -22,6 +22,7 @@ export interface DeckCompareTableProps<T>
   isLoading: boolean;
   format: number;
   shouldHideDeck?: (deck: DeckTypeSchema) => boolean;
+  isComparison?: boolean;
 }
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
@@ -67,7 +68,7 @@ export const DeckCompareTable = <T extends string>(
           ) : props.decks.length === 0 ? (
             <NoDataDisplay />
           ) : (
-            <Grid gridTemplateColumns={'1fr 1fr'} gap={2} rowGap={2}>
+            <Grid gridTemplateColumns={'1fr'} gap={2} rowGap={2}>
               {props.decks
                 .filter(
                   deck => !(props.shouldHideDeck && props.shouldHideDeck(deck))
@@ -82,6 +83,7 @@ export const DeckCompareTable = <T extends string>(
                         columns={props.columns}
                         sortBy={props.sortBy}
                         format={props.format}
+                        isComparison={props.isComparison}
                       />
                     )
                   );

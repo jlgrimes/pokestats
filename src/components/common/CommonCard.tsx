@@ -3,6 +3,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  CardProps,
   Heading,
   HStack,
   Skeleton,
@@ -13,95 +14,86 @@ import { memo } from 'react';
 import { SeeMoreButton } from '../Deck/Analytics/SeeMoreButton';
 import { StatsHeading } from './StatsHeading';
 
+interface CommonCardProps {
+  header?: string;
+  subheader?: string;
+  children: JSX.Element;
+  leftIcon?: JSX.Element;
+  slug?: string;
+  ghost?: boolean;
+  loading?: boolean;
+  shouldRemovePadding?: boolean;
+  smallHeader?: boolean;
+  slugText?: string;
+  rightElement?: JSX.Element;
+}
+
 export const CommonCard = memo(
-  ({
-    header,
-    subheader,
-    children,
-    leftIcon,
-    slug,
-    ghost,
-    loading,
-    shouldRemovePadding,
-    smallHeader,
-    slugText,
-    rightElement,
-  }: {
-    header?: string;
-    subheader?: string;
-    children: JSX.Element;
-    leftIcon?: JSX.Element;
-    slug?: string;
-    ghost?: boolean;
-    loading?: boolean;
-    shouldRemovePadding?: boolean;
-    smallHeader?: boolean;
-    slugText?: string;
-    rightElement?: JSX.Element;
-  }) => {
+  (props: CommonCardProps & Partial<CardProps>) => {
     const { colorMode } = useColorMode();
 
     return (
       <Card
         style={
-          ghost
+          props.ghost
             ? {
                 borderRadius: 'none',
                 boxShadow: 'none',
-                padding: shouldRemovePadding ? 0 : 'auto',
+                padding: props.shouldRemovePadding ? 0 : 'auto',
               }
             : {}
         }
-        variant={ghost ? 'unstyled' : 'elevated'}
+        variant={props.ghost ? 'unstyled' : 'elevated'}
         paddingX={2}
         paddingY={3}
         gap={3}
+        {...props}
       >
-        {(header || rightElement) && (
+        {(props.header || props.rightElement) && (
           <HStack justifyContent='space-between'>
-            {header && (
+            {props.header && (
               <CardHeader
                 padding={0}
                 display='flex'
                 flexDirection={'column'}
                 gap={1}
               >
-                {!loading ? (
+                {!props.loading ? (
                   <StatsHeading
                     headingProps={{
                       color: colorMode === 'dark' ? 'gray.400' : 'gray.600',
-                      size: smallHeader ? 'xs' : 'sm',
+                      size: props.smallHeader ? 'xs' : 'sm',
                     }}
                   >
-                    {leftIcon ? (
+                    {props.leftIcon ? (
                       <HStack>
-                        {leftIcon}
-                        <Text>{header}</Text>
+                        {props.leftIcon}
+                        <Text>{props.header}</Text>
                       </HStack>
                     ) : (
-                      header
+                      props.header
                     )}
                   </StatsHeading>
                 ) : (
                   <Skeleton height='6' width='70' />
                 )}
-                {subheader &&
-                  (!loading ? (
+                {props.subheader &&
+                  (!props.loading ? (
                     <Heading color='gray.500' size='sm' fontWeight={'semibold'}>
-                      {subheader}
+                      {props.subheader}
                     </Heading>
                   ) : (
                     <Skeleton height='6' width='70' />
                   ))}
               </CardHeader>
             )}
-            {rightElement ?? null}
+            {props.rightElement ?? null}
           </HStack>
         )}
-        <CardBody padding={0}>{children}</CardBody>
-        {slug && (
+        <CardBody padding={0}>{props.children}</CardBody>
+        {props.slug && (
           <CardFooter padding={0}>
-            <SeeMoreButton slug={slug} text={slugText} />
+            <SeeMoreButton slug={props.slug} text={props.slugText} />
           </CardFooter>
         )}
       </Card>

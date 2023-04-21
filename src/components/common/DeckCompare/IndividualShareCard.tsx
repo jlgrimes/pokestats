@@ -1,8 +1,6 @@
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import {
   Box,
-  Card,
-  CardBody,
   Grid,
   Heading,
   HStack,
@@ -12,11 +10,8 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import SpriteDisplay from '../../common/SpriteDisplay/SpriteDisplay';
-import { Tournament } from '../../../../types/tournament';
 import { CommonCard } from '../CommonCard';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
-import { useFormats } from '../../../hooks/formats/formats';
-import { getTournamentFormat } from '../../../hooks/formats/helpers';
 import { DeckCompareColumnType } from './DeckCompareSortToggles';
 import { GenericStat } from './GenericStat';
 import { getDeckHref } from './helpers';
@@ -27,6 +22,7 @@ interface IndividualCardProps<T> {
   columns: DeckCompareColumnType<T>[];
   format: number;
   sortBy: T;
+  isComparison?: boolean;
 }
 
 export const IndividualShareCard = memo(
@@ -34,16 +30,20 @@ export const IndividualShareCard = memo(
     const { colorMode } = useColorMode();
 
     return (
-      <Box gridColumn={'1/-1'}>
-        <CommonCard>
+      <HStack>
+        <CommonCard width='100%'>
           <Grid
             gridTemplateColumns={`auto repeat(${props.columns.length}, 6rem)`}
             paddingX={2}
             gap={2}
             alignItems='center'
           >
-            <Stack>
+            <Grid gridTemplateColumns={'1.5rem auto'} gap={2} rowGap={2}>
+              <Box />
               <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
+              <Heading color='gray.400' fontSize={14} textTransform='uppercase'>
+                vs
+              </Heading>
               <LinkOverlay
                 as={NextLink}
                 href={getDeckHref(props.deck, props.format) as any}
@@ -55,7 +55,7 @@ export const IndividualShareCard = memo(
                   {props.deck.name}
                 </Heading>
               </LinkOverlay>
-            </Stack>
+            </Grid>
             {props.columns.map(column => (
               <GenericStat
                 key={`${props.deck}-${column.name}`}
@@ -67,7 +67,7 @@ export const IndividualShareCard = memo(
             ))}
           </Grid>
         </CommonCard>
-      </Box>
+      </HStack>
     );
   }
 );
