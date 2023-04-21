@@ -220,6 +220,9 @@ export const SearchBar = (props: SearchBarProps) => {
             <Input
               placeholder='Search anything'
               autoFocus
+              // onBlur={() => handleClose()}
+              style={{ border: 'none' }}
+              _focusVisible={{ outline: 'none' }}
               height={10}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
