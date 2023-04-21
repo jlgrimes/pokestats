@@ -47,7 +47,7 @@ export const IndividualShareCard = memo(
       <Box gridColumn={'1/-1'}>
         <CommonCard>
           <Grid
-            gridTemplateColumns={`auto repeat(6em, )`}
+            gridTemplateColumns={`auto repeat(${props.columns.length}, 6rem)`}
             paddingX={2}
             gap={2}
             alignItems='center'
