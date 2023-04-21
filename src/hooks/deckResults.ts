@@ -174,6 +174,12 @@ export const useDeckResults = (
           },
         };
       })
+      .filter(row => {
+        if (options.supertype) return row.id !== options.supertype.id;
+        if (options.archetype) return row.id !== options.archetype;
+
+        return true;
+      })
       .sort((a, b) => {
         if (a.count <= 10 || a.name === 'Other') return 1;
         if (b.count <= 10 || b.name === 'Other') return -1;
