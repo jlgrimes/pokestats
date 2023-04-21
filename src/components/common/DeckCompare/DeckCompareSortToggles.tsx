@@ -1,6 +1,6 @@
 import { Button, useColorMode } from '@chakra-ui/react';
 import { Fragment } from 'react';
-import { FaSortAmountDownAlt, FaSortAmountUp } from 'react-icons/fa';
+import { FaSortAmountDown, FaSortAmountUpAlt } from 'react-icons/fa';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 
 export type DeckCompareColumnType<T> = {
@@ -37,9 +37,9 @@ export const DeckCompareSortToggles = <T extends string>(
           variant='ghost'
           leftIcon={
             props.sortBy === column.name && props.sortOrder === 'asc' ? (
-              <FaSortAmountDownAlt />
+              <FaSortAmountUpAlt />
             ) : (
-              <FaSortAmountUp />
+              <FaSortAmountDown />
             )
           }
           onClick={() => {
