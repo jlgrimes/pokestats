@@ -124,7 +124,7 @@ export const useStoredDecks = (options?: {
       decks,
       data: ret
         .filter(({ deck }) => deck.id !== 'unreported')
-        .map(({ deck }) => deck),
+        .map(({ deck, count }) => ({ ...deck, count })),
       numberReported: decks.filter(deck => deck.deck_archetype).length,
     };
   }

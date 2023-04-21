@@ -5,6 +5,7 @@ import { Tournament } from '../../../../../types/tournament';
 import { DeckCompareTable } from '../../../common/DeckCompare/DeckCompareTable';
 import { DeckCompareColumnType } from '../../../common/DeckCompare/DeckCompareSortToggles';
 import { getDay2Decks, getConversionRate } from '../../../../hooks/stats';
+import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
@@ -41,18 +42,21 @@ export const MetaGameShareList = memo(
       sortOrder: sort.sortOrder,
     });
 
+    const shouldHide = (deck: DeckTypeSchema) =>
+      !!(deck.count && deck.count <= 20) || deck.name === 'Other';
+
     const columns: DeckCompareColumnType<'played' | 'converted'>[] = [
       {
         name: 'played',
         calculation: (deck, decks) => getMetaShare(deck, decks),
         label: deck => `${deck.count} played`,
-        shouldHide: deck => !!(deck.count && deck.count <= 20),
+        shouldHide,
       },
       {
         name: 'converted',
         calculation: deck => getConversionRate(deck, allDecks),
         label: deck => `${getDay2Decks(deck, allDecks)} day two`,
-        shouldHide: deck => !!(deck.count && deck.count <= 20),
+        shouldHide,
       },
     ];
 

@@ -43,7 +43,6 @@ export const DeckFinishes = memo(
                 : true
             )
             .map((standing, idx) => {
-              console.log(standing);
               const tournament = tournaments.find(
                 ({ id }) => id === standing.tournamentId
               ) as Tournament;
