@@ -23,6 +23,7 @@ export const DARWIN_MOCK_TOURNAMENT: Tournament = {
   lastUpdated: 'now',
   rk9link: 'slug',
   subStatus: null,
+  format: 2
 };
 
 export const SYDNEY_MOCK_TOURNAMENT = {
@@ -46,4 +47,5 @@ export const SYDNEY_MOCK_TOURNAMENT = {
   lastUpdated: 'now',
   rk9link: 'slug',
   subStatus: null,
+  format: 2
 };
