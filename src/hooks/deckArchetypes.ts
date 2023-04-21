@@ -109,6 +109,7 @@ export interface DeckTypeSchema extends SupertypeSchema {
   type: DeckClassification;
   supertype?: SupertypeSchema;
   count?: number;
+  data?: Record<string, number>
 }
 
 export const fetchSupertypes = async () => {
