@@ -1,4 +1,4 @@
-import { Box, Card, Heading, HStack, Stack } from '@chakra-ui/react';
+import { Box, Card, Heading, HStack, Stack, Tag } from '@chakra-ui/react';
 import { DeckTypeSchema } from '../../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../../common/SpriteDisplay/SpriteDisplay';
 import { FormatTag } from '../../../../Deck/Format/FormatTag';
@@ -14,11 +14,23 @@ export const ArchetypeCard = (props: ArchetypeCardProps) => {
         <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
         <Stack spacing={1}>
           <Heading size='sm'>{props.deck.name}</Heading>
-          {props.deck.format && (
-            <Box>
-              <FormatTag removeSpacing format={props.deck.format} />
-            </Box>
-          )}
+          <HStack spacing={1}>
+            {props.deck.type === 'archetype' && (
+              <Box>
+                <Tag>Deck</Tag>
+              </Box>
+            )}
+            {props.deck.type === 'supertype' && (
+              <Box>
+                <Tag>Supertype</Tag>
+              </Box>
+            )}
+            {props.deck.format && (
+              <Box>
+                <FormatTag removeSpacing format={props.deck.format} />
+              </Box>
+            )}
+          </HStack>
         </Stack>
       </HStack>
     </Card>
