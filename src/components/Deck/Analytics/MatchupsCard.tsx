@@ -42,7 +42,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
   return (
     <DeckCompareTable
       header={`${props.deck.name} matchups`}
-      subheader='Numbers are not 100% accurate and only reflect reported/known decks.'
+      subheader='Only reflects decks reported through pokestats.live or revealed through deck lists.'
       decks={data ?? []}
       shouldDrillDown={shouldDrillDown}
       setShouldDrillDown={setShouldDrillDown}
