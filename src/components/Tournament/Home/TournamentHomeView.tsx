@@ -34,6 +34,7 @@ import { TopCutViewController } from './TopCut/TopCutViewController';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useSessionPlayerProfile } from '../../../hooks/user';
+import { TournamentFormatBadges } from '../../TournamentList/TournamentFormatBadges';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -54,48 +55,41 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         tournament={props.tournament}
         location={location}
       />
-      <Stack paddingX={6} spacing={4}>
-        <Stack spacing={2}>
-          <Stack>
-            <Heading
-              size='xl'
-              color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
-              lineHeight={'2.25rem'}
+      <Stack paddingX={6} spacing={1}>
+        <Heading
+          size='xl'
+          color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
+          lineHeight={'2.25rem'}
+        >
+          {props.tournament.name}
+        </Heading>
+        <Grid gridTemplateColumns={'5rem auto'} alignItems='center' rowGap={2}>
+          {country ? (
+            <Box>
+              <CountryFlag countryCode={country} size='lg' />
+            </Box>
+          ) : (
+            <Box></Box>
+          )}
+          <Stack spacing={1}>
+            <StatsHeading
+              headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
             >
-              {props.tournament.name}
-            </Heading>
-            <Grid
-              gridTemplateColumns={'5rem auto'}
-              alignItems='center'
-              rowGap={2}
-            >
-              {country ? (
-                <Box>
-                  <CountryFlag countryCode={country} size='lg' />
-                </Box>
-              ) : (
-                <Box></Box>
-              )}
-              <Stack spacing={1}>
+              {formatTournamentDate(props.tournament, true)}
+            </StatsHeading>
+            {props.tournament.players.masters &&
+              props.tournament.players.masters > 0 && (
                 <StatsHeading
                   headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
                 >
-                  {formatTournamentDate(props.tournament, true)}
+                  {`${props.tournament.players.masters} masters`}
                 </StatsHeading>
-                {props.tournament.players.masters &&
-                  props.tournament.players.masters > 0 && (
-                    <StatsHeading
-                      headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
-                    >
-                      {`${props.tournament.players.masters} masters`}
-                    </StatsHeading>
-                  )}
-              </Stack>
-            </Grid>
+              )}
           </Stack>
-        </Stack>
-        <TournamentHomeLinks tournament={props.tournament} />
+        </Grid>
+        <TournamentFormatBadges tournament={props.tournament} size='sm' />
       </Stack>
+      <TournamentHomeLinks tournament={props.tournament} />
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {isAuthenticated && profile?.name && (
         <PlayerTournamentView

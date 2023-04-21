@@ -108,7 +108,7 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   let query = supabase
     .from('Tournaments')
     .select(
-      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format'
+      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
     )
     .order('date->end', { ascending: false });
 
@@ -124,7 +124,7 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
     query = query.eq('id', parseInt(options.tournamentId));
   }
 
-  const res = await query;
+  const res = await query.returns<Tournament[]>();
 
   if (!res.data) return [];
 

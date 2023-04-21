@@ -37,7 +37,7 @@ export const useCurrentFormat = (tournament?: Tournament) => {
   if (!tournament?.date) {
     return {
       ...formats,
-      data: formats.data[0],
+      data: formats.data[formats.data.length - 1],
     };
   }
 

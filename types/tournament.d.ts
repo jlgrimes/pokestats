@@ -2,6 +2,7 @@ import {
   DeckClassification,
   DeckTypeSchema,
 } from '../src/hooks/deckArchetypes';
+import { FormatSchema } from '../src/hooks/formats/formats';
 import { StoredPlayerProfile } from './player';
 
 export interface DeckCard {
@@ -106,5 +107,5 @@ export interface Tournament {
     seniors: number | null;
     masters: number | null;
   };
-  format: number;
+  format: FormatSchema;
 }

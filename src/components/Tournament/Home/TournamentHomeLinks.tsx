@@ -1,5 +1,13 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Button, Grid, HStack, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Button,
+  ButtonGroup,
+  ButtonProps,
+  Grid,
+  HStack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { IconExternalLink } from '@tabler/icons-react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -28,9 +36,10 @@ interface TournamentHomeLinksProps {
 }
 
 export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
-  const commonProps = useMemo(
+  const commonProps: Partial<ButtonProps> = useMemo(
     () => ({
       colorScheme: 'gray',
+      borderRadius: 0,
     }),
     []
   );
@@ -38,7 +47,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
-    <Grid gridTemplateColumns='1fr 1fr 1fr' gap={2} rowGap={2}>
+    <Grid gridTemplateColumns={'1fr 1fr 1fr'}>
       <StreamLink tournament={props.tournament} />
       <Button
         {...commonProps}

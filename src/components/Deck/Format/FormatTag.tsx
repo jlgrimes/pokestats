@@ -1,4 +1,4 @@
-import { Tag } from '@chakra-ui/react';
+import { BadgeProps, Tag } from '@chakra-ui/react';
 import { FormatSchema } from '../../../hooks/formats/formats';
 
 interface FormatTagProps {
@@ -6,9 +6,13 @@ interface FormatTagProps {
   removeSpacing?: boolean;
 }
 
-export const FormatTag = (props: FormatTagProps) => {
+export const FormatTag = (props: FormatTagProps & BadgeProps) => {
   return (
-    <Tag ml={props.removeSpacing ? 0 : 2} mt={props.removeSpacing ? 0 : 2}>
+    <Tag
+      {...props}
+      ml={props.removeSpacing ? 0 : 2}
+      mt={props.removeSpacing ? 0 : 2}
+    >
       {props.format.rotation} Block
     </Tag>
   );

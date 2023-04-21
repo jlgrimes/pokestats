@@ -5,8 +5,9 @@ import {
   formatTournamentStatus,
   getTournamentStatusBadgeProps,
 } from './helpers';
+import { TournamentFormatBadges } from './TournamentFormatBadges';
 
-interface TournamentStatusBadgeProps {
+export interface TournamentStatusBadgeProps {
   tournament: Tournament;
   size: 'xs' | 'sm' | 'md' | 'lg';
 }
@@ -14,7 +15,10 @@ interface TournamentStatusBadgeProps {
 export const TournamentStatusBadge = (props: TournamentStatusBadgeProps) => {
   const utcOffset = useUtcOffset(props.tournament.id);
 
-  if (props.tournament.tournamentStatus === 'finished') return <Box />;
+  if (props.tournament.tournamentStatus === 'finished')
+    return (
+      <TournamentFormatBadges tournament={props.tournament} size={props.size} />
+    );
 
   return (
     <span>

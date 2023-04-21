@@ -1,6 +1,15 @@
-import { Heading, LinkOverlay, Stack, useColorMode } from '@chakra-ui/react';
+import {
+  Grid,
+  Heading,
+  HStack,
+  LinkOverlay,
+  Stack,
+  useColorMode,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Tournament } from '../../../types/tournament';
+import { useCurrentFormat } from '../../hooks/formats/formats';
+import { FormatTag } from '../Deck/Format/FormatTag';
 import { formatTournamentDate } from './helpers';
 
 interface TournamentInfoProps {
