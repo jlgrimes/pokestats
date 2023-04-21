@@ -37,7 +37,7 @@ export const PlayerCard = (props: PlayerResultProps) => {
                 </Text>
               </Stack>
             </LinkOverlay>
-            {props.player.username === 'null' && <SingleSprite name='type-null' />}
+            {props.player.username === 'null' && <SingleSprite name='rotom' />}
             {props.player.username === 'jolt' && <SingleSprite name='jolteon' />}
             {props.player.username === 'noah' && <SingleSprite name='trubbish' />}
             {props.player.username === 'jared' && <SingleSprite name='arceus' />}
