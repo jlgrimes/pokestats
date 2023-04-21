@@ -20,3 +20,17 @@ export const getDay2Decks = (
       finalDeck.day2
   ).length;
 };
+
+export const getConversionRate = (
+  deck: DeckTypeSchema,
+  decks: FinalResultsDeckSchema[]
+) => {
+  const reportedDecks = decks.filter(deck => deck.deck_archetype);
+  const day2Decks = getDay2Decks(deck, decks);
+
+  const totalDecks = reportedDecks.filter(finalDeck =>
+    ifResultMatchesSchema(deck, finalDeck)
+  );
+
+  return day2Decks / totalDecks.length;
+};

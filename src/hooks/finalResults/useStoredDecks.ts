@@ -1,14 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Deck } from '../../../types/tournament';
-import {
-  getConversionRate,
-  getDay2Decks,
-} from '../../components/Deck/Analytics/MetaGameShare/ConversionStat';
-import {
-  DeckTypeSchema,
-  useArchetypes,
-  useSupertypes,
-} from '../deckArchetypes';
+import { getConversionRate } from '../stats';
+import { DeckTypeSchema } from '../deckArchetypes';
 import { fetchDecksWithLists } from './fetch';
 import { FinalResultsDeckSchema } from './final-results-schema';
 import { getDeckCounts } from './helpers';
@@ -20,7 +13,7 @@ export const useStoredDecks = (options?: {
   sortOrder?: 'asc' | 'desc';
 }): {
   isLoading: boolean;
-  data: DeckTypeSchema[],
+  data: DeckTypeSchema[];
   decks: FinalResultsDeckSchema[];
   numberReported: number;
 } => {

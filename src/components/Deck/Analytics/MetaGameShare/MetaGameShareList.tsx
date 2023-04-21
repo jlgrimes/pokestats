@@ -1,28 +1,10 @@
 import { createContext, memo, useContext, useMemo, useState } from 'react';
-import {
-  Box,
-  Button,
-  Grid,
-  HStack,
-  Spinner,
-  Stack,
-  Switch,
-  Text,
-} from '@chakra-ui/react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
-import { IndividualShareCard } from './IndividualShareCard';
-import { getMetaDiff, getMetaShare } from './helpers';
-import { NoDataDisplay } from './NoDataDisplay';
-import { CommonCard } from '../../../common/CommonCard';
-import { ComponentLoader } from '../../../common/ComponentLoader';
-import { useTournaments } from '../../../../hooks/tournaments';
+import { getMetaShare } from './helpers';
 import { Tournament } from '../../../../../types/tournament';
-import { FaSortAmountUp } from 'react-icons/fa';
-import { MetaGameSortToggles } from './MetaGameSortToggles';
 import { DeckCompareTable } from '../../../common/DeckCompare/DeckCompareTable';
 import { DeckCompareColumnType } from '../../../common/DeckCompare/DeckCompareSortToggles';
-import { getDay2Decks } from '../../../../hooks/stats';
-import { getConversionRate } from './ConversionStat';
+import { getDay2Decks, getConversionRate } from '../../../../hooks/stats';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
