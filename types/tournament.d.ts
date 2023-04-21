@@ -106,4 +106,5 @@ export interface Tournament {
     seniors: number | null;
     masters: number | null;
   };
+  format: number;
 }

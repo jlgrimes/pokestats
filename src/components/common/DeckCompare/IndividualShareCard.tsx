@@ -31,8 +31,6 @@ interface IndividualCardProps<T> {
 export const IndividualShareCard = memo(
   <T extends string>(props: IndividualCardProps<T>) => {
     const { colorMode } = useColorMode();
-    const { data: formats } = useFormats();
-    const format = getTournamentFormat(formats ?? [], props.tournament);
 
     const link =
       props.deck.type === 'supertype'
@@ -59,7 +57,7 @@ export const IndividualShareCard = memo(
                 href={
                   {
                     pathname: link,
-                    query: { format: format?.id },
+                    query: { format: props.tournament.format },
                   } as any
                 }
               >
