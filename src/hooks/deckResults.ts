@@ -56,11 +56,11 @@ export const fetchDeckResults = async (
   }
 
   if (options.supertype) {
-    query = query.eq('deck_supertype', options.supertype.id);
+    if (!options.supertype.format) return [];
 
-    if (options.supertype.format) {
-      query = query.eq('format', options.supertype.format);
-    }
+    query = query
+      .eq('deck_supertype', options.supertype.id)
+      .eq('format', options.supertype.format);
   }
 
   const res = await query.returns<

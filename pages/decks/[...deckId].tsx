@@ -25,6 +25,7 @@ import { Deck } from '../../types/tournament';
 import { fetchFormats } from '../../src/hooks/formats/formats';
 import { Container, Stack } from '@chakra-ui/react';
 import { MatchupsCard } from '../../src/components/Deck/Analytics/MatchupsCard';
+import { fetchDeckResults, getDeckResultsFilters } from '../../src/hooks/deckResults';
 
 export default function DeckPage({
   deck,
@@ -76,6 +77,7 @@ export async function getStaticProps({
   if (!deck) return invalidDeckReturn;
 
   const formats = await fetchFormats();
+  const format = formats ? formats[formats.length - 1].id : null;
 
   await queryClient.setQueryData(['formats'], () => formats);
 
@@ -84,7 +86,7 @@ export async function getStaticProps({
       ...deck,
       classification: archetypeId ? 'archetype' : 'supertype',
     },
-    formats ? formats[formats.length - 1].id : null
+    format
   );
 
   await queryClient.prefetchQuery({
@@ -108,6 +110,12 @@ export async function getStaticProps({
       queryFn: () => fetchVariants(deck!.supertype!.id),
     });
   }
+
+  // const deckResultsFilters = getDeckResultsFilters(deck, format);
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['deck-results', deckResultsFilters, false],
+  //   queryFn: () => fetchDeckResults(deckResultsFilters, false),
+  // });
 
   return {
     props: {
