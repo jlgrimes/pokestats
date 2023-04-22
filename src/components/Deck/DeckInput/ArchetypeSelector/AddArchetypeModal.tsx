@@ -44,7 +44,7 @@ interface AddArchetypeModalProps {
   isOpen: boolean;
   onClose: () => void;
   handleArchetypeChange?: (name: string) => void;
-  tournament: Tournament;
+  tournament: Tournament | undefined;
 }
 
 export default function AddArchetypeModal(props: AddArchetypeModalProps) {
