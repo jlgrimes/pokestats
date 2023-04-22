@@ -40,7 +40,7 @@ export const DeckCompareTable = <T extends string>(
       >
         <Stack>
           <Grid
-            gridTemplateColumns={`auto repeat(${props.columns.length}, 7em)`}
+            gridTemplateColumns={`auto repeat(${props.columns.length}, 5.9rem)`}
             paddingX={3}
           >
             <HStack>

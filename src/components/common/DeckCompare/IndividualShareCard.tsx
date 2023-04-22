@@ -33,7 +33,7 @@ export const IndividualShareCard = memo(
       <HStack>
         <CommonCard width='100%'>
           <Grid
-            gridTemplateColumns={`auto repeat(${props.columns.length}, 6rem)`}
+            gridTemplateColumns={`auto repeat(${props.columns.length}, 5rem)`}
             paddingX={2}
             gap={2}
             alignItems='center'
