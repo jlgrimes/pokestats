@@ -21,7 +21,7 @@ export default function LocalsPage(props: LocalsPageProps) {
       {userIsAdmin && (
         <Stack>
           <Input
-            placeholder='Player name'
+            placeholder='Enter player name'
             onChange={e => setName(e.target.value)}
           />
           <Button onClick={() => modalControls.onOpen()}>
