@@ -1,5 +1,14 @@
-import { Box, Grid, HStack, Stack, Switch, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Grid,
+  HStack,
+  Stack,
+  Switch,
+  Text,
+} from '@chakra-ui/react';
 import { createContext, useState } from 'react';
+import { FaChess, FaChessRook } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 import { NoDataDisplay } from '../../Deck/Analytics/MetaGameShare/NoDataDisplay';
@@ -41,10 +50,20 @@ export const DeckCompareTable = <T extends string>(
         <Stack>
           <Grid
             gridTemplateColumns={`auto repeat(${props.columns.length}, 5.9rem)`}
-            paddingX={3}
+            paddingRight={3}
           >
             <HStack>
-              <Text color='gray.500' fontWeight='semibold' fontSize='sm'>
+              <Button
+                variant={props.shouldDrillDown ? 'solid' : 'outline'}
+                size='sm'
+                colorScheme='pink'
+                leftIcon={props.shouldDrillDown ? <FaChessRook /> : <FaChess />}
+                onClick={() => props.setShouldDrillDown(!props.shouldDrillDown)}
+                borderRadius='10rem'
+              >
+                {props.shouldDrillDown ? 'Specific decks' : 'Generic decks'}
+              </Button>
+              {/* <Text color='gray.500' fontWeight='semibold' fontSize='sm'>
                 Drilldown
               </Text>
               <Switch
@@ -52,7 +71,7 @@ export const DeckCompareTable = <T extends string>(
                 onChange={() =>
                   props.setShouldDrillDown(!props.shouldDrillDown)
                 }
-              />
+              /> */}
             </HStack>
             <DeckCompareSortToggles
               sortBy={props.sortBy}
