@@ -11,7 +11,7 @@ export interface ArchetypeSelectorProps {
   onChange: (value: Deck) => void;
   modalControls: UseDisclosureProps;
   shouldShowAsText?: boolean;
-  tournament: Tournament | undefined;
+  tournament: Tournament;
   unownOverride?: string;
   userIsAdmin: boolean;
   deckIsVerified?: boolean;
@@ -22,7 +22,6 @@ export interface ArchetypeSelectorProps {
   isListUp: boolean;
   shouldEnableEdits?: boolean;
   shouldHideSpecificArchetype?: boolean;
-  isLocal?: boolean;
 }
 
 const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {
