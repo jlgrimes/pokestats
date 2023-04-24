@@ -20,5 +20,5 @@ export const fixPercentage = (percentNumber: number) => {
     return Math.abs(percentNumber).toFixed(0);
   }
 
-  return Math.abs(percentNumber).toFixed(1);
+  return Math.abs(percentNumber).toFixed(0);
 };
