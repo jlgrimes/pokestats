@@ -11,8 +11,6 @@ import { Fragment, memo, useContext } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
-import { useFormats } from '../../../hooks/formats/formats';
-import { getTournamentFormat } from '../../../hooks/formats/helpers';
 import { useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';

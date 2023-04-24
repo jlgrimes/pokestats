@@ -8,7 +8,6 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { Tournament } from '../../../types/tournament';
-import { useCurrentFormat } from '../../hooks/formats/formats';
 import { useColor } from '../../hooks/useColor';
 import { FormatTag } from '../Deck/Format/FormatTag';
 import { formatTournamentDate } from './helpers';

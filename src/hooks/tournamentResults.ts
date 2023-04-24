@@ -1,8 +1,5 @@
-import { useUser } from '@supabase/auth-helpers-react';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { PlayerTournamentPerformance } from '../../types/player';
-import { PlayerRound, Standing } from '../../types/tournament';
+import { useQuery } from '@tanstack/react-query';
+import { Standing } from '../../types/tournament';
 import { StandingsFilters } from '../components/Tournament/Results/Filters/StandingsFilterMenu';
 import {
   fetchLiveResults,
@@ -14,7 +11,6 @@ import {
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
 import { useArchetypes, useDecks } from './deckArchetypes';
-import { useCurrentFormat } from './formats/formats';
 import { useTournaments } from './tournaments';
 import { usePlayerProfile, useUserMatchesLoggedInUser } from './user';
 
@@ -79,7 +75,7 @@ export const useLiveTournamentResults = (
   const { data: tournaments } = useTournaments();
   const tournament = tournaments?.find(({ id }) => id === tournamentId);
 
-  const { data: currentFormat } = useCurrentFormat(tournament);
+  const currentFormat = tournament?.format;
   const { data: decks } = useDecks(currentFormat);
 
   const queryKey = [
