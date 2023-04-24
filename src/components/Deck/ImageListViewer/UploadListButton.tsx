@@ -53,7 +53,7 @@ export const UploadListButton = (props: UploadListButtonProps) => {
       {/* <FormLabel htmlFor='writeUpFile'>{''}</FormLa> */}
       <InputGroup>
         <IconFileUpload
-          size={18}
+          size={20}
           onClick={e => {
             e.stopPropagation();
             inputRef.current && inputRef.current.click();

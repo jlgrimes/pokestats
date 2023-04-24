@@ -42,7 +42,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         }}
         minWidth={0}
       >
-        <IconCards size={18} />
+        <IconCards size={20} />
       </IconButton>
       <Modal
         isOpen={imageOpen}
