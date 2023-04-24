@@ -5,9 +5,9 @@ import supabase from '../lib/supabase/client';
 import { FormatSchema, useCurrentFormat } from './formats/formats';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchArchetypes = async (
+export const fetchDecks = async (
   format?: FormatSchema
-): Promise<DeckTypeSchema[] | null> => {
+): Promise<Deck[] | null> => {
   let query = supabase
     .from('Deck Archetypes')
     .select(
@@ -29,14 +29,22 @@ export const fetchArchetypes = async (
       id: number;
       name: string;
       defined_pokemon: string[];
-      supertype: SupertypeSchema;
+      supertype: DeckTypeSchema;
       identifiable_cards: string[];
       format: FormatSchema;
     }[]
   >();
 
-  if (res.data) {
-    return res.data.map(archetype => {
+  return res.data;
+};
+
+export const fetchArchetypes = async (
+  format?: FormatSchema
+): Promise<DeckTypeSchema[] | null> => {
+  const data = await fetchDecks();
+
+  if (data) {
+    return data.map(archetype => {
       const supertype = Array.isArray(archetype.supertype)
         ? archetype.supertype[0]
         : archetype.supertype ?? {
@@ -55,7 +63,7 @@ export const fetchArchetypes = async (
     });
   }
 
-  return res.data;
+  return data;
 };
 
 export const fetchArchetype = async (archetypeId: number) => {

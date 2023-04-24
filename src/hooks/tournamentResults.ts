@@ -169,66 +169,6 @@ export const usePlayerLiveResults = (
   };
 };
 
-export const usePlayerPerformance = (
-  playerName: string | undefined,
-  tournamentHistory: string[] | undefined
-): PlayerTournamentPerformance[] => {
-  const { data: tournaments } = useTournaments();
-  const sortedTournamentHistory = tournamentHistory?.sort(
-    (a: string, b: string) => {
-      if (parseInt(a) < parseInt(b)) {
-        return 1;
-      }
-      if (parseInt(a) > parseInt(b)) {
-        return -1;
-      }
-
-      return 0;
-    }
-  );
-
-  const queries =
-    sortedTournamentHistory?.map(tournamentId => {
-      return {
-        queryKey: [`live-results`, tournamentId],
-        queryFn: () => fetchLiveResults(tournamentId),
-      };
-    }) ?? [];
-
-  const allTournamentDataRelevantToPlayer = useQueries({
-    queries,
-  });
-
-  if (playerName === undefined || tournamentHistory === undefined) {
-    return [];
-  }
-
-  const playerTournamentPerformance: PlayerTournamentPerformance[] =
-    allTournamentDataRelevantToPlayer.reduce(
-      (acc: any[], result, tournamentIdx) => {
-        if (!result.data) {
-          return acc;
-        }
-
-        const perf = result.data.data.find(
-          standing => standing.name === playerName
-        );
-
-        return [
-          ...acc,
-          {
-            tournament: tournaments?.find(
-              ({ id }) => id === tournamentHistory[tournamentIdx]
-            ),
-            performance: perf,
-          },
-        ];
-      },
-      []
-    );
-  return playerTournamentPerformance;
-};
-
 export const useLiveTournamentPlayers = (tournamentId: string) => {
   const { data: liveResults, isLoading: isLiveTournamentResultsLoading } =
     useLiveTournamentResults(tournamentId);

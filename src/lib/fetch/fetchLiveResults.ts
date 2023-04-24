@@ -7,6 +7,7 @@ import {
   TournamentStatus,
 } from '../../../types/tournament';
 import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
+import { fetchDecks } from '../../hooks/deckArchetypes';
 import { fetchFormats, FormatSchema } from '../../hooks/formats/formats';
 import { getTournamentFormat } from '../../hooks/formats/helpers';
 import { fetchPlayerDecks } from '../../hooks/playerDecks';
@@ -22,23 +23,6 @@ import { getPokedataStandingsUrl } from '../url';
 interface FetchDeckArchetypesFilters {
   format: FormatSchema | undefined;
 }
-
-const fetchDeckArchetypes = async (filters: FetchDeckArchetypesFilters) => {
-  const perfStart = performance.now();
-
-  const res = await supabase
-    .from('Deck Archetypes')
-    .select('id,name,defined_pokemon,identifiable_cards,supertype')
-    .eq('format', filters.format?.id);
-
-  // console.log(
-  //   'fetchDeckArchetypes:',
-  //   (performance.now() - perfStart) / 1000,
-  //   'sec'
-  // );
-
-  return res.data;
-};
 
 const updatePlayerProfilesWithTournament = async (
   parsedData: Record<string, any>[],
@@ -393,7 +377,7 @@ export const fetchLiveResults = async (
 
   const formats = await fetchFormats();
   const currentFormat = getTournamentFormat(formats ?? [], tournament);
-  const deckArchetypes = await fetchDeckArchetypes({ format: currentFormat });
+  const deckArchetypes = await fetchDecks(currentFormat);
 
   const playerDeckObjects = await getPlayerDeckObjects(
     tournamentId,
