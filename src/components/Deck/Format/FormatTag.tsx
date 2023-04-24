@@ -7,13 +7,10 @@ interface FormatTagProps {
 }
 
 export const FormatTag = (props: FormatTagProps & BadgeProps) => {
+  const { format, removeSpacing, ...rest } = props;
   return (
-    <Tag
-      {...props}
-      ml={props.removeSpacing ? 0 : 2}
-      mt={props.removeSpacing ? 0 : 2}
-    >
-      {props.format.rotation} Block
+    <Tag {...rest} ml={removeSpacing ? 0 : 2} mt={removeSpacing ? 0 : 2}>
+      {format.rotation} Block
     </Tag>
   );
 };
