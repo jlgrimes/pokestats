@@ -26,6 +26,7 @@ import { useArchetypes, useSupertypes } from '../../../../hooks/deckArchetypes';
 import { useFinalResultsPlayers } from '../../../../hooks/finalResults/fetch';
 import { useTournaments } from '../../../../hooks/tournaments';
 import { normalizeName, usePlayerProfiles } from '../../../../hooks/user';
+import { appSearchResultComparator } from './helpers';
 import { SearchResultSchema, SearchResultType } from './search-types';
 import { SearchResult } from './SearchResult';
 
@@ -154,48 +155,16 @@ export const SearchBar = (props: SearchBarProps) => {
   const optimizedSearchResults = useMemo(
     () =>
       searchResults
-        .sort((a, b) => {
-          const trueLength = searchQuery.length;
-
-          // If neither returned a string, punt that to back
-          if (!a.match) return 1;
-          if (!b.match) return -1;
-
-          // If both decks are archetypes, we want the one in the more relevant format
-          if (a.type === 'archetype' && b.type === 'archetype') {
-            if (a.data.format.id > b.data.format.id) return -1;
-            if (a.data.format.id < b.data.format.id) return 1;
-          }
-
-          // Now, return whichever is closer to the search query in length
-          if (
-            Math.abs(a.match.length - trueLength) <
-            Math.abs(b.match.length - trueLength)
-          )
-            return -1;
-          if (
-            Math.abs(a.match.length - trueLength) >
-            Math.abs(b.match.length - trueLength)
-          )
-            return 1;
-
-          // Finally, if we're comparing between an archetype and supertype, supertype goes first
-          if (a.type === 'supertype' && b.type === 'archetype') return -1;
-          if (a.type === 'archetype' && b.type === 'supertype') return 1;
-
-          return 0;
-        })
+        .sort(appSearchResultComparator(searchQuery))
         .filter((result, idx) => {
-          return !searchResults
-            .slice(0, idx)
-            .some((existingResult, existingIdx) => {
-              return (
-                existingResult.type === result.type &&
-                existingResult.data.id === result.data.id
-              );
-            });
+          return !searchResults.slice(0, idx).some(existingResult => {
+            return (
+              existingResult.type === result.type &&
+              existingResult.data.id === result.data.id
+            );
+          });
         }),
-    [searchQuery.length, searchResults]
+    [searchQuery, searchResults]
   );
 
   const shouldShowSearchResults = optimizedSearchResults.length > 0;
