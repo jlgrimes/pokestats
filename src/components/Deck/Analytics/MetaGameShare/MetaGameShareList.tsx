@@ -26,7 +26,7 @@ export const MetaGameShareList = memo(
   }) => {
     const [shouldDrillDown, setShouldDrillDown] = useState(false);
     const [sort, setSort] = useState<{
-      sortBy: 'played' | 'converted';
+      sortBy: 'played' | 'day 2';
       sortOrder: 'asc' | 'desc';
     }>({
       sortBy: 'played',
@@ -45,7 +45,7 @@ export const MetaGameShareList = memo(
       sortOrder: sort.sortOrder,
     });
 
-    const columns: DeckCompareColumnType<'played' | 'converted'>[] = [
+    const columns: DeckCompareColumnType<'played' | 'day 2'>[] = [
       {
         name: 'played',
         calculation: (deck, decks) => getMetaShare(deck, decks),
@@ -55,7 +55,7 @@ export const MetaGameShareList = memo(
       ...(!tournament.name.includes(' Cup')
         ? [
             {
-              name: 'converted' as 'played' | 'converted',
+              name: 'day 2' as 'played' | 'day 2',
               calculation: (deck: DeckTypeSchema) =>
                 getConversionRate(deck, allDecks),
               label: (deck: DeckTypeSchema) =>
@@ -79,7 +79,7 @@ export const MetaGameShareList = memo(
         sortBy={sort.sortBy}
         sortOrder={sort.sortOrder}
         columns={columns}
-        setSort={(sortBy: 'played' | 'converted', sortOrder: 'asc' | 'desc') =>
+        setSort={(sortBy: 'played' | 'day 2', sortOrder: 'asc' | 'desc') =>
           setSort({ sortBy, sortOrder })
         }
         shouldHideDeck={deck => shouldHide(deck)}

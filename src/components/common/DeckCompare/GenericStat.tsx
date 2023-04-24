@@ -9,11 +9,13 @@ export const GenericStat = memo(
     decks,
     column,
     isInactive,
+    shouldHideLabel
   }: {
     deck: DeckTypeSchema;
     decks: DeckTypeSchema[];
     column: DeckCompareColumnType<T>;
     isInactive?: boolean;
+    shouldHideLabel?: boolean;
   }) => {
     const stat = column.calculation(deck, decks);
     if (!stat || column.shouldHide(deck, decks)) return null;
@@ -23,6 +25,7 @@ export const GenericStat = memo(
         stat={stat}
         label={column.label(deck, decks)}
         isInactive={isInactive}
+        shouldHideLabel={shouldHideLabel}
       />
     );
   }

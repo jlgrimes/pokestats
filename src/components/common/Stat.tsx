@@ -5,6 +5,7 @@ interface StatProps {
   stat: number;
   label: string;
   isInactive?: boolean;
+  shouldHideLabel?: boolean;
 }
 
 export const Stat = (props: StatProps) => {
@@ -20,9 +21,11 @@ export const Stat = (props: StatProps) => {
       <Heading size='md' color={color}>
         {fixPercentage(props.stat * 100)}%
       </Heading>
-      <Heading size='xs' color={color}>
-        {props.label}
-      </Heading>
+      {!props.shouldHideLabel && (
+        <Heading size='xs' color={color}>
+          {props.label}
+        </Heading>
+      )}
     </Stack>
   );
 };

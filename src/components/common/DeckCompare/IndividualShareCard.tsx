@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import {
   Box,
   Grid,
@@ -23,6 +23,7 @@ interface IndividualCardProps<T> {
   format: number;
   sortBy: T;
   isComparison?: boolean;
+  shouldHideLabels?: boolean;
 }
 
 export const IndividualShareCard = memo(
@@ -33,7 +34,7 @@ export const IndividualShareCard = memo(
       <HStack>
         <CommonCard width='100%'>
           <Grid
-            gridTemplateColumns={`auto repeat(${props.columns.length}, 5rem)`}
+            gridTemplateColumns={`auto repeat(${props.columns.length}, ${props.shouldHideLabels ? 3 : 5}rem)`}
             paddingX={2}
             gap={2}
             alignItems='center'
@@ -63,7 +64,7 @@ export const IndividualShareCard = memo(
               </Grid>
             )}
             {!props.isComparison && (
-              <Stack>
+              <HStack>
                 <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
                 <LinkOverlay
                   as={NextLink}
@@ -76,7 +77,7 @@ export const IndividualShareCard = memo(
                     {props.deck.name}
                   </Heading>
                 </LinkOverlay>
-              </Stack>
+              </HStack>
             )}
             {props.columns.map(column => (
               <GenericStat
@@ -85,6 +86,7 @@ export const IndividualShareCard = memo(
                 decks={props.decks}
                 column={column}
                 isInactive={props.sortBy !== column.name}
+                shouldHideLabel={props.shouldHideLabels}
               />
             ))}
           </Grid>

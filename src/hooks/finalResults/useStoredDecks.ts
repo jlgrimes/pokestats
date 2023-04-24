@@ -9,7 +9,7 @@ import { getDeckCounts } from './helpers';
 export const useStoredDecks = (options?: {
   tournamentId?: string;
   shouldDrillDown?: boolean;
-  sortBy?: 'played' | 'converted';
+  sortBy?: 'played' | 'day 2';
   sortOrder?: 'asc' | 'desc';
 }): {
   isLoading: boolean;
@@ -93,7 +93,7 @@ export const useStoredDecks = (options?: {
         if (a.count <= 20 || a.deck.name === 'Other') return 1;
         if (b.count <= 20 || b.deck.name === 'Other') return -1;
 
-        if (sortBy === 'converted') {
+        if (sortBy === 'day 2') {
           if (sortOrder === 'desc') {
             if (a.day2Conversion < b.day2Conversion) return 1;
             if (b.day2Conversion < a.day2Conversion) return -1;

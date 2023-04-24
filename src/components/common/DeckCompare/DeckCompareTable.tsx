@@ -39,6 +39,8 @@ export const ShouldDrillDownMetaShareContext = createContext(false);
 export const DeckCompareTable = <T extends string>(
   props: DeckCompareTableProps<T>
 ) => {
+  const [shouldHideLabels] = useState(true);
+
   return (
     <ShouldDrillDownMetaShareContext.Provider value={props.shouldDrillDown}>
       <CommonCard
@@ -49,7 +51,7 @@ export const DeckCompareTable = <T extends string>(
       >
         <Stack>
           <Grid
-            gridTemplateColumns={`auto repeat(${props.columns.length}, 5.9rem)`}
+            gridTemplateColumns={`auto repeat(${props.columns.length}, ${shouldHideLabels ? 4.6 : 5.9}rem)`}
             paddingRight={3}
           >
             <HStack>
@@ -103,6 +105,7 @@ export const DeckCompareTable = <T extends string>(
                         sortBy={props.sortBy}
                         format={props.format}
                         isComparison={props.isComparison}
+                        shouldHideLabels={shouldHideLabels}
                       />
                     )
                   );
