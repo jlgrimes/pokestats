@@ -15,6 +15,7 @@ import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 import { DeckCompareColumnType } from './DeckCompareSortToggles';
 import { GenericStat } from './GenericStat';
 import { getDeckHref } from './helpers';
+import { useColor } from '../../../hooks/useColor';
 
 interface IndividualCardProps<T> {
   deck: DeckTypeSchema;
@@ -28,13 +29,15 @@ interface IndividualCardProps<T> {
 
 export const IndividualShareCard = memo(
   <T extends string>(props: IndividualCardProps<T>) => {
-    const { colorMode } = useColorMode();
+    const { active } = useColor();
 
     return (
       <HStack>
         <CommonCard width='100%'>
           <Grid
-            gridTemplateColumns={`auto repeat(${props.columns.length}, ${props.shouldHideLabels ? 3 : 5}rem)`}
+            gridTemplateColumns={`auto repeat(${props.columns.length}, ${
+              props.shouldHideLabels ? 3.5 : 5
+            }rem)`}
             paddingX={2}
             gap={2}
             alignItems='center'
@@ -54,30 +57,24 @@ export const IndividualShareCard = memo(
                   as={NextLink}
                   href={getDeckHref(props.deck, props.format) as any}
                 >
-                  <Heading
-                    color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}
-                    size={'sm'}
-                  >
+                  <Heading color={active} size={'sm'}>
                     {props.deck.name}
                   </Heading>
                 </LinkOverlay>
               </Grid>
             )}
             {!props.isComparison && (
-              <HStack>
+              <Grid gridTemplateColumns={'5.2rem auto'} alignItems='center'>
                 <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
                 <LinkOverlay
                   as={NextLink}
                   href={getDeckHref(props.deck, props.format) as any}
                 >
-                  <Heading
-                    color={colorMode === 'dark' ? 'gray.100' : 'gray.600'}
-                    size={'sm'}
-                  >
+                  <Heading color={active} size={'sm'}>
                     {props.deck.name}
                   </Heading>
                 </LinkOverlay>
-              </HStack>
+              </Grid>
             )}
             {props.columns.map(column => (
               <GenericStat

@@ -1,4 +1,5 @@
 import { Heading, Stack, useColorMode } from '@chakra-ui/react';
+import { useColor } from '../../hooks/useColor';
 import { fixPercentage } from '../Deck/ListViewer/CardViewer.tsx/helpers';
 
 interface StatProps {
@@ -9,12 +10,8 @@ interface StatProps {
 }
 
 export const Stat = (props: StatProps) => {
-  const { colorMode } = useColorMode();
-  const color = props.isInactive
-    ? 'gray.500'
-    : colorMode === 'dark'
-    ? 'gray.300'
-    : 'gray.700';
+  const { active, inactive } = useColor();
+  const color = props.isInactive ? inactive : active;
 
   return (
     <Stack spacing={0}>

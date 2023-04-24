@@ -2,6 +2,7 @@ import { Button, useColorMode } from '@chakra-ui/react';
 import { Fragment } from 'react';
 import { FaSortAmountDown, FaSortAmountUpAlt } from 'react-icons/fa';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
+import { useColor } from '../../../hooks/useColor';
 
 export type DeckCompareColumnType<T> = {
   name: T;
@@ -20,9 +21,7 @@ export interface DeckCompareSortTogglesProps<T> {
 export const DeckCompareSortToggles = <T extends string>(
   props: DeckCompareSortTogglesProps<T>
 ) => {
-  const { colorMode } = useColorMode();
-  const activeColor = colorMode === 'dark' ? 'gray.100' : 'gray.900';
-  const inactiveColor = colorMode === 'dark' ? 'gray.600' : 'gray.400';
+  const { active, inactive } = useColor();
 
   const invertOrder = (order: 'asc' | 'desc') =>
     order === 'asc' ? 'desc' : 'asc';
@@ -32,7 +31,7 @@ export const DeckCompareSortToggles = <T extends string>(
       {props.columns.map(column => (
         <Button
           key={`column-toggle-${column.name}`}
-          color={props.sortBy === column.name ? activeColor : inactiveColor}
+          color={props.sortBy === column.name ? active : inactive}
           size='sm'
           variant='ghost'
           leftIcon={
@@ -49,6 +48,8 @@ export const DeckCompareSortToggles = <T extends string>(
               props.setSort(column.name, 'desc');
             }
           }}
+          _active={{ backgroundColor: 'transparent' }}
+          _hover={{ backgroundColor: 'transparent' }}
         >
           {column.name}
         </Button>
