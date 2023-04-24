@@ -7,7 +7,7 @@ import {
   TournamentStatus,
 } from '../../../types/tournament';
 import { StandingsFilters } from '../../components/Tournament/Results/Filters/StandingsFilterMenu';
-import { fetchDecks } from '../../hooks/deckArchetypes';
+import { fetchDecks, getDecksInFormat } from '../../hooks/deckArchetypes';
 import { fetchFormats, FormatSchema } from '../../hooks/formats/formats';
 import { getTournamentFormat } from '../../hooks/formats/helpers';
 import { fetchPlayerDecks } from '../../hooks/playerDecks';
@@ -390,7 +390,8 @@ export const fetchLiveResults = async (
   } else {
     const formats = await fetchFormats();
     const currentFormat = getTournamentFormat(formats ?? [], tournament);
-    deckArchetypes = await fetchDecks(currentFormat);
+    const decks = await fetchDecks();
+    deckArchetypes = getDecksInFormat(decks, currentFormat);
   }
 
   const playerDeckObjects = await getPlayerDeckObjects(

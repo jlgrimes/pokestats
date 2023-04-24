@@ -5,7 +5,7 @@ import supabase from '../lib/supabase/client';
 import { FormatSchema } from './formats/formats';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchDecks = async (): Promise<Deck[] | null> => {
+export const fetchDecks = async (): Promise<Deck[]> => {
   let query = supabase
     .from('Deck Archetypes')
     .select(
@@ -29,8 +29,15 @@ export const fetchDecks = async (): Promise<Deck[] | null> => {
     }[]
   >();
 
-  return res.data;
+  return res.data ?? [];
 };
+
+export const getDecksInFormat = (decks: Deck[], format?: FormatSchema) =>
+  format
+    ? decks.filter(
+        deck => deck.format?.id === format.id || deck.name === 'Other'
+      )
+    : decks;
 
 export const convertDecksToArchetypes = (decks: Deck[]): DeckTypeSchema[] => {
   return decks.map(archetype => {
@@ -113,9 +120,7 @@ export const useDecks = (format?: FormatSchema) => {
   if (data && format) {
     return {
       ...rest,
-      data: data.filter(
-        deck => deck.format === format || deck.name === 'Other'
-      ),
+      data: getDecksInFormat(data, format),
     };
   }
 
