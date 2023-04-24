@@ -29,7 +29,7 @@ interface IndividualCardProps<T> {
 
 export const IndividualShareCard = memo(
   <T extends string>(props: IndividualCardProps<T>) => {
-    const { active } = useColor();
+    const { active, subheader } = useColor();
 
     return (
       <HStack>
@@ -50,7 +50,7 @@ export const IndividualShareCard = memo(
             >
               {props.isComparison && (
                 <Heading
-                  color='gray.400'
+                  color={subheader}
                   fontSize={12}
                   textTransform='uppercase'
                 >
