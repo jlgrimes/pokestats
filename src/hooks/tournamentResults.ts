@@ -13,6 +13,8 @@ import {
 } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
+import { useArchetypes, useDecks } from './deckArchetypes';
+import { useCurrentFormat } from './formats/formats';
 import { useTournaments } from './tournaments';
 import { usePlayerProfile, useUserMatchesLoggedInUser } from './user';
 
@@ -74,6 +76,12 @@ export const useLiveTournamentResults = (
   tournamentId: string,
   options?: FetchLiveResultsOptions
 ) => {
+  const { data: tournaments } = useTournaments();
+  const tournament = tournaments?.find(({ id }) => id === tournamentId);
+
+  const { data: currentFormat } = useCurrentFormat(tournament);
+  const { data: decks } = useDecks(currentFormat);
+
   const queryKey = [
     `live-results`,
     tournamentId,
@@ -83,7 +91,11 @@ export const useLiveTournamentResults = (
   ];
   const query = useQuery({
     queryKey,
-    queryFn: () => fetchLiveResults(tournamentId, options),
+    queryFn: () =>
+      fetchLiveResults(tournamentId, options, {
+        tournament,
+        decksInFormat: decks,
+      }),
   });
 
   if (query.data) {
@@ -171,7 +183,7 @@ export const usePlayerLiveResults = (
 
 export const useLiveTournamentPlayers = (tournamentId: string) => {
   const { data: liveResults, isLoading: isLiveTournamentResultsLoading } =
-    useLiveTournamentResults(tournamentId);
+    useLiveTournamentResults(tournamentId, { load: { allRoundData: true } });
 
   return {
     data: liveResults?.data.map(({ name }) => name),

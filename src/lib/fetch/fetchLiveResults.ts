@@ -359,7 +359,11 @@ export const getTopCutStatus = (
 
 export const fetchLiveResults = async (
   tournamentId: string,
-  options?: FetchLiveResultsOptions
+  options?: FetchLiveResultsOptions,
+  data?: {
+    tournament?: Tournament;
+    decksInFormat?: Deck[] | null;
+  }
 ): Promise<LiveResults> => {
   const startTime = performance.now();
 
@@ -368,16 +372,26 @@ export const fetchLiveResults = async (
     options?.prefetch
   );
 
-  const [tournament] = await fetchTournaments({
-    tournamentId,
-    prefetch: options?.prefetch,
-  });
+  const tournament =
+    data?.tournament ??
+    (
+      await fetchTournaments({
+        tournamentId,
+        prefetch: options?.prefetch,
+      })
+    )[0];
 
   const roundNumber = tournament?.roundNumbers.masters as number;
 
-  const formats = await fetchFormats();
-  const currentFormat = getTournamentFormat(formats ?? [], tournament);
-  const deckArchetypes = await fetchDecks(currentFormat);
+  let deckArchetypes;
+
+  if (data?.decksInFormat) {
+    deckArchetypes = data.decksInFormat;
+  } else {
+    const formats = await fetchFormats();
+    const currentFormat = getTournamentFormat(formats ?? [], tournament);
+    deckArchetypes = await fetchDecks(currentFormat);
+  }
 
   const playerDeckObjects = await getPlayerDeckObjects(
     tournamentId,
@@ -386,7 +400,7 @@ export const fetchLiveResults = async (
 
   // await updatePlayerProfilesWithTournament(parsedData, tournamentId);
 
-  parsedData = await mapResultsArray(
+  parsedData = mapResultsArray(
     parsedData,
     roundNumber,
     playerDeckObjects,

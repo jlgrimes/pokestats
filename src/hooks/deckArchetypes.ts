@@ -38,29 +38,33 @@ export const fetchDecks = async (
   return res.data;
 };
 
+export const convertDecksToArchetypes = (decks: Deck[]): DeckTypeSchema[] => {
+  return decks.map(archetype => {
+    const supertype = Array.isArray(archetype.supertype)
+      ? archetype.supertype[0]
+      : archetype.supertype ?? {
+          id: -1,
+          name: archetype.name,
+          defined_pokemon: archetype.defined_pokemon,
+          cover_cards: archetype.identifiable_cards,
+        };
+
+    return {
+      ...archetype,
+      type: 'archetype',
+      cover_cards: archetype.identifiable_cards,
+      supertype,
+    };
+  });
+};
+
 export const fetchArchetypes = async (
   format?: FormatSchema
 ): Promise<DeckTypeSchema[] | null> => {
-  const data = await fetchDecks();
+  const data = await fetchDecks(format);
 
   if (data) {
-    return data.map(archetype => {
-      const supertype = Array.isArray(archetype.supertype)
-        ? archetype.supertype[0]
-        : archetype.supertype ?? {
-            id: -1,
-            name: archetype.name,
-            defined_pokemon: archetype.defined_pokemon,
-            cover_cards: archetype.identifiable_cards,
-          };
-
-      return {
-        ...archetype,
-        type: 'archetype',
-        cover_cards: archetype.identifiable_cards,
-        supertype,
-      };
-    });
+    return convertDecksToArchetypes(data);
   }
 
   return data;
@@ -106,11 +110,25 @@ export const useVariants = (
   };
 };
 
-export const useArchetypes = (format?: FormatSchema) => {
+export const useDecks = (format?: FormatSchema) => {
   return useQuery({
     queryKey: ['deck-archetypes', format?.format, format?.rotation],
-    queryFn: () => fetchArchetypes(format),
+    queryFn: () => fetchDecks(format),
   });
+};
+
+export const useArchetypes = (format?: FormatSchema) => {
+  const decks = useDecks(format);
+
+  return decks.data
+    ? {
+        ...decks,
+        data: convertDecksToArchetypes(decks.data),
+      }
+    : {
+        ...decks,
+        data: null,
+      };
 };
 
 export interface SupertypeSchema {

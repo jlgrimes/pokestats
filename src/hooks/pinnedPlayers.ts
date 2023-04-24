@@ -131,7 +131,7 @@ export const useAvailablePinnedPlayerNames = (tournamentId: string) => {
   const { data: pinnedPlayers, isLoading: isPinnedPlayersLoading } =
     usePinnedPlayers();
   const { data: liveResults, isLoading: isLiveTournamentResultsLoading } =
-    useLiveTournamentResults(tournamentId);
+    useLiveTournamentResults(tournamentId, { load: { allRoundData: true } });
 
   return {
     data: liveResults?.data.reduce((acc: string[], curr: Standing) => {
