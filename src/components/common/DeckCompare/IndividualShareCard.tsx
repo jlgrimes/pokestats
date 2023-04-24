@@ -42,40 +42,31 @@ export const IndividualShareCard = memo(
             gap={2}
             alignItems='center'
           >
-            {props.isComparison && (
-              <Grid gridTemplateColumns={'1.5rem auto'} gap={2} rowGap={2}>
-                <Box />
-                <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
+            <Grid
+              gridTemplateColumns={`${
+                props.isComparison ? '1.5rem' : ''
+              } 5.2rem auto`}
+              alignItems='center'
+            >
+              {props.isComparison && (
                 <Heading
                   color='gray.400'
-                  fontSize={14}
+                  fontSize={12}
                   textTransform='uppercase'
                 >
                   vs
                 </Heading>
-                <LinkOverlay
-                  as={NextLink}
-                  href={getDeckHref(props.deck, props.format) as any}
-                >
-                  <Heading color={active} size={'sm'}>
-                    {props.deck.name}
-                  </Heading>
-                </LinkOverlay>
-              </Grid>
-            )}
-            {!props.isComparison && (
-              <Grid gridTemplateColumns={'5.2rem auto'} alignItems='center'>
-                <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
-                <LinkOverlay
-                  as={NextLink}
-                  href={getDeckHref(props.deck, props.format) as any}
-                >
-                  <Heading color={active} size={'sm'}>
-                    {props.deck.name}
-                  </Heading>
-                </LinkOverlay>
-              </Grid>
-            )}
+              )}
+              <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
+              <LinkOverlay
+                as={NextLink}
+                href={getDeckHref(props.deck, props.format) as any}
+              >
+                <Heading color={active} size={'sm'}>
+                  {props.deck.name}
+                </Heading>
+              </LinkOverlay>
+            </Grid>
             {props.columns.map(column => (
               <GenericStat
                 key={`${props.deck}-${column.name}`}
