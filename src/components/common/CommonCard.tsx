@@ -31,69 +31,83 @@ interface CommonCardProps {
 export const CommonCard = memo(
   (props: CommonCardProps & Partial<CardProps>) => {
     const { colorMode } = useColorMode();
+    const {
+      header,
+      subheader,
+      children,
+      leftIcon,
+      slug,
+      ghost,
+      loading,
+      shouldRemovePadding,
+      smallHeader,
+      slugText,
+      rightElement,
+      ...rest
+    } = props;
 
     return (
       <Card
         style={
-          props.ghost
+          ghost
             ? {
                 borderRadius: 'none',
                 boxShadow: 'none',
-                padding: props.shouldRemovePadding ? 0 : 'auto',
+                padding: shouldRemovePadding ? 0 : 'auto',
               }
             : {}
         }
-        variant={props.ghost ? 'unstyled' : 'elevated'}
+        variant={ghost ? 'unstyled' : 'elevated'}
         paddingX={2}
         paddingY={3}
         gap={3}
-        {...props}
+        {...rest}
       >
-        {(props.header || props.rightElement) && (
+        {(header || rightElement) && (
           <HStack justifyContent='space-between'>
-            {props.header && (
+            {header && (
               <CardHeader
                 padding={0}
                 display='flex'
                 flexDirection={'column'}
                 gap={1}
               >
-                {!props.loading ? (
+                {!loading ? (
                   <StatsHeading
                     headingProps={{
                       color: colorMode === 'dark' ? 'gray.400' : 'gray.600',
-                      size: props.smallHeader ? 'xs' : 'sm',
+                      size: smallHeader ? 'xs' : 'sm',
                     }}
                   >
-                    {props.leftIcon ? (
+                    {leftIcon ? (
                       <HStack>
-                        {props.leftIcon}
-                        <Text>{props.header}</Text>
+                        {leftIcon}
+                        <Text>{header}</Text>
                       </HStack>
                     ) : (
-                      props.header
+                      header
                     )}
                   </StatsHeading>
                 ) : (
                   <Skeleton height='6' width='70' />
                 )}
-                {props.subheader &&
-                  (!props.loading ? (
+                {subheader &&
+                  (!loading ? (
                     <Heading color='gray.500' size='sm' fontWeight={'semibold'}>
-                      {props.subheader}
+                      {subheader}
                     </Heading>
                   ) : (
                     <Skeleton height='6' width='70' />
                   ))}
               </CardHeader>
             )}
-            {props.rightElement ?? null}
+            {rightElement ?? null}
           </HStack>
         )}
-        <CardBody padding={0}>{props.children}</CardBody>
-        {props.slug && (
+        <CardBody padding={0}>{children}</CardBody>
+        {slug && (
           <CardFooter padding={0}>
-            <SeeMoreButton slug={props.slug} text={props.slugText} />
+            <SeeMoreButton slug={slug} text={slugText} />
           </CardFooter>
         )}
       </Card>
