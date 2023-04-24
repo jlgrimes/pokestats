@@ -28,6 +28,7 @@ import { useTournaments } from '../../../../hooks/tournaments';
 import { normalizeName, usePlayerProfiles } from '../../../../hooks/user';
 import { appSearchResultComparator } from './helpers';
 import { SearchResultSchema, SearchResultType } from './search-types';
+import { SearchBarResults } from './SearchBarResults';
 import { SearchResult } from './SearchResult';
 
 interface SearchBarProps {
@@ -68,11 +69,6 @@ export function getRelevantSearchResults<T>(
 
 export const SearchBar = (props: SearchBarProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: names } = useFinalResultsPlayers();
-  const { data: playerProfiles } = usePlayerProfiles();
-  const { data: tournaments } = useTournaments();
-  const { data: archetypes } = useArchetypes();
-  const { data: supertypes } = useSupertypes();
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -80,94 +76,6 @@ export const SearchBar = (props: SearchBarProps) => {
     setSearchQuery('');
     onClose();
   };
-
-  const additionalNames = useMemo(
-    () =>
-      playerProfiles?.reduce(
-        (acc: string[], curr) =>
-          curr.additional_names ? [...acc, ...curr.additional_names] : acc,
-        []
-      ),
-    [playerProfiles]
-  );
-
-  const playerList = useMemo(
-    () =>
-      names
-        ?.map(
-          name =>
-            playerProfiles?.find(player => player.name === name) || {
-              name,
-              username: null,
-            }
-        )
-        .filter(player => !additionalNames?.includes(player.name))
-        .sort((a, b) => {
-          if (a.username) return -1;
-          if (b.username) return 1;
-          return 0;
-        }),
-    [names, playerProfiles, additionalNames]
-  );
-
-  const searchResults: SearchResultSchema[] = useMemo(
-    () => [
-      ...getRelevantSearchResults(
-        playerList,
-        'player',
-        player => player.name,
-        searchQuery
-      ),
-      ...getRelevantSearchResults(
-        playerList,
-        'player',
-        player => player.username,
-        searchQuery
-      ),
-      ...getRelevantSearchResults(
-        tournaments,
-        'tournament',
-        tournament => tournament.name,
-        searchQuery
-      ),
-      ...getRelevantSearchResults(
-        archetypes,
-        'archetype',
-        archetype => archetype.name,
-        searchQuery
-      ),
-      ...getRelevantSearchResults(
-        archetypes,
-        'archetype',
-        archetype => archetype.supertype?.name,
-        searchQuery
-      ),
-      ...getRelevantSearchResults(
-        supertypes,
-        'supertype',
-        supertype => supertype.name,
-        searchQuery
-      ),
-    ],
-    [archetypes, playerList, searchQuery, supertypes, tournaments]
-  );
-
-  const optimizedSearchResults = useMemo(
-    () =>
-      searchResults
-        .sort(appSearchResultComparator(searchQuery))
-        .filter((result, idx) => {
-          return !searchResults.slice(0, idx).some(existingResult => {
-            return (
-              existingResult.type === result.type &&
-              existingResult.data.id === result.data.id
-            );
-          });
-        }),
-    [searchQuery, searchResults]
-  );
-
-  const shouldShowSearchResults = optimizedSearchResults.length > 0;
 
   return (
     <>
@@ -210,16 +118,11 @@ export const SearchBar = (props: SearchBarProps) => {
               onChange={e => setSearchQuery(e.target.value)}
             />
           </InputGroup>
-          {shouldShowSearchResults && (
-            <Stack paddingX={4} paddingY={4}>
-              {optimizedSearchResults.map((result, idx) => (
-                <SearchResult
-                  key={`search-result-${idx}`}
-                  result={result}
-                  handleClose={handleClose}
-                />
-              ))}
-            </Stack>
+          {isOpen && (
+            <SearchBarResults
+              searchQuery={searchQuery}
+              handleClose={handleClose}
+            />
           )}
         </ModalContent>
       </Modal>
