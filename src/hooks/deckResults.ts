@@ -106,7 +106,7 @@ export const calculateTieRate = (deck: DeckTypeSchema) =>
 export const useDeckResults = (
   options: FetchDeckResultsOptions,
   shouldDrilldown: boolean,
-  sortBy: 'win rate' | 'tie rate',
+  sortBy: 'won' | 'tied',
   sortOrder: 'asc' | 'desc'
 ) => {
   const { data, ...rest } = useQuery({
@@ -188,7 +188,7 @@ export const useDeckResults = (
         if (a.count <= 10 || a.name === 'Other') return 1;
         if (b.count <= 10 || b.name === 'Other') return -1;
 
-        if (sortBy === 'win rate') {
+        if (sortBy === 'won') {
           if (sortOrder === 'desc') {
             if (calculateWinPercentage(a) < calculateWinPercentage(b)) return 1;
             if (calculateWinPercentage(b) < calculateWinPercentage(a))
@@ -202,7 +202,7 @@ export const useDeckResults = (
           }
         }
 
-        if (sortBy === 'tie rate') {
+        if (sortBy === 'tied') {
           if (sortOrder === 'desc') {
             if (calculateTieRate(a) < calculateTieRate(b)) return 1;
             if (calculateTieRate(b) < calculateTieRate(a)) return -1;

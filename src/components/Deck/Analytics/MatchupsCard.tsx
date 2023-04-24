@@ -21,10 +21,10 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
 
   const [shouldDrillDown, setShouldDrillDown] = useState(false);
   const [sort, setSort] = useState<{
-    sortBy: 'win rate' | 'tie rate';
+    sortBy: 'won' | 'tied';
     sortOrder: 'asc' | 'desc';
   }>({
-    sortBy: 'win rate',
+    sortBy: 'won',
     sortOrder: 'desc',
   });
   const filters = getDeckResultsFilters(props.deck, format?.id);
@@ -35,15 +35,15 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
     sort.sortOrder
   );
 
-  const columns: DeckCompareColumnType<'win rate' | 'tie rate'>[] = [
+  const columns: DeckCompareColumnType<'won' | 'tied'>[] = [
     {
-      name: 'win rate',
+      name: 'won',
       label: (deck: DeckTypeSchema) => `${deck.data?.wins} won`,
       calculation: calculateWinPercentage,
       shouldHide: (deck: DeckTypeSchema) => shouldHide(deck, 10),
     },
     {
-      name: 'tie rate',
+      name: 'tied',
       label: (deck: DeckTypeSchema) => `${deck.data?.ties} tied`,
       calculation: calculateTieRate,
       shouldHide: (deck: DeckTypeSchema) => shouldHide(deck, 10),
@@ -61,7 +61,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
       format={format?.id ?? 1}
       sortBy={sort.sortBy}
       sortOrder={sort.sortOrder}
-      setSort={(sortBy: 'win rate' | 'tie rate', sortOrder: 'asc' | 'desc') =>
+      setSort={(sortBy: 'won' | 'tied', sortOrder: 'asc' | 'desc') =>
         setSort({ sortBy, sortOrder })
       }
       columns={columns}

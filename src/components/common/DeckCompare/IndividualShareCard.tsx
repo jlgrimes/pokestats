@@ -44,28 +44,28 @@ export const IndividualShareCard = memo(
           >
             <Grid
               gridTemplateColumns={`${
-                props.isComparison ? '1.5rem' : ''
-              } 5.2rem auto`}
+                props.isComparison ? '1rem' : ''
+              } auto 5.2rem`}
               alignItems='center'
+              gap={2}
             >
               {props.isComparison && (
                 <Heading
                   color={subheader}
-                  fontSize={12}
-                  textTransform='uppercase'
+                  fontSize={14}
                 >
                   vs
                 </Heading>
               )}
-              <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
               <LinkOverlay
                 as={NextLink}
                 href={getDeckHref(props.deck, props.format) as any}
               >
-                <Heading color={active} size={'sm'}>
+                <Heading color={subheader} size={'sm'}>
                   {props.deck.name}
                 </Heading>
               </LinkOverlay>
+              <SpriteDisplay pokemonNames={props.deck.defined_pokemon} />
             </Grid>
             {props.columns.map(column => (
               <GenericStat
