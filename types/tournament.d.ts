@@ -27,6 +27,7 @@ export interface Deck {
   on_stream?: boolean;
   classification?: DeckClassification;
   player_name?: string | null;
+  format?: FormatSchema;
 }
 
 export interface DeckList {

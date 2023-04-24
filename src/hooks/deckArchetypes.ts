@@ -5,9 +5,7 @@ import supabase from '../lib/supabase/client';
 import { FormatSchema } from './formats/formats';
 import { useLiveTournamentResults } from './tournamentResults';
 
-export const fetchDecks = async (
-  format?: FormatSchema
-): Promise<Deck[] | null> => {
+export const fetchDecks = async (): Promise<Deck[] | null> => {
   let query = supabase
     .from('Deck Archetypes')
     .select(
@@ -19,10 +17,6 @@ export const fetchDecks = async (
     ),identifiable_cards,format(id,format,rotation,start_date)`
     )
     .order('created_at', { ascending: false });
-
-  if (format) {
-    query = query.or(`format.eq.${format.id},name.eq.Other`);
-  }
 
   const res = await query.returns<
     {
@@ -61,7 +55,7 @@ export const convertDecksToArchetypes = (decks: Deck[]): DeckTypeSchema[] => {
 export const fetchArchetypes = async (
   format?: FormatSchema
 ): Promise<DeckTypeSchema[] | null> => {
-  const data = await fetchDecks(format);
+  const data = await fetchDecks();
 
   if (data) {
     return convertDecksToArchetypes(data);
@@ -111,10 +105,24 @@ export const useVariants = (
 };
 
 export const useDecks = (format?: FormatSchema) => {
-  return useQuery({
-    queryKey: ['deck-archetypes', format?.format, format?.rotation],
-    queryFn: () => fetchDecks(format),
+  const { data, ...rest } = useQuery({
+    queryKey: ['deck-archetypes'],
+    queryFn: () => fetchDecks(),
   });
+
+  if (data && format) {
+    return {
+      ...rest,
+      data: data.filter(
+        deck => deck.format === format || deck.name === 'Other'
+      ),
+    };
+  }
+
+  return {
+    ...rest,
+    data,
+  };
 };
 
 export const useArchetypes = (format?: FormatSchema) => {
