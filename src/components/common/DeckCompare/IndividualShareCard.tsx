@@ -45,7 +45,7 @@ export const IndividualShareCard = memo(
             <Grid
               gridTemplateColumns={`${
                 props.isComparison ? '1rem' : ''
-              } auto 5.2rem`}
+              } minmax(8rem,40%) auto`}
               alignItems='center'
               gap={2}
             >
