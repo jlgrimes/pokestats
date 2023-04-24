@@ -35,13 +35,14 @@ import { TournamentHomeLinks } from './TournamentHomeLinks';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useSessionPlayerProfile } from '../../../hooks/user';
 import { TournamentFormatBadges } from '../../TournamentList/TournamentFormatBadges';
+import { useColor } from '../../../hooks/useColor';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
 }
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
-  const { colorMode } = useColorMode();
+  const { header, subheader } = useColor();
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const { data: userIsAdmin } = useUserIsAdmin();
   const { data: location } = useLocation(props.tournament?.id ?? '');
@@ -56,11 +57,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         location={location}
       />
       <Stack paddingX={6} spacing={1}>
-        <Heading
-          size='xl'
-          color={colorMode === 'dark' ? 'gray.100' : 'gray.700'}
-          lineHeight={'2.25rem'}
-        >
+        <Heading size='xl' color={header} lineHeight={'2.25rem'}>
           {props.tournament.name}
         </Heading>
         <Grid gridTemplateColumns={'5rem auto'} alignItems='center' rowGap={2}>
@@ -73,14 +70,14 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           )}
           <Stack spacing={1}>
             <StatsHeading
-              headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+              headingProps={{ color: subheader, fontWeight: 'bold' }}
             >
               {formatTournamentDate(props.tournament, true)}
             </StatsHeading>
             {props.tournament.players.masters &&
               props.tournament.players.masters > 0 && (
                 <StatsHeading
-                  headingProps={{ color: 'gray.500', fontWeight: 'bold' }}
+                  headingProps={{ color: subheader, fontWeight: 'bold' }}
                 >
                   {`${props.tournament.players.masters} masters`}
                 </StatsHeading>

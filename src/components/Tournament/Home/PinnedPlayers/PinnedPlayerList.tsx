@@ -8,7 +8,7 @@ import {
   Box,
   Flex,
   Text,
-  useColorMode
+  useColorMode,
 } from '@chakra-ui/react';
 import {
   FaHeart,
@@ -23,6 +23,7 @@ import { Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
+import { useColor } from '../../../../hooks/useColor';
 import { useSessionPlayerProfile } from '../../../../hooks/user';
 import { CommonCard } from '../../../common/CommonCard';
 import { ComponentLoader } from '../../../common/ComponentLoader';
@@ -35,7 +36,7 @@ interface PinnedPlayerListProps {
 }
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
-  const { colorMode } = useColorMode();
+  const { header } = useColor();
   const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
     usePinnedPlayers();
 
@@ -162,7 +163,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               onClick={addPinPlayerModalControls.onOpen}
               isDisabled={props.tournament.tournamentStatus === 'not-started'}
               size={'sm'}
-              colorScheme={colorMode === 'dark' ? 'whiteAlpha' : 'blackAlpha'}
+              colorScheme={header}
             >
               Follow player
             </Button>
@@ -173,7 +174,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 onClick={editPinnedPlayers.onToggle}
                 isDisabled={props.tournament.tournamentStatus === 'not-started'}
                 size={'sm'}
-                colorScheme={editPinnedPlayers.isOpen ? 'pink' : colorMode === 'dark' ? 'whiteAlpha' : 'blackAlpha'}
+                colorScheme={editPinnedPlayers.isOpen ? 'pink' : header}
               >
                 {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
               </Button>

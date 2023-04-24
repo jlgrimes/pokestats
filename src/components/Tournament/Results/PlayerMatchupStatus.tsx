@@ -12,6 +12,7 @@ import { CombinedPlayerProfile } from '../../../../types/player';
 import { RecordIcon } from './ResultsList/RecordIcon';
 import { getPercentile } from './helpers';
 import { useCallback } from 'react';
+import { useColor } from '../../../hooks/useColor';
 
 export const PlayerMatchupStatus = ({
   tournament,
@@ -27,7 +28,7 @@ export const PlayerMatchupStatus = ({
   livePlayerResults: PlayerLiveResultsSchema;
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
-  const { colorMode } = useColorMode();
+  const { header } = useColor();
   const {
     player: playerResults,
     shouldHideDecks,
@@ -59,7 +60,7 @@ export const PlayerMatchupStatus = ({
             <RecordIcon standing={playerResults} tournament={tournament} />
             <Heading
               size='sm'
-              color={colorMode === 'dark' ? 'gray.500' : 'gray.700'}
+              color={header}
             >
               {`${ordinalSuffixOf(playerResults.placing)}`}
             </Heading>
@@ -67,7 +68,7 @@ export const PlayerMatchupStatus = ({
           {tournamentFinished && (
             <Heading
               size='sm'
-              color={colorMode === 'dark' ? 'gray.500' : 'gray.700'}
+              color={header}
             >
               {`Top ${getPercentile(
                 playerResults.placing,
