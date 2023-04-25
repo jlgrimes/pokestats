@@ -7,6 +7,10 @@
     {
       "path": "/api/load-all-final-results",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/load-deck-results",
+      "schedule": "0 0 * * *"
     }
   ]
 }
