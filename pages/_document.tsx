@@ -8,6 +8,11 @@ export default class Document extends NextDocument {
     return (
       <Html lang='en'>
         <Head />
+        <script
+          async
+          src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3066736963130742'
+          crossOrigin='anonymous'
+        ></script>
         <body>
           {/* 👇 Here's the script */}
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
