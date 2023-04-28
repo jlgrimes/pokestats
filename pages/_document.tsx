@@ -8,14 +8,11 @@ export default class Document extends NextDocument {
     return (
       <Html lang='en'>
         <Head />
-        <Script
-          id='3850744716'
+        <script
           async
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3066736963130742'
           crossOrigin='anonymous'
-          data-ad-client='ca-pub-3066736963130742'
-          strategy='beforeInteractive'
-        />
+        ></script>
         <body>
           {/* 👇 Here's the script */}
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
