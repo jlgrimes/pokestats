@@ -53,7 +53,12 @@ export const AppLayout = ({
             </Head>
             <AppBar />
             {/* <BetaBanner /> */}
-            <Container maxW='2xl' height='100%' alignItems='center'>
+            <Container
+              maxW='container.md'
+              height='100%'
+              padding={0}
+              alignItems='center'
+            >
               {children}
             </Container>
           </ChakraProvider>
