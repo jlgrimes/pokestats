@@ -53,18 +53,7 @@ export const AppLayout = ({
             </Head>
             <AppBar />
             {/* <BetaBanner /> */}
-            <Container
-              maxW='2xl'
-              height='100%'
-              alignItems='center'
-              padding={
-                router.asPath.includes('tournaments') ||
-                router.asPath.includes('decks') ||
-                router.asPath === '/'
-                  ? 0
-                  : 4
-              }
-            >
+            <Container maxW='2xl' height='100%' alignItems='center'>
               {children}
             </Container>
           </ChakraProvider>
