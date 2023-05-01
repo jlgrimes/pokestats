@@ -47,6 +47,8 @@ export const Record = ({
         fontSize={normal ? 'lg' : '0.95rem'}
         fontFamily={normal ? 'inherit' : 'mono'}
         whiteSpace={'nowrap'}
+        width='6ch'
+        textAlign='right'
       >
         {formatRecord(standing.record)}
       </Text>

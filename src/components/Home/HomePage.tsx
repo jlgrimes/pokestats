@@ -3,7 +3,7 @@ import { Tournament } from '../../../types/tournament';
 import { getMostRecentFinishedTournament } from '../../hooks/tournaments';
 import { Footer } from '../Footer';
 import { AppLogo } from '../Layout/AppBar/AppLogo';
-import { HomeAd } from './HomeAd';
+import { Ad } from '../Ad';
 import { HomeIcons } from './HomeIcons';
 import { RecentTournaments } from './RecentTournaments';
 import { TopDecks } from './TopDecks';
@@ -23,9 +23,9 @@ export const HomePage = (props: HomePageProps) => {
         <AppLogo big />
         <HomeIcons />
       </Stack>
-      <HomeAd />
+      <Ad />
       <RecentTournaments tournaments={props.tournaments} />
-      <HomeAd slot='7147816871' />
+      <Ad slot='7147816871' />
       {/* <Adsense
         client='ca-pub-3066736963130742'
         slot='5583671963'
