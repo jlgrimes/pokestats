@@ -11,7 +11,7 @@ export const AdminBadge = memo(() => {
       marginLeft={2}
       onClick={() => setShouldMockUser(!shouldMockUser)}
     >
-      {shouldMockUser ? 'User' : 'Admin'}
+      {shouldMockUser ? 'User' : 'God'}
     </Badge>
   );
 });
