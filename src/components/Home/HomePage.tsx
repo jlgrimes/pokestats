@@ -19,12 +19,13 @@ export const HomePage = (props: HomePageProps) => {
 
   return (
     <Stack>
-      <Stack spacing={0}>
+      <Stack spacing={0} paddingBottom='2'>
         <AppLogo big />
         <HomeIcons />
       </Stack>
       <HomeAd />
       <RecentTournaments tournaments={props.tournaments} />
+      <HomeAd slot='7147816871' />
       {/* <Adsense
         client='ca-pub-3066736963130742'
         slot='5583671963'
