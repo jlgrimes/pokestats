@@ -29,14 +29,14 @@ interface IndividualCardProps<T> {
 
 export const IndividualShareCard = memo(
   <T extends string>(props: IndividualCardProps<T>) => {
-    const { active, subheader } = useColor();
+    const { inactive, subheader } = useColor();
 
     return (
       <HStack>
         <CommonCard width='100%'>
           <Grid
             gridTemplateColumns={`auto repeat(${props.columns.length}, ${
-              props.shouldHideLabels ? 3.5 : 5
+              props.shouldHideLabels ? 3 : 5
             }rem)`}
             paddingX={2}
             gap={2}
@@ -45,13 +45,13 @@ export const IndividualShareCard = memo(
             <Grid
               gridTemplateColumns={`${
                 props.isComparison ? '1rem' : ''
-              } minmax(8rem,40%) auto`}
+              } minmax(7.8rem,40%) auto`}
               alignItems='center'
-              gap={2}
+              gap={1}
             >
               {props.isComparison && (
                 <Heading
-                  color={subheader}
+                  color={inactive}
                   fontSize={14}
                 >
                   vs
