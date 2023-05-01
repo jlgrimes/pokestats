@@ -36,6 +36,7 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { useSessionPlayerProfile } from '../../../hooks/user';
 import { TournamentFormatBadges } from '../../TournamentList/TournamentFormatBadges';
 import { useColor } from '../../../hooks/useColor';
+import { Ad } from '../../Ad';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -87,6 +88,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         <TournamentFormatBadges tournament={props.tournament} size='sm' />
       </Stack>
       <TournamentHomeLinks tournament={props.tournament} />
+      <Ad slot='7673650238' />
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {isAuthenticated && profile?.name && (
         <PlayerTournamentView
