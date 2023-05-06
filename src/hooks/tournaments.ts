@@ -14,6 +14,7 @@ import {
   getPatchedTournament,
   getTournamentShouldBeFinished,
   getTournamentShouldBeRunning,
+  isTournamentLongGone,
   patchTournamentsClient,
 } from '../lib/patches';
 import supabase from '../lib/supabase/client';
@@ -90,7 +91,7 @@ export const fetchPokedataTournaments = async (
 
   let i = 0;
   for await (const tournament of data) {
-    if (tournament?.tournamentStatus === 'running') {
+    if (!isTournamentLongGone(tournament)) {
       const newTournament = await getPatchedTournament(
         tournament,
         undefined,
