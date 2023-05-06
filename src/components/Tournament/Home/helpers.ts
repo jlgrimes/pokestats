@@ -36,8 +36,8 @@ export const getLocalizedTournamentTime = (
       startDate.getFullYear(),
       startDate.getMonth(),
       startDate.getDate(),
-      9 - utcOffsetMinutes / 60,
-      0,
+      8 - utcOffsetMinutes / 60,
+      30,
       0
     )
   );
