@@ -5,6 +5,7 @@ import {
   ButtonProps,
   Grid,
   HStack,
+  Link,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -62,7 +63,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       </Button>
       <Button
         {...commonProps}
-        as={NextLink}
+        as={Link}
         href={`${router.asPath}/standings`}
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
       >
