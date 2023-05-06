@@ -82,9 +82,12 @@ export const fetchPokedataTournaments = async (
   data = data.map(tournament => {
     return {
       ...tournament,
-      tournamentStatus: tournament.roundNumbers.masters
-        ? tournament.tournamentStatus
-        : 'not-started',
+      tournamentStatus:
+        tournament.players.masters &&
+        tournament.players.masters > 0 &&
+        !tournament.roundNumbers.masters
+          ? 'not-started'
+          : tournament.tournamentStatus,
       subStatus: getTournamentSubStatus(tournament),
     };
   });
