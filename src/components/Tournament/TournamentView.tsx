@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
+import { Ad } from '../Ad';
 import { Banner } from '../common/Banner';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { SorryText } from '../common/SorryText';
@@ -55,6 +56,7 @@ export default function TournamentView({
           <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>
         </Banner>
       )} */}
+      <Ad slot='3745883635' />
       <StandingsFilterContainer
         tournament={tournament}
         standingsFilters={standingsFilters}
