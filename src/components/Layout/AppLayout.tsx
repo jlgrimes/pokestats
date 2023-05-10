@@ -55,7 +55,6 @@ export const AppLayout = ({
             {/* <BetaBanner /> */}
             <Container
               maxW='container.md'
-              height='100%'
               padding={0}
               alignItems='center'
             >

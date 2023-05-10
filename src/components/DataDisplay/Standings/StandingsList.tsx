@@ -7,6 +7,7 @@ import { StandingsRowExpandable } from './StandingsRowExpandable';
 import { Fragment, memo, useMemo, useCallback } from 'react';
 import { tableHeadingProps } from './props';
 import { VirtualizedRow } from './VirtualizedRow';
+import { PlayerCard } from '../../Tournament/Home/PlayerCard/PlayerCard';
 
 export const StandingsList = memo(
   ({
@@ -51,7 +52,19 @@ export const StandingsList = memo(
     );
 
     return (
-      <Stack height='100%'>
+      <Stack>
+        {results.map(standing => (
+          <PlayerCard
+            key={`standing-${standing.name}`}
+            player={standing}
+            tournament={tournament}
+            shouldHideDecks={shouldHideDecks}
+            canEditDecks={userIsAdmin}
+            size='sm'
+            shouldHideOpponent
+            isPlayerMeOrMyOpponent={false}
+          />
+        ))}
         {/* <Grid
           gridTemplateColumns='2.65rem 2fr 1fr 1fr'
           gridTemplateRows='20px auto'
@@ -66,7 +79,7 @@ export const StandingsList = memo(
             Record
           </Text>
         </Grid> */}
-        <AutoSizer>{WindowCallback}</AutoSizer>
+        {/* <AutoSizer>{WindowCallback}</AutoSizer> */}
       </Stack>
     );
   }
