@@ -40,7 +40,7 @@ export const TournamentPageLayout = ({
         <Text fontSize='sm'>
           Standings are unofficial and may not be accurate.
         </Text>
-        <TournamentStatusBadge tournament={tournament} size='md' />
+        {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}
     </Stack>
