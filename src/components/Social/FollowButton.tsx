@@ -6,14 +6,14 @@ import {
   deletePinnedPlayer,
   useUserIsFollowingPlayer,
 } from '../../hooks/pinnedPlayers';
-import { usePlayerProfile } from '../../hooks/user';
+import { useSessionPlayerProfile } from '../../hooks/user';
 
 interface FollowButtonProps {
   playerName: string;
 }
 
 export const FollowButton = (props: FollowButtonProps) => {
-  const { data: profile } = usePlayerProfile();
+  const { data: profile } = useSessionPlayerProfile();
 
   const toast = useToast();
   const { data: userIsFollowing, refetch } = useUserIsFollowingPlayer(
