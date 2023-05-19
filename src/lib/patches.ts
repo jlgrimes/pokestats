@@ -68,10 +68,14 @@ export const getPatchedTournament = async (
   if (preloadedLiveResults) {
     liveResults = preloadedLiveResults;
   } else {
-    liveResults = await fetchLiveResults(tournamentFromApi.id, {
-      prefetch,
-      load: { allRoundData: true },
-    });
+    liveResults = await fetchLiveResults(
+      tournamentFromApi.id,
+      {
+        prefetch,
+        load: { allRoundData: true },
+      },
+      { tournament: tournamentFromApi }
+    );
   }
 
   if (!liveResults.data || liveResults.data.length === 0)

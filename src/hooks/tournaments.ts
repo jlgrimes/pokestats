@@ -135,10 +135,14 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
 
   if (!res.data) return [];
 
-  return res.data.map(tournament => ({
+  let tournaments = res.data.map(tournament => ({
     ...tournament,
     id: String(tournament.id).padStart(7, '0'),
   }));
+
+  tournaments = tournaments.filter((tournament, idx) => !tournaments.find((otherTournament, otherIdx) => otherTournament.rk9link === tournament.rk9link && idx < otherIdx))
+
+  return tournaments;
 };
 
 export const useTournaments = (options?: FetchTournamentsOptions) => {
