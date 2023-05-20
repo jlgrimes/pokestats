@@ -17,29 +17,31 @@ import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTour
 import { getRK9TournamentUrl } from './helpers';
 
 export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
-  const { data: streamLink } = useStreamLink(tournament.id);
+  const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament.id);
   const { data: streamInfo, isLoading: streamInfoLoading } =
     useStreamInfo(streamLink);
 
   const getStreamButtonText = useCallback(() => {
     if (!streamLink) return 'No stream';
 
+    return 'Stream';
+
     if (streamInfo === ID_MAP_UNREGISTERED) return 'Stream';
 
     if (streamInfo) return 'LIVE';
     return 'Offline';
-  }, [streamInfo]);
+  }, [streamLink, streamInfo]);
 
   return (
     <Button
-      variant={streamInfo ? 'solid' : 'ghost'}
+      variant={streamLink ? 'solid' : 'ghost'}
       colorScheme={'purple'}
       size='md'
       leftIcon={streamLink ? <FaTwitch /> : <FaVideoSlash />}
       as={NextLink}
       href={streamLink ?? '#'}
       target={streamLink ?? '_blank'}
-      isLoading={streamInfoLoading}
+      isLoading={streamLinkLoading}
       isDisabled={!streamLink}
     >
       {getStreamButtonText()}
