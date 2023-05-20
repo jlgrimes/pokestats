@@ -45,7 +45,7 @@ export const TournamentCard = ({
       <CommonCard>
         <Stack spacing={4}>
           <Grid gridTemplateColumns={'3.4fr 2fr'} alignItems='center' gap={2}>
-            <Grid gridTemplateColumns={`3.4rem 4fr`} alignItems='center'>
+            <Grid gridTemplateColumns={`3.4rem 4fr`} alignItems='center' rowGap={live ? 1 : 0}>
               {countryCode ? (
                 <Box>
                   <CountryFlag countryCode={countryCode} size={'sm'} />
@@ -58,7 +58,7 @@ export const TournamentCard = ({
               </LinkOverlay>
               <Box />
               {!shouldHideStatus && (
-                <TournamentStatusBadge tournament={tournament} size={'xs'} />
+                <TournamentStatusBadge tournament={tournament} size={live ? 'sm' : 'xs'} />
               )}
             </Grid>
             {champion && <ChampionDisplay champion={champion} />}

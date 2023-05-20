@@ -22,7 +22,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
 
   return (
     <Stack spacing={1}>
-      <Heading size={'sm'} color={header}>
+      <Heading size={live ? 'md' : 'sm'} color={header}>
         {props.tournament.name}
       </Heading>
       {!live && (
