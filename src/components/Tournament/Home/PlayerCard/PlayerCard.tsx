@@ -126,6 +126,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
                 <Grid
                   width='100%'
                   gridTemplateColumns={props.result ? '25px auto' : 'auto'}
+                  justifyContent='center'
                 >
                   {props.result && <ResultLetter result={props.result} />}
                   <StandingsRow
