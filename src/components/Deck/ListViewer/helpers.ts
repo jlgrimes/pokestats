@@ -16,12 +16,24 @@ export const getCardImageUrl = (
 
   if (card.number.includes('SWSH')) {
     set = 'swshp';
-  } else if (card.number.includes('TG')) {
-    set = set.replace('tg', '').concat('tg');
   } else if (card.number.includes('SV')) {
     set = set.replace('sv', '').concat('sv');
-  } else if (card.number.includes('GG')) {
-    set = set + 'gg';
+  }
+
+  if (card.number.includes('GG')) {
+    set = set.replace('gg', '').concat('gg');
+  } else {
+    set = set.replace('gg', '');
+  }
+
+  if (card.number.includes('TG')) {
+    set = set.replace('tg', '').concat('tg');
+  } else {
+    set = set.replace('tg', '');
+  }
+  
+  if (set[set.length - 1] === 'c') {
+    set = set.slice(0, set.length - 1);
   }
 
   return `https://images.pokemontcg.io/${set}/${card?.number}${
