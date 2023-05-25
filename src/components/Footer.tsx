@@ -1,4 +1,5 @@
 import {
+  Button,
   HStack,
   Icon,
   IconButton,
@@ -7,7 +8,7 @@ import {
   Text,
   useColorMode,
 } from '@chakra-ui/react';
-import { FaGithub, FaTwitter } from 'react-icons/fa';
+import { FaGithub, FaHeart, FaTwitter } from 'react-icons/fa';
 import NextLink from 'next/link';
 import { useTwitterLink } from '../hooks/twitter';
 import { useColor } from '../hooks/useColor';
@@ -20,14 +21,26 @@ export const Footer = () => {
 
   return (
     <Stack padding={6} justifyContent={'center'} alignItems='center'>
-      <Link href={TCGPLAYER_AFFILIATE_URL} isExternal>
-        <Image
-          src='/Powered-By-TCGplayer-Primary-Horizontal-RGB_500px.png'
-          width='200'
-          height='50'
-          alt='TCGplayer Affiliate Link'
-        />
-      </Link>
+      <HStack spacing={4}>
+        <Link href={TCGPLAYER_AFFILIATE_URL} isExternal>
+          <Image
+            src='/Powered-By-TCGplayer-Primary-Horizontal-RGB_500px.png'
+            width='200'
+            height='50'
+            alt='TCGplayer Affiliate Link'
+          />
+        </Link>
+        <Button
+          colorScheme='pink'
+          as={NextLink}
+          href='https://t.co/ruYHo54RjN'
+          target='_blank'
+          leftIcon={<FaHeart />}
+          size='sm'
+        >
+          Donate
+        </Button>
+      </HStack>
       <Text fontSize={'sm'} color={subheader}>
         Made by Jared Grimes
       </Text>
