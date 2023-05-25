@@ -35,29 +35,27 @@ export const HomePage = (props: HomePageProps) => {
     <Stack>
       <Stack spacing={0} paddingBottom='2'>
         <AppLogo big />
-        <Box paddingX={4}>
-          <LinkBox>
-            <LinkOverlay href={TCGPLAYER_AFFILIATE_URL} isExternal>
-              <Card paddingY={2} paddingX={4} cursor='pointer'>
-                <HStack>
-                  <Text>
-                    Buy your cards{' '}
-                    <Text color='blue.500' display='inline' fontWeight='bold'>
-                      here
-                    </Text>{' '}
-                    to support the site!
-                  </Text>
-                  <Image
-                    src='/TCGplayer-Primary-RGB_500px.png'
-                    width='100'
-                    height='50'
-                    alt='TCGplayer Affiliate Link'
-                  />
-                </HStack>
-              </Card>
-            </LinkOverlay>
-          </LinkBox>
-        </Box>
+        <LinkBox>
+          <LinkOverlay href={TCGPLAYER_AFFILIATE_URL} isExternal>
+            <Card paddingY={2} paddingX={4} cursor='pointer'>
+              <HStack justifyContent='center'>
+                <Text>
+                  Buy your cards{' '}
+                  <Text color='blue.500' display='inline' fontWeight='bold'>
+                    here
+                  </Text>{' '}
+                  to support the site!
+                </Text>
+                <Image
+                  src='/TCGplayer-Primary-RGB_500px.png'
+                  width='100'
+                  height='50'
+                  alt='TCGplayer Affiliate Link'
+                />
+              </HStack>
+            </Card>
+          </LinkOverlay>
+        </LinkBox>
         {/* <HomeIcons /> */}
       </Stack>
       <Ad />
