@@ -11,6 +11,8 @@ import { FaGithub, FaTwitter } from 'react-icons/fa';
 import NextLink from 'next/link';
 import { useTwitterLink } from '../hooks/twitter';
 import { useColor } from '../hooks/useColor';
+import Image from 'next/image';
+import { TCGPLAYER_AFFILIATE_URL } from '../lib/url';
 
 export const Footer = () => {
   const myTwitter = useTwitterLink('jgrimesey');
@@ -18,6 +20,14 @@ export const Footer = () => {
 
   return (
     <Stack padding={6} justifyContent={'center'} alignItems='center'>
+      <Link href={TCGPLAYER_AFFILIATE_URL} isExternal>
+        <Image
+          src='/Powered-By-TCGplayer-Primary-Horizontal-RGB_500px.png'
+          width='200'
+          height='50'
+          alt='TCGplayer Affiliate Link'
+        />
+      </Link>
       <Text fontSize={'sm'} color={subheader}>
         Made by Jared Grimes
       </Text>
