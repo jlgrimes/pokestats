@@ -14,6 +14,7 @@ import {
   getTopCutStatus,
   LiveResults,
 } from './fetch/fetchLiveResults';
+import { captureException } from '@sentry/browser';
 
 export const isTournamentLongGone = (tournament: Tournament) =>
   differenceInDays(new Date(), parseISO(tournament.date.end)) > 4;
@@ -61,54 +62,58 @@ export const getPatchedTournament = async (
   preloadedLiveResults?: LiveResults,
   prefetch?: boolean
 ) => {
-  let liveResults;
+  let liveResults: LiveResults;
 
   if (!tournamentFromApi) return null;
 
-  if (preloadedLiveResults) {
-    liveResults = preloadedLiveResults;
-  } else {
-    liveResults = await fetchLiveResults(
-      tournamentFromApi.id,
-      {
-        prefetch,
-        load: { allRoundData: true },
-      },
-      { tournament: tournamentFromApi }
-    );
+  try {
+    if (preloadedLiveResults) {
+      liveResults = preloadedLiveResults;
+    } else {
+      liveResults = await fetchLiveResults(
+        tournamentFromApi.id,
+        {
+          prefetch,
+          load: { allRoundData: true },
+        },
+        { tournament: tournamentFromApi }
+      );
+    }
+  
+    if (!liveResults.data || liveResults.data.length === 0)
+      return tournamentFromApi;
+  
+    const tournamentApiSaysCompleted =
+      tournamentFromApi?.tournamentStatus === 'finished';
+  
+    const topCutStatus = getTopCutStatus(liveResults.data, tournamentFromApi);
+  
+    const afterDayOne =
+      tournamentFromApi.lastUpdated &&
+      tournamentFromApi.roundNumbers.masters === 9 &&
+      differenceInHours(new Date(tournamentFromApi.lastUpdated), new Date()) >= 1;
+  
+    const patchedTournament: Tournament = {
+      ...tournamentFromApi,
+      tournamentStatus: getTournamentShouldBeRunning(
+        tournamentFromApi,
+        liveResults
+      )
+        ? 'running'
+        : isTournamentLongGone(tournamentFromApi)
+        ? 'finished'
+        : tournamentFromApi.tournamentStatus,
+      topCutStatus,
+      hasStaleData:
+        tournamentApiSaysCompleted &&
+        !getTournamentIsComplete(tournamentFromApi, liveResults),
+      subStatus: tournamentFromApi.subStatus,
+    };
+
+    return patchedTournament;
+  } catch(err) {
+    captureException(err);
   }
-
-  if (!liveResults.data || liveResults.data.length === 0)
-    return tournamentFromApi;
-
-  const tournamentApiSaysCompleted =
-    tournamentFromApi?.tournamentStatus === 'finished';
-
-  const topCutStatus = getTopCutStatus(liveResults.data, tournamentFromApi);
-
-  const afterDayOne =
-    tournamentFromApi.lastUpdated &&
-    tournamentFromApi.roundNumbers.masters === 9 &&
-    differenceInHours(new Date(tournamentFromApi.lastUpdated), new Date()) >= 1;
-
-  const patchedTournament: Tournament = {
-    ...tournamentFromApi,
-    tournamentStatus: getTournamentShouldBeRunning(
-      tournamentFromApi,
-      liveResults
-    )
-      ? 'running'
-      : isTournamentLongGone(tournamentFromApi)
-      ? 'finished'
-      : tournamentFromApi.tournamentStatus,
-    topCutStatus,
-    hasStaleData:
-      tournamentApiSaysCompleted &&
-      !getTournamentIsComplete(tournamentFromApi, liveResults),
-    subStatus: tournamentFromApi.subStatus,
-  };
-
-  return patchedTournament;
 };
 
 export const patchTournamentsClient = async (tournament: Tournament) => {
