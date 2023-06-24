@@ -51,6 +51,7 @@ export const fetchPokedataTournaments = async (
   data = data.map(tournament => ({
     ...tournament,
     name: shortenTournamentName(tournament),
+    tournamentStatus: isTournamentLongGone(tournament) ? 'finished' : tournament.tournamentStatus
   }));
 
   if (options?.onlyFinished) {
