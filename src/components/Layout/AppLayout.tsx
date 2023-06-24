@@ -57,6 +57,7 @@ export const AppLayout = ({
               maxW='container.md'
               padding={0}
               alignItems='center'
+              height='100%'
             >
               {children}
             </Container>
