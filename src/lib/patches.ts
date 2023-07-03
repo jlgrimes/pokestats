@@ -17,7 +17,7 @@ import {
 import { captureException } from '@sentry/browser';
 
 export const isTournamentLongGone = (tournament: Tournament) =>
-  differenceInDays(new Date(), parseISO(tournament.date.end)) > 2;
+  differenceInDays(new Date(), parseISO(tournament.date.end)) > 1;
 
 const getTournamentIsComplete = (
   tournament: Tournament,
