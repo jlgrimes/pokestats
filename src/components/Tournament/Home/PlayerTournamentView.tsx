@@ -36,7 +36,9 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
       user?.additional_names?.includes(standing.name)
   );
 
-  const resultsData = playerFinalResult
+  // Masks a glitch where final results don't have opponent info for some reason
+  const shouldUseFinalResults = playerFinalResult?.rounds?.every((round) => round.opponent);
+  const resultsData = playerFinalResult && shouldUseFinalResults
     ? {
         isLoading: false,
         shouldHideDecks: false,

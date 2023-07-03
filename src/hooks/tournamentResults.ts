@@ -187,10 +187,11 @@ export const useLiveTournamentPlayers = (tournamentId: string) => {
   };
 };
 
-export const usePlayerIsMeOrMyOpponent = (player: Standing) => {
+export const usePlayerIsMeOrMyOpponent = (player: Standing | undefined) => {
   const { data: profile } = usePlayerProfile();
   const userName = profile?.name;
 
+  if (!player) return true;
   if (!userName) return false;
   if (!player.rounds) return false;
 
