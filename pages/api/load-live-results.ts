@@ -13,6 +13,11 @@ export default async function handler(
   try {
     const tournaments = await fetchTournaments({ prefetch: true });
 
+    if (tournaments.every((tournament) => tournament.tournamentStatus !== 'running')) {
+      console.log('No tournaments to update.');
+      return res.status(500);
+    }
+
     for await (const tournament of tournaments) {
       console.log('Loading live results for', tournament.name, '...');
       const { error } = await loadLiveResults(tournament.id, tournament.tournamentStatus);
