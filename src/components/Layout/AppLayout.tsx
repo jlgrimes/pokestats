@@ -1,5 +1,5 @@
 import { Container, extendTheme } from '@chakra-ui/react';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { AppBar } from './AppBar/AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
 import {
@@ -54,10 +54,11 @@ export const AppLayout = ({
             <AppBar />
             {/* <BetaBanner /> */}
             <Container
+              overflow={'hidden'}
               maxW='container.md'
               padding={0}
               alignItems='center'
-              height='100%'
+              height='calc(100% - 3rem)'
             >
               {children}
             </Container>

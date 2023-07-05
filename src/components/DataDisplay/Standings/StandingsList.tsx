@@ -52,8 +52,8 @@ export const StandingsList = memo(
     );
 
     return (
-      <Stack>
-        {results.map(standing => (
+      <Stack height='100%'>
+        {/* {results.map(standing => (
           <PlayerCard
             key={`standing-${standing.name}`}
             player={standing}
@@ -64,7 +64,7 @@ export const StandingsList = memo(
             shouldHideOpponent
             isPlayerMeOrMyOpponent={false}
           />
-        ))}
+        ))} */}
         {/* <Grid
           gridTemplateColumns='2.65rem 2fr 1fr 1fr'
           gridTemplateRows='20px auto'
@@ -79,7 +79,7 @@ export const StandingsList = memo(
             Record
           </Text>
         </Grid> */}
-        {/* <AutoSizer>{WindowCallback}</AutoSizer> */}
+        <AutoSizer>{WindowCallback}</AutoSizer>
       </Stack>
     );
   }

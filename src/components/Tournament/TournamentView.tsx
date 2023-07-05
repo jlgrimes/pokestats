@@ -39,6 +39,7 @@ export default function TournamentView({
       filters: standingsFilters,
     }
   );
+  console.log(isLoading)
 
   if (isLoading) return <FullPageLoader />;
 
@@ -50,13 +51,13 @@ export default function TournamentView({
     );
 
   return (
-    <Stack>
+    <Stack height='100%'>
       {/* {tournament.hasStaleData && (
         <Banner color='yellow'>
           <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>
         </Banner>
       )} */}
-      <Ad slot='3745883635' />
+
       <StandingsFilterContainer
         tournament={tournament}
         standingsFilters={standingsFilters}
