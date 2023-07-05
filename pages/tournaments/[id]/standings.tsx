@@ -1,6 +1,7 @@
 import TournamentView from '../../../src/components/Tournament/TournamentView';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import {
+  fetchSingleTournament,
   fetchTournaments,
   usePatchedTournaments,
 } from '../../../src/hooks/tournaments';
@@ -24,10 +25,7 @@ export default function TournamentPage({
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
-  const [tournament] = await fetchTournaments({
-    tournamentId: params.id,
-    prefetch: true,
-  });
+  const tournament = await fetchSingleTournament(params.id);
 
   return {
     props: {

@@ -112,6 +112,8 @@ export const fetchPokedataTournaments = async (
   return data.slice().reverse();
 };
 
+export const padTournamentId = (tournament: Tournament) => ({ ...tournament, id: String(tournament.id).padStart(7, '0') })
+
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   let query = supabase
     .from('Tournaments')
@@ -136,15 +138,24 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
 
   if (!res.data) return [];
 
-  let tournaments = res.data.map(tournament => ({
-    ...tournament,
-    id: String(tournament.id).padStart(7, '0'),
-  }));
+  let tournaments = res.data.map(padTournamentId);
 
   tournaments = tournaments.filter((tournament, idx) => !tournaments.find((otherTournament, otherIdx) => otherTournament.rk9link === tournament.rk9link && idx < otherIdx))
 
   return tournaments;
 };
+
+export const fetchSingleTournament = async (tournamentId: string) => {
+  let query = supabase
+    .from('Tournaments')
+    .select(
+      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
+    )
+    .eq('id', parseInt(tournamentId))
+
+  const res = await query.returns<Tournament[]>();
+  return res.data?.at(0) ? padTournamentId(res.data[0]) : undefined;
+}
 
 export const useTournaments = (options?: FetchTournamentsOptions) => {
   const queryKey = ['tournaments'];
