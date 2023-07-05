@@ -72,12 +72,6 @@ export const useLiveTournamentResults = (
   tournamentId: string,
   options?: FetchLiveResultsOptions
 ) => {
-  const { data: tournaments } = useTournaments();
-  const tournament = tournaments?.find(({ id }) => id === tournamentId);
-
-  const currentFormat = tournament?.format;
-  const { data: decks } = useDecks(currentFormat);
-
   const queryKey = [
     `live-results`,
     tournamentId,
@@ -88,10 +82,7 @@ export const useLiveTournamentResults = (
   const query = useQuery({
     queryKey,
     queryFn: () =>
-      fetchLiveResults(tournamentId, options, {
-        tournament,
-        decksInFormat: decks,
-      }),
+      fetchLiveResults(tournamentId, options),
   });
 
   if (query.data) {

@@ -382,18 +382,7 @@ export const fetchLiveResults = async (
     )[0];
 
   const roundNumber = tournament?.roundNumbers.masters as number;
-
-  let deckArchetypes;
-
-  if (data?.decksInFormat) {
-    deckArchetypes = data.decksInFormat;
-  } else {
-    const formats = await fetchFormats();
-    const currentFormat = getTournamentFormat(formats ?? [], tournament);
-    const decks = await fetchDecks();
-    deckArchetypes = getDecksInFormat(decks, currentFormat);
-  }
-
+  const deckArchetypes = await fetchDecks();
   const playerDeckObjects = await getPlayerDeckObjects(
     tournamentId,
     deckArchetypes
