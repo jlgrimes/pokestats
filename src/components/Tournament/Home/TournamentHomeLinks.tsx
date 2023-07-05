@@ -63,7 +63,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       </Button>
       <Button
         {...commonProps}
-        as={Link}
+        as={NextLink}
         href={`${router.asPath}/standings`}
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
       >
