@@ -52,14 +52,13 @@ export const StandingsFilterMenu = memo(
     tournament: Tournament;
     disableDeckFilter?: boolean;
   }) => {
-    const { data: mostPopularDecks } = useMostPopularArchetypes(tournament);
-
-    const supertypeCollection = sortBySuperType(mostPopularDecks);
+    const { data: mostPopularDecks, isLoading } = useMostPopularArchetypes(tournament);
+    const supertypeCollection = isLoading ? [] : sortBySuperType(mostPopularDecks);
 
     return (
       <FilterMenu>
         <Fragment>
-          <MenuOptionGroup title='Results' type='checkbox'>
+          {/* <MenuOptionGroup title='Results' type='checkbox'>
             <Stack paddingX={4}>
               <Checkbox
                 isChecked={getFilter('justDay2')}
@@ -81,7 +80,7 @@ export const StandingsFilterMenu = memo(
               </Checkbox>
             </Stack>
           </MenuOptionGroup>
-          <MenuDivider />
+          <MenuDivider /> */}
           {!disableDeckFilter && (
             <Fragment>
               <MenuOptionGroup title='Archetype'>
@@ -108,9 +107,9 @@ export const StandingsFilterMenu = memo(
                             <HStack spacing={1}>
                               <SpriteDisplay
                                 squishWidth
-                                pokemonNames={[supertype.definedPokemon]}
+                                pokemonNames={supertype.supertype.defined_pokemon}
                               />
-                              <Text as='b'>{supertype.archetypeName}</Text>
+                              <Text as='b'>{supertype.supertype.name}</Text>
                             </HStack>
                           </MenuItemOption>
                         </Tag>
@@ -119,7 +118,7 @@ export const StandingsFilterMenu = memo(
                 </Grid>
               </MenuOptionGroup>
 
-              <MenuOptionGroup title='Individual deck'>
+              {/* <MenuOptionGroup title='Individual deck'>
                 <Grid
                   key={`supertype-collection-grid`}
                   gridTemplateColumns={`1fr repeat(3, 1fr)`}
@@ -148,7 +147,7 @@ export const StandingsFilterMenu = memo(
                       )
                   )}
                 </Grid>
-              </MenuOptionGroup>
+              </MenuOptionGroup> */}
             </Fragment>
           )}
         </Fragment>

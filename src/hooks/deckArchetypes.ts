@@ -381,5 +381,6 @@ export const useMostPopularArchetypes = (
   return {
     data: sortedArchetypes.map(({ deck }) => deck),
     refetchArchetypes: refetch,
+    isLoading: archetypesIsLoading
   };
 };
