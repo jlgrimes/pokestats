@@ -11,10 +11,6 @@
     {
       "path": "/api/load-deck-results",
       "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/load-live-results",
-      "schedule": "* * * * *"
     }
   ]
 }
