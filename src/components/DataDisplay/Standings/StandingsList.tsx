@@ -4,7 +4,7 @@ import { FixedSizeList as List } from 'react-window';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { StandingsRowExpandable } from './StandingsRowExpandable';
-import { Fragment, memo, useMemo, useCallback } from 'react';
+import { Fragment, memo, useMemo, useCallback, useEffect } from 'react';
 import { tableHeadingProps } from './props';
 import { VirtualizedRow } from './VirtualizedRow';
 import { PlayerCard } from '../../Tournament/Home/PlayerCard/PlayerCard';
@@ -53,8 +53,25 @@ export const StandingsList = memo(
       [VirtualizedRowCallback, results.length]
     );
 
+    // This is us throwing hands with AdSense because they mess up all of our heights
+    useEffect(() => {
+      let wrapper = document.getElementById('standings')
+      if (!wrapper) return;
+
+      const observer = new MutationObserver(function (mutations, observer) {
+        if (!wrapper) return;
+
+        wrapper.style.height = ''
+        wrapper.style.minHeight = ''
+      })
+      observer.observe(wrapper, {
+        attributes: true,
+        attributeFilter: ['style']
+      })
+    }, []);
+
     return (
-      <Stack height='75vh'>
+      <Stack id='standings' height='75vh'>
         {/* {results.map(standing => (
           <PlayerCard
             key={`standing-${standing.name}`}

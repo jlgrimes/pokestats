@@ -18,6 +18,7 @@ export const FilterMenu = ({ children }: { children: JSX.Element }) => {
           icon={<FaFilter />}
           isRound
           size='lg'
+          boxShadow={'xl'}
         />
         <MenuList minWidth='240px' marginRight='0.5' maxWidth='100vw'>
           {children}
