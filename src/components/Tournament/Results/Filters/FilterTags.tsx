@@ -41,12 +41,15 @@ export const FilterTags = ({
   const tagProps: Partial<TagProps> = {
     size: 'lg',
     borderRadius: 'full',
-    outline: 'solid',
-    boxShadow: '',
+    variant: 'solid',
+    colorScheme: 'facebook',
+    background: 'gray.500',
+    boxShadow: 'md',
+    paddingY: 1
   };
 
   return (
-    <HStack flexWrap={'wrap'} flexDirection='row-reverse'>
+    <HStack flexWrap={'wrap'} spacing={2}>
       {(Object.entries(filters) as Entries<StandingsFilters>).map(
         ([key, val], idx) => {
           if (key === 'decksVisible') {

@@ -129,8 +129,8 @@ export const StandingsFilterContainer = memo(
     );
 
     return (
-      <Box position='fixed' bottom='20px' right={['16px', '84px']} zIndex={3}>
-        <Grid gridTemplateColumns='auto 84px' justifyContent='baseline'>
+      <Box position='fixed' bottom='12px' right={['12px', '80px']} zIndex={3}>
+        <Grid gridTemplateColumns='auto 120px' justifyContent='baseline'>
           <FilterTags
             filters={standingsFilters}
             toggleFilter={toggleFilter}

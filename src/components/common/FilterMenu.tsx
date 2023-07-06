@@ -1,4 +1,5 @@
 import {
+  Button,
   IconButton,
   Menu,
   MenuButton,
@@ -13,13 +14,15 @@ export const FilterMenu = ({ children }: { children: JSX.Element }) => {
     <Stack paddingLeft={4} justifyContent='end'>
       <Menu closeOnSelect={false} placement='top'>
         <MenuButton
-          as={IconButton}
+          as={Button}
           colorScheme='blue'
-          icon={<FaFilter />}
-          isRound
-          size='lg'
-          boxShadow={'xl'}
-        />
+          leftIcon={<FaFilter />}
+          size='md'
+          boxShadow={'md'}
+          borderRadius={12}
+        >
+          Filter
+        </MenuButton>
         <MenuList minWidth='240px' marginRight='0.5' maxWidth='100vw'>
           {children}
         </MenuList>
