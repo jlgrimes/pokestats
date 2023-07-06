@@ -88,30 +88,22 @@ export const StandingsFilterMenu = memo(
                   {supertypeCollection?.map(
                     (supertype, idx) =>
                       supertype.decks.length > 1 && (
-                        <Tag variant={'outline'} key={idx}>
-                          <MenuItemOption
-                            background={'none'}
-                            height='100%'
-                            alignItems={'center'}
-                            padding={'0.25rem 0'}
-                            isChecked={getFilter(
-                              'decksVisible',
-                              supertype.decks.map(({ id }) => id)
-                            )}
-                            onClick={() =>
-                              toggleFilter('decksVisible', {
-                                superType: supertype.decks,
-                              })
-                            }
-                          >
-                            <HStack spacing={1}>
+                        <Tag variant={getFilter(
+                          'decksVisible',
+                          supertype.decks.map(({ id }) => id)
+                        ) ? 'solid' : 'outline'} key={idx}
+                        onClick={() =>
+                          toggleFilter('decksVisible', {
+                            superType: supertype.decks,
+                          })
+                        } padding={2}>
+                            <HStack spacing={4}>
                               <SpriteDisplay
                                 squishWidth
                                 pokemonNames={supertype.supertype.defined_pokemon}
                               />
                               <Text as='b'>{supertype.supertype.name}</Text>
                             </HStack>
-                          </MenuItemOption>
                         </Tag>
                       )
                   )}

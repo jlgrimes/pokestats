@@ -37,6 +37,9 @@ export const sortBySuperType = (
   const supertypes = Object.values(supertypeMap);
 
   return supertypes.sort((a, b) => {
+    if (a.supertype.name === 'Other') return 1;
+    if (b.supertype.name === 'Other') return -1;
+
     if (a.decks.length > b.decks.length) {
       return -1;
     }

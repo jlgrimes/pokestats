@@ -19,7 +19,7 @@ export const FilterMenu = ({ children }: { children: JSX.Element }) => {
           isRound
           size='lg'
         />
-        <MenuList minWidth='240px' marginRight='0.5'>
+        <MenuList minWidth='240px' marginRight='0.5' maxWidth='100vw'>
           {children}
         </MenuList>
       </Menu>
