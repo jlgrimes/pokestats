@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, GridItem, Stack, Text } from '@chakra-ui/react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList as List } from 'react-window';
+import { VariableSizeList as List } from 'react-window';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { StandingsRowExpandable } from './StandingsRowExpandable';
@@ -26,7 +26,7 @@ export const StandingsList = memo(
 
     const VirtualizedRowCallback = useCallback(
       ({ index, style }: { index: number; style: any }) => (
-        index === 0 ?             <Ad slot='3745883635' height='44px' /> :
+        index === 0 ?             <Ad slot='3745883635' /> :
         <VirtualizedRow
           index={index - 1}
           style={style}
@@ -45,7 +45,7 @@ export const StandingsList = memo(
           <List
             height={height}
             width={width}
-            itemSize={44}
+            itemSize={index => index === 0 ? 280 : 44}
             itemCount={results.length + 1}
           >
             {VirtualizedRowCallback}
