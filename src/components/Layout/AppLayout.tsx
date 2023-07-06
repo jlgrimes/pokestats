@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { userMockContext } from '../../contexts/MockUserContext';
+import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 
 const theme = extendTheme({
   components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
@@ -37,6 +38,7 @@ export const AppLayout = ({
   children: ReactNode;
   dehydratedState?: DehydratedState;
 }) => {
+  useFixAutoHeight();
   const [queryClient] = useState(() => new QueryClient(queryClientConfig));
   const router = useRouter();
   const [shouldMockUser, setShouldMockUser] = useState(false);

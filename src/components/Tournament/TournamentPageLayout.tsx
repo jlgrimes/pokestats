@@ -10,6 +10,7 @@ import {
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { Tournament } from '../../../types/tournament';
+import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { capitalize } from '../../lib/strings';
 import { StatsHeading } from '../common/StatsHeading';
 import { TournamentStatusBadge } from '../TournamentList/TournamentStatusBadge';
@@ -21,6 +22,7 @@ export const TournamentPageLayout = ({
   children: ReactNode;
   tournament: Tournament | null;
 }) => {
+  useFixAutoHeight();
   const { colorMode } = useColorMode();
 
   const router = useRouter();

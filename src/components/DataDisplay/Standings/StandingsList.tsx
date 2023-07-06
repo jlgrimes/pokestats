@@ -9,6 +9,7 @@ import { tableHeadingProps } from './props';
 import { VirtualizedRow } from './VirtualizedRow';
 import { PlayerCard } from '../../Tournament/Home/PlayerCard/PlayerCard';
 import { Ad } from '../../Ad';
+import { useFixAutoHeight } from '../../../hooks/useFixAutoHeight';
 
 export const StandingsList = memo(
   ({
@@ -20,6 +21,7 @@ export const StandingsList = memo(
     tournament: Tournament;
     shouldHideDecks: boolean;
   }) => {
+    useFixAutoHeight(['tournament-view', 'standings']);
     const { data: userIsAdmin } = useUserIsAdmin();
 
     const VirtualizedRowCallback = useCallback(
@@ -52,27 +54,6 @@ export const StandingsList = memo(
       },
       [VirtualizedRowCallback, results.length]
     );
-
-    // This is us throwing hands with AdSense because they mess up all of our heights
-    useEffect(() => {
-      const targetIds = ['__next', 'app-layout-container', 'tournament-page-layout', 'tournament-view', 'standings'];
-
-      for (const id of targetIds) {
-        let wrapper = document.getElementById(id)
-        if (!wrapper) return;
-  
-        const observer = new MutationObserver(function (mutations, observer) {
-          if (!wrapper) return;
-  
-          wrapper.style.height = ''
-          wrapper.style.minHeight = ''
-        })
-        observer.observe(wrapper, {
-          attributes: true,
-          attributeFilter: ['style']
-        })
-      }
-    }, []);
 
     return (
       <Stack id='standings' height='100%'>
