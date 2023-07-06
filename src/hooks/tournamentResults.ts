@@ -42,6 +42,15 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
     };
   }
 
+  if (filters.supertypesVisible.length > 0) {
+    ret = {
+      ...liveResults,
+      data: ret.data.filter(
+        ({ deck }) => deck && deck.supertype?.id && filters.supertypesVisible.includes(deck.supertype.id)
+      ),
+    };
+  }
+
   if (filters.justDay2.value) {
     ret = {
       ...liveResults,

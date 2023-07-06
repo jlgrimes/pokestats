@@ -10,7 +10,7 @@ interface SuperTypeCollection {
 export const sortBySuperType = (
   mostPopularDecks: DeckTypeSchema[] | null | undefined
 ) => {
-  if (!mostPopularDecks) return;
+  if (!mostPopularDecks || mostPopularDecks.some((deck) => !deck)) return;
 
   const supertypeMap = mostPopularDecks.reduce((acc: Record<number, { supertype: SupertypeSchema, decks: Deck[] }>, curr: DeckTypeSchema) => {
     if (!curr.supertype?.id) return acc;

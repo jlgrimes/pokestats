@@ -35,6 +35,7 @@ export interface StandingsFilters {
   onStream: Filter;
   deckKnown: Filter;
   decksVisible: number[];
+  supertypesVisible: number[];
 }
 
 export const StandingsFilterMenu = memo(
@@ -89,12 +90,12 @@ export const StandingsFilterMenu = memo(
                     (supertype, idx) =>
                       supertype.decks.length > 1 && (
                         <Tag variant={getFilter(
-                          'decksVisible',
+                          'supertypesVisible',
                           supertype.decks.map(({ id }) => id)
-                        ) ? 'solid' : 'outline'} key={idx}
+                        ) ? 'solid' : 'outline'} key={idx} cursor='pointer'
                         onClick={() =>
-                          toggleFilter('decksVisible', {
-                            superType: supertype.decks,
+                          toggleFilter('supertypesVisible', {
+                            individualDeck: supertype.supertype.id,
                           })
                         } padding={2}>
                             <HStack spacing={4}>

@@ -14,6 +14,7 @@ import {
   useMostPopularArchetypes,
 } from '../../../../hooks/deckArchetypes';
 import SpriteDisplay from '../../../common/SpriteDisplay/SpriteDisplay';
+import { sortBySuperType } from './helpers';
 import { ToggleFilterOptions } from './StandingsFilterContainer';
 import { StandingsFilters } from './StandingsFilterMenu';
 
@@ -35,6 +36,7 @@ export const FilterTags = ({
   tournament: Tournament;
 }) => {
   const { data: archetypes } = useMostPopularArchetypes(tournament);
+  const supertypes = sortBySuperType(archetypes);
 
   const tagProps: Partial<TagProps> = {
     size: 'lg',
@@ -67,6 +69,39 @@ export const FilterTags = ({
                         <TagCloseButton
                           onClick={() =>
                             toggleFilter('decksVisible', {
+                              individualDeck: deckId,
+                            })
+                          }
+                        />
+                      </Tag>
+                    );
+                  }
+                  return <div key={`${key}-${deckId}`}></div>;
+                })}
+              </Fragment>
+            );
+          }
+
+          if (key === 'supertypesVisible') {
+            return (
+              <Fragment key={`${key}`}>
+                {val.map((deckId: number) => {
+                  const supertype = supertypes?.find(
+                    ({ supertype }) => deckId === supertype.id
+                  );
+                  if (supertype) {
+                    return (
+                      <Tag {...tagProps} key={`${key}-${deckId}`}>
+                        <HStack spacing={1}>
+                          <SpriteDisplay
+                            pokemonNames={supertype.supertype?.defined_pokemon ?? []}
+                            squishWidth
+                          />
+                          {/* <Text fontSize={'sm'} as='b'>{deckArchetype?.count}</Text> */}
+                        </HStack>
+                        <TagCloseButton
+                          onClick={() =>
+                            toggleFilter('supertypesVisible', {
                               individualDeck: deckId,
                             })
                           }

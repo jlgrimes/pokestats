@@ -30,6 +30,7 @@ export default function TournamentView({
       value: false,
     },
     decksVisible: [],
+    supertypesVisible: []
   });
 
   const { data: liveResults, isLoading } = useLiveTournamentResults(

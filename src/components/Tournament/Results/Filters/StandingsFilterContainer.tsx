@@ -29,6 +29,12 @@ export const StandingsFilterContainer = memo(
           return !!arg?.every(deck =>
             standingsFilters.decksVisible.find(deckId => deckId === deck)
           );
+
+        if (key === 'supertypesVisible')
+          return !!arg?.every(deck =>
+            standingsFilters.supertypesVisible.find(deckId => deckId === deck)
+          );
+
         return standingsFilters[key].value;
       },
       [standingsFilters]
@@ -80,6 +86,30 @@ export const StandingsFilterContainer = memo(
               ...standingsFilters,
               decksVisible: standingsFilters.decksVisible.concat(
                 remainingDecksToCheck.map(({ id }) => id)
+              ),
+            });
+          }
+        }
+
+        if (key === 'supertypesVisible') {
+          if (options?.individualDeck) {
+            if (
+              standingsFilters.supertypesVisible.find(
+                deck => deck === options.individualDeck
+              )
+            ) {
+              return setStandingsFilters({
+                ...standingsFilters,
+                supertypesVisible: standingsFilters.supertypesVisible.filter(
+                  deck => deck !== options.individualDeck
+                ),
+              });
+            }
+
+            return setStandingsFilters({
+              ...standingsFilters,
+              supertypesVisible: standingsFilters.supertypesVisible.concat(
+                options.individualDeck
               ),
             });
           }
