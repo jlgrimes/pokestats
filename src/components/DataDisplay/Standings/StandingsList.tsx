@@ -55,23 +55,27 @@ export const StandingsList = memo(
 
     // This is us throwing hands with AdSense because they mess up all of our heights
     useEffect(() => {
-      let wrapper = document.getElementById('standings')
-      if (!wrapper) return;
+      const targetIds = ['__next', 'app-layout-container', 'tournament-page-layout', 'tournament-view', 'standings'];
 
-      const observer = new MutationObserver(function (mutations, observer) {
+      for (const id of targetIds) {
+        let wrapper = document.getElementById(id)
         if (!wrapper) return;
-
-        wrapper.style.height = ''
-        wrapper.style.minHeight = ''
-      })
-      observer.observe(wrapper, {
-        attributes: true,
-        attributeFilter: ['style']
-      })
+  
+        const observer = new MutationObserver(function (mutations, observer) {
+          if (!wrapper) return;
+  
+          wrapper.style.height = ''
+          wrapper.style.minHeight = ''
+        })
+        observer.observe(wrapper, {
+          attributes: true,
+          attributeFilter: ['style']
+        })
+      }
     }, []);
 
     return (
-      <Stack id='standings' height='72vh'>
+      <Stack id='standings' height='100%'>
         {/* {results.map(standing => (
           <PlayerCard
             key={`standing-${standing.name}`}

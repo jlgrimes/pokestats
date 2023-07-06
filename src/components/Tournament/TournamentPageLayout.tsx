@@ -30,7 +30,7 @@ export const TournamentPageLayout = ({
   if (!tournament) return null;
 
   return (
-    <Stack spacing={0} height='100%' overflow='hidden'>
+    <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
       <Stack paddingX={4} paddingTop={2} spacing={1}>
         <StatsHeading
           headingProps={{ color: colorMode === 'dark' ? 'gray.100' : 'gray.700'}}
