@@ -26,7 +26,7 @@ export const StandingsList = memo(
 
     const VirtualizedRowCallback = useCallback(
       ({ index, style }: { index: number; style: any }) => (
-        index === 0 ?             <Ad slot='3745883635' height={'44px'} /> :
+        index === 0 ?             <Ad slot='3745883635' height='44px' /> :
         <VirtualizedRow
           index={index - 1}
           style={style}
@@ -46,7 +46,7 @@ export const StandingsList = memo(
             height={height}
             width={width}
             itemSize={44}
-            itemCount={results.length}
+            itemCount={results.length + 1}
           >
             {VirtualizedRowCallback}
           </List>
