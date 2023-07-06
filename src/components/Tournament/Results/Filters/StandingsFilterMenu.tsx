@@ -87,8 +87,7 @@ export const StandingsFilterMenu = memo(
               <MenuOptionGroup>
                 <Grid gridTemplateColumns={`1fr 1fr`} gap={2} paddingX={2}>
                   {supertypeCollection?.map(
-                    (supertype, idx) =>
-                      supertype.decks.length > 1 && (
+                    (supertype, idx) => (
                         <Tag variant={getFilter(
                           'supertypesVisible',
                           [supertype.supertype.id]
@@ -98,12 +97,12 @@ export const StandingsFilterMenu = memo(
                             individualDeck: supertype.supertype.id,
                           })
                         } padding={2}>
-                            <HStack spacing={4}>
+                            <HStack justifyContent='space-between' width='100%'>
                               <SpriteDisplay
                                 squishWidth
                                 pokemonNames={supertype.supertype.defined_pokemon}
                               />
-                              <Text as='b'>{supertype.supertype.name}</Text>
+                              <Text as='b' textAlign={'right'}>{supertype.supertype.name}</Text>
                             </HStack>
                         </Tag>
                       )
