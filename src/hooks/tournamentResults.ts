@@ -46,7 +46,9 @@ const applyFilters = (liveResults: LiveResults, filters?: StandingsFilters) => {
     ret = {
       ...liveResults,
       data: ret.data.filter(
-        ({ deck }) => deck && deck.supertype?.id && filters.supertypesVisible.includes(deck.supertype.id)
+        ({ deck }) => {
+          return deck && ((deck.supertype &&filters.supertypesVisible.includes(deck.supertype.id)) || (filters.supertypesVisible.some((supertype) => supertype === -1) && !deck.supertype))
+        }
       ),
     };
   }
