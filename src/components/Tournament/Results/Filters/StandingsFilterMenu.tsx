@@ -84,14 +84,14 @@ export const StandingsFilterMenu = memo(
           <MenuDivider /> */}
           {!disableDeckFilter && (
             <Fragment>
-              <MenuOptionGroup title='Archetype'>
+              <MenuOptionGroup>
                 <Grid gridTemplateColumns={`1fr 1fr`} gap={2} paddingX={2}>
                   {supertypeCollection?.map(
                     (supertype, idx) =>
                       supertype.decks.length > 1 && (
                         <Tag variant={getFilter(
                           'supertypesVisible',
-                          supertype.decks.map(({ id }) => id)
+                          [supertype.supertype.id]
                         ) ? 'solid' : 'outline'} key={idx} cursor='pointer'
                         onClick={() =>
                           toggleFilter('supertypesVisible', {
