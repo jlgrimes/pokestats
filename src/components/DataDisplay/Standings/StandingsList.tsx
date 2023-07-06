@@ -52,7 +52,7 @@ export const StandingsList = memo(
     );
 
     return (
-      <Stack height='100%'>
+      <Stack height='50vh'>
         {/* {results.map(standing => (
           <PlayerCard
             key={`standing-${standing.name}`}
