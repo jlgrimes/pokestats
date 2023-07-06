@@ -57,7 +57,6 @@ export default function TournamentView({
           <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>
         </Banner>
       )} */}
-      <Ad slot='3745883635' />
       <StandingsFilterContainer
         tournament={tournament}
         standingsFilters={standingsFilters}

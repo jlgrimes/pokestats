@@ -8,6 +8,7 @@ import { Fragment, memo, useMemo, useCallback } from 'react';
 import { tableHeadingProps } from './props';
 import { VirtualizedRow } from './VirtualizedRow';
 import { PlayerCard } from '../../Tournament/Home/PlayerCard/PlayerCard';
+import { Ad } from '../../Ad';
 
 export const StandingsList = memo(
   ({
@@ -23,10 +24,11 @@ export const StandingsList = memo(
 
     const VirtualizedRowCallback = useCallback(
       ({ index, style }: { index: number; style: any }) => (
+        index === 0 ?             <Ad slot='3745883635' height={'44px'} /> :
         <VirtualizedRow
-          index={index}
+          index={index - 1}
           style={style}
-          standing={results[index]}
+          standing={results[index - 1]}
           tournament={tournament}
           canEditDecks={userIsAdmin}
           shouldHideDeck={shouldHideDecks}
