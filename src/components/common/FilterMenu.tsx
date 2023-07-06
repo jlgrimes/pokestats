@@ -15,7 +15,8 @@ export const FilterMenu = ({ children }: { children: JSX.Element }) => {
       <Menu closeOnSelect={false} placement='top'>
         <MenuButton
           as={Button}
-          colorScheme='blue'
+          colorScheme='red'
+          background='red.600'
           leftIcon={<FaFilter />}
           size='md'
           boxShadow={'md'}

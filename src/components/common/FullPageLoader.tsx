@@ -1,4 +1,4 @@
-import PropagateLoader from 'react-spinners/PropagateLoader';
+import RingLoader from 'react-spinners/RingLoader';
 import { Box } from '@chakra-ui/react';
 
 export const FullPageLoader = () => (
@@ -10,6 +10,6 @@ export const FullPageLoader = () => (
     width='100%'
     opacity={0.4}
   >
-    <PropagateLoader />
+    <RingLoader color='red' />
   </Box>
 );
