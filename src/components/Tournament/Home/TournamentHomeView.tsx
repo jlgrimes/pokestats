@@ -58,7 +58,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         location={location}
       />
       <Stack paddingX={6} spacing={1}>
-        <Heading size='xl' color={header} lineHeight={'2.25rem'}>
+        <Heading size='lg' color={header} lineHeight={'2rem'}>
           {props.tournament.name}
         </Heading>
         <Grid gridTemplateColumns={'5rem auto'} alignItems='center' rowGap={2}>
