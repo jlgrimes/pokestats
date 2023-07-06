@@ -45,7 +45,7 @@ export const StandingsList = memo(
           <List
             height={height}
             width={width}
-            itemSize={index => index === 0 ? 280 : 44}
+            itemSize={index => index === 0 ? 200 : 44}
             itemCount={results.length + 1}
           >
             {VirtualizedRowCallback}
