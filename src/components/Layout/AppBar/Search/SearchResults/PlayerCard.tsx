@@ -41,6 +41,7 @@ export const PlayerCard = (props: PlayerResultProps) => {
             {props.player.username === 'jolt' && <SingleSprite name='jolteon' />}
             {props.player.username === 'noah' && <SingleSprite name='trubbish' />}
             {props.player.username === 'jared' && <SingleSprite name='arceus' />}
+            {props.player.username === 'Yellow9822' && <SingleSprite name='slowpoke' />}
             <Box onClick={e => e.stopPropagation()}>
               <FollowButton playerName={props.player.name} />
             </Box>
