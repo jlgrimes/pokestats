@@ -28,6 +28,8 @@ export interface Deck {
   classification?: DeckClassification;
   player_name?: string | null;
   format?: FormatSchema;
+  // Optional URL for sprites
+  sprites?: string;
 }
 
 export interface DeckList {
