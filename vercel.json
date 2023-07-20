@@ -11,6 +11,10 @@
     {
       "path": "/api/load-deck-results",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/load-leaderboard",
+      "schedule": "0 0 * * *"
     }
   ]
 }
