@@ -22,8 +22,9 @@ export interface CombinedPlayerProfile {
   email: string;
   username: string | null | undefined;
   image?: string | null | undefined;
-  additional_names: string[];
+  additional_names: string[] | null | undefined;
   preferred_name?: string | null | undefined;
+  play_pokemon_name: string | null | undefined;
 }
 
 export interface PlayerTournamentPerformance {

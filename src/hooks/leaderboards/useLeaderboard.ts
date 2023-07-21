@@ -1,12 +1,16 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { SupabaseClient } from "@supabase/supabase-js"
 import { useQuery } from "@tanstack/react-query";
+import { CombinedPlayerProfile } from "../../../types/player";
+import { usePlayerProfiles } from "../user";
 
 export interface PlayerOnLeaderboard {
   id: string;
   name: string;
   country_code: string;
   points: number;
+  placing: number;
+  profile?: CombinedPlayerProfile;
 }
 
 const fetchLeaderboard = async (supabase: SupabaseClient, qualificationPeriod: number, isCompact: boolean) => {
@@ -26,9 +30,19 @@ const fetchLeaderboard = async (supabase: SupabaseClient, qualificationPeriod: n
 
 export const useLeaderboard = (qualificationPeriod: number, isCompact?: boolean) => {
   const supabase = useSupabaseClient();
+  const { data: playerProfiles } = usePlayerProfiles();
 
-  return useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ['leaderboard', qualificationPeriod, isCompact],
     queryFn: () => fetchLeaderboard(supabase, qualificationPeriod, !!isCompact)
   });
+
+  return {
+    data: data?.map((player, idx) => ({
+      ...player,
+      placing: idx + 1,
+      profile: playerProfiles?.find((playerProfile) => player.name === playerProfile.name || playerProfile.additional_names?.includes(player.name) || playerProfile.play_pokemon_name === player.name)
+    })),
+    ...rest
+  }
 };

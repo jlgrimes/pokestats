@@ -1,4 +1,6 @@
-import { Card, Grid, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Card, Flex, Grid, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { FaHiking, FaMountain, FaRegUser, FaRoute } from "react-icons/fa";
 import { PlayerOnLeaderboard } from "../../hooks/leaderboards/useLeaderboard"
 import { CommonCard } from "../common/CommonCard";
 import { CountryFlag } from "../Tournament/Home/CountryFlag";
@@ -8,15 +10,26 @@ interface PlayerPointsCardProps {
 }
 
 export const PlayerPointsCard = (props: PlayerPointsCardProps) => {
+  const router = useRouter();
+
   return (
-    <CommonCard>
-      <Grid gridTemplateColumns={`3.4rem auto`}>
+    <Box>
+      <Grid gridTemplateColumns={`1.5rem 2.6rem 1fr auto auto`} gap={4} alignItems='center'>
+        <Heading size='md' color='gray.800' textAlign='right'>{props.player.placing}</Heading>
         <CountryFlag countryCode={props.player.country_code} size={'sm'} />
-        <Stack spacing={1}>
+        <Stack spacing={0}>
           <Text fontSize='lg' fontWeight='semibold'>{props.player.name}</Text>
           <Text>{props.player.points} CP</Text>
         </Stack>
+        <Stack direction={{ base: 'column', sm: 'row' }}>
+          <Button leftIcon={<FaRoute />} size={{ base: 'sm', sm: 'md' }} isDisabled={!props.player.profile}>
+            Season
+          </Button>
+          <Button leftIcon={<FaRegUser />} size={{ base: 'sm', sm: 'md' }} isDisabled={!props.player.profile} onClick={() => router.push(`/player/${props.player.profile?.username}`)}>
+            Profile
+          </Button>
+        </Stack>
       </Grid>
-    </CommonCard>
+    </Box>
   )
 }
