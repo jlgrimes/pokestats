@@ -1,4 +1,4 @@
-import { Box, Button, Card, Flex, Grid, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Card, Flex, Grid, Heading, HStack, Stack, Text, Tooltip } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FaHiking, FaMountain, FaRegUser, FaRoute } from "react-icons/fa";
 import { PlayerOnLeaderboard } from "../../hooks/leaderboards/useLeaderboard"
@@ -21,14 +21,16 @@ export const PlayerPointsCard = (props: PlayerPointsCardProps) => {
           <Text fontSize='lg' fontWeight='semibold'>{props.player.name}</Text>
           <Text>{props.player.points} CP</Text>
         </Stack>
-        <Stack direction={{ base: 'column', sm: 'row' }}>
-          <Button leftIcon={<FaRoute />} size={{ base: 'sm', sm: 'md' }} isDisabled={!props.player.profile}>
-            Season
-          </Button>
-          <Button leftIcon={<FaRegUser />} size={{ base: 'sm', sm: 'md' }} isDisabled={!props.player.profile} onClick={() => router.push(`/player/${props.player.profile?.username}`)}>
-            Profile
-          </Button>
-        </Stack>
+        <Tooltip label={props.player.profile ? null : `${props.player.name} is not on pokestats :(`}>
+          <Stack direction={{ base: 'column', sm: 'row' }}>
+            <Button leftIcon={<FaRoute />} size={{ base: 'sm', sm: 'md' }} isDisabled={!props.player.profile}>
+              Season
+            </Button>
+            <Button leftIcon={<FaRegUser />} size={{ base: 'sm', sm: 'md' }} isDisabled={!props.player.profile} onClick={() => router.push(`/player/${props.player.profile?.username}`)}>
+              Profile
+            </Button>
+          </Stack>
+        </Tooltip>
       </Grid>
     </Box>
   )

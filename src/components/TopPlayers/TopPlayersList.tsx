@@ -9,7 +9,6 @@ interface TopPlayersList {
 
 export const TopPlayersList = (props: TopPlayersList) => {
   const { data: topPlayers } = useLeaderboard(props.season, props.isCompact);
-  console.log(topPlayers)
 
   return (
     <Stack>
