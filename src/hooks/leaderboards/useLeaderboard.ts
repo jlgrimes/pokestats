@@ -2,6 +2,13 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { SupabaseClient } from "@supabase/supabase-js"
 import { useQuery } from "@tanstack/react-query";
 
+export interface PlayerOnLeaderboard {
+  id: string;
+  name: string;
+  country_code: string;
+  points: number;
+}
+
 const fetchLeaderboard = async (supabase: SupabaseClient, qualificationPeriod: number, isCompact: boolean) => {
   let query = supabase.from('Masters Leaderboard')
     .select('id,name,country_code,points')
@@ -12,8 +19,7 @@ const fetchLeaderboard = async (supabase: SupabaseClient, qualificationPeriod: n
     query = query.range(1, 10);
   }
 
-  const res = await query;
-  console.log(res)
+  const res = await query.returns<PlayerOnLeaderboard[]>();
 
   return res.data;
 }
