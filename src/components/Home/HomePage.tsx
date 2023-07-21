@@ -21,6 +21,7 @@ import { CommonCard } from '../common/CommonCard';
 import { useColor } from '../../hooks/useColor';
 import { TCGPLAYER_AFFILIATE_URL } from '../../lib/url';
 import { TopPlayersList } from '../TopPlayers/TopPlayersList';
+import { LeaderboardCard } from './LeaderboardCard';
 
 export interface HomePageProps {
   tournaments: Tournament[];
@@ -61,7 +62,7 @@ export const HomePage = (props: HomePageProps) => {
       </Stack>
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />
-      <TopPlayersList isCompact />
+      <LeaderboardCard />
       <Ad slot='7147816871' />
       {/* <Adsense
         client='ca-pub-3066736963130742'
