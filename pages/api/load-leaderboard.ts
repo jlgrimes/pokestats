@@ -14,7 +14,7 @@ export default async function handler(
     // 2023. Idk why
     const qualificationPeriod = 46;
 
-    const initialPage = await fetch(getLeaderboardApiUrl(qualificationPeriod)).then((res) => res.json());
+    const initialPage = await fetch(getLeaderboardApiUrl(qualificationPeriod, 1)).then((res) => res.json());
     const numPages = initialPage._metadata.page_count;
 
     for await (const pageNum of [...Array(numPages).keys()]) {
@@ -24,7 +24,7 @@ export default async function handler(
       if (realNum === 1) {
         pageData = initialPage;
       } else {
-        pageData = await fetch(getLeaderboardApiUrl(pageNum)).then((res) => res.json());
+        pageData = await fetch(getLeaderboardApiUrl(qualificationPeriod, pageNum)).then((res) => res.json());
       }
 
       const upsertedEntries = pageData.leaderboard.records.map((record) => ({
