@@ -187,7 +187,7 @@ export const fetchPlayerProfile = async (): Promise<
 > => {
   const res = await supabase
     .from('Player Profiles')
-    .select('id,name,email,username,additional_names,preferred_name');
+    .select('id,name,email,username,additional_names,preferred_name,play_pokemon_name');
 
   return (res.data as CombinedPlayerProfile[]) ?? null;
 };

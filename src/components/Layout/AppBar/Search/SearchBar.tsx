@@ -20,14 +20,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useMemo, useState } from 'react';
-import { Tournament } from '../../../../../types/tournament';
-import { useArchetypes, useSupertypes } from '../../../../hooks/deckArchetypes';
-import { useFinalResultsPlayers } from '../../../../hooks/finalResults/fetch';
-import { useTournaments } from '../../../../hooks/tournaments';
-import { normalizeName, usePlayerProfiles } from '../../../../hooks/user';
-import { appSearchResultComparator } from './helpers';
-import { SearchResultSchema, SearchResultType } from './search-types';
+import { useState } from 'react';
+import { normalizeName } from '../../../../hooks/user';
+import { SearchResultType } from './search-types';
 import { SearchBarResults } from './SearchBarResults';
 import { SearchResult } from './SearchResult';
 

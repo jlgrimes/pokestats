@@ -12,8 +12,8 @@ export const PlayerPointsCard = (props: PlayerPointsCardProps) => {
     <CommonCard>
       <Grid gridTemplateColumns={`3.4rem auto`}>
         <CountryFlag countryCode={props.player.country_code} size={'sm'} />
-        <Stack>
-        <Text fontSize='lg' fontWeight='semibold'>{props.player.name}</Text>
+        <Stack spacing={1}>
+          <Text fontSize='lg' fontWeight='semibold'>{props.player.name}</Text>
           <Text>{props.player.points} CP</Text>
         </Stack>
       </Grid>
