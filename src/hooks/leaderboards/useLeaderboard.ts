@@ -20,7 +20,7 @@ const fetchLeaderboard = async (supabase: SupabaseClient, qualificationPeriod: n
     .order('points', { ascending: false });
 
   if (isCompact) {
-    query = query.range(1, 10);
+    query = query.range(1, 16);
   }
 
   const res = await query.returns<PlayerOnLeaderboard[]>();
