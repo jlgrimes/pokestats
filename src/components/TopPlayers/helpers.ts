@@ -110,4 +110,4 @@ export const getPointsEarned = (standing: Standing, tournament: Tournament): num
   }
 
   return 0;
-}
+};

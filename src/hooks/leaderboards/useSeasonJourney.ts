@@ -11,7 +11,7 @@ export interface JourneyPoint {
   pointsEarned: number;
 }
 
-export const useSeasonJourney = (user: CombinedPlayerProfile, worldsSeasonYear: number) => {
+export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worldsSeasonYear: number) => {
   const { data: tournamentPerformance, ...rest } = useFinalResults({
     playerName: user?.name,
     additionalNames: user?.additional_names,
