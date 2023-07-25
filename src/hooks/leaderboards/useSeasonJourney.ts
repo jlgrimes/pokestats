@@ -1,7 +1,7 @@
 import { isAfter, isBefore, isWithinInterval, parseISO } from "date-fns";
 import { CombinedPlayerProfile } from "../../../types/player";
 import { Standing, Tournament } from "../../../types/tournament";
-import { getPointsEarned } from "../../components/TopPlayers/helpers";
+import { filterOutBFLExtras, getPointsEarned } from "../../components/TopPlayers/helpers";
 import { useFinalResults } from "../finalResults";
 import { useTournaments } from "../tournaments";
 
@@ -34,8 +34,10 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
     return acc;
   }, []);
 
+  const journeyWithoutExceedingBFL = relevantStandings ? filterOutBFLExtras(worldsSeasonYear, relevantStandings) : undefined;
+
   return {
-    data: relevantStandings,
+    data: journeyWithoutExceedingBFL,
     ...rest
   }
 }

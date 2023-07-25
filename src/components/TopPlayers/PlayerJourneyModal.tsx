@@ -23,7 +23,7 @@ export const PlayerJourneyModal = (props: PlayerJourneyModalProps) => {
         <ModalCloseButton />
         <ModalHeader>{props.player.name}'s 2023 season</ModalHeader>
         <ModalBody>
-          <Stack>
+          <Stack spacing={4}>
             <Grid gridTemplateColumns={'3fr 1fr 1fr 3fr'} alignItems='center' gap={2}>
               {journey?.map((point) => <PlayerJourneyCard key={Math.random()} journeyPoint={point} />)}
             </Grid>

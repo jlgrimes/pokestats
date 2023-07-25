@@ -1,4 +1,5 @@
 import { Standing, Tournament } from "../../../types/tournament";
+import { JourneyPoint } from "../../hooks/leaderboards/useSeasonJourney";
 
 export type TournamentType = 'regional' | 'ic';
 
@@ -111,3 +112,26 @@ export const getPointsEarned = (standing: Standing, tournament: Tournament): num
 
   return 0;
 };
+
+interface BFLValue {
+  regionals: number;
+}
+
+export const BFL_MAP: Record<number, BFLValue> = {
+  2023: {
+    regionals: 6
+  }
+};
+
+export const filterOutBFLExtras = (season: number, journey: JourneyPoint[]) => {
+  if (!BFL_MAP[season]) return journey; 
+
+  const regionalsByPerformance = journey.slice().filter((point) => getTournamentType(point.tournament.name) === 'regional').sort((a, b) => b.pointsEarned - a.pointsEarned);
+  const regionalsToBeRemoved = regionalsByPerformance.slice(BFL_MAP[season].regionals).map((point) => point.tournament.id);
+
+  if (regionalsToBeRemoved.length > 0) {
+    return journey.filter((point) => !regionalsToBeRemoved.some((regionalId) => regionalId === point.tournament.id));
+  }
+
+  return journey;
+}
