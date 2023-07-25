@@ -11,12 +11,13 @@ interface PlayerJourneyModalProps {
 
 export const PlayerJourneyModal = (props: PlayerJourneyModalProps) => {
   const { data: journey } = useSeasonJourney(props.player, 2023);
+  console.log(journey)
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
       <ModalContent>
-        {journey?.map((standing) => <div>{standing .name}</div>)}
+        {journey?.map((standing) => <div>{standing.standing.name}</div>)}
       </ModalContent>
     </Modal>
   )

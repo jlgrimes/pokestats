@@ -1,7 +1,15 @@
 import { isAfter, isBefore, isWithinInterval, parseISO } from "date-fns";
 import { CombinedPlayerProfile } from "../../../types/player";
+import { Standing, Tournament } from "../../../types/tournament";
+import { getPointsEarned } from "../../components/TopPlayers/helpers";
 import { useFinalResults } from "../finalResults";
 import { useTournaments } from "../tournaments";
+
+export interface JourneyPoint {
+  standing: Standing;
+  tournament: Tournament;
+  pointsEarned: number;
+}
 
 export const useSeasonJourney = (user: CombinedPlayerProfile, worldsSeasonYear: number) => {
   const { data: tournamentPerformance, ...rest } = useFinalResults({
@@ -10,13 +18,21 @@ export const useSeasonJourney = (user: CombinedPlayerProfile, worldsSeasonYear: 
   });
   const { data: tournaments } = useTournaments();
 
-  const relevantStandings = tournamentPerformance?.filter((standing) => {
-    const tournamentDate = tournaments?.find((tournament) => tournament.id === standing.tournamentId)?.date;
-    if (tournamentDate && isAfter(parseISO(tournamentDate?.start), parseISO(`${worldsSeasonYear - 1}-09-01`)) && isBefore(parseISO(tournamentDate?.end), parseISO(`${worldsSeasonYear}-06-20`))) {
-      return true;
+  const relevantStandings = tournamentPerformance?.reverse().reduce((acc: JourneyPoint[], standing) => {
+    const tournament = tournaments?.find((tournament) => tournament.id === standing.tournamentId);
+    const tournamentDate = tournament?.date;
+    const isTournamentInSeason = tournamentDate && isAfter(parseISO(tournamentDate?.start), parseISO(`${worldsSeasonYear - 1}-09-01`)) && isBefore(parseISO(tournamentDate?.end), parseISO(`${worldsSeasonYear}-06-20`));
+    const pointsEarned = tournament ? getPointsEarned(standing, tournament) : 0;
+
+    if (isTournamentInSeason && pointsEarned > 0) {
+      return [...acc, {
+        standing,
+        tournament,
+        pointsEarned
+      }];
     }
-    return false;
-  });
+    return acc;
+  }, []);
 
   return {
     data: relevantStandings,
