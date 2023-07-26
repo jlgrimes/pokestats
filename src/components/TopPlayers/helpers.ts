@@ -84,7 +84,12 @@ export const IC_POINT_MAP: Record<number, PointMapValue> = {
 };
 
 export const getTournamentType = (tournamentName: string): TournamentType | undefined => {
-  if (tournamentName.toLowerCase().includes('regional') || tournamentName.toLowerCase().includes('special') || tournamentName.toLowerCase().includes('open')) return 'regional';
+  const lowercaseName = tournamentName.toLowerCase();
+  const isRegional = lowercaseName.includes('regional');
+  const isSPE = lowercaseName.includes('special') || tournamentName === 'Team Island: Tournament of Champions -';
+  const isOpen = lowercaseName.includes('open');
+
+  if (isRegional || isSPE || isOpen) return 'regional';
   if (tournamentName.toLowerCase().includes('international') || tournamentName.includes('intercontinental')) return 'ic';
 };
 
