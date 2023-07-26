@@ -21,7 +21,7 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
   const relevantStandings = tournamentPerformance?.slice().reverse().reduce((acc: JourneyPoint[], standing) => {
     const tournament = tournaments?.find((tournament) => tournament.id === standing.tournamentId);
     const tournamentDate = tournament?.date;
-    const isTournamentInSeason = tournamentDate && isAfter(parseISO(tournamentDate?.start), parseISO(`${worldsSeasonYear - 1}-09-01`)) && isBefore(parseISO(tournamentDate?.end), parseISO(`${worldsSeasonYear}-07-10`));
+    const isTournamentInSeason = tournamentDate && isAfter(parseISO(tournamentDate?.start), parseISO(`${worldsSeasonYear - 1}-08-01`)) && isBefore(parseISO(tournamentDate?.end), parseISO(`${worldsSeasonYear}-07-10`));
     const pointsEarned = tournament ? getPointsEarned(standing, tournament) : 0;
 
     if (isTournamentInSeason && pointsEarned > 0) {

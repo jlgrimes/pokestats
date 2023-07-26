@@ -84,7 +84,7 @@ export const IC_POINT_MAP: Record<number, PointMapValue> = {
 };
 
 export const getTournamentType = (tournamentName: string): TournamentType | undefined => {
-  if (tournamentName.toLowerCase().includes('regional')) return 'regional';
+  if (tournamentName.toLowerCase().includes('regional') || tournamentName.toLowerCase().includes('special') || tournamentName.toLowerCase().includes('open')) return 'regional';
   if (tournamentName.toLowerCase().includes('international') || tournamentName.includes('intercontinental')) return 'ic';
 };
 
