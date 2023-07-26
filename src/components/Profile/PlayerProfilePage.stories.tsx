@@ -28,6 +28,7 @@ MyLiveProfile.args = {
     email: '',
     image: '',
     additional_names: [],
+    play_pokemon_name: ''
   },
 };
 
@@ -40,5 +41,6 @@ OtherLiveProfile.args = {
     email: '',
     image: '',
     additional_names: [],
+    play_pokemon_name: ''
   },
 };
