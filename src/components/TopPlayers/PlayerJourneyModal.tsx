@@ -15,7 +15,7 @@ export const PlayerJourneyModal = (props: PlayerJourneyModalProps) => {
       <ModalContent my={{ base: 0, sm: 16 }}>
         <ModalCloseButton />
         <ModalHeader pb={2}>{props.player.profile?.name ?? props.player.name}'s 2023 season</ModalHeader>
-        <ModalBody minHeight={{ base: '90vh', sm: '560px'}}>
+        <ModalBody minHeight={{ base: '90vh', sm: '560px'}} position={'relative'}>
           {props.isOpen && <PlayerJourneyModalContent {...props} />}
         </ModalBody>
       </ModalContent>

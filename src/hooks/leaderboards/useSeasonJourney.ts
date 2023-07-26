@@ -16,7 +16,7 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
     playerName: user?.name,
     additionalNames: user?.additional_names,
   });
-  const { data: tournaments } = useTournaments();
+  const { data: tournaments, isLoading: isTournamentsLoading } = useTournaments();
 
   const relevantStandings = tournamentPerformance?.slice().reverse().reduce((acc: JourneyPoint[], standing) => {
     const tournament = tournaments?.find((tournament) => tournament.id === standing.tournamentId);
@@ -38,6 +38,7 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
 
   return {
     data: journeyWithoutExceedingBFL,
-    ...rest
+    ...rest,
+    isLoading: rest.isLoading || isTournamentsLoading,
   }
 }
