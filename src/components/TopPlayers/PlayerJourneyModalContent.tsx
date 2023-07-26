@@ -26,14 +26,14 @@ export const PlayerJourneyModalContent = (props: PlayerJourneyModalProps) => {
 
         {localsPoints > 0 && (
           <>
-            <Text fontWeight={'semibold'} color='gray.800' fontSize={'md'}>Locals</Text>
+            <Text fontWeight={'semibold'} fontSize={'md'}>Locals</Text>
             <Text fontWeight='bold' fontSize='xl'>+{localsPoints}</Text>
             <Box />
             <Box />
           </>
         )}
 
-        <Text fontWeight={'semibold'} color='gray.800' fontSize={'md'} pt='4'>Total</Text>
+        <Text fontWeight={'semibold'} fontSize={'md'} pt='4'>Total</Text>
         <Text fontWeight='bold' fontSize='xl' gridColumn={'2/-1'} pt='4'>{props.player.points} CP</Text>
       </Grid>
     </Stack>
