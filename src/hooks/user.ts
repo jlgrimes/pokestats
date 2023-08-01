@@ -9,9 +9,10 @@ import { fetchTournaments } from './tournaments';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
   const user = useUser();
-  const { data: profile } = usePlayerProfile({
+  const { data } = useSmartPlayerProfiles({
     email: user?.email,
   });
+  const profile = data?.at(0);
 
   if (!user?.email) return false;
 
@@ -61,12 +62,6 @@ export const fetchUserProfile = async (user: User) => {
   return null;
 };
 
-export const usePlayerProfiles = () => {
-  return useQuery({
-    queryKey: ['player-profiles'],
-    queryFn: () => fetchPlayerProfile(),
-  });
-};
 export interface SessionUserProfile {
   email: string | null;
   user_metadata: {
@@ -206,7 +201,7 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters): Promis
 
   const res = await query;
 
-  return (res.data as CombinedPlayerProfile[]) ?? null;
+  return res.data;
 };
 
 export const fetchAllTakenUsernames = async () => {
@@ -253,34 +248,5 @@ export const useSessionPlayerProfile = () => {
     ...profile,
     data,
     isAuthenticated: !!session?.access_token,
-  };
-};
-
-export const usePlayerProfile = (filters?: PlayerProfileFilters) => {
-  const { data, ...rest } = usePlayerProfiles();
-
-  let user: CombinedPlayerProfile | null = null;
-
-  if (filters?.name) {
-    user =
-      data?.find(
-        ({ name, additional_names }) =>
-          name === filters?.name ||
-          additional_names?.includes(filters.name as string)
-      ) ?? null;
-  } else if (filters?.username) {
-    user = data?.find(({ username }) => username === filters.username) ?? null;
-  } else if (filters?.email) {
-    user = data?.find(({ email }) => email === filters.email) ?? null;
-  } else {
-    return {
-      ...rest,
-      data: null,
-    };
-  }
-
-  return {
-    ...rest,
-    data: user,
   };
 };

@@ -2,7 +2,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { SupabaseClient } from "@supabase/supabase-js"
 import { useQuery } from "@tanstack/react-query";
 import { CombinedPlayerProfile } from "../../../types/player";
-import { usePlayerProfiles, useSmartPlayerProfiles } from "../user";
+import { useSmartPlayerProfiles } from "../user";
 
 export interface PlayerOnLeaderboard {
   id: string;
@@ -30,15 +30,13 @@ const fetchLeaderboard = async (supabase: SupabaseClient, qualificationPeriod: n
 
 export const useLeaderboard = (qualificationPeriod: number, isCompact?: boolean) => {
   const supabase = useSupabaseClient();
-  const { data: playerProfiles } = usePlayerProfiles();
 
   const { data, ...rest } = useQuery({
     queryKey: ['leaderboard', qualificationPeriod, isCompact],
     queryFn: () => fetchLeaderboard(supabase, qualificationPeriod, !!isCompact)
   });
 
-  const { data: smarties } = useSmartPlayerProfiles({ nameList: data?.map(({ name }) => name )})
-  console.log(smarties)
+  const { data: playerProfiles } = useSmartPlayerProfiles({ nameList: data?.map(({ name }) => name )})
 
   return {
     data: data?.map((player, idx) => ({
