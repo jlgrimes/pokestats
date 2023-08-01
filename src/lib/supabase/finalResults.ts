@@ -53,6 +53,7 @@ export const loadFinalResults = async (
         deck_archetype: player.deck?.id ?? null,
         deck_supertype: player.deck?.supertype?.id ?? null,
         day2: player.day2 ?? null,
+        tournament: parseInt(tournamentId)
       };
     });
 
