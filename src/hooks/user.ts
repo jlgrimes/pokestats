@@ -64,7 +64,7 @@ export const fetchUserProfile = async (user: User) => {
 export const usePlayerProfiles = () => {
   return useQuery({
     queryKey: ['player-profiles'],
-    queryFn: fetchPlayerProfile,
+    queryFn: () => fetchPlayerProfile(),
   });
 };
 export interface SessionUserProfile {
@@ -182,12 +182,29 @@ export const fetchUser = async (email: string) => {
   return res.data?.[0];
 };
 
-export const fetchPlayerProfile = async (): Promise<
+export const fetchPlayerProfile = async (filters?: PlayerProfileFilters): Promise<
   CombinedPlayerProfile[] | null
 > => {
-  const res = await supabase
+  let query = supabase
     .from('Player Profiles')
     .select('id,name,email,username,additional_names,preferred_name,play_pokemon_name');
+
+  if (filters?.email) {
+    query = query.eq('email', filters.email)
+  }
+
+  if (filters?.username) {
+    query = query.eq('username', filters.username);
+  }
+
+  if (filters?.nameList) {
+    let strigifiedNames = JSON.stringify(filters.nameList);
+    strigifiedNames = strigifiedNames.slice(1, strigifiedNames.length - 1);
+
+    query = query.or(`name.in.(${strigifiedNames}), additional_names.cd.{${strigifiedNames}}, play_pokemon_name.in.(${strigifiedNames})`)
+  }
+
+  const res = await query;
 
   return (res.data as CombinedPlayerProfile[]) ?? null;
 };
@@ -207,15 +224,23 @@ export const useAllTakenUsernames = () => {
   });
 };
 
+export const useSmartPlayerProfiles = (filters: PlayerProfileFilters) => {
+  return useQuery({
+    queryKey: ['smart-player-profiles', filters],
+    queryFn: () => fetchPlayerProfile(filters),
+  });
+}
+
 interface PlayerProfileFilters {
   username?: string;
   name?: string | null;
   email?: string;
+  nameList?: string[]
 }
 
 export const useSessionPlayerProfile = () => {
   const session = useSession();
-  const profile = usePlayerProfile({ email: session?.user?.email });
+  const profile = useSmartPlayerProfiles({ email: session?.user?.email });
 
   const data = profile.data
     ? {
