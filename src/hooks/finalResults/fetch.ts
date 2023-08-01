@@ -106,6 +106,9 @@ export const fetchFinalResults = async (
   if (filters?.format) {
     query = query.eq('deck_archetype.format', filters.format);
   }
+  if (filters?.shouldExpandTournament) {
+    query = query.not('tournament', 'is', null);
+  }
 
   if (filters?.playerName) {
     if (filters.additionalNames) {

@@ -3,7 +3,6 @@ import { CombinedPlayerProfile } from "../../../types/player";
 import { Standing, Tournament } from "../../../types/tournament";
 import { filterOutBFLExtras, getPointsEarned } from "../../components/TopPlayers/helpers";
 import { useFinalResults } from "../finalResults";
-import { useTournaments } from "../tournaments";
 
 export interface JourneyPoint {
   standing: Standing;
@@ -15,11 +14,12 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
   const { data: tournamentPerformance, ...rest } = useFinalResults({
     playerName: user?.name,
     additionalNames: user?.additional_names,
+    shouldExpandTournament: true
   });
-  const { data: tournaments, isLoading: isTournamentsLoading } = useTournaments();
+  console.log(tournamentPerformance)
 
   const relevantStandings = tournamentPerformance?.slice().reverse().reduce((acc: JourneyPoint[], standing) => {
-    const tournament = tournaments?.find((tournament) => tournament.id === standing.tournamentId);
+    const tournament = standing.tournament;
     const tournamentDate = tournament?.date;
     const isTournamentInSeason = tournamentDate && isAfter(parseISO(tournamentDate?.start), parseISO(`${worldsSeasonYear - 1}-08-01`)) && isBefore(parseISO(tournamentDate?.end), parseISO(`${worldsSeasonYear}-07-10`));
     const pointsEarned = tournament ? getPointsEarned(standing, tournament) : 0;
@@ -39,6 +39,5 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
   return {
     data: journeyWithoutExceedingBFL,
     ...rest,
-    isLoading: rest.isLoading || isTournamentsLoading,
   }
 }

@@ -10,9 +10,7 @@ import {
 } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
-import { useArchetypes, useDecks } from './deckArchetypes';
-import { useTournaments } from './tournaments';
-import { usePlayerProfile, useUserMatchesLoggedInUser } from './user';
+import { usePlayerProfile } from './user';
 
 export const useTournamentResults = (tournamentName: string) => {
   const fetchResults = async () => {
