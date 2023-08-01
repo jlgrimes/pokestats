@@ -6,6 +6,7 @@ import {
   useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../../hooks/user';
+import { cropPlayerName } from '../../../lib/fetch/fetchLiveResults';
 import { CommonCard } from '../../common/CommonCard';
 import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
@@ -38,8 +39,7 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
   );
 
   // Masks a glitch where final results don't have opponent info for some reason
-  const shouldUseFinalResults = playerFinalResult?.rounds?.every((round) => round.opponent);
-  const resultsData = playerFinalResult && shouldUseFinalResults
+  const resultsData = playerFinalResult
     ? {
         isLoading: false,
         shouldHideDecks: false,
@@ -48,7 +48,7 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
           rounds: playerFinalResult.rounds?.map(round => ({
             ...round,
             opponent: finalResults?.find(
-              standing => standing.name === round.name
+              standing => cropPlayerName(standing.name) === cropPlayerName(round.name)
             ),
           })),
         },
