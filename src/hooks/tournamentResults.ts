@@ -10,6 +10,7 @@ import {
 } from '../lib/fetch/fetchLiveResults';
 import { getResultQueryKey } from '../lib/fetch/query-keys';
 import supabase from '../lib/supabase/client';
+import { useSessionPlayerProfile } from './user';
 
 export const useTournamentResults = (tournamentName: string) => {
   const fetchResults = async () => {
@@ -187,7 +188,7 @@ export const useLiveTournamentPlayers = (tournamentId: string) => {
 };
 
 export const usePlayerIsMeOrMyOpponent = (player: Standing | undefined) => {
-  const { data: profile } = usePlayerProfile();
+  const { data: profile } = useSessionPlayerProfile();
   const userName = profile?.name;
 
   if (!player) return true;
