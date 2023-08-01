@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useArchetypes, useSupertypes } from '../../../../hooks/deckArchetypes';
 import { useFinalResultsPlayers } from '../../../../hooks/finalResults/fetch';
 import { useTournaments } from '../../../../hooks/tournaments';
-import { usePlayerProfiles } from '../../../../hooks/user';
+import { useSmartPlayerProfiles } from '../../../../hooks/user';
 import { appSearchResultComparator } from './helpers';
 import { SearchResultSchema } from './search-types';
 import { getRelevantSearchResults } from './SearchBar';
@@ -16,7 +16,7 @@ interface SearchBarResultsProps {
 
 export const SearchBarResults = (props: SearchBarResultsProps) => {
   const { data: names } = useFinalResultsPlayers();
-  const { data: playerProfiles } = usePlayerProfiles();
+  const { data: playerProfiles } = useSmartPlayerProfiles();
   const { data: tournaments } = useTournaments();
   const { data: archetypes } = useArchetypes();
   const { data: supertypes } = useSupertypes();

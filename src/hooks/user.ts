@@ -180,16 +180,22 @@ export const fetchUser = async (email: string) => {
 export const fetchPlayerProfile = async (filters?: PlayerProfileFilters): Promise<
   CombinedPlayerProfile[] | null
 > => {
+  if (filters && Object.keys(filters).length !== Object.values(filters).filter((fil) => fil).length) return null;
+
   let query = supabase
     .from('Player Profiles')
     .select('id,name,email,username,additional_names,preferred_name,play_pokemon_name');
 
   if (filters?.email) {
-    query = query.eq('email', filters.email)
+    query = query.or(`email.eq.${filters.email}`)
   }
 
   if (filters?.username) {
-    query = query.eq('username', filters.username);
+    query = query.or(`username.eq.${filters.username}`);
+  }
+
+  if (filters?.name) {
+    query = query.or(`name.eq.${filters.name}, additional_names.cs.{"${filters.name}"}, play_pokemon_name.eq.${filters.name})`)
   }
 
   if (filters?.nameList) {
@@ -219,7 +225,7 @@ export const useAllTakenUsernames = () => {
   });
 };
 
-export const useSmartPlayerProfiles = (filters: PlayerProfileFilters) => {
+export const useSmartPlayerProfiles = (filters?: PlayerProfileFilters) => {
   return useQuery({
     queryKey: ['smart-player-profiles', filters],
     queryFn: () => fetchPlayerProfile(filters),
@@ -239,7 +245,7 @@ export const useSessionPlayerProfile = () => {
 
   const data = profile.data
     ? {
-        ...profile.data,
+        ...profile.data.at(0),
         image: session?.user.user_metadata.avatar_url,
       }
     : null;

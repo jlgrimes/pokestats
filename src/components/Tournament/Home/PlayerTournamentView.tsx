@@ -1,10 +1,9 @@
 import { Stack } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import { Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
 import {
-  usePlayerProfile,
+  useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../../hooks/user';
 import { CommonCard } from '../../common/CommonCard';
@@ -17,7 +16,9 @@ interface PlayerTournamentViewProps {
 }
 
 export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
-  const { data: user } = usePlayerProfile({ name: props.playerName });
+  const { data } = useSmartPlayerProfiles({ name: props.playerName });
+  const user = data?.at(0);
+
   const livePlayerResults = usePlayerLiveResults(
     props.tournament.id,
     user?.name,

@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { FaCheck, FaCross, FaTimes, FaWindowClose } from 'react-icons/fa';
 import * as Yup from 'yup';
 import { CombinedPlayerProfile } from '../../../types/player';
-import { useAllTakenUsernames, usePlayerProfile, useSessionPlayerProfile } from '../../hooks/user';
+import { useAllTakenUsernames, useSessionPlayerProfile } from '../../hooks/user';
 import supabase from '../../lib/supabase/client';
 import { Username } from './Username';
 import { profanity } from '@2toad/profanity';
