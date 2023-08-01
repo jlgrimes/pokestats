@@ -45,11 +45,6 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   }
 
   await queryClient.prefetchQuery({
-    queryKey: ['all-pinned-players', tournament.id],
-    queryFn: () => fetchPinnedPlayers(tournament.id),
-  });
-
-  await queryClient.prefetchQuery({
     queryKey: ['all-tournament-metadata'],
     queryFn: () => fetchTournamentMetadata(),
   });

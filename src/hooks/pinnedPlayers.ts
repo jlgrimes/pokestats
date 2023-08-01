@@ -34,7 +34,7 @@ export const useAllPinnedPlayers = (tournamentId?: string, name?: string) => {
 
 export const usePinnedPlayers = (tournamentId?: string) => {
   const user = useUser();
-  const { data, ...rest } = useAllPinnedPlayers(tournamentId);
+  const { data, ...rest } = useAllPinnedPlayers(tournamentId, user?.email);
 
   const filteredPlayers = data?.filter(
     pinnedPlayer => pinnedPlayer.user_account === user?.email
