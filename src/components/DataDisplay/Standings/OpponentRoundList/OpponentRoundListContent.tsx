@@ -2,6 +2,7 @@ import {
   Card,
   CardBody,
   Divider,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -28,9 +29,18 @@ import { useUserIsAdmin } from '../../../../hooks/administrators';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
 import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
-import { PlayerCard } from '../../../Tournament/Home/PlayerCard/PlayerCard';
 import { RoundsList } from '../../Rounds/RoundsList';
-import { StandingsRow } from '../StandingsRow';
+import {
+  usePlayerIsMeOrMyOpponent,
+  usePlayerLiveResults,
+} from '../../../../hooks/tournamentResults';
+import { useSmartPlayerProfiles } from '../../../../hooks/user';
+import { ordinalSuffixOf } from '../../../../lib/strings';
+import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
+import { Username } from '../../../Profile/Username';
+import { FollowButton } from '../../../Social/FollowButton';
+import { Record } from '../../../Tournament/Results/ResultsList/Record';
+import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
 
 export const OpponentRoundListContent = ({
   tournament,
@@ -48,6 +58,12 @@ export const OpponentRoundListContent = ({
   const { data: userIsAdmin } = useUserIsAdmin();
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
+  const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
+  const { data } = useSmartPlayerProfiles({ name: player.name });
+  const playerProfile = data?.at(0);
+
+  const isMyOpponent = usePlayerIsMeOrMyOpponent(player);
+
   const opponents: { name: string; result: MatchResult }[] | undefined =
     player.rounds;
 
@@ -62,17 +78,62 @@ export const OpponentRoundListContent = ({
     };
   });
 
-  return rounds ? (
-    <RoundsList
-      player={{
-        ...player,
-        rounds,
-      }}
-      tournament={tournament}
-      shouldHideDecks={!!liveResults?.shouldHideDecks}
-      shouldDisableOpponentModal
-      canEditDecks={userMatchesLoggedInUser}
-      userIsAdmin={userIsAdmin}
-    />
-  ) : null;
+  return (
+    <>
+      <ModalHeader padding={'0.5rem 2rem'}>
+        <HStack>
+          <Grid gridTemplateColumns={'2.5fr 1fr'} pr={4}>
+            <Stack spacing={0}>
+              <Flex wrap='wrap' alignItems={'center'}>
+                <Text mr='2'>{player.name}</Text>
+              </Flex>
+              <HStack>
+                {playerProfile?.username && (
+                  <Username small isLink>
+                    {playerProfile?.username}
+                  </Username>
+                )}
+                <FollowButton playerName={player.name} />
+              </HStack>
+            </Stack>
+            <Stack spacing={0}>
+              <HStack alignItems='center'>
+                <HStack spacing={0}>
+                  <RecordIcon standing={player} tournament={tournament} />
+                  <Text fontSize='lg'>{ordinalSuffixOf(player.placing)}</Text>
+                </HStack>
+                <Record standing={player} normal />
+              </HStack>
+              <DeckInfoDisplay
+                tournament={tournament}
+                player={player}
+                enableEdits={false}
+                disableList
+                // Since we're pulling from post-tournament
+                shouldHideDeck={shouldHideDecks}
+                shouldDisableDeckExtras
+                isPlayerMeOrMyOpponent={isMyOpponent}
+              />
+            </Stack>
+          </Grid>
+        </HStack>
+      </ModalHeader>
+      <ModalCloseButton />
+      <ModalBody paddingTop={0} paddingX={0}>
+        {rounds && (
+          <RoundsList
+            player={{
+              ...player,
+              rounds,
+            }}
+            tournament={tournament}
+            shouldHideDecks={!!liveResults?.shouldHideDecks}
+            shouldDisableOpponentModal
+            canEditDecks={userMatchesLoggedInUser}
+            userIsAdmin={userIsAdmin}
+          />
+        )}
+      </ModalBody>
+    </>
+  )
 };
