@@ -1,6 +1,4 @@
-import { Badge, Icon, Stack } from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { FaTrophy } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
 import { TopCutView } from './TopCutView';
@@ -12,6 +10,7 @@ interface TopCutViewProps {
 export const FinalTopCutView = (props: TopCutViewProps) => {
   const { data: finalTournamentResults, isLoading } = useFinalResults({
     tournamentId: props.tournament.id,
+    minimumPlacing: 8
   });
 
   const topCutPlayers = useMemo(

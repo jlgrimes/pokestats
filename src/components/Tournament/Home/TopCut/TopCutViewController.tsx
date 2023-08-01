@@ -10,6 +10,7 @@ interface TopCutViewControllerProps {
 export const TopCutViewController = (props: TopCutViewControllerProps) => {
   const { data: finalTournamentResults } = useFinalResults({
     tournamentId: props.tournament.id,
+    minimumPlacing: 8
   });
 
   if (

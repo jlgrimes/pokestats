@@ -38,9 +38,10 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
         'final-results',
         {
           tournamentId: tournament.id,
+          minimumPlacing: 8
         },
       ],
-      queryFn: () => fetchFinalResults({ tournamentId: tournament.id }),
+      queryFn: () => fetchFinalResults({ tournamentId: tournament.id, minimumPlacing: 8 }),
     });
   }
 

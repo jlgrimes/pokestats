@@ -14,4 +14,5 @@ export interface FinalResultsFilters {
   placing?: number;
   format?: number;
   shouldExpandTournament?: boolean;
+  minimumPlacing?: number;
 }

@@ -109,6 +109,9 @@ export const fetchFinalResults = async (
   if (filters?.shouldExpandTournament) {
     query = query.not('tournament', 'is', null);
   }
+  if (filters?.minimumPlacing) {
+    query = query.lt('placing', filters.minimumPlacing + 1);
+  }
 
   if (filters?.playerName) {
     if (filters.additionalNames) {
