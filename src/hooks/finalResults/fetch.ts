@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { isAfter, parseISO } from 'date-fns';
 import { FinalResultsSchema } from '../../../types/final-results';
 import { Deck, Standing } from '../../../types/tournament';
 import supabase from '../../lib/supabase/client';
@@ -123,6 +124,11 @@ export const fetchFinalResults = async (
 
   const res = await query.returns<FinalResultsSchema[]>();
   let finalResultsData: FinalResultsSchema[] | null = res.data;
+
+  // Ongoing issue: https://github.com/orgs/supabase/discussions/11859
+  if (filters?.shouldExpandTournament) {
+    finalResultsData = finalResultsData?.sort((a, b) => isAfter(parseISO(b.tournament!.date.start), parseISO(a.tournament!.date.start)) ? 1 : -1) ?? null;
+  }
 
   let userReportedDecks: Deck[] | undefined | null = null;
   if (filters?.playerName) {

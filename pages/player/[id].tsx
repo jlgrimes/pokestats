@@ -87,12 +87,14 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
         {
           playerName: playerProfile.name,
           additionalNames: playerProfile.additional_names,
+          shouldExpandTournament: true
         },
       ],
       queryFn: () =>
         fetchFinalResults({
           playerName: playerProfile.name,
           additionalNames: playerProfile.additional_names,
+          shouldExpandTournament: true
         }),
     });
   }
