@@ -9,17 +9,18 @@ import { fetchTournamentMetadata } from '../../src/hooks/tournamentMetadata';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import {
   fetchAllTakenUsernames,
-  usePlayerProfile,
   fetchPlayerProfile,
+  useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
 
 export default function Page({ username }: { username: string }) {
   const router = useRouter();
-  const { data, isLoading } = usePlayerProfile({ username });
-  const userIsLoggedInUser = useUserMatchesLoggedInUser(data?.name);
+  const { data, isLoading } = useSmartPlayerProfiles({ username });
+  const profile = data?.at(0);
+  const userIsLoggedInUser = useUserMatchesLoggedInUser(profile?.name);
 
-  if (router.isFallback || isLoading) return <FullPageLoader />;
+  if (router.isFallback || isLoading || !profile) return <FullPageLoader />;
 
   if (!isLoading && !data)
     return (
@@ -52,7 +53,7 @@ export default function Page({ username }: { username: string }) {
          */}
       </Head>
       <PlayerProfilePage
-        profile={data}
+        profile={profile}
         userIsLoggedInUser={userIsLoggedInUser}
       />
     </div>

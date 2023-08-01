@@ -22,7 +22,7 @@ import {
   usePlayerIsMeOrMyOpponent,
   usePlayerLiveResults,
 } from '../../../../hooks/tournamentResults';
-import { usePlayerProfile } from '../../../../hooks/user';
+import { useSmartPlayerProfiles } from '../../../../hooks/user';
 import { ordinalSuffixOf } from '../../../../lib/strings';
 import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
 import { Username } from '../../../Profile/Username';
@@ -42,7 +42,9 @@ export const OpponentRoundList = (props: OpponentRoundListProps) => {
 
   const isMobile = useIsMobile();
   const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
-  const { data: playerProfile } = usePlayerProfile({ name: player.name });
+  const { data } = useSmartPlayerProfiles({ name: player.name });
+  const playerProfile = data?.at(0);
+
   const isMyOpponent = usePlayerIsMeOrMyOpponent(props.player);
 
   return (
