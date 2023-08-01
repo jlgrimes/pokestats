@@ -16,7 +16,6 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
     additionalNames: user?.additional_names,
     shouldExpandTournament: true
   });
-  console.log(tournamentPerformance)
 
   const relevantStandings = tournamentPerformance?.slice().reverse().reduce((acc: JourneyPoint[], standing) => {
     const tournament = standing.tournament;

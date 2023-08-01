@@ -20,7 +20,6 @@ export const SearchBarResults = (props: SearchBarResultsProps) => {
   const { data: tournaments } = useTournaments();
   const { data: archetypes } = useArchetypes();
   const { data: supertypes } = useSupertypes();
-  console.log('loading everything dumb')
 
   const additionalNames = useMemo(
     () =>

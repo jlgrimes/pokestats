@@ -47,7 +47,6 @@ export const PlayerPerformanceList = ({
     additionalNames: user?.additional_names,
     shouldExpandTournament: true
   });
-  console.log(tournamentPerformance)
   const { data: userIsAdmin } = useUserIsAdmin();
 
   if (isLoading) return <FullPageLoader />;
