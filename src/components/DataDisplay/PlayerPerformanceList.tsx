@@ -45,8 +45,9 @@ export const PlayerPerformanceList = ({
   const { data: tournamentPerformance, isLoading } = useFinalResults({
     playerName: user?.name,
     additionalNames: user?.additional_names,
+    shouldExpandTournament: true
   });
-  const { data: tournaments } = useTournaments();
+  console.log(tournamentPerformance)
   const { data: userIsAdmin } = useUserIsAdmin();
 
   if (isLoading) return <FullPageLoader />;
@@ -75,18 +76,14 @@ export const PlayerPerformanceList = ({
       {tournamentPerformance?.map((performance: Standing, idx) => {
         if (!performance.tournamentId) return null;
 
-        const tournament = tournaments?.find(
-          ({ id }) => id === performance.tournamentId
-        );
-
-        if (!tournament) return null;
+        if (!performance.tournament) return null;
 
         return (
           <Stack key={`${performance.tournamentId}-${performance.name}`}>
-            <TournamentInfo tournament={tournament} />
+            <TournamentInfo tournament={performance.tournament} />
             <PlayerCard
               player={performance}
-              tournament={tournament}
+              tournament={performance.tournament}
               shouldHideDecks={false}
               canEditDecks={userMatchesLoggedInUser || userIsAdmin}
               isPlayerMeOrMyOpponent={false}

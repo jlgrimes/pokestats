@@ -4,6 +4,7 @@ import {
   PlayerRecord,
   PlayerResistances,
   PlayerRound,
+  Tournament,
 } from './tournament';
 
 export interface FinalResultsSchema {
@@ -16,4 +17,5 @@ export interface FinalResultsSchema {
   deck_list: DeckList | null;
   deck_archetype: Deck | null;
   uploaded_list_path: string | null;
+  tournament: Tournament | null;
 }

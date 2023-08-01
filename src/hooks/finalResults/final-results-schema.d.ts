@@ -13,4 +13,5 @@ export interface FinalResultsFilters {
   additionalNames?: string[] | null;
   placing?: number;
   format?: number;
+  shouldExpandTournament?: boolean;
 }

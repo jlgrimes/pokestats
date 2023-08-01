@@ -98,6 +98,10 @@ export const mapFinalResultsToStandings = (
     rounds: finalResult.rounds,
     resistances: finalResult.resistances,
     tournamentId: finalResult.tournament_id,
+    tournament: finalResult.tournament ? {
+      ...finalResult.tournament,
+      id: finalResult.tournament_id
+    } : null
   }));
 
 export const addUserReportedDecksToFinalResults = (

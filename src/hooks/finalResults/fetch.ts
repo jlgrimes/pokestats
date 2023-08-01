@@ -88,9 +88,9 @@ export const fetchFinalResults = async (
       identifiable_cards,
       supertype,
       format
-    ),deck_supertype,uploaded_list_path`
+    ),deck_supertype,uploaded_list_path${filters?.shouldExpandTournament ? ',tournament(id,name,date,tournamentStatus,players,roundNumbers,rk9link,subStatus,winners,format)' : ''}`
     )
-    .order('tournament_id', { ascending: false })
+    .order('tournament', { ascending: false })
     .order('placing', { ascending: true });
 
   if (filters?.tournamentId) {

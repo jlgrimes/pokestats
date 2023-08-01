@@ -72,6 +72,7 @@ export interface Standing {
   deck?: Deck | null;
   drop?: number | null;
   tournamentId?: string;
+  tournament?: Tournament | null;
 }
 
 export interface MatchupResult extends Standing {
