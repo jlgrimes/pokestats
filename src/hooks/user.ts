@@ -243,9 +243,9 @@ export const useSessionPlayerProfile = () => {
   const session = useSession();
   const profile = useSmartPlayerProfiles({ email: session?.user?.email });
 
-  const data = profile.data
+  const data = profile.data && profile.data.length > 0
     ? {
-        ...profile.data.at(0),
+        ...profile.data[0],
         image: session?.user.user_metadata.avatar_url,
       }
     : null;

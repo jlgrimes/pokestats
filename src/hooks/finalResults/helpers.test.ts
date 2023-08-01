@@ -18,7 +18,8 @@ describe('final results helpers', () => {
           tournament_id: '1',
           deck_list: null,
           deck_archetype: null,
-          uploaded_list_path: null
+          uploaded_list_path: null,
+          tournament: null
         },
         {
           name: 'Jared',
@@ -29,7 +30,8 @@ describe('final results helpers', () => {
           tournament_id: '2',
           deck_list: null,
           deck_archetype: null,
-          uploaded_list_path: null
+          uploaded_list_path: null,
+          tournament: null
         },
       ];
 
@@ -69,6 +71,7 @@ describe('final results helpers', () => {
           resistances: { opp: 100, oppopp: 100, self: 100 },
           rounds: [],
           tournamentId: '1',
+          tournament: null
         },
         {
           deck: {
@@ -84,6 +87,7 @@ describe('final results helpers', () => {
           resistances: { opp: 100, oppopp: 100, self: 100 },
           rounds: [],
           tournamentId: '2',
+          tournament: null
         },
       ]);
     });
