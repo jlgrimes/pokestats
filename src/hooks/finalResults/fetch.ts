@@ -126,6 +126,9 @@ export const fetchFinalResults = async (
     }
   }
   if (filters?.playerNames) {
+    // Don't fire off if playerNames haven't loaded.
+    if (filters.playerNames.length === 0) return null;
+
     const stringifiedNames = getStringifiedNames(filters.playerNames);
     query = query = query.or(`name.in.(${stringifiedNames})`)
   }
@@ -175,7 +178,10 @@ export const fetchFinalResults = async (
     }));
   }
 
-  if (filters?.shouldLoadOpponentRounds && filters.playerName) {
+  if (filters?.shouldLoadOpponentRounds) {
+    // If name hasn't loaded yet, don't bother fetching.
+    if (!filters.playerName) return null;
+
     const finalRes = finalResultsData.at(0);
     const opponentList = finalRes?.rounds.map((round) => cropPlayerName(round.name));
     
