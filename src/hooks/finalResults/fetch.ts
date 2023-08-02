@@ -191,11 +191,10 @@ export const fetchFinalResults = async (
             identifiable_cards,
             supertype,
             format
-          ),deck_supertype`)
+          ),deck_supertype,rounds`)
         .eq('tournament_id', finalRes?.tournament_id)
         .or(`name.in.(${stringifiedNames})`);
       const opponents = opponentRes.data;
-      console.log(opponents)
 
       if (opponents) {
         finalResultsData[0] = {
@@ -207,7 +206,6 @@ export const fetchFinalResults = async (
           }))
         }
       }
-      console.log(finalResultsData)
     }
   }
 
