@@ -15,4 +15,6 @@ export interface FinalResultsFilters {
   format?: number;
   shouldExpandTournament?: boolean;
   minimumPlacing?: number;
+  playerNames?: string[];
+  shouldLoadOpponentRounds?: boolean;
 }

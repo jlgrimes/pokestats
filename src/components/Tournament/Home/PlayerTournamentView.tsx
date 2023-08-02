@@ -31,27 +31,19 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
 
   const { data: finalResults } = useFinalResults({
     tournamentId: props.tournament.id,
+    playerName: user?.name,
+    additionalNames: user?.additional_names,
+    shouldLoadOpponentRounds: true
   });
-  const playerFinalResult = finalResults?.find(
-    standing =>
-      standing.name === user?.name ||
-      user?.additional_names?.includes(standing.name)
-  );
+
+  const playerFinalResult = finalResults?.at(0);
 
   // Masks a glitch where final results don't have opponent info for some reason
   const resultsData = playerFinalResult
     ? {
         isLoading: false,
         shouldHideDecks: false,
-        player: {
-          ...playerFinalResult,
-          rounds: playerFinalResult.rounds?.map(round => ({
-            ...round,
-            opponent: finalResults?.find(
-              standing => cropPlayerName(standing.name) === cropPlayerName(round.name)
-            ),
-          })),
-        },
+        player: playerFinalResult
       }
     : livePlayerResults;
 

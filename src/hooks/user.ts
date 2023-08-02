@@ -2,6 +2,7 @@ import { User, useSession, useUser } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
 import { CombinedPlayerProfile, StoredPlayerProfile } from '../../types/player';
 import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
+import { getStringifiedNames } from '../lib/query-helpers';
 import supabase from '../lib/supabase/client';
 import { fetchPlayers } from './finalResults/fetch';
 import { useLiveTournamentResults } from './tournamentResults';
@@ -199,9 +200,7 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters): Promis
   }
 
   if (filters?.nameList) {
-    let strigifiedNames = JSON.stringify(filters.nameList);
-    strigifiedNames = strigifiedNames.slice(1, strigifiedNames.length - 1);
-
+    const strigifiedNames = getStringifiedNames(filters.nameList);
     query = query.or(`name.in.(${strigifiedNames}), additional_names.cd.{${strigifiedNames}}, play_pokemon_name.in.(${strigifiedNames})`)
   }
 

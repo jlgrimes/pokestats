@@ -43,6 +43,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const { data: tournamentPerformance, isLoading: areFinalResultsLoading } =
     useFinalResults({
       tournamentId: props.tournament.id,
+      playerNames: pinnedPlayerNames
     });
 
   const { data: liveTournamentResults, isLoading } = useLiveTournamentResults(

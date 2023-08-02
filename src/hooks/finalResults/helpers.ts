@@ -95,7 +95,13 @@ export const mapFinalResultsToStandings = (
     name: finalResult.name,
     placing: finalResult.placing,
     record: finalResult.record,
-    rounds: finalResult.rounds,
+    rounds: finalResult.rounds.map((round) => ({
+      ...round,
+      opponent: {
+        ...round.opponent,
+        deck: round.opponent?.deck_archetype ?? null
+      }
+    })),
     resistances: finalResult.resistances,
     tournamentId: finalResult.tournament_id,
     tournament: finalResult.tournament ? {

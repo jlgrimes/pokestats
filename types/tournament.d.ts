@@ -55,7 +55,7 @@ export type MatchResult = 'W' | 'L' | 'T';
 export interface PlayerRound {
   name: string;
   result: MatchResult;
-  opponent?: Standing;
+  opponent?: FinalResultsSchema;
 }
 
 export interface Standing {
@@ -73,6 +73,8 @@ export interface Standing {
   drop?: number | null;
   tournamentId?: string;
   tournament?: Tournament | null;
+
+
 }
 
 export interface MatchupResult extends Standing {

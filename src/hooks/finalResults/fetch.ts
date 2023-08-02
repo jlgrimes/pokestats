@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { isAfter, parseISO } from 'date-fns';
 import { FinalResultsSchema } from '../../../types/final-results';
 import { Deck, Standing } from '../../../types/tournament';
+import { cropPlayerName } from '../../lib/fetch/fetchLiveResults';
+import { getStringifiedNames } from '../../lib/query-helpers';
 import supabase from '../../lib/supabase/client';
 import { fetchPlayerDecks } from '../playerDecks';
 import { fetchAllVerifiedUsers, normalizeName } from '../user';
@@ -79,18 +81,18 @@ export const fetchDecksWithLists = async (
 export const fetchFinalResults = async (
   filters?: FinalResultsFilters
 ): Promise<Standing[] | null | undefined> => {
-  let query = supabase
-    .from('Final Results')
-    .select(
-      `name,placing,record,resistances,rounds,tournament_id,deck_list,deck_archetype (
+  const selectQueryStr =  `name,placing,record,resistances,rounds,tournament_id,deck_list,deck_archetype (
     id,
       name,
       defined_pokemon,
       identifiable_cards,
       supertype,
       format
-    ),deck_supertype,uploaded_list_path${filters?.shouldExpandTournament ? ',tournament(id,name,date,tournamentStatus,players,roundNumbers,rk9link,subStatus,winners,format)' : ''}`
-    )
+    ),deck_supertype,uploaded_list_path${filters?.shouldExpandTournament ? ',tournament(id,name,date,tournamentStatus,players,roundNumbers,rk9link,subStatus,winners,format)' : ''}`;
+
+  let query = supabase
+    .from('Final Results')
+    .select(selectQueryStr)
     .order('tournament', { ascending: false })
     .order('placing', { ascending: true });
 
@@ -122,6 +124,10 @@ export const fetchFinalResults = async (
     } else {
       query = query.ilike('name', filters.playerName);
     }
+  }
+  if (filters?.playerNames) {
+    const stringifiedNames = getStringifiedNames(filters.playerNames);
+    query = query = query.or(`name.in.(${stringifiedNames})`)
   }
 
   if (filters?.placing) {
@@ -167,6 +173,42 @@ export const fetchFinalResults = async (
       ...result,
       name: filters.playerName as string,
     }));
+  }
+
+  if (filters?.shouldLoadOpponentRounds && filters.playerName) {
+    const finalRes = finalResultsData.at(0);
+    const opponentList = finalRes?.rounds.map((round) => cropPlayerName(round.name));
+    
+    if (opponentList) {
+      const stringifiedNames = getStringifiedNames(opponentList);
+
+      const opponentRes = await supabase
+        .from('Final Results')
+        .select(`name,placing,record,resistances,tournament_id,deck_list,deck_archetype (
+          id,
+            name,
+            defined_pokemon,
+            identifiable_cards,
+            supertype,
+            format
+          ),deck_supertype`)
+        .eq('tournament_id', finalRes?.tournament_id)
+        .or(`name.in.(${stringifiedNames})`);
+      const opponents = opponentRes.data;
+      console.log(opponents)
+
+      if (opponents) {
+        finalResultsData[0] = {
+          ...finalResultsData[0],
+          rounds: finalResultsData[0].rounds.map((round, idx) => ({
+            ...round,
+            name: cropPlayerName(round.name),
+            opponent: opponents.find((opponent) => cropPlayerName(opponent.name) === cropPlayerName(round.name))
+          }))
+        }
+      }
+      console.log(finalResultsData)
+    }
   }
 
   const finalResultsAsStandings = mapFinalResultsToStandings(finalResultsData);
