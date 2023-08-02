@@ -59,13 +59,13 @@ export async function getStaticProps() {
     queryFn: () => fetchFinalResults({ placing: 1 }),
   });
 
-  const mostRecentFinishedTournament =
-    getMostRecentFinishedTournament(tournaments);
+  // const mostRecentFinishedTournament =
+  //   getMostRecentFinishedTournament(tournaments);
 
-  await queryClient.prefetchQuery({
-    queryKey: ['decks-with-lists', mostRecentFinishedTournament.id, false],
-    queryFn: () => fetchDecksWithLists(mostRecentFinishedTournament.id),
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['decks-with-lists', mostRecentFinishedTournament.id, false],
+  //   queryFn: () => fetchDecksWithLists(mostRecentFinishedTournament.id),
+  // });
 
   return {
     props: {
