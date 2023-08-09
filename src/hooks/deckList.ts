@@ -18,6 +18,14 @@ export const useCodeToSetMap = (): Record<string, string> => {
         };
       }
 
+      // TODO: make this stop
+      if (set.id === 'sv2') {
+        return {
+          ...acc,
+          PAL: 'sv2',
+        }
+      }
+
       // TODO: stupid fix for trainer gallery please actually change this
       if (acc[set.ptcgoCode]) {
         return acc;
