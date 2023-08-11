@@ -22,6 +22,7 @@ import {
 import NextLink from 'next/link';
 import { useState } from 'react';
 import { normalizeName } from '../../../../hooks/user';
+import { trimQuery } from './helpers';
 import { SearchResultType } from './search-types';
 import { SearchBarResults } from './SearchBarResults';
 import { SearchResult } from './SearchResult';
@@ -38,12 +39,14 @@ export function getRelevantSearchResults<T>(
 ) {
   if (!arr || searchQuery.length === 0) return [];
 
+  const fixedQuery = trimQuery(searchQuery);
+
   return arr
     .filter((el: T) => {
       const relevantString = getRelevantString(el);
       if (!relevantString) return false;
 
-      const wordBlocks = normalizeName(searchQuery).split(' ');
+      const wordBlocks = normalizeName(fixedQuery).split(' ');
 
       const normalizedWord = normalizeName(relevantString);
 
