@@ -259,7 +259,7 @@ function mapResultsArray(
           9 - roundNumber,
       currentOpponent,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
-      ...(player.drop > 0 ? { drop: player.drop } : {}),
+      ...((player.drop > 0 && !day2) ? { drop: player.drop } : {}),
       ...(player.region ? { region: player.region } : {})
     };
   });
