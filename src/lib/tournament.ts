@@ -102,6 +102,12 @@ export const getTournamentRoundSchema = (numberOfPlayers: number) =>
       numberOfPlayers < schema.playerRange[1]
   );
 
+export const ifTournamentIsDayOneWorlds = (tournament: Tournament) => {
+  const DAY_1_WORLDS_TOURNAMENT_IDS = ['0000023', '0000086'];
+
+  return DAY_1_WORLDS_TOURNAMENT_IDS.includes(tournament.id);
+}
+
 export const ifPlayerDay2 = (
   player: Standing | Player,
   tournament: Tournament
@@ -110,8 +116,15 @@ export const ifPlayerDay2 = (
     return false;
 
   const roundSchema = getTournamentRoundSchema(tournament.players.masters);
+  const currentMatchPoints = player.record.wins * 3 + player.record.ties;
 
-  if (player.record.wins * 3 + player.record.ties >= 19) return true;
+  if (ifTournamentIsDayOneWorlds(tournament) && roundSchema?.rounds) {
+    const requiredMatchPointsToDayTwo = 3 * (roundSchema.rounds.dayOneSwissRounds - 1);
+
+    if (currentMatchPoints >= requiredMatchPointsToDayTwo) return true;
+  } else {
+    if (currentMatchPoints >= 19) return true;
+  }
 
   const currentRoundNumber = tournament.roundNumbers.masters;
 
