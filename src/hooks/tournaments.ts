@@ -19,6 +19,7 @@ import {
 } from '../lib/patches';
 import supabase from '../lib/supabase/client';
 import {
+  ifTournamentIsDayOneWorlds,
   reallyShortenTournamentName,
   shortenTournamentName,
 } from '../lib/tournament';
@@ -39,6 +40,13 @@ export const getTournamentSubStatus = (tournament: Tournament) => {
   return afterDayOne ? 'after-day-one' : null;
 };
 
+export const fixTournamentStatus = (tournament: Tournament) => {
+  if (isTournamentLongGone(tournament)) return 'finished';
+  if (tournament.id === '0000086' && tournament.roundNumbers.masters && (tournament.roundNumbers.masters >= 8)) return 'finished';
+
+  return tournament.tournamentStatus;
+}
+
 export const fetchPokedataTournaments = async (
   options?: FetchTournamentsOptions
 ) => {
@@ -51,7 +59,7 @@ export const fetchPokedataTournaments = async (
   data = data.map(tournament => ({
     ...tournament,
     name: shortenTournamentName(tournament),
-    tournamentStatus: isTournamentLongGone(tournament) ? 'finished' : tournament.tournamentStatus
+    tournamentStatus: fixTournamentStatus(tournament)
   }));
 
   if (options?.onlyFinished) {
