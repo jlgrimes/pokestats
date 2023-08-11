@@ -130,7 +130,6 @@ export const ifPlayerDay2 = (
   const roundSchema = getTournamentRoundSchema(tournament);
   const currentMatchPoints = player.record.wins * 3 + player.record.ties;
 
-  console.log(tournament)
   if (ifTournamentIsDayOneWorlds(tournament) && roundSchema?.rounds) {
     const requiredMatchPointsToDayTwo = 3 * (roundSchema.rounds.dayOneSwissRounds - 2);
 
