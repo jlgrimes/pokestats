@@ -95,12 +95,16 @@ export const twoDayTournamentRoundSchemas: TournamentRoundMapSchema[] =
     })
   );
 
+export const HARDCODED_TOURNAMENT_ROUNDS: Record<string, number> = {
+  '0000086': 8
+}
+
 export const getTournamentRoundSchema = (tournament: Tournament) => {
   const numberOfPlayers = tournament.players.masters;
   if (!numberOfPlayers) return undefined;
 
-  if (tournament.id === '0000086') {
-    return twoDayTournamentRoundSchemas.find((schema) => schema.rounds.dayOneSwissRounds === 8);
+  if (Object.keys(HARDCODED_TOURNAMENT_ROUNDS).includes(tournament.id)) {
+    return twoDayTournamentRoundSchemas.find((schema) => schema.rounds.dayOneSwissRounds === HARDCODED_TOURNAMENT_ROUNDS[tournament.id]);
   }
 
   return twoDayTournamentRoundSchemas.find(

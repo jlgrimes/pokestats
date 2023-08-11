@@ -19,6 +19,7 @@ import {
 } from '../lib/patches';
 import supabase from '../lib/supabase/client';
 import {
+  HARDCODED_TOURNAMENT_ROUNDS,
   ifTournamentIsDayOneWorlds,
   reallyShortenTournamentName,
   shortenTournamentName,
@@ -32,9 +33,11 @@ interface FetchTournamentsOptions {
 }
 
 export const getTournamentSubStatus = (tournament: Tournament) => {
+  const maxTournamentRound = HARDCODED_TOURNAMENT_ROUNDS[tournament.id] ?? 9;
+
   const afterDayOne =
     tournament.lastUpdated &&
-    tournament.roundNumbers.masters === 9 &&
+    tournament.roundNumbers.masters === maxTournamentRound &&
     differenceInHours(new Date(tournament.lastUpdated), new Date()) >= 1;
 
   return afterDayOne ? 'after-day-one' : null;
@@ -42,7 +45,6 @@ export const getTournamentSubStatus = (tournament: Tournament) => {
 
 export const fixTournamentStatus = (tournament: Tournament) => {
   if (isTournamentLongGone(tournament)) return 'finished';
-  if (tournament.id === '0000086' && tournament.roundNumbers.masters && (tournament.roundNumbers.masters >= 8)) return 'finished';
 
   return tournament.tournamentStatus;
 }
