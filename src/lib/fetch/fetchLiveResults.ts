@@ -335,7 +335,7 @@ export const getTopCutStatus = (
 ) => {
   const tournamentRoundSchema: TournamentRoundMapSchema | undefined = tournament
     ?.players.masters
-    ? getTournamentRoundSchema(tournament?.players.masters)
+    ? getTournamentRoundSchema(tournament)
     : undefined;
 
   const topEightRoundNumber = tournamentRoundSchema
@@ -424,7 +424,7 @@ export const fetchLiveResults = async (
 
   const tournamentRoundSchema: TournamentRoundMapSchema | undefined = tournament
     .players.masters
-    ? getTournamentRoundSchema(tournament.players.masters)
+    ? getTournamentRoundSchema(tournament)
     : undefined;
   const dayOneRounds = tournamentRoundSchema?.rounds.dayOneSwissRounds ?? 9; // Default to 9 i guess
 

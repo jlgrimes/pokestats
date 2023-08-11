@@ -95,12 +95,20 @@ export const twoDayTournamentRoundSchemas: TournamentRoundMapSchema[] =
     })
   );
 
-export const getTournamentRoundSchema = (numberOfPlayers: number) =>
-  twoDayTournamentRoundSchemas.find(
+export const getTournamentRoundSchema = (tournament: Tournament) => {
+  const numberOfPlayers = tournament.players.masters;
+  if (!numberOfPlayers) return undefined;
+
+  if (tournament.id === '0000086') {
+    return twoDayTournamentRoundSchemas.find((schema) => schema.rounds.dayOneSwissRounds === 8);
+  }
+
+  return twoDayTournamentRoundSchemas.find(
     schema =>
       numberOfPlayers > schema.playerRange[0] &&
       numberOfPlayers < schema.playerRange[1]
   );
+}
 
 export const ifTournamentIsDayOneWorlds = (tournament: Tournament) => {
   const DAY_1_WORLDS_TOURNAMENT_IDS = ['0000023', '0000086'];
@@ -115,7 +123,7 @@ export const ifPlayerDay2 = (
   if (!tournament.players.masters || !tournament.roundNumbers.masters)
     return false;
 
-  const roundSchema = getTournamentRoundSchema(tournament.players.masters);
+  const roundSchema = getTournamentRoundSchema(tournament);
   const currentMatchPoints = player.record.wins * 3 + player.record.ties;
 
   if (ifTournamentIsDayOneWorlds(tournament) && roundSchema?.rounds) {
