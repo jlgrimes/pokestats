@@ -57,12 +57,12 @@ export const TournamentCard = ({
                 <TournamentInfo tournament={tournament} />
               </LinkOverlay>
               <Box />
-              {!shouldHideStatus && (
+              {!(!live && shouldHideStatus) && (
                 <TournamentStatusBadge tournament={tournament} size={live ? 'sm' : 'xs'} />
               )}
             </Grid>
             {champion && <ChampionDisplay champion={champion} />}
-            {live && (
+            {live && !shouldHideStatus && (
               <Flex justifyContent={'center'} alignItems={'center'}>
                 <StreamLink tournament={tournament} />
               </Flex>

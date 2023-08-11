@@ -28,6 +28,7 @@ export const SearchResult = (props: SearchResultProps) => {
         <TournamentCard
           tournament={props.result.data as Tournament}
           shouldHideStatus
+          disableFollowing
         />
       </Box>
     );
