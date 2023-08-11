@@ -8,7 +8,11 @@ interface CountryFlagProps {
 }
 
 const fixCountryCode = (code: string) => {
-  return code.slice(0, 2);
+  const fixedCode = code.slice(0, 2);
+
+  if (code === 'UK') return 'GB';
+
+  return fixedCode;
 }
 
 export const CountryFlag = memo((props: CountryFlagProps) => {
@@ -21,8 +25,8 @@ export const CountryFlag = memo((props: CountryFlagProps) => {
         crossOrigin='anonymous'
         alt={`${props.countryCode} flag`}
         src={url}
-        height={props.size === 'sm' ? 20 : props.size === 'lg' ? 30 : 25}
-        width={props.size === 'sm' ? 40 : props.size === 'lg' ? 60 : 50}
+        height={props.size === 'sm' ? 20 : props.size === 'lg' ? 30 : props.size === 'xs' ? 15 : 25}
+        width={props.size === 'sm' ? 40 : props.size === 'lg' ? 60 : props.size === 'xs' ? 30 : 50}
       />
     </Box>
   );

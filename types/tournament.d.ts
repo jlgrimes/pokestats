@@ -73,8 +73,7 @@ export interface Standing {
   drop?: number | null;
   tournamentId?: string;
   tournament?: Tournament | null;
-
-
+  region?: string;
 }
 
 export interface MatchupResult extends Standing {

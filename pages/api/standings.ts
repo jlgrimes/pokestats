@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { cropPlayerName } from '../../src/lib/fetch/fetchLiveResults';
+import { cropPlayerName, getPlayerRegion } from '../../src/lib/fetch/fetchLiveResults';
 import { getPokedataStandingsUrl } from '../../src/lib/url';
 
 export default async function handler(
@@ -16,6 +16,7 @@ export default async function handler(
     let data: Record<string, any>[] = await response.json();
 
     data.forEach((player, idx) => {
+      data[idx].region = getPlayerRegion(player.name)?.at(1);
       data[idx].name = cropPlayerName(player.name);
 
       Object.entries(data[idx].rounds).forEach(([roundNumber, round]) => {

@@ -143,6 +143,7 @@ export interface Player {
   rounds: Record<number, Record<string, any>>;
   decklist: Record<any, any>;
   drop: number;
+  region?: string;
 }
 
 interface PlayerDeckObject {
@@ -259,6 +260,7 @@ function mapResultsArray(
       currentOpponent,
       deck: getPlayerDeck(playerDeckObjects, player, deckArchetypes),
       ...(player.drop > 0 ? { drop: player.drop } : {}),
+      ...(player.region ? { region: player.region } : {})
     };
   });
 
@@ -272,6 +274,7 @@ function mapResultsArray(
 }
 
 export const cropPlayerName = (name: string) => name.split('[')[0].trim();
+export const getPlayerRegion = (name: string) => name.match(/\[(.*?)\]/);
 
 export const getPokedata = async (tournamentId: string, prefetch?: boolean) => {
   const perfStart = performance.now();

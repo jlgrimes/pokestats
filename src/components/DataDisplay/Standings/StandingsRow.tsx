@@ -3,6 +3,7 @@ import {
   Flex,
   Grid,
   GridItem,
+  HStack,
   Spinner,
   Stack,
   Td,
@@ -22,6 +23,7 @@ import { ListViewerOpenButton } from '../../Deck/ListViewer/ListViewerOpenButton
 import { ifPlayerDay2 } from '../../../lib/tournament';
 import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
 import { ComponentLoader } from '../../common/ComponentLoader';
+import { CountryFlag } from '../../Tournament/Home/CountryFlag';
 
 export interface StandingsRowProps {
   result: Standing;
@@ -113,14 +115,17 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
               standing={props.result}
               tournament={props.tournament as Tournament}
             /> */}
-            <Text
-              fontSize='md'
-              textAlign={
-                props.isCurrentlyPlayingInTopCut ? 'center' : 'initial'
-              }
-            >
-              {props.result.name}
-            </Text>
+            <HStack>
+              {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
+              <Text
+                fontSize='md'
+                textAlign={
+                  props.isCurrentlyPlayingInTopCut ? 'center' : 'initial'
+                }
+              >
+                {props.result.name}
+              </Text>
+            </HStack>
           </GridItem>
         )}
 
