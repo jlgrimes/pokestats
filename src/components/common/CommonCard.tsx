@@ -17,6 +17,7 @@ import { StatsHeading } from './StatsHeading';
 interface CommonCardProps {
   header?: string;
   subheader?: string;
+  subheaderEl?: JSX.Element;
   children: JSX.Element;
   leftIcon?: JSX.Element;
   slug?: string;
@@ -34,6 +35,7 @@ export const CommonCard = memo(
     const {
       header,
       subheader,
+      subheaderEl,
       children,
       leftIcon,
       slug,
@@ -92,11 +94,11 @@ export const CommonCard = memo(
                   <Skeleton height='6' width='70' />
                 )}
                 {subheader &&
-                  (!loading ? (
+                  (!loading ? (subheaderEl ?? (
                     <Heading color='gray.500' size='sm' fontWeight={'semibold'}>
                       {subheader}
                     </Heading>
-                  ) : (
+                  )) : (
                     <Skeleton height='6' width='70' />
                   ))}
               </CardHeader>
