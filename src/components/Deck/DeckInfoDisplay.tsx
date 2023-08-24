@@ -69,11 +69,13 @@ export const DeckInfoDisplay = memo(
       tournament.topCutStatus,
     ]);
 
+    const shouldShowEditButton = shouldShowSmallEditIcon && !player.deck?.list;
+
     return (
       <Grid
         gridTemplateColumns={
-          userIsLoggedInUser
-            ? 'auto 15px 50px'
+          userIsLoggedInUser && shouldShowEditButton
+            ? `auto 15px 50px`
             : shouldDisableDeckExtras &&
               !shouldShowList &&
               !shouldShowSmallEditIcon
@@ -96,7 +98,7 @@ export const DeckInfoDisplay = memo(
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           shouldEnableEdits={enableEdits}
         />
-        {shouldShowSmallEditIcon && !player.deck?.list && (
+        {shouldShowEditButton && (
           <IconButton
             icon={<FaRegEdit />}
             aria-label='edit'
