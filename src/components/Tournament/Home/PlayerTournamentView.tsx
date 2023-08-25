@@ -1,4 +1,5 @@
-import { Stack } from '@chakra-ui/react';
+import { Stack, Icon } from '@chakra-ui/react';
+import { FaUser } from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useFinalResults } from '../../../hooks/finalResults';
 import { usePlayerLiveResults } from '../../../hooks/tournamentResults';
@@ -52,20 +53,22 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
   if (!props.tournament || !resultsData.player || !user) return null;
 
   return (
-    <Stack spacing={3}>
-      <PlayerMatchupStatus
-        tournament={props.tournament}
-        user={user}
-        shouldHideOpponentView
-        isLoggedInUser={isLoggedInUser}
-        livePlayerResults={resultsData}
-      />
-      <MyMatchupsList
-        tournament={props.tournament}
-        user={user}
-        isLoggedInUser={isLoggedInUser}
-        livePlayerResults={resultsData}
-      />
-    </Stack>
+    <CommonCard ghost header='My rounds' leftIcon={<Icon color='gray.500' as={FaUser} />}>
+      <Stack spacing={3}>
+        <PlayerMatchupStatus
+          tournament={props.tournament}
+          user={user}
+          shouldHideOpponentView
+          isLoggedInUser={isLoggedInUser}
+          livePlayerResults={resultsData}
+        />
+        <MyMatchupsList
+          tournament={props.tournament}
+          user={user}
+          isLoggedInUser={isLoggedInUser}
+          livePlayerResults={resultsData}
+        />
+      </Stack>
+    </CommonCard>
   );
 };
