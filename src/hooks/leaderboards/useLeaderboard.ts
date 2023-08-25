@@ -9,7 +9,7 @@ export interface PlayerOnLeaderboard {
   name: string;
   country_code: string;
   points: number;
-  placing: number;
+  rank: number;
   profile?: CombinedPlayerProfile;
 }
 
@@ -54,7 +54,7 @@ export const useLeaderboard = (qualificationPeriod: number, isCompact?: boolean)
   return {
     data: data?.map((player, idx) => ({
       ...player,
-      placing: idx + 1,
+      rank: idx + 1,
       profile: playerProfiles?.find((playerProfile) => player.name === playerProfile.name || playerProfile.additional_names?.includes(player.name) || playerProfile.play_pokemon_name === player.name)
     })),
     ...rest

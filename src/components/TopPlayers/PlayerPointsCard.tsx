@@ -17,8 +17,8 @@ export const PlayerPointsCard = (props: PlayerPointsCardProps) => {
   return (
     <Box>
       {props.player.profile && <PlayerJourneyModal season={props.season} player={props.player} isOpen={isOpen} onClose={onClose} />}
-      <Grid gridTemplateColumns={`1.5rem 2.6rem 1fr auto auto`} gap={4} alignItems='center'>
-        <Heading size='md' textAlign='right'>{props.player.placing}</Heading>
+      <Grid gridTemplateColumns={`1.8rem 2.6rem 1fr auto auto`} gap={4} alignItems='center'>
+        <Heading size={props.player.rank >= 100 ? 'sm' : 'md'} textAlign='right'>{props.player.rank}</Heading>
         <CountryFlag countryCode={props.player.country_code} size={'sm'} />
         <Stack spacing={0} onClick={() => props.player.profile && router.push(`/player/${props.player.profile?.username}`)} cursor={props.player.profile ? 'pointer' : 'auto'}>
           <Text fontSize='lg' fontWeight='semibold'>{props.player.profile?.name ?? props.player.name}</Text>
