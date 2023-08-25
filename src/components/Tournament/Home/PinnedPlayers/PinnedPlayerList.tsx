@@ -109,7 +109,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   return (
     <CommonCard
       header='Following'
-      leftIcon={<Icon as={FaUserFriends} color='blue.500' />}
+      leftIcon={<Icon as={FaHeart} color='pink.500' />}
       ghost
       shouldRemovePadding={props.isCompact}
       smallHeader={props.isCompact}

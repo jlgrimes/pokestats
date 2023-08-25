@@ -53,7 +53,7 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
   if (!props.tournament || !resultsData.player || !user) return null;
 
   return (
-    <CommonCard ghost header='My rounds' leftIcon={<Icon color='gray.500' as={FaUser} />}>
+    <CommonCard ghost header='My tournament' leftIcon={<Icon color='blue.500' as={FaUser} />}>
       <Stack spacing={3}>
         <PlayerMatchupStatus
           tournament={props.tournament}
