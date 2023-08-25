@@ -14,7 +14,7 @@ export const TournamentList = ({
   mostRecent?: boolean;
 }) => {
   const { data: champions } = useChampions();
-  const items = useTournamentRender(tournaments);
+  const items = useTournamentRender(tournaments, mostRecent);
   const parsedItems = getTournaments(items, mostRecent);
 
   return (

@@ -12,10 +12,11 @@ export const fetchSets = async () => {
   return sets;
 };
 
-export const useSets = () => {
+export const useSets = (shouldDisable?: boolean) => {
   return useQuery({
     queryKey: [`sets`],
     queryFn: fetchSets,
+    enabled: !shouldDisable
   });
 };
 
@@ -25,9 +26,10 @@ export interface TournamentOrSet {
 }
 
 export const useTournamentRender = (
-  tournaments: Tournament[]
+  tournaments: Tournament[],
+  mostRecent?: boolean
 ): TournamentOrSet[] => {
-  const sets = useSets();
+  const sets = useSets(mostRecent);
 
   if (!sets.data)
     return tournaments.map(tournament => ({
