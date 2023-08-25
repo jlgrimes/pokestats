@@ -6,6 +6,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { useState } from 'react';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import Head from 'next/head';
 
 export default function App({
   Component,
@@ -27,6 +28,11 @@ export default function App({
             crossOrigin='anonymous'
           ></script>
         </Head> */}
+        <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true' />
+          <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet" />
+        </Head>
         <Component {...pageProps} />
         <Analytics />
       </AppLayout>

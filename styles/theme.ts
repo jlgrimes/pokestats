@@ -3,6 +3,9 @@ import { extendTheme } from '@chakra-ui/react';
 
 // 2. Add your color mode config
 const config = {
+  fonts: {
+    mono: `'Roboto Mono', sans-serif`,
+  },
   components: {
     Button: {
       baseStyle: {

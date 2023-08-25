@@ -15,7 +15,13 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { userMockContext } from '../../contexts/MockUserContext';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
-import theme from '../../../styles/theme';
+
+const theme = extendTheme({
+  fonts: {
+    mono: `'Roboto Mono', monospace`,
+  },
+  components: { Button: { baseStyle: { _focus: { boxShadow: 'none' } } } },
+});
 
 const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
