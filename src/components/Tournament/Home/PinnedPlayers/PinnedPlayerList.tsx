@@ -9,15 +9,19 @@ import {
   Flex,
   Text,
   useColorMode,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import {
   FaHeart,
   FaMapPin,
   FaPlus,
   FaRegEdit,
+  FaSearch,
   FaStar,
   FaTwitter,
+  FaUserEdit,
   FaUserFriends,
+  FaUserPlus,
 } from 'react-icons/fa';
 import { Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
@@ -111,6 +115,26 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       smallHeader={props.isCompact}
     >
       <Stack>
+        {!props.isCompact && filteredPlayers && filteredPlayers.length > 0 && (
+          <ButtonGroup isAttached variant='outline'>
+            <Button
+              leftIcon={<FaUserPlus />}
+              onClick={addPinPlayerModalControls.onOpen}
+              isDisabled={props.tournament.tournamentStatus === 'not-started'}
+            >
+              Follow player
+            </Button>
+            {pinnedPlayers && pinnedPlayers.length > 0 && (
+              <Button
+                leftIcon={<FaUserEdit />}
+                onClick={editPinnedPlayers.onToggle}
+                isDisabled={props.tournament.tournamentStatus === 'not-started'}
+              >
+                {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
+              </Button>
+            )}
+          </ButtonGroup>
+        )}
         {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
           <ComponentLoader isLiveComponent />
         ) : (
@@ -155,32 +179,6 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
               </Button>
             </Box>
           </Stack>
-        )}
-        {!props.isCompact && filteredPlayers && filteredPlayers.length > 0 && (
-          <HStack justifyContent={'space-around'}>
-            <Button
-              variant='ghost'
-              leftIcon={<FaPlus />}
-              onClick={addPinPlayerModalControls.onOpen}
-              isDisabled={props.tournament.tournamentStatus === 'not-started'}
-              size={'sm'}
-              colorScheme={header}
-            >
-              Follow player
-            </Button>
-            {pinnedPlayers && pinnedPlayers.length > 0 && (
-              <Button
-                variant='ghost'
-                leftIcon={<FaRegEdit />}
-                onClick={editPinnedPlayers.onToggle}
-                isDisabled={props.tournament.tournamentStatus === 'not-started'}
-                size={'sm'}
-                colorScheme={editPinnedPlayers.isOpen ? 'pink' : header}
-              >
-                {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
-              </Button>
-            )}
-          </HStack>
         )}
         <PinPlayerModal
           tournament={props.tournament}

@@ -20,6 +20,7 @@ import {
   FaPenFancy,
   FaTrophy,
   FaTwitch,
+  FaUserFriends,
 } from 'react-icons/fa';
 import { IoMdPodium } from 'react-icons/io';
 import { Tournament } from '../../../../types/tournament';
@@ -31,6 +32,7 @@ import { StreamLink } from '../TournamentLinks';
 import { AdminTournamentPanel } from './AdminTournamentPanel';
 import { getTimeUntilTournament } from './helpers';
 import { ReportModal } from './ReportModal';
+import { GiPodiumWinner } from 'react-icons/gi';
 
 interface TournamentHomeLinksProps {
   tournament: Tournament;
@@ -42,6 +44,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       colorScheme: 'gray',
       variant: 'outline',
       borderRadius: 0,
+      size: 'lg'
     }),
     []
   );
@@ -56,6 +59,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         as={NextLink}
         href={`${router.asPath}/standings`}
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
+        leftIcon={<IoMdPodium />}
       >
         Standings
       </Button>
@@ -64,6 +68,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         as={NextLink}
         href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
         target='_blank'
+        leftIcon={<FaUserFriends />}
       >
         <HStack spacing={1.5}>
           <Text>Pairings</Text>
