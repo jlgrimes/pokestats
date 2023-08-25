@@ -304,6 +304,7 @@ export interface FetchLiveResultsOptions {
   prefetch?: boolean;
   load?: LiveResultsLoadOptions;
   filters?: StandingsFilters;
+  shouldNotFetchData?: boolean;
 }
 
 export interface LiveResultsLoadOptions {

@@ -92,6 +92,7 @@ export const useLiveTournamentResults = (
     queryKey,
     queryFn: () =>
       fetchLiveResults(tournamentId, options),
+    enabled: !options?.shouldNotFetchData
   });
 
   if (query.data) {

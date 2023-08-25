@@ -35,6 +35,7 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
   const { data: mostPopularDecks, refetchArchetypes } =
     useMostPopularArchetypes(props.tournament, {
       shouldIncludeDecksNotPlayed: true,
+      shouldNotFetchData: !props.modalControls.isOpen
     });
   const addArchetypeModalControls = useDisclosure();
   const myTwitter = useTwitterLink('jgrimesey');

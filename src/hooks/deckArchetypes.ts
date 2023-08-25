@@ -111,10 +111,11 @@ export const useVariants = (
   };
 };
 
-export const useDecks = (format?: FormatSchema) => {
+export const useDecks = (format?: FormatSchema, shouldNotFetchData?: boolean) => {
   const { data, ...rest } = useQuery({
     queryKey: ['deck-archetypes'],
     queryFn: () => fetchDecks(),
+    enabled: !shouldNotFetchData
   });
 
   if (data && format) {
@@ -130,8 +131,8 @@ export const useDecks = (format?: FormatSchema) => {
   };
 };
 
-export const useArchetypes = (format?: FormatSchema) => {
-  const decks = useDecks(format);
+export const useArchetypes = (format?: FormatSchema, shouldNotFetchData?: boolean) => {
+  const decks = useDecks(format, shouldNotFetchData);
 
   return decks.data
     ? {
@@ -278,6 +279,7 @@ export const useMutateArchetypes = (onClose: () => void) => {
 
 interface MostPopularArchetypesOptions {
   shouldIncludeDecksNotPlayed?: boolean;
+  shouldNotFetchData?: boolean;
 }
 
 export const useMostPopularArchetypes = (
@@ -287,12 +289,13 @@ export const useMostPopularArchetypes = (
   const { data: liveResults, isLoading: liveResultsIsLoading } =
     useLiveTournamentResults(tournament?.id ?? '', {
       load: { allRoundData: true },
+      shouldNotFetchData: options?.shouldNotFetchData
     });
   const {
     data: archetypes,
     refetch,
     isLoading: archetypesIsLoading,
-  } = useArchetypes(tournament?.format);
+  } = useArchetypes(tournament?.format, options?.shouldNotFetchData);
 
   const playerDeckCounts = liveResults?.data?.reduce(
     (
