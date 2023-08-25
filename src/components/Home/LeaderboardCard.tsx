@@ -2,6 +2,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Button, HStack, Menu, MenuButton, MenuItem, MenuList, Stack } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
 import { CommonCard } from "../common/CommonCard"
+import { MyLeaderboardStanding } from "../TopPlayers/MyLeaderboardStanding";
 import { TopPlayersList } from "../TopPlayers/TopPlayersList"
 
 const YEAR_TO_POKEMON_API_MAP: Record<number, number> = {
@@ -46,6 +47,7 @@ export const LeaderboardCard = () => {
           <RegionSelect />
         </HStack>
         <TopPlayersList isCompact season={year} />
+        <MyLeaderboardStanding season={year} />
       </Stack>
     </CommonCard>
   )

@@ -31,7 +31,8 @@ export default async function handler(
         name: record.screen_name,
         country_code: record.country,
         points: record.score,
-        qualification_period: qualificationPeriod
+        qualification_period: qualificationPeriod,
+        rank: record.rank
       }))
       
       const upsertRes = await supabase.from('Masters Leaderboard').upsert(upsertedEntries, { onConflict: 'name' });
