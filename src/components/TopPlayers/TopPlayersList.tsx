@@ -12,7 +12,7 @@ export const TopPlayersList = (props: TopPlayersList) => {
 
   return (
     <Stack>
-      {topPlayers?.map((player) => <PlayerPointsCard key={player.name + player.points} player={player} />)}
+      {topPlayers?.map((player) => <PlayerPointsCard key={player.name + player.points} player={player} season={props.season} />)}
     </Stack>
   )
 }

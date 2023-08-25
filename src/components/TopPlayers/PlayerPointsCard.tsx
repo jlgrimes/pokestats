@@ -7,6 +7,7 @@ import { PlayerJourneyModal } from "./PlayerJourneyModal";
 
 interface PlayerPointsCardProps {
   player: PlayerOnLeaderboard;
+  season: number;
 }
 
 export const PlayerPointsCard = (props: PlayerPointsCardProps) => {
@@ -15,7 +16,7 @@ export const PlayerPointsCard = (props: PlayerPointsCardProps) => {
 
   return (
     <Box>
-      {props.player.profile && <PlayerJourneyModal  player={props.player} isOpen={isOpen} onClose={onClose} />}
+      {props.player.profile && <PlayerJourneyModal season={props.season} player={props.player} isOpen={isOpen} onClose={onClose} />}
       <Grid gridTemplateColumns={`1.5rem 2.6rem 1fr auto auto`} gap={4} alignItems='center'>
         <Heading size='md' textAlign='right'>{props.player.placing}</Heading>
         <CountryFlag countryCode={props.player.country_code} size={'sm'} />

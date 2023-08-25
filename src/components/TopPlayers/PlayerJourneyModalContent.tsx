@@ -8,7 +8,7 @@ import { PlayerJourneyModalProps } from "./PlayerJourneyModal";
 const TableHeading = (props: PropsWithChildren) =>  <Text fontWeight={'bold'} color='gray.400' fontSize={'sm'} textTransform='uppercase' letterSpacing={0.5}>{props.children}</Text>
 
 export const PlayerJourneyModalContent = (props: PlayerJourneyModalProps) => {
-  const { data: journey, isLoading } = useSeasonJourney(props.player.profile, 2023);
+  const { data: journey, isLoading } = useSeasonJourney(props.player.profile, props.season);
   const majorsPoints = journey?.reduce((acc: number, curr) => acc + curr.pointsEarned, 0) ?? 0;
   const localsPoints = props.player.points - majorsPoints;
 

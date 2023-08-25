@@ -9,8 +9,10 @@ const YEAR_TO_POKEMON_API_MAP: Record<number, number> = {
   52: 2024
 };
 
+export const seasonToReadableYear = (season: number) => YEAR_TO_POKEMON_API_MAP[season];
+
 export const LeaderboardCard = () => {
-  const [year, setYear] = useState(46);
+  const [year, setYear] = useState(52);
   const [region, setRegion] = useState('global');
 
   const YearSelect = useCallback(() => (
