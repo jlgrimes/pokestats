@@ -6,7 +6,7 @@ import { TopPlayersList } from "../TopPlayers/TopPlayersList"
 
 const YEAR_TO_POKEMON_API_MAP: Record<number, number> = {
   46: 2023,
-  47: 2024
+  52: 2024
 };
 
 export const LeaderboardCard = () => {
@@ -19,7 +19,7 @@ export const LeaderboardCard = () => {
         {YEAR_TO_POKEMON_API_MAP[year]}
       </MenuButton>
       <MenuList>
-        {/* <MenuItem onClick={() => setYear(47)}>2024</MenuItem> */}
+        <MenuItem onClick={() => setYear(52)}>2024</MenuItem>
         <MenuItem onClick={() => setYear(46)}>2023</MenuItem>
       </MenuList>
     </Menu>

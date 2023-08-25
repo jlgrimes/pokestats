@@ -11,8 +11,8 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    // 2023. Idk why
-    const qualificationPeriod = 46;
+    // 2024. Idk why
+    const qualificationPeriod = 52;
 
     const initialPage = await fetch(getLeaderboardApiUrl(qualificationPeriod, 1)).then((res) => res.json());
     const numPages = initialPage._metadata.page_count;

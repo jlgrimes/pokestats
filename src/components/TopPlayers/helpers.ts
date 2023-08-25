@@ -125,6 +125,9 @@ interface BFLValue {
 export const BFL_MAP: Record<number, BFLValue> = {
   2023: {
     regionals: 6
+  },
+  2024: {
+    regionals: 6
   }
 };
 
