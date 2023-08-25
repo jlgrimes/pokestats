@@ -16,7 +16,7 @@ export const MyLeaderboardStanding = (props: MyLeaderboardStandingProps) => {
   if (!player) return null;
 
   return (
-    <CommonCard ghost header='My standing' leftIcon={<Icon color='gray.500' as={FaUser} />}>
+    <CommonCard>
       <PlayerPointsCard player={player} season={props.season} />
     </CommonCard>
   )

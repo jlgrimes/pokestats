@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Button, HStack, Menu, MenuButton, MenuItem, MenuList, Stack } from "@chakra-ui/react"
+import { Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, Stack } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
 import { CommonCard } from "../common/CommonCard"
 import { MyLeaderboardStanding } from "../TopPlayers/MyLeaderboardStanding";
@@ -46,8 +46,8 @@ export const LeaderboardCard = () => {
           <YearSelect />
           <RegionSelect />
         </HStack>
-        <TopPlayersList isCompact season={year} />
         <MyLeaderboardStanding season={year} />
+        <TopPlayersList isCompact season={year} />
       </Stack>
     </CommonCard>
   )
