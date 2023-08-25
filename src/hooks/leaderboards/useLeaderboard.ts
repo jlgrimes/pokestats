@@ -28,7 +28,7 @@ const fetchLeaderboard = async (supabase: SupabaseClient, qualificationPeriod: n
   return res.data;
 }
 
-const fetchMyLeaderboardStanding = async (supabase: SupabaseClient, qualificationPeriod: number, name: string | undefined) => {
+const fetchMyLeaderboardStanding = async (supabase: SupabaseClient, qualificationPeriod: number, name: string | undefined): Promise<PlayerOnLeaderboard | undefined> => {
   if (!name) return undefined;
 
   let query = supabase.from('Masters Leaderboard')
@@ -67,12 +67,24 @@ export const useMyLeaderboardStanding = (qualificationPeriod: number) => {
   const {data: profile } = useSmartPlayerProfiles({ email: user?.email });
 
   const { data, ...rest } = useQuery({
-    queryKey: ['my-leaderboard', qualificationPeriod],
+    queryKey: ['my-leaderboard', profile?.at(0)?.name, qualificationPeriod],
     queryFn: () => fetchMyLeaderboardStanding(supabase, qualificationPeriod, profile?.at(0)?.name)
   });
 
+  if (!data) {
+    return {
+      data: undefined,
+      ...rest
+    }
+  }
+
+  const myPlayer: PlayerOnLeaderboard = {
+    ...data,
+    profile: profile?.at(0),
+  }
+
   return {
-    data,
+    data: myPlayer,
     ...rest
   }
 };
