@@ -17,7 +17,7 @@ interface ReportModalProps {
 export const ReportModal = (props: ReportModalProps) => {
   const user = useUser();
   const toast = useToast();
-  const { data: playerDecks, refetch } = usePlayerDecks(props.tournament.id);
+  const { data: playerDecks, refetch } = usePlayerDecks(props.tournament.id, { shouldDisableFetch: !props.playerSelectModalControls.isOpen });
   const { data: userIsAdmin } = useUserIsAdmin();
 
   const { data: playerNames } = useLiveTournamentPlayers(props.tournament.id);

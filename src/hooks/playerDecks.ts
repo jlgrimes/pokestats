@@ -46,6 +46,7 @@ export const fetchPlayerDecks = async (filters: PlayerDecksFilters) => {
 
 interface PlayerDecksOptions {
   pairingPlayers?: PairingPlayer[];
+  shouldDisableFetch?: boolean;
 }
 
 export const usePlayerDecks = (
@@ -55,6 +56,7 @@ export const usePlayerDecks = (
   const query = useQuery({
     queryKey: ['player-decks', tournamentId],
     queryFn: () => fetchPlayerDecks({ tournamentId }),
+    enabled: !options?.shouldDisableFetch
   });
 
   const data = query.data ?? [];
