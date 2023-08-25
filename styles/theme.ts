@@ -3,8 +3,15 @@ import { extendTheme } from '@chakra-ui/react';
 
 // 2. Add your color mode config
 const config = {
-  initialColorMode: 'light',
-  useSystemColorMode: false,
+  components: {
+    Button: {
+      baseStyle: {
+         _focus: {
+          boxShadow: 'none'
+        }
+      }
+    }
+  },
 };
 
 // 3. extend the theme
