@@ -9,6 +9,15 @@ export const fetchTournamentMetadata = async () => {
   return res.data;
 };
 
+export const fetchOneTournamentMetadata = async (tournamentId: string) => {
+  const res = await supabase
+    .from('Tournament Metadata')
+    .select('tournament,type,data')
+    .eq('tournament', tournamentId)
+
+  return res.data;
+};
+
 export const useAllTournamentMetadata = () => {
   return useQuery({
     queryKey: ['all-tournament-metadata'],
@@ -17,12 +26,10 @@ export const useAllTournamentMetadata = () => {
 };
 
 export const useTournamentMetadata = (tournamentId: string) => {
-  const { data, ...rest } = useAllTournamentMetadata();
-
-  return {
-    data: data?.filter(({ tournament }) => tournament === tournamentId),
-    ...rest,
-  };
+  return useQuery({
+    queryKey: ['tournament-metadata', tournamentId],
+    queryFn: () => fetchOneTournamentMetadata(tournamentId)
+  })
 };
 
 export const useStreamLink = (tournamentId: string) => {
