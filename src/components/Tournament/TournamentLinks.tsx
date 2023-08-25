@@ -1,4 +1,4 @@
-import { Button, ButtonProps, HStack, IconButton } from '@chakra-ui/react';
+import { Box, Button, ButtonProps, HStack, IconButton } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { memo, useCallback } from 'react';
 import { FaInfo, FaTwitch, FaVideoSlash } from 'react-icons/fa';
@@ -15,6 +15,29 @@ import {
 import { useSessionPlayerProfile } from '../../hooks/user';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
+
+export const StreamIconLink = ({ tournament }: { tournament: Tournament }) => {
+  const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament.id);
+  const { data: streamInfo, isLoading: streamInfoLoading } =
+    useStreamInfo(streamLink);
+
+  return (
+    <Box>
+      <IconButton
+        variant={streamLink ? 'solid' : 'ghost'}
+        colorScheme={'purple'}
+        size='md'
+        icon={streamLink ? <FaTwitch /> : <FaVideoSlash />}
+        aria-label='stream'
+        as={NextLink}
+        href={streamLink ?? '#'}
+        target={streamLink ?? '_blank'}
+        isLoading={streamLinkLoading}
+        isDisabled={!streamLink}
+      />
+    </Box>
+  );
+};
 
 export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
   const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament.id);

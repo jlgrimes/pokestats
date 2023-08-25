@@ -40,6 +40,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const commonProps: Partial<ButtonProps> = useMemo(
     () => ({
       colorScheme: 'gray',
+      variant: 'outline',
       borderRadius: 0,
     }),
     []
@@ -48,8 +49,16 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
   const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
-    <Grid gridTemplateColumns={'1fr 1fr 1fr'}>
-      <StreamLink tournament={props.tournament} />
+    <Grid gridTemplateColumns={'1fr 1fr'}>
+      {/* <StreamLink tournament={props.tournament} /> */}
+      <Button
+        {...commonProps}
+        as={NextLink}
+        href={`${router.asPath}/standings`}
+        isDisabled={props.tournament.tournamentStatus === 'not-started'}
+      >
+        Standings
+      </Button>
       <Button
         {...commonProps}
         as={NextLink}
@@ -58,16 +67,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       >
         <HStack spacing={1.5}>
           <Text>Pairings</Text>
-          <IconExternalLink size={16} />
         </HStack>
-      </Button>
-      <Button
-        {...commonProps}
-        as={NextLink}
-        href={`${router.asPath}/standings`}
-        isDisabled={props.tournament.tournamentStatus === 'not-started'}
-      >
-        Standings
       </Button>
       {/* <Button
         {...commonProps}

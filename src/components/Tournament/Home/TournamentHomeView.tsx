@@ -37,6 +37,7 @@ import { useSessionPlayerProfile } from '../../../hooks/user';
 import { TournamentFormatBadges } from '../../TournamentList/TournamentFormatBadges';
 import { useColor } from '../../../hooks/useColor';
 import { Ad } from '../../Ad';
+import { StreamIconLink } from '../TournamentLinks';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -61,7 +62,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         <Heading size='lg' color={header} lineHeight={'2rem'}>
           {props.tournament.name}
         </Heading>
-        <Grid gridTemplateColumns={'5rem auto'} alignItems='center' rowGap={2}>
+        <Grid gridTemplateColumns={'5rem 1fr auto'} alignItems='center' rowGap={2}>
           {country ? (
             <Box>
               <CountryFlag countryCode={country} size='lg' />
@@ -84,8 +85,9 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
                 </StatsHeading>
               )}
           </Stack>
+          <StreamIconLink tournament={props.tournament} />
         </Grid>
-        <TournamentFormatBadges tournament={props.tournament} size='sm' />
+        {/* <TournamentFormatBadges tournament={props.tournament} size='sm' /> */}
       </Stack>
       <TournamentHomeLinks tournament={props.tournament} />
       <Ad slot='7673650238' />
