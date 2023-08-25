@@ -37,7 +37,7 @@ export const HomePage = (props: HomePageProps) => {
     <Stack>
       <Stack spacing={0} paddingBottom='2'>
         <AppLogo big />
-        <LinkBox>
+        {/* <LinkBox>
           <LinkOverlay href={TCGPLAYER_AFFILIATE_URL} isExternal>
             <Card paddingY={2} paddingX={4} cursor='pointer'>
               <HStack justifyContent='center'>
@@ -57,7 +57,7 @@ export const HomePage = (props: HomePageProps) => {
               </HStack>
             </Card>
           </LinkOverlay>
-        </LinkBox>
+        </LinkBox> */}
         {/* <HomeIcons /> */}
       </Stack>
       <Ad />
