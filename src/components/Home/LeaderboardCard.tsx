@@ -1,6 +1,7 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, Stack } from "@chakra-ui/react"
+import { Button, Divider, HStack, Link, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
+import { Banner } from "../common/Banner";
 import { CommonCard } from "../common/CommonCard"
 import { MyLeaderboardStanding } from "../TopPlayers/MyLeaderboardStanding";
 import { TopPlayersList } from "../TopPlayers/TopPlayersList"
@@ -48,6 +49,9 @@ export const LeaderboardCard = () => {
         </HStack>
         {/* <MyLeaderboardStanding season={year} /> */}
         <TopPlayersList isCompact season={year} />
+        <Banner>
+          <Text>Data sourced from <Link href='https://www.pokemon.com/us/play-pokemon/leaderboards/tcg-masters/' isExternal color='blue.500'>pokemon.com</Link>. Check them out for the most up-to-date standings.</Text>
+        </Banner>
       </Stack>
     </CommonCard>
   )
