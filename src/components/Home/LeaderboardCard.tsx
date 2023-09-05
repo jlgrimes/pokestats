@@ -47,7 +47,7 @@ export const LeaderboardCard = () => {
           <YearSelect />
           <RegionSelect />
         </HStack>
-        {/* <MyLeaderboardStanding season={year} /> */}
+        <MyLeaderboardStanding season={year} />
         <TopPlayersList isCompact season={year} />
         <Banner>
           <Text>Data sourced from <Link href='https://www.pokemon.com/us/play-pokemon/leaderboards/tcg-masters/' isExternal color='blue.500'>pokemon.com</Link>. Check them out for the most up-to-date standings.</Text>
