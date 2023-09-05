@@ -1,6 +1,8 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Button, Divider, HStack, Link, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from "@chakra-ui/react"
+import { formatDistanceStrict, parseISO } from "date-fns";
 import { useCallback, useState } from "react"
+import { useWhenLeaderboardUpdated } from "../../hooks/leaderboards/useLeaderboard";
 import { Banner } from "../common/Banner";
 import { CommonCard } from "../common/CommonCard"
 import { MyLeaderboardStanding } from "../TopPlayers/MyLeaderboardStanding";
@@ -16,6 +18,8 @@ export const seasonToReadableYear = (season: number) => YEAR_TO_POKEMON_API_MAP[
 export const LeaderboardCard = () => {
   const [year, setYear] = useState(52);
   const [region, setRegion] = useState('global');
+  const { data: whenUpdated } = useWhenLeaderboardUpdated(year);
+  console.log(whenUpdated && formatDistanceStrict(parseISO(whenUpdated), new Date()))
 
   const YearSelect = useCallback(() => (
     <Menu isLazy>
@@ -47,11 +51,11 @@ export const LeaderboardCard = () => {
           <YearSelect />
           <RegionSelect />
         </HStack>
+        <Banner>
+          <Text>Last updated: {whenUpdated && formatDistanceStrict(parseISO(whenUpdated), new Date(), { addSuffix: true })}</Text>
+        </Banner>
         <MyLeaderboardStanding season={year} />
         <TopPlayersList isCompact season={year} />
-        <Banner>
-          <Text>Data sourced from <Link href='https://www.pokemon.com/us/play-pokemon/leaderboards/tcg-masters/' isExternal color='blue.500'>pokemon.com</Link>. Check them out for the most up-to-date standings.</Text>
-        </Banner>
       </Stack>
     </CommonCard>
   )

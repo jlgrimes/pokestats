@@ -88,3 +88,18 @@ export const useMyLeaderboardStanding = (qualificationPeriod: number) => {
     ...rest
   }
 };
+
+const fetchWhenLeaderboardUpdated = async (supabase: SupabaseClient, qualificationPeriod: number): Promise<string | undefined> => {
+  const res = await supabase.from('leaderboard_updated_at').select('created_at').eq('qualification_period', qualificationPeriod);
+
+  return res.data?.at(0)?.created_at;
+}
+
+export const useWhenLeaderboardUpdated = (qualificationPeriod: number) => {
+  const supabase = useSupabaseClient();
+
+  return useQuery({
+    queryKey: ['when-leaderboard-updated', qualificationPeriod],
+    queryFn: () => fetchWhenLeaderboardUpdated(supabase, qualificationPeriod)
+  });
+};
