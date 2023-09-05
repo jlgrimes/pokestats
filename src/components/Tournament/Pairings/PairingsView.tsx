@@ -65,7 +65,7 @@ export const PairingsView = ({
       <Box flexGrow={1}>
         {round && pairingsData.tables && (
         <ReactVirtualizedAutoSizer>
-          {({ height, width }) => (
+          {({ height, width }: { height: string | number, width: string | number }) => (
             <FixedSizeList
               height={height}
               width={width}
