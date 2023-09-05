@@ -46,7 +46,7 @@ export const LeaderboardCard = () => {
           <YearSelect />
           <RegionSelect />
         </HStack>
-        <MyLeaderboardStanding season={year} />
+        {/* <MyLeaderboardStanding season={year} /> */}
         <TopPlayersList isCompact season={year} />
       </Stack>
     </CommonCard>
