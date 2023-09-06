@@ -17,7 +17,7 @@ export default async function handler(
     const initialPage = await fetch(getLeaderboardApiUrl(qualificationPeriod, 1)).then((res) => res.json());
     const numPages = initialPage._metadata.page_count;
 
-    for await (const pageNum of [...Array(numPages).keys()]) {
+    for await (const pageNum of [0]) {
       const realNum = pageNum + 1;
       let pageData;
 

@@ -54,7 +54,7 @@ export const LeaderboardCard = () => {
         <Banner>
           <Text>Last updated: {whenUpdated && formatDistanceStrict(parseISO(whenUpdated), new Date(), { addSuffix: true })}</Text>
         </Banner>
-        <MyLeaderboardStanding season={year} />
+        {/* <MyLeaderboardStanding season={year} /> */}
         <TopPlayersList isCompact season={year} />
       </Stack>
     </CommonCard>
