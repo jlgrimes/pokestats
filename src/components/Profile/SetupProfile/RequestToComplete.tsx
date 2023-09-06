@@ -66,44 +66,29 @@ export const RequestToComplete = ({
       name => normalizeName(name) === normalizeName(fullNameVal)
     );
 
-    if (finalResultsName) {
-      try {
-        await supabase
-          .from('Account Requests')
-          .delete()
-          .eq('email', userProfile?.email);
+    try {
+      await supabase
+        .from('Account Requests')
+        .delete()
+        .eq('email', userProfile?.email);
 
-        await supabase.from('Player Profiles').insert({
-          name: finalResultsName,
-          email: userProfile?.email,
-        });
-
-        await refetch();
-        setRequestSentStatus('succeed');
-
-        return toast({
-          status: 'success',
-          title: 'Account successfully created!',
-        });
-      } catch {
-        return toast({
-          status: 'error',
-          title: 'Something went wrong.',
-        });
-      }
-    }
-
-    const { data, error } = await supabase.from('Account Requests').insert([
-      {
+      await supabase.from('Player Profiles').insert({
+        name: finalResultsName || fullNameVal,
         email: userProfile?.email,
-        name: userProfile?.user_metadata.name,
-        entered_name: fullNameVal,
-      },
-    ]);
-    if (error) {
-      setRequestSentStatus('sent-error');
-    } else {
-      setRequestSentStatus('sent');
+      });
+
+      await refetch();
+      setRequestSentStatus('succeed');
+
+      return toast({
+        status: 'success',
+        title: 'Account successfully created!',
+      });
+    } catch {
+      return toast({
+        status: 'error',
+        title: 'Something went wrong.',
+      });
     }
   };
 
