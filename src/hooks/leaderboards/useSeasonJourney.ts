@@ -36,10 +36,6 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, season
     return acc;
   }, []);
 
-  console.log(tournamentPerformance)
-  console.log(relevantStandings)
-  console.log(worldsSeasonYear)
-
   const journeyWithoutExceedingBFL = relevantStandings ? filterOutBFLExtras(worldsSeasonYear, relevantStandings) : undefined;
 
   return {
