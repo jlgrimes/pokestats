@@ -1,6 +1,7 @@
 import { isAfter, isBefore, isWithinInterval, parseISO } from "date-fns";
 import { CombinedPlayerProfile } from "../../../types/player";
 import { Standing, Tournament } from "../../../types/tournament";
+import { seasonToReadableYear } from "../../components/Home/LeaderboardCard";
 import { filterOutBFLExtras, getPointsEarned } from "../../components/TopPlayers/helpers";
 import { useFinalResults } from "../finalResults";
 
@@ -10,7 +11,9 @@ export interface JourneyPoint {
   pointsEarned: number;
 }
 
-export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worldsSeasonYear: number) => {
+export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, season: number) => {
+  const worldsSeasonYear = seasonToReadableYear(season);
+
   const { data: tournamentPerformance, ...rest } = useFinalResults({
     playerName: user?.name,
     additionalNames: user?.additional_names,
@@ -32,6 +35,10 @@ export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, worlds
     }
     return acc;
   }, []);
+
+  console.log(tournamentPerformance)
+  console.log(relevantStandings)
+  console.log(worldsSeasonYear)
 
   const journeyWithoutExceedingBFL = relevantStandings ? filterOutBFLExtras(worldsSeasonYear, relevantStandings) : undefined;
 
