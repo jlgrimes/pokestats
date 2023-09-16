@@ -22,7 +22,10 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
             <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`}>
               <Title>
                 {props.tournament.name}
-              </Title>  
+              </Title>
+              <Subtitle>
+                {formatTournamentDate(props.tournament)}
+              </Subtitle>
             </LinkOverlay>
           </Flex>
 
