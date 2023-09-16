@@ -3,9 +3,6 @@ import {
   Heading,
   LinkOverlay,
   LinkBox,
-  Box,
-  Flex,
-  useColorMode,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
@@ -20,9 +17,8 @@ import { StreamLink } from '../Tournament/TournamentLinks';
 import { ChampionDisplay } from './ChampionDisplay';
 import { formatTournamentDate } from './helpers';
 import { TournamentInfo } from './TournamentInfo';
-import { TournamentStatusBadge } from './TournamentStatusBadge';
 import { useSessionPlayerProfile } from '../../hooks/user';
-import { Card, Grid } from '@tremor/react';
+import { Card, Flex, Grid } from '@tremor/react';
 
 export const TournamentCard = ({
   tournament,
@@ -36,20 +32,18 @@ export const TournamentCard = ({
   shouldHideStatus?: boolean;
 }) => {
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
-  const countryCode = useCountryCode(tournament.id);
   const live = tournament.tournamentStatus === 'running';
 
   return (
     <LinkBox height='100%'>
-      <Card>
-        <Grid className='gap-2' numItems={3}>
-          {countryCode ? <CountryFlag countryCode={countryCode} size={'sm'} /> : null}
-          <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
+      <Card decoration={live ? 'left' : undefined}>
+        <Flex>
+          <Flex className='justify-stretch gap-6'>
             <TournamentInfo tournament={tournament} />
-          </LinkOverlay>
+          </Flex>
           {champion && <ChampionDisplay champion={champion} />}
-        </Grid>
-
+        </Flex>
+        
 
         {/* <Stack spacing={4}>
           <Grid gridTemplateColumns={'3.4fr 2fr'} alignItems='center' gap={2}>

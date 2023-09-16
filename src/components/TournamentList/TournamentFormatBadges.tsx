@@ -1,5 +1,5 @@
 import { Badge, HStack } from '@chakra-ui/react';
-import { TournamentStatusBadgeProps } from './TournamentStatusBadge';
+import { TournamentStatusBadgeProps } from './TournamentStatusCallout';
 
 export const TournamentFormatBadges = (props: TournamentStatusBadgeProps) => (
   <HStack paddingY={1}>

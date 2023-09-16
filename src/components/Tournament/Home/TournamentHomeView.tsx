@@ -23,7 +23,7 @@ import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditT
 import { StatsHeading } from '../../common/StatsHeading';
 import { TopDecks } from '../../Home/TopDecks';
 import { formatTournamentDate } from '../../TournamentList/helpers';
-import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusBadge';
+import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusCallout';
 import { TournamentStatusBanner } from '../../TournamentList/TournamentStatusBanner';
 import { AdminTournamentPanel } from './AdminTournamentPanel';
 import { CountryFlag } from './CountryFlag';

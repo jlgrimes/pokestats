@@ -1,4 +1,5 @@
 import { BadgeProps } from '@chakra-ui/react';
+import { CalloutProps } from '@tremor/react';
 import {
   differenceInDays,
   format,
@@ -44,6 +45,8 @@ export const formatTournamentStatus = (
     }
     return `Live in ${getTimeUntilTournament(tournament, utcOffset)}`;
   }
+
+  return '';
 };
 
 export const getTournamentStatusBadgeProps = (
@@ -75,6 +78,36 @@ export const getTournamentStatusBadgeProps = (
     return {
       variant: 'solid',
       colorScheme: 'blackAlpha',
+    };
+  }
+
+  return {};
+};
+
+export const getTournamentStatusCalloutProps = (
+  tournament: Tournament
+): Partial<CalloutProps> => {
+  if (tournament.subStatus === 'after-day-one') {
+    return {
+      color: 'teal'
+    };
+  }
+
+  if (tournament.tournamentStatus === 'running') {
+    return {
+      color: 'blue'
+    };
+  }
+
+  if (tournament.tournamentStatus === 'not-started') {
+    return {
+      color: 'violet'
+    };
+  }
+
+  if (tournament.tournamentStatus === 'finished') {
+    return {
+      color: 'slate'
     };
   }
 

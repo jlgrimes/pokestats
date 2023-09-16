@@ -13,7 +13,7 @@ import { Tournament } from '../../../types/tournament';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { capitalize } from '../../lib/strings';
 import { StatsHeading } from '../common/StatsHeading';
-import { TournamentStatusBadge } from '../TournamentList/TournamentStatusBadge';
+import { TournamentStatusBadge } from '../TournamentList/TournamentStatusCallout';
 
 export const TournamentPageLayout = ({
   children,
