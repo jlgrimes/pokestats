@@ -139,8 +139,8 @@ export const PlayerCard = (props: PlayerCardProps) => {
   return (
     <>
       <TableRow className={`bg-${getResultItemBackgroundColor(props.result, colorMode)}`}>
-        {props.roundNumber && <TableCell><Bold className={`text-gray-500 font-black text-lg`}>{props.roundNumber}</Bold></TableCell>}
-        <TableCell>{props.result && <ResultLetter result={props.result} />}</TableCell>
+        {props.roundNumber && <TableCell className='px-2' width={16}><Bold className={`text-gray-500 font-black text-lg`}>{props.roundNumber}</Bold></TableCell>}
+        <TableCell width={48} className='pr-0'>{props.result && <ResultLetter result={props.result} />}</TableCell>
         <StandingsRow
           result={props.player}
           tournament={props.tournament}

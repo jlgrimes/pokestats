@@ -46,19 +46,18 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           </Text>
         </TableCell>
       )}
-      <TableCell className='p-0'>
+      <TableCell className='p-0' width={30}>
         {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
       </TableCell>
       <TableCell
-        style={{ wordWrap: 'break-word', width: '100px'}}
-        className={`${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
+        className={`whitespace-normal break-normal ${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
         onClick={onOpen}
       >
         <Text className={`${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
           {props.result.name}
         </Text>
       </TableCell>
-      <TableCell>
+      <TableCell width={126}>
         <Flex className='gap-2'>
           {!props.hideArchetype && !props.isDeckLoading ? (
               <DeckInfoDisplay
@@ -83,7 +82,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         </Flex>
       </TableCell>
       {!props.isCurrentlyPlayingInTopCut && (
-        <TableCell>
+        <TableCell width={80}>
           <Record standing={props.result} />
         </TableCell>
       )}

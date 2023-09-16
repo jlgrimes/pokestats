@@ -18,7 +18,7 @@ export const RoundsList = (props: RoundsListProps) => {
   const rounds = props.player.rounds?.slice().reverse();
 
   return (
-    <Table>
+    <Table style={{ tableLayout: 'fixed', width: '100%', overflow: 'hidden', wordBreak: 'break-all' }}>
       <TableBody>
         {rounds?.map(
           (round, idx) =>
