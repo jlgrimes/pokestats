@@ -10,6 +10,7 @@ import {
   useColorMode,
   useDisclosure,
 } from '@chakra-ui/react';
+import { Bold, ListItem, TableCell, TableRow } from '@tremor/react';
 import { Fragment, useMemo } from 'react';
 import { FaHeartBroken } from 'react-icons/fa';
 import {
@@ -18,7 +19,7 @@ import {
   Tournament,
 } from '../../../../../types/tournament';
 import { StatsHeading } from '../../../common/StatsHeading';
-import { getResultBackgroundColor } from '../../../DataDisplay/helpers';
+import { getResultItemBackgroundColor, getResultItemPrimaryColor } from '../../../DataDisplay/helpers';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
 
@@ -46,20 +47,9 @@ export const inverseResult = (result?: MatchResult) =>
   !result ? undefined : result === 'W' ? 'L' : result === 'L' ? 'W' : 'T';
 
 const ResultLetter = ({ result }: { result?: MatchResult }) => {
-  const { colorMode } = useColorMode();
-
   return (
-    <Box display='flex' justifyContent={'center'} alignItems='center'>
-      <StatsHeading
-        headingProps={{
-          color: getResultBackgroundColor(result)?.replace('100', '500'),
-          fontSize: 'lg',
-        }}
-      >
-        {result}
-      </StatsHeading>
-    </Box>
-  );
+    <Bold className={`text-${getResultItemPrimaryColor(result)} font-black`}>{result}</Bold>
+  )
 };
 
 export const PlayerCard = (props: PlayerCardProps) => {
@@ -147,60 +137,41 @@ export const PlayerCard = (props: PlayerCardProps) => {
       </HStack>
     );
   }
-
   return (
-    <Card
-      backgroundColor={getResultBackgroundColor(props.result, colorMode)}
-      width='100%'
-    >
-      <CardBody paddingX={0} paddingY={props.size === 'sm' ? 0 : 1}>
-        <Grid
-          width='100%'
-          gridTemplateColumns={props.result ? '25px auto' : 'auto'}
-        >
-          {props.result && <ResultLetter result={props.result} />}
-          <Stack
-            spacing={0}
-            flexDirection={isCurrentlyPlayingInTopCut ? 'row' : 'column'}
-            padding={isCurrentlyPlayingInTopCut ? 3 : 0}
-            justifyContent='space-evenly'
-            alignItems={isCurrentlyPlayingInTopCut ? 'center' : 'auto'}
-          >
+    <TableRow className={`bg-${getResultItemBackgroundColor(props.result, colorMode)}`}>
+      <TableCell>{props.result && <ResultLetter result={props.result} />}</TableCell>
+      <StandingsRow
+        result={props.player}
+        tournament={props.tournament}
+        onUnpinPlayer={props.onUnpinPlayer}
+        canEditDecks={props.canEditDecks}
+        shouldHideDeck={props.shouldHideDecks}
+        isDeckLoading={props.isDeckLoading}
+        // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
+        translucent={hasLostInTopCut}
+        isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
+        shouldHideStanding={props.shouldHideStanding}
+        shouldHideName={props.shouldHideName}
+        shouldDisableOpponentModal={props.shouldDisableOpponentModal}
+        isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
+      />
+      {props.tournament.tournamentStatus === 'running' &&
+        props.player.currentOpponent &&
+        !props.shouldHideOpponent && (
+          <Fragment>
             <StandingsRow
-              result={props.player}
+              result={props.player.currentOpponent}
               tournament={props.tournament}
-              onUnpinPlayer={props.onUnpinPlayer}
               canEditDecks={props.canEditDecks}
               shouldHideDeck={props.shouldHideDecks}
               isDeckLoading={props.isDeckLoading}
-              // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
-              translucent={hasLostInTopCut}
+              translucent={!props.topCut}
               isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
-              shouldHideStanding={props.shouldHideStanding}
-              shouldHideName={props.shouldHideName}
-              shouldDisableOpponentModal={props.shouldDisableOpponentModal}
-              isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
+              shouldReplacePlacementWithVs
+              isPlayerMeOrMyOpponent={false}
             />
-            {props.tournament.tournamentStatus === 'running' &&
-              props.player.currentOpponent &&
-              !props.shouldHideOpponent && (
-                <Fragment>
-                  <StandingsRow
-                    result={props.player.currentOpponent}
-                    tournament={props.tournament}
-                    canEditDecks={props.canEditDecks}
-                    shouldHideDeck={props.shouldHideDecks}
-                    isDeckLoading={props.isDeckLoading}
-                    translucent={!props.topCut}
-                    isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
-                    shouldReplacePlacementWithVs
-                    isPlayerMeOrMyOpponent={false}
-                  />
-                </Fragment>
-              )}
-          </Stack>
-        </Grid>
-      </CardBody>
-    </Card>
+          </Fragment>
+        )}
+    </TableRow>
   );
 };

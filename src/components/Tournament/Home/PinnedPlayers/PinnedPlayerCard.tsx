@@ -1,5 +1,6 @@
 import { HStack, IconButton, useToast } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
+import { Flex } from '@tremor/react';
 import { useCallback } from 'react';
 import { FaHeartBroken } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
@@ -50,7 +51,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   }, [props.player.name, user?.email, toast, refetch]);
 
   return (
-    <HStack>
+    <>
       <PlayerCard
         canEditDecks={userIsAdmin}
         onUnpinPlayer={onUnpinPlayer}
@@ -79,6 +80,6 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
           }}
         />
       )}
-    </HStack>
+    </>
   );
 };

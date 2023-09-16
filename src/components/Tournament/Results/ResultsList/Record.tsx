@@ -1,4 +1,5 @@
-import { Stack, Text, Link, Heading, useColorMode } from '@chakra-ui/react';
+import { Link, useColorMode } from '@chakra-ui/react';
+import { Bold, Text, Title } from '@tremor/react';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
 import { Standing } from '../../../../../types/tournament';
@@ -25,7 +26,7 @@ export const Record = ({
           color={standing.drop && standing.drop > 0 ? 'red.600' : 'blue.600'}
           href={href}
         >
-          <Text fontSize='md' whiteSpace={'nowrap'}>
+          <Text>
             {formatRecord(standing.record)}
           </Text>
         </Link>
@@ -34,38 +35,22 @@ export const Record = ({
 
     if (big) {
       return (
-        <Heading
-          color={standing.drop && standing.drop > 0 ? 'red.600' : 'auto'}
+        <Title
+          className={standing.drop && standing.drop > 0 ? 'text-red-600' : ''}
         >
           {formatRecord(standing.record)}
-        </Heading>
+        </Title>
       );
     }
 
     return (
-      <Text
-        fontSize={normal ? 'lg' : '0.95rem'}
-        fontFamily={normal ? 'inherit' : 'mono'}
-        whiteSpace={'nowrap'}
-        width='6ch'
-        textAlign='right'
-      >
+      <Bold>
         {formatRecord(standing.record)}
-      </Text>
+      </Bold>
     );
   }, [href, standing.record, standing.drop, big, normal]);
 
-  return (
-    <Stack
-      direction='row'
-      color={standing.drop && standing.drop > 0 ? 'red.600' : 'auto'}
-      spacing={1}
-      alignItems={big ? 'baseline' : 'center'}
-      justifyContent='space-between'
-    >
-      {renderRecordText()}
-    </Stack>
-  );
+  return renderRecordText();
 };
 
 Record.displayName = 'Record';
