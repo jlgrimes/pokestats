@@ -44,9 +44,9 @@ export const Record = ({
     }
 
     return (
-      <Bold>
+      <Text className={'font-medium'}>
         {formatRecord(standing.record)}
-      </Bold>
+      </Text>
     );
   }, [href, standing.record, standing.drop, big, normal]);
 

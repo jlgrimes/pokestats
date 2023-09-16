@@ -34,13 +34,13 @@ export interface PlayerCardProps {
   onUnpinPlayer?: () => void;
   topCut?: boolean;
   shouldHideStanding?: boolean;
-  shouldHideName?: boolean;
   size?: PlayerCardSize;
   shouldHideOpponent?: boolean;
   shouldDisableOpponentModal?: boolean;
   result?: MatchResult;
   shouldMoveResultLast?: boolean;
   isPlayerMeOrMyOpponent: boolean;
+  roundNumber?: number;
 }
 
 export const inverseResult = (result?: MatchResult) =>
@@ -86,7 +86,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
               translucent={hasLostInTopCut}
               isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
               shouldHideStanding={props.shouldHideStanding}
-              shouldHideName={props.shouldHideName}
               shouldDisableOpponentModal={props.shouldDisableOpponentModal}
               isPlayerMeOrMyOpponent={false}
             />
@@ -138,40 +137,25 @@ export const PlayerCard = (props: PlayerCardProps) => {
     );
   }
   return (
-    <TableRow className={`bg-${getResultItemBackgroundColor(props.result, colorMode)}`}>
-      <TableCell>{props.result && <ResultLetter result={props.result} />}</TableCell>
-      <StandingsRow
-        result={props.player}
-        tournament={props.tournament}
-        onUnpinPlayer={props.onUnpinPlayer}
-        canEditDecks={props.canEditDecks}
-        shouldHideDeck={props.shouldHideDecks}
-        isDeckLoading={props.isDeckLoading}
-        // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
-        translucent={hasLostInTopCut}
-        isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
-        shouldHideStanding={props.shouldHideStanding}
-        shouldHideName={props.shouldHideName}
-        shouldDisableOpponentModal={props.shouldDisableOpponentModal}
-        isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
-      />
-      {props.tournament.tournamentStatus === 'running' &&
-        props.player.currentOpponent &&
-        !props.shouldHideOpponent && (
-          <Fragment>
-            <StandingsRow
-              result={props.player.currentOpponent}
-              tournament={props.tournament}
-              canEditDecks={props.canEditDecks}
-              shouldHideDeck={props.shouldHideDecks}
-              isDeckLoading={props.isDeckLoading}
-              translucent={!props.topCut}
-              isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
-              shouldReplacePlacementWithVs
-              isPlayerMeOrMyOpponent={false}
-            />
-          </Fragment>
-        )}
-    </TableRow>
+    <>
+      <TableRow className={`bg-${getResultItemBackgroundColor(props.result, colorMode)}`}>
+        {props.roundNumber && <TableCell><Bold className={`text-gray-500 font-black text-lg`}>{props.roundNumber}</Bold></TableCell>}
+        <TableCell>{props.result && <ResultLetter result={props.result} />}</TableCell>
+        <StandingsRow
+          result={props.player}
+          tournament={props.tournament}
+          onUnpinPlayer={props.onUnpinPlayer}
+          canEditDecks={props.canEditDecks}
+          shouldHideDeck={props.shouldHideDecks}
+          isDeckLoading={props.isDeckLoading}
+          // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
+          translucent={hasLostInTopCut}
+          isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
+          shouldHideStanding={props.shouldHideStanding}
+          shouldDisableOpponentModal={props.shouldDisableOpponentModal}
+          isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
+        />
+      </TableRow>
+    </>
   );
 };

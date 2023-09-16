@@ -27,8 +27,6 @@ export interface StandingsRowProps {
   isCurrentlyPlayingInTopCut?: boolean;
   shouldDisableOpponentModal?: boolean;
   shouldHideStanding?: boolean;
-  shouldHideName?: boolean;
-  shouldReplacePlacementWithVs?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -43,25 +41,23 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
               standing={props.result}
               tournament={props.tournament as Tournament}
             />
-            {props.shouldReplacePlacementWithVs
-              ? 'vs'
-              : props.opponentRoundNumber ??
+            {props.opponentRoundNumber ??
                 (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
           </Text>
         </TableCell>
       )}
-      {!props.shouldHideName && (
-        <TableCell
-          className={`${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''}`}
-        >
-          <Flex className='gap-4 w-fit'>
-            {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
-            <Text className={ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}>
-              {props.result.name}
-            </Text>
-          </Flex>
-        </TableCell>
-      )}
+      <TableCell className='p-0'>
+        {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
+      </TableCell>
+      <TableCell
+        style={{ wordWrap: 'break-word', width: '100px'}}
+        className={`${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
+        onClick={onOpen}
+      >
+        <Text className={`${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
+          {props.result.name}
+        </Text>
+      </TableCell>
       <TableCell>
         <Flex className='gap-2'>
           {!props.hideArchetype && !props.isDeckLoading ? (
@@ -90,6 +86,14 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         <TableCell>
           <Record standing={props.result} />
         </TableCell>
+      )}
+      {!props.shouldDisableOpponentModal && (
+        <OpponentRoundList
+          player={props.result}
+          tournament={props.tournament}
+          modalOpen={isOpen}
+          handleCloseModal={onClose}
+        />
       )}
     </>
   )
