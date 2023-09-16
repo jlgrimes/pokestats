@@ -1,19 +1,14 @@
 import {
   Box,
 } from '@chakra-ui/react';
-import { createContext, memo, useCallback, useState } from 'react';
-import { FaChess, FaChessRook } from 'react-icons/fa';
-import { Tournament } from '../../../../types/tournament';
+import { createContext, useCallback } from 'react';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 import { NoDataDisplay } from '../../Deck/Analytics/MetaGameShare/NoDataDisplay';
-import { CommonCard } from '../CommonCard';
 import { ComponentLoader } from '../ComponentLoader';
 import {
   DeckCompareColumnType,
-  DeckCompareSortToggles,
   DeckCompareSortTogglesProps,
 } from './DeckCompareSortToggles';
-import { IndividualShareCard } from './IndividualShareCard';
 import { Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Tab } from "@tremor/react";
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
