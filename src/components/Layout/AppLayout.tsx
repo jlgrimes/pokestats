@@ -1,4 +1,4 @@
-import { Container, extendTheme } from '@chakra-ui/react';
+import { Container, extendTheme, useColorMode } from '@chakra-ui/react';
 import React, { ReactNode, useEffect } from 'react';
 import { AppBar } from './AppBar/AppBar';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { userMockContext } from '../../contexts/MockUserContext';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
+import { AppBody } from './AppBody';
 
 const theme = extendTheme({
   fonts: {
@@ -58,15 +59,7 @@ export const AppLayout = ({
             </Head>
             <AppBar />
             {/* <BetaBanner /> */}
-            <Container
-              id='app-layout-container'
-              maxW='container.md'
-              padding={0}
-              alignItems='center'
-              height='calc(100% - 3rem)'
-            >
-              {children}
-            </Container>
+            <AppBody>{children}</AppBody>
           </ChakraProvider>
         </userMockContext.Provider>
       </Hydrate>
