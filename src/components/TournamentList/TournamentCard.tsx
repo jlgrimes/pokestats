@@ -36,14 +36,25 @@ export const TournamentCard = ({
 
   return (
     <LinkBox height='100%'>
-      <Card decoration={live ? 'left' : undefined}>
+      <Card decoration={live ? 'left' : undefined} className='flex flex-col gap-6'>
         <Flex>
           <Flex className='justify-stretch gap-6'>
             <TournamentInfo tournament={tournament} />
           </Flex>
           {champion && <ChampionDisplay champion={champion} />}
         </Flex>
-        
+        {isAuthenticated && live && profile?.name && (
+          <PlayerTournamentView
+            tournament={tournament}
+            playerName={profile.name}
+          />
+        )}
+        {live && !tournament.topCutStatus && !disableFollowing && (
+          <PinnedPlayerList tournament={tournament} isCompact />
+        )}
+        {live && tournament.topCutStatus && !disableFollowing && (
+          <TopCutViewController tournament={tournament} />
+        )}
 
         {/* <Stack spacing={4}>
           <Grid gridTemplateColumns={'3.4fr 2fr'} alignItems='center' gap={2}>

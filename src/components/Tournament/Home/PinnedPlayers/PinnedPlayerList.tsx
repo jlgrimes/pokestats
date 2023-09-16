@@ -1,28 +1,6 @@
-import {
-  Button,
-  Grid,
-  Stack,
-  Icon,
-  useDisclosure,
-  HStack,
-  Box,
-  Flex,
-  Text,
-  useColorMode,
-  ButtonGroup,
-} from '@chakra-ui/react';
-import {
-  FaHeart,
-  FaMapPin,
-  FaPlus,
-  FaRegEdit,
-  FaSearch,
-  FaStar,
-  FaTwitter,
-  FaUserEdit,
-  FaUserFriends,
-  FaUserPlus,
-} from 'react-icons/fa';
+import { useDisclosure } from '@chakra-ui/react';
+import { UserAddIcon, UserRemoveIcon } from '@heroicons/react/outline';
+import { Button, Card, Flex, List, Text, Title } from '@tremor/react';
 import { Tournament } from '../../../../../types/tournament';
 import { useFinalResults } from '../../../../hooks/finalResults';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
@@ -107,84 +85,75 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
     return <ComponentLoader isLiveComponent />;
 
   return (
-    <CommonCard
-      header='Following'
-      leftIcon={<Icon as={FaHeart} color='pink.500' />}
-      ghost
-      shouldRemovePadding={props.isCompact}
-      smallHeader={props.isCompact}
-    >
-      <Stack>
+    <Card>
+      <Title>Following</Title>
+      <List className='mt-4'>
         {!props.isCompact && filteredPlayers && filteredPlayers.length > 0 && (
-          <ButtonGroup isAttached variant='outline'>
-            <Button
-              leftIcon={<FaUserPlus />}
-              onClick={addPinPlayerModalControls.onOpen}
-              isDisabled={props.tournament.tournamentStatus === 'not-started'}
-            >
-              Follow player
-            </Button>
-            {pinnedPlayers && pinnedPlayers.length > 0 && (
+            <Flex>
               <Button
-                leftIcon={<FaUserEdit />}
-                onClick={editPinnedPlayers.onToggle}
-                isDisabled={props.tournament.tournamentStatus === 'not-started'}
-              >
-                {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
-              </Button>
-            )}
-          </ButtonGroup>
-        )}
-        {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
-          <ComponentLoader isLiveComponent />
-        ) : (
-          pinnedPlayers.map(
-            pinnedPlayer =>
-              pinnedPlayer && (
-                <PinnedPlayerCard
-                  key={`pinned-${pinnedPlayer?.name}`}
-                  player={pinnedPlayer}
-                  tournament={props.tournament}
-                  shouldHideDecks={liveTournamentResults?.shouldHideDecks}
-                  isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
-                  isEditingPinned={editPinnedPlayers.isOpen}
-                  shouldHideOpponent={props.isCompact}
-                  size={props.isCompact ? 'md' : 'lg'}
-                />
-              )
-          )
-        )}
-        {filteredPlayers?.length === 0 && (
-          <Stack paddingX={4} paddingY={2} spacing={4}>
-            {pinnedPlayerNames && pinnedPlayerNames.length === 0 && (
-              <Text fontWeight={'bold'} color='gray.600'>
-                Keep up with your friends or anyone attending by following a
-                player!
-              </Text>
-            )}
-            {pinnedPlayerNames && pinnedPlayerNames.length > 0 && (
-              <Text fontWeight={'bold'} color='gray.600'>
-                None of your following are attending this tournament.
-              </Text>
-            )}
-            <Box>
-              <Button
-                leftIcon={<FaPlus />}
+                icon={UserAddIcon}
                 onClick={addPinPlayerModalControls.onOpen}
-                isDisabled={props.tournament.tournamentStatus === 'not-started'}
-                size={'sm'}
-                colorScheme='pink'
+                disabled={props.tournament.tournamentStatus === 'not-started'}
               >
                 Follow player
               </Button>
-            </Box>
-          </Stack>
+              {pinnedPlayers && pinnedPlayers.length > 0 && (
+                <Button
+                  icon={UserRemoveIcon}
+                  onClick={editPinnedPlayers.onToggle}
+                  disabled={props.tournament.tournamentStatus === 'not-started'}
+                >
+                  {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
+                </Button>
+              )}
+            </Flex>
+          )}
+          {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
+            <ComponentLoader isLiveComponent />
+          ) : (
+            pinnedPlayers.map(
+              pinnedPlayer =>
+                pinnedPlayer && (
+                  <PinnedPlayerCard
+                    key={`pinned-${pinnedPlayer?.name}`}
+                    player={pinnedPlayer}
+                    tournament={props.tournament}
+                    shouldHideDecks={liveTournamentResults?.shouldHideDecks}
+                    isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
+                    isEditingPinned={editPinnedPlayers.isOpen}
+                    shouldHideOpponent={props.isCompact}
+                    size={props.isCompact ? 'md' : 'lg'}
+                  />
+                )
+            )
         )}
-        <PinPlayerModal
-          tournament={props.tournament}
-          modalControls={addPinPlayerModalControls}
-        />
-      </Stack>
-    </CommonCard>
+          {filteredPlayers?.length === 0 && (
+            <Flex className='flex-col'>
+              {pinnedPlayerNames && pinnedPlayerNames.length === 0 && (
+                <Text>
+                  Keep up with your friends or anyone attending by following a
+                  player!
+                </Text>
+              )}
+              {pinnedPlayerNames && pinnedPlayerNames.length > 0 && (
+                <Text>
+                  None of your following are attending this tournament.
+                </Text>
+              )}
+              <Button
+                icon={UserAddIcon}
+                onClick={addPinPlayerModalControls.onOpen}
+                disabled={props.tournament.tournamentStatus === 'not-started'}
+              >
+                Follow player
+              </Button>
+            </Flex>
+          )}
+          <PinPlayerModal
+            tournament={props.tournament}
+            modalControls={addPinPlayerModalControls}
+          />
+      </List>
+    </Card>
   );
 };
