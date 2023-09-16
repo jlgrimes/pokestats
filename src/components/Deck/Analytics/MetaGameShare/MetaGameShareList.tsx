@@ -2,10 +2,10 @@ import { createContext, memo, useContext, useMemo, useState } from 'react';
 import { useStoredDecks } from '../../../../hooks/finalResults';
 import { getMetaShare } from './helpers';
 import { Tournament } from '../../../../../types/tournament';
-import { DeckCompareTable } from '../../../common/DeckCompare/DeckCompareTable';
 import { DeckCompareColumnType } from '../../../common/DeckCompare/DeckCompareSortToggles';
 import { getDay2Decks, getConversionRate } from '../../../../hooks/stats';
 import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
+import { MetagameBreakdownTable } from '../../../common/DeckCompare/MetagameBreakdownTable';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
@@ -67,7 +67,7 @@ export const MetaGameShareList = memo(
     ];
 
     return (
-      <DeckCompareTable
+      <MetagameBreakdownTable
         header={tournament.name ? `${tournament.name}` : `Decks`}
         subheader={`${tournament.players.masters} Masters, ${numberReported} known`}
         decks={decks}

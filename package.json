@@ -19,6 +19,7 @@
     "@ctrl/react-adsense": "^1.6.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@heroicons/react": "^1.0.6",
     "@nivo/bar": "^0.80.0",
     "@nivo/core": "^0.80.0",
     "@nivo/pie": "^0.80.0",
