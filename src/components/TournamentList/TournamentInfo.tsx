@@ -1,15 +1,5 @@
-import {
-  Grid,
-  Heading,
-  HStack,
-  LinkOverlay,
-  Stack,
-  useColorMode,
-} from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Subtitle, Title } from '@tremor/react';
 import { Tournament } from '../../../types/tournament';
-import { useColor } from '../../hooks/useColor';
-import { FormatTag } from '../Deck/Format/FormatTag';
 import { formatTournamentDate } from './helpers';
 
 interface TournamentInfoProps {
@@ -17,19 +7,18 @@ interface TournamentInfoProps {
 }
 
 export const TournamentInfo = (props: TournamentInfoProps) => {
-  const { header, subheader } = useColor();
   const live = props.tournament.tournamentStatus === 'running';
 
   return (
-    <Stack spacing={1}>
-      <Heading size={live ? 'md' : 'sm'} color={header}>
+    <>
+      <Title>
         {props.tournament.name}
-      </Heading>
+      </Title>
       {!live && (
-        <Heading size={'xs'} color={subheader} fontWeight={'semibold'}>
+        <Subtitle>
           {formatTournamentDate(props.tournament)}
-        </Heading>
+        </Subtitle>
       )}
-    </Stack>
+    </>
   );
 };

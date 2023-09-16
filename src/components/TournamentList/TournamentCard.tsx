@@ -1,10 +1,8 @@
 import {
-  Card,
   Stack,
   Heading,
   LinkOverlay,
   LinkBox,
-  Grid,
   Box,
   Flex,
   useColorMode,
@@ -24,6 +22,7 @@ import { formatTournamentDate } from './helpers';
 import { TournamentInfo } from './TournamentInfo';
 import { TournamentStatusBadge } from './TournamentStatusBadge';
 import { useSessionPlayerProfile } from '../../hooks/user';
+import { Card, Grid } from '@tremor/react';
 
 export const TournamentCard = ({
   tournament,
@@ -42,8 +41,17 @@ export const TournamentCard = ({
 
   return (
     <LinkBox height='100%'>
-      <CommonCard>
-        <Stack spacing={4}>
+      <Card>
+        <Grid className='gap-2' numItems={3}>
+          {countryCode ? <CountryFlag countryCode={countryCode} size={'sm'} /> : null}
+          <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
+            <TournamentInfo tournament={tournament} />
+          </LinkOverlay>
+          {champion && <ChampionDisplay champion={champion} />}
+        </Grid>
+
+
+        {/* <Stack spacing={4}>
           <Grid gridTemplateColumns={'3.4fr 2fr'} alignItems='center' gap={2}>
             <Grid gridTemplateColumns={`3.4rem 4fr`} alignItems='center' rowGap={live ? 1 : 0}>
               {countryCode ? (
@@ -80,8 +88,8 @@ export const TournamentCard = ({
           {live && tournament.topCutStatus && !disableFollowing && (
             <TopCutViewController tournament={tournament} />
           )}
-        </Stack>
-      </CommonCard>
+        </Stack> */}
+      </Card>
     </LinkBox>
   );
 };
