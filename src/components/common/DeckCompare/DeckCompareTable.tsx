@@ -18,7 +18,7 @@ import {
   DeckCompareSortTogglesProps,
 } from './DeckCompareSortToggles';
 import { IndividualShareCard } from './IndividualShareCard';
-import { Table, TableHead, TableHeaderCell, TableBody, TableRow, TableCell, TableFoot, TableFooterCell, Title, Card, Text  } from "@tremor/react";
+import { Table, TableHead, TableHeaderCell, TableBody, TableRow, TableCell, TableFoot, TableFooterCell, Title, Card, Text, Bold, Subtitle  } from "@tremor/react";
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 
 export interface DeckCompareTableProps<T>
@@ -42,10 +42,13 @@ export const DeckCompareTable = <T extends string>(
 ) => {
   const [shouldHideLabels] = useState(true);
 
+  console.log(props.columns)
+
   return (
     <ShouldDrillDownMetaShareContext.Provider value={props.shouldDrillDown}>
       <Card>
         <Title>{props.header}</Title>
+        <Subtitle>{props.subheader}</Subtitle>
         <Stack>
           {props.isLoading ? (
             <Box height={'50rem'}>
@@ -57,7 +60,7 @@ export const DeckCompareTable = <T extends string>(
               <Table>
                 <TableHead>
                   <TableRow>
-                      <TableHeaderCell>Name</TableHeaderCell>
+                      <TableHeaderCell>Deck Archetype</TableHeaderCell>
                       <TableHeaderCell>Day 1 Meta Share</TableHeaderCell>
                       <TableHeaderCell>Day 2 Conversion Rate</TableHeaderCell>
                     </TableRow>
@@ -69,11 +72,15 @@ export const DeckCompareTable = <T extends string>(
                   )
                   .map(deck => (
                     <TableRow key={`${deck.name}${deck.id}`}>
-                      <TableCell>
-                        <Text>{deck.name}</Text>
+                      <TableCell className='flex gap-4 items-center'>
                         <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+                        <Bold>{deck.name}</Bold>
                       </TableCell>
-                      <TableCell>idk</TableCell>
+                      {props.columns.map((column) => (
+                        <TableCell key={column.name + deck.id}>
+                          {`${(column.calculation(deck, props.decks) * 100).toFixed(2)}%`}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   ))
                   // .map(deck => {
