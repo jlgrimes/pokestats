@@ -13,3 +13,13 @@ export const getDeckHref = (deck: DeckTypeSchema, format?: number) => ({
     ...(format ? { format } : {}),
   },
 });
+
+export const getDeckLink = (deck: DeckTypeSchema, format?: number) => {
+  const { pathname, query } = getDeckHref(deck, format);
+
+  if (query.format) {
+    return `${pathname}?format=${query.format}`;
+  }
+
+  return pathname;
+};

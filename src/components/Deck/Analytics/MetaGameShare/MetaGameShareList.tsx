@@ -68,7 +68,7 @@ export const MetaGameShareList = memo(
 
     return (
       <DeckCompareTable
-        header={tournament.name ? `${tournament.name} Decks` : `Decks`}
+        header={tournament.name ? `${tournament.name}` : `Decks`}
         subheader={`${tournament.players.masters} Masters, ${numberReported} known`}
         decks={decks}
         shouldDrillDown={shouldDrillDown}

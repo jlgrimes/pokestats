@@ -18,8 +18,9 @@ import {
   DeckCompareSortTogglesProps,
 } from './DeckCompareSortToggles';
 import { IndividualShareCard } from './IndividualShareCard';
-import { Table, TableHead, TableHeaderCell, TableBody, TableRow, TableCell, TableFoot, TableFooterCell, Title, Card, Text, Bold, Subtitle  } from "@tremor/react";
+import { Flex, Title, Card, Text, Bold, Subtitle, BarList  } from "@tremor/react";
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
+import { getDeckHref } from './helpers';
 
 export interface DeckCompareTableProps<T>
   extends DeckCompareSortTogglesProps<T> {
@@ -42,68 +43,38 @@ export const DeckCompareTable = <T extends string>(
 ) => {
   const [shouldHideLabels] = useState(true);
 
-  console.log(props.columns)
+  const data = props.decks
+    .filter(
+      deck => !(props.shouldHideDeck && props.shouldHideDeck(deck))
+    ).map((deck) => ({
+      name: deck.name,
+      value: Math.round(props.columns[0].calculation(deck, props.decks) * 10000) / 100,
+      href: getDeckHref(deck, props.format).pathname,
+      icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+    }))
 
   return (
     <ShouldDrillDownMetaShareContext.Provider value={props.shouldDrillDown}>
       <Card>
         <Title>{props.header}</Title>
         <Subtitle>{props.subheader}</Subtitle>
-        <Stack>
-          {props.isLoading ? (
-            <Box height={'50rem'}>
-              <ComponentLoader />
-            </Box>
-          ) : props.decks.length === 0 ? (
-            <NoDataDisplay />
-          ) : (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                      <TableHeaderCell>Deck Archetype</TableHeaderCell>
-                      <TableHeaderCell>Day 1 Meta Share</TableHeaderCell>
-                      <TableHeaderCell>Day 2 Conversion Rate</TableHeaderCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                  {props.decks
-                  .filter(
-                    deck => !(props.shouldHideDeck && props.shouldHideDeck(deck))
-                  )
-                  .map(deck => (
-                    <TableRow key={`${deck.name}${deck.id}`}>
-                      <TableCell className='flex gap-4 items-center'>
-                        <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-                        <Bold>{deck.name}</Bold>
-                      </TableCell>
-                      {props.columns.map((column) => (
-                        <TableCell key={column.name + deck.id}>
-                          {`${(column.calculation(deck, props.decks) * 100).toFixed(2)}%`}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                  // .map(deck => {
-                  //   return (
-                  //     deck?.id && (
-                  //       <IndividualShareCard
-                  //         key={`${deck.name}${deck.id}`}
-                  //         decks={props.decks}
-                  //         deck={deck}
-                  //         columns={props.columns}
-                  //         sortBy={props.sortBy}
-                  //         format={props.format}
-                  //         isComparison={props.isComparison}
-                  //         shouldHideLabels={shouldHideLabels}
-                  //       />
-                  //     )
-                  //   )
-                  // })
-                  }
-                </TableBody>
-              </Table>
-          )}
-        </Stack>
+        <Flex className="mt-4">
+          <Text>
+            <Bold>Deck Archetype</Bold>
+          </Text>
+          <Text>
+            <Bold>Day 1 Usage</Bold>
+          </Text>
+        </Flex>
+        {props.isLoading ? (
+          <Box height={'50rem'}>
+            <ComponentLoader />
+          </Box>
+        ) : props.decks.length === 0 ? (
+          <NoDataDisplay />
+        ) : (
+            <BarList data={data} className='mt-2 [&>div>.tremor-BarList-labelWrapper]:h-12 [&>div>.tremor-BarList-labelWrapper]:after:content-["%"] [&>div>div>div]:items-center [&>div>div>div]:gap-4 [&>div>.tremor-BarList-bar]:h-12' />
+        )}
       </Card>
     </ShouldDrillDownMetaShareContext.Provider>
   );
