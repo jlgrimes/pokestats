@@ -62,7 +62,7 @@ export const HomePage = (props: HomePageProps) => {
       </Stack>
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />
-      <LeaderboardCard />
+      {/* <LeaderboardCard /> */}
       <Ad slot='7147816871' />
       {/* <Adsense
         client='ca-pub-3066736963130742'
