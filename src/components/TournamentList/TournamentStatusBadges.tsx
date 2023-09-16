@@ -11,7 +11,7 @@ interface TournamentStatusBadgesProps {
 
 export const TournamentStatusBadges = (props: TournamentStatusBadgesProps) => {
   return (
-    <Flex className="justify-start gap-2 w-fit ml-4">
+    <Flex className="justify-start gap-2 w-fit ml-6">
       {props.tournament.tournamentStatus === 'not-started' && (
         <Badge color='purple'>Upcoming</Badge>
       )}
