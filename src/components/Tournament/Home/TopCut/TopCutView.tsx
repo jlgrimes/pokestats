@@ -1,4 +1,5 @@
 import { Badge, Icon, Stack } from '@chakra-ui/react';
+import { Card, Flex, Subtitle, Table, TableBody, Title } from '@tremor/react';
 import { useMemo } from 'react';
 import { FaTrophy } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
@@ -14,38 +15,73 @@ interface TopCutViewProps {
 }
 
 export const TopCutView = (props: TopCutViewProps) => {
+  const topCutPlayers = props.players && props.players.filter(player =>(props.tournament.tournamentStatus === 'finished' ||
+  !props.players!.some(
+    otherPlayer =>
+      player.name === otherPlayer.currentOpponent?.name &&
+      player.placing > otherPlayer?.placing
+  )));
+
+  const playersWhoWereKnockedOut = topCutPlayers?.filter((player) => !player.currentOpponent);
+
   return (
-    <CommonCard
-      header={'Top cut'}
-      ghost
-      leftIcon={<Icon color='yellow.500' as={FaTrophy} />}
-    >
-      <Stack>
-        {props.players &&
-          props.players.map(
+    <Flex className='flex-col gap-4'>
+      <Title>Top cut</Title>
+        {topCutPlayers?.filter((player) => player.currentOpponent).map(
             (player: Standing) =>
-              (props.tournament.tournamentStatus === 'finished' ||
-                !props.players!.some(
-                  otherPlayer =>
-                    player.name === otherPlayer.currentOpponent?.name &&
-                    player.placing > otherPlayer?.placing
-                )) && (
-                <PlayerCard
-                  key={`top-cut-${player.name}`}
-                  player={player}
-                  tournament={props.tournament}
-                  shouldHideDecks={false}
-                  topCut
-                  result={
-                    props.tournament.tournamentStatus === 'running'
-                      ? player.currentMatchResult
-                      : undefined
-                  }
-                  isPlayerMeOrMyOpponent={false}
-                />
-              )
+                <Card key={`top-cut-${player.name}`} className='p-0 mb-4'>
+                  <Table>
+                    <TableBody>
+                      <PlayerCard
+                        player={player}
+                        tournament={props.tournament}
+                        shouldHideDecks={false}
+                        result={
+                          props.tournament.tournamentStatus === 'running'
+                            ? player.currentMatchResult
+                            : undefined
+                        }
+                        isPlayerMeOrMyOpponent={false}
+                      />
+                    {
+                      player.currentOpponent && (
+                        <PlayerCard
+                          player={player.currentOpponent}
+                          tournament={props.tournament}
+                          shouldHideDecks={false}
+                          result={
+                            props.tournament.tournamentStatus === 'running'
+                              ? player.currentOpponent?.currentMatchResult
+                              : undefined
+                          }
+                          isPlayerMeOrMyOpponent={false}
+                        />
+                      )
+                    }
+                    </TableBody>
+                  </Table>
+              </Card>
           )}
-      </Stack>
-    </CommonCard>
+          {playersWhoWereKnockedOut && playersWhoWereKnockedOut.length > 0 && (
+            <Table className='opacity-40'>
+              <TableBody>
+                {playersWhoWereKnockedOut.map((player) => (
+                  <PlayerCard
+                    key={`${player.name}`}
+                    player={player}
+                    tournament={props.tournament}
+                    shouldHideDecks={false}
+                    result={
+                      props.tournament.tournamentStatus === 'running'
+                        ? player.currentMatchResult
+                        : undefined
+                    }
+                    isPlayerMeOrMyOpponent={false}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          )}
+    </Flex>
   );
 };

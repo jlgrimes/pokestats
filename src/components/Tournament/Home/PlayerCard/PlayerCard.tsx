@@ -19,7 +19,10 @@ import {
   Tournament,
 } from '../../../../../types/tournament';
 import { StatsHeading } from '../../../common/StatsHeading';
-import { getResultItemBackgroundColor, getResultItemPrimaryColor } from '../../../DataDisplay/helpers';
+import {
+  getResultItemBackgroundColor,
+  getResultItemPrimaryColor,
+} from '../../../DataDisplay/helpers';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
 
@@ -48,8 +51,10 @@ export const inverseResult = (result?: MatchResult) =>
 
 const ResultLetter = ({ result }: { result?: MatchResult }) => {
   return (
-    <Bold className={`text-${getResultItemPrimaryColor(result)} font-black`}>{result}</Bold>
-  )
+    <Bold className={`text-${getResultItemPrimaryColor(result)} font-black`}>
+      {result}
+    </Bold>
+  );
 };
 
 export const PlayerCard = (props: PlayerCardProps) => {
@@ -62,85 +67,24 @@ export const PlayerCard = (props: PlayerCardProps) => {
     isInTopCut && !!props.player.currentOpponent;
   const hasLostInTopCut = isInTopCut && !props.player.currentOpponent;
 
-  if (isCurrentlyPlayingInTopCut) {
-    return (
-      <HStack alignItems={'stretch'} spacing={3}>
-        <Card
-          backgroundColor={getResultBackgroundColor(props.result, colorMode)}
-          width='100%'
-        >
-          <CardBody
-            padding={3}
-            display='flex'
-            justifyContent='center'
-            alignItems='center'
-          >
-            <StandingsRow
-              result={props.player}
-              tournament={props.tournament}
-              onUnpinPlayer={props.onUnpinPlayer}
-              canEditDecks={props.canEditDecks}
-              shouldHideDeck={props.shouldHideDecks}
-              isDeckLoading={props.isDeckLoading}
-              // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
-              translucent={hasLostInTopCut}
-              isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
-              shouldHideStanding={props.shouldHideStanding}
-              shouldDisableOpponentModal={props.shouldDisableOpponentModal}
-              isPlayerMeOrMyOpponent={false}
-            />
-          </CardBody>
-        </Card>
-
-        {props.player.currentOpponent && !props.shouldHideOpponent && (
-          <Fragment>
-            <Stack justifyContent={'center'}>
-              <Heading color='gray.400' fontSize={14} textTransform='uppercase'>
-                vs
-              </Heading>
-            </Stack>
-            <Card
-              backgroundColor={getResultBackgroundColor(
-                inverseResult(props.result),
-                colorMode
-              )}
-              width='100%'
-            >
-              <CardBody
-                padding={3}
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-              >
-                <Grid
-                  width='100%'
-                  gridTemplateColumns={props.result ? '25px auto' : 'auto'}
-                  justifyContent='center'
-                >
-                  {props.result && <ResultLetter result={props.result} />}
-                  <StandingsRow
-                    result={props.player.currentOpponent}
-                    tournament={props.tournament}
-                    canEditDecks={props.canEditDecks}
-                    shouldHideDeck={props.shouldHideDecks}
-                    isDeckLoading={props.isDeckLoading}
-                    translucent={!props.topCut}
-                    isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
-                    isPlayerMeOrMyOpponent={false}
-                  />
-                </Grid>
-              </CardBody>
-            </Card>
-          </Fragment>
-        )}
-      </HStack>
-    );
-  }
   return (
     <>
-      <TableRow className={`bg-${getResultItemBackgroundColor(props.result, colorMode)}`}>
-        {props.roundNumber && <TableCell className='px-2' width={16}><Bold className={`text-gray-500 font-black text-lg`}>{props.roundNumber}</Bold></TableCell>}
-        <TableCell width={48} className='pr-0'>{props.result && <ResultLetter result={props.result} />}</TableCell>
+      <TableRow
+        className={`bg-${getResultItemBackgroundColor(
+          props.result,
+          colorMode
+        )}`}
+      >
+        {props.roundNumber && (
+          <TableCell className='px-2' width={16}>
+            <Bold className={`text-gray-500 font-black text-lg text-right`}>
+              {props.roundNumber}
+            </Bold>
+          </TableCell>
+        )}
+        <TableCell width={48} className='pr-0'>
+          {props.result && <ResultLetter result={props.result} />}
+        </TableCell>
         <StandingsRow
           result={props.player}
           tournament={props.tournament}
