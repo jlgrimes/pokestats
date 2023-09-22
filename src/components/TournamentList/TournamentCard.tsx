@@ -1,21 +1,11 @@
 import {
-  Stack,
-  Heading,
-  LinkOverlay,
   LinkBox,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import NextLink from 'next/link';
 import { Standing, Tournament } from '../../../types/tournament';
-import { useCountryCode } from '../../hooks/tournamentMetadata';
-import { CommonCard } from '../common/CommonCard';
-import { CountryFlag } from '../Tournament/Home/CountryFlag';
 import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
 import { PinnedPlayerList } from '../Tournament/Home/PinnedPlayers/PinnedPlayerList';
 import { TopCutViewController } from '../Tournament/Home/TopCut/TopCutViewController';
-import { StreamLink } from '../Tournament/TournamentLinks';
 import { ChampionDisplay } from './ChampionDisplay';
-import { formatTournamentDate } from './helpers';
 import { TournamentInfo } from './TournamentInfo';
 import { useSessionPlayerProfile } from '../../hooks/user';
 import { Card, Flex, Grid } from '@tremor/react';
@@ -36,11 +26,9 @@ export const TournamentCard = ({
 
   return (
     <LinkBox height='100%'>
-      <Card decoration={live ? 'left' : undefined} className='flex flex-col gap-6'>
+      <Card decoration={live ? 'left' : undefined} className='flex flex-col gap-6 px-4 py-2'>
         <Flex>
-          <Flex className='justify-stretch gap-6'>
-            <TournamentInfo tournament={tournament} />
-          </Flex>
+          <TournamentInfo tournament={tournament} />
           {champion && <ChampionDisplay champion={champion} />}
         </Flex>
         {isAuthenticated && live && profile?.name && (

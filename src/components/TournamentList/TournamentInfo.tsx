@@ -1,6 +1,6 @@
 import { LinkOverlay } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { Flex, Subtitle, Title } from '@tremor/react';
+import { Flex, Grid, Subtitle, Title } from '@tremor/react';
 import { Tournament } from '../../../types/tournament';
 import { formatTournamentDate } from './helpers';
 import { TournamentStatusBadges } from './TournamentStatusBadges';
@@ -15,7 +15,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
   const countryCode = useCountryCode(props.tournament.id);
 
   return (
-      <Flex className='gap-6 justify-start'>
+      <Grid className='grid-cols-[auto_1fr] gap-4'>
          {countryCode ? <CountryFlag countryCode={countryCode} size={'sm'} /> : null}
         <Flex className='w-fit'>
           <Flex className='flex-col grow items-start'>
@@ -31,6 +31,6 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
 
           <TournamentStatusBadges tournament={props.tournament} />
         </Flex>
-      </Flex>
+      </Grid>
   );
 };
