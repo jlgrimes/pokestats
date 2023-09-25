@@ -22,6 +22,7 @@ import { useColor } from '../../hooks/useColor';
 import { TCGPLAYER_AFFILIATE_URL } from '../../lib/url';
 import { TopPlayersList } from '../TopPlayers/TopPlayersList';
 import { LeaderboardCard } from './LeaderboardCard';
+import { Callout } from '@tremor/react';
 
 export interface HomePageProps {
   tournaments: Tournament[];
@@ -35,31 +36,6 @@ export const HomePage = (props: HomePageProps) => {
 
   return (
     <Stack>
-      <Stack spacing={0} paddingBottom='2'>
-        <AppLogo big />
-        {/* <LinkBox>
-          <LinkOverlay href={TCGPLAYER_AFFILIATE_URL} isExternal>
-            <Card paddingY={2} paddingX={4} cursor='pointer'>
-              <HStack justifyContent='center'>
-                <Text>
-                  Buy your cards{' '}
-                  <Text color='blue.500' display='inline' fontWeight='bold'>
-                    here
-                  </Text>{' '}
-                  to support the site!
-                </Text>
-                <Image
-                  src='/TCGplayer-Primary-RGB_500px.png'
-                  width='100'
-                  height='50'
-                  alt='TCGplayer Affiliate Link'
-                />
-              </HStack>
-            </Card>
-          </LinkOverlay>
-        </LinkBox> */}
-        {/* <HomeIcons /> */}
-      </Stack>
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />
       {/* <LeaderboardCard /> */}

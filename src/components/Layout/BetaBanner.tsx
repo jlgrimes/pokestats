@@ -1,17 +1,16 @@
-import { Link, Stack, Text } from '@chakra-ui/react';
-import { useTwitterLink } from '../../hooks/twitter';
-import { Banner } from '../common/Banner';
+import { Bold, Button, Callout, Text } from "@tremor/react";
+import { useTwitterLink } from "../../hooks/twitter";
 
 export const BetaBanner = () => {
-  // TODO: update text once we're out of beta
-  const showBetaBanner = process.env.NEXT_PUBLIC_ENV !== 'production';
   const myTwitter = useTwitterLink('jgrimesey');
 
-  return showBetaBanner ? (
-    <Banner title='PokéStats Live is currently in beta'>
-      <Link href={myTwitter} isExternal>
-        <Text color='blue.500'>{`Please let me know if something is broken!`}</Text>
-      </Link>
-    </Banner>
-  ) : null;
+  return (
+    <Callout
+      className="mx-4 mb-4"
+      title='This is a beta version of pokestats.live'
+      color='amber'
+    >
+      Things may not work as expected - please let me know <a href={myTwitter} target="_blank" rel="noopener noreferrer"><Bold>@jgrimesey</Bold></a> if something is wrong.
+    </Callout>
+  )
 };

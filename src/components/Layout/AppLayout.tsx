@@ -16,6 +16,7 @@ import Head from 'next/head';
 import { userMockContext } from '../../contexts/MockUserContext';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { AppBody } from './AppBody';
+import { BetaBanner } from './BetaBanner';
 
 const theme = extendTheme({
   fonts: {
@@ -58,7 +59,6 @@ export const AppLayout = ({
               <link rel='icon' href='/favicon.ico' />
             </Head>
             <AppBar />
-            {/* <BetaBanner /> */}
             <AppBody>{children}</AppBody>
           </ChakraProvider>
         </userMockContext.Provider>

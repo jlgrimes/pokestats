@@ -46,7 +46,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
               </Heading>
             </Stack>
             {process.env['NEXT_PUBLIC_ENV'] === 'staging' && (
-              <Badge color='yellow'>Beta</Badge>
+              <Badge color='amber'>Beta</Badge>
             )}
           </HStack>
         </LinkOverlay>
