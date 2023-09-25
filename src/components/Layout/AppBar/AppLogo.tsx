@@ -3,13 +3,13 @@ import {
   Stack,
   LinkOverlay,
   LinkBox,
-  Badge,
   HStack,
   useColorMode,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AdminBadge } from '../../common/AdminBadge';
+import { Badge } from '@tremor/react';
 
 export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
   const { colorMode } = useColorMode();
@@ -26,7 +26,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
       <LinkBox>
         <LinkOverlay href={`/`} as={NextLink}>
           <HStack spacing={1} alignItems='baseline'>
-            <Stack direction={'row'} alignItems='center' spacing={0}>
+            <Stack direction={'row'} alignItems='baseline' spacing={0}>
               <Heading
                 color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
                 letterSpacing={'wider'}
@@ -45,7 +45,9 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
                 .live
               </Heading>
             </Stack>
-            {/* <Badge>Beta</Badge> */}
+            {process.env['NEXT_PUBLIC_ENV'] === 'staging' && (
+              <Badge color='yellow'>Beta</Badge>
+            )}
           </HStack>
         </LinkOverlay>
       </LinkBox>
