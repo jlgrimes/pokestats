@@ -7,7 +7,6 @@ import { AppLogo } from "./AppBar/AppLogo";
 export const AppBody = ({ children }: { children: React.ReactNode }) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
-  console.log(router)
 
   return (
     <Container

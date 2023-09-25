@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cropPlayerName, getPlayerRegion } from '../../src/lib/fetch/fetchLiveResults';
-import { getPokedataStandingsUrl } from '../../src/lib/url';
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,9 +11,23 @@ export default async function handler(
     const { tournamentId } = req.query;
 
     if (typeof tournamentId !== 'string') return res.status(500);
+    if (!process.env['AWS_ACCESS_KEY']) throw('AWS_ACCESS_KEY not defined')
+    if (!process.env['AWS_SECRET_KEY']) throw('AWS_SECRET_KEY not defined')
 
-    const response = await fetch(getPokedataStandingsUrl(tournamentId));
-    let data: Record<string, any>[] = await response.json();
+    const client = new S3Client({credentials: {
+      accessKeyId: process.env['AWS_ACCESS_KEY'],
+      secretAccessKey: process.env['AWS_SECRET_KEY']
+    }})
+    const command = new GetObjectCommand({
+      Bucket: "pokescraper",
+      Key: `masters_${tournamentId}.json`
+    });
+    const response = await client.send(command);
+
+    if (!response.Body) throw('no body');
+    // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
+    const str = await response.Body.transformToString();
+    const data = JSON.parse(str);
 
     data.forEach((player, idx) => {
       data[idx].region = getPlayerRegion(player.name)?.at(1);
@@ -28,6 +42,7 @@ export default async function handler(
 
     res.status(200).json(data);
   } catch (err) {
+    console.error(err)
     return res.status(500);
   } finally {
     res.end();
