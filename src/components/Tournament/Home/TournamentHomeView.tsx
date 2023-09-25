@@ -1,40 +1,23 @@
 import {
-  Badge,
   Box,
   Grid,
   Heading,
-  HStack,
   Stack,
-  Text,
-  useColorMode,
 } from '@chakra-ui/react';
-import { Fragment } from 'react';
-import {
-  FaCalendar,
-  FaClock,
-  FaMapMarker,
-  FaMapMarkerAlt,
-  FaRegClock,
-} from 'react-icons/fa';
 import { Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { useCountryCode, useLocation } from '../../../hooks/tournamentMetadata';
-import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { StatsHeading } from '../../common/StatsHeading';
 import { TopDecks } from '../../Home/TopDecks';
 import { formatTournamentDate } from '../../TournamentList/helpers';
-import { TournamentStatusBadge } from '../../TournamentList/TournamentStatusCallout';
 import { TournamentStatusBanner } from '../../TournamentList/TournamentStatusBanner';
 import { AdminTournamentPanel } from './AdminTournamentPanel';
 import { CountryFlag } from './CountryFlag';
-import { getLocalTime, isInSameTimeZone } from './helpers';
 import { PlayerTournamentView } from './PlayerTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
 import { TopCutViewController } from './TopCut/TopCutViewController';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
-import { useUser } from '@supabase/auth-helpers-react';
 import { useSessionPlayerProfile } from '../../../hooks/user';
-import { TournamentFormatBadges } from '../../TournamentList/TournamentFormatBadges';
 import { useColor } from '../../../hooks/useColor';
 import { Ad } from '../../Ad';
 import { StreamIconLink } from '../TournamentLinks';
@@ -87,7 +70,6 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           </Stack>
           <StreamIconLink tournament={props.tournament} />
         </Grid>
-        {/* <TournamentFormatBadges tournament={props.tournament} size='sm' /> */}
       </Stack>
       <TournamentHomeLinks tournament={props.tournament} />
       <Ad slot='7673650238' />
