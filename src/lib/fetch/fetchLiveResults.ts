@@ -12,83 +12,12 @@ import { fetchFormats, FormatSchema } from '../../hooks/formats/formats';
 import { getTournamentFormat } from '../../hooks/formats/helpers';
 import { fetchPlayerDecks } from '../../hooks/playerDecks';
 import { fetchTournaments } from '../../hooks/tournaments';
-import supabase from '../supabase/client';
 import {
   getTournamentRoundSchema,
   ifPlayerDay2,
   TournamentRoundMapSchema,
 } from '../tournament';
 import { getPokedataStandingsUrl } from '../url';
-
-interface FetchDeckArchetypesFilters {
-  format: FormatSchema | undefined;
-}
-
-const updatePlayerProfilesWithTournament = async (
-  parsedData: Record<string, any>[],
-  tournamentId: string,
-  playerProfiles?: any[] | null
-) => {
-  if (!playerProfiles) {
-    const { data } = await supabase
-      .from('Player Profiles')
-      .select('id,name,email,tournament_history');
-    playerProfiles = data;
-  }
-
-  const perfStart = performance.now();
-  const upsertingRows = parsedData.reduce(
-    (acc: Record<string, any>[], standing, idx) => {
-      const player: {
-        id: string;
-        name: string;
-        tournament_history: string[];
-        email: string | null;
-      } = playerProfiles?.find(({ name }) => name === standing.name) ?? {
-        id: `${tournamentId}${idx}`,
-        name: standing.name,
-        tournament_history: [],
-        email: null,
-      };
-      const shouldUpdatePlayerProfile =
-        !player.tournament_history.includes(tournamentId);
-      const duplicateName =
-        parsedData.filter(dataStanding => dataStanding.name === standing.name)
-          ?.length > 1;
-
-      if (!shouldUpdatePlayerProfile || duplicateName) {
-        return acc;
-      }
-
-      return [
-        ...acc,
-        {
-          id: player.id,
-          name: player.name,
-          email: player.email,
-          tournament_history: [
-            ...(player.tournament_history ?? []),
-            tournamentId,
-          ],
-        },
-      ];
-    },
-    []
-  );
-  const { error } = await supabase
-    .from('Player Profiles')
-    .upsert(upsertingRows, {
-      onConflict: 'name',
-    });
-
-  // console.log(
-  //   'done updating players:',
-  //   (performance.now() - perfStart) / 1000,
-  //   'sec'
-  // );
-
-  return { error };
-};
 
 export const getPlayerDeckObjects = async (
   tournamentId: string,
@@ -160,8 +89,11 @@ const matchArchetype = (
   deckArchetypes: Deck[] | null,
   list: Record<any, any>,
   targetLength: number
-) =>
-  deckArchetypes?.find(({ identifiable_cards }) => {
+) => {
+  if (!list.pokemon) list = JSON.parse(list as unknown as string);
+  if (!list.pokemon) return null
+
+  return deckArchetypes?.find(({ identifiable_cards }) => {
     return (
       identifiable_cards?.length === targetLength &&
       identifiable_cards?.every(
@@ -178,8 +110,10 @@ const matchArchetype = (
       )
     );
   });
+}
 
-const getPlayerDeck = (
+
+export const getPlayerDeck = (
   playerDeckObjects: PlayerDeckObject[] | undefined,
   player: Player,
   deckArchetypes: Deck[] | null
@@ -187,7 +121,7 @@ const getPlayerDeck = (
   const savedDeckInfo = playerDeckObjects?.find(
     playerDeck => playerDeck.player_name === player.name
   )?.deck;
-  const list = player.decklist;
+  let list = player.decklist
   let inferredArchetypeFromList;
 
   if (list) {
