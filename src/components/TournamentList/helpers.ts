@@ -115,14 +115,22 @@ export const getTournamentStatusCalloutProps = (
 };
 
 export const getTournamentRange = (tournament: Tournament) => {
-  if (tournament.name.includes('Regional')) {
-    return eachWeekendOfInterval({
-      start: parseISO(tournament.date.start),
-      end: parseISO(tournament.date.end),
-    });
+  const startDate = parseISO(tournament.date.start);
+  const endDate = parseISO(tournament.date.end);
+
+  try {
+    if (tournament.name.includes('Regional')) {
+      return eachWeekendOfInterval({
+        start: startDate,
+        end: endDate,
+      });
+    }
+  } catch(e) {
+    // If the weekend thing doesn't work, just return whatever is in there.
+    return [startDate, endDate];
   }
 
-  return [parseISO(tournament.date.start), parseISO(tournament.date.end)];
+  return [startDate, endDate];
 };
 
 export const formatTournamentDate = (

@@ -49,84 +49,11 @@ export const fixTournamentStatus = (tournament: Tournament) => {
   return tournament.tournamentStatus;
 }
 
-export const fetchPokedataTournaments = async (
-  options?: FetchTournamentsOptions
-) => {
-  const url = options?.prefetch
-    ? 'https://pokedata.ovh/standings/tournaments.json'
-    : '/api/tournaments';
-
-  const res: Response = await fetch(url);
-  let data: Tournament[] = await res.json();
-  data = data.map(tournament => ({
-    ...tournament,
-    name: shortenTournamentName(tournament),
-    tournamentStatus: fixTournamentStatus(tournament)
-  }));
-
-  if (options?.onlyFinished) {
-    data = data.filter(
-      tournament => tournament.tournamentStatus === 'finished'
-    );
-  }
-
-  data = data.filter(
-    tournament =>
-      tournament.date.start &&
-      isAfter(parseISO(tournament.date.start), parseISO('2022-05-09'))
-  );
-
-  if (options?.excludeUpcoming) {
-    data = data.filter(
-      tournament =>
-        tournament.tournamentStatus !== 'not-started' &&
-        // something's wrong with tournament 0000019 i guess
-        tournament.id !== '0000019'
-    );
-  }
-
-  if (options?.tournamentId) {
-    data = data.filter(tournament => tournament.id === options.tournamentId);
-  }
-
-  // Add "after day one" tournament status
-  data = data.map(tournament => {
-    return {
-      ...tournament,
-      tournamentStatus:
-        tournament.players.masters &&
-        tournament.players.masters > 0 &&
-        !tournament.roundNumbers.masters
-          ? 'not-started'
-          : tournament.tournamentStatus,
-      subStatus: getTournamentSubStatus(tournament),
-    };
-  });
-
-  let i = 0;
-  for await (const tournament of data) {
-    if (!isTournamentLongGone(tournament)) {
-      const newTournament = await getPatchedTournament(
-        tournament,
-        undefined,
-        options?.prefetch
-      );
-
-      if (newTournament) {
-        data[i] = newTournament;
-      }
-    }
-    i++;
-  }
-
-  return data.slice().reverse();
-};
-
 export const padTournamentId = (tournament: Tournament) => ({ ...tournament, id: String(tournament.id).padStart(7, '0') })
 
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   let query = supabase
-    .from('Tournaments')
+    .from('tournaments_new')
     .select(
       'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
     )
@@ -158,7 +85,7 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
 
 export const fetchSingleTournament = async (tournamentId: string) => {
   let query = supabase
-    .from('Tournaments')
+    .from('tournaments_new')
     .select(
       'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
     )
