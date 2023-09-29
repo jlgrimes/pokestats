@@ -49,8 +49,8 @@ export const DeckInfoDisplay = memo(
     const userIsLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
     const shouldShowList =
-      player?.deck?.list || (player.deck?.listImagePath && !disableList);
-    const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
+      player?.decklist;
+    const shouldShowSmallEditIcon = enableEdits && player.deck_archetype;
 
     const ifShouldHideDeck = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
@@ -69,7 +69,7 @@ export const DeckInfoDisplay = memo(
       tournament.topCutStatus,
     ]);
 
-    const shouldShowEditButton = shouldShowSmallEditIcon && !player.deck?.list;
+    const shouldShowEditButton = shouldShowSmallEditIcon && !player.decklist;
 
     return (
       <Grid
@@ -90,7 +90,7 @@ export const DeckInfoDisplay = memo(
         <DeckInput
           tournament={tournament}
           playerName={player.name}
-          deck={player.deck ?? undefined}
+          deck={player.deck_archetype ?? undefined}
           archetypeModal={archetypeModal}
           shouldShowAsText={shouldShowAsText}
           shouldHideDeck={ifShouldHideDeck()}

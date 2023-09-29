@@ -73,7 +73,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
             ) : (
               <ComponentLoader />
             )}
-            {props.hideArchetype && props.result.deck?.list && (
+            {props.hideArchetype && props.result.decklist && (
               <ListViewerOpenButton
                 result={props.result}
                 tournament={props.tournament}

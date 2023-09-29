@@ -69,7 +69,8 @@ export interface Standing {
   day2?: boolean;
   outOfDay2?: boolean;
   currentOpponent?: Standing;
-  deck?: Deck | null;
+  deck_archetype?: Deck | null;
+  decklist: string;
   drop?: number | null;
   tournamentId?: string;
   tournament?: Tournament | null;
