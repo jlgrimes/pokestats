@@ -81,9 +81,9 @@ export const mapFinalResultsToStandings = (
     deck: finalResult.deck_archetype
       ? {
           ...finalResult.deck_archetype,
-          ...(finalResult.deck_list
+          ...(finalResult.decklist
             ? {
-                list: finalResult.deck_list,
+                list: finalResult.decklist,
               }
             : finalResult.uploaded_list_path
             ? {

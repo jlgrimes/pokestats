@@ -10,6 +10,7 @@ import { StatsHeading } from '../common/StatsHeading';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
 import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';
+import { useStandings } from '../../hooks/newStandings';
 
 export default function TournamentView({
   tournament,
@@ -33,17 +34,14 @@ export default function TournamentView({
     supertypesVisible: []
   });
 
-  const { data: liveResults, isLoading } = useLiveTournamentResults(
-    tournament.id,
-    {
-      load: { allRoundData: true },
-      filters: standingsFilters,
-    }
-  );
+  const { data: liveResults, isLoading } = useStandings(parseInt(tournament.id))
+  // TODO PLEASE CHANGE THIS
+  const shouldHideDecks = false;
+  console.log(liveResults)
 
   if (isLoading) return <FullPageLoader />;
 
-  if (!isLoading && liveResults?.data.length === 0)
+  if (!isLoading && liveResults?.length === 0)
     return (
       <SorryText>
         {`Sorry, we're unable to retrieve standings right now. Please try again later.`}
@@ -61,13 +59,13 @@ export default function TournamentView({
         tournament={tournament}
         standingsFilters={standingsFilters}
         setStandingsFilters={setStandingsFilters}
-        disabled={liveResults?.shouldHideDecks}
+        disabled={shouldHideDecks}
       />
       {liveResults && (
         <StandingsList
-          results={liveResults.data}
+          results={liveResults}
           tournament={tournament}
-          shouldHideDecks={liveResults.shouldHideDecks}
+          shouldHideDecks={shouldHideDecks}
         />
       )}
     </Stack>

@@ -81,7 +81,7 @@ export const fetchDecksWithLists = async (
 export const fetchFinalResults = async (
   filters?: FinalResultsFilters
 ): Promise<Standing[] | null | undefined> => {
-  const selectQueryStr =  `name,placing,record,resistances,rounds,tournament_id,deck_list,deck_archetype (
+  const selectQueryStr =  `name,placing,record,resistances,rounds,tournament_id,decklist,deck_archetype (
     id,
       name,
       defined_pokemon,
@@ -91,7 +91,7 @@ export const fetchFinalResults = async (
     ),deck_supertype,uploaded_list_path${filters?.shouldExpandTournament ? ',tournament(id,name,date,tournamentStatus,players,roundNumbers,rk9link,subStatus,winners,format)' : ''}`;
 
   let query = supabase
-    .from('Final Results')
+    .from('standings_new')
     .select(selectQueryStr)
     .order('tournament', { ascending: false })
     .order('placing', { ascending: true });
@@ -189,8 +189,8 @@ export const fetchFinalResults = async (
       const stringifiedNames = getStringifiedNames(opponentList);
 
       const opponentRes = await supabase
-        .from('Final Results')
-        .select(`name,placing,record,resistances,tournament_id,deck_list,deck_archetype (
+        .from('standings_new')
+        .select(`name,placing,record,resistances,tournament_id,decklist,deck_archetype (
           id,
             name,
             defined_pokemon,

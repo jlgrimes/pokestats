@@ -12,14 +12,9 @@ export default function TournamentPage({
 }: {
   tournament: Tournament;
 }) {
-  const { data: patchedTournamentData } = usePatchedTournaments([tournament]);
-  const patchedTournament = patchedTournamentData
-    ? patchedTournamentData[0]
-    : tournament;
-
   return (
-    <TournamentPageLayout tournament={patchedTournament}>
-      <TournamentView tournament={patchedTournament} />
+    <TournamentPageLayout tournament={tournament}>
+      <TournamentView tournament={tournament} />
     </TournamentPageLayout>
   );
 }

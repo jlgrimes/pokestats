@@ -16,7 +16,7 @@ describe('final results helpers', () => {
           resistances: { self: 100, opp: 100, oppopp: 100 },
           rounds: [],
           tournament_id: '1',
-          deck_list: null,
+          decklist: null,
           deck_archetype: null,
           uploaded_list_path: null,
           tournament: null
@@ -28,7 +28,7 @@ describe('final results helpers', () => {
           resistances: { self: 100, opp: 100, oppopp: 100 },
           rounds: [],
           tournament_id: '2',
-          deck_list: null,
+          decklist: null,
           deck_archetype: null,
           uploaded_list_path: null,
           tournament: null
