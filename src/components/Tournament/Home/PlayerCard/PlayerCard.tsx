@@ -44,7 +44,6 @@ export interface PlayerCardProps {
   shouldMoveResultLast?: boolean;
   isPlayerMeOrMyOpponent: boolean;
   roundNumber?: number;
-  style?: any;
 }
 
 export const inverseResult = (result?: MatchResult) =>
@@ -76,7 +75,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
           props.result,
           colorMode
         )}`}
-        style={props.style}
       >
         {props.roundNumber && (
           <TableCell className='px-2' width={16}>

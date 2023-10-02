@@ -6,7 +6,6 @@ import { StandingsRowExpandable } from './StandingsRowExpandable';
 
 interface VirtualizedRowProps {
   index: number;
-  style: any;
   standing: Standing;
   tournament: Tournament;
   canEditDecks: boolean;
@@ -23,7 +22,6 @@ export const VirtualizedRow = memo((props: VirtualizedRowProps) => {
       size='sm'
       shouldHideOpponent
       isPlayerMeOrMyOpponent={false}
-      style={props.style}
     />
   );
 });
