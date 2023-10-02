@@ -1,30 +1,28 @@
 import { useQuery } from "@tanstack/react-query"
 import supabase from "../lib/supabase/client"
+import { capitalize } from "../lib/strings";
+import { Tournament } from "../../types/tournament";
 
 export const fixStoredDeck = (decklist: any) => {
-  if (decklist === '""') return {};
+  // if (decklist === '""') return {};
 
-  decklist = JSON.parse(decklist);
-  if (!decklist.pokemon) decklist = JSON.parse(decklist as unknown as string);
+  // if (!decklist.pokemon) decklist = JSON.parse(decklist as unknown as string);
   return decklist;
 }
 
-const fetchStandings = async (tournamentId: number) => {
-  const liveStandings = await supabase.from('live_standings').select('*,deck_archetype(id,defined_pokemon)').eq('tournament_id', tournamentId).order('placing', { ascending: true });
-  const standings = await supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon)').eq('tournament_id', tournamentId).order('placing', { ascending: true });
-  
-  return [
-    ...(liveStandings.data ?? []),
-    ...(standings.data ?? [])
-  ].map((standing) => ({
-    ...standing,
-    decklist: fixStoredDeck(standing.decklist)
-  }));
+const fetchStandings = async (params: UseStandingsParams) => {
+  const standings = await supabase.from(params.tournament.tournamentStatus === 'running' ? 'live_standings' : 'standings_new').select('*,deck_archetype(id,defined_pokemon)').eq('tournament_id', params.tournament.id).eq('age_division', capitalize(params.ageDivision)).order('placing', { ascending: true });
+  return standings.data;
 }
 
-export const useStandings = (tournamentId: number) => {
+interface UseStandingsParams {
+  tournament: Tournament;
+  ageDivision: string;
+}
+
+export const useStandings = (params: UseStandingsParams) => {
   return useQuery({
-    queryKey: ['standings', tournamentId],
-    queryFn: () => fetchStandings(tournamentId)
+    queryKey: ['standings', params.tournament.id, params.ageDivision],
+    queryFn: () => fetchStandings(params)
   });
 }

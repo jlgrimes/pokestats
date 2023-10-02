@@ -1,6 +1,7 @@
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
+import { AgeDivision } from '../../../types/age-division';
 import { useLiveTournamentResults } from '../../hooks/tournamentResults';
 import { Ad } from '../Ad';
 import { Banner } from '../common/Banner';
@@ -14,8 +15,10 @@ import { useStandings } from '../../hooks/newStandings';
 
 export default function TournamentView({
   tournament,
+  ageDivision
 }: {
   tournament: Tournament;
+  ageDivision: AgeDivision
 }) {
   const [standingsFilters, setStandingsFilters] = useState<StandingsFilters>({
     justDay2: {
@@ -34,10 +37,12 @@ export default function TournamentView({
     supertypesVisible: []
   });
 
-  const { data: liveResults, isLoading } = useStandings(parseInt(tournament.id))
+  const { data: liveResults, isLoading } = useStandings({
+    tournament,
+    ageDivision
+  });
   // TODO PLEASE CHANGE THIS
   const shouldHideDecks = false;
-  console.log(liveResults)
 
   if (isLoading) return <FullPageLoader />;
 

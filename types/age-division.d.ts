@@ -1,0 +1,1 @@
+export type AgeDivision = 'juniors' | 'seniors' | 'masters';
