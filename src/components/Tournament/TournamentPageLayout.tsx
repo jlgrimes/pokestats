@@ -1,6 +1,5 @@
 import {
   Stack,
-  Text,
   useColorMode,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -9,6 +8,9 @@ import { Tournament } from '../../../types/tournament';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { capitalize } from '../../lib/strings';
 import { StatsHeading } from '../common/StatsHeading';
+import { PageTitle } from '../common/new/PageTitle';
+import { Text } from '@tremor/react';
+import { AgeDivisionSelector } from './AgeDivisionSelector';
 
 export const TournamentPageLayout = ({
   children,
@@ -29,14 +31,13 @@ export const TournamentPageLayout = ({
   return (
     <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
       <Stack paddingX={4} paddingTop={2} spacing={1}>
-        <StatsHeading
-          headingProps={{ color: colorMode === 'dark' ? 'gray.100' : 'gray.700'}}
-        >
+        <PageTitle>
           {`${tournament.name} ${capitalize(slug as string)}`}
-        </StatsHeading>
-        <Text fontSize='sm'>
+        </PageTitle>
+        <Text>
           Standings are unofficial and may be inaccurate.
         </Text>
+        <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}

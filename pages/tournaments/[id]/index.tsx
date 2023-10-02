@@ -1,12 +1,12 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { TournamentHomeView } from '../../../../src/components/Tournament/Home/TournamentHomeView';
-import { fetchFinalResults } from '../../../../src/hooks/finalResults/fetch';
-import { fetchOneTournamentMetadata } from '../../../../src/hooks/tournamentMetadata';
+import { TournamentHomeView } from '../../../src/components/Tournament/Home/TournamentHomeView';
+import { fetchFinalResults } from '../../../src/hooks/finalResults/fetch';
+import { fetchOneTournamentMetadata } from '../../../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
   usePatchedTournaments,
-} from '../../../../src/hooks/tournaments';
-import { Tournament } from '../../../../types/tournament';
+} from '../../../src/hooks/tournaments';
+import { Tournament } from '../../../types/tournament';
 
 interface TournamentPageProps {
   tournament: Tournament;
@@ -23,7 +23,7 @@ export default function TournamentPage(props: TournamentPageProps) {
   return <TournamentHomeView tournament={patchedTournament} />;
 }
 
-export async function getStaticProps({ params }: { params: { id: string, division: string } }) {
+export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
 
   const [tournament] = await fetchTournaments({
@@ -52,7 +52,6 @@ export async function getStaticProps({ params }: { params: { id: string, divisio
   return {
     props: {
       tournament,
-      ageDivision: params.division,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
@@ -73,13 +72,8 @@ export async function getStaticPaths() {
     };
   });
 
-  let pathsWithDivisions: any[] = [];
-  for (const division of ['masters', 'seniors', 'juniors']) {
-    pathsWithDivisions = [...pathsWithDivisions, ...paths.map((path) => ({ params: { ...path.params, division }}))]
-  }
-
   return {
-    paths: pathsWithDivisions,
+    paths,
     fallback: 'blocking',
   };
 }

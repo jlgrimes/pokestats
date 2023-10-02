@@ -21,6 +21,8 @@ import { useSessionPlayerProfile } from '../../../hooks/user';
 import { useColor } from '../../../hooks/useColor';
 import { Ad } from '../../Ad';
 import { StreamIconLink } from '../TournamentLinks';
+import { PageTitle } from '../../common/new/PageTitle';
+import { Flex } from '@tremor/react';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -41,10 +43,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         tournament={props.tournament}
         location={location}
       />
-      <Stack paddingX={6} spacing={1}>
-        <Heading size='lg' color={header} lineHeight={'2rem'}>
+      <Flex className='flex-col'>
+        <PageTitle>
           {props.tournament.name}
-        </Heading>
+        </PageTitle>
         <Grid gridTemplateColumns={'5rem 1fr auto'} alignItems='center' rowGap={2}>
           {country ? (
             <Box>
@@ -70,7 +72,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           </Stack>
           <StreamIconLink tournament={props.tournament} />
         </Grid>
-      </Stack>
+      </Flex>
       <TournamentHomeLinks tournament={props.tournament} />
       <Ad slot='7673650238' />
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
