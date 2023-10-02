@@ -15,17 +15,16 @@ interface VirtualizedRowProps {
 
 export const VirtualizedRow = memo((props: VirtualizedRowProps) => {
   return (
-    <Box style={props.style}>
-      <PlayerCard
-        player={props.standing}
-        tournament={props.tournament}
-        shouldHideDecks={props.shouldHideDeck}
-        canEditDecks={props.canEditDecks}
-        size='sm'
-        shouldHideOpponent
-        isPlayerMeOrMyOpponent={false}
-      />
-    </Box>
+    <PlayerCard
+      player={props.standing}
+      tournament={props.tournament}
+      shouldHideDecks={props.shouldHideDeck}
+      canEditDecks={props.canEditDecks}
+      size='sm'
+      shouldHideOpponent
+      isPlayerMeOrMyOpponent={false}
+      style={props.style}
+    />
   );
 });
 
