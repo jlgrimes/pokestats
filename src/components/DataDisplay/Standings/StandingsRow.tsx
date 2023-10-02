@@ -37,10 +37,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       {!props.shouldHideStanding && !props.isCurrentlyPlayingInTopCut && (
         <td>
           <Text>
-            <RecordIcon
+            {/* <RecordIcon
               standing={props.result}
               tournament={props.tournament as Tournament}
-            />
+            /> */}
             {props.opponentRoundNumber ??
                 (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
           </Text>
