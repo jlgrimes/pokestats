@@ -141,9 +141,9 @@ export const formatTournamentDate = (
 
   // I want to use ordinal numbers but these guys won't let me :(
   // https://atlassian.design/content/writing-guidelines/date-and-time-guideline
-  return `${format(startDate, 'MMM d')}${startDate.getMonth() !== endDate.getMonth() ? ' - ' : '-'}${format(
+  return `${format(startDate, 'MMMM d')}${startDate.getMonth() !== endDate.getMonth() ? ' - ' : '-'}${format(
     endDate,
-    `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM' : ''} d${', y'}`
+    `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM ' : ''}d${', y'}`
   )}`;
 };
 
