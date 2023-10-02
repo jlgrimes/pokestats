@@ -103,6 +103,9 @@ module.exports = {
       },
       padding: {
         'tremor-TableCell-root': '0rem'
+      },
+      lineHeight: {
+        'standings': '46px'
       }
     },
   },

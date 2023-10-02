@@ -49,7 +49,7 @@ export const DeckInfoDisplay = memo(
     const userIsLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
     const shouldShowList =
-      player?.decklist;
+      player?.decklist && !disableList;
     const shouldShowSmallEditIcon = enableEdits && player.deck_archetype;
 
     const ifShouldHideDeck = useCallback(() => {
@@ -74,6 +74,7 @@ export const DeckInfoDisplay = memo(
     return (
       <Grid
         gridTemplateColumns={
+          !shouldShowList ? 'auto' :
           userIsLoggedInUser && shouldShowEditButton
             ? `auto 15px 50px`
             : shouldDisableDeckExtras &&
@@ -121,7 +122,7 @@ export const DeckInfoDisplay = memo(
             tournamentId={tournament.id}
           />
         ) : (
-          <Box />
+          <></>
         )}
 
         {/* {!shouldHideMenu && (

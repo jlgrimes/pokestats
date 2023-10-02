@@ -1,7 +1,7 @@
 import { Standing, Tournament } from '../../../../types/tournament';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { Record } from '../../Tournament/Results/ResultsList/Record';
-import { memo, useCallback } from 'react';
+import { PropsWithChildren, memo, useCallback } from 'react';
 import { RecordIcon } from '../../Tournament/Results/ResultsList/RecordIcon';
 import { ListViewerOpenButton } from '../../Deck/ListViewer/ListViewerOpenButton';
 import { ifPlayerDay2 } from '../../../lib/tournament';
@@ -11,11 +11,28 @@ import { CountryFlag } from '../../Tournament/Home/CountryFlag';
 import { Flex, Text } from '@tremor/react';
 import { useDisclosure } from '@chakra-ui/react';
 
+interface StandingsCellProps extends PropsWithChildren {
+  className?: string;
+  width?: number;
+  onClick?: (e: any) => void
+}
+
+export const StandingsCell = (props: StandingsCellProps) => {
+  const {
+    children,
+    className,
+    ...rest
+  } = props;
+
+  return <td {...rest} className={'align-middle ' + className ?? ''}>{props.children}</td>;
+}
+
+
 export interface StandingsRowProps {
   result: Standing;
   tournament: Tournament;
   isPlayerMeOrMyOpponent: boolean;
-  canEditDecks?: boolean;
+  canEdiStandingsCellecks?: boolean;
   rowExpanded?: boolean;
   opponentRoundNumber?: number;
   opponentResult?: string;
@@ -27,6 +44,8 @@ export interface StandingsRowProps {
   isCurrentlyPlayingInTopCut?: boolean;
   shouldDisableOpponentModal?: boolean;
   shouldHideStanding?: boolean;
+  shouldHideList?: boolean;
+  shouldHideRegion?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -35,7 +54,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   return (
     <>
       {!props.shouldHideStanding && !props.isCurrentlyPlayingInTopCut && (
-        <td>
+        <StandingsCell>
           <Text>
             {/* <RecordIcon
               standing={props.result}
@@ -44,31 +63,34 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
             {props.opponentRoundNumber ??
                 (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
           </Text>
-        </td>
+        </StandingsCell>
       )}
-      <td width={40}>
-        {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
-      </td>
-      <td
-        className={`whitespace-normal break-normal ${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
+      {!props.shouldHideRegion && (
+        <StandingsCell width={40}>
+          {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
+        </StandingsCell>
+      )}
+      <StandingsCell
+        className={`align-middle whitespace-normal break-normal ${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
         onClick={onOpen}
       >
         <Text className={`${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
           {props.result.name}
         </Text>
-      </td>
-      <td width={126}>
+      </StandingsCell>
+      <StandingsCell width={props.shouldHideList ? 80 : 126}>
         <Flex className='gap-2'>
           {!props.hideArchetype && !props.isDeckLoading ? (
               <DeckInfoDisplay
                 tournament={props.tournament}
                 player={props.result}
-                enableEdits={!!props.canEditDecks}
+                enableEdits={!!props.canEdiStandingsCellecks}
                 shouldHideDeck={props.shouldHideDeck}
                 onUnpinPlayer={props.onUnpinPlayer}
                 shouldHideMenu={props.translucent}
                 shouldDisableDeckExtras={props.isCurrentlyPlayingInTopCut}
                 isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
+                disableList={props.shouldHideList}
               />
             ) : (
               <ComponentLoader />
@@ -80,11 +102,11 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
               />
             )}
         </Flex>
-      </td>
+      </StandingsCell>
       {!props.isCurrentlyPlayingInTopCut && (
-        <td width={80}>
+        <StandingsCell width={80} className='text-right'>
           <Record standing={props.result} />
-        </td>
+        </StandingsCell>
       )}
       {!props.shouldDisableOpponentModal && (
         <OpponentRoundList

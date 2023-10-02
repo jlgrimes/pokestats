@@ -1,6 +1,7 @@
 import { getYear, parseISO } from 'date-fns';
 import { Standing, Tournament } from '../../types/tournament';
 import { Player } from './fetch/fetchLiveResults';
+import { AgeDivision } from '../../types/age-division';
 
 export const shortenTournamentName = (tournament: Tournament) => {
   const tournamentStartYear = getYear(parseISO(tournament.date.start));
@@ -99,8 +100,8 @@ export const HARDCODED_TOURNAMENT_ROUNDS: Record<string, number> = {
   '0000086': 8
 }
 
-export const getTournamentRoundSchema = (tournament: Tournament) => {
-  const numberOfPlayers = tournament.players.masters;
+export const getTournamentRoundSchema = (tournament: Tournament, ageDivision?: AgeDivision) => {
+  const numberOfPlayers = tournament.players[ageDivision ?? 'masters'];
   if (!numberOfPlayers) return undefined;
 
   if (Object.keys(HARDCODED_TOURNAMENT_ROUNDS).includes(tournament.id)) {

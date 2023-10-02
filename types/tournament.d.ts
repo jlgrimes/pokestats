@@ -3,6 +3,7 @@ import {
   DeckTypeSchema,
 } from '../src/hooks/deckArchetypes';
 import { FormatSchema } from '../src/hooks/formats/formats';
+import { AgeDivision } from './age-division';
 import { StoredPlayerProfile } from './player';
 
 export interface DeckCard {
@@ -75,6 +76,7 @@ export interface Standing {
   tournamentId?: string;
   tournament?: Tournament | null;
   region?: string;
+  age_division: AgeDivision;
 }
 
 export interface MatchupResult extends Standing {

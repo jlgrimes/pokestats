@@ -24,7 +24,7 @@ import {
   getResultItemPrimaryColor,
 } from '../../../DataDisplay/helpers';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
-import { StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
+import { StandingsCell, StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
 
 export type PlayerCardSize = 'sm' | 'md' | 'lg';
 
@@ -71,22 +71,22 @@ export const PlayerCard = (props: PlayerCardProps) => {
   return (
     <>
       <TableRow
-        className={`bg-${getResultItemBackgroundColor(
+        className={`h-11 bg-${getResultItemBackgroundColor(
           props.result,
           colorMode
         )}`}
       >
         {props.roundNumber && (
-          <TableCell className='px-2' width={16}>
+          <StandingsCell className='pl-2 w-8 text-right'>
             <Bold className={`text-gray-500 font-black text-lg text-right`}>
               {props.roundNumber}
             </Bold>
-          </TableCell>
+          </StandingsCell>
         )}
         {props.result && (
-          <TableCell width={48} className='pr-0'>
+          <StandingsCell className='pr-0 w-8 text-center'>
             <ResultLetter result={props.result} />
-          </TableCell>
+          </StandingsCell>
         )}
         <StandingsRow
           result={props.player}
@@ -101,6 +101,8 @@ export const PlayerCard = (props: PlayerCardProps) => {
           shouldHideStanding={props.shouldHideStanding}
           shouldDisableOpponentModal={props.shouldDisableOpponentModal}
           isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
+          shouldHideList
+          shouldHideRegion
         />
       </TableRow>
     </>

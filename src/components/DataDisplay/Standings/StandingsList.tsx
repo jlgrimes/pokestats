@@ -3,13 +3,13 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeListProps, FixedSizeList } from 'react-window';
 import { Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
-import { StandingsRowExpandable } from './StandingsRowExpandable';
 import { Fragment, memo, useMemo, useCallback, useEffect, forwardRef, useContext, createContext, useRef, useState } from 'react';
 import { tableHeadingProps } from './props';
 import { VirtualizedRow } from './VirtualizedRow';
 import { PlayerCard } from '../../Tournament/Home/PlayerCard/PlayerCard';
 import { Ad } from '../../Ad';
 import { useFixAutoHeight } from '../../../hooks/useFixAutoHeight';
+import { Table, TableBody } from '@tremor/react';
 
 /** Context for cross component communication */
 const VirtualTableContext = createContext<{
@@ -71,11 +71,11 @@ const Inner = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
     const { header, footer, top } = useContext(VirtualTableContext)
     return (
       <div {...rest} ref={ref}>
-        <table style={{ top, position: 'absolute', width: '100%' }}>
+        <Table style={{ top, position: 'absolute', width: '100%' }}>
           {header}
-          <tbody>{children}</tbody>
+          <TableBody>{children}</TableBody>
           {footer}
-        </table>
+        </Table>
       </div>
     )
   }
@@ -108,7 +108,7 @@ export const StandingsList = memo(
             height={height}
             width={width}
             itemCount={results.length}
-            itemSize={42}
+            itemSize={44}
             row={Row}
           />
         );

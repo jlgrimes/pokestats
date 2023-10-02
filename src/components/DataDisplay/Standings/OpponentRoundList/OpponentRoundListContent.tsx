@@ -41,6 +41,7 @@ import { Username } from '../../../Profile/Username';
 import { FollowButton } from '../../../Social/FollowButton';
 import { Record } from '../../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
+import { getShouldHideDecks, useStandings } from '../../../../hooks/newStandings';
 
 export const OpponentRoundListContent = ({
   tournament,
@@ -52,9 +53,7 @@ export const OpponentRoundListContent = ({
   // We set the load - allRoundData flag to true because this component will only
   // get rendered if opponent round data is loaded. So we can just tap into that
   // without triggering a long load time for refetching the tournament.
-  const { data: liveResults } = useLiveTournamentResults(tournament.id, {
-    load: { allRoundData: true },
-  });
+  const { data: liveResults } = useStandings({ tournament, ageDivision: player.age_division });
   const { data: userIsAdmin } = useUserIsAdmin();
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
@@ -68,7 +67,7 @@ export const OpponentRoundListContent = ({
     player.rounds;
 
   const rounds = opponents?.map(({ name, result }) => {
-    const standing = liveResults?.data.find(
+    const standing = liveResults?.find(
       standing => standing.name === cropPlayerName(name)
     );
     return {
@@ -127,7 +126,7 @@ export const OpponentRoundListContent = ({
               rounds,
             }}
             tournament={tournament}
-            shouldHideDecks={!!liveResults?.shouldHideDecks}
+            shouldHideDecks={getShouldHideDecks({ tournament, ageDivision: player.age_division })}
             shouldDisableOpponentModal
             canEditDecks={userMatchesLoggedInUser}
             userIsAdmin={userIsAdmin}
