@@ -108,7 +108,7 @@ export const StandingsList = memo(
             height={height}
             width={width}
             itemCount={results.length}
-            itemSize={72}
+            itemSize={42}
             row={Row}
           />
         );

@@ -8,7 +8,7 @@ import { ifPlayerDay2 } from '../../../lib/tournament';
 import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
 import { ComponentLoader } from '../../common/ComponentLoader';
 import { CountryFlag } from '../../Tournament/Home/CountryFlag';
-import { Flex, TableCell, Text } from '@tremor/react';
+import { Flex, Text } from '@tremor/react';
 import { useDisclosure } from '@chakra-ui/react';
 
 export interface StandingsRowProps {
@@ -35,7 +35,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   return (
     <>
       {!props.shouldHideStanding && !props.isCurrentlyPlayingInTopCut && (
-        <TableCell>
+        <td>
           <Text>
             <RecordIcon
               standing={props.result}
@@ -44,20 +44,20 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
             {props.opponentRoundNumber ??
                 (props.result.placing === 9999 ? 'DQ' : props.result.placing)}
           </Text>
-        </TableCell>
+        </td>
       )}
-      <TableCell className='p-0' width={30}>
+      <td className='p-0' width={30}>
         {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
-      </TableCell>
-      <TableCell
+      </td>
+      <td
         className={`whitespace-normal break-normal ${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
         onClick={onOpen}
       >
         <Text className={`${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
           {props.result.name}
         </Text>
-      </TableCell>
-      <TableCell width={126}>
+      </td>
+      <td width={126}>
         <Flex className='gap-2'>
           {!props.hideArchetype && !props.isDeckLoading ? (
               <DeckInfoDisplay
@@ -80,11 +80,11 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
               />
             )}
         </Flex>
-      </TableCell>
+      </td>
       {!props.isCurrentlyPlayingInTopCut && (
-        <TableCell width={80}>
+        <td width={80}>
           <Record standing={props.result} />
-        </TableCell>
+        </td>
       )}
       {!props.shouldDisableOpponentModal && (
         <OpponentRoundList
