@@ -91,8 +91,15 @@ module.exports = {
       fontSize: {
         "tremor-label": ["0.75rem"],
         "tremor-default": ["1rem", { lineHeight: "1.25rem" }],
-        "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
+        "tremor-title": ["1.125rem", { lineHeight: "1.65rem" }],
         "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }],
+        sm: '0.8rem',
+        base: '1rem',
+        xl: '1.25rem',
+        '2xl': '1.563rem',
+        '3xl': '1.953rem',
+        '4xl': '2.441rem',
+        '5xl': '3.052rem',
       },
       padding: {
         'tremor-TableCell-root': '0rem'

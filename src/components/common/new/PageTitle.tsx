@@ -2,5 +2,5 @@ import { Title } from "@tremor/react";
 import { PropsWithChildren } from "react";
 
 export const PageTitle = (props: PropsWithChildren) => (
-  <Title className="text-2xl">{props.children}</Title>
+  <h1 className="text-2xl font-bold leading-snug text-center text-slate-700">{props.children}</h1>
 )

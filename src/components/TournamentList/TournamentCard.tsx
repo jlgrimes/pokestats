@@ -26,7 +26,7 @@ export const TournamentCard = ({
 
   return (
     <LinkBox height='100%'>
-      <Card decoration={live ? 'left' : undefined} className='flex flex-col gap-6 px-4 py-2'>
+      <Card decoration={live ? 'left' : undefined} className='flex flex-col gap-6 px-6 py-4'>
         <Flex>
           <TournamentInfo tournament={tournament} />
           {champion && <ChampionDisplay champion={champion} />}
