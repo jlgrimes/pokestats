@@ -30,7 +30,7 @@ export const TournamentPageLayout = ({
 
   return (
     <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
-      <Stack paddingX={4} paddingTop={2} spacing={1}>
+      <Stack paddingTop={2} spacing={1}>
         <PageTitle>
           {`${tournament.name} ${capitalize(slug as string)}`}
         </PageTitle>
