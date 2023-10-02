@@ -83,9 +83,11 @@ export const PlayerCard = (props: PlayerCardProps) => {
             </Bold>
           </TableCell>
         )}
-        <TableCell width={48} className='pr-0'>
-          {props.result && <ResultLetter result={props.result} />}
-        </TableCell>
+        {props.result && (
+          <TableCell width={48} className='pr-0'>
+            <ResultLetter result={props.result} />
+          </TableCell>
+        )}
         <StandingsRow
           result={props.player}
           tournament={props.tournament}

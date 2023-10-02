@@ -27,7 +27,7 @@ export const AgeDivisionSelector = (props: AgeDivisionSelectorProps) => {
   }, [index]);
 
   return (
-    <TabGroup className="my-2" index={index}>
+    <TabGroup className="mt-2 mb-8" index={index}>
       <TabList variant="solid">
         <Tab onClick={() => handleTabClick('masters')}>Masters</Tab>
         <Tab onClick={() => handleTabClick('seniors')}>Seniors</Tab>

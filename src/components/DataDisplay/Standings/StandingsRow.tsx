@@ -46,9 +46,9 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           </Text>
         </td>
       )}
-      <td className='p-0' width={30}>
+      {/* <td className='p-0' width={30}>
         {props.result.region && <CountryFlag size='xs' countryCode={props.result.region} />}
-      </td>
+      </td> */}
       <td
         className={`whitespace-normal break-normal ${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
         onClick={onOpen}

@@ -12,7 +12,7 @@ export const AppBody = ({ children }: { children: React.ReactNode }) => {
     <Container
       id='app-layout-container'
       maxW='container.md'
-      padding={0}
+      paddingX={2}
       alignItems='center'
       height='calc(100% - 3rem)'
       className={colorMode}
