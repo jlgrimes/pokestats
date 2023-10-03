@@ -54,7 +54,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   return (
     <>
       {!props.shouldHideStanding && !props.isCurrentlyPlayingInTopCut && (
-        <StandingsCell>
+        <StandingsCell width={30}>
           <Text>
             {/* <RecordIcon
               standing={props.result}
@@ -104,8 +104,13 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         </Flex>
       </StandingsCell>
       {!props.isCurrentlyPlayingInTopCut && (
-        <StandingsCell width={80} className='text-right'>
+        <StandingsCell width={56} className='text-right'>
           <Record standing={props.result} />
+        </StandingsCell>
+      )}
+      {!props.isCurrentlyPlayingInTopCut && props.result.resistances?.opp && (
+        <StandingsCell width={60} className='text-right'>
+          <Text className={'text-slate-400'}>{(props.result.resistances.opp * 100).toPrecision(4)}%</Text>
         </StandingsCell>
       )}
       {!props.shouldDisableOpponentModal && (
