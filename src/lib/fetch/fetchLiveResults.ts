@@ -144,7 +144,7 @@ export const getPlayerDeck = (
   };
 };
 
-export const getRoundsArray = (player?: Player) =>
+export const getRoundsArray = (player?: Standing) =>
   Object.values(player?.rounds ?? {});
 
 function mapResultsArray(

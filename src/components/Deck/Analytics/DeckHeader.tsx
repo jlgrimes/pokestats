@@ -12,7 +12,6 @@ import Image from 'next/image';
 import { getCardImageUrl } from '../ListViewer/helpers';
 import { DeckCard, Deck } from '../../../../types/tournament';
 import { useCodeToSetMap } from '../../../hooks/deckList';
-import { useFinalResults } from '../../../hooks/finalResults';
 import SpriteDisplay from '../../common/SpriteDisplay/SpriteDisplay';
 import { FaChevronLeft } from 'react-icons/fa';
 import { useRouter } from 'next/router';
@@ -20,17 +19,15 @@ import { StickyHeader } from '../../common/Layout/StickyHeader';
 import { DeckVariants } from './DeckVariants';
 import { BackToDecksButton } from './BackToDecksButton';
 import { FormatContext } from './DeckAnalyticsContainer';
-import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
 import { FormatTag } from '../Format/FormatTag';
+import { useDeckStandings } from '../../../hooks/newStandings';
 
 export const DeckHeader = memo(
   ({ deck, compact }: { deck: Deck; compact?: boolean }) => {
     const { colorMode } = useColorMode();
     const format = useContext(FormatContext);
 
-    const { data: deckStandings } = useFinalResults(
-      getFinalResultsDeckFilters(deck, format?.id)
-    );
+    const { data: deckStandings } = useDeckStandings(deck);
     const codeToSetMap = useCodeToSetMap();
     const router = useRouter();
 
@@ -39,12 +36,12 @@ export const DeckHeader = memo(
         deck.identifiable_cards
           ?.map(cardName => {
             return deckStandings
-              ?.find(standing => !!standing.deck?.list)
-              ?.deck?.list?.pokemon.find(({ name, set }) => {
+              ?.find(standing => !!standing.decklist)
+              ?.decklist?.pokemon.find(({ name, set }) => {
                 // Hard code to get the right Inteleon
                 if (
                   name === 'Inteleon' &&
-                  deckStandings?.[0].deck?.list?.pokemon.find(
+                  deckStandings?.[0].decklist?.pokemon.find(
                     ({ name, set }) => name === 'Inteleon' && set === 'SSH'
                   ) &&
                   set !== 'SSH'
@@ -99,9 +96,9 @@ export const DeckHeader = memo(
               key={`${card?.name} ${card?.set}`}
               width={width}
               height={height}
-              src={getCardImageUrl(card as DeckCard, codeToSetMap, {
+              src={card ? getCardImageUrl(card, codeToSetMap, {
                 highRes: true,
-              })}
+              }) : ''}
               alt={`${card?.name} ${card?.set}`}
             />
           ))}

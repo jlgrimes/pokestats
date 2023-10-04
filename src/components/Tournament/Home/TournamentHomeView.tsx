@@ -15,7 +15,6 @@ import { AdminTournamentPanel } from './AdminTournamentPanel';
 import { CountryFlag } from './CountryFlag';
 import { PlayerTournamentView } from './PlayerTournamentView';
 import { PinnedPlayerList } from './PinnedPlayers/PinnedPlayerList';
-import { TopCutViewController } from './TopCut/TopCutViewController';
 import { TournamentHomeLinks } from './TournamentHomeLinks';
 import { useSessionPlayerProfile } from '../../../hooks/user';
 import { useColor } from '../../../hooks/useColor';
@@ -23,6 +22,7 @@ import { Ad } from '../../Ad';
 import { StreamIconLink } from '../TournamentLinks';
 import { PageTitle } from '../../common/new/PageTitle';
 import { Flex } from '@tremor/react';
+import { TopCutViewContainer } from './TopCut/TopCutViewContainer';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -84,7 +84,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       )}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
-        <TopCutViewController tournament={props.tournament} />
+        <TopCutViewContainer tournament={props.tournament} />
       )}
       {isAuthenticated &&
         props.tournament.tournamentStatus !== 'not-started' && (

@@ -3,7 +3,7 @@ import {
   getCompressedList,
   getSameCardIdx,
 } from '../../components/Deck/ListViewer/helpers';
-import { useFinalResults } from './useFinalResults';
+import { useDeckStandings } from '../newStandings';
 
 export const getFinalResultsDeckFilters = (deck: Deck, format?: number) => {
   const filters: Record<string, any> = {};
@@ -20,16 +20,14 @@ export const useCardCounts = (
   format: number | undefined,
   options?: { countCopies?: boolean }
 ) => {
-  const { data: deckStandings } = useFinalResults(
-    getFinalResultsDeckFilters(deck, format)
-  );
+  const { data: deckStandings } = useDeckStandings(deck);
 
   if (!deckStandings) return [];
 
   const cardCounts = deckStandings?.reduce(
     (acc: { card: DeckCard; count: number }[], deck) => {
-      if (deck.deck?.list) {
-        const compressedList = getCompressedList(deck.deck.list);
+      if (deck.decklist) {
+        const compressedList = getCompressedList(deck.decklist);
 
         for (const card of compressedList) {
           const sameCardIdx = getSameCardIdx(

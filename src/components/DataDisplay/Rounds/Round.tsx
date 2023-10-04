@@ -24,7 +24,7 @@ export const Round = (props: RoundProps) => {
       shouldHideStanding
       canEditDecks={
         props.userIsAdmin ||
-        (props.canEditDecks && !props.opponent?.deck?.name)
+        (props.canEditDecks && !props.opponent?.deck_archetype?.name)
       }
       size={(props.player.rounds?.length ?? 0) < 10 ? 'md' : 'sm'}
       shouldHideOpponent

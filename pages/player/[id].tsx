@@ -4,7 +4,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FullPageLoader } from '../../src/components/common/FullPageLoader';
 import { PlayerProfilePage } from '../../src/components/Profile/PlayerProfilePage';
-import { fetchFinalResults } from '../../src/hooks/finalResults/fetch';
 import { fetchTournamentMetadata } from '../../src/hooks/tournamentMetadata';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import {
@@ -13,6 +12,7 @@ import {
   useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
+import { fetchPlayerStandings } from '../../src/hooks/newStandings';
 
 export default function Page({ username }: { username: string }) {
   const router = useRouter();
@@ -84,19 +84,13 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   if (playerProfile?.name) {
     await queryClient.prefetchQuery({
       queryKey: [
-        'final-results',
-        {
-          playerName: playerProfile.name,
-          additionalNames: playerProfile.additional_names,
-          shouldExpandTournament: true
-        },
+        'player-standings',
+        playerProfile.id,
+        undefined,
+        undefined
       ],
       queryFn: () =>
-        fetchFinalResults({
-          playerName: playerProfile.name,
-          additionalNames: playerProfile.additional_names,
-          shouldExpandTournament: true
-        }),
+        fetchPlayerStandings(playerProfile)
     });
   }
 

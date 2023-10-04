@@ -6,13 +6,6 @@ import { FormatSchema } from '../src/hooks/formats/formats';
 import { AgeDivision } from './age-division';
 import { StoredPlayerProfile } from './player';
 
-export interface DeckCard {
-  count: number;
-  name: string;
-  number: string;
-  set: string;
-}
-
 export interface Deck {
   id: number;
   name: string;
@@ -59,6 +52,13 @@ export interface PlayerRound {
   opponent?: FinalResultsSchema;
 }
 
+export interface DeckCard {
+  name: string;
+  count: number;
+  number?: string;
+  set?: string;
+}
+
 export interface Standing {
   name: string;
   profile?: StoredPlayerProfile;
@@ -71,9 +71,9 @@ export interface Standing {
   outOfDay2?: boolean;
   currentOpponent?: Standing;
   deck_archetype?: Deck | null;
-  decklist: string;
+  decklist: DeckList | null;
   drop?: number | null;
-  tournamentId?: string;
+  tournament_id?: string;
   tournament?: Tournament | null;
   region?: string;
   age_division: AgeDivision;

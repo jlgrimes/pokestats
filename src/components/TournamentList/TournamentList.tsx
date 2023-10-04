@@ -1,10 +1,9 @@
 import { Box, Grid, Text } from '@chakra-ui/react';
-import { useCallback } from 'react';
 import { Tournament } from '../../../types/tournament';
-import { useChampions } from '../../hooks/finalResults';
 import { useTournamentRender } from '../../hooks/sets';
 import { getTournaments } from './helpers';
 import { TournamentCard } from './TournamentCard';
+import { useChampions } from '../../hooks/newStandings';
 
 export const TournamentList = ({
   tournaments,
@@ -38,7 +37,7 @@ export const TournamentList = ({
             >
               <TournamentCard
                 tournament={item.data}
-                champion={champions ? champions[tournamentId] : undefined}
+                champion={champions ? champions.find((standing) => standing.tournament_id === tournamentId) : undefined}
               />
             </Box>
           );

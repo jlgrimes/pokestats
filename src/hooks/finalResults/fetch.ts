@@ -11,10 +11,6 @@ import {
   FinalResultsDeckSchema,
   FinalResultsFilters,
 } from './final-results-schema';
-import {
-  addUserReportedDecksToFinalResults,
-  mapFinalResultsToStandings,
-} from './helpers';
 
 export const fetchDecksByPlayer = async (name: string) => {
   const res = await supabase
@@ -215,15 +211,8 @@ export const fetchFinalResults = async (
     }
   }
 
-  const finalResultsAsStandings = mapFinalResultsToStandings(finalResultsData);
-
-  if (userReportedDecks) {
-    return addUserReportedDecksToFinalResults(
-      finalResultsAsStandings,
-      userReportedDecks
-    );
-  }
-  return finalResultsAsStandings;
+  // lol
+  return [];
 };
 
 export const fetchVerifiedUserTournaments = async () => {

@@ -2,12 +2,12 @@ import { useDisclosure } from '@chakra-ui/react';
 import { UserAddIcon, UserRemoveIcon } from '@heroicons/react/outline';
 import { Button, Card, Flex, List, Table, TableBody, Text, Title } from '@tremor/react';
 import { Tournament } from '../../../../../types/tournament';
-import { useFinalResults } from '../../../../hooks/finalResults';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
 import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { ComponentLoader } from '../../../common/ComponentLoader';
 import { PinnedPlayerCard } from './PinnedPlayerCard';
 import { PinPlayerModal } from './PinPlayerModal';
+import { useFollowingStandings } from '../../../../hooks/newStandings';
 
 interface PinnedPlayerListProps {
   tournament: Tournament;
@@ -18,11 +18,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
     usePinnedPlayers();
 
-  const { data: tournamentPerformance, isLoading: areFinalResultsLoading } =
-    useFinalResults({
-      tournamentId: props.tournament.id,
-      playerNames: pinnedPlayerNames ?? []
-    });
+  const { data: tournamentPerformance, isLoading: areFinalResultsLoading } = useFollowingStandings(pinnedPlayerNames, props.tournament);
 
   const { data: liveTournamentResults, isLoading } = useLiveTournamentResults(
     props.tournament.id,
@@ -44,12 +40,12 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
       if (finalStanding && liveStanding) {
         if (
-          !finalStanding.deck?.defined_pokemon &&
-          liveStanding.deck?.defined_pokemon
+          !finalStanding.deck_archetype?.defined_pokemon &&
+          liveStanding.deck_archetype?.defined_pokemon
         ) {
           return {
             ...finalStanding,
-            deck: liveStanding.deck,
+            deck: liveStanding.deck_archetype,
           };
         }
       }
@@ -116,7 +112,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                       player={pinnedPlayer}
                       tournament={props.tournament}
                       shouldHideDecks={liveTournamentResults?.shouldHideDecks}
-                      isDeckLoading={isLoading && !pinnedPlayer.deck?.id}
+                      isDeckLoading={isLoading && !pinnedPlayer.deck_archetype?.id}
                       isEditingPinned={editPinnedPlayers.isOpen}
                       shouldHideOpponent={props.isCompact}
                       size={props.isCompact ? 'md' : 'lg'}

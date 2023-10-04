@@ -80,7 +80,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
     setSelectedCard(null);
   }, [setSelectedCard]);
 
-  if (!props.result.deck?.list) return null;
+  if (!props.result.deck_archetype || !props.result.decklist) return null;
 
   return (
     <Modal
@@ -98,7 +98,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
             alignItems={'center'}
           >
             <Stack spacing={0} padding={3}>
-              <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
+              <Heading size='md'>{props.result.deck_archetype.name ?? 'Other'}</Heading>
               <Text>
                 {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
                 {props.tournament.name}
@@ -111,11 +111,11 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
             card={selectedCard}
             clearSelectedCard={handleCardClear}
             tournament={props.tournament}
-            deck={props.result.deck}
+            deck={props.result.deck_archetype}
           />
         ) : (
           <ListModalBody
-            list={props.result.deck.list}
+            list={props.result.decklist}
             handleCardClick={handleCardClick}
           />
         )}

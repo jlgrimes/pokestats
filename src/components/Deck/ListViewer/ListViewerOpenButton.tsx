@@ -34,7 +34,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         onClick={e => {
           e.stopPropagation();
 
-          if (props.result.deck?.listImagePath) {
+          if (props.result.deck_archetype?.listImagePath) {
             onImageOpen();
           } else {
             onOpen();
@@ -54,7 +54,7 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         <ModalOverlay />
         <ModalContent>
           <Image
-            src={`https://keujidcnlmekgfajgnjq.supabase.co/storage/v1/object/public/uploaded-deck-lists/${props.result.deck?.listImagePath}`}
+            src={`https://keujidcnlmekgfajgnjq.supabase.co/storage/v1/object/public/uploaded-deck-lists/${props.result.deck_archetype?.listImagePath}`}
             alt='deck list'
           />
         </ModalContent>

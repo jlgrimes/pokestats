@@ -13,10 +13,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Session } from 'next-auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
-import { useFinalResults } from '../../../hooks/finalResults';
 import { useTournaments } from '../../../hooks/tournaments';
 import { SessionUserProfile } from '../../../hooks/user';
 import supabase from '../../../lib/supabase/client';
+import { usePlayerStandings, useStandingsWithName } from '../../../hooks/newStandings';
 
 export interface RecommendedSuggestedUserProps {
   userProfile: User | undefined;
@@ -37,13 +37,11 @@ export const RecommendedSuggestedUser = (
   const [elementFadedIn, setElementFadedIn] = useState(0);
   const [identityConfirmationLoading, setIdentityConfirmationLoading] =
     useState(false);
-  const { data: suggestedUserTournaments } = useFinalResults({
-    playerName: userProfile?.user_metadata.name,
-  });
+  const { data: suggestedUserTournaments } = useStandingsWithName(userProfile?.user_metadata.name)
   const { data: tournaments } = useTournaments();
 
   const attendedTournaments = suggestedUserTournaments?.map(standing =>
-    tournaments?.find(({ id }) => id === standing.tournamentId)
+    tournaments?.find(({ id }) => id === standing.tournament_id)
   );
 
   const onIdentityConfirmClick = useCallback(async () => {

@@ -1,8 +1,5 @@
 import { User } from '@supabase/supabase-js';
-import { Session } from 'next-auth';
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useFinalResults } from '../../../hooks/finalResults';
 import {
   SessionUserProfile,
   useUserSentAccountRequest,
@@ -11,6 +8,7 @@ import { FullPageLoader } from '../../common/FullPageLoader';
 import { AccountMadeSuccessfully } from './AccountMadeSuccessfully';
 import { RecommendedSuggestedUser } from './RecommendSuggestedUser';
 import { RequestToComplete } from './RequestToComplete';
+import { useStandingsWithName } from '../../../hooks/newStandings';
 
 export interface SetupProfileControllerProps {
   userProfile?: User | null;
@@ -19,9 +17,7 @@ export interface SetupProfileControllerProps {
 export const SetupProfileController = (props: SetupProfileControllerProps) => {
   const { userProfile } = props;
 
-  const { data: fetchedTournamentsForUser, isLoading } = useFinalResults({
-    playerName: userProfile?.user_metadata.name,
-  });
+  const { data: fetchedTournamentsForUser, isLoading } = useStandingsWithName(userProfile?.user_metadata.name);
   const suggestedUser =
     fetchedTournamentsForUser && fetchedTournamentsForUser.length > 0;
   const { data: userSentRequest } = useUserSentAccountRequest(

@@ -1,22 +1,19 @@
-import { Badge, Icon, Stack } from '@chakra-ui/react';
 import { Card, Flex, Subtitle, Table, TableBody, Title } from '@tremor/react';
-import { useMemo } from 'react';
-import { FaTrophy } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
-import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
-import { CommonCard } from '../../../common/CommonCard';
-import { getRoundText } from '../../helpers';
 import { PlayerCard } from '../PlayerCard/PlayerCard';
+import { useTopCutStandings } from '../../../../hooks/newStandings';
+import { AgeDivision } from '../../../../../types/age-division';
 
 interface TopCutViewProps {
   tournament: Tournament;
-  players?: Standing[];
-  isLoading?: boolean;
+  ageDivision: AgeDivision;
 }
 
 export const TopCutView = (props: TopCutViewProps) => {
-  const topCutPlayers = props.players && props.players.filter(player =>(props.tournament.tournamentStatus === 'finished' ||
-  !props.players!.some(
+  const { data: players } = useTopCutStandings({ tournament: props.tournament, ageDivision: props.ageDivision });
+
+  const topCutPlayers = players && players.filter(player =>(props.tournament.tournamentStatus === 'finished' ||
+  !players!.some(
     otherPlayer =>
       player.name === otherPlayer.currentOpponent?.name &&
       player.placing > otherPlayer?.placing

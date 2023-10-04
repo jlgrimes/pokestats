@@ -1,28 +1,14 @@
-import { Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
 import { formatDistance, isBefore } from 'date-fns';
-import Script from 'next/script';
-import { Fragment, useEffect, useState } from 'react';
 import { ComingSoonPage } from '../src/components/ComingSoonPage';
 import { HomePage } from '../src/components/Home/HomePage';
-import { RecentTournaments } from '../src/components/Home/RecentTournaments';
-import { AppLogo } from '../src/components/Layout/AppBar/AppLogo';
-import { getTournaments } from '../src/components/TournamentList/helpers';
-import {
-  fetchDecksWithLists,
-  fetchFinalResults,
-} from '../src/hooks/finalResults/fetch';
-import { TournamentOrSet } from '../src/hooks/sets';
 import { fetchTournamentMetadata } from '../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
-  getMostRecentFinishedTournament,
-  getTournamentsThatNeedToBePatched,
-  usePatchedTournaments,
 } from '../src/hooks/tournaments';
 import { SHOULD_SHOW_COMING_SOON } from '../src/lib/coming-soon';
-import { prewarmLiveTournamentData } from '../src/lib/fetch/cache-prewarm';
 import { Tournament } from '../types/tournament';
+import { fetchChampions } from '../src/hooks/newStandings';
 
 export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   if (
@@ -50,13 +36,8 @@ export async function getStaticProps() {
   });
 
   await queryClient.prefetchQuery({
-    queryKey: [
-      'final-results',
-      {
-        placing: 1,
-      },
-    ],
-    queryFn: () => fetchFinalResults({ placing: 1 }),
+    queryKey: ['champions'],
+    queryFn: () => fetchChampions(),
   });
 
   // const mostRecentFinishedTournament =
