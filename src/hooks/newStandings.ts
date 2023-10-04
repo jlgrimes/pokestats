@@ -25,7 +25,7 @@ export const getShouldHideDecks = (params: UseStandingsParams) => {
 }
 
 const fetchStandings = async (params: UseStandingsParams) => {
-  let query = supabase.from(params.tournament.tournamentStatus === 'running' ? 'live_standings' : 'standings_new').select('*,deck_archetype(id,defined_pokemon)').eq('tournament_id', params.tournament.id);
+  let query = supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon)').eq('tournament_id', params.tournament.id);
   query = query.eq('age_division', capitalize(params.ageDivision));
   query = query.order('placing', { ascending: true });
 

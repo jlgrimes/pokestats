@@ -13,7 +13,7 @@ export default async function handler(
 
     if (typeof tournamentId !== 'string') return res.status(500);
 
-    const response = await supabase.from('live_standings').select('*');
+    const response = await supabase.from('new_standings').select('*');
     const data = response.data;
 
     if (!data) throw 'Data is null';
