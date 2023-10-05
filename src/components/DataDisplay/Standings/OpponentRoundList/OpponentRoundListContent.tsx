@@ -26,7 +26,6 @@ import {
   Tournament,
 } from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
-import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
 import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
 import { RoundsList } from '../../Rounds/RoundsList';

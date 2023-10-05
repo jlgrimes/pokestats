@@ -7,9 +7,11 @@ import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditT
 import { CommonCard } from '../../common/CommonCard';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { ReportModal } from './ReportModal';
+import { AgeDivision } from '../../../../types/age-division';
 
 interface AdminTournamentPanelProps {
   tournament: Tournament;
+  ageDivision: AgeDivision;
 }
 
 export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
@@ -29,7 +31,7 @@ export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
         </Button>
         <Button
           as={NextLink}
-          href={`/tournaments/${props.tournament.id}/pairings`}
+          href={`/tournaments/${props.tournament.id}/${props.ageDivision}/pairings`}
           isDisabled={props.tournament.tournamentStatus === 'not-started'}
           leftIcon={<FaUserFriends />}
         >

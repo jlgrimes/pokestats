@@ -36,3 +36,13 @@ export const AgeDivisionSelector = (props: AgeDivisionSelectorProps) => {
     </TabGroup>
   )
 }
+
+export const useRoutedAgeDivision = () => {
+  const router = useRouter();
+  const path = router.asPath;
+
+  if (path.includes('juniors')) return 'juniors';
+  if (path.includes('seniors')) return 'seniors';
+
+  return 'masters';
+}

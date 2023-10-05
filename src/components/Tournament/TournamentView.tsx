@@ -1,13 +1,9 @@
-import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { AgeDivision } from '../../../types/age-division';
-import { useLiveTournamentResults } from '../../hooks/tournamentResults';
-import { Ad } from '../Ad';
-import { Banner } from '../common/Banner';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { SorryText } from '../common/SorryText';
-import { StatsHeading } from '../common/StatsHeading';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
 import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';

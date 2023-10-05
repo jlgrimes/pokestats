@@ -1,9 +1,9 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { Standing } from '../../types/tournament';
+import { Standing, Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
-import { useLiveTournamentResults } from './tournamentResults';
+import { AgeDivision } from '../../types/age-division';
+import { useStandings } from './newStandings';
 
 export const fetchPinnedPlayers = async (
   tournamentId?: string,
@@ -127,14 +127,13 @@ export const addPinnedPlayer = async (
   return res;
 };
 
-export const useAvailablePinnedPlayerNames = (tournamentId: string) => {
+export const useAvailablePinnedPlayerNames = (tournament: Tournament, ageDivision: AgeDivision) => {
   const { data: pinnedPlayers, isLoading: isPinnedPlayersLoading } =
     usePinnedPlayers();
-  const { data: liveResults, isLoading: isLiveTournamentResultsLoading } =
-    useLiveTournamentResults(tournamentId, { load: { allRoundData: true } });
+  const { data: liveResults, isLoading: isLiveTournamentResultsLoading } = useStandings({ tournament, ageDivision });
 
   return {
-    data: liveResults?.data.reduce((acc: string[], curr: Standing) => {
+    data: liveResults?.reduce((acc: string[], curr: Standing) => {
       if (pinnedPlayers?.some(name => name === curr.name)) return acc;
 
       return [...acc, curr.name];

@@ -23,6 +23,7 @@ import { StreamIconLink } from '../TournamentLinks';
 import { PageTitle } from '../../common/new/PageTitle';
 import { Flex } from '@tremor/react';
 import { TopCutViewContainer } from './TopCut/TopCutViewContainer';
+import { AgeDivisionSelector, useRoutedAgeDivision } from '../AgeDivisionSelector';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -34,6 +35,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   const { data: userIsAdmin } = useUserIsAdmin();
   const { data: location } = useLocation(props.tournament?.id ?? '');
   const country = useCountryCode(props.tournament?.id ?? '');
+  const ageDivision = useRoutedAgeDivision();
 
   if (!props.tournament) return null;
 
@@ -73,9 +75,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           <StreamIconLink tournament={props.tournament} />
         </Grid>
       </Flex>
-      <TournamentHomeLinks tournament={props.tournament} />
       <Ad slot='7673650238' />
-      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
+      <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${props.tournament?.id}/${division}`} />
+      <TournamentHomeLinks tournament={props.tournament} />
+      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} ageDivision={ageDivision} />}
       {isAuthenticated && profile?.name && (
         <PlayerTournamentView
           tournament={props.tournament}
@@ -88,7 +91,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       )}
       {isAuthenticated &&
         props.tournament.tournamentStatus !== 'not-started' && (
-          <PinnedPlayerList tournament={props.tournament} />
+          <PinnedPlayerList tournament={props.tournament} ageDivision={ageDivision} />
         )}
       {props.tournament.tournamentStatus === 'finished' && (
         <TopDecks tournament={props.tournament} />

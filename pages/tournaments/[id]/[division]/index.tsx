@@ -1,12 +1,12 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { TournamentHomeView } from '../../../src/components/Tournament/Home/TournamentHomeView';
-import { fetchFinalResults } from '../../../src/hooks/finalResults/fetch';
-import { fetchOneTournamentMetadata } from '../../../src/hooks/tournamentMetadata';
+import { TournamentHomeView } from '../../../../src/components/Tournament/Home/TournamentHomeView';
+import { fetchFinalResults } from '../../../../src/hooks/finalResults/fetch';
+import { fetchOneTournamentMetadata } from '../../../../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
   usePatchedTournaments,
-} from '../../../src/hooks/tournaments';
-import { Tournament } from '../../../types/tournament';
+} from '../../../../src/hooks/tournaments';
+import { Tournament } from '../../../../types/tournament';
 
 interface TournamentPageProps {
   tournament: Tournament;
@@ -67,6 +67,7 @@ export async function getStaticPaths() {
     return {
       params: {
         id: tournament.id,
+        division: 'masters',
         displayName: tournament.name,
       },
     };

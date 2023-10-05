@@ -21,9 +21,11 @@ import {
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
 import { PlayerSelectModal } from './PlayerSelectModal';
+import { AgeDivision } from '../../../../../types/age-division';
 
 interface PinPlayerModalProps {
   tournament: Tournament;
+  ageDivision: AgeDivision;
   modalControls: UseDisclosureProps;
 }
 
@@ -32,7 +34,8 @@ export const PinPlayerModal = (props: PinPlayerModalProps) => {
   const toast = useToast();
 
   const { data: availablePinnedPlayerNames } = useAvailablePinnedPlayerNames(
-    props.tournament.id
+    props.tournament,
+    props.ageDivision
   );
   const { refetch } = usePinnedPlayers();
 

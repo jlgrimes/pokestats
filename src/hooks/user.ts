@@ -1,11 +1,10 @@
 import { User, useSession, useUser } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
-import { CombinedPlayerProfile, StoredPlayerProfile } from '../../types/player';
+import { CombinedPlayerProfile } from '../../types/player';
 import { fetchLiveResults } from '../lib/fetch/fetchLiveResults';
 import { getStringifiedNames } from '../lib/query-helpers';
 import supabase from '../lib/supabase/client';
 import { fetchPlayers } from './finalResults/fetch';
-import { useLiveTournamentResults } from './tournamentResults';
 import { fetchTournaments } from './tournaments';
 
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
@@ -69,17 +68,6 @@ export interface SessionUserProfile {
     name: string;
   };
 }
-
-export const useUserIsInTournament = (
-  tournamentId: string,
-  playerName?: string | null
-) => {
-  const { data: liveResults } = useLiveTournamentResults(tournamentId, {
-    load: { allRoundData: true },
-  });
-
-  return liveResults?.data.some(({ name }) => name === playerName);
-};
 
 export const useAccountRequests = () => {
   const fetchUserAccountRequests = async () => {

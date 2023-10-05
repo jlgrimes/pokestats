@@ -3,8 +3,6 @@ import {
 } from '@chakra-ui/react';
 import { Standing, Tournament } from '../../../types/tournament';
 import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
-import { PinnedPlayerList } from '../Tournament/Home/PinnedPlayers/PinnedPlayerList';
-import { TopCutViewController } from '../Tournament/Home/TopCut/TopCutViewController';
 import { ChampionDisplay } from './ChampionDisplay';
 import { TournamentInfo } from './TournamentInfo';
 import { useSessionPlayerProfile } from '../../hooks/user';
@@ -13,13 +11,9 @@ import { Card, Flex, Grid } from '@tremor/react';
 export const TournamentCard = ({
   tournament,
   champion,
-  disableFollowing,
-  shouldHideStatus,
 }: {
   tournament: Tournament;
   champion?: Standing;
-  disableFollowing?: boolean;
-  shouldHideStatus?: boolean;
 }) => {
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const live = tournament.tournamentStatus === 'running';
@@ -37,13 +31,6 @@ export const TournamentCard = ({
             playerName={profile.name}
           />
         )}
-        {live && !tournament.topCutStatus && !disableFollowing && (
-          <PinnedPlayerList tournament={tournament} isCompact />
-        )}
-        {live && tournament.topCutStatus && !disableFollowing && (
-          <TopCutViewController tournament={tournament} />
-        )}
-
         {/* <Stack spacing={4}>
           <Grid gridTemplateColumns={'3.4fr 2fr'} alignItems='center' gap={2}>
             <Grid gridTemplateColumns={`3.4rem 4fr`} alignItems='center' rowGap={live ? 1 : 0}>

@@ -7,11 +7,9 @@ import { getCardImageUrl, getCompressedList } from './helpers';
 export const ListView = ({
   deckList,
   containerHeight,
-  handleCardClick,
 }: {
   deckList: DeckList;
   containerHeight: number;
-  handleCardClick: (card: DeckCard) => void;
 }) => {
   const codeToSetMap = useCodeToSetMap();
   const flatDeckList = useMemo(() => getCompressedList(deckList, true), [deckList]);
@@ -37,7 +35,6 @@ export const ListView = ({
       {flatDeckList.map((card: DeckCard, idx: number) => (
         <SimpleGrid
           cursor={'pointer'}
-          onClick={() => handleCardClick(card)}
           key={idx}
           gridAutoFlow='column'
           marginLeft={'-12'}

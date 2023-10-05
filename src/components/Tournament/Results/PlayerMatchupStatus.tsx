@@ -1,8 +1,4 @@
-import { Heading, Skeleton, Stack, Text, useColorMode } from '@chakra-ui/react';
-import {
-  PlayerLiveResultsSchema,
-  usePlayerLiveResults,
-} from '../../../hooks/tournamentResults';
+import { Heading, Skeleton, Stack } from '@chakra-ui/react';
 import { DeckInfoDisplay } from '../../Deck/DeckInfoDisplay';
 import { formatRecordNeed, formatRecord } from './ResultsList/helpers';
 import { ordinalSuffixOf } from '../../../lib/strings';

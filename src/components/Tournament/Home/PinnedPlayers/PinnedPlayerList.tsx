@@ -3,14 +3,15 @@ import { UserAddIcon, UserRemoveIcon } from '@heroicons/react/outline';
 import { Button, Card, Flex, List, Table, TableBody, Text, Title } from '@tremor/react';
 import { Tournament } from '../../../../../types/tournament';
 import { usePinnedPlayers } from '../../../../hooks/pinnedPlayers';
-import { useLiveTournamentResults } from '../../../../hooks/tournamentResults';
 import { ComponentLoader } from '../../../common/ComponentLoader';
 import { PinnedPlayerCard } from './PinnedPlayerCard';
 import { PinPlayerModal } from './PinPlayerModal';
-import { useFollowingStandings } from '../../../../hooks/newStandings';
+import { useFollowingStandings, useStandings } from '../../../../hooks/newStandings';
+import { AgeDivision } from '../../../../../types/age-division';
 
 interface PinnedPlayerListProps {
   tournament: Tournament;
+  ageDivision: AgeDivision;
   isCompact?: boolean;
 }
 
@@ -20,10 +21,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
   const { data: tournamentPerformance, isLoading: areFinalResultsLoading } = useFollowingStandings(pinnedPlayerNames, props.tournament);
 
-  const { data: liveTournamentResults, isLoading } = useLiveTournamentResults(
-    props.tournament.id,
-    { load: { allRoundData: true } }
-  );
+  const { data: liveTournamentResults, isLoading } = useStandings({ tournament: props.tournament, ageDivision: props.ageDivision });
   const resultsAreLoading =
     (props.tournament.tournamentStatus === 'running' && isLoading) ||
     (props.tournament.tournamentStatus === 'finished' &&
@@ -34,7 +32,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       const finalStanding = tournamentPerformance?.find(
         standing => standing.name === name
       );
-      const liveStanding = liveTournamentResults?.data.find(
+      const liveStanding = liveTournamentResults?.find(
         liveResult => liveResult.name === name
       );
 
@@ -146,6 +144,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}
+          ageDivision={props.ageDivision}
         />
     </Card>
   );
