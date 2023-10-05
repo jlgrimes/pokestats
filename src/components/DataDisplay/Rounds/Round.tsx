@@ -31,7 +31,6 @@ export const Round = (props: RoundProps) => {
       shouldDisableOpponentModal={props.shouldDisableOpponentModal}
       result={props.round.result}
       shouldMoveResultLast
-      isPlayerMeOrMyOpponent={isMyOpponent}
       roundNumber={props.roundNumber}
     />
   );

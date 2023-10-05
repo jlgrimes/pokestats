@@ -31,7 +31,6 @@ export const StandingsCell = (props: StandingsCellProps) => {
 export interface StandingsRowProps {
   result: Standing;
   tournament: Tournament;
-  isPlayerMeOrMyOpponent: boolean;
   canEditDecks?: boolean;
   rowExpanded?: boolean;
   opponentRoundNumber?: number;
@@ -87,7 +86,6 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                 onUnpinPlayer={props.onUnpinPlayer}
                 shouldHideMenu={props.translucent}
                 shouldDisableDeckExtras={props.isCurrentlyPlayingInTopCut}
-                isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
                 disableList={props.shouldHideList}
               />
             ) : (

@@ -10,6 +10,7 @@ import { CommonCard } from '../../common/CommonCard';
 import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
 import { usePlayerStandings } from '../../../hooks/newStandings';
+import { Card, Title } from '@tremor/react';
 
 interface PlayerTournamentViewProps {
   tournament: Tournament;
@@ -29,9 +30,9 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
   if (!props.tournament || !results || !user) return null;
 
   return (
-    <CommonCard ghost header='My tournament' leftIcon={<Icon color='blue.500' as={FaUser} />}>
-      <Stack spacing={3}>
-        <PlayerMatchupStatus
+    <Card>
+      <Title className='mb-4'>My tournament</Title>
+      <PlayerMatchupStatus
           tournament={props.tournament}
           user={user}
           shouldHideOpponentView
@@ -44,7 +45,6 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
           isLoggedInUser={isLoggedInUser}
           myStanding={result}
         />
-      </Stack>
-    </CommonCard>
-  );
+    </Card>
+  )
 };

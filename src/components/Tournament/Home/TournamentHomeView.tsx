@@ -1,7 +1,6 @@
 import {
   Box,
   Grid,
-  Heading,
   Stack,
 } from '@chakra-ui/react';
 import { Tournament } from '../../../../types/tournament';
@@ -22,8 +21,8 @@ import { Ad } from '../../Ad';
 import { StreamIconLink } from '../TournamentLinks';
 import { PageTitle } from '../../common/new/PageTitle';
 import { Flex } from '@tremor/react';
-import { TopCutViewContainer } from './TopCut/TopCutViewContainer';
 import { AgeDivisionSelector, useRoutedAgeDivision } from '../AgeDivisionSelector';
+import { TopCutView } from './TopCut/TopCutView';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -87,7 +86,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       )}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
-        <TopCutViewContainer tournament={props.tournament} />
+          <TopCutView tournament={props.tournament} ageDivision={ageDivision} />
       )}
       {isAuthenticated &&
         props.tournament.tournamentStatus !== 'not-started' && (

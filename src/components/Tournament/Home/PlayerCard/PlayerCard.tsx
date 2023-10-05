@@ -41,7 +41,6 @@ export interface PlayerCardProps {
   shouldDisableOpponentModal?: boolean;
   result?: MatchResult;
   shouldMoveResultLast?: boolean;
-  isPlayerMeOrMyOpponent: boolean;
   roundNumber?: number;
 }
 
@@ -97,7 +96,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
           isCurrentlyPlayingInTopCut={isCurrentlyPlayingInTopCut}
           shouldHideStanding={props.shouldHideStanding}
           shouldDisableOpponentModal={props.shouldDisableOpponentModal}
-          isPlayerMeOrMyOpponent={props.isPlayerMeOrMyOpponent}
           shouldHideList
           shouldHideRegion
         />

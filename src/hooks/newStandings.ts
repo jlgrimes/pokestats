@@ -56,6 +56,7 @@ export const fetchStandings = async (params: UseStandingsParams) => {
   query = query.order('placing', { ascending: true });
 
   const standingsRes = await query;
+  const standings = fixDatabaseStandings(standingsRes)
 
   if (params?.shouldLoadOpponentRounds) {
     if (!standingsRes.data) return null;
@@ -63,7 +64,7 @@ export const fetchStandings = async (params: UseStandingsParams) => {
     return updatedStandings;
   }
   
-  return fixDatabaseStandings(standingsRes);
+  return standings;
 }
 
 interface UseStandingsParams {
@@ -85,14 +86,21 @@ export const fetchTopCut = async (params: UseStandingsParams) => {
   query = query.lte('placing', 8);
 
   const standingsRes = await query;
+  const standings = fixDatabaseStandings(standingsRes);
+
+  if (params?.shouldLoadOpponentRounds && standings) {
+    if (!standingsRes.data) return null;
+    const updatedStandings = await loadOpponentRounds(standings);
+    return updatedStandings;
+  }
   
-  return fixDatabaseStandings(standingsRes);
+  return standings;
 }
 
 export const useTopCutStandings = (params: UseStandingsParams) => {
   return useQuery({
     queryKey: ['top-cut', params.tournament.id, params.ageDivision],
-    queryFn: () => fetchStandings(params)
+    queryFn: () => fetchTopCut(params)
   });
 }
 
@@ -102,8 +110,10 @@ interface UsePlayerStandingsParams {
 }
 
 const loadOpponentRounds = async (standings: Standing[]) => {
-  const finalRes = standings.at(0);
-  const opponentList = finalRes?.rounds?.map((round) => round.name);
+  const opponentList = standings.reduce((acc: string[], curr: Standing) => {
+    const opponentRounds = curr.rounds?.map((round) => round.name) ?? [];
+    return [...acc, ...opponentRounds]
+  }, []);
   
   if (opponentList) {
     const stringifiedNames = getStringifiedNames(opponentList);
@@ -118,14 +128,15 @@ const loadOpponentRounds = async (standings: Standing[]) => {
           supertype,
           format
         ),rounds`)
-      .eq('tournament_id', finalRes?.tournament_id)
+      .eq('tournament_id', standings[0]?.tournament_id)
       .or(`name.in.(${stringifiedNames})`);
     const opponents = opponentRes.data;
+    console.log(opponents)
 
     if (opponents) {
-      return[{
-        ...standings[0],
-        rounds: standings[0].rounds?.map((round, idx) => {
+      return standings.map(standing => ({
+        ...standing,
+        rounds: standing.rounds?.map((round, idx) => {
           const opponent = opponents.find((opponent) => opponent.name === round.name);
 
           return {
@@ -137,7 +148,7 @@ const loadOpponentRounds = async (standings: Standing[]) => {
             },
           }
         })
-      }]
+      }))
     }
   }
 

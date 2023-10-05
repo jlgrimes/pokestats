@@ -30,12 +30,10 @@ export const DeckInfoDisplay = memo(
     onUnpinPlayer,
     shouldHideMenu,
     shouldDisableDeckExtras,
-    isPlayerMeOrMyOpponent,
   }: {
     player: Standing;
     tournament: Tournament;
     enableEdits: boolean;
-    isPlayerMeOrMyOpponent: boolean;
     shouldShowAsText?: boolean;
     disableList?: boolean;
     shouldHideVerifiedIcon?: boolean;
@@ -54,17 +52,16 @@ export const DeckInfoDisplay = memo(
     const ifShouldHideDeck = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
 
-      return !isPlayerMeOrMyOpponent && getShouldHideDecks(tournament, player.age_division);
-    }, [player.age_division, tournament, isPlayerMeOrMyOpponent]);
+      return getShouldHideDecks(tournament, player.age_division);
+    }, [player.age_division, tournament]);
 
     const ifShouldBlurSpecificAArchetype = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
       if (tournament.topCutStatus) return false;
 
-      return !isPlayerMeOrMyOpponent;
+      return true;
     }, [
       tournament.tournamentStatus,
-      isPlayerMeOrMyOpponent,
       tournament.topCutStatus,
     ]);
 

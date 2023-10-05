@@ -27,9 +27,6 @@ import {
 import { useUserIsAdmin } from '../../../../hooks/administrators';
 import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
 import { RoundsList } from '../../Rounds/RoundsList';
-import {
-  usePlayerIsMeOrMyOpponent,
-} from '../../../../hooks/tournamentResults';
 import { useSmartPlayerProfiles } from '../../../../hooks/user';
 import { ordinalSuffixOf } from '../../../../lib/strings';
 import { DeckInfoDisplay } from '../../../Deck/DeckInfoDisplay';
@@ -103,7 +100,6 @@ export const OpponentRoundListContent = ({
                 enableEdits={false}
                 disableList
                 shouldDisableDeckExtras
-                isPlayerMeOrMyOpponent
               />
             </Stack>
           </Grid>

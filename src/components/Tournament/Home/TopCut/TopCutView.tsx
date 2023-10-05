@@ -12,6 +12,7 @@ interface TopCutViewProps {
 export const TopCutView = (props: TopCutViewProps) => {
   const { data: players } = useTopCutStandings({ tournament: props.tournament, ageDivision: props.ageDivision, shouldLoadOpponentRounds: true });
 
+  console.log('top players', players)
   const topCutPlayers = players && players.filter(player =>(props.tournament.tournamentStatus === 'finished' ||
   !players!.some(
     otherPlayer =>
@@ -22,9 +23,24 @@ export const TopCutView = (props: TopCutViewProps) => {
   const playersWhoWereKnockedOut = topCutPlayers?.filter((player) => !player.currentOpponent);
 
   return (
-    <Flex className='flex-col gap-4'>
-      <Title>Top cut</Title>
-        {topCutPlayers?.filter((player) => player.currentOpponent).map(
+    <>
+      {props.tournament.tournamentStatus === 'finished' && (
+        <Card>
+          <Title>Top cut</Title>
+          <Subtitle className='mb-4'>TCG {props.ageDivision}</Subtitle>
+          <Table className='overflow-hidden'>
+            <TableBody>
+              {topCutPlayers?.map((player) => (
+                <PlayerCard
+                  player={player}
+                  tournament={props.tournament}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </Card>
+      )}
+      {props.tournament.tournamentStatus === 'running' &&  topCutPlayers?.filter((player) => player.currentOpponent).map(
             (player: Standing) =>
                 <Card key={`top-cut-${player.name}`} className='p-0 mb-4'>
                   <Table>
@@ -37,7 +53,6 @@ export const TopCutView = (props: TopCutViewProps) => {
                             ? player.currentMatchResult
                             : undefined
                         }
-                        isPlayerMeOrMyOpponent={false}
                       />
                     {
                       player.currentOpponent && (
@@ -49,7 +64,6 @@ export const TopCutView = (props: TopCutViewProps) => {
                               ? player.currentOpponent?.currentMatchResult
                               : undefined
                           }
-                          isPlayerMeOrMyOpponent={false}
                         />
                       )
                     }
@@ -70,12 +84,11 @@ export const TopCutView = (props: TopCutViewProps) => {
                         ? player.currentMatchResult
                         : undefined
                     }
-                    isPlayerMeOrMyOpponent={false}
                   />
                 ))}
               </TableBody>
             </Table>
           )}
-    </Flex>
+    </>
   );
 };

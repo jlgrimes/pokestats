@@ -9,7 +9,6 @@ import {
   deletePinnedPlayer,
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
-import { usePlayerIsMeOrMyOpponent } from '../../../../hooks/tournamentResults';
 import { PlayerCard, PlayerCardSize } from '../PlayerCard/PlayerCard';
 
 interface PinnedPlayerCardProps {
@@ -26,7 +25,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   const toast = useToast();
   const { refetch } = usePinnedPlayers();
   const { data: userIsAdmin } = useUserIsAdmin();
-  const isMeOrMyOpponent = usePlayerIsMeOrMyOpponent(props.player);
+  const isMeOrMyOpponent = false;
 
   const onUnpinPlayer = useCallback(async () => {
     if (!user?.email) {
@@ -60,7 +59,6 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
             ? props.player.currentMatchResult
             : undefined
         }
-        isPlayerMeOrMyOpponent={isMeOrMyOpponent}
         player={props.player}
         tournament={props.tournament}
         size={props.size}
