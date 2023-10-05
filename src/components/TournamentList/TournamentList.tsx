@@ -16,7 +16,7 @@ export const TournamentList = ({
 
   return (
     <>{
-      tournaments.map((tournament) => (
+      tournaments.slice(0, mostRecent ? 5 : -1).map((tournament) => (
         <TournamentCard
           key={`tournament-card-${tournament.id}`}
           tournament={tournament}

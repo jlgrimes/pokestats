@@ -20,7 +20,7 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
   const { data } = useSmartPlayerProfiles({ name: props.playerName });
   const user = data?.at(0);
 
-  const { data: results } = usePlayerStandings(user, { tournament: props.tournament })
+  const { data: results } = usePlayerStandings(user, { tournament: props.tournament, shouldLoadOpponentRounds: true })
 
   const result = results?.at(0);
 

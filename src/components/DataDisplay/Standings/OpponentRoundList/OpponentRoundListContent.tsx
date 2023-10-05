@@ -57,8 +57,6 @@ export const OpponentRoundListContent = ({
   const { data } = useSmartPlayerProfiles({ name: player.name });
   const playerProfile = data?.at(0);
 
-  const isMyOpponent = usePlayerIsMeOrMyOpponent(player);
-
   const opponents: { name: string; result: MatchResult }[] | undefined =
     player.rounds;
 
@@ -105,7 +103,7 @@ export const OpponentRoundListContent = ({
                 enableEdits={false}
                 disableList
                 shouldDisableDeckExtras
-                isPlayerMeOrMyOpponent={isMyOpponent}
+                isPlayerMeOrMyOpponent
               />
             </Stack>
           </Grid>

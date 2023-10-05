@@ -10,7 +10,7 @@ interface TopCutViewProps {
 }
 
 export const TopCutView = (props: TopCutViewProps) => {
-  const { data: players } = useTopCutStandings({ tournament: props.tournament, ageDivision: props.ageDivision });
+  const { data: players } = useTopCutStandings({ tournament: props.tournament, ageDivision: props.ageDivision, shouldLoadOpponentRounds: true });
 
   const topCutPlayers = players && players.filter(player =>(props.tournament.tournamentStatus === 'finished' ||
   !players!.some(

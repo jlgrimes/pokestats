@@ -13,6 +13,7 @@ import { FullPageLoader } from '../common/FullPageLoader';
 import { TournamentInfo } from '../TournamentList/TournamentInfo';
 import { usePlayerStandings } from '../../hooks/newStandings';
 import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
+import { Card, Table, TableBody, TableRow } from '@tremor/react';
 
 export const PlayerPerformanceList = ({
   user,
@@ -20,13 +21,13 @@ export const PlayerPerformanceList = ({
   user: CombinedPlayerProfile | null | undefined;
 }) => {
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user?.name);
-  const { data: tournamentPerformance, isLoading } = usePlayerStandings(user);
+  const { data: tournamentPerformance, isLoading } = usePlayerStandings(user, { shouldLoadOpponentRounds: true });
   const { data: userIsAdmin } = useUserIsAdmin();
 
   if (isLoading) return <FullPageLoader />;
 
   return (
-    <Stack spacing={8} py={6} px={2}>
+    <div className='flex flex-col gap-4 mt-4'>
       {userMatchesLoggedInUser &&
         (!tournamentPerformance || tournamentPerformance.length === 0) && (
           <Stack>
@@ -50,17 +51,21 @@ export const PlayerPerformanceList = ({
         }
 
         return (
-          <Stack key={`${performance.tournament_id}-${performance.name}`}>
+          <Card key={`${performance.tournament_id}-${performance.name}`} className='px-6 py-4'>
             <TournamentInfo tournament={performance.tournament} />
-            <PlayerCard
-              player={performance}
-              tournament={performance.tournament}
-              canEditDecks={userMatchesLoggedInUser || userIsAdmin}
-              isPlayerMeOrMyOpponent={false}
-            />
-          </Stack>
+            <Table>
+              <TableBody>
+                <PlayerCard
+                  player={performance}
+                  tournament={performance.tournament}
+                  canEditDecks={userMatchesLoggedInUser || userIsAdmin}
+                  isPlayerMeOrMyOpponent={false}
+                />
+              </TableBody>
+            </Table>
+          </Card>
         );
       })}
-    </Stack>
+    </div>
   );
 };

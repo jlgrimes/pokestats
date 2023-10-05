@@ -21,7 +21,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
   const { data: tournamentPerformance, isLoading: areFinalResultsLoading } = useFollowingStandings(pinnedPlayerNames, props.tournament);
 
-  const { data: liveTournamentResults, isLoading } = useStandings({ tournament: props.tournament, ageDivision: props.ageDivision });
+  const { data: liveTournamentResults, isLoading } = useStandings({ tournament: props.tournament, ageDivision: props.ageDivision, shouldLoadOpponentRounds: true });
   const resultsAreLoading =
     (props.tournament.tournamentStatus === 'running' && isLoading) ||
     (props.tournament.tournamentStatus === 'finished' &&

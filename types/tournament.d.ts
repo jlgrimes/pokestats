@@ -61,6 +61,7 @@ export interface DeckCard {
 
 export interface Standing {
   name: string;
+  region?: string;
   profile?: StoredPlayerProfile;
   placing: number;
   record: PlayerRecord;

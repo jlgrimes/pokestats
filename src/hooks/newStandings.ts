@@ -21,17 +21,17 @@ const fixDatabaseStandings = (response: PostgrestSingleResponse<Record<any, any>
   const currentRound = rounds.length - 1;
 
   return {
-    name: cropPlayerName(standing.name),
-    region: getPlayerRegion(standing.name)?.at(1),
+    name: standing.name,
+    region: standing.region ?? null,
     rounds,
     tournament_id: Number.isInteger(standing.tournament_id) ? standing.tournament_id : standing.tournament_id.id,
     tournament: !Number.isInteger(standing.tournament_id) ? standing.tournament_id : null,
     placing: standing.placing,
     record: standing.record,
     age_division: standing.age_division,
-    decklist: JSON.parse(standing.decklist),
+    decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
     currentOpponent: standing.rounds[currentRound],
-    currentMatchResult: standing.rounds[currentRound]?.result
+    currentMatchResult: standing.rounds[currentRound]?.result ?? null
   }
 });
 
@@ -56,6 +56,12 @@ export const fetchStandings = async (params: UseStandingsParams) => {
   query = query.order('placing', { ascending: true });
 
   const standingsRes = await query;
+
+  if (params?.shouldLoadOpponentRounds) {
+    if (!standingsRes.data) return null;
+    const updatedStandings = await loadOpponentRounds(standingsRes.data);
+    return updatedStandings;
+  }
   
   return fixDatabaseStandings(standingsRes);
 }
@@ -63,6 +69,7 @@ export const fetchStandings = async (params: UseStandingsParams) => {
 interface UseStandingsParams {
   tournament: Tournament;
   ageDivision: AgeDivision;
+  shouldLoadOpponentRounds?: boolean;
 }
 
 export const useStandings = (params: UseStandingsParams) => {
@@ -94,6 +101,49 @@ interface UsePlayerStandingsParams {
   shouldLoadOpponentRounds?: boolean;
 }
 
+const loadOpponentRounds = async (standings: Standing[]) => {
+  const finalRes = standings.at(0);
+  const opponentList = finalRes?.rounds?.map((round) => round.name);
+  
+  if (opponentList) {
+    const stringifiedNames = getStringifiedNames(opponentList);
+
+    const opponentRes = await supabase
+      .from('standings_new')
+      .select(`name,placing,record,resistances,tournament_id,decklist,deck_archetype (
+        id,
+          name,
+          defined_pokemon,
+          identifiable_cards,
+          supertype,
+          format
+        ),rounds`)
+      .eq('tournament_id', finalRes?.tournament_id)
+      .or(`name.in.(${stringifiedNames})`);
+    const opponents = opponentRes.data;
+
+    if (opponents) {
+      return[{
+        ...standings[0],
+        rounds: standings[0].rounds?.map((round, idx) => {
+          const opponent = opponents.find((opponent) => opponent.name === round.name);
+
+          return {
+            ...round,
+            name: round.name,
+            opponent: {
+              ...opponent,
+              rounds: getRoundsArray(opponent as unknown as Standing)
+            },
+          }
+        })
+      }]
+    }
+  }
+
+  return standings;
+}
+
 export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams) => {
   if (!player) return null;
 
@@ -118,40 +168,10 @@ export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null 
   if (params?.shouldLoadOpponentRounds) {
     // If name hasn't loaded yet, don't bother fetching.
     if (!player.name || !standings) return null;
-
-    const finalRes = standings.at(0);
-    const opponentList = finalRes?.rounds?.map((round) => cropPlayerName(round.name));
-    
-    if (opponentList) {
-      const stringifiedNames = getStringifiedNames(opponentList);
-
-      const opponentRes = await supabase
-        .from('standings_new')
-        .select(`name,placing,record,resistances,tournament_id,decklist,deck_archetype (
-          id,
-            name,
-            defined_pokemon,
-            identifiable_cards,
-            supertype,
-            format
-          ),deck_supertype,rounds`)
-        .eq('tournament_id', finalRes?.tournament_id)
-        .or(`name.in.(${stringifiedNames})`);
-      const opponents = opponentRes.data;
-
-      if (opponents) {
-        standings[0] = {
-          ...standings[0],
-          rounds: standings[0].rounds?.map((round, idx) => ({
-            ...round,
-            name: cropPlayerName(round.name),
-            opponent: opponents.find((opponent) => cropPlayerName(opponent.name) === cropPlayerName(round.name))
-          }))
-        }
-      }
-    }
+    const updatedStandings = await loadOpponentRounds(standings);
+    return updatedStandings;
   }
-  
+
   return standings;
 }
 

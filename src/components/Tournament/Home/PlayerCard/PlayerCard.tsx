@@ -57,7 +57,6 @@ const ResultLetter = ({ result }: { result?: MatchResult }) => {
 };
 
 export const PlayerCard = (props: PlayerCardProps) => {
-  console.log(props.player)
   const { colorMode } = useColorMode();
 
   const isInTopCut =
