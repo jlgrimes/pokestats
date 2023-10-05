@@ -221,7 +221,7 @@ export const useFollowingStandings = (namesList: string[] | undefined, tournamen
   });
 }
 
-const fetchAllPlayerNames = async () => {
+export const fetchAllPlayerNames = async () => {
   const names = await supabase.rpc('distinct_names').returns<{ name: string }[]>();
   return names.data;
 }

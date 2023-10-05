@@ -63,7 +63,7 @@ export const RequestToComplete = ({
 
     const unusedNames = await fetchUnusedPlayers();
     const finalResultsName = unusedNames?.find(
-      name => normalizeName(name) === normalizeName(fullNameVal)
+      ({name}) => normalizeName(name) === normalizeName(fullNameVal)
     );
 
     try {

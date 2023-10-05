@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Deck } from '../../../types/tournament';
 import { getConversionRate } from '../stats';
 import { DeckTypeSchema } from '../deckArchetypes';
-import { fetchDecksWithLists } from './fetch';
 import { FinalResultsDeckSchema } from './final-results-schema';
 import { getDeckCounts } from './helpers';
 
@@ -22,11 +21,12 @@ export const useStoredDecks = (options?: {
 
   const { data: decks, isLoading } = useQuery({
     queryKey: [
-      'decks-with-lists',
+      'stored-decks',
       options?.tournamentId,
       options?.shouldDrillDown,
     ],
-    queryFn: () => fetchDecksWithLists(options?.tournamentId),
+    // TODO: IMPLEMENT
+    queryFn: () => [{}] as unknown as FinalResultsDeckSchema[],
   });
 
   if (!decks)

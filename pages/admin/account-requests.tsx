@@ -47,7 +47,7 @@ export default function AccountRequestsPage(props: AccountRequestsPageProps) {
 }
 
 export async function getStaticProps() {
-  const unusedPlayers = await fetchUnusedPlayers(true);
+  const unusedPlayers = await fetchUnusedPlayers();
 
   return {
     props: {
