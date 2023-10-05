@@ -7,22 +7,10 @@ import {
   isWithinInterval,
   parseISO,
 } from 'date-fns';
-import { useState } from 'react';
-import { Tournament, TournamentStatus } from '../../types/tournament';
-import { tournamentHasArrivedButNotLive } from '../components/TournamentList/helpers';
-import {
-  getPatchedTournament,
-  getTournamentShouldBeFinished,
-  getTournamentShouldBeRunning,
-  isTournamentLongGone,
-  patchTournamentsClient,
-} from '../lib/patches';
+import { Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import {
   HARDCODED_TOURNAMENT_ROUNDS,
-  ifTournamentIsDayOneWorlds,
-  reallyShortenTournamentName,
-  shortenTournamentName,
 } from '../lib/tournament';
 import { AgeDivision } from '../../types/age-division';
 
@@ -43,12 +31,6 @@ export const getTournamentSubStatus = (tournament: Tournament) => {
 
   return afterDayOne ? 'after-day-one' : null;
 };
-
-export const fixTournamentStatus = (tournament: Tournament) => {
-  if (isTournamentLongGone(tournament)) return 'finished';
-
-  return tournament.tournamentStatus;
-}
 
 export const padTournamentId = (tournament: Tournament) => ({ ...tournament, id: String(tournament.id).padStart(7, '0') })
 
@@ -104,43 +86,6 @@ export const useTournaments = (options?: FetchTournamentsOptions) => {
     queryKey,
     queryFn: () => fetchTournaments(options),
   });
-};
-
-export const getTournamentsThatNeedToBePatched = (
-  tournamentList: Tournament[]
-) =>
-  tournamentList.filter(tournament => {
-    if (getTournamentShouldBeFinished(tournament)) return false;
-
-    return isWithinInterval(new Date(), {
-      start: addDays(parseISO(tournament.date.start), -1),
-      end: addDays(parseISO(tournament.date.end), 1),
-    });
-  });
-
-export const usePatchedTournaments = (tournamentList: Tournament[]) => {
-  const results = useQueries({
-    queries: getTournamentsThatNeedToBePatched(tournamentList).map(
-      tournament => ({
-        queryKey: ['patched-tournament', tournament.id],
-        queryFn: () => {
-          return patchTournamentsClient(tournament);
-        },
-      })
-    ),
-  });
-
-  const tournamentsWithPatchesApplied = tournamentList.map(
-    tournament =>
-      results.find(
-        patchedTournament => tournament.id === patchedTournament.data?.id
-      )?.data ?? tournament
-  );
-
-  return {
-    data: tournamentsWithPatchesApplied,
-    isLoading: results.reduce((acc, curr) => acc || curr.isLoading, false),
-  };
 };
 
 export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>

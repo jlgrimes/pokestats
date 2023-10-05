@@ -14,18 +14,13 @@ import {
   fetchVariants,
 } from '../../src/hooks/deckArchetypes';
 import { fetchCodeToSetMap } from '../../src/hooks/deckList';
-import {
-  fetchFinalResults,
-  fetchUniqueDecks,
-} from '../../src/hooks/finalResults/fetch';
 import { getFinalResultsDeckFilters } from '../../src/hooks/finalResults/useCardCounts';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
 import { fetchFormats } from '../../src/hooks/formats/formats';
-import { Container, Stack } from '@chakra-ui/react';
 import { MatchupsCard } from '../../src/components/Deck/Analytics/MatchupsCard';
-import { fetchDeckResults, getDeckResultsFilters } from '../../src/hooks/deckResults';
+import supabase from '../../src/lib/supabase/client';
 
 export default function DeckPage({
   deck,
@@ -90,11 +85,6 @@ export async function getStaticProps({
   );
 
   await queryClient.prefetchQuery({
-    queryKey: ['final-results', filter],
-    queryFn: () => fetchFinalResults(filter),
-  });
-
-  await queryClient.prefetchQuery({
     queryKey: ['tournaments'],
     queryFn: () => fetchTournaments({ prefetch: true }),
   });
@@ -131,12 +121,12 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const decks = await fetchUniqueDecks();
+  const decks = (await supabase.from('Deck Archetypes').select('id')).data ?? []
 
   return {
-    paths: decks.map(({ deck_archetype }) => ({
+    paths: decks.map(({ id }) => ({
       params: {
-        deckId: deck_archetype,
+        deckId: id,
       },
     })),
     fallback: 'blocking',

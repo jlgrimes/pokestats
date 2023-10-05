@@ -2,7 +2,6 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { PairingsView } from '../../../../src/components/Tournament/Pairings/PairingsView';
 import { TournamentPageLayout } from '../../../../src/components/Tournament/TournamentPageLayout';
 import { fetchTournaments } from '../../../../src/hooks/tournaments';
-import { fetchLiveResults } from '../../../../src/lib/fetch/fetchLiveResults';
 import { Tournament } from '../../../../types/tournament';
 
 export default function StatsPage({ tournament }: { tournament: Tournament }) {

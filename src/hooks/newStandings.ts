@@ -220,3 +220,15 @@ export const useFollowingStandings = (namesList: string[] | undefined, tournamen
     queryFn: () => fetchFollowingStandings(namesList, tournament)
   });
 }
+
+const fetchAllPlayerNames = async () => {
+  const names = await supabase.rpc('distinct_names').returns<{ name: string }[]>();
+  return names.data;
+}
+
+export const useAllPlayerNames = () => {
+  return useQuery({
+    queryKey: ['all-player-names'],
+    queryFn: () => fetchAllPlayerNames()
+  });
+}

@@ -44,6 +44,7 @@ export const PlayerPerformanceList = ({
             <PlayerTournamentView
               tournament={performance.tournament}
               playerName={performance.name}
+              key={`${performance.tournament_id}-${performance.name}`}
             />
           )
         }

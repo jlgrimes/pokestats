@@ -19,7 +19,6 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { Fragment, useEffect, useState } from 'react';
 import {
   MatchResult,
   Standing,
@@ -27,7 +26,6 @@ import {
 } from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
 import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
-import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
 import { RoundsList } from '../../Rounds/RoundsList';
 import {
   usePlayerIsMeOrMyOpponent,
@@ -40,6 +38,7 @@ import { FollowButton } from '../../../Social/FollowButton';
 import { Record } from '../../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
 import { useStandings } from '../../../../hooks/newStandings';
+import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
 
 export const OpponentRoundListContent = ({
   tournament,

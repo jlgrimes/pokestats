@@ -3,7 +3,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Deck, Standing, Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { FormatSchema } from './formats/formats';
-import { useLiveTournamentResults } from './tournamentResults';
+import { useStandings } from './newStandings';
+import { usePlayerDecks } from './playerDecks';
 
 export const fetchDecks = async (): Promise<Deck[]> => {
   let query = supabase
@@ -283,43 +284,39 @@ interface MostPopularArchetypesOptions {
 }
 
 export const useMostPopularArchetypes = (
-  tournament?: Tournament,
+  tournament: Tournament,
   options?: MostPopularArchetypesOptions
 ) => {
-  const { data: liveResults, isLoading: liveResultsIsLoading } =
-    useLiveTournamentResults(tournament?.id ?? '', {
-      load: { allRoundData: true },
-      shouldNotFetchData: options?.shouldNotFetchData
-    });
+  const { data: liveResults, isLoading: liveResultsIsLoading } = usePlayerDecks(tournament.id)
   const {
     data: archetypes,
     refetch,
     isLoading: archetypesIsLoading,
   } = useArchetypes(tournament?.format, options?.shouldNotFetchData);
 
-  const playerDeckCounts = liveResults?.data?.reduce(
+  const playerDeckCounts = liveResults?.reduce(
     (
       acc: Record<string, { deck: DeckTypeSchema; count: number }>,
       player: Standing
     ) => {
-      if (player.deck && player.deck.id) {
+      if (player.deck_archetype && player.deck_archetype.id) {
         // Adds in supertype
         const playerDeck = archetypes?.find(
-          archetype => archetype.id === player.deck?.id
+          archetype => archetype.id === player.deck_archetype?.id
         );
 
-        if (acc[player.deck.id]) {
+        if (acc[player.deck_archetype.id]) {
           return {
             ...acc,
-            [player.deck.id]: {
+            [player.deck_archetype.id]: {
               deck: playerDeck,
-              count: acc[player.deck.id].count + 1,
+              count: acc[player.deck_archetype.id].count + 1,
             },
           };
         }
         return {
           ...acc,
-          [player.deck.id]: {
+          [player.deck_archetype.id]: {
             deck: playerDeck,
             count: 1,
           },

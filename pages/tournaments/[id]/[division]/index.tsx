@@ -1,10 +1,8 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { TournamentHomeView } from '../../../../src/components/Tournament/Home/TournamentHomeView';
-import { fetchFinalResults } from '../../../../src/hooks/finalResults/fetch';
 import { fetchOneTournamentMetadata } from '../../../../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
-  usePatchedTournaments,
 } from '../../../../src/hooks/tournaments';
 import { Tournament } from '../../../../types/tournament';
 
@@ -13,14 +11,7 @@ interface TournamentPageProps {
 }
 
 export default function TournamentPage(props: TournamentPageProps) {
-  const { data: patchedTournamentData } = usePatchedTournaments([
-    props.tournament,
-  ]);
-  const patchedTournament = patchedTournamentData
-    ? patchedTournamentData[0]
-    : props.tournament;
-
-  return <TournamentHomeView tournament={patchedTournament} />;
+  return <TournamentHomeView tournament={props.tournament} />;
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
@@ -30,19 +21,6 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     tournamentId: params.id,
     prefetch: true,
   });
-
-  if (tournament.tournamentStatus === 'finished') {
-    await queryClient.prefetchQuery({
-      queryKey: [
-        'final-results',
-        {
-          tournamentId: tournament.id,
-          minimumPlacing: 8
-        },
-      ],
-      queryFn: () => fetchFinalResults({ tournamentId: tournament.id, minimumPlacing: 8 }),
-    });
-  }
 
   await queryClient.prefetchQuery({
     queryKey: ['tournament-metadata', tournament.id],

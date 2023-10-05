@@ -12,7 +12,6 @@ import {
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 import { TournamentOrSet } from '../../hooks/sets';
-import { isTournamentLongGone } from '../../lib/patches';
 import { getRoundText } from '../Tournament/helpers';
 import {
   getRawTimeUntilTournament,
@@ -167,44 +166,4 @@ export const tournamentFallsOnCurrentDate = (tournament: Tournament) => {
     start: startDate,
     end: endOfDay(endDate),
   });
-};
-
-export const getTournaments = (
-  items: TournamentOrSet[],
-  mostRecent?: boolean
-) => {
-  const finishedTournaments = items.filter(
-    tournament => tournament.data.tournamentStatus === 'finished'
-  );
-  const almostStartedTournamentFilter = (tournament: TournamentOrSet) =>
-    tournament.data.date &&
-    tournamentHasArrivedButNotLive(tournament.data as unknown as Tournament);
-
-  const upcomingTournaments = items.filter(tournament => {
-    return (
-      tournament.data.tournamentStatus === 'not-started' &&
-      !tournamentHasArrivedButNotLive(tournament.data as unknown as Tournament)
-    );
-  });
-
-  const liveTournaments = items.filter(
-    tournament =>
-      tournament.data.tournamentStatus === 'running' &&
-      !isTournamentLongGone(tournament.data as Tournament)
-  );
-  const almostStartedTournaments = items
-    .filter(tournament => almostStartedTournamentFilter(tournament))
-    .reverse();
-
-  return {
-    highlightedTournamentsLength:
-      liveTournaments.length + almostStartedTournaments.length,
-    items: [
-      ...liveTournaments,
-      ...almostStartedTournaments,
-      ...(mostRecent ? [] : upcomingTournaments),
-      ...(mostRecent ? finishedTournaments.slice(0, 4) : finishedTournaments),
-      // ...upcomingTournaments,
-    ],
-  };
 };

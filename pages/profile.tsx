@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { PlayerProfilePage } from '../src/components/Profile/PlayerProfilePage';
 import { fetchArchetypes } from '../src/hooks/deckArchetypes';
-import { fetchDecksWithLists } from '../src/hooks/finalResults/fetch';
 import { fetchTournaments } from '../src/hooks/tournaments';
 import { useSessionPlayerProfile } from '../src/hooks/user';
 import { Tournament } from '../types/tournament';
@@ -37,10 +36,6 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery({
     queryKey: ['deck-archetypes'],
     queryFn: () => fetchArchetypes(),
-  });
-  await queryClient.prefetchQuery({
-    queryKey: ['decks-with-lists'],
-    queryFn: () => fetchDecksWithLists(),
   });
 
   return {

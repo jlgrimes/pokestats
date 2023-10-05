@@ -3,7 +3,6 @@ import { TournamentPageLayout } from '../../../../src/components/Tournament/Tour
 import {
   fetchSingleTournament,
   fetchTournaments,
-  usePatchedTournaments,
 } from '../../../../src/hooks/tournaments';
 import { Tournament } from '../../../../types/tournament';
 import { AgeDivision } from '../../../../types/age-division';

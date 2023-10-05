@@ -1,9 +1,7 @@
-import { PlayerLiveResultsSchema, usePlayerLiveResults } from '../../hooks/tournamentResults';
 import { Standing, Tournament } from '../../../types/tournament';
 import { memo } from 'react';
 import { RoundsList } from './Rounds/RoundsList';
 import { CombinedPlayerProfile } from '../../../types/player';
-import { getShouldHideDecks } from '../../hooks/tournaments';
 
 export const MyMatchupsList = memo(
   ({
