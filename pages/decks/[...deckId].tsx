@@ -121,12 +121,13 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const decks = (await supabase.from('Deck Archetypes').select('id')).data ?? []
+  const decksRes = await supabase.from('Deck Archetypes').select('id,supertype');
+  const decks = decksRes.data ?? [];
 
   return {
-    paths: decks.map(({ id }) => ({
+    paths: decks.map(({ id, supertype }) => ({
       params: {
-        deckId: id,
+        deckId: [`${supertype}` ?? 'other', `${id}`],
       },
     })),
     fallback: 'blocking',
