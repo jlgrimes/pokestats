@@ -9,6 +9,8 @@ export const BetaBanner = () => {
       className="mb-4"
       title='This is a beta version of pokestats.live'
       color='amber'
-    />
+    >
+      10/4: Expect things to be broken! Currently no decks are displayed and all optimization is out.
+    </Callout>
   )
 };
