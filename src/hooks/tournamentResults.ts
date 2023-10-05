@@ -110,72 +110,9 @@ export const useTopPerformingPlayers = (tournamentId: string) => {
     useLiveTournamentResults(tournamentId);
   return liveTournamentResults?.data.slice(0, 4).map(player => ({
     name: player.name,
-    deck: player.deck,
+    deck: player.deck_archetype,
     email: player.profile?.email,
   }));
-};
-
-export interface PlayerLiveResultsSchema {
-  player: Standing | undefined;
-  shouldHideDecks: boolean | undefined;
-  isLoading: boolean;
-}
-
-export const usePlayerLiveResults = (
-  tournamentId: string,
-  name?: string | null,
-  options?: FetchLoggedInPlayerOptions
-): PlayerLiveResultsSchema => {
-  const { data: liveResults, isLoading } = useLiveTournamentResults(
-    tournamentId,
-    {
-      load: { allRoundData: true },
-    }
-  );
-
-  if (!name)
-    return {
-      player: undefined,
-      shouldHideDecks: undefined,
-      isLoading,
-    };
-
-  const player = liveResults?.data.find(
-    (result: Standing) =>
-      result.name === name ||
-      (options?.additionalNames &&
-        options.additionalNames.includes(result.name))
-  );
-
-  if (options?.load?.opponentRoundData && player?.rounds) {
-    return {
-      player: {
-        ...player,
-        rounds: player.rounds.map(roundResult => {
-          const opponent = liveResults?.data.find(
-            player => player.name === roundResult.name
-          );
-
-          if (opponent) {
-            return {
-              ...roundResult,
-              opponent,
-            };
-          }
-
-          return roundResult;
-        }),
-      },
-      shouldHideDecks: liveResults?.shouldHideDecks,
-      isLoading,
-    };
-  }
-
-  return {
-    player,
-    shouldHideDecks: liveResults?.shouldHideDecks,
-    isLoading,
-  };
 };
 
 export const useLiveTournamentPlayers = (tournamentId: string) => {

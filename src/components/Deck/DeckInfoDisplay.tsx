@@ -16,6 +16,7 @@ import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
 import DeckInput from './DeckInput/DeckInput';
 import { UploadListButton } from './ImageListViewer/UploadListButton';
 import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
+import { getShouldHideDecks } from '../../hooks/tournaments';
 
 export const DeckInfoDisplay = memo(
   ({
@@ -24,7 +25,6 @@ export const DeckInfoDisplay = memo(
     enableEdits,
     shouldShowAsText,
     disableList,
-    shouldHideDeck,
     shouldHideVerifiedIcon,
     shouldHideOpponentView,
     onUnpinPlayer,
@@ -38,7 +38,6 @@ export const DeckInfoDisplay = memo(
     isPlayerMeOrMyOpponent: boolean;
     shouldShowAsText?: boolean;
     disableList?: boolean;
-    shouldHideDeck?: boolean;
     shouldHideVerifiedIcon?: boolean;
     shouldHideOpponentView?: boolean;
     onUnpinPlayer?: () => void;
@@ -55,8 +54,8 @@ export const DeckInfoDisplay = memo(
     const ifShouldHideDeck = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
 
-      return !isPlayerMeOrMyOpponent && shouldHideDeck;
-    }, [shouldHideDeck, tournament.tournamentStatus, isPlayerMeOrMyOpponent]);
+      return !isPlayerMeOrMyOpponent && getShouldHideDecks(tournament, player.age_division);
+    }, [player.age_division, tournament, isPlayerMeOrMyOpponent]);
 
     const ifShouldBlurSpecificAArchetype = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;

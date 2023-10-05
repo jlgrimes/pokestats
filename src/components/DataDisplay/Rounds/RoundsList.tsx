@@ -8,7 +8,6 @@ import { Round } from './Round';
 export interface RoundsListProps {
   player: Standing;
   tournament: Tournament;
-  shouldHideDecks: boolean;
   shouldDisableOpponentModal?: boolean;
   canEditDecks?: boolean;
   userIsAdmin?: boolean;

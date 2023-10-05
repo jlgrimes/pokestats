@@ -32,7 +32,6 @@ export const TopCutView = (props: TopCutViewProps) => {
                       <PlayerCard
                         player={player}
                         tournament={props.tournament}
-                        shouldHideDecks={false}
                         result={
                           props.tournament.tournamentStatus === 'running'
                             ? player.currentMatchResult
@@ -45,7 +44,6 @@ export const TopCutView = (props: TopCutViewProps) => {
                         <PlayerCard
                           player={player.currentOpponent}
                           tournament={props.tournament}
-                          shouldHideDecks={false}
                           result={
                             props.tournament.tournamentStatus === 'running'
                               ? player.currentOpponent?.currentMatchResult
@@ -67,7 +65,6 @@ export const TopCutView = (props: TopCutViewProps) => {
                     key={`${player.name}`}
                     player={player}
                     tournament={props.tournament}
-                    shouldHideDecks={false}
                     result={
                       props.tournament.tournamentStatus === 'running'
                         ? player.currentMatchResult

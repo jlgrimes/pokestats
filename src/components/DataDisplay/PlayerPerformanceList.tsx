@@ -54,7 +54,6 @@ export const PlayerPerformanceList = ({
             <PlayerCard
               player={performance}
               tournament={performance.tournament}
-              shouldHideDecks={false}
               canEditDecks={userMatchesLoggedInUser || userIsAdmin}
               isPlayerMeOrMyOpponent={false}
             />

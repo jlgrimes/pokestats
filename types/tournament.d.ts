@@ -116,4 +116,9 @@ export interface Tournament {
     masters: number | null;
   };
   format: FormatSchema;
+  should_reveal_decks: {
+    juniors: boolean;
+    seniors: boolean;
+    masters: boolean;
+  } | null;
 }

@@ -36,13 +36,13 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
           user={user}
           shouldHideOpponentView
           isLoggedInUser={isLoggedInUser}
-          livePlayerResults={results}
+          myStanding={result}
         />
         <MyMatchupsList
           tournament={props.tournament}
           user={user}
           isLoggedInUser={isLoggedInUser}
-          livePlayerResults={results}
+          myStanding={result}
         />
       </Stack>
     </CommonCard>

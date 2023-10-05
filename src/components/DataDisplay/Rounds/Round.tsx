@@ -5,6 +5,7 @@ import { usePlayerIsMeOrMyOpponent } from '../../../hooks/tournamentResults';
 import { StatsHeading } from '../../common/StatsHeading';
 import { PlayerCard } from '../../Tournament/Home/PlayerCard/PlayerCard';
 import { RoundsListProps } from './RoundsList';
+import { getShouldHideDecks } from '../../../hooks/tournaments';
 
 interface RoundProps extends RoundsListProps {
   round: PlayerRound;
@@ -20,7 +21,6 @@ export const Round = (props: RoundProps) => {
     <PlayerCard
       player={props.opponent}
       tournament={props.tournament}
-      shouldHideDecks={props.shouldHideDecks}
       shouldHideStanding
       canEditDecks={
         props.userIsAdmin ||

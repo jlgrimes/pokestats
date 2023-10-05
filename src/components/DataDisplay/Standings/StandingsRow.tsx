@@ -37,7 +37,6 @@ export interface StandingsRowProps {
   opponentRoundNumber?: number;
   opponentResult?: string;
   hideArchetype?: boolean;
-  shouldHideDeck?: boolean;
   onUnpinPlayer?: () => void;
   translucent?: boolean;
   isDeckLoading?: boolean;
@@ -85,7 +84,6 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                 tournament={props.tournament}
                 player={props.result}
                 enableEdits={!!props.canEditDecks}
-                shouldHideDeck={props.shouldHideDeck}
                 onUnpinPlayer={props.onUnpinPlayer}
                 shouldHideMenu={props.translucent}
                 shouldDisableDeckExtras={props.isCurrentlyPlayingInTopCut}

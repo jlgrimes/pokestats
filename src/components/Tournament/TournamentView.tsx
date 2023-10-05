@@ -42,7 +42,7 @@ export default function TournamentView({
     ageDivision
   });
   // TODO PLEASE CHANGE THIS
-  const shouldHideDecks = false;
+  const shouldHideDecks = !tournament.should_reveal_decks?.[ageDivision];
 
   if (isLoading) return <FullPageLoader />;
 

@@ -24,6 +24,7 @@ import {
   reallyShortenTournamentName,
   shortenTournamentName,
 } from '../lib/tournament';
+import { AgeDivision } from '../../types/age-division';
 
 interface FetchTournamentsOptions {
   prefetch?: boolean;
@@ -55,7 +56,7 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   let query = supabase
     .from('tournaments_new')
     .select(
-      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
+      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date),should_reveal_decks'
     )
     .order('date->end', { ascending: false });
 
@@ -147,3 +148,5 @@ export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>
     ({ name, tournamentStatus }) =>
       tournamentStatus === 'finished' && !name.includes(' Cup')
   ) as Tournament;
+
+export const getShouldHideDecks = (tournament: Tournament, playerAgeDivision: AgeDivision) => !tournament.should_reveal_decks?.[playerAgeDivision]

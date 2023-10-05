@@ -19,21 +19,16 @@ export const PlayerMatchupStatus = ({
   user,
   shouldHideOpponentView,
   isLoggedInUser,
-  livePlayerResults,
+  myStanding,
 }: {
   tournament: Tournament;
   user: CombinedPlayerProfile | null;
   shouldHideOpponentView?: boolean;
   isLoggedInUser?: boolean;
-  livePlayerResults: PlayerLiveResultsSchema;
+  myStanding: Standing | null | undefined;
 }) => {
   const tournamentFinished = tournament.tournamentStatus === 'finished';
   const { header } = useColor();
-  const {
-    player: playerResults,
-    shouldHideDecks,
-    isLoading,
-  } = livePlayerResults;
 
   const renderLoadingSkeleton = useCallback(
     () => <Skeleton height={63.9} />,
@@ -42,27 +37,26 @@ export const PlayerMatchupStatus = ({
 
   if (!user) return renderLoadingSkeleton();
 
-  return !isLoading && playerResults && user ? (
+  return myStanding && user ? (
     <Stack alignItems={'center'} spacing={4} py={1}>
       <Stack direction={'row'} alignItems='center'>
         <DeckInfoDisplay
           tournament={tournament}
-          player={playerResults}
+          player={myStanding}
           enableEdits={!!isLoggedInUser}
-          shouldHideDeck={shouldHideDecks}
           shouldHideOpponentView={shouldHideOpponentView}
           shouldDisableDeckExtras={!isLoggedInUser}
           isPlayerMeOrMyOpponent={!!isLoggedInUser}
         />
         <Stack direction={'row'} alignItems='baseline'>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
-            <Record standing={playerResults} big />
-            <RecordIcon standing={playerResults} tournament={tournament} />
+            <Record standing={myStanding} big />
+            <RecordIcon standing={myStanding} tournament={tournament} />
             <Heading
               size='sm'
               color={header}
             >
-              {`${ordinalSuffixOf(playerResults.placing)}`}
+              {`${ordinalSuffixOf(myStanding.placing)}`}
             </Heading>
           </Stack>
           {tournamentFinished && (
@@ -71,7 +65,7 @@ export const PlayerMatchupStatus = ({
               color={header}
             >
               {`Top ${getPercentile(
-                playerResults.placing,
+                myStanding.placing,
                 tournament.players.masters as number
               )}%`}
             </Heading>

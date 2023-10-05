@@ -15,7 +15,6 @@ import { PlayerCard, PlayerCardSize } from '../PlayerCard/PlayerCard';
 interface PinnedPlayerCardProps {
   player: Standing;
   tournament: Tournament;
-  shouldHideDecks: boolean | undefined;
   isEditingPinned: boolean;
   isDeckLoading?: boolean;
   shouldHideOpponent?: boolean;
@@ -65,7 +64,6 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
         player={props.player}
         tournament={props.tournament}
         size={props.size}
-        shouldHideDecks={props.shouldHideDecks}
       />
       {props.isEditingPinned && (
         <IconButton

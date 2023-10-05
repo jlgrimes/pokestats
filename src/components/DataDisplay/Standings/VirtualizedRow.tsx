@@ -17,7 +17,6 @@ export const VirtualizedRow = memo((props: VirtualizedRowProps) => {
     <PlayerCard
       player={props.standing}
       tournament={props.tournament}
-      shouldHideDecks={props.shouldHideDeck}
       canEditDecks={props.canEditDecks}
       size='sm'
       shouldHideOpponent

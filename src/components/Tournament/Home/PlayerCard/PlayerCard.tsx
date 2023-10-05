@@ -31,7 +31,6 @@ export type PlayerCardSize = 'sm' | 'md' | 'lg';
 export interface PlayerCardProps {
   player: Standing;
   tournament: Tournament;
-  shouldHideDecks: boolean | undefined;
   isDeckLoading?: boolean;
   canEditDecks?: boolean;
   onUnpinPlayer?: () => void;
@@ -93,7 +92,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
           tournament={props.tournament}
           onUnpinPlayer={props.onUnpinPlayer}
           canEditDecks={props.canEditDecks}
-          shouldHideDeck={props.shouldHideDecks}
           isDeckLoading={props.isDeckLoading}
           // If we're in top 8 and the player is knocked out, blur them out while the tournament is still running
           translucent={hasLostInTopCut}

@@ -32,7 +32,6 @@ import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
 import { RoundsList } from '../../Rounds/RoundsList';
 import {
   usePlayerIsMeOrMyOpponent,
-  usePlayerLiveResults,
 } from '../../../../hooks/tournamentResults';
 import { useSmartPlayerProfiles } from '../../../../hooks/user';
 import { ordinalSuffixOf } from '../../../../lib/strings';
@@ -41,7 +40,7 @@ import { Username } from '../../../Profile/Username';
 import { FollowButton } from '../../../Social/FollowButton';
 import { Record } from '../../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
-import { getShouldHideDecks, useStandings } from '../../../../hooks/newStandings';
+import { useStandings } from '../../../../hooks/newStandings';
 
 export const OpponentRoundListContent = ({
   tournament,
@@ -57,7 +56,6 @@ export const OpponentRoundListContent = ({
   const { data: userIsAdmin } = useUserIsAdmin();
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
-  const { shouldHideDecks } = usePlayerLiveResults(tournament.id, player.name);
   const { data } = useSmartPlayerProfiles({ name: player.name });
   const playerProfile = data?.at(0);
 
@@ -108,8 +106,6 @@ export const OpponentRoundListContent = ({
                 player={player}
                 enableEdits={false}
                 disableList
-                // Since we're pulling from post-tournament
-                shouldHideDeck={shouldHideDecks}
                 shouldDisableDeckExtras
                 isPlayerMeOrMyOpponent={isMyOpponent}
               />
@@ -126,7 +122,6 @@ export const OpponentRoundListContent = ({
               rounds,
             }}
             tournament={tournament}
-            shouldHideDecks={getShouldHideDecks({ tournament, ageDivision: player.age_division })}
             shouldDisableOpponentModal
             canEditDecks={userMatchesLoggedInUser}
             userIsAdmin={userIsAdmin}

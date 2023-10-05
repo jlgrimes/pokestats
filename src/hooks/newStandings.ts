@@ -16,17 +16,6 @@ export const fixStoredDeck = (decklist: any) => {
   return decklist;
 }
 
-export const getShouldHideDecks = (params: UseStandingsParams) => {
-  const ageDivision = params.ageDivision;
-  const roundNumber = params.tournament.roundNumbers[ageDivision];
-  const tournamentRoundSchema = params.tournament.players[ageDivision]
-    ? getTournamentRoundSchema(params.tournament, params.ageDivision)
-    : undefined;
-  const dayOneRounds = tournamentRoundSchema?.rounds.dayOneSwissRounds ?? 9; // Default to 9 i guess
-
-  return roundNumber ? roundNumber < dayOneRounds : true;
-}
-
 const fixDatabaseStandings = (response: PostgrestSingleResponse<Record<any, any>[]>): Standing[] | undefined => response.data?.map((standing) => {
   const rounds = getRoundsArray(standing as Standing);
   const currentRound = rounds.length - 1;

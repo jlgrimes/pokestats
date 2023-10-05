@@ -111,7 +111,6 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                       key={`pinned-${pinnedPlayer?.name}`}
                       player={pinnedPlayer}
                       tournament={props.tournament}
-                      shouldHideDecks={liveTournamentResults?.shouldHideDecks}
                       isDeckLoading={isLoading && !pinnedPlayer.deck_archetype?.id}
                       isEditingPinned={editPinnedPlayers.isOpen}
                       shouldHideOpponent={props.isCompact}
