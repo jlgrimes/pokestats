@@ -59,7 +59,6 @@ export const PlayerPerformanceList = ({
                   player={performance}
                   tournament={performance.tournament}
                   canEditDecks={userMatchesLoggedInUser || userIsAdmin}
-                  isPlayerMeOrMyOpponent={false}
                 />
               </TableBody>
             </Table>
