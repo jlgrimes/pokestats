@@ -32,6 +32,7 @@ export const TopCutView = (props: TopCutViewProps) => {
             <TableBody>
               {topCutPlayers?.map((player) => (
                 <PlayerCard
+                  key={`top-cut-card-${player.name}`}
                   player={player}
                   tournament={props.tournament}
                 />
