@@ -74,7 +74,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
         )}`}
       >
         {props.roundNumber && (
-          <StandingsCell className='pl-2 w-8 text-right'>
+          <StandingsCell className='pl-2 w-4  text-right'>
             <Bold className={`text-gray-500 font-black text-lg text-right`}>
               {props.roundNumber}
             </Bold>

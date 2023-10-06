@@ -9,6 +9,8 @@ import { RecordIcon } from './ResultsList/RecordIcon';
 import { getPercentile } from './helpers';
 import { useCallback } from 'react';
 import { useColor } from '../../../hooks/useColor';
+import { PlayerCard } from '../Home/PlayerCard/PlayerCard';
+import { Table, TableBody } from '@tremor/react';
 
 export const PlayerMatchupStatus = ({
   tournament,
@@ -23,60 +25,24 @@ export const PlayerMatchupStatus = ({
   isLoggedInUser?: boolean;
   myStanding: Standing | null | undefined;
 }) => {
-  const tournamentFinished = tournament.tournamentStatus === 'finished';
-  const { header } = useColor();
-
   const renderLoadingSkeleton = useCallback(
     () => <Skeleton height={63.9} />,
     []
   );
 
   if (!user) return renderLoadingSkeleton();
-
-  return myStanding && user ? (
-    <Stack alignItems={'center'} spacing={4} py={1}>
-      <Stack direction={'row'} alignItems='center'>
-        <DeckInfoDisplay
-          tournament={tournament}
+  
+  return myStanding && user && (
+    <Table className='mb-4'>
+      <TableBody>
+        <PlayerCard
           player={myStanding}
-          enableEdits={!!isLoggedInUser}
-          shouldHideOpponentView={shouldHideOpponentView}
-          shouldDisableDeckExtras={!isLoggedInUser}
+          tournament={tournament}
+          canEditDecks
+          shouldHideOpponent
+          shouldDisableOpponentModal
         />
-        <Stack direction={'row'} alignItems='baseline'>
-          <Stack direction='row' alignItems={'baseline'} spacing={1}>
-            <Record standing={myStanding} big />
-            <RecordIcon standing={myStanding} tournament={tournament} />
-            <Heading
-              size='sm'
-              color={header}
-            >
-              {`${ordinalSuffixOf(myStanding.placing)}`}
-            </Heading>
-          </Stack>
-          {tournamentFinished && (
-            <Heading
-              size='sm'
-              color={header}
-            >
-              {`Top ${getPercentile(
-                myStanding.placing,
-                tournament.players.masters as number
-              )}%`}
-            </Heading>
-          )}
-        </Stack>
-      </Stack>
-      {/* {!tournamentFinished && (
-        <RecordNeeded
-          record={playerResults.record}
-          objective='day 2'
-          matchPointsNeeded={19}
-          roundsLeft={9 - (playerResults.rounds?.length ?? 0)}
-        />
-      )} */}
-    </Stack>
-  ) : (
-    renderLoadingSkeleton()
-  );
+      </TableBody>
+    </Table>
+  )
 };

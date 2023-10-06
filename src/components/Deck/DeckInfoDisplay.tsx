@@ -69,7 +69,7 @@ export const DeckInfoDisplay = memo(
       <Grid
         gridTemplateColumns={
           shouldShowEditButton
-            ? `auto 15px 50px`
+            ? `auto 15px`
             : 'auto'
         }
         columnGap={2}
@@ -99,7 +99,7 @@ export const DeckInfoDisplay = memo(
           />
         )}
 
-        {shouldShowList ? (
+        {/* {shouldShowList ? (
           <ListViewerOpenButton result={player} tournament={tournament} />
         ) : userIsLoggedInUser && tournament.tournamentStatus === 'finished' ? (
           <UploadListButton
@@ -108,7 +108,7 @@ export const DeckInfoDisplay = memo(
           />
         ) : (
           <></>
-        )}
+        )} */}
 
         {/* {!shouldHideMenu && (
           <StandingsInfoMenu
