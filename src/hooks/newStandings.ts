@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import supabase from "../lib/supabase/client"
 import { capitalize } from "../lib/strings";
 import { Deck, PlayerRecord, PlayerResistances, PlayerRound, Standing, Tournament, TournamentDate } from "../../types/tournament";
-import { cropPlayerName, getPlayerRegion, getRoundsArray } from "../lib/fetch/fetchLiveResults";
+import { cropPlayerName, getPlayerDeck, getPlayerRegion, getRoundsArray } from "../lib/fetch/fetchLiveResults";
 import { AgeDivision } from "../../types/age-division";
 import { getTournamentRoundSchema } from "../lib/tournament";
 import { PostgrestSingleResponse } from "@supabase/supabase-js";

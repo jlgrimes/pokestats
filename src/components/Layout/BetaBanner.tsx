@@ -10,7 +10,7 @@ export const BetaBanner = () => {
       title='This is a beta version of pokestats.live'
       color='amber'
     >
-      10/4: Expect things to be broken! Currently no decks are displayed and all optimization is out.
+      10/6: Expect things to be broken! We might need to call code red and update prod with this.
     </Callout>
   )
 };

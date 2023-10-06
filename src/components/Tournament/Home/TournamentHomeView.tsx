@@ -48,7 +48,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         <PageTitle>
           {props.tournament.name}
         </PageTitle>
-        <Grid gridTemplateColumns={'5rem 1fr auto'} alignItems='center' rowGap={2}>
+        <Flex className='justify-center gap-4'>
           {country ? (
             <Box>
               <CountryFlag countryCode={country} size='lg' />
@@ -72,18 +72,18 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
               )}
           </Stack>
           <StreamIconLink tournament={props.tournament} />
-        </Grid>
+        </Flex>
       </Flex>
       <Ad slot='7673650238' />
-      <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${props.tournament?.id}/${division}`} />
-      <TournamentHomeLinks tournament={props.tournament} />
-      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} ageDivision={ageDivision} />}
       {isAuthenticated && profile?.name && (
         <PlayerTournamentView
           tournament={props.tournament}
           playerName={profile.name}
         />
       )}
+      <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${props.tournament?.id}/${division}`} />
+      <TournamentHomeLinks tournament={props.tournament} />
+      {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} ageDivision={ageDivision} />}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
           <TopCutView tournament={props.tournament} ageDivision={ageDivision} />
