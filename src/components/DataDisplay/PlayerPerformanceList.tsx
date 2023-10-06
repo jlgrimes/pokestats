@@ -6,14 +6,14 @@ import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
 import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import { useUserIsAdmin } from '../../hooks/administrators';
-import { Standing } from '../../../types/tournament';
+import { Standing, Tournament } from '../../../types/tournament';
 import { CommonCard } from '../common/CommonCard';
 import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { TournamentInfo } from '../TournamentList/TournamentInfo';
 import { usePlayerStandings } from '../../hooks/newStandings';
 import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
-import { Card, Table, TableBody, TableRow } from '@tremor/react';
+import { Callout, Card, Table, TableBody, TableRow } from '@tremor/react';
 
 export const PlayerPerformanceList = ({
   user,
@@ -35,36 +35,26 @@ export const PlayerPerformanceList = ({
             <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
           </Stack>
         )}
-      {tournamentPerformance?.map((performance: Standing) => {
+      {/* {tournamentPerformance?.map((performance: Standing) => {
         if (!performance.tournament_id) return null;
-
-        if (!performance.tournament) return null;
-
-        if (performance.tournament.tournamentStatus === 'running') {
-          return (
-            <PlayerTournamentView
-              tournament={performance.tournament}
-              playerName={performance.name}
-              key={`${performance.tournament_id}-${performance.name}`}
-            />
-          )
-        }
-
         return (
           <Card key={`${performance.tournament_id}-${performance.name}`} className='px-6 py-4'>
-            <TournamentInfo tournament={performance.tournament} />
+            <TournamentInfo tournament={tournament} />
             <Table>
               <TableBody>
                 <PlayerCard
                   player={performance}
-                  tournament={performance.tournament}
+                  tournament={tournament}
                   canEditDecks={userMatchesLoggedInUser || userIsAdmin}
                 />
               </TableBody>
             </Table>
           </Card>
         );
-      })}
+      })} */}
+      <Callout title={`Sorry, we are working on this page!`}>
+        Come back another time
+      </Callout>
     </div>
   );
 };

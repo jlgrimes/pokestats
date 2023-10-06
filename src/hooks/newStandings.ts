@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import supabase from "../lib/supabase/client"
 import { capitalize } from "../lib/strings";
-import { Deck, PlayerRecord, PlayerResistances, PlayerRound, Standing, Tournament } from "../../types/tournament";
+import { Deck, PlayerRecord, PlayerResistances, PlayerRound, Standing, Tournament, TournamentDate } from "../../types/tournament";
 import { cropPlayerName, getPlayerRegion, getRoundsArray } from "../lib/fetch/fetchLiveResults";
 import { AgeDivision } from "../../types/age-division";
 import { getTournamentRoundSchema } from "../lib/tournament";
@@ -29,7 +29,10 @@ interface StandingsWithDecksReturnType {
   deck_archetype: number,
   defined_pokemon: string[] | null,
   identifiable_cards: string[] | null,
-  supertype: number | null
+  supertype: number | null,
+  tournament_id: number,
+  tournament_name: string,
+  tournament_date: TournamentDate,
 }
 
 const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => data?.map((standing) => {

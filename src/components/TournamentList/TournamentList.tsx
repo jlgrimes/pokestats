@@ -23,7 +23,7 @@ export const TournamentList = ({
       <TournamentCard
         key={`tournament-card-${tournament.id}`}
         tournament={tournament}
-        champion={champions ? champions.find((standing) => standing.tournament_id === tournament.id) : undefined}
+        champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
       />
     ))}
     {
@@ -31,7 +31,7 @@ export const TournamentList = ({
         <TournamentCard
           key={`tournament-card-${tournament.id}`}
           tournament={tournament}
-          champion={champions ? champions.find((standing) => standing.tournament_id === tournament.id) : undefined}
+          champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
         />
       ))
     }</>

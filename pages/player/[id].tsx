@@ -12,7 +12,6 @@ import {
   useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
-import { fetchPlayerStandings } from '../../src/hooks/newStandings';
 
 export default function Page({ username }: { username: string }) {
   const router = useRouter();

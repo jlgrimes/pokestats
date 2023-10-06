@@ -73,7 +73,6 @@ export interface Standing {
   currentOpponent?: PlayerRound | Standing;
   decklist: DeckList | null;
   drop?: number | null;
-  tournament_id?: string;
   tournament?: Tournament | null;
   region?: string;
   age_division: AgeDivision;
@@ -82,6 +81,9 @@ export interface Standing {
   defined_pokemon: string[] | null;
   identifiable_cards: string[] | null;
   supertype: number | null;
+  tournament_id: number | null;
+  tournament_name: string | null;
+  tournament_date: TournamentDate | null;
 }
 
 export interface MatchupResult extends Standing {
@@ -92,13 +94,15 @@ export type TournamentStatus = 'not-started' | 'running' | 'finished';
 
 export type TopCutStatus = null | 'finals' | 'top4' | 'top8';
 
+export type TournamentDate = {
+  start: string;
+  end: string;
+};
+
 export interface Tournament {
   id: string;
   name: string;
-  date: {
-    start: string;
-    end: string;
-  };
+  date: TournamentDate;
   tournamentStatus: TournamentStatus;
   topCutStatus?: TopCutStatus;
   hasStaleData?: boolean;
