@@ -49,7 +49,7 @@ export type MatchResult = 'W' | 'L' | 'T';
 export interface PlayerRound {
   name: string;
   result: MatchResult;
-  opponent?: FinalResultsSchema;
+  opponent?: Standing;
 }
 
 export interface DeckCard {

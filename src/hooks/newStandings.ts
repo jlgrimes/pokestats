@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import supabase from "../lib/supabase/client"
 import { capitalize } from "../lib/strings";
-import { Deck, Standing, Tournament } from "../../types/tournament";
+import { Deck, PlayerRecord, PlayerResistances, Standing, Tournament } from "../../types/tournament";
 import { cropPlayerName, getPlayerRegion, getRoundsArray } from "../lib/fetch/fetchLiveResults";
 import { AgeDivision } from "../../types/age-division";
 import { getTournamentRoundSchema } from "../lib/tournament";
@@ -16,7 +16,7 @@ export const fixStoredDeck = (decklist: any) => {
   return decklist;
 }
 
-const fixDatabaseStandings = (response: PostgrestSingleResponse<Record<any, any>[]>): Standing[] | undefined => response.data?.map((standing) => {
+const fixDatabaseStandings = (data: Record<any, any>[] | null): Standing[] | undefined => data?.map((standing) => {
   const rounds = getRoundsArray(standing as Standing);
   const currentRound = rounds.length - 1;
 
@@ -40,7 +40,7 @@ export const fetchChampions = async (): Promise<Standing[] | undefined> => {
 
   const standingsRes = await query;
 
-  return fixDatabaseStandings(standingsRes);
+  return fixDatabaseStandings(standingsRes.data);
 }
 
 export const useChampions = () => {
@@ -56,7 +56,7 @@ export const fetchStandings = async (params: UseStandingsParams) => {
   query = query.order('placing', { ascending: true });
 
   const standingsRes = await query;
-  const standings = fixDatabaseStandings(standingsRes)
+  const standings = fixDatabaseStandings(standingsRes.data)
 
   if (params?.shouldLoadOpponentRounds) {
     if (!standingsRes.data) return null;
@@ -86,7 +86,7 @@ export const fetchTopCut = async (params: UseStandingsParams) => {
   query = query.lte('placing', 8);
 
   const standingsRes = await query;
-  const standings = fixDatabaseStandings(standingsRes);
+  const standings = fixDatabaseStandings(standingsRes.data);
 
   if (params?.shouldLoadOpponentRounds && standings) {
     if (!standingsRes.data) return null;
@@ -109,7 +109,7 @@ interface UsePlayerStandingsParams {
   shouldLoadOpponentRounds?: boolean;
 }
 
-const loadOpponentRounds = async (standings: Standing[]) => {
+const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> => {
   const opponentList = standings.reduce((acc: string[], curr: Standing) => {
     const opponentRounds = curr.rounds?.map((round) => round.name) ?? [];
     return [...acc, ...opponentRounds]
@@ -120,18 +120,11 @@ const loadOpponentRounds = async (standings: Standing[]) => {
 
     const opponentRes = await supabase
       .from('standings_new')
-      .select(`name,placing,record,resistances,tournament_id,decklist,deck_archetype (
-        id,
-          name,
-          defined_pokemon,
-          identifiable_cards,
-          supertype,
-          format
-        ),rounds`)
+      .select(`name,placing,record,resistances,tournament_id,rounds,decklist`)
       .eq('tournament_id', standings[0]?.tournament_id)
-      .or(`name.in.(${stringifiedNames})`);
-    const opponents = opponentRes.data;
-    console.log(opponents)
+      .or(`name.in.(${stringifiedNames})`)
+      .returns<{ name: string, placing: number, record: PlayerRecord, resistances: PlayerResistances, tournament_id: number, rounds: Record<string, PlayerRecord>, decklist: string }[]>();
+    const opponents = fixDatabaseStandings(opponentRes.data);
 
     if (opponents) {
       return standings.map(standing => ({
@@ -139,12 +132,16 @@ const loadOpponentRounds = async (standings: Standing[]) => {
         rounds: standing.rounds?.map((round, idx) => {
           const opponent = opponents.find((opponent) => opponent.name === round.name);
 
+          if (!opponent) {
+            return round;
+          }
+
           return {
             ...round,
-            name: round.name,
             opponent: {
               ...opponent,
-              rounds: getRoundsArray(opponent as unknown as Standing)
+              rounds: getRoundsArray(opponent as unknown as Standing),
+              age_division: standing.age_division
             },
           }
         })
@@ -155,7 +152,7 @@ const loadOpponentRounds = async (standings: Standing[]) => {
   return standings;
 }
 
-export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams) => {
+export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams): Promise<Standing[] | null | undefined> => {
   if (!player) return null;
 
   let query = supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon),tournament_id(*)');
@@ -174,7 +171,7 @@ export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null 
   }
 
   const standingsRes = await query;
-  const standings = fixDatabaseStandings(standingsRes);
+  const standings = fixDatabaseStandings(standingsRes.data);
 
   if (params?.shouldLoadOpponentRounds) {
     // If name hasn't loaded yet, don't bother fetching.
@@ -205,7 +202,7 @@ export const fetchDeckStandings = async (deck: Deck): Promise<Standing[] | undef
 
   const standingsRes = await query;
   
-  return fixDatabaseStandings(standingsRes);
+  return fixDatabaseStandings(standingsRes.data);
 }
 
 export const useDeckStandings = (deck: Deck) => {
@@ -221,7 +218,7 @@ export const fetchStandingsWithName = async (name: string): Promise<Standing[] |
 
   const standingsRes = await query;
   
-  return fixDatabaseStandings(standingsRes);
+  return fixDatabaseStandings(standingsRes.data);
 }
 
 export const useStandingsWithName = (name: string) => {
@@ -242,7 +239,7 @@ export const fetchFollowingStandings = async (namesList: string[] | undefined, t
 
   const standingsRes = await query;
   
-  return fixDatabaseStandings(standingsRes);
+  return fixDatabaseStandings(standingsRes.data);
 }
 
 export const useFollowingStandings = (namesList: string[] | undefined, tournament: Tournament) => {
