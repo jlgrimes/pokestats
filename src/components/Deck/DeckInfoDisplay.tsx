@@ -23,7 +23,6 @@ export const DeckInfoDisplay = memo(
     player,
     tournament,
     enableEdits,
-    shouldShowAsText,
     disableList,
     shouldHideVerifiedIcon,
     shouldHideOpponentView,
@@ -34,7 +33,6 @@ export const DeckInfoDisplay = memo(
     player: Standing;
     tournament: Tournament;
     enableEdits: boolean;
-    shouldShowAsText?: boolean;
     disableList?: boolean;
     shouldHideVerifiedIcon?: boolean;
     shouldHideOpponentView?: boolean;
@@ -42,6 +40,7 @@ export const DeckInfoDisplay = memo(
     shouldHideMenu?: boolean;
     shouldDisableDeckExtras?: boolean;
   }) => {
+    console.log(player)
     const archetypeModal = useDisclosure();
     const userIsLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
@@ -77,19 +76,15 @@ export const DeckInfoDisplay = memo(
               !shouldShowList &&
               !shouldShowSmallEditIcon
             ? 'auto'
-            : shouldShowAsText
-            ? 'auto 25px'
             : '80px 25px'
         }
         columnGap={2}
         alignItems='center'
       >
         <DeckInput
+          standing={player}
           tournament={tournament}
-          playerName={player.name}
-          deck={player.deck_archetype ?? undefined}
           archetypeModal={archetypeModal}
-          shouldShowAsText={shouldShowAsText}
           shouldHideDeck={ifShouldHideDeck()}
           shouldHideSpecificArchetype={ifShouldBlurSpecificAArchetype()}
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}

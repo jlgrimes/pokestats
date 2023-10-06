@@ -7,18 +7,14 @@ import { ArchetypeEditButton } from './ArchetypeEditButton';
 import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 
 export interface ArchetypeSelectorProps {
-  selectedArchetype?: Deck;
+  selectedArchetype: Deck | null;
   onChange: (value: Deck) => void;
   modalControls: UseDisclosureProps;
-  shouldShowAsText?: boolean;
   tournament: Tournament;
   unownOverride?: string;
   userIsAdmin: boolean;
-  deckIsVerified?: boolean;
   shouldHideDeck?: boolean;
   shouldHideVerifiedIcon?: boolean;
-  isStreamDeck?: boolean;
-  toggleIsStreamDeck?: () => void;
   isListUp: boolean;
   shouldEnableEdits?: boolean;
   shouldHideSpecificArchetype?: boolean;
@@ -26,25 +22,16 @@ export interface ArchetypeSelectorProps {
 
 const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {
   const renderDeckName = () => {
-    if (props.shouldShowAsText) {
-      return (
-        <Text fontSize='lg'>
-          {props.selectedArchetype
-            ? props.selectedArchetype.name
-            : 'Unknown deck'}
-        </Text>
-      );
-    } else {
-      return (
-        <SpriteDisplay
-          verified={!props.shouldHideVerifiedIcon && props.deckIsVerified}
-          pokemonNames={props.selectedArchetype?.defined_pokemon}
-          deckId={props.selectedArchetype?.id}
-          hidden={props.shouldHideDeck}
-          shouldBlurSecondSprite={props.shouldHideSpecificArchetype}
-        />
-      );
-    }
+    return (
+      <SpriteDisplay
+        // I hate this checkmark Nope
+        verified={false}
+        pokemonNames={props.selectedArchetype?.defined_pokemon}
+        deckId={props.selectedArchetype?.id}
+        hidden={props.shouldHideDeck}
+        shouldBlurSecondSprite={props.shouldHideSpecificArchetype}
+      />
+    );
   };
 
   return (

@@ -46,7 +46,7 @@ const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Stan
 });
 
 export const fetchChampions = async (): Promise<Standing[] | undefined> => {
-  let query = supabase.rpc('standings_with_decks').eq('placing', 1).returns<StandingsWithDecksReturnType[]>();
+  let query = supabase.from('standings_with_decks').select('*').eq('placing', 1).returns<StandingsWithDecksReturnType[]>();
 
   const standingsRes = await query;
 
@@ -61,7 +61,7 @@ export const useChampions = () => {
 }
 
 export const fetchStandings = async (params: UseStandingsParams) => {
-  let query = supabase.rpc('standings_with_decks').eq('tournament_id', params.tournament.id);
+  let query = supabase.from('standings_with_decks').select('*').eq('tournament_id', params.tournament.id);
   query = query.eq('age_division', capitalize(params.ageDivision));
   query = query.order('placing', { ascending: true });
 
@@ -91,7 +91,8 @@ export const useStandings = (params: UseStandingsParams) => {
 }
 
 export const fetchTopCut = async (params: UseStandingsParams) => {
-  let query = supabase.rpc('standings_with_decks')
+  let query = supabase.from('standings_with_decks').select('*')
+  query = query.eq('tournament_id', params.tournament.id)
   query = query.eq('age_division', capitalize(params.ageDivision));
   query = query.lte('placing', 8);
 
@@ -128,7 +129,7 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
   if (opponentList) {
     const stringifiedNames = getStringifiedNames(opponentList);
 
-    const opponentRes = await supabase.rpc('standings_with_decks')
+    const opponentRes = await supabase.from('standings_with_decks').select('*')
       .eq('tournament_id', standings[0]?.tournament_id)
       .or(`name.in.(${stringifiedNames})`)
       .returns<StandingsWithDecksReturnType[]>();
@@ -165,7 +166,7 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
 export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams): Promise<Standing[] | null | undefined> => {
   if (!player) return null;
 
-  let query = supabase.rpc('standings_with_decks');
+  let query = supabase.from('standings_with_decks').select('*');
 
   if (params?.tournament) {
     query = query.eq('tournament_id', params.tournament.id);
@@ -201,7 +202,7 @@ export const usePlayerStandings = (player: CombinedPlayerProfile | null | undefi
 }
 
 export const fetchDeckStandings = async (deck: Deck): Promise<Standing[] | undefined> => {
-  let query = supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon)');
+  let query = supabase.from('standings_with_decks').select('*');
 
   if (deck.classification === 'archetype') {
     query = query.eq('deck_archetype', deck.id);
@@ -223,7 +224,7 @@ export const useDeckStandings = (deck: Deck) => {
 }
 
 export const fetchStandingsWithName = async (name: string): Promise<Standing[] | undefined> => {
-  let query = supabase.from('standings_new').select('*');
+  let query = supabase.from('standings_with_decks').select('*');
   query = query.eq('name', name);
 
   const standingsRes = await query;
@@ -241,7 +242,7 @@ export const useStandingsWithName = (name: string) => {
 export const fetchFollowingStandings = async (namesList: string[] | undefined, tournament: Tournament): Promise<Standing[] | undefined> => {
   if (!namesList) return undefined;
 
-  let query = supabase.from('standings_new').select('*,deck_archetype(*)');
+  let query = supabase.from('standings_with_decks').select('*');
 
   const stringifiedNames = getStringifiedNames(namesList);
   query = query.or(`name.in.(${stringifiedNames})`)
