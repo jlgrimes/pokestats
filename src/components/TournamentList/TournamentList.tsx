@@ -13,8 +13,8 @@ export const TournamentList = ({
   const { data: champions } = useChampions();
 
   const liveTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'running'));
-  const notLiveTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus !== 'running'));
-  const lastUpcomingTournament = tournaments.findLastIndex((tournament) => tournament.tournamentStatus === 'not-started');
+  const upcomingTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'not-started'));
+  const finishedTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'finished'));
 
   return (
     <>
@@ -25,8 +25,15 @@ export const TournamentList = ({
         champion={undefined}
       />
     ))}
+    {upcomingTournaments.slice(0, 2).map((tournament) => (
+      <TournamentCard
+        key={`tournament-card-${tournament.id}`}
+        tournament={tournament}
+        champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
+      />
+    ))}
     {
-      notLiveTournaments.slice(mostRecent ? lastUpcomingTournament : 0, mostRecent ? (lastUpcomingTournament + 5) : -1).map((tournament) => (
+      finishedTournaments.slice(0, mostRecent ? 3 : -1).map((tournament) => (
         <TournamentCard
           key={`tournament-card-${tournament.id}`}
           tournament={tournament}

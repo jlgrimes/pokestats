@@ -80,12 +80,18 @@ export const usePlayerDecks = (
   // }
 
   playerDecks = data.map(player => ({
-    ...player,
     placing: -1,
     name: player.player_name,
     record: { wins: -1, ties: -1, losses: -1 },
     decklist: null,
-    age_division: 'masters'
+    age_division: 'masters',
+    defined_pokemon: [],
+    identifiable_cards: [],
+    deck_archetype: player.deck_archetype.id,
+    supertype: player.deck_archetype.supertype,
+    tournament_id: parseInt(tournamentId),
+    tournament_name: null,
+    tournament_date: null
   }));
 
   return {

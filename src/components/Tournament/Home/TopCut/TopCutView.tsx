@@ -57,11 +57,11 @@ export const TopCutView = (props: TopCutViewProps) => {
                     {
                       player.currentOpponent && (
                         <PlayerCard
-                          player={player.currentOpponent}
+                          player={player.currentOpponent as Standing}
                           tournament={props.tournament}
                           result={
                             props.tournament.tournamentStatus === 'running'
-                              ? player.currentOpponent?.currentMatchResult
+                              ? (player.currentOpponent as Standing)?.currentMatchResult
                               : undefined
                           }
                         />

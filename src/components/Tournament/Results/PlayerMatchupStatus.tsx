@@ -32,7 +32,7 @@ export const PlayerMatchupStatus = ({
 
   if (!user) return renderLoadingSkeleton();
   
-  return myStanding && user && (
+  return myStanding && user ? (
     <Table className='mb-4'>
       <TableBody>
         <PlayerCard
@@ -44,5 +44,5 @@ export const PlayerMatchupStatus = ({
         />
       </TableBody>
     </Table>
-  )
+  ) : null
 };

@@ -299,24 +299,24 @@ export const useMostPopularArchetypes = (
       acc: Record<string, { deck: DeckTypeSchema; count: number }>,
       player: Standing
     ) => {
-      if (player.deck_archetype && player.deck_archetype.id) {
+      if (player.deck_archetype && player.deck_archetype) {
         // Adds in supertype
         const playerDeck = archetypes?.find(
-          archetype => archetype.id === player.deck_archetype?.id
+          archetype => archetype.id === player.deck_archetype
         );
 
-        if (acc[player.deck_archetype.id]) {
+        if (acc[player.deck_archetype]) {
           return {
             ...acc,
-            [player.deck_archetype.id]: {
+            [player.deck_archetype]: {
               deck: playerDeck,
-              count: acc[player.deck_archetype.id].count + 1,
+              count: acc[player.deck_archetype].count + 1,
             },
           };
         }
         return {
           ...acc,
-          [player.deck_archetype.id]: {
+          [player.deck_archetype]: {
             deck: playerDeck,
             count: 1,
           },

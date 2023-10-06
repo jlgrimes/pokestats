@@ -34,7 +34,7 @@ export const PairingsCard = ({
     ) ?? [];
 
   const knownDecksCount = Math.min(
-    players.filter(player => player.deck_archetype?.defined_pokemon).length +
+    players.filter(player => player.defined_pokemon).length +
       currentRoundPairingMatches?.length,
     2
   );

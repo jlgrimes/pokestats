@@ -20,11 +20,6 @@ interface ListViewerOpenButtonProps {
 
 export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: imageOpen,
-    onOpen: onImageOpen,
-    onClose: onImageClose,
-  } = useDisclosure();
 
   return (
     <>
@@ -33,32 +28,12 @@ export const ListViewerOpenButton = (props: ListViewerOpenButtonProps) => {
         variant={'unstyled'}
         onClick={e => {
           e.stopPropagation();
-
-          if (props.result.deck_archetype?.listImagePath) {
-            onImageOpen();
-          } else {
-            onOpen();
-          }
+          onOpen();
         }}
         minWidth={0}
       >
         <IconCards size={20} />
       </IconButton>
-      <Modal
-        isOpen={imageOpen}
-        onClose={onImageClose}
-        size='4xl'
-        allowPinchZoom
-        blockScrollOnMount={false}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <Image
-            src={`https://keujidcnlmekgfajgnjq.supabase.co/storage/v1/object/public/uploaded-deck-lists/${props.result.deck_archetype?.listImagePath}`}
-            alt='deck list'
-          />
-        </ModalContent>
-      </Modal>
       {isOpen && (
         <ListViewerModal
           isOpen={isOpen}

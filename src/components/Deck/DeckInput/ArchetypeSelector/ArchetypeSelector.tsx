@@ -8,7 +8,7 @@ import { ArchetypeSelectorModal } from './ArchetypeSelectorModal';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
 
 export interface ArchetypeSelectorProps {
-  selectedArchetype: Deck | null;
+  selectedArchetype?: Deck | null;
   onChange: (value: Deck) => void;
   modalControls: UseDisclosureProps;
   tournament: Tournament;

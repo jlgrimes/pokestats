@@ -41,7 +41,7 @@ export const RecommendedSuggestedUser = (
   const { data: tournaments } = useTournaments();
 
   const attendedTournaments = suggestedUserTournaments?.map(standing =>
-    tournaments?.find(({ id }) => id === standing.tournament_id)
+    tournaments?.find(({ id }) => parseInt(id) === standing.tournament_id)
   );
 
   const onIdentityConfirmClick = useCallback(async () => {

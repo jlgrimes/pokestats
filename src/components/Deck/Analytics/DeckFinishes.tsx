@@ -42,7 +42,7 @@ export const DeckFinishes = memo(
             .slice(0, onlyShowRecent ? 10 : -1)
             .map((standing, idx) => {
               const tournament = tournaments.find(
-                ({ id }) => id === standing.tournament_id
+                ({ id }) => parseInt(id) === standing.tournament_id
               ) as Tournament;
 
               const shouldShowHeading =
