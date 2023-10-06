@@ -38,7 +38,7 @@ const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Stan
 
   return {
     ...standing,
-    rounds,
+    rounds: rounds.map((round) => ({ ...round, name: cropPlayerName(round.name) })),
     decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
     currentOpponent: standing.rounds[currentRound],
     currentMatchResult: standing.rounds[currentRound]?.result ?? null
@@ -125,7 +125,7 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
     const opponentRounds = curr.rounds?.map((round) => round.name) ?? [];
     return [...acc, ...opponentRounds]
   }, []);
-  
+
   if (opponentList) {
     const stringifiedNames = getStringifiedNames(opponentList);
 

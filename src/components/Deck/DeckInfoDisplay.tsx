@@ -40,7 +40,6 @@ export const DeckInfoDisplay = memo(
     shouldHideMenu?: boolean;
     shouldDisableDeckExtras?: boolean;
   }) => {
-    console.log(player)
     const archetypeModal = useDisclosure();
     const userIsLoggedInUser = useUserMatchesLoggedInUser(player.name);
 

@@ -5,8 +5,6 @@ import {
   useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../../hooks/user';
-import { cropPlayerName } from '../../../lib/fetch/fetchLiveResults';
-import { CommonCard } from '../../common/CommonCard';
 import { MyMatchupsList } from '../../DataDisplay/MyMatchupsList';
 import { PlayerMatchupStatus } from '../Results/PlayerMatchupStatus';
 import { usePlayerStandings } from '../../../hooks/newStandings';

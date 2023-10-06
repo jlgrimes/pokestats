@@ -82,7 +82,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
             alignItems={'center'}
           >
             <Stack spacing={0} padding={3}>
-              <Heading size='md'>{props.result.deck_archetype.name ?? 'Other'}</Heading>
+              <Heading size='md'>{props.result.deck_archetype ?? 'Other'}</Heading>
               <Text>
                 {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
                 {props.tournament.name}
