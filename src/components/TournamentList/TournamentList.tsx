@@ -12,11 +12,22 @@ export const TournamentList = ({
   mostRecent?: boolean;
 }) => {
   const { data: champions } = useChampions();
-  const items = useTournamentRender(tournaments, mostRecent);
+
+  const liveTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'running'));
+  const notLiveTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus !== 'running'));
+  const lastUpcomingTournament = tournaments.findLastIndex((tournament) => tournament.tournamentStatus === 'not-started');
 
   return (
-    <>{
-      tournaments.slice(0, mostRecent ? 5 : -1).map((tournament) => (
+    <>
+    {liveTournaments.map((tournament) => (
+      <TournamentCard
+        key={`tournament-card-${tournament.id}`}
+        tournament={tournament}
+        champion={champions ? champions.find((standing) => standing.tournament_id === tournament.id) : undefined}
+      />
+    ))}
+    {
+      notLiveTournaments.slice(mostRecent ? lastUpcomingTournament : 0, mostRecent ? (lastUpcomingTournament + 5) : -1).map((tournament) => (
         <TournamentCard
           key={`tournament-card-${tournament.id}`}
           tournament={tournament}
