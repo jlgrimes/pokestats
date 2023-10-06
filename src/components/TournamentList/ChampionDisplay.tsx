@@ -6,8 +6,9 @@ interface ChampionDisplayProps {
 }
 
 export const ChampionDisplay = (props: ChampionDisplayProps) => {
+  if (!props.champion.defined_pokemon) return null;
 
   return (
-    <SpriteDisplay pokemonNames={props.champion.deck_archetype?.defined_pokemon} />
+    <SpriteDisplay pokemonNames={props.champion.defined_pokemon} />
   );
 };

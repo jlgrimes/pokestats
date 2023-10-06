@@ -49,7 +49,7 @@ const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Stan
 });
 
 export const fetchChampions = async (): Promise<Standing[] | undefined> => {
-  let query = supabase.from('standings_with_decks').select('*').eq('placing', 1).returns<StandingsWithDecksReturnType[]>();
+  let query = supabase.from('standings_with_decks').select('*').eq('placing', 1).eq('age_division', 'masters').returns<StandingsWithDecksReturnType[]>();
 
   const standingsRes = await query;
 

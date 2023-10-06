@@ -1,6 +1,5 @@
 import { Box, Grid, Text } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
-import { useTournamentRender } from '../../hooks/sets';
 import { TournamentCard } from './TournamentCard';
 import { useChampions } from '../../hooks/newStandings';
 
@@ -23,7 +22,7 @@ export const TournamentList = ({
       <TournamentCard
         key={`tournament-card-${tournament.id}`}
         tournament={tournament}
-        champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
+        champion={undefined}
       />
     ))}
     {
