@@ -69,14 +69,9 @@ export const DeckInfoDisplay = memo(
     return (
       <Grid
         gridTemplateColumns={
-          !shouldShowList ? 'auto' :
-          userIsLoggedInUser && shouldShowEditButton
+          shouldShowEditButton
             ? `auto 15px 50px`
-            : shouldDisableDeckExtras &&
-              !shouldShowList &&
-              !shouldShowSmallEditIcon
-            ? 'auto'
-            : '80px 25px'
+            : 'auto'
         }
         columnGap={2}
         alignItems='center'

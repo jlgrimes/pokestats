@@ -38,8 +38,8 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
       if (finalStanding && liveStanding) {
         if (
-          !finalStanding.deck_archetype?.defined_pokemon &&
-          liveStanding.deck_archetype?.defined_pokemon
+          !finalStanding.defined_pokemon &&
+          liveStanding.defined_pokemon
         ) {
           return {
             ...finalStanding,
@@ -100,7 +100,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
         {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
           <ComponentLoader isLiveComponent />
         ) : (
-          <Table>
+          <Table className='overflow-hidden'>
             <TableBody>
               {pinnedPlayers.map(
                 pinnedPlayer =>
@@ -109,7 +109,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                       key={`pinned-${pinnedPlayer?.name}`}
                       player={pinnedPlayer}
                       tournament={props.tournament}
-                      isDeckLoading={isLoading && !pinnedPlayer.deck_archetype?.id}
+                      isDeckLoading={isLoading && !pinnedPlayer.deck_archetype}
                       isEditingPinned={editPinnedPlayers.isOpen}
                       shouldHideOpponent={props.isCompact}
                       size={props.isCompact ? 'md' : 'lg'}
