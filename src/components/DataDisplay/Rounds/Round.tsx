@@ -14,9 +14,6 @@ interface RoundProps extends RoundsListProps {
 }
 
 export const Round = (props: RoundProps) => {
-  const { colorMode } = useColorMode();
-  const isMyOpponent = usePlayerIsMeOrMyOpponent(props.opponent);
-
   return (
     <PlayerCard
       player={props.opponent}
