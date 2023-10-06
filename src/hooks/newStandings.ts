@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import supabase from "../lib/supabase/client"
 import { capitalize } from "../lib/strings";
-import { Deck, PlayerRecord, PlayerResistances, Standing, Tournament } from "../../types/tournament";
+import { Deck, PlayerRecord, PlayerResistances, PlayerRound, Standing, Tournament } from "../../types/tournament";
 import { cropPlayerName, getPlayerRegion, getRoundsArray } from "../lib/fetch/fetchLiveResults";
 import { AgeDivision } from "../../types/age-division";
 import { getTournamentRoundSchema } from "../lib/tournament";
@@ -16,19 +16,29 @@ export const fixStoredDeck = (decklist: any) => {
   return decklist;
 }
 
-const fixDatabaseStandings = (data: Record<any, any>[] | null): Standing[] | undefined => data?.map((standing) => {
+interface StandingsWithDecksReturnType {
+  name: string,
+  placing: number,
+  record: PlayerRecord,
+  resistances: PlayerResistances,
+  drop: number,
+  rounds: Record<number, PlayerRound>,
+  age_division: AgeDivision,
+  region: string | null,
+  decklist: string | null,
+  deck_archetype: number,
+  defined_pokemon: string[] | null,
+  identifiable_cards: string[] | null,
+  supertype: number | null
+}
+
+const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => data?.map((standing) => {
   const rounds = getRoundsArray(standing as Standing);
   const currentRound = rounds.length - 1;
 
   return {
-    name: standing.name,
-    region: standing.region ?? null,
+    ...standing,
     rounds,
-    tournament_id: Number.isInteger(standing.tournament_id) ? standing.tournament_id : standing.tournament_id.id,
-    tournament: !Number.isInteger(standing.tournament_id) ? standing.tournament_id : null,
-    placing: standing.placing,
-    record: standing.record,
-    age_division: standing.age_division,
     decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
     currentOpponent: standing.rounds[currentRound],
     currentMatchResult: standing.rounds[currentRound]?.result ?? null
@@ -36,7 +46,7 @@ const fixDatabaseStandings = (data: Record<any, any>[] | null): Standing[] | und
 });
 
 export const fetchChampions = async (): Promise<Standing[] | undefined> => {
-  let query = supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon)').eq('placing', 1).returns<Standing[]>();
+  let query = supabase.rpc('standings_with_decks').eq('placing', 1).returns<StandingsWithDecksReturnType[]>();
 
   const standingsRes = await query;
 
@@ -51,11 +61,11 @@ export const useChampions = () => {
 }
 
 export const fetchStandings = async (params: UseStandingsParams) => {
-  let query = supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon)').eq('tournament_id', params.tournament.id);
+  let query = supabase.rpc('standings_with_decks').eq('tournament_id', params.tournament.id);
   query = query.eq('age_division', capitalize(params.ageDivision));
   query = query.order('placing', { ascending: true });
 
-  const standingsRes = await query;
+  const standingsRes = await query.returns<[]>();
   const standings = fixDatabaseStandings(standingsRes.data)
 
   if (params?.shouldLoadOpponentRounds) {
@@ -81,7 +91,7 @@ export const useStandings = (params: UseStandingsParams) => {
 }
 
 export const fetchTopCut = async (params: UseStandingsParams) => {
-  let query = supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon)').eq('tournament_id', params.tournament.id);
+  let query = supabase.rpc('standings_with_decks')
   query = query.eq('age_division', capitalize(params.ageDivision));
   query = query.lte('placing', 8);
 
@@ -118,12 +128,10 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
   if (opponentList) {
     const stringifiedNames = getStringifiedNames(opponentList);
 
-    const opponentRes = await supabase
-      .from('standings_new')
-      .select(`name,placing,record,resistances,tournament_id,rounds,decklist`)
+    const opponentRes = await supabase.rpc('standings_with_decks')
       .eq('tournament_id', standings[0]?.tournament_id)
       .or(`name.in.(${stringifiedNames})`)
-      .returns<{ name: string, placing: number, record: PlayerRecord, resistances: PlayerResistances, tournament_id: number, rounds: Record<string, PlayerRecord>, decklist: string }[]>();
+      .returns<StandingsWithDecksReturnType[]>();
     const opponents = fixDatabaseStandings(opponentRes.data);
 
     if (opponents) {
@@ -136,13 +144,15 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
             return round;
           }
 
+          const opponentStanding: Standing = {
+            ...opponent,
+            rounds: getRoundsArray(opponent as unknown as Standing),
+            age_division: standing.age_division
+          };
+
           return {
             ...round,
-            opponent: {
-              ...opponent,
-              rounds: getRoundsArray(opponent as unknown as Standing),
-              age_division: standing.age_division
-            },
+            opponent: opponentStanding,
           }
         })
       }))
@@ -155,7 +165,7 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
 export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams): Promise<Standing[] | null | undefined> => {
   if (!player) return null;
 
-  let query = supabase.from('standings_new').select('*,deck_archetype(id,defined_pokemon),tournament_id(*)');
+  let query = supabase.rpc('standings_with_decks');
 
   if (params?.tournament) {
     query = query.eq('tournament_id', params.tournament.id);

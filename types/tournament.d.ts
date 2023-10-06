@@ -61,7 +61,7 @@ export interface DeckCard {
 
 export interface Standing {
   name: string;
-  region?: string;
+  region: string | null;
   profile?: StoredPlayerProfile;
   placing: number;
   record: PlayerRecord;
@@ -70,14 +70,18 @@ export interface Standing {
   rounds?: PlayerRound[];
   day2?: boolean;
   outOfDay2?: boolean;
-  currentOpponent?: Standing;
-  deck_archetype?: Deck | null;
+  currentOpponent?: PlayerRound | Standing;
   decklist: DeckList | null;
   drop?: number | null;
   tournament_id?: string;
   tournament?: Tournament | null;
   region?: string;
   age_division: AgeDivision;
+
+  deck_archetype: number | null;
+  defined_pokemon: string[] | null;
+  identifiable_cards: string[] | null;
+  supertype: number | null;
 }
 
 export interface MatchupResult extends Standing {
