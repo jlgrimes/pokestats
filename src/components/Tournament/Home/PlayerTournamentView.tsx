@@ -28,8 +28,8 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
   if (!props.tournament || !results || !user) return null;
 
   return (
-    <Card>
-      <Title className='mb-4'>My tournament</Title>
+    <Card className='px-0'>
+      {/* <Title className='m-6'>My tournament</Title> */}
       <PlayerMatchupStatus
           tournament={props.tournament}
           user={user}

@@ -51,7 +51,7 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
           </HStack>
         </LinkOverlay>
       </LinkBox>
-      {(userIsAdmin || isUserMocked) && <AdminBadge />}
+      {/* {(userIsAdmin || isUserMocked) && <AdminBadge />} */}
     </Stack>
   );
 };

@@ -57,7 +57,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
       <Button
         {...commonProps}
         as={NextLink}
-        href={`${router.asPath}/masters/standings`}
+        href={`${router.asPath}/standings`}
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
         leftIcon={<IoMdPodium />}
       >

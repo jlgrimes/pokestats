@@ -8,7 +8,7 @@ import { ifPlayerDay2 } from '../../../lib/tournament';
 import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
 import { ComponentLoader } from '../../common/ComponentLoader';
 import { CountryFlag } from '../../Tournament/Home/CountryFlag';
-import { Flex, Text } from '@tremor/react';
+import { Bold, Flex, Text } from '@tremor/react';
 import { useDisclosure } from '@chakra-ui/react';
 
 interface StandingsCellProps extends PropsWithChildren {
@@ -105,8 +105,8 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         </StandingsCell>
       )}
       {!props.isCurrentlyPlayingInTopCut && props.result.resistances?.opp && (
-        <StandingsCell width={60} className='text-right'>
-          <Text className={'text-slate-400'}>{(props.result.resistances.opp * 100).toPrecision(4)}%</Text>
+        <StandingsCell width={40} className='text-right'>
+          <Bold className={'text-slate-400 text-sm'}>{(props.result.resistances.opp * 100).toPrecision(4)}</Bold>
         </StandingsCell>
       )}
       {!props.shouldDisableOpponentModal && (

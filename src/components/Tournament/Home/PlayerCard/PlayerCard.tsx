@@ -68,13 +68,13 @@ export const PlayerCard = (props: PlayerCardProps) => {
   return (
     <>
       <TableRow
-        className={`h-11 bg-${getResultItemBackgroundColor(
+        className={`h-10 bg-${getResultItemBackgroundColor(
           props.result,
           colorMode
         )}`}
       >
         {props.roundNumber && (
-          <StandingsCell className='pl-2 w-4  text-right'>
+          <StandingsCell className='pl-2 w-8  text-right'>
             <Bold className={`text-gray-500 font-black text-lg text-right`}>
               {props.roundNumber}
             </Bold>
