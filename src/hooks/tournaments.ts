@@ -10,7 +10,7 @@ import {
 import { Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import {
-  HARDCODED_TOURNAMENT_ROUNDS,
+  HARDCODED_TOURNAMENT_ROUNDS, shortenTournamentName,
 } from '../lib/tournament';
 import { AgeDivision } from '../../types/age-division';
 
@@ -61,7 +61,7 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   let tournaments = res.data.map(padTournamentId);
 
   tournaments = tournaments.filter((tournament, idx) => !tournaments.find((otherTournament, otherIdx) => otherTournament.rk9link === tournament.rk9link && idx < otherIdx))
-  tournaments = tournaments.map((tournament) => ({ ...tournament, tournamentStatus: tournament.id === '0000086' ? 'finished' : tournament.tournamentStatus}))
+  tournaments = tournaments.map((tournament) => ({ ...tournament, name: shortenTournamentName(tournament), tournamentStatus: tournament.id === '0000086' ? 'finished' : tournament.tournamentStatus}))
 
   return tournaments;
 };

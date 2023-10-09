@@ -4,7 +4,7 @@ import { capitalize } from "../lib/strings";
 import { Deck, PlayerRecord, PlayerResistances, PlayerRound, Standing, Tournament, TournamentDate } from "../../types/tournament";
 import { cropPlayerName, getPlayerDeck, getPlayerRegion, getRoundsArray } from "../lib/fetch/fetchLiveResults";
 import { AgeDivision } from "../../types/age-division";
-import { getTournamentRoundSchema } from "../lib/tournament";
+import { getTournamentRoundSchema, shortenTournamentName } from "../lib/tournament";
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { CombinedPlayerProfile } from "../../types/player";
 import { getStringifiedNames } from "../lib/query-helpers";
