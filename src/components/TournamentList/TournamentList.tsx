@@ -2,6 +2,7 @@ import { Box, Grid, Text } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
 import { TournamentCard } from './TournamentCard';
 import { useChampions } from '../../hooks/newStandings';
+import { isBefore, parseISO } from 'date-fns';
 
 export const TournamentList = ({
   tournaments,
@@ -13,7 +14,11 @@ export const TournamentList = ({
   const { data: champions } = useChampions();
 
   const liveTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'running'));
-  const upcomingTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'not-started'));
+  const upcomingTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'not-started')).sort((a, b) => {
+    if (isBefore(parseISO(a.date.start), parseISO(b.date.start))) return -1;
+    if (isBefore(parseISO(b.date.start), parseISO(a.date.start))) return 1;
+    return 0;
+  });
   const finishedTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'finished'));
 
   return (

@@ -37,8 +37,7 @@ export const formatTournamentStatus = (
   if (tournament.tournamentStatus === 'not-started') {
     if (
       utcOffset
-        ? getRawTimeUntilTournament(tournament, utcOffset) < 0
-        : tournamentHasArrivedButNotLive(tournament)
+        && getRawTimeUntilTournament(tournament, utcOffset) < 0
     ) {
       return `About to Start`;
     }
