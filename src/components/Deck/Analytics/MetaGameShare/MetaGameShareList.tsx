@@ -6,6 +6,7 @@ import { DeckCompareColumnType } from '../../../common/DeckCompare/DeckCompareSo
 import { getDay2Decks, getConversionRate } from '../../../../hooks/stats';
 import { DeckTypeSchema } from '../../../../hooks/deckArchetypes';
 import { MetagameBreakdownTable } from '../../../common/DeckCompare/MetagameBreakdownTable';
+import { useMetaShare } from '../../../../hooks/finalResults/useStoredDecks';
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
 
@@ -33,17 +34,11 @@ export const MetaGameShareList = memo(
       sortOrder: 'desc',
     });
 
+    // TODO ONCE SENIORS + JUNIORS USE - ADD AGE DIVISION VAR
     const {
-      data: decks,
-      decks: allDecks,
-      isLoading,
-      numberReported,
-    } = useStoredDecks({
-      tournamentId: tournament.id,
-      shouldDrillDown,
-      sortBy: sort.sortBy,
-      sortOrder: sort.sortOrder,
-    });
+      data: metaShare,
+      isLoading
+    } = useMetaShare(tournament.id, 'masters');
 
     const columns: DeckCompareColumnType<'played' | 'day 2'>[] = [
       {
@@ -56,21 +51,22 @@ export const MetaGameShareList = memo(
         ? [
             {
               name: 'day 2' as 'played' | 'day 2',
-              calculation: (deck: DeckTypeSchema) =>
-                getConversionRate(deck, allDecks),
+              calculation: (deck: DeckTypeSchema) => (deck.count && deck.day_two_count) ? (deck.day_two_count / deck.count) : 0,
               label: (deck: DeckTypeSchema) =>
-                `${getDay2Decks(deck, allDecks)} day two`,
+                `boop day two`,
               shouldHide: (deck: DeckTypeSchema) => shouldHide(deck),
             },
           ]
         : []),
     ];
 
+    const numKnown = metaShare?.reduce((acc, share) => acc + (share.count ?? 0), 0) ?? 0;
+
     return (
       <MetagameBreakdownTable
-        header={tournament.name ? `${tournament.name}` : `Decks`}
-        subheader={`${tournament.players.masters} Masters, ${numberReported} known`}
-        decks={decks}
+        tournament={tournament}
+        numKnown={numKnown}
+        decks={metaShare ?? []}
         shouldDrillDown={shouldDrillDown}
         setShouldDrillDown={setShouldDrillDown}
         isLoading={isLoading}

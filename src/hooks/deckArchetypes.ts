@@ -161,6 +161,7 @@ export interface DeckTypeSchema extends SupertypeSchema {
   count?: number;
   data?: Record<string, any>;
   format?: FormatSchema;
+  day_two_count?: number;
 }
 
 export const fetchSupertypes = async () => {

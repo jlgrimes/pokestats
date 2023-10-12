@@ -9,14 +9,13 @@ import {
   DeckCompareColumnType,
   DeckCompareSortTogglesProps,
 } from './DeckCompareSortToggles';
-import { Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Tab } from "@tremor/react";
+import { Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Tab, Badge } from "@tremor/react";
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
+import { Tournament } from '../../../../types/tournament';
 
 export interface MetagameBreakdownTableProps<T>
   extends DeckCompareSortTogglesProps<T> {
-  header: string;
-  subheader: string;
   slug?: string;
   decks: DeckTypeSchema[];
   shouldDrillDown: boolean;
@@ -25,6 +24,8 @@ export interface MetagameBreakdownTableProps<T>
   format: number;
   shouldHideDeck?: (deck: DeckTypeSchema) => boolean;
   isComparison?: boolean;
+  tournament: Tournament,
+  numKnown: number;
 }
 
 export const ShouldDrillDownMetaShareContext = createContext(false);
@@ -58,8 +59,8 @@ export const MetagameBreakdownTable = <T extends string>(
 
   return (
     <Card>
-      <Title>{props.header}</Title>
-      <Subtitle>{props.subheader}</Subtitle>
+      <Title>{props.tournament.name ? `${props.tournament.name}` : `Decks`}</Title>
+      <Subtitle>{`Decks known: ${props.numKnown}/${props.tournament.players.masters}`}</Subtitle>
       <TabGroup className='mt-4' onIndexChange={((index) => props.setSort(props.columns[index].name, 'desc'))}>
         <TabList>
           <Tab>Day 1 usage</Tab>
