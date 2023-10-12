@@ -42,6 +42,7 @@ export interface PlayerCardProps {
   result?: MatchResult;
   shouldMoveResultLast?: boolean;
   roundNumber?: number;
+  shouldHideResistance?: boolean;
 }
 
 export const inverseResult = (result?: MatchResult) =>
@@ -98,6 +99,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
           shouldDisableOpponentModal={props.shouldDisableOpponentModal}
           shouldHideList
           shouldHideRegion
+          shouldHideResistance={props.shouldHideResistance}
         />
       </TableRow>
     </>

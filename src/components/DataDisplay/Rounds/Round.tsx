@@ -29,6 +29,7 @@ export const Round = (props: RoundProps) => {
       result={props.round.result}
       shouldMoveResultLast
       roundNumber={props.roundNumber}
+      shouldHideResistance
     />
   );
 };
