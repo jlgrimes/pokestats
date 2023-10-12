@@ -10,6 +10,7 @@ import { ComponentLoader } from '../../common/ComponentLoader';
 import { CountryFlag } from '../../Tournament/Home/CountryFlag';
 import { Bold, Flex, Text } from '@tremor/react';
 import { useDisclosure } from '@chakra-ui/react';
+import { MatchPoints } from '../../Tournament/Results/ResultsList/MatchPoints';
 
 interface StandingsCellProps extends PropsWithChildren {
   className?: string;
@@ -45,6 +46,7 @@ export interface StandingsRowProps {
   shouldHideList?: boolean;
   shouldHideRegion?: boolean;
   shouldHideResistance?: boolean;
+  shouldShowMatchPoints?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -102,7 +104,11 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       </StandingsCell>
       {!props.isCurrentlyPlayingInTopCut && (
         <StandingsCell width={56} className='text-right'>
-          <Record standing={props.result} />
+          {props.shouldShowMatchPoints ? (
+            <MatchPoints standing={props.result} />
+          ) : (
+            <Record standing={props.result} />
+          )}
         </StandingsCell>
       )}
       {!props.isCurrentlyPlayingInTopCut && props.result.resistances?.opp && !props.shouldHideResistance && (

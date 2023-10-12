@@ -1,16 +1,18 @@
 import {
   Stack,
   useColorMode,
+  Switch
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { capitalize } from '../../lib/strings';
 import { StatsHeading } from '../common/StatsHeading';
 import { PageTitle } from '../common/new/PageTitle';
-import { Text } from '@tremor/react';
+import { Bold, Flex, Text } from '@tremor/react';
 import { AgeDivisionSelector } from './AgeDivisionSelector';
+import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
 
 export const TournamentPageLayout = ({
   children,
@@ -21,6 +23,7 @@ export const TournamentPageLayout = ({
 }) => {
   useFixAutoHeight();
   const { colorMode } = useColorMode();
+  const { setShouldShowMatchPoints } = useContext(StandingsPageContext);
 
   const router = useRouter();
   const splitPath: string[] = router.route ? router.route.split('/') : [];
@@ -37,7 +40,17 @@ export const TournamentPageLayout = ({
         <Text>
           Standings are unofficial and may be inaccurate.
         </Text>
-        <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
+        <Flex className=' gap-2'>
+          <div>
+            <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
+          </div>
+          <div className='flex gap-2'>
+            <Text className='text-xs'>
+              Match points
+            </Text>
+            <Switch onChange={e => setShouldShowMatchPoints(e.currentTarget.checked)} />
+          </div>
+        </Flex>
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}

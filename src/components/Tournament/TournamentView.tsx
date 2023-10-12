@@ -37,7 +37,7 @@ export default function TournamentView({
     tournament,
     ageDivision
   });
-  // TODO PLEASE CHANGE THIS
+
   const shouldHideDecks = !tournament.should_reveal_decks?.[ageDivision];
 
   if (isLoading) return <FullPageLoader />;
@@ -56,12 +56,12 @@ export default function TournamentView({
           <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>
         </Banner>
       )} */}
-      <StandingsFilterContainer
+      {/* <StandingsFilterContainer
         tournament={tournament}
         standingsFilters={standingsFilters}
         setStandingsFilters={setStandingsFilters}
         disabled={shouldHideDecks}
-      />
+      /> */}
       {liveResults && (
         <StandingsList
           results={liveResults}
