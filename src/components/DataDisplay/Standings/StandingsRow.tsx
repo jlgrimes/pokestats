@@ -53,8 +53,8 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
   return (
     <>
       {!props.shouldHideStanding && !props.isCurrentlyPlayingInTopCut && (
-        <StandingsCell width={30}>
-          <Text>
+        <StandingsCell className='w-8'>
+          <Text className='text-right mr-2'>
             {/* <RecordIcon
               standing={props.result}
               tournament={props.tournament as Tournament}

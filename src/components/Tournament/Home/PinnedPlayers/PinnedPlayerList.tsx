@@ -8,6 +8,7 @@ import { PinnedPlayerCard } from './PinnedPlayerCard';
 import { PinPlayerModal } from './PinPlayerModal';
 import { useFollowingStandings, useStandings } from '../../../../hooks/newStandings';
 import { AgeDivision } from '../../../../../types/age-division';
+import { FullWidthCard } from '../../../common/new/FullWidthCard';
 
 interface PinnedPlayerListProps {
   tournament: Tournament;
@@ -75,14 +76,14 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
     return <ComponentLoader isLiveComponent />;
 
   return (
-    <Card>
-      <Title>Following</Title>
+    <FullWidthCard title='Following'>
         {!props.isCompact && filteredPlayers && filteredPlayers.length > 0 && (
-          <Flex>
+          <Flex className='flex gap-8 px-5 pb-4'>
             <Button
               icon={UserAddIcon}
               onClick={addPinPlayerModalControls.onOpen}
               disabled={props.tournament.tournamentStatus === 'not-started'}
+              variant='light'
             >
               Follow player
             </Button>
@@ -91,6 +92,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
                 icon={UserRemoveIcon}
                 onClick={editPinnedPlayers.onToggle}
                 disabled={props.tournament.tournamentStatus === 'not-started'}
+                variant='light'
               >
                 {editPinnedPlayers.isOpen ? 'Stop editing' : 'Edit following'}
               </Button>
@@ -146,6 +148,6 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
           modalControls={addPinPlayerModalControls}
           ageDivision={props.ageDivision}
         />
-    </Card>
+    </FullWidthCard>
   );
 };

@@ -3,6 +3,8 @@ import { Standing, Tournament } from '../../../../../types/tournament';
 import { PlayerCard } from '../PlayerCard/PlayerCard';
 import { useTopCutStandings } from '../../../../hooks/newStandings';
 import { AgeDivision } from '../../../../../types/age-division';
+import { FullWidthCard } from '../../../common/new/FullWidthCard';
+import { capitalize } from '../../../../lib/strings';
 
 interface TopCutViewProps {
   tournament: Tournament;
@@ -24,9 +26,7 @@ export const TopCutView = (props: TopCutViewProps) => {
   return (
     <>
       {props.tournament.tournamentStatus === 'finished' && (
-        <Card>
-          <Title>Top cut</Title>
-          <Subtitle className='mb-4'>TCG {props.ageDivision}</Subtitle>
+        <FullWidthCard title={`${capitalize(props.ageDivision)} top cut`}>
           <Table className='overflow-hidden'>
             <TableBody>
               {topCutPlayers?.map((player) => (
@@ -38,7 +38,7 @@ export const TopCutView = (props: TopCutViewProps) => {
               ))}
             </TableBody>
           </Table>
-        </Card>
+        </FullWidthCard>
       )}
       {props.tournament.tournamentStatus === 'running' &&  topCutPlayers?.filter((player) => player.currentOpponent).map(
             (player: Standing) =>
