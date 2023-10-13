@@ -44,6 +44,7 @@ export interface PlayerCardProps {
   roundNumber?: number;
   shouldHideResistance?: boolean;
   shouldShowMatchPoints?: boolean;
+  isMe?: boolean;
 }
 
 export const inverseResult = (result?: MatchResult) =>
@@ -102,6 +103,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
           shouldHideRegion
           shouldHideResistance={props.shouldHideResistance}
           shouldShowMatchPoints={props.shouldShowMatchPoints}
+          isMe={props.isMe}
         />
       </TableRow>
     </>

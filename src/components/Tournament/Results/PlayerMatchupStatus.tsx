@@ -41,6 +41,7 @@ export const PlayerMatchupStatus = ({
           canEditDecks
           shouldHideOpponent
           shouldDisableOpponentModal
+          isMe={!!isLoggedInUser}
         />
       </TableBody>
     </Table>

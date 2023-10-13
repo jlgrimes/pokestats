@@ -29,6 +29,7 @@ export const DeckInfoDisplay = memo(
     onUnpinPlayer,
     shouldHideMenu,
     shouldDisableDeckExtras,
+    isMe
   }: {
     player: Standing;
     tournament: Tournament;
@@ -39,6 +40,7 @@ export const DeckInfoDisplay = memo(
     onUnpinPlayer?: () => void;
     shouldHideMenu?: boolean;
     shouldDisableDeckExtras?: boolean;
+    isMe?: boolean;
   }) => {
     const archetypeModal = useDisclosure();
     const userIsLoggedInUser = useUserMatchesLoggedInUser(player.name);
@@ -83,6 +85,7 @@ export const DeckInfoDisplay = memo(
           shouldHideSpecificArchetype={ifShouldBlurSpecificAArchetype()}
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           shouldEnableEdits={enableEdits}
+          shouldHideFakeDecks={isMe}
         />
         {shouldShowEditButton && (
           <IconButton

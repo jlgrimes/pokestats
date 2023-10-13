@@ -42,7 +42,9 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
 
   const filteredDecks: DeckTypeSchema[] = useMemo(
     () => [
-      ...(mostPopularDecks?.filter(({ name }) => {
+      ...(mostPopularDecks?.filter(({ name, hide_from_selection }) => {
+        if (props.shouldHideFakeDecks && hide_from_selection) return false;
+
         return (
           name.toLowerCase().includes(filterQuery.toLowerCase()) ||
           name === 'Other'

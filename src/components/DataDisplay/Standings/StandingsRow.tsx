@@ -47,6 +47,7 @@ export interface StandingsRowProps {
   shouldHideRegion?: boolean;
   shouldHideResistance?: boolean;
   shouldShowMatchPoints?: boolean;
+  isMe?: boolean;
 }
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
@@ -90,6 +91,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
                 shouldHideMenu={props.translucent}
                 shouldDisableDeckExtras={props.isCurrentlyPlayingInTopCut}
                 disableList={props.shouldHideList}
+                isMe={props.isMe}
               />
             ) : (
               <ComponentLoader />

@@ -15,7 +15,7 @@ export const fetchDecks = async (): Promise<Deck[]> => {
       name,
       defined_pokemon,
       cover_cards
-    ),identifiable_cards,format(id,format,rotation,start_date)`
+    ),identifiable_cards,format(id,format,rotation,start_date),hide_from_selection`
     )
     .order('created_at', { ascending: false });
 
@@ -27,6 +27,7 @@ export const fetchDecks = async (): Promise<Deck[]> => {
       supertype: DeckTypeSchema;
       identifiable_cards: string[];
       format: FormatSchema;
+      hide_from_selection: boolean;
     }[]
   >();
 
@@ -162,6 +163,7 @@ export interface DeckTypeSchema extends SupertypeSchema {
   data?: Record<string, any>;
   format?: FormatSchema;
   day_two_count?: number;
+  hide_from_selection?: boolean | null;
 }
 
 export const fetchSupertypes = async () => {
@@ -338,6 +340,9 @@ export const useMostPopularArchetypes = (
 
   if (options?.shouldIncludeDecksNotPlayed) {
     const sortedArchetypes = archetypes?.sort((a, b) => {
+      if (a.name === 'Other') return 1;
+      if (b.name === 'Other') return -1;
+
       if (!playerDeckCounts[a.id]) {
         return 1;
       }
