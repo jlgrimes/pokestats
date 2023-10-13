@@ -50,7 +50,7 @@ export const MetaGameShareList = memo(
         label: deck => `${deck.count} played`,
         shouldHide: (deck: DeckTypeSchema) => shouldHide(deck),
       },
-      ...(!tournament.name.includes(' Cup')
+      ...(!tournament.name.includes(' Cup') && tournament.roundNumbers.masters && tournament.roundNumbers.masters >= 9
         ? [
             {
               name: 'day 2 played' as 'played' | 'day 2 played' | 'day 2',

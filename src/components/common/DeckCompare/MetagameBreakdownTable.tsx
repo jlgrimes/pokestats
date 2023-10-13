@@ -63,16 +63,16 @@ export const MetagameBreakdownTable = <T extends string>(
 
   return (
     <Card>
-      <Title>{props.tournament.name ? `${props.tournament.name}` : `Decks`}</Title>
-      <Subtitle>{`Decks known: ${props.numKnown}/${props.tournament.players.masters}`}</Subtitle>
-      <Select className='mt-4' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
-        <SelectItem value='played'>Day 1 Metagame</SelectItem>
-        <SelectItem value='day 2 played'>Day 2 Metagame</SelectItem>
+      <Title>{`Metagame`}</Title>
+      <Subtitle>{props.tournament.name}</Subtitle>
+      <Select className='mt-3' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
+        <SelectItem value='played'>Day 1</SelectItem>
+        <SelectItem value='day 2 played'>Day 2</SelectItem>
         <SelectItem value='day 2'>Day 2 Conversion</SelectItem>
       </Select>
       <Flex className="mt-4">
         <Text>
-          <Bold>Deck archetype</Bold>
+          <Bold>Deck</Bold>
         </Text>
         <Text>
           <Bold>{getValueDisplayLabel(activeColumn)}</Bold>
@@ -87,6 +87,7 @@ export const MetagameBreakdownTable = <T extends string>(
       ) : (
           <BarList data={data} className='mt-2 [&>div>.tremor-BarList-labelWrapper]:h-10 [&>div>.tremor-BarList-labelWrapper]:after:content-["%"] [&>div>div>div]:items-center [&>div>div>div]:gap-4 [&>div>.tremor-BarList-bar]:h-10' />
       )}
+      <Subtitle className='mt-3'>{`Decks known: ${props.numKnown}/${props.tournament.players.masters}`}</Subtitle>
     </Card>
   );
 };

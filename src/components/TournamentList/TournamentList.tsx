@@ -3,6 +3,7 @@ import { Tournament } from '../../../types/tournament';
 import { TournamentCard } from './TournamentCard';
 import { useChampions } from '../../hooks/newStandings';
 import { isBefore, parseISO } from 'date-fns';
+import { TopDecks } from '../Home/TopDecks';
 
 export const TournamentList = ({
   tournaments,
@@ -24,11 +25,14 @@ export const TournamentList = ({
   return (
     <>
     {liveTournaments.map((tournament) => (
-      <TournamentCard
-        key={`tournament-card-${tournament.id}`}
-        tournament={tournament}
-        champion={undefined}
-      />
+      <div className='flex flex-col py-4 gap-2'>
+        <TournamentCard
+          key={`tournament-card-${tournament.id}`}
+          tournament={tournament}
+          champion={undefined}
+        />
+        <TopDecks tournament={tournament} />
+      </div>
     ))}
     {upcomingTournaments.slice(0, 2).map((tournament) => (
       <TournamentCard
@@ -39,11 +43,14 @@ export const TournamentList = ({
     ))}
     {
       finishedTournaments.slice(0, mostRecent ? 3 : -1).map((tournament) => (
-        <TournamentCard
-          key={`tournament-card-${tournament.id}`}
-          tournament={tournament}
-          champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
-        />
+        <div className='flex flex-col py-4 gap-2'>
+          <TournamentCard
+            key={`tournament-card-${tournament.id}`}
+            tournament={tournament}
+            champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
+          />
+          <TopDecks tournament={tournament} />
+        </div>
       ))
     }</>
   );

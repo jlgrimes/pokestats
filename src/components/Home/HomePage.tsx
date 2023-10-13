@@ -46,9 +46,6 @@ export const HomePage = (props: HomePageProps) => {
         style={{ display: 'block' }}
         format='auto'
       /> */}
-      {mostRecentFinishedTournament && (
-        <TopDecks tournament={mostRecentFinishedTournament} />
-      )}
       <Footer />
     </Stack>
   );
