@@ -4,7 +4,7 @@ export type DeckCompareColumnType<T> = {
   name: T;
   label: (deck: DeckTypeSchema, decks: DeckTypeSchema[]) => string;
   shouldHide: (deck: DeckTypeSchema, decks: DeckTypeSchema[]) => boolean;
-  calculation: (deck: DeckTypeSchema, decks: DeckTypeSchema[]) => number;
+  calculation: (deck: DeckTypeSchema) => number;
 };
 
 export interface DeckCompareSortTogglesProps<T> {

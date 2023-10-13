@@ -27,7 +27,7 @@ export const MetaGameShareList = memo(
   }) => {
     const [shouldDrillDown, setShouldDrillDown] = useState(false);
     const [sort, setSort] = useState<{
-      sortBy: 'played' | 'day 2';
+      sortBy: 'played' | 'day 2 played' | 'day 2';
       sortOrder: 'asc' | 'desc';
     }>({
       sortBy: 'played',
@@ -40,17 +40,27 @@ export const MetaGameShareList = memo(
       isLoading
     } = useMetaShare(tournament.id, 'masters');
 
-    const columns: DeckCompareColumnType<'played' | 'day 2'>[] = [
+    const totalDecks = useMemo(() => metaShare?.reduce((acc, share) => acc + (share.count ?? 0), 0) ?? 0, [metaShare]);
+    const totalDay2Decks = useMemo(() => metaShare?.reduce((acc, share) => acc + (share.day_two_count ?? 0), 0) ?? 0, [metaShare]);
+
+    const columns: DeckCompareColumnType<'played' | 'day 2 played' | 'day 2'>[] = [
       {
         name: 'played',
-        calculation: (deck, decks) => getMetaShare(deck, decks),
+        calculation: (deck) => (deck.count ?? 0) / totalDecks,
         label: deck => `${deck.count} played`,
         shouldHide: (deck: DeckTypeSchema) => shouldHide(deck),
       },
       ...(!tournament.name.includes(' Cup')
         ? [
             {
-              name: 'day 2' as 'played' | 'day 2',
+              name: 'day 2 played' as 'played' | 'day 2 played' | 'day 2',
+              calculation: (deck: DeckTypeSchema) => (deck.day_two_count) ? (deck.day_two_count / totalDay2Decks) : 0,
+              label: (deck: DeckTypeSchema) =>
+                `boop day two`,
+              shouldHide: (deck: DeckTypeSchema) => shouldHide(deck),
+            },
+            {
+              name: 'day 2' as 'played' | 'day 2 played' | 'day 2',
               calculation: (deck: DeckTypeSchema) => (deck.count && deck.day_two_count) ? (deck.day_two_count / deck.count) : 0,
               label: (deck: DeckTypeSchema) =>
                 `boop day two`,
@@ -60,12 +70,10 @@ export const MetaGameShareList = memo(
         : []),
     ];
 
-    const numKnown = metaShare?.reduce((acc, share) => acc + (share.count ?? 0), 0) ?? 0;
-
     return (
       <MetagameBreakdownTable
         tournament={tournament}
-        numKnown={numKnown}
+        numKnown={totalDecks}
         decks={metaShare ?? []}
         shouldDrillDown={shouldDrillDown}
         setShouldDrillDown={setShouldDrillDown}
@@ -74,7 +82,7 @@ export const MetaGameShareList = memo(
         sortBy={sort.sortBy}
         sortOrder={sort.sortOrder}
         columns={columns}
-        setSort={(sortBy: 'played' | 'day 2', sortOrder: 'asc' | 'desc') =>
+        setSort={(sortBy: 'played' | 'day 2 played' | 'day 2', sortOrder: 'asc' | 'desc') =>
           setSort({ sortBy, sortOrder })
         }
         shouldHideDeck={deck => shouldHide(deck)}

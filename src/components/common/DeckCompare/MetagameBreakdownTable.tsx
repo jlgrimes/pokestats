@@ -9,7 +9,7 @@ import {
   DeckCompareColumnType,
   DeckCompareSortTogglesProps,
 } from './DeckCompareSortToggles';
-import { Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Tab, Badge } from "@tremor/react";
+import { Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Tab, Badge, Select, SelectItem } from "@tremor/react";
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
 import { Tournament } from '../../../../types/tournament';
@@ -38,6 +38,10 @@ export const MetagameBreakdownTable = <T extends string>(
       return 'Usage';
     }
 
+    if (column?.name === 'day 2 played') {
+      return 'Usage';
+    }
+
     if (column?.name === 'day 2') {
       return 'Conversion rate';
     }
@@ -52,7 +56,7 @@ export const MetagameBreakdownTable = <T extends string>(
       deck => !(props.shouldHideDeck && props.shouldHideDeck(deck))
     ).map((deck) => ({
       name: deck.name,
-      value: activeColumn ? Math.round(activeColumn.calculation(deck, props.decks) * 10000) / 100 : 0,
+      value: activeColumn ? Math.round(activeColumn.calculation(deck) * 10000) / 100 : 0,
       href: getDeckHref(deck, props.format).pathname,
       icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />
     }))
@@ -61,13 +65,12 @@ export const MetagameBreakdownTable = <T extends string>(
     <Card>
       <Title>{props.tournament.name ? `${props.tournament.name}` : `Decks`}</Title>
       <Subtitle>{`Decks known: ${props.numKnown}/${props.tournament.players.masters}`}</Subtitle>
-      <TabGroup className='mt-4' onIndexChange={((index) => props.setSort(props.columns[index].name, 'desc'))}>
-        <TabList>
-          <Tab>Day 1 usage</Tab>
-          <Tab>Day 2 conversion</Tab>
-        </TabList>
-      </TabGroup>
-      <Flex className="mt-6">
+      <Select className='mt-4' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
+        <SelectItem value='played'>Day 1 Metagame</SelectItem>
+        <SelectItem value='day 2 played'>Day 2 Metagame</SelectItem>
+        <SelectItem value='day 2'>Day 2 Conversion</SelectItem>
+      </Select>
+      <Flex className="mt-4">
         <Text>
           <Bold>Deck archetype</Bold>
         </Text>
@@ -82,7 +85,7 @@ export const MetagameBreakdownTable = <T extends string>(
       ) : props.decks.length === 0 ? (
         <NoDataDisplay />
       ) : (
-          <BarList data={data} className='mt-2 [&>div>.tremor-BarList-labelWrapper]:h-12 [&>div>.tremor-BarList-labelWrapper]:after:content-["%"] [&>div>div>div]:items-center [&>div>div>div]:gap-4 [&>div>.tremor-BarList-bar]:h-12' />
+          <BarList data={data} className='mt-2 [&>div>.tremor-BarList-labelWrapper]:h-10 [&>div>.tremor-BarList-labelWrapper]:after:content-["%"] [&>div>div>div]:items-center [&>div>div>div]:gap-4 [&>div>.tremor-BarList-bar]:h-10' />
       )}
     </Card>
   );
