@@ -17,6 +17,7 @@ const DeckInput = memo(
     shouldHideVerifiedIcon,
     shouldEnableEdits,
     shouldHideSpecificArchetype,
+    shouldHideFakeDecks
   }: {
     playerName: string;
     deck: Deck | undefined;
@@ -27,6 +28,7 @@ const DeckInput = memo(
     shouldHideVerifiedIcon?: boolean;
     shouldEnableEdits: boolean;
     shouldHideSpecificArchetype?: boolean;
+    shouldHideFakeDecks?: boolean
   }) => {
     const deckId = deck?.id;
 
@@ -71,6 +73,7 @@ const DeckInput = memo(
         isListUp={!!deck?.list}
         shouldHideVerifiedIcon={shouldHideVerifiedIcon}
         shouldEnableEdits={shouldEnableEdits}
+        shouldHideFakeDecks={shouldHideFakeDecks}
       />
     );
   }

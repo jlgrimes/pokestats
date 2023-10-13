@@ -30,6 +30,7 @@ export interface Deck {
   format?: FormatSchema;
   // Optional URL for sprites
   sprites?: string;
+  hide_from_selection?: boolean | null;
 }
 
 export interface DeckList {

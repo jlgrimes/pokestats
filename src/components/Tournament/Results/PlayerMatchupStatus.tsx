@@ -53,6 +53,7 @@ export const PlayerMatchupStatus = ({
           shouldHideOpponentView={shouldHideOpponentView}
           shouldDisableDeckExtras={!isLoggedInUser}
           isPlayerMeOrMyOpponent={!!isLoggedInUser}
+          isMe={!!isLoggedInUser}
         />
         <Stack direction={'row'} alignItems='baseline'>
           <Stack direction='row' alignItems={'baseline'} spacing={1}>
