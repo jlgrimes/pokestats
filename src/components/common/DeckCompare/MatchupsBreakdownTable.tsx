@@ -44,7 +44,7 @@ export const MatchupsBreakdownTable = <T extends string>(
     .filter(
       deck => !(props.shouldHideDeck && props.shouldHideDeck(deck))
     ).map((deck) => {
-      const winRate = activeColumn ? Math.round(activeColumn.calculation(deck, props.decks) * 10000) / 100 : 0;
+      const winRate = activeColumn ? Math.round(activeColumn.calculation(deck) * 10000) / 100 : 0;
 
       return {
         name: deck.name,
