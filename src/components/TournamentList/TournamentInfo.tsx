@@ -19,7 +19,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
          {countryCode ? <CountryFlag countryCode={countryCode} size={'sm'} /> : null}
         <Flex className='w-fit'>
           <Flex className='flex-col grow items-start'>
-            <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}/masters`}>
+            <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`}>
               <Title>
                 {props.tournament.name}
               </Title>
