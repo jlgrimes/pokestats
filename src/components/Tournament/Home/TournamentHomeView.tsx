@@ -22,6 +22,7 @@ import { StreamIconLink } from '../TournamentLinks';
 import { PageTitle } from '../../common/new/PageTitle';
 import { Flex } from '@tremor/react';
 import { TopCutView } from './TopCut/TopCutView';
+import { MatchPointsStats } from './MatchPointsStats';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;
@@ -83,7 +84,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
+          <>
           <TopCutView tournament={props.tournament} />
+          <MatchPointsStats tournament={props.tournament} ageDivision='masters' />
+          </>
       )}
       {isAuthenticated &&
         props.tournament.tournamentStatus !== 'not-started' && (
