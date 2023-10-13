@@ -1,32 +1,25 @@
-import { Heading, Stack } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { MetaGameShareList } from '../../../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
-import { TournamentPageLayout } from '../../../../src/components/Tournament/TournamentPageLayout';
-import { fetchArchetypes } from '../../../../src/hooks/deckArchetypes';
-import { fetchTournaments } from '../../../../src/hooks/tournaments';
-import { Tournament } from '../../../../types/tournament';
+import { PairingsView } from '../../../src/components/Tournament/Pairings/PairingsView';
+import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
+import { fetchTournaments } from '../../../src/hooks/tournaments';
+import { Tournament } from '../../../types/tournament';
 
-export default function DecksPage({ tournament }: { tournament: Tournament }) {
+export default function StatsPage({ tournament }: { tournament: Tournament }) {
   return (
     <TournamentPageLayout tournament={tournament}>
-      <Stack paddingX={4}>
-        <Heading size={'md'}>Day 2 Metagame</Heading>
-        <MetaGameShareList tournament={tournament} sortByMoves={false} />
-      </Stack>
+      <PairingsView tournament={tournament} />
     </TournamentPageLayout>
   );
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ['deck-archetypes'],
-    queryFn: () => fetchArchetypes(),
-  });
+
   const [tournament] = await fetchTournaments({
     tournamentId: params.id,
     prefetch: true,
   });
+  queryClient.setQueryData(['tournaments', params.id], () => tournament);
 
   return {
     props: {

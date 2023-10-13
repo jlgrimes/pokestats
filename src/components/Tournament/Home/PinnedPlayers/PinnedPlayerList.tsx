@@ -12,17 +12,19 @@ import { FullWidthCard } from '../../../common/new/FullWidthCard';
 
 interface PinnedPlayerListProps {
   tournament: Tournament;
-  ageDivision: AgeDivision;
   isCompact?: boolean;
 }
 
 export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
+  // TODO: IMPLEMENT
+  const ageDivision = 'masters';
+
   const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
     usePinnedPlayers();
 
   const { data: tournamentPerformance, isLoading: areFinalResultsLoading } = useFollowingStandings(pinnedPlayerNames, props.tournament);
 
-  const { data: liveTournamentResults, isLoading } = useStandings({ tournament: props.tournament, ageDivision: props.ageDivision });
+  const { data: liveTournamentResults, isLoading } = useStandings({ tournament: props.tournament, ageDivision: ageDivision });
   const resultsAreLoading =
     (props.tournament.tournamentStatus === 'running' && isLoading) ||
     (props.tournament.tournamentStatus === 'finished' &&
@@ -146,7 +148,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
         <PinPlayerModal
           tournament={props.tournament}
           modalControls={addPinPlayerModalControls}
-          ageDivision={props.ageDivision}
+          ageDivision={ageDivision}
         />
     </FullWidthCard>
   );

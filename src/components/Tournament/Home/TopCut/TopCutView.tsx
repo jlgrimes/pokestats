@@ -5,14 +5,16 @@ import { useTopCutStandings } from '../../../../hooks/newStandings';
 import { AgeDivision } from '../../../../../types/age-division';
 import { FullWidthCard } from '../../../common/new/FullWidthCard';
 import { capitalize } from '../../../../lib/strings';
+import { useState } from 'react';
+import { AgeDivisionSelector } from '../../AgeDivisionSelector';
 
 interface TopCutViewProps {
   tournament: Tournament;
-  ageDivision: AgeDivision;
 }
 
 export const TopCutView = (props: TopCutViewProps) => {
-  const { data: players } = useTopCutStandings({ tournament: props.tournament, ageDivision: props.ageDivision, shouldLoadOpponentRounds: true });
+  const [ageDivision, setAgeDivision] = useState<AgeDivision>('masters');
+  const { data: players } = useTopCutStandings({ tournament: props.tournament, ageDivision: ageDivision, shouldLoadOpponentRounds: true });
 
   const topCutPlayers = players && players.filter(player =>(props.tournament.tournamentStatus === 'finished' ||
   !players!.some(
@@ -26,7 +28,10 @@ export const TopCutView = (props: TopCutViewProps) => {
   return (
     <>
       {props.tournament.tournamentStatus === 'finished' && (
-        <FullWidthCard title={`${capitalize(props.ageDivision)} top cut`}>
+        <FullWidthCard title={`Top cut`}>
+          <div className='ml-3'>
+            <AgeDivisionSelector setAgeDivision={setAgeDivision} />
+          </div>
           <Table className='overflow-hidden'>
             <TableBody>
               {topCutPlayers?.map((player) => (

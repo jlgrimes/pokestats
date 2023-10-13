@@ -11,7 +11,6 @@ import { AgeDivision } from '../../../../types/age-division';
 
 interface AdminTournamentPanelProps {
   tournament: Tournament;
-  ageDivision: AgeDivision;
 }
 
 export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
@@ -31,7 +30,7 @@ export const AdminTournamentPanel = (props: AdminTournamentPanelProps) => {
         </Button>
         <Button
           as={NextLink}
-          href={`/tournaments/${props.tournament.id}/${props.ageDivision}/pairings`}
+          href={`/tournaments/${props.tournament.id}/pairings`}
           isDisabled={props.tournament.tournamentStatus === 'not-started'}
           leftIcon={<FaUserFriends />}
         >
