@@ -31,11 +31,6 @@ export async function getStaticProps() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['all-tournament-metadata'],
-    queryFn: () => fetchTournamentMetadata(),
-  });
-
-  await queryClient.prefetchQuery({
     queryKey: ['champions'],
     queryFn: () => fetchChampions(),
   });
