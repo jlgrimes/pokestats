@@ -8,8 +8,7 @@ interface MatchPointsProps {
 export const MatchPoints = (props: MatchPointsProps) => {
   const numMatchPoints = props.standing.record.wins * 3 + props.standing.record.ties;
   const getColor = () => {
-    if (numMatchPoints < 19) return 'slate';
-    return numMatchPoints % 2 === 0 ? 'green' : 'sky';
+    return numMatchPoints % 4 === 0 ? 'fuchsia' : numMatchPoints % 4 === 1 ? 'green' : numMatchPoints % 4 === 2 ? 'sky' : 'amber';
   }
 
   return <Badge color={getColor()}><Bold>{numMatchPoints}</Bold></Badge>
