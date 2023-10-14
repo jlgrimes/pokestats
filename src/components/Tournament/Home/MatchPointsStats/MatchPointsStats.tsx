@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
-import supabase from "../../../lib/supabase/client"
-import { AgeDivision } from "../../../../types/age-division";
-import { Tournament } from "../../../../types/tournament";
-import { capitalize } from "../../../lib/strings";
+import supabase from "../../../../lib/supabase/client"
+import { AgeDivision } from "../../../../../types/age-division";
+import { Tournament } from "../../../../../types/tournament";
+import { capitalize } from "../../../../lib/strings";
 import { Card, CategoryBar, Flex, Text } from "@tremor/react";
-import { getTournamentRoundSchema } from "../../../lib/tournament";
+import { getTournamentRoundSchema } from "../../../../lib/tournament";
 
 const humanizeMatchPoints = (points: number, tournament: Tournament, ageDivision: AgeDivision) => {
   const roundSchema = getTournamentRoundSchema(tournament, ageDivision);
@@ -36,11 +36,20 @@ const fetchPlacementCutoffs = async (tournamentId: string, ageDivision: AgeDivis
   for (const cutoff of res.data) {
     if (placementIdx >= placements.length) break;
 
-    if (cutoff.cutoff_placing < placements[placementIdx]) {
+    if (cutoff.cutoff_placing === placements[placementIdx]) {
+      placementDividedCutoffs.push({
+        placementTier: placements[placementIdx],
+        matchPoints: cutoff.match_points,
+        placementIdx,
+        cleanCut: true
+      });
+      placementIdx += 1
+    } else if (cutoff.cutoff_placing < placements[placementIdx]) {
       placementDividedCutoffs.push({
         placementTier: placements[placementIdx],
         matchPoints: cutoff.match_points - 1,
-        placementIdx
+        placementIdx,
+        cleanCut: false
       });
       placementIdx += 1
     }
@@ -62,21 +71,34 @@ interface MatchPointsStatsProps {
 }
 
 export const MatchPointsStats = (props: MatchPointsStatsProps) => {
-  const { data: placementDividedCutoffs } = usePlacementCutoffs(props.tournament.id, props.ageDivision)
+  let { data: placementDividedCutoffs } = usePlacementCutoffs(props.tournament.id, props.ageDivision)
+  console.log(placementDividedCutoffs)
+  placementDividedCutoffs = placementDividedCutoffs?.map((thing, idx) => idx === 3 ? ({...thing, cleanCut: true }) : thing)
+
+  const getSpaceForTremorBars = (placementIdx: number) => {
+    const lowestPlacement = placementIdx
+    
+    const onTheBubbleLength = 0;
+    const placementTierCutoffValue = 0;
+  }
 
   return (
     <Card>
-      {placementDividedCutoffs?.toReversed().map(({ placementTier, matchPoints }) => (
-        <div key={Math.random()}>
-          <Flex>
+      {placementDividedCutoffs?.toReversed().map(({ placementTier, placementIdx, matchPoints, cleanCut }) => (
+        <div key={Math.random()} className='mb-8'>
+          <Flex className="mb-4">
             <Text>Top {placementTier}</Text>
             <Text>{`${humanizeMatchPoints(matchPoints, props.tournament, props.ageDivision)} (${matchPoints})`}</Text>
           </Flex>
+          <Flex className="mb-2">
+            <Text>{matchPoints - 1}</Text>
+            <Text>{matchPoints}</Text>
+            {!cleanCut && <Text>{matchPoints + 1}</Text>}
+          </Flex>
           <CategoryBar
-            values={[matchPoints - 1, matchPoints, 1]}
-            colors={["orange", "yellow", "emerald"]}
-            markerValue={matchPoints}
-            className="mt-3"
+            className="[&>.tremor-CategoryBar-labels]:hidden"
+            values={cleanCut ? [50, 50] : [20, 60, 20]}
+            colors={cleanCut ? ['rose', 'emerald'] : ["rose", "yellow", "emerald"]}
           />
         </div>
       ))}

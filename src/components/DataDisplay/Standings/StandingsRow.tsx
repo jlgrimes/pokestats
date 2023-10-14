@@ -105,7 +105,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         </Flex>
       </StandingsCell>
       {!props.isCurrentlyPlayingInTopCut && (
-        <StandingsCell width={56} className='text-right'>
+        <StandingsCell className='text-right w-16'>
           {props.shouldShowMatchPoints ? (
             <MatchPoints standing={props.result} />
           ) : (
