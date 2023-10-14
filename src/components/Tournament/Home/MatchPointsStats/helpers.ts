@@ -18,7 +18,9 @@ export const getPropsForMatchPointCutoffVisualization = (data: MatchPointCutoffR
       ...acc,
       [curr]: {
         onTheBubble: safeLowerBoundEntry.cutoff_placing === curr ? null : [bubbleLowerBound.cutoff_placing, safeLowerBoundEntry.cutoff_placing + 1],
-        safe: [safeLowerBoundEntry.cutoff_placing, safeUpperBound]
+        onTheBubbleMatchPoints: safeLowerBoundEntry.cutoff_placing === curr ? null : bubbleLowerBound.match_points,
+        safe: [safeLowerBoundEntry.cutoff_placing, safeUpperBound],
+        safeMatchPoints: safeLowerBoundEntry.match_points
       }
     }
   }, {});

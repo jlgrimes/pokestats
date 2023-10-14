@@ -3,8 +3,10 @@ import supabase from "../../../../lib/supabase/client"
 import { AgeDivision } from "../../../../../types/age-division";
 import { Tournament } from "../../../../../types/tournament";
 import { capitalize } from "../../../../lib/strings";
-import { Card, CategoryBar, Flex, Text } from "@tremor/react";
+import { Card, CategoryBar, Flex, Subtitle, Text, Title } from "@tremor/react";
 import { getTournamentRoundSchema } from "../../../../lib/tournament";
+import { getPropsForMatchPointCutoffVisualization } from "./helpers";
+import { Box } from "@chakra-ui/react";
 
 const humanizeMatchPoints = (points: number, tournament: Tournament, ageDivision: AgeDivision) => {
   const roundSchema = getTournamentRoundSchema(tournament, ageDivision);
@@ -24,38 +26,12 @@ const humanizeMatchPoints = (points: number, tournament: Tournament, ageDivision
   return `${wins}-${losses}-${ties}`;
 }
 
-const placements = [1024, 512, 256, 128, 64, 32, 16, 8];
-
 const fetchPlacementCutoffs = async (tournamentId: string, ageDivision: AgeDivision) => {
   const res = await supabase.from('match_point_cutoffs').select('match_points,cutoff_placing').eq('tournament_id', parseInt(tournamentId)).eq('age_division', capitalize(ageDivision)).order('cutoff_placing', { ascending: false });
 
   if (!res.data) return;
 
-  let placementIdx = 0, placementDividedCutoffs = [];
-
-  for (const cutoff of res.data) {
-    if (placementIdx >= placements.length) break;
-
-    if (cutoff.cutoff_placing === placements[placementIdx]) {
-      placementDividedCutoffs.push({
-        placementTier: placements[placementIdx],
-        matchPoints: cutoff.match_points,
-        placementIdx,
-        cleanCut: true
-      });
-      placementIdx += 1
-    } else if (cutoff.cutoff_placing < placements[placementIdx]) {
-      placementDividedCutoffs.push({
-        placementTier: placements[placementIdx],
-        matchPoints: cutoff.match_points - 1,
-        placementIdx,
-        cleanCut: false
-      });
-      placementIdx += 1
-    }
-  }
-
-  return placementDividedCutoffs;
+  return res.data;
 }
 
 const usePlacementCutoffs = (tournamentId: string, ageDivision: AgeDivision) => {
@@ -70,37 +46,56 @@ interface MatchPointsStatsProps {
   ageDivision: AgeDivision;
 }
 
-export const MatchPointsStats = (props: MatchPointsStatsProps) => {
-  let { data: placementDividedCutoffs } = usePlacementCutoffs(props.tournament.id, props.ageDivision)
-  console.log(placementDividedCutoffs)
-  placementDividedCutoffs = placementDividedCutoffs?.map((thing, idx) => idx === 3 ? ({...thing, cleanCut: true }) : thing)
+const getWidthRatios = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }) => {
+  const shrinkRatio = (onTheBubble[1] - onTheBubble[0]) / (safe[1] - onTheBubble[0]);
+  return [0.2, shrinkRatio, 1 - shrinkRatio];
+}
 
-  const getSpaceForTremorBars = (placementIdx: number) => {
-    const lowestPlacement = placementIdx
-    
-    const onTheBubbleLength = 0;
-    const placementTierCutoffValue = 0;
-  }
+const convertMatchPointThingToTremor = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }) => {
+  const shrinkRatio = (onTheBubble[1] - onTheBubble[0]) / (safe[1] - onTheBubble[0]);
+  return [20, shrinkRatio * 80, 80 - (shrinkRatio * 80)];
+}
+
+const convertMatchPointThingToTremorBarVal = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }, placementTier) => {
+  const shrinkRatio = (placementTier - onTheBubble[0]) / (safe[1] - onTheBubble[0]);
+  return 20 + shrinkRatio * 80;
+}
+
+export const MatchPointsStats = (props: MatchPointsStatsProps) => {
+  const { data: placementDividedCutoffs } = usePlacementCutoffs(props.tournament.id, props.ageDivision)
+  let parsed = placementDividedCutoffs ? getPropsForMatchPointCutoffVisualization(placementDividedCutoffs) : {};
+  const shouldHide1k = !props.tournament.name.toLowerCase().includes('international');
 
   return (
     <Card>
-      {placementDividedCutoffs?.toReversed().map(({ placementTier, placementIdx, matchPoints, cleanCut }) => (
-        <div key={Math.random()} className='mb-8'>
-          <Flex className="mb-4">
-            <Text>Top {placementTier}</Text>
-            <Text>{`${humanizeMatchPoints(matchPoints, props.tournament, props.ageDivision)} (${matchPoints})`}</Text>
-          </Flex>
-          <Flex className="mb-2">
-            <Text>{matchPoints - 1}</Text>
-            <Text>{matchPoints}</Text>
-            {!cleanCut && <Text>{matchPoints + 1}</Text>}
-          </Flex>
+      <Title>Match point breakdown</Title>
+      <Subtitle className="mb-4">{props.tournament.name}</Subtitle>
+      {Object.entries(parsed).slice(0, shouldHide1k ? Object.entries(parsed).length - 1 : -1).map(([placementTier, { onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }]) => (
+        <Flex key={Math.random()} className='mb-6 flex'>
+          <Text className="w-1/4">Top {placementTier}</Text>
+          <div className="w-3/4">
+          <div className="mb-2 flex flex-1 w-full text-center">
+            {onTheBubble ? (
+              <>
+                <Box width={'20%'}><Text>{onTheBubbleMatchPoints - 1}</Text></Box>
+                <Box width={`${(getWidthRatios({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints })[1] * 100).toFixed(2)}%`}><Text>{onTheBubbleMatchPoints}</Text></Box>
+                {(onTheBubble[1] !== safe[1]) && <Box width={`${(getWidthRatios({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints })[2] * 100).toFixed(2)}%`}><Text>{safeMatchPoints}</Text></Box>}
+              </>
+            ) : (
+              <>
+                <Text className="w-1/2">{safeMatchPoints - 1}</Text>
+                <Text className="w-1/2">{safeMatchPoints}</Text>
+              </>
+            )}
+          </div>
           <CategoryBar
             className="[&>.tremor-CategoryBar-labels]:hidden"
-            values={cleanCut ? [50, 50] : [20, 60, 20]}
-            colors={cleanCut ? ['rose', 'emerald'] : ["rose", "yellow", "emerald"]}
+            values={!onTheBubble ? [50, 50] : convertMatchPointThingToTremor({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints })}
+            colors={!onTheBubble ? ['rose', 'emerald'] : ["rose", "yellow", "emerald"]}
+            markerValue={onTheBubble ? convertMatchPointThingToTremorBarVal({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }, placementTier) : 51}
           />
-        </div>
+          </div>
+        </Flex>
       ))}
     </Card>
   );

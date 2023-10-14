@@ -3,10 +3,10 @@ import { getPropsForMatchPointCutoffVisualization } from "./helpers";
 describe('when getPropsForMatchPointCutoffVisualization is called', () => {
   it('should return cutoffs in proper format', () => {
     const mockData = [{
-      match_points: 27,
+      match_points: 26,
       cutoff_placing: 1100
     }, {
-      match_points: 28,
+      match_points: 27,
       cutoff_placing: 600
     }, {
       match_points: 28,
@@ -41,35 +41,51 @@ describe('when getPropsForMatchPointCutoffVisualization is called', () => {
     expect(res).toEqual({
       1024: {
         onTheBubble: [1100, 601],
-        safe: [600, 513]
+        safe: [600, 513],
+        onTheBubbleMatchPoints: 26,
+        safeMatchPoints: 27
       },
       512: {
         onTheBubble: [600, 301],
-        safe: [300, 257]
+        safe: [300, 257],
+        onTheBubbleMatchPoints: 27,
+        safeMatchPoints: 28
       },
       256: {
         onTheBubble: [300, 201],
-        safe: [200, 129]
+        safe: [200, 129],
+        onTheBubbleMatchPoints: 28,
+        safeMatchPoints: 29
       },
       128: {
         onTheBubble: [200, 101],
-        safe: [100, 65]
+        safe: [100, 65],
+        onTheBubbleMatchPoints: 29,
+        safeMatchPoints: 30
       },
       64: {
         onTheBubble: [100, 41],
-        safe: [40, 33]
+        safe: [40, 33],
+        onTheBubbleMatchPoints: 30,
+        safeMatchPoints: 31
       },
       32: {
         onTheBubble: null,
-        safe: [32, 17]
+        safe: [32, 17],
+        onTheBubbleMatchPoints: null,
+        safeMatchPoints: 32
       },
       16: {
         onTheBubble: [22, 16],
-        safe: [15, 9]
+        safe: [15, 9],
+        onTheBubbleMatchPoints: 33,
+        safeMatchPoints: 34
       },
       8: {
         onTheBubble: null,
-        safe: [8, 1]
+        safe: [8, 1],
+        onTheBubbleMatchPoints: null,
+        safeMatchPoints: 35
       }
     });
   });
