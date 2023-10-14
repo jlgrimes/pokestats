@@ -5,7 +5,7 @@ import { Tournament } from "../../../../../types/tournament";
 import { capitalize } from "../../../../lib/strings";
 import { Card, CategoryBar, Flex, Subtitle, Text, Title } from "@tremor/react";
 import { getTournamentRoundSchema } from "../../../../lib/tournament";
-import { getPropsForMatchPointCutoffVisualization } from "./helpers";
+import { getPropsForMatchPointCutoffVisualization, MatchPointVizReturnType } from "./helpers";
 import { Box } from "@chakra-ui/react";
 
 const humanizeMatchPoints = (points: number, tournament: Tournament, ageDivision: AgeDivision) => {
@@ -46,17 +46,21 @@ interface MatchPointsStatsProps {
   ageDivision: AgeDivision;
 }
 
-const getWidthRatios = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }) => {
+const getWidthRatios = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }: MatchPointVizReturnType) => {
+  if (onTheBubble === null) return [0.5, 0.5];
+
   const shrinkRatio = (onTheBubble[1] - onTheBubble[0]) / (safe[1] - onTheBubble[0]);
   return [0.2, shrinkRatio, 1 - shrinkRatio];
 }
 
-const convertMatchPointThingToTremor = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }) => {
+const convertMatchPointThingToTremor = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }: MatchPointVizReturnType) => {
+  if (onTheBubble === null) return [50, 50];
   const shrinkRatio = (onTheBubble[1] - onTheBubble[0]) / (safe[1] - onTheBubble[0]);
   return [20, shrinkRatio * 80, 80 - (shrinkRatio * 80)];
 }
 
-const convertMatchPointThingToTremorBarVal = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }, placementTier) => {
+const convertMatchPointThingToTremorBarVal = ({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }: MatchPointVizReturnType, placementTier: number) => {
+  if (!onTheBubble) return 50;
   const shrinkRatio = (placementTier - onTheBubble[0]) / (safe[1] - onTheBubble[0]);
   return 20 + shrinkRatio * 80;
 }
@@ -75,7 +79,7 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
           <Text className="w-1/4">Top {placementTier}</Text>
           <div className="w-3/4">
           <div className="mb-2 flex flex-1 w-full text-center">
-            {onTheBubble ? (
+            {onTheBubble && onTheBubbleMatchPoints ? (
               <>
                 <Box width={'20%'}><Text>{onTheBubbleMatchPoints - 1}</Text></Box>
                 <Box width={`${(getWidthRatios({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints })[1] * 100).toFixed(2)}%`}><Text>{onTheBubbleMatchPoints}</Text></Box>
@@ -92,7 +96,7 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
             className="[&>.tremor-CategoryBar-labels]:hidden"
             values={!onTheBubble ? [50, 50] : convertMatchPointThingToTremor({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints })}
             colors={!onTheBubble ? ['rose', 'emerald'] : ["rose", "yellow", "emerald"]}
-            markerValue={onTheBubble ? convertMatchPointThingToTremorBarVal({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }, placementTier) : 51}
+            markerValue={onTheBubble ? convertMatchPointThingToTremorBarVal({ onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints }, parseInt(placementTier)) : 51}
           />
           </div>
         </Flex>

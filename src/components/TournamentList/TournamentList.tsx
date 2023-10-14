@@ -25,9 +25,8 @@ export const TournamentList = ({
   return (
     <>
     {liveTournaments.map((tournament) => (
-      <div className='flex flex-col py-4 gap-2'>
+      <div className='flex flex-col py-4 gap-2' key={`tournament-card-${tournament.id}`}>
         <TournamentCard
-          key={`tournament-card-${tournament.id}`}
           tournament={tournament}
           champion={undefined}
         />
@@ -43,9 +42,8 @@ export const TournamentList = ({
     ))}
     {
       finishedTournaments.slice(0, mostRecent ? 3 : -1).map((tournament) => (
-        <div className='flex flex-col py-4 gap-2'>
+        <div className='flex flex-col py-4 gap-2' key={`tournament-card-${tournament.id}`}>
           <TournamentCard
-            key={`tournament-card-${tournament.id}`}
             tournament={tournament}
             champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
           />
