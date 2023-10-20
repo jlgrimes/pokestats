@@ -91,7 +91,9 @@ export const usePlayerDecks = (
     supertype: player.deck_archetype.supertype,
     tournament_id: parseInt(tournamentId),
     tournament_name: null,
-    tournament_date: null
+    tournament_date: null,
+    day_two: null,
+    tournament_status: null
   }));
 
   return {

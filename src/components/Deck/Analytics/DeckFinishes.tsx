@@ -33,7 +33,7 @@ export const DeckFinishes = memo(
         <Table>
           <TableBody>
             {deckStandings.filter(standing => standing.tournament_id === parseInt(mostRecentFinished.id)).map((standing) => (
-              <TableRow>
+              <TableRow key={'finish ' + standing.name}>
                 <StandingsRow
                     result={standing}
                     tournament={mostRecentFinished}

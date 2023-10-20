@@ -20,7 +20,8 @@ export const useCardCounts = (
   format: number | undefined,
   options?: { countCopies?: boolean }
 ) => {
-  const { data: deckStandings } = useDeckStandings(deck);
+  // TODO
+  const { data: deckStandings } = useDeckStandings(deck, -1);
 
   if (!deckStandings) return [];
 
