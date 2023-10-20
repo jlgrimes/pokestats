@@ -75,7 +75,7 @@ const getWidthRatios = ({
   if (onTheBubble === null) return [0.5, 0.5];
 
   const shrinkRatio =
-    (onTheBubble[1] - onTheBubble[0]) / (safe[1] - onTheBubble[0]);
+    Math.min(0.9, (onTheBubble[1] - onTheBubble[0]) / (safe[1] - onTheBubble[0]));
   return [0.2, shrinkRatio, 1 - shrinkRatio];
 };
 
