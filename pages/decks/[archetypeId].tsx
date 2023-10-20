@@ -26,7 +26,7 @@ export default function DeckPage({
       <Fragment>
       <RecentFinishesCard deck={deck} />
       {deck && <MatchupsCard deck={deck} />}
-      <PopularTechsCard deck={deck} />
+      {/* <PopularTechsCard deck={deck} /> */}
     </Fragment>
     </DeckAnalyticsContainer>
   );

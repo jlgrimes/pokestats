@@ -1,7 +1,7 @@
 import {
   Box,
 } from '@chakra-ui/react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 import { NoDataDisplay } from '../../Deck/Analytics/MetaGameShare/NoDataDisplay';
 import { ComponentLoader } from '../ComponentLoader';
@@ -53,7 +53,15 @@ export const MatchupsBreakdownTable = <T extends string>(
         icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />,
         color: getBarColor(winRate)
       
-    }})
+    }});
+
+  useEffect(() => {
+    if (!props.isLoading && document) {
+      document.querySelectorAll('.tremor-BarList-barLink').forEach((el) => {
+        el.removeAttribute('target')
+      })
+    }
+  }, [props.isLoading]);
 
   return (
     <Card>

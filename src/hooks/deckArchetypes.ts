@@ -295,7 +295,7 @@ export const useMostPopularArchetypes = (
     data: archetypes,
     refetch,
     isLoading: archetypesIsLoading,
-  } = useArchetypes(tournament?.format, options?.shouldNotFetchData);
+  } = useArchetypes(tournament?.format ?? undefined, options?.shouldNotFetchData);
 
   const playerDeckCounts = liveResults?.reduce(
     (

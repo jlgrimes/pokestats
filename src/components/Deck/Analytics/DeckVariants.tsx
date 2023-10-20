@@ -38,7 +38,7 @@ export const DeckVariants = memo(({ deck }: { deck: Deck }) => {
             as={NextLink}
             href={
               {
-                pathname: `/decks/${deck.supertype?.id}/${variant.id}`,
+                pathname: `/decks/${variant.id}`,
                 query: {
                   format: router.query.format,
                 },
