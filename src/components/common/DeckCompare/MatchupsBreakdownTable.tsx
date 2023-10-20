@@ -49,7 +49,7 @@ export const MatchupsBreakdownTable = <T extends string>(
       return {
         name: deck.name,
         value: winRate,
-        href: getDeckHref(deck, props.format).pathname,
+        href: getDeckHref(deck).pathname,
         icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />,
         color: getBarColor(winRate)
       
