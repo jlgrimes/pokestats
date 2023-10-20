@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import supabase from "../lib/supabase/client"
 import { capitalize } from "../lib/strings";
-import { Deck, PlayerRecord, PlayerResistances, PlayerRound, Standing, Tournament, TournamentDate } from "../../types/tournament";
+import { Deck, PlayerRecord, PlayerResistances, PlayerRound, Standing, Tournament, TournamentDate, TournamentStatus } from "../../types/tournament";
 import { cropPlayerName, getPlayerDeck, getPlayerRegion, getRoundsArray } from "../lib/fetch/fetchLiveResults";
 import { AgeDivision } from "../../types/age-division";
 import { getTournamentRoundSchema, shortenTournamentName } from "../lib/tournament";
@@ -28,11 +28,13 @@ interface StandingsWithDecksReturnType {
   decklist: string | null,
   deck_archetype: number,
   defined_pokemon: string[] | null,
+  day_two: boolean | null;
   identifiable_cards: string[] | null,
   supertype: number | null,
   tournament_id: number,
   tournament_name: string,
   tournament_date: TournamentDate,
+  tournament_status: TournamentStatus | null;
 }
 
 const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => data?.map((standing) => {
@@ -204,25 +206,24 @@ export const usePlayerStandings = (player: CombinedPlayerProfile | null | undefi
   });
 }
 
-export const fetchDeckStandings = async (deck: Deck): Promise<Standing[] | undefined> => {
-  let query = supabase.from('standings_with_decks').select('*');
-
-  if (deck.classification === 'archetype') {
-    query = query.eq('deck_archetype', deck.id);
-  } else {
-    // supertype
-    query = query.eq('deck_archetype->supertype', deck.id);
+export const fetchDeckStandings = async (deck: Deck, tournamentId: number, shouldFetchOnlyDay2?: boolean): Promise<Standing[] | undefined> => {
+  let query = supabase.from('standings_with_decks').select('*').eq('deck_archetype', deck.id).eq('tournament_id', tournamentId);
+  
+  if (shouldFetchOnlyDay2) {
+    query = query.eq('day_two', true);
   }
+  
+  query = query.order('placing', { ascending: true });
 
   const standingsRes = await query;
   
   return fixDatabaseStandings(standingsRes.data);
 }
 
-export const useDeckStandings = (deck: Deck) => {
+export const useDeckStandings = (deck: Deck, tournamentId: number, shouldFetchOnlyDay2?: boolean) => {
   return useQuery({
-    queryKey: ['deck-standings', deck.id],
-    queryFn: () => fetchDeckStandings(deck)
+    queryKey: ['deck-standings', deck.id, tournamentId, shouldFetchOnlyDay2],
+    queryFn: () => fetchDeckStandings(deck, tournamentId, shouldFetchOnlyDay2)
   });
 }
 

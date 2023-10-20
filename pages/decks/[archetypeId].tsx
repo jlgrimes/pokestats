@@ -1,22 +1,16 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { CardCounts } from '../../src/components/Deck/Analytics/CardCounts/CardCounts';
 import { DeckAnalyticsContainer } from '../../src/components/Deck/Analytics/DeckAnalyticsContainer';
 import { DeckFinishes } from '../../src/components/Deck/Analytics/DeckFinishes';
-import { DeckVariants } from '../../src/components/Deck/Analytics/DeckVariants';
 import { PopularTechsCard } from '../../src/components/Deck/Analytics/PopularTechsCard';
 import { RecentFinishesCard } from '../../src/components/Deck/Analytics/RecentFinishesCard';
 import {
   fetchArchetype,
-  fetchSupertype,
-  fetchSupertypes,
   fetchVariants,
 } from '../../src/hooks/deckArchetypes';
 import { fetchCodeToSetMap } from '../../src/hooks/deckList';
-import { getFinalResultsDeckFilters } from '../../src/hooks/finalResults/useCardCounts';
 import { fetchTournaments } from '../../src/hooks/tournaments';
-import { parseDeckUrlParams } from '../../src/lib/query-params';
 import { Deck } from '../../types/tournament';
 import { fetchFormats } from '../../src/hooks/formats/formats';
 import { MatchupsCard } from '../../src/components/Deck/Analytics/MatchupsCard';
@@ -24,24 +18,16 @@ import supabase from '../../src/lib/supabase/client';
 
 export default function DeckPage({
   deck,
-  slug,
 }: {
   deck: Deck;
-  slug: string | null;
 }) {
   return (
-    <DeckAnalyticsContainer deck={deck} compactTitle={!!slug}>
+    <DeckAnalyticsContainer deck={deck}>
       <Fragment>
-        {slug === 'cards' && <CardCounts deck={deck} />}
-        {slug === 'finishes' && <DeckFinishes deck={deck} />}
-        {slug === null && (
-          <Fragment>
-            <RecentFinishesCard deck={deck} />
-            {deck && <MatchupsCard deck={deck} />}
-            <PopularTechsCard deck={deck} />
-          </Fragment>
-        )}
-      </Fragment>
+      <RecentFinishesCard deck={deck} />
+      {deck && <MatchupsCard deck={deck} />}
+      <PopularTechsCard deck={deck} />
+    </Fragment>
     </DeckAnalyticsContainer>
   );
 }
@@ -56,18 +42,10 @@ const invalidDeckReturn = {
 export async function getStaticProps({
   params,
 }: {
-  params: { deckId: string[] };
+  params: { archetypeId: string };
 }) {
-  const { supertypeId, archetypeId, slug } = parseDeckUrlParams(params.deckId);
-
   const queryClient = new QueryClient();
-  let deck: Deck | null | undefined;
-
-  if (archetypeId) {
-    deck = await fetchArchetype(archetypeId);
-  } else if (supertypeId) {
-    deck = await fetchSupertype(supertypeId);
-  }
+  let deck: Deck | null | undefined = await fetchArchetype(parseInt(params.archetypeId));
 
   if (!deck) return invalidDeckReturn;
 
@@ -75,14 +53,6 @@ export async function getStaticProps({
   const format = formats ? formats[formats.length - 1].id : null;
 
   await queryClient.setQueryData(['formats'], () => formats);
-
-  const filter = getFinalResultsDeckFilters(
-    {
-      ...deck,
-      classification: archetypeId ? 'archetype' : 'supertype',
-    },
-    format
-  );
 
   await queryClient.prefetchQuery({
     queryKey: ['tournaments'],
@@ -109,11 +79,7 @@ export async function getStaticProps({
 
   return {
     props: {
-      deck: {
-        ...deck,
-        classification: archetypeId ? 'archetype' : 'supertype',
-      },
-      slug,
+      deck,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
@@ -121,13 +87,13 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
-  const decksRes = await supabase.from('Deck Archetypes').select('id,supertype');
+  const decksRes = await supabase.from('Deck Archetypes').select('id');
   const decks = decksRes.data ?? [];
 
   return {
-    paths: decks.map(({ id, supertype }) => ({
+    paths: decks.map(({ id }) => ({
       params: {
-        deckId: [`${supertype}` ?? 'other', `${id}`],
+        archetypeId: id.toString(),
       },
     })),
     fallback: 'blocking',

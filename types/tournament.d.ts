@@ -69,7 +69,6 @@ export interface Standing {
   resistances?: PlayerResistances;
   currentMatchResult?: MatchResult;
   rounds?: PlayerRound[];
-  day2?: boolean;
   outOfDay2?: boolean;
   currentOpponent?: PlayerRound | Standing;
   decklist: DeckList | null;
@@ -78,6 +77,7 @@ export interface Standing {
   region?: string;
   age_division: AgeDivision;
 
+  day_two: boolean | null;
   deck_archetype: number | null;
   defined_pokemon: string[] | null;
   identifiable_cards: string[] | null;
