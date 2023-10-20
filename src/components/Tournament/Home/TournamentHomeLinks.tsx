@@ -28,11 +28,6 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
-import { StreamLink } from '../TournamentLinks';
-import { AdminTournamentPanel } from './AdminTournamentPanel';
-import { getTimeUntilTournament } from './helpers';
-import { ReportModal } from './ReportModal';
-import { GiPodiumWinner } from 'react-icons/gi';
 
 interface TournamentHomeLinksProps {
   tournament: Tournament;
@@ -59,7 +54,6 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         as={NextLink}
         href={`${router.asPath}/masters/standings`}
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
-        leftIcon={<IoMdPodium />}
       >
         Standings
       </Button>
@@ -68,10 +62,9 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         as={NextLink}
         href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
         target='_blank'
-        leftIcon={<FaUserFriends />}
       >
         <HStack spacing={1.5}>
-          <Text>Pairings</Text>
+          <Text>RK9 Pairings</Text>
         </HStack>
       </Button>
       {/* <Button

@@ -1,7 +1,7 @@
 import {
   Box,
 } from '@chakra-ui/react';
-import { createContext, useCallback } from 'react';
+import { createContext, useCallback, useEffect } from 'react';
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 import { NoDataDisplay } from '../../Deck/Analytics/MetaGameShare/NoDataDisplay';
 import { ComponentLoader } from '../ComponentLoader';
@@ -62,7 +62,15 @@ export const MetagameBreakdownTable = <T extends string>(
       if (a.value > b.value) return -1;
       if (a.value < b.value) return 1;
       return 0;
-    })
+    });
+
+    useEffect(() => {
+      if (!props.isLoading && document) {
+        document.querySelectorAll('.tremor-BarList-barLink').forEach((el) => {
+          el.removeAttribute('target')
+        })
+      }
+    }, [props.isLoading]);
 
   return (
     <Card>

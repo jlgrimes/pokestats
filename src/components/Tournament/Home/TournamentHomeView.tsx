@@ -43,7 +43,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         tournament={props.tournament}
         location={location}
       />
-      <Flex className='flex-col'>
+      <Flex className='flex-col gap-2'>
         <PageTitle>
           {props.tournament.name}
         </PageTitle>
@@ -73,6 +73,7 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           <StreamIconLink tournament={props.tournament} />
         </Flex>
       </Flex>
+      <TournamentHomeLinks tournament={props.tournament} />
       <Ad slot='7673650238' />
       {isAuthenticated && profile?.name && (
         <PlayerTournamentView
@@ -80,7 +81,6 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           playerName={profile.name}
         />
       )}
-      <TournamentHomeLinks tournament={props.tournament} />
       {userIsAdmin && <AdminTournamentPanel tournament={props.tournament} />}
       {(props.tournament.topCutStatus ||
         props.tournament.tournamentStatus === 'finished') && (
