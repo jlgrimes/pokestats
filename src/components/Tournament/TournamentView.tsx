@@ -8,6 +8,7 @@ import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
 import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';
 import { useStandings } from '../../hooks/newStandings';
+import { getShouldHideDecks } from '../../hooks/tournaments';
 
 export default function TournamentView({
   tournament,
@@ -38,7 +39,7 @@ export default function TournamentView({
     ageDivision
   });
 
-  const shouldHideDecks = !tournament.should_reveal_decks?.[ageDivision];
+  const shouldHideDecks = getShouldHideDecks(tournament, ageDivision);
 
   if (isLoading) return <FullPageLoader />;
 
