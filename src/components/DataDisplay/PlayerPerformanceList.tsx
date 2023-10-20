@@ -14,6 +14,7 @@ import { TournamentInfo } from '../TournamentList/TournamentInfo';
 import { usePlayerStandings } from '../../hooks/newStandings';
 import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
 import { Callout, Card, Table, TableBody, TableRow } from '@tremor/react';
+import { padTournamentId } from '../../hooks/tournaments';
 
 export const PlayerPerformanceList = ({
   user,
@@ -35,8 +36,26 @@ export const PlayerPerformanceList = ({
             <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
           </Stack>
         )}
-      {/* {tournamentPerformance?.map((performance: Standing) => {
+      {tournamentPerformance?.map((performance: Standing) => {
         if (!performance.tournament_id) return null;
+
+        const tournament = {
+          id: String(performance.tournament_id).padStart(7, '0'),
+          name: performance.tournament_name,
+          date: performance.tournament_date,
+          tournamentStatus: performance.tournament_status,
+          players: { masters: null, seniors: null, juniors: null },
+          roundNumbers: { masters: null, seniors: null, juniors: null },
+          rk9link: '',
+          subStatus: null,
+          format: null,
+          should_reveal_decks: {
+            juniors: userMatchesLoggedInUser || performance.tournament_status === 'finished',
+            seniors: userMatchesLoggedInUser || performance.tournament_status === 'finished',
+            masters: userMatchesLoggedInUser || performance.tournament_status === 'finished'
+          }
+        } as Tournament;
+
         return (
           <Card key={`${performance.tournament_id}-${performance.name}`} className='px-6 py-4'>
             <TournamentInfo tournament={tournament} />
@@ -51,10 +70,7 @@ export const PlayerPerformanceList = ({
             </Table>
           </Card>
         );
-      })} */}
-      <Callout title={`Sorry, we are working on this page!`}>
-        Come back another time
-      </Callout>
+      })}
     </div>
   );
 };

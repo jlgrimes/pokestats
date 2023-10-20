@@ -85,6 +85,7 @@ export interface Standing {
   tournament_id: number | null;
   tournament_name: string | null;
   tournament_date: TournamentDate | null;
+  tournament_status: TournamentStatus | null;
 }
 
 export interface MatchupResult extends Standing {
@@ -125,7 +126,7 @@ export interface Tournament {
     seniors: number | null;
     masters: number | null;
   };
-  format: FormatSchema;
+  format: FormatSchema | null;
   should_reveal_decks: {
     juniors: boolean;
     seniors: boolean;
