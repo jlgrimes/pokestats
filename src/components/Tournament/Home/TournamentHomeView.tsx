@@ -22,7 +22,7 @@ import { StreamIconLink } from '../TournamentLinks';
 import { PageTitle } from '../../common/new/PageTitle';
 import { Flex } from '@tremor/react';
 import { TopCutView } from './TopCut/TopCutView';
-import { MatchPointsStats } from './MatchPointsStats';
+import { MatchPointsStats } from './MatchPointsStats/MatchPointsStats';
 
 export interface TournamentHomeViewProps {
   tournament: Tournament | null;

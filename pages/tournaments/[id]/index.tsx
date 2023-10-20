@@ -14,7 +14,7 @@ export default function TournamentPage(props: TournamentPageProps) {
   return <TournamentHomeView tournament={props.tournament} />;
 }
 
-export async function getStaticProps({ params }: { params: { id: string } }) {
+export async function getServerSideProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
 
   const [tournament] = await fetchTournaments({
@@ -32,26 +32,5 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
       tournament,
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 10,
-  };
-}
-
-export async function getStaticPaths() {
-  const tournaments = await fetchTournaments({
-    prefetch: true,
-    excludeUpcoming: true,
-  });
-  const paths = tournaments?.map(tournament => {
-    return {
-      params: {
-        id: tournament.id,
-        displayName: tournament.name,
-      },
-    };
-  });
-
-  return {
-    paths,
-    fallback: 'blocking',
   };
 }

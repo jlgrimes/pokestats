@@ -58,7 +58,11 @@ export const MetagameBreakdownTable = <T extends string>(
       value: activeColumn ? Math.round(activeColumn.calculation(deck) * 10000) / 100 : 0,
       href: getDeckHref(deck).pathname,
       icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />
-    }))
+    })).sort((a, b) => {
+      if (a.value > b.value) return -1;
+      if (a.value < b.value) return 1;
+      return 0;
+    })
 
   return (
     <Card>

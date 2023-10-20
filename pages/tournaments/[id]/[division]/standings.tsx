@@ -32,7 +32,7 @@ export default function TournamentPage({
   );
 }
 
-export async function getStaticProps({ params }: { params: { id: string, division: string } }) {
+export async function getServerSideProps({ params }: { params: { id: string, division: string } }) {
   const queryClient = new QueryClient();
   const tournament = await fetchSingleTournament(params.id);
 
@@ -48,28 +48,6 @@ export async function getStaticProps({ params }: { params: { id: string, divisio
       tournament,
       ageDivision: params.division,
       dehydratedState: dehydrate(queryClient),
-    })),
-    revalidate: 10,
-  };
-}
-
-export async function getStaticPaths() {
-  const tournaments = await fetchTournaments({
-    prefetch: true,
-    excludeUpcoming: true,
-  });
-  const paths = tournaments?.map(tournament => {
-    return {
-      params: {
-        id: tournament.id,
-        division: 'masters',
-        displayName: tournament.name,
-      },
-    };
-  });
-
-  return {
-    paths,
-    fallback: 'blocking',
+    }))
   };
 }
