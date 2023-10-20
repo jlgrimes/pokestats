@@ -78,7 +78,6 @@ export const MetaGameShareList = memo(
         shouldDrillDown={shouldDrillDown}
         setShouldDrillDown={setShouldDrillDown}
         isLoading={isLoading}
-        format={tournament.format.id}
         sortBy={sort.sortBy}
         sortOrder={sort.sortOrder}
         columns={columns}

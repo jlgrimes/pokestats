@@ -21,7 +21,6 @@ export interface MetagameBreakdownTableProps<T>
   shouldDrillDown: boolean;
   setShouldDrillDown: (shouldDrillDown: boolean) => void;
   isLoading: boolean;
-  format: number;
   shouldHideDeck?: (deck: DeckTypeSchema) => boolean;
   isComparison?: boolean;
   tournament: Tournament,
@@ -57,7 +56,7 @@ export const MetagameBreakdownTable = <T extends string>(
     ).map((deck) => ({
       name: deck.name,
       value: activeColumn ? Math.round(activeColumn.calculation(deck) * 10000) / 100 : 0,
-      href: getDeckHref(deck, props.format).pathname,
+      href: getDeckHref(deck).pathname,
       icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />
     }))
 

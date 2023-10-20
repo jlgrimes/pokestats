@@ -1,6 +1,6 @@
 import { DeckTypeSchema } from '../../../hooks/deckArchetypes';
 
-export const getDeckHref = (deck: DeckTypeSchema, format?: number) => ({
+export const getDeckHref = (deck: DeckTypeSchema) => ({
   pathname:
     deck.type === 'supertype'
       ? `/decks/${deck.id}`
@@ -8,18 +8,10 @@ export const getDeckHref = (deck: DeckTypeSchema, format?: number) => ({
           deck.supertype?.id && deck.supertype.id > 0
             ? deck.supertype.id
             : 'other'
-        }/${deck.id}`,
-  query: {
-    ...(format ? { format } : {}),
-  },
+        }/${deck.id}`
 });
 
-export const getDeckLink = (deck: DeckTypeSchema, format?: number) => {
-  const { pathname, query } = getDeckHref(deck, format);
-
-  if (query.format) {
-    return `${pathname}?format=${query.format}`;
-  }
-
+export const getDeckLink = (deck: DeckTypeSchema) => {
+  const { pathname } = getDeckHref(deck);
   return pathname;
 };
