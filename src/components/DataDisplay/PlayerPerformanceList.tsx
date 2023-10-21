@@ -57,8 +57,8 @@ export const PlayerPerformanceList = ({
         } as Tournament;
 
         return (
-          <div>
-          <Card key={`${performance.tournament_id}-${performance.name}`} className='px-6 py-4 mb-2'>
+          <div key={`${performance.tournament_id}-${performance.name}`}>
+          <Card className='px-6 py-4 mb-2'>
             <TournamentInfo tournament={tournament} />
           </Card>
           <Card className='p-2'>
