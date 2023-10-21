@@ -10,7 +10,7 @@ import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { capitalize } from '../../lib/strings';
 import { StatsHeading } from '../common/StatsHeading';
 import { PageTitle } from '../common/new/PageTitle';
-import { Bold, Flex, Text } from '@tremor/react';
+import { Bold, Flex, Subtitle, Text } from '@tremor/react';
 import { AgeDivisionSelector } from './AgeDivisionSelector';
 import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
 import { shortenTournamentName } from '../../lib/tournament';
@@ -38,9 +38,7 @@ export const TournamentPageLayout = ({
         <PageTitle>
           {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
         </PageTitle>
-        <Text>
-          Standings are unofficial and may be inaccurate.
-        </Text>
+        <Subtitle className="text-center">Standings are unofficial and may be inaccurate.</Subtitle>
         <Flex className=' gap-2'>
           <div>
             <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
