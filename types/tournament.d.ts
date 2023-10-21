@@ -45,7 +45,7 @@ export interface PlayerResistances {
   oppopp: number;
 }
 
-export type MatchResult = 'W' | 'L' | 'T';
+export type MatchResult = 'W' | 'L' | 'T' | '...';
 
 export interface PlayerRound {
   name: string;

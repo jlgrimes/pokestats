@@ -25,6 +25,7 @@ import {
 } from '../../../DataDisplay/helpers';
 import { OpponentRoundList } from '../../../DataDisplay/Standings/OpponentRoundList/OpponentRoundList';
 import { StandingsCell, StandingsRow } from '../../../DataDisplay/Standings/StandingsRow';
+import { RecordIcon } from '../../Results/ResultsList/RecordIcon';
 
 export type PlayerCardSize = 'sm' | 'md' | 'lg';
 
@@ -67,6 +68,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
   const isCurrentlyPlayingInTopCut =
     isInTopCut && !!props.player.currentOpponent;
   const hasLostInTopCut = isInTopCut && !props.player.currentOpponent;
+  console.log(props.player)
 
   return (
     <>
@@ -88,6 +90,18 @@ export const PlayerCard = (props: PlayerCardProps) => {
             <ResultLetter result={props.result} />
           </StandingsCell>
         )}
+        {props.result === null && (
+          <StandingsCell className='pr-0 w-8 text-center'>
+            <></>
+          </StandingsCell>
+        )}
+        {
+          props.player.drop && props.player.drop > 0 && (
+            <StandingsCell className='pr-0 w-8 text-center'>
+              <RecordIcon standing={props.player} tournament={props.tournament} />
+            </StandingsCell>
+          )
+        }
         <StandingsRow
           result={props.player}
           tournament={props.tournament}
