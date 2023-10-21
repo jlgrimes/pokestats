@@ -7,7 +7,6 @@ import { ComponentLoader } from '../../../common/ComponentLoader';
 import { PinnedPlayerCard } from './PinnedPlayerCard';
 import { PinPlayerModal } from './PinPlayerModal';
 import { useFollowingStandings, useStandings } from '../../../../hooks/newStandings';
-import { AgeDivision } from '../../../../../types/age-division';
 import { FullWidthCard } from '../../../common/new/FullWidthCard';
 
 interface PinnedPlayerListProps {
@@ -22,50 +21,17 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const { data: pinnedPlayerNames, isLoading: arePinnedPlayersLoading } =
     usePinnedPlayers();
 
-  const { data: tournamentPerformance, isLoading: areFinalResultsLoading } = useFollowingStandings(pinnedPlayerNames, props.tournament);
+  const { data: pinnedPlayers, isLoading: areFinalResultsLoading } = useFollowingStandings(pinnedPlayerNames, props.tournament);
 
-  const { data: liveTournamentResults, isLoading } = useStandings({ tournament: props.tournament, ageDivision: ageDivision });
   const resultsAreLoading =
-    (props.tournament.tournamentStatus === 'running' && isLoading) ||
     (props.tournament.tournamentStatus === 'finished' &&
       areFinalResultsLoading);
 
-  const pinnedPlayers = pinnedPlayerNames
-    ?.map(name => {
-      const finalStanding = tournamentPerformance?.find(
-        standing => standing.name === name
-      );
-      const liveStanding = liveTournamentResults?.find(
-        liveResult => liveResult.name === name
-      );
-
-      if (finalStanding && liveStanding) {
-        if (
-          !finalStanding.defined_pokemon &&
-          liveStanding.defined_pokemon
-        ) {
-          return {
-            ...finalStanding,
-            deck: liveStanding.deck_archetype,
-          };
-        }
-      }
-
-      return finalStanding ?? liveStanding;
-    })
-    .sort((a, b) => {
-      if (!a || !b) return 0;
-
-      if (a.placing > b.placing) return 1;
-      if (a.placing < b.placing) return -1;
-
-      return 0;
-    });
   const addPinPlayerModalControls = useDisclosure();
   const editPinnedPlayers = useDisclosure();
 
-  const filteredPlayers = pinnedPlayers?.filter(player => player);
-
+  const filteredPlayers = pinnedPlayers?.filter(player => player.rounds?.length && props.tournament.roundNumbers[ageDivision] && (player.rounds.length === props.tournament.roundNumbers[ageDivision] || player.rounds.length === props.tournament.roundNumbers[ageDivision] - 1 ));
+  console.log(props.tournament, filteredPlayers)
   if (
     props.isCompact &&
     pinnedPlayers?.filter(player => player)?.length === 0 &&
@@ -89,7 +55,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             >
               Follow player
             </Button>
-            {pinnedPlayers && pinnedPlayers.length > 0 && (
+            {filteredPlayers && filteredPlayers.length > 0 && (
               <Button
                 icon={UserRemoveIcon}
                 onClick={editPinnedPlayers.onToggle}
@@ -101,19 +67,19 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             )}
           </Flex>
         )}
-        {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
+        {(!props.isCompact && resultsAreLoading) || !filteredPlayers ? (
           <ComponentLoader isLiveComponent />
         ) : (
           <Table className='overflow-hidden'>
             <TableBody>
-              {pinnedPlayers.map(
+              {filteredPlayers.map(
                 pinnedPlayer =>
                   pinnedPlayer && (
                     <PinnedPlayerCard
                       key={`pinned-${pinnedPlayer?.name}`}
                       player={pinnedPlayer}
                       tournament={props.tournament}
-                      isDeckLoading={isLoading && !pinnedPlayer.deck_archetype}
+                      isDeckLoading={arePinnedPlayersLoading && !pinnedPlayer.deck_archetype}
                       isEditingPinned={editPinnedPlayers.isOpen}
                       shouldHideOpponent={props.isCompact}
                       size={props.isCompact ? 'md' : 'lg'}
@@ -125,13 +91,13 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
       )}
         {filteredPlayers?.length === 0 && (
           <Flex className='flex-col'>
-            {pinnedPlayerNames && pinnedPlayerNames.length === 0 && (
+            {filteredPlayers && filteredPlayers.length === 0 && (
               <Text>
                 Keep up with your friends or anyone attending by following a
                 player!
               </Text>
             )}
-            {pinnedPlayerNames && pinnedPlayerNames.length > 0 && (
+            {filteredPlayers && filteredPlayers.length > 0 && (
               <Text>
                 None of your following are attending this tournament.
               </Text>

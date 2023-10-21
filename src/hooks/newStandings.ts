@@ -35,18 +35,18 @@ interface StandingsWithDecksReturnType {
   tournament_name: string,
   tournament_date: TournamentDate,
   tournament_status: TournamentStatus | null;
+  tournament_round_number: number | null;
 }
 
 const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => data?.map((standing) => {
   const rounds = getRoundsArray(standing as Standing);
-  const currentRound = rounds.length - 1;
 
   return {
     ...standing,
     rounds: rounds.map((round) => ({ ...round, name: cropPlayerName(round.name) })),
     decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
-    currentOpponent: standing.rounds[currentRound],
-    currentMatchResult: standing.rounds[currentRound]?.result ?? null,
+    currentOpponent: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number] : undefined,
+    currentMatchResult: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number]?.result : undefined,
     tournament_name: shortenTournamentName({ name: standing.tournament_name, date: standing.tournament_date } as Tournament)
   }
 });
@@ -72,7 +72,7 @@ export const fetchStandings = async (params: UseStandingsParams) => {
   query = query.order('placing', { ascending: true });
 
   const standingsRes = await query.returns<[]>();
-  const standings = fixDatabaseStandings(standingsRes.data)
+  const standings = fixDatabaseStandings(standingsRes.data);
 
   if (params?.shouldLoadOpponentRounds) {
     if (!standingsRes.data) return null;

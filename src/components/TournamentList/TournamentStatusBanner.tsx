@@ -42,9 +42,9 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
       {shouldShowLocalTime && (
         <HStack>
           <Icon as={FaGlobeAmericas} />
-          <Bold>{`${getLocalTime(
+          <Text className='font-semibold'>{`${getLocalTime(
             props.location!.utc_offset_minutes
-          )}`}</Bold>
+          )} local`}</Text>
         </HStack>
       )}
     </Callout>
