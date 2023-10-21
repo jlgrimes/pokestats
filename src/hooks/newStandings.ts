@@ -38,18 +38,37 @@ interface StandingsWithDecksReturnType {
   tournament_round_number: number | null;
 }
 
-const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => data?.map((standing) => {
-  const rounds = getRoundsArray(standing as Standing);
+const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => {
+  const rawData = data?.map((standing) => {
+    const rounds = getRoundsArray(standing as Standing);
+  
+    return {
+      ...standing,
+      rounds: rounds.map((round) => ({ ...round, name: cropPlayerName(round.name) })),
+      decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
+      currentOpponent: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number] : undefined,
+      currentMatchResult: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number]?.result : undefined,
+      tournament_name: shortenTournamentName({ name: standing.tournament_name, date: standing.tournament_date } as Tournament)
+    }
+  });
 
-  return {
-    ...standing,
-    rounds: rounds.map((round) => ({ ...round, name: cropPlayerName(round.name) })),
-    decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
-    currentOpponent: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number] : undefined,
-    currentMatchResult: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number]?.result : undefined,
-    tournament_name: shortenTournamentName({ name: standing.tournament_name, date: standing.tournament_date } as Tournament)
-  }
-});
+  const rawDataDict = rawData?.reduce((acc: Record<string, Standing>, curr: Standing) => {
+    if (acc[curr.name + curr.tournament_id] && (acc[curr.name + curr.tournament_id].rounds?.length ?? 0) > (curr.rounds?.length ?? 0)) {
+      return acc;
+    }
+
+    return {
+      ...acc,
+      [curr.name + curr.tournament_id]: curr
+    }
+  }, {});
+
+  return Object.values(rawDataDict ?? {}).sort((a, b) => {
+    if (a.placing > b.placing) return 1;
+    if (a.placing < b.placing) return -1;
+    return 0;
+  });
+};
 
 export const fetchChampions = async (): Promise<Standing[] | undefined> => {
   let query = supabase.from('standings_with_decks').select('*').eq('placing', 1).eq('age_division', 'masters').returns<StandingsWithDecksReturnType[]>();

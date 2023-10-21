@@ -30,8 +30,6 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   const addPinPlayerModalControls = useDisclosure();
   const editPinnedPlayers = useDisclosure();
 
-  const filteredPlayers = pinnedPlayers?.filter(player => player.rounds?.length && props.tournament.roundNumbers[ageDivision] && (player.rounds.length === props.tournament.roundNumbers[ageDivision] || player.rounds.length === props.tournament.roundNumbers[ageDivision] - 1 ));
-  console.log(props.tournament, filteredPlayers)
   if (
     props.isCompact &&
     pinnedPlayers?.filter(player => player)?.length === 0 &&
@@ -45,7 +43,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
 
   return (
     <FullWidthCard title='Following'>
-        {!props.isCompact && filteredPlayers && filteredPlayers.length > 0 && (
+        {!props.isCompact && pinnedPlayers && pinnedPlayers.length > 0 && (
           <Flex className='flex gap-8 px-5 pb-4'>
             <Button
               icon={UserAddIcon}
@@ -55,7 +53,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             >
               Follow player
             </Button>
-            {filteredPlayers && filteredPlayers.length > 0 && (
+            {pinnedPlayers && pinnedPlayers.length > 0 && (
               <Button
                 icon={UserRemoveIcon}
                 onClick={editPinnedPlayers.onToggle}
@@ -67,12 +65,12 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             )}
           </Flex>
         )}
-        {(!props.isCompact && resultsAreLoading) || !filteredPlayers ? (
+        {(!props.isCompact && resultsAreLoading) || !pinnedPlayers ? (
           <ComponentLoader isLiveComponent />
         ) : (
           <Table className='overflow-hidden'>
             <TableBody>
-              {filteredPlayers.map(
+              {pinnedPlayers.map(
                 pinnedPlayer =>
                   pinnedPlayer && (
                     <PinnedPlayerCard
@@ -89,15 +87,15 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             </TableBody>
           </Table>
       )}
-        {filteredPlayers?.length === 0 && (
+        {pinnedPlayers?.length === 0 && (
           <Flex className='flex-col'>
-            {filteredPlayers && filteredPlayers.length === 0 && (
+            {pinnedPlayers && pinnedPlayers.length === 0 && (
               <Text>
                 Keep up with your friends or anyone attending by following a
                 player!
               </Text>
             )}
-            {filteredPlayers && filteredPlayers.length > 0 && (
+            {pinnedPlayers && pinnedPlayers.length > 0 && (
               <Text>
                 None of your following are attending this tournament.
               </Text>
