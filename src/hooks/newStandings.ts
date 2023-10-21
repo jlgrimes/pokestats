@@ -41,13 +41,14 @@ interface StandingsWithDecksReturnType {
 const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => {
   const rawData = data?.map((standing) => {
     const rounds = getRoundsArray(standing as Standing);
+    const tournamentRound = (standing.tournament_round_number ?? 0) - 1;
   
     return {
       ...standing,
       rounds: rounds.map((round) => ({ ...round, name: cropPlayerName(round.name) })),
       decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
-      currentOpponent: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number] : undefined,
-      currentMatchResult: (standing.tournament_round_number && standing.tournament_round_number < rounds.length) ? rounds[standing.tournament_round_number]?.result : undefined,
+      currentOpponent: (tournamentRound < rounds.length) ? rounds[tournamentRound] : undefined,
+      currentMatchResult: (tournamentRound < rounds.length) ? rounds[tournamentRound]?.result : undefined,
       tournament_name: shortenTournamentName({ name: standing.tournament_name, date: standing.tournament_date } as Tournament)
     }
   });
