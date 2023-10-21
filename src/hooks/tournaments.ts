@@ -94,4 +94,4 @@ export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>
       tournamentStatus === 'finished' && !name.includes(' Cup')
   ) as Tournament;
 
-export const getShouldHideDecks = (tournament: Tournament, playerAgeDivision: AgeDivision) => !tournament.should_reveal_decks?.[playerAgeDivision]
+export const getShouldHideDecks = (tournament: Tournament, playerAgeDivision: AgeDivision) => !tournament.should_reveal_decks?.[playerAgeDivision.toLowerCase() as 'masters' | 'seniors' | 'juniors']

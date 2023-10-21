@@ -68,7 +68,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
   const isCurrentlyPlayingInTopCut =
     isInTopCut && !!props.player.currentOpponent;
   const hasLostInTopCut = isInTopCut && !props.player.currentOpponent;
-  console.log(props.player)
 
   return (
     <>
