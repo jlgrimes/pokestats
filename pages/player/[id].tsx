@@ -12,6 +12,7 @@ import {
   useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
+import { fetchPlayerStandings } from '../../src/hooks/newStandings';
 
 export default function Page({ username }: { username: string }) {
   const router = useRouter();
@@ -67,11 +68,6 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     queryFn: () => fetchTournaments({ prefetch: true }),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: ['all-tournament-metadata'],
-    queryFn: () => fetchTournamentMetadata(),
-  });
-
   const playerProfiles = await fetchPlayerProfile();
 
   await queryClient.setQueryData(['player-profiles'], () => playerProfiles);
@@ -80,18 +76,18 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     ({ username }) => username === params.id
   );
 
-  // if (playerProfile?.name) {
-  //   await queryClient.prefetchQuery({
-  //     queryKey: [
-  //       'player-standings',
-  //       playerProfile.id,
-  //       undefined,
-  //       undefined
-  //     ],
-  //     queryFn: () =>
-  //       fetchPlayerStandings(playerProfile)
-  //   });
-  // }
+  if (playerProfile?.name) {
+    await queryClient.prefetchQuery({
+      queryKey: [
+        'player-standings',
+        playerProfile.id,
+        null,
+        true
+      ],
+      queryFn: () =>
+        fetchPlayerStandings(playerProfile)
+    });
+  }
 
   return {
     props: {
