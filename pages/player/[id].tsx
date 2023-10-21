@@ -76,18 +76,18 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     ({ username }) => username === params.id
   );
 
-  if (playerProfile?.name) {
-    await queryClient.prefetchQuery({
-      queryKey: [
-        'player-standings',
-        playerProfile.id,
-        null,
-        true
-      ],
-      queryFn: () =>
-        fetchPlayerStandings(playerProfile)
-    });
-  }
+  // if (playerProfile?.name) {
+  //   await queryClient.prefetchQuery({
+  //     queryKey: [
+  //       'player-standings',
+  //       playerProfile.id,
+  //       null,
+  //       true
+  //     ],
+  //     queryFn: () =>
+  //       fetchPlayerStandings(playerProfile)
+  //   });
+  // }
 
   return {
     props: {
