@@ -70,7 +70,7 @@ export const fetchSingleTournament = async (tournamentId: string) => {
   let query = supabase
     .from('tournaments_new')
     .select(
-      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
+      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date),should_reveal_decks'
     )
     .eq('id', parseInt(tournamentId))
 

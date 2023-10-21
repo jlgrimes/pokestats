@@ -13,6 +13,7 @@ import { PageTitle } from '../common/new/PageTitle';
 import { Bold, Flex, Text } from '@tremor/react';
 import { AgeDivisionSelector } from './AgeDivisionSelector';
 import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
+import { shortenTournamentName } from '../../lib/tournament';
 
 export const TournamentPageLayout = ({
   children,
@@ -35,7 +36,7 @@ export const TournamentPageLayout = ({
     <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
       <Stack paddingTop={2} spacing={1}>
         <PageTitle>
-          {`${tournament.name} ${capitalize(slug as string)}`}
+          {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
         </PageTitle>
         <Text>
           Standings are unofficial and may be inaccurate.
