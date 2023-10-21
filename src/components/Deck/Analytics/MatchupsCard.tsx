@@ -54,7 +54,7 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
     <MatchupsBreakdownTable
       header={`${props.deck.name} matchups`}
       subheader='Only reflects decks reported through pokestats.live or revealed through deck lists. Tie rates may include intentional draws.'
-      decks={data ?? []}
+      decks={data.filter((matchup) => matchup.count > 50) ?? []}
       shouldDrillDown={shouldDrillDown}
       setShouldDrillDown={setShouldDrillDown}
       isLoading={isLoading}
