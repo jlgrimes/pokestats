@@ -15,6 +15,7 @@ import { Deck } from '../../types/tournament';
 import { fetchFormats } from '../../src/hooks/formats/formats';
 import { MatchupsCard } from '../../src/components/Deck/Analytics/MatchupsCard';
 import supabase from '../../src/lib/supabase/client';
+import { MetaTrendsGraph } from '../../src/components/Deck/Analytics/MetaTrendsGraph';
 
 export default function DeckPage({
   deck,
@@ -25,6 +26,7 @@ export default function DeckPage({
     <DeckAnalyticsContainer deck={deck}>
       <Fragment>
       <RecentFinishesCard deck={deck} />
+      {deck && <MetaTrendsGraph deck={deck} />}
       {deck && <MatchupsCard deck={deck} />}
       {/* <PopularTechsCard deck={deck} /> */}
     </Fragment>

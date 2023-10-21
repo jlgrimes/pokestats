@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Deck, Standing, Tournament } from '../../types/tournament';
+import { Deck, Standing, Tournament, TournamentDate } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { FormatSchema } from './formats/formats';
 import { useStandings } from './newStandings';
@@ -54,6 +54,7 @@ export const convertDecksToArchetypes = (decks: Deck[]): DeckTypeSchema[] => {
 
     return {
       ...archetype,
+      tournament_id: parseInt(archetype.tournament_id ?? ''),
       type: 'archetype',
       cover_cards: archetype.identifiable_cards,
       supertype,
@@ -164,6 +165,10 @@ export interface DeckTypeSchema extends SupertypeSchema {
   format?: FormatSchema;
   day_two_count?: number;
   hide_from_selection?: boolean | null;
+
+  tournament_id?: number | null;
+  tournament_name?: string | null;
+  tournament_date?: TournamentDate | null;
 }
 
 export const fetchSupertypes = async () => {
