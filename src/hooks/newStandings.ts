@@ -171,7 +171,7 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
 export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams): Promise<Standing[] | null | undefined> => {
   if (!player) return null;
 
-  let query = supabase.from('standings_with_decks').select('*');
+  let query = supabase.from('standings_with_decks').select('*').order('tournament_date->end', { ascending: false });
 
   if (params?.tournament) {
     query = query.eq('tournament_id', params.tournament.id);
