@@ -3,6 +3,7 @@ import { Deck } from "../../../../types/tournament";
 import { useDeckMetaShare } from "../../../hooks/finalResults/useStoredDecks";
 import { useMemo } from "react";
 import { format, parseISO } from "date-fns";
+import { DeckTypeSchema } from "../../../hooks/deckArchetypes";
 
 interface MetaTrendsGraph {
   deck: Deck;
@@ -10,17 +11,26 @@ interface MetaTrendsGraph {
 
 
 export const MetaTrendsGraph = (props: MetaTrendsGraph) => {
-  const { data: metaShare } = useDeckMetaShare(props.deck.id, 'masters');
+  const { data: metaShare } = useDeckMetaShare('masters');
 
-  const totalDecks = useMemo(() => metaShare?.reduce((acc, share) => acc + (share.count ?? 0), 0) ?? 0, [metaShare]);
-  const totalDay2Decks = useMemo(() => metaShare?.reduce((acc, share) => acc + (share.day_two_count ?? 0), 0) ?? 0, [metaShare]);
+  const chartData = metaShare?.filter((share) => share.id === props.deck.id)?.map((share) => {
+    const totalDecks = metaShare.reduce((acc, curr: DeckTypeSchema) => {
+      if (!curr.tournament_id || !curr.count || curr.tournament_id !== share.tournament_id) return acc;
+      return acc + curr.count;
+    }, 0);
 
-  const chartData = metaShare?.map((share) => ({
-    date: share.tournament_date?.end ? format(parseISO(share.tournament_date?.end), 'LLL d') : 'Jan 1',
-    'Day 1 share': (share.count ?? 0) / totalDecks,
-    'Day 2 share': (share.day_two_count) ? (share.day_two_count / totalDay2Decks) : 0,
-    'Day 2 conversion': (share.count && share.day_two_count) ? (share.day_two_count / share.count) : 0,
-  }));
+    const totalDay2Decks = metaShare.reduce((acc, curr: DeckTypeSchema) => {
+      if (!curr.tournament_id || !curr.day_two_count || curr.tournament_id !== share.tournament_id) return acc;
+      return acc + curr.day_two_count;
+    }, 0);
+
+    return {
+      date: share.tournament_date?.end ? format(parseISO(share.tournament_date?.end), 'LLL d') : 'Jan 1',
+      'Day 1 usage': (share.count ?? 0) / totalDecks,
+      'Day 2 usage': (share.day_two_count) ? (share.day_two_count / totalDay2Decks) : 0,
+      'Day 2 conversion': (share.count && share.day_two_count) ? (share.day_two_count / share.count) : 0,
+    }
+  });
 
   const valueFormatter = (number: number) => `${(number * 100).toFixed(0)}%`;
 
@@ -34,7 +44,7 @@ export const MetaTrendsGraph = (props: MetaTrendsGraph) => {
         className="h-72 mt-4"
         data={chartData}
         index="date"
-        categories={["Day 1 share", "Day 2 share", "Day 2 conversion"]}
+        categories={["Day 1 usage", "Day 2 usage", "Day 2 conversion"]}
         colors={["indigo", "cyan", "rose"]}
         valueFormatter={valueFormatter}
       />

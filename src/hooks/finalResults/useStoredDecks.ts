@@ -28,8 +28,8 @@ export const useMetaShare = (tournamentId: string, ageDivision: AgeDivision) => 
   });
 }
 
-const fetchDeckMetaShare = async (deckId: number, ageDivision: AgeDivision): Promise<DeckTypeSchema[] | null | undefined> => {
-  const res = await supabase.from('deck_meta_shares').select('*').eq('deck_archetype', deckId).eq('age_division', capitalize(ageDivision)).order('tournament_id', { ascending: true });
+const fetchDeckMetaShare = async (ageDivision: AgeDivision): Promise<DeckTypeSchema[] | null | undefined> => {
+  const res = await supabase.from('deck_meta_shares').select('*').eq('age_division', capitalize(ageDivision)).order('tournament_id', { ascending: true });
   const shares: DeckTypeSchema[] | undefined = res.data?.map((share) => ({
     id: share.deck_archetype,
     name: share.name,
@@ -59,10 +59,10 @@ const fetchDeckMetaShare = async (deckId: number, ageDivision: AgeDivision): Pro
   });
 }
 
-export const useDeckMetaShare = (deckId: number, ageDivision: AgeDivision) => {
+export const useDeckMetaShare = (ageDivision: AgeDivision) => {
   return useQuery({
-    queryKey: ['meta-share', deckId, ageDivision],
-    queryFn: () => fetchDeckMetaShare(deckId, ageDivision)
+    queryKey: ['deck-meta-share', ageDivision],
+    queryFn: () => fetchDeckMetaShare(ageDivision)
   });
 }
 
