@@ -25,15 +25,15 @@ export const AppBody = ({ children }: { children: React.ReactNode }) => {
           <BetaBanner />
         </>
       )}
-      {router.asPath === '/' && (
+      {/* {router.asPath === '/' && (
         <Callout
-          className="text-sm mb-2"
+          className="text-sm mb-4"
           icon={ExclamationIcon}
           title='Ongoing data inaccuracy for Lille'
           color='rose'>
             10/21: Deck percentages might be off.
         </Callout>
-      )}
+      )} */}
       {children}
     </Container>
   )
