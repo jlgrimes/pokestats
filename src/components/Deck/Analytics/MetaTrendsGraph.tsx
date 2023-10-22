@@ -38,7 +38,7 @@ export const MetaTrendsGraph = (props: MetaTrendsGraph) => {
 
   return (
     <Card>
-      <Title>Metagame analysis</Title>
+      <Title>Metagame History</Title>
       <Subtitle>{props.deck.name}</Subtitle>
       <AreaChart
         className="h-72 mt-4"

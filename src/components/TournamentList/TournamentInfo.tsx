@@ -20,16 +20,17 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
         <Flex className='w-fit'>
           <Flex className='flex-col grow items-start'>
             <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`}>
-              <Title>
-                {props.tournament.name}
-              </Title>
+              <div className='flex'>
+                <Title>
+                  {props.tournament.name}
+                </Title>
+                <TournamentStatusBadges tournament={props.tournament} />
+              </div>
               <Subtitle>
                 {formatTournamentDate(props.tournament)}
               </Subtitle>
             </LinkOverlay>
           </Flex>
-
-          <TournamentStatusBadges tournament={props.tournament} />
         </Flex>
       </Grid>
   );

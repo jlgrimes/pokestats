@@ -13,6 +13,7 @@ import { Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Ta
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
 import { Tournament } from '../../../../types/tournament';
+import { TournamentStatusBadges } from '../../TournamentList/TournamentStatusBadges';
 
 export interface MetagameBreakdownTableProps<T>
   extends DeckCompareSortTogglesProps<T> {
@@ -74,7 +75,10 @@ export const MetagameBreakdownTable = <T extends string>(
 
   return (
     <Card>
-      <Title>{`Metagame`}</Title>
+      <div className='flex'>
+        <Title>{`Metagame Breakdown`}</Title>
+        <TournamentStatusBadges tournament={props.tournament} />
+      </div>
       <Subtitle>{props.tournament.name}</Subtitle>
       <Select className='mt-3' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
         <SelectItem value='played'>Day 1</SelectItem>

@@ -15,7 +15,7 @@ export const TournamentStatusBadges = (props: TournamentStatusBadgesProps) => {
   const utcOffset = useUtcOffset(props.tournament.id);
 
   return (
-    <Flex className="justify-start gap-2 w-fit ml-6">
+    <Flex className="justify-start gap-2 w-fit ml-3">
       {props.tournament.tournamentStatus === 'not-started' && (
         <Badge color='purple'>{formatTournamentStatus(props.tournament, utcOffset)}</Badge>
       )}
