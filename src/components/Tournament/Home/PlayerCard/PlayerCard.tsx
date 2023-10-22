@@ -68,6 +68,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
   const isCurrentlyPlayingInTopCut =
     isInTopCut && !!props.player.currentOpponent;
   const hasLostInTopCut = isInTopCut && !props.player.currentOpponent;
+  const dropped = props.player.drop && props.player.drop > 0;
 
   return (
     <>
@@ -94,13 +95,6 @@ export const PlayerCard = (props: PlayerCardProps) => {
             <></>
           </StandingsCell>
         )}
-        {
-          props.player.drop && props.player.drop > 0 && (
-            <StandingsCell className='pr-0 w-8 text-center'>
-              <RecordIcon standing={props.player} tournament={props.tournament} />
-            </StandingsCell>
-          )
-        }
         <StandingsRow
           result={props.player}
           tournament={props.tournament}

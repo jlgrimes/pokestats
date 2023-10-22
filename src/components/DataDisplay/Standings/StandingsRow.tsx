@@ -8,9 +8,10 @@ import { ifPlayerDay2 } from '../../../lib/tournament';
 import { OpponentRoundList } from './OpponentRoundList/OpponentRoundList';
 import { ComponentLoader } from '../../common/ComponentLoader';
 import { CountryFlag } from '../../Tournament/Home/CountryFlag';
-import { Bold, Flex, Text } from '@tremor/react';
+import { Bold, Flex, Icon, Text } from '@tremor/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { MatchPoints } from '../../Tournament/Results/ResultsList/MatchPoints';
+import { FaRunning } from 'react-icons/fa';
 
 interface StandingsCellProps extends PropsWithChildren {
   className?: string;
@@ -76,9 +77,12 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         className={`align-middle whitespace-normal break-normal ${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
         onClick={onOpen}
       >
-        <Text className={`${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
-          {props.result.name}
-        </Text>
+        <Flex>
+          <Text className={`${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
+            {props.result.name}
+          </Text>
+          {props.result.drop && props.result.drop > 0 && <Icon icon={FaRunning} color='red' />}
+        </Flex>
       </StandingsCell>
       <StandingsCell width={props.shouldHideList ? 80 : 126}>
         <Flex className='gap-2'>
@@ -114,7 +118,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         </StandingsCell>
       )}
       {!props.isCurrentlyPlayingInTopCut && props.result.resistances?.opp && !props.shouldHideResistance && (
-        <StandingsCell width={40} className='text-right'>
+        <StandingsCell width={40} className='text-right pr-1'>
           <Bold className={'text-slate-400 text-sm'}>{(props.result.resistances.opp * 100).toPrecision(3)}</Bold>
         </StandingsCell>
       )}

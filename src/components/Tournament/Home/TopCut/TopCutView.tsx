@@ -7,6 +7,7 @@ import { FullWidthCard } from '../../../common/new/FullWidthCard';
 import { capitalize } from '../../../../lib/strings';
 import { useState } from 'react';
 import { AgeDivisionSelector } from '../../AgeDivisionSelector';
+import { IconTrophy } from '@tabler/icons-react';
 
 interface TopCutViewProps {
   tournament: Tournament;
@@ -28,7 +29,7 @@ export const TopCutView = (props: TopCutViewProps) => {
   return (
     <>
       {props.tournament.tournamentStatus === 'finished' && (
-        <FullWidthCard title={`Top cut`}>
+        <FullWidthCard title={`Top Cut`} subtitle={props.tournament.name} icon={IconTrophy} iconColor='amber'>
           <div className='ml-3'>
             <AgeDivisionSelector setAgeDivision={setAgeDivision} />
           </div>
@@ -55,7 +56,7 @@ export const TopCutView = (props: TopCutViewProps) => {
                         tournament={props.tournament}
                         result={
                           props.tournament.tournamentStatus === 'running'
-                            ? player.currentMatchResult
+                            ? player.currentMatchResult ?? undefined
                             : undefined
                         }
                       />
@@ -66,7 +67,7 @@ export const TopCutView = (props: TopCutViewProps) => {
                           tournament={props.tournament}
                           result={
                             props.tournament.tournamentStatus === 'running'
-                              ? (player.currentOpponent as Standing)?.currentMatchResult
+                              ? (player.currentOpponent as Standing)?.currentMatchResult ?? undefined
                               : undefined
                           }
                         />
@@ -76,7 +77,7 @@ export const TopCutView = (props: TopCutViewProps) => {
                   </Table>
               </Card>
           )}
-          {playersWhoWereKnockedOut && playersWhoWereKnockedOut.length > 0 && (
+          {props.tournament.tournamentStatus === 'running' && playersWhoWereKnockedOut && playersWhoWereKnockedOut.length > 0 && (
             <Table className='opacity-40'>
               <TableBody>
                 {playersWhoWereKnockedOut.map((player) => (
@@ -86,7 +87,7 @@ export const TopCutView = (props: TopCutViewProps) => {
                     tournament={props.tournament}
                     result={
                       props.tournament.tournamentStatus === 'running'
-                        ? player.currentMatchResult
+                        ? player.currentMatchResult ?? undefined
                         : undefined
                     }
                   />

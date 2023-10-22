@@ -69,13 +69,9 @@ export const DeckInfoDisplay = memo(
 
     return (
       <Grid
-        gridTemplateColumns={
-          shouldShowEditButton
-            ? `auto 15px`
-            : 'auto'
-        }
         columnGap={2}
         alignItems='center'
+        position={'relative'}
       >
         <DeckInput
           standing={player}
@@ -99,6 +95,8 @@ export const DeckInfoDisplay = memo(
               e.stopPropagation();
               archetypeModal.onOpen();
             }}
+            position={'absolute'}
+            right='0'
           />
         )}
 

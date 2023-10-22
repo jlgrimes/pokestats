@@ -3,13 +3,14 @@ import supabase from '../../../../lib/supabase/client';
 import { AgeDivision } from '../../../../../types/age-division';
 import { Tournament } from '../../../../../types/tournament';
 import { capitalize } from '../../../../lib/strings';
-import { Card, CategoryBar, Flex, Subtitle, Text, Title } from '@tremor/react';
+import { Card, CategoryBar, Flex, Icon, Subtitle, Text, Title } from '@tremor/react';
 import { getTournamentRoundSchema } from '../../../../lib/tournament';
 import {
   getPropsForMatchPointCutoffVisualization,
   MatchPointVizReturnType,
 } from './helpers';
 import { Box } from '@chakra-ui/react';
+import { CalculatorIcon } from '@heroicons/react/outline';
 
 const humanizeMatchPoints = (
   points: number,
@@ -120,8 +121,13 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
 
   return (
     <Card>
-      <Title>Match point breakdown</Title>
-      <Subtitle className='mb-4'>{props.tournament.name}</Subtitle>
+      <Flex>
+        <div>
+          <Title>Match Point Breakdown</Title>
+          <Subtitle className='mb-4'>{props.tournament.name}</Subtitle>
+        </div>
+        <Icon variant="solid" icon={CalculatorIcon} color={'neutral'} />
+      </Flex>
       {Object.entries(parsed)
         .slice(0, shouldHide1k ? Object.entries(parsed).length - 1 : -1)
         .map(

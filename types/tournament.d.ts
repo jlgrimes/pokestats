@@ -67,10 +67,10 @@ export interface Standing {
   placing: number;
   record: PlayerRecord;
   resistances?: PlayerResistances;
-  currentMatchResult?: MatchResult;
+  currentMatchResult?: MatchResult | null;
   rounds?: PlayerRound[];
   outOfDay2?: boolean;
-  currentOpponent?: PlayerRound | Standing;
+  currentOpponent?: PlayerRound | Standing | null;
   decklist: DeckList | null;
   drop?: number | null;
   tournament?: Tournament | null;

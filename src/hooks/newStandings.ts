@@ -47,8 +47,8 @@ const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Stan
       ...standing,
       rounds: rounds.map((round) => ({ ...round, name: cropPlayerName(round.name) })),
       decklist: standing.decklist ? JSON.parse(standing.decklist) : null,
-      currentOpponent: (tournamentRound < rounds.length) ? rounds[tournamentRound] : undefined,
-      currentMatchResult: (tournamentRound < rounds.length) ? rounds[tournamentRound]?.result : undefined,
+      currentOpponent: (tournamentRound < rounds.length) ? rounds[tournamentRound] : null,
+      currentMatchResult: (tournamentRound < rounds.length) ? rounds[tournamentRound]?.result : null,
       tournament_name: shortenTournamentName({ name: standing.tournament_name, date: standing.tournament_date } as Tournament)
     }
   });
