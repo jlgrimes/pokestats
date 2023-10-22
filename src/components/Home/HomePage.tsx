@@ -40,7 +40,7 @@ export const HomePage = (props: HomePageProps) => {
             <Title className='text-sm'>Support Pokéstats Live <Icon size='xs' icon={FaExternalLinkAlt} color='neutral' /></Title>
           </div>
           <div className='flex'>
-            <Text>Become a Patreon to support development of the site so we can continue to make cool stuff!</Text>
+            <Text>Support development of the site on Patreon so we can keep making cool stuff!</Text>
           </div>
           </LinkOverlay>
       </Card>
