@@ -86,7 +86,6 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
         props.tournament.tournamentStatus === 'finished') && (
           <>
           <TopCutView tournament={props.tournament} />
-          <MatchPointsStats tournament={props.tournament} ageDivision='masters' />
           </>
       )}
       {isAuthenticated &&
@@ -94,7 +93,10 @@ export const TournamentHomeView = (props: TournamentHomeViewProps) => {
           <PinnedPlayerList tournament={props.tournament} />
         )}
       {props.tournament.tournamentStatus === 'finished' && (
-        <TopDecks tournament={props.tournament} />
+        <>
+                <TopDecks tournament={props.tournament} />
+        <MatchPointsStats tournament={props.tournament} ageDivision='masters' />
+        </>
       )}
     </Stack>
   );

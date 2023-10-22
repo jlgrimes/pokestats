@@ -9,8 +9,9 @@ import {
   getPropsForMatchPointCutoffVisualization,
   MatchPointVizReturnType,
 } from './helpers';
-import { Box } from '@chakra-ui/react';
+import { Box, Switch } from '@chakra-ui/react';
 import { CalculatorIcon } from '@heroicons/react/outline';
+import { useCallback, useState } from 'react';
 
 const humanizeMatchPoints = (
   points: number,
@@ -108,6 +109,8 @@ const convertMatchPointThingToTremorBarVal = (
 };
 
 export const MatchPointsStats = (props: MatchPointsStatsProps) => {
+  const [showRecords, setShowRecords] = useState(true);
+
   const { data: placementDividedCutoffs } = usePlacementCutoffs(
     props.tournament.id,
     props.ageDivision
@@ -119,14 +122,27 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
     .toLowerCase()
     .includes('international');
 
+  const displayMatchPoints = useCallback((points: number) => {
+    if (showRecords) {
+      return <Text className='text-xs leading-5 font-semibold'>{humanizeMatchPoints(points, props.tournament, props.ageDivision)}</Text>;
+    }
+
+    return <Text>{points}</Text>;
+  }, [showRecords, humanizeMatchPoints, props.tournament, props.ageDivision]);
+
   return (
     <Card>
       <Flex>
         <div>
-          <Title>Match Point Breakdown</Title>
+          <Title>Placement Divisions</Title>
           <Subtitle className='mb-4'>{props.tournament.name}</Subtitle>
         </div>
-        <Icon variant="solid" icon={CalculatorIcon} color={'neutral'} />
+        <div className='flex gap-2 items-center'>
+          <Switch onChange={e => setShowRecords(!e.currentTarget.checked)} />
+          <Text className='text-xs'>
+            Points
+          </Text>
+        </div>
       </Flex>
       {Object.entries(parsed)
         .slice(0, shouldHide1k ? Object.entries(parsed).length - 1 : -1)
@@ -142,7 +158,7 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
                   {onTheBubble && onTheBubbleMatchPoints ? (
                     <>
                       <Box width={'20%'}>
-                        <Text>{onTheBubbleMatchPoints - 1}</Text>
+                        {displayMatchPoints(onTheBubbleMatchPoints - 1)}
                       </Box>
                       <Box
                         width={`${(
@@ -154,7 +170,7 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
                           })[1] * 100
                         ).toFixed(2)}%`}
                       >
-                        <Text>{onTheBubbleMatchPoints}</Text>
+                        {displayMatchPoints(onTheBubbleMatchPoints)}
                       </Box>
                       {onTheBubble[1] !== safe[1] && (
                         <Box
@@ -167,23 +183,14 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
                             })[2] * 100
                           ).toFixed(2)}%`}
                         >
-                          <Text>{safeMatchPoints}</Text>
+                          {displayMatchPoints(safeMatchPoints)}
                         </Box>
                       )}
                     </>
                   ) : (
                     <>
-                      <Flex className='w-1/2 flex-col'>
-                        <Text className='w-1/2'>{safeMatchPoints - 1}</Text>
-                        <Text className='w-1/2 text-xs text-slate-400'>
-                          {humanizeMatchPoints(
-                            safeMatchPoints - 1,
-                            props.tournament,
-                            props.ageDivision
-                          )}
-                        </Text>
-                      </Flex>
-                      <Text className='w-1/2'>{safeMatchPoints}</Text>
+                      <Box className='w-1/2'>{displayMatchPoints(safeMatchPoints - 1)}</Box>
+                      <Box className='w-1/2'>{displayMatchPoints(safeMatchPoints)}</Box>
                     </>
                   )}
                 </div>
@@ -223,10 +230,11 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
           )
         )}
     <Legend
-        className="mt-3"
+        className="mt-3 mb-6"
         categories={["Out", "On the bubble", "Safe"]}
         colors={["red", "amber", "green"]}
       />
+      <Text>Note: record tiers include records equivalent in match points. Ex. 5-0-4, 6-2-1</Text>
     </Card>
   );
 };
