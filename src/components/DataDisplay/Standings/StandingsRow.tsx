@@ -115,7 +115,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       )}
       {!props.isCurrentlyPlayingInTopCut && props.result.resistances?.opp && !props.shouldHideResistance && (
         <StandingsCell width={40} className='text-right'>
-          <Bold className={'text-slate-400 text-sm'}>{(props.result.resistances.opp * 100).toPrecision(4)}</Bold>
+          <Bold className={'text-slate-400 text-sm'}>{(props.result.resistances.opp * 100).toPrecision(3)}</Bold>
         </StandingsCell>
       )}
       {!props.shouldDisableOpponentModal && (

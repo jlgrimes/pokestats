@@ -13,7 +13,7 @@ import { Icon, Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabLi
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
 import { Tournament } from '../../../../types/tournament';
-import { ChartBarIcon } from '@heroicons/react/outline';
+import { ChartPieIcon } from '@heroicons/react/outline';
 
 export interface MetagameBreakdownTableProps<T>
   extends DeckCompareSortTogglesProps<T> {
@@ -81,7 +81,7 @@ export const MetagameBreakdownTable = <T extends string>(
           <Title>{`Metagame Breakdown`}</Title>
           <Subtitle>{props.tournament.name}</Subtitle>
         </div>
-        <Icon icon={ChartBarIcon} color='neutral' variant="solid" size="sm" />
+        <Icon icon={ChartPieIcon} color='neutral' variant="solid" size="sm" />
       </Flex>
 
       <Select className='mt-3' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
