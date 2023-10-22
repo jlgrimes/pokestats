@@ -56,7 +56,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
         shouldHideOpponent={props.shouldHideOpponent}
         result={
           props.tournament.tournamentStatus === 'running'
-            ? props.player.currentMatchResult
+            ? props.player.currentMatchResult ?? undefined
             : undefined
         }
         player={props.player}
