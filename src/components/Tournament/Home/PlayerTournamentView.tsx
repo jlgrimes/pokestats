@@ -25,7 +25,7 @@ export const PlayerTournamentView = (props: PlayerTournamentViewProps) => {
 
   const isLoggedInUser = useUserMatchesLoggedInUser(user?.name);
 
-  if (!props.tournament || !results || !user) return null;
+  if (!props.tournament || !results || !user || !result) return null;
 
   return (
     <Card className='px-0'>
