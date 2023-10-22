@@ -18,7 +18,9 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
   return (
     <Flex>
       <div>
+      <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`}>
         <Title>{props.tournament.name}</Title>
+      </LinkOverlay>
         <div className='flex gap-2'>
           <Subtitle>{formatTournamentDate(props.tournament)}</Subtitle>
           {props.tournament.tournamentStatus === 'running' && (
