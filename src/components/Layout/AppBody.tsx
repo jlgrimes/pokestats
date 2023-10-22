@@ -27,7 +27,7 @@ export const AppBody = ({ children }: { children: React.ReactNode }) => {
       )}
       {router.asPath === '/' && (
         <Callout
-          className="text-sm"
+          className="text-sm mb-2"
           icon={ExclamationIcon}
           title='Ongoing data inaccuracy for Lille'
           color='rose'>
