@@ -3,6 +3,8 @@ import React from "react";
 import { BetaBanner } from "./BetaBanner";
 import { useRouter } from "next/router";
 import { AppLogo } from "./AppBar/AppLogo";
+import { Callout, Text } from "@tremor/react";
+import { ExclamationIcon } from "@heroicons/react/solid";
 
 export const AppBody = ({ children }: { children: React.ReactNode }) => {
   const { colorMode } = useColorMode();
@@ -19,7 +21,18 @@ export const AppBody = ({ children }: { children: React.ReactNode }) => {
     >
       {(router.asPath === '/' || router.asPath === '/about') && <AppLogo big />}
       {process.env['NEXT_PUBLIC_ENV'] == 'staging' && (
-        <BetaBanner />
+        <>
+          <BetaBanner />
+        </>
+      )}
+      {router.asPath === '/' && (
+        <Callout
+          className="text-sm"
+          icon={ExclamationIcon}
+          title='Ongoing data inaccuracy for Lille'
+          color='rose'>
+            10/21: Deck percentages might be off.
+        </Callout>
       )}
       {children}
     </Container>

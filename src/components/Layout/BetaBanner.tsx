@@ -6,8 +6,8 @@ export const BetaBanner = () => {
 
   return (
     <Callout
-      className="mb-4"
-      title='This is a beta version of pokestats.live - things might be broken!'
+      className="mb-2"
+      title='This is a beta version of pokestats.live'
       color='amber'
     >
     </Callout>

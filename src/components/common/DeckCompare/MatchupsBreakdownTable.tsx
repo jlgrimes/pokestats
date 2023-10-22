@@ -8,9 +8,10 @@ import { ComponentLoader } from '../ComponentLoader';
 import {
   DeckCompareSortTogglesProps,
 } from './DeckCompareSortToggles';
-import { Flex, Title, Card, Text, Bold, Subtitle, BarList, Color } from "@tremor/react";
+import { Flex, Title, Card, Text, Bold, Subtitle, BarList, Color, Icon } from "@tremor/react";
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
+import { ScaleIcon } from '@heroicons/react/outline';
 
 export interface MatchupsBreakdownTable<T>
   extends DeckCompareSortTogglesProps<T> {
@@ -65,8 +66,13 @@ export const MatchupsBreakdownTable = <T extends string>(
 
   return (
     <Card>
-      <Title>{props.header}</Title>
-      <Subtitle>{props.subheader}</Subtitle>
+      <Flex>
+        <div>
+          <Title>{props.header}</Title>
+          <Subtitle>{props.subheader}</Subtitle>
+        </div>
+        <Icon icon={ScaleIcon} color='neutral' variant="solid" size="sm" />
+      </Flex>
       <Flex className="mt-6">
         <Text>
           <Bold>Deck archetype</Bold>

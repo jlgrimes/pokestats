@@ -9,11 +9,11 @@ import {
   DeckCompareColumnType,
   DeckCompareSortTogglesProps,
 } from './DeckCompareSortToggles';
-import { Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Tab, Badge, Select, SelectItem } from "@tremor/react";
+import { Icon, Flex, Title, Card, Text, Bold, Subtitle, BarList, TabGroup, TabList, Tab, Badge, Select, SelectItem, Color } from "@tremor/react";
 import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
 import { Tournament } from '../../../../types/tournament';
-import { TournamentStatusBadges } from '../../TournamentList/TournamentStatusBadges';
+import { ChartBarIcon } from '@heroicons/react/outline';
 
 export interface MetagameBreakdownTableProps<T>
   extends DeckCompareSortTogglesProps<T> {
@@ -58,7 +58,8 @@ export const MetagameBreakdownTable = <T extends string>(
       name: deck.name,
       value: activeColumn ? Math.round(activeColumn.calculation(deck) * 10000) / 100 : 0,
       href: getDeckHref(deck).pathname,
-      icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />
+      icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />,
+      color: props.tournament.tournamentStatus === 'running' ? 'blue' : 'indigo' as Color
     })).sort((a, b) => {
       if (a.value > b.value) return -1;
       if (a.value < b.value) return 1;
@@ -75,11 +76,14 @@ export const MetagameBreakdownTable = <T extends string>(
 
   return (
     <Card>
-      <div className='flex'>
-        <Title>{`Metagame Breakdown`}</Title>
-        <TournamentStatusBadges tournament={props.tournament} />
-      </div>
-      <Subtitle>{props.tournament.name}</Subtitle>
+      <Flex>
+        <div>
+          <Title>{`Metagame Breakdown`}</Title>
+          <Subtitle>{props.tournament.name}</Subtitle>
+        </div>
+        <Icon icon={ChartBarIcon} color={props.tournament.tournamentStatus === 'running' ? 'blue' : 'neutral'} variant="solid" size="sm" />
+      </Flex>
+
       <Select className='mt-3' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
         <SelectItem value='played'>Day 1</SelectItem>
         <SelectItem value='day 2 played'>Day 2</SelectItem>

@@ -1,9 +1,10 @@
-import { AreaChart, Card, Subtitle, Title } from "@tremor/react"
+import { AreaChart, Card, Flex, Icon, Subtitle, Title } from "@tremor/react"
 import { Deck } from "../../../../types/tournament";
 import { useDeckMetaShare } from "../../../hooks/finalResults/useStoredDecks";
 import { useMemo } from "react";
 import { format, parseISO } from "date-fns";
 import { DeckTypeSchema } from "../../../hooks/deckArchetypes";
+import { ClockIcon } from "@heroicons/react/outline";
 
 interface MetaTrendsGraph {
   deck: Deck;
@@ -38,8 +39,13 @@ export const MetaTrendsGraph = (props: MetaTrendsGraph) => {
 
   return (
     <Card>
-      <Title>Metagame History</Title>
-      <Subtitle>{props.deck.name}</Subtitle>
+      <Flex>
+        <div>
+          <Title>Metagame History</Title>
+          <Subtitle>{props.deck.name}</Subtitle>
+        </div>
+        <Icon icon={ClockIcon} color='neutral' variant="solid" size="sm" />
+      </Flex>
       <AreaChart
         className="h-72 mt-4"
         data={chartData}
