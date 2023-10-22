@@ -24,7 +24,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
         <div className='flex gap-2'>
           <Subtitle>{formatTournamentDate(props.tournament)}</Subtitle>
           {props.tournament.tournamentStatus === 'running' && (
-            <Badge size='xs' icon={StatusOnlineIcon}>Live</Badge>
+            <Badge size='xs' icon={StatusOnlineIcon}>Round {props.tournament.roundNumbers.masters}</Badge>
           )}
         </div>
       </div>
