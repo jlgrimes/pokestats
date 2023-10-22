@@ -30,7 +30,7 @@ export const MetaGameShareList = memo(
       sortBy: 'played' | 'day 2 played' | 'day 2';
       sortOrder: 'asc' | 'desc';
     }>({
-      sortBy: 'played',
+      sortBy: (tournament.tournamentStatus === 'running' && tournament.roundNumbers.masters && tournament.roundNumbers.masters >= 9) ? 'day 2 played' : 'played',
       sortOrder: 'desc',
     });
 
