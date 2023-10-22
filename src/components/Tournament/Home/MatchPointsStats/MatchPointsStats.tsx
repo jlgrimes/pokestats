@@ -3,7 +3,7 @@ import supabase from '../../../../lib/supabase/client';
 import { AgeDivision } from '../../../../../types/age-division';
 import { Tournament } from '../../../../../types/tournament';
 import { capitalize } from '../../../../lib/strings';
-import { Card, CategoryBar, Flex, Icon, Subtitle, Text, Title } from '@tremor/react';
+import { Card, CategoryBar, Flex, Icon, Legend, Subtitle, Text, Title } from '@tremor/react';
 import { getTournamentRoundSchema } from '../../../../lib/tournament';
 import {
   getPropsForMatchPointCutoffVisualization,
@@ -222,6 +222,11 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
             </Flex>
           )
         )}
+    <Legend
+        className="mt-3"
+        categories={["Out", "On the bubble", "Safe"]}
+        colors={["red", "amber", "green"]}
+      />
     </Card>
   );
 };
