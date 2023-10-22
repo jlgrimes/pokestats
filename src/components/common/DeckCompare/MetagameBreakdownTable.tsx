@@ -59,7 +59,7 @@ export const MetagameBreakdownTable = <T extends string>(
       value: activeColumn ? Math.round(activeColumn.calculation(deck) * 10000) / 100 : 0,
       href: getDeckHref(deck).pathname,
       icon: () => <SpriteDisplay pokemonNames={deck.defined_pokemon} />,
-      color: props.tournament.tournamentStatus === 'running' ? 'blue' : 'indigo' as Color
+      color: 'indigo' as Color
     })).sort((a, b) => {
       if (a.value > b.value) return -1;
       if (a.value < b.value) return 1;
@@ -81,7 +81,7 @@ export const MetagameBreakdownTable = <T extends string>(
           <Title>{`Metagame Breakdown`}</Title>
           <Subtitle>{props.tournament.name}</Subtitle>
         </div>
-        <Icon icon={ChartBarIcon} color={props.tournament.tournamentStatus === 'running' ? 'blue' : 'neutral'} variant="solid" size="sm" />
+        <Icon icon={ChartBarIcon} color='neutral' variant="solid" size="sm" />
       </Flex>
 
       <Select className='mt-3' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
