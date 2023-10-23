@@ -14,6 +14,9 @@ const placements = [1024, 512, 256, 128, 64, 32, 16, 8];
 
 export const getPropsForMatchPointCutoffVisualization = (data: MatchPointCutoffReturnType[]): Record<number, MatchPointVizReturnType> => {
   return placements.reduce((acc, curr, idx) => {
+    // Ignore if the match point tier is greater than any of the cutoffs
+    if (curr > Math.max(...data.map((entry) => entry.cutoff_placing))) return acc;
+
     const safeLowerBoundEntryIdx = data.findIndex((entry) => entry.cutoff_placing <= curr);
     const safeLowerBoundEntry = data[safeLowerBoundEntryIdx];
 
