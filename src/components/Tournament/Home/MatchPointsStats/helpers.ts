@@ -23,14 +23,16 @@ export const getPropsForMatchPointCutoffVisualization = (data: MatchPointCutoffR
     const bubbleLowerBound = data[safeLowerBoundEntryIdx - 1];
     const safeUpperBound = idx + 1 < placements.length ? (placements[idx + 1] + 1) : 1;
 
+    const onTheBubbleMatchPoints = safeLowerBoundEntry.cutoff_placing === curr ? null : bubbleLowerBound.match_points;
+    const safeMatchPoints = onTheBubbleMatchPoints ? onTheBubbleMatchPoints + 1 : safeLowerBoundEntry.match_points;
 
     return {
       ...acc,
       [curr]: {
         onTheBubble: safeLowerBoundEntry.cutoff_placing === curr ? null : [bubbleLowerBound.cutoff_placing, safeLowerBoundEntry.cutoff_placing + 1],
-        onTheBubbleMatchPoints: safeLowerBoundEntry.cutoff_placing === curr ? null : bubbleLowerBound.match_points,
+        onTheBubbleMatchPoints,
         safe: [safeLowerBoundEntry.cutoff_placing, safeUpperBound],
-        safeMatchPoints: safeLowerBoundEntry.match_points
+        safeMatchPoints
       }
     }
   }, {});

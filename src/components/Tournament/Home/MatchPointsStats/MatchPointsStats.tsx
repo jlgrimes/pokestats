@@ -128,7 +128,7 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
     }
 
     return <Text>{points}</Text>;
-  }, [showRecords, humanizeMatchPoints, props.tournament, props.ageDivision]);
+  }, [showRecords, props.tournament, props.ageDivision]);
 
   return (
     <Card>
