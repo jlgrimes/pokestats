@@ -14,14 +14,9 @@ interface TournamentStatusBadgesProps {
 export const TournamentStatusBadges = (props: TournamentStatusBadgesProps) => {
   const utcOffset = useUtcOffset(props.tournament.id);
 
-  return (
-    <Flex className="justify-start gap-2 w-fit ml-3">
-      {props.tournament.tournamentStatus === 'not-started' && (
+  return props.tournament.tournamentStatus === 'not-started' ? (
         <Badge color='purple'>{formatTournamentStatus(props.tournament, utcOffset)}</Badge>
-      )}
-      {props.tournament.tournamentStatus === 'running' && (
-        <Badge icon={StatusOnlineIcon}>Live</Badge>
-      )}
-    </Flex>
-  )
+      ) : props.tournament.tournamentStatus === 'running' ? (
+        <Badge size='xs' icon={StatusOnlineIcon}>Round {props.tournament.roundNumbers.masters}</Badge>
+      ) : null
 }

@@ -23,9 +23,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
       </LinkOverlay>
         <div className='flex gap-2'>
           <Subtitle>{formatTournamentDate(props.tournament)}</Subtitle>
-          {props.tournament.tournamentStatus === 'running' && (
-            <Badge size='xs' icon={StatusOnlineIcon}>Round {props.tournament.roundNumbers.masters}</Badge>
-          )}
+          <TournamentStatusBadges tournament={props.tournament} />
         </div>
       </div>
       {countryCode ? <CountryFlag countryCode={countryCode} size={'sm'} /> : null}
