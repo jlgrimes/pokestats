@@ -17,7 +17,7 @@ import { useColor } from '../../hooks/useColor';
 import { TCGPLAYER_AFFILIATE_URL } from '../../lib/url';
 import { TopPlayersList } from '../TopPlayers/TopPlayersList';
 import { LeaderboardCard } from './LeaderboardCard';
-import { Button, Callout, Card, Flex, Icon, Text, Title } from '@tremor/react';
+import { Bold, Button, Callout, Card, Flex, Icon, Text, Title } from '@tremor/react';
 import { ExternalLinkIcon, HeartIcon, LinkIcon } from '@heroicons/react/outline';
 import { FaExternalLinkAlt, FaPatreon } from 'react-icons/fa';
 
@@ -33,17 +33,9 @@ export const HomePage = (props: HomePageProps) => {
 
   return (
     <Stack>
-      <Card className='py-4'>
         <LinkOverlay href='https://www.patreon.com/bePatron?u=97204202' isExternal>
-          <div className='flex items-center gap-4 mb-2'>
-          <Icon variant='solid' icon={HeartIcon} color='rose' />
-            <Title className='text-sm'>Support Pokéstats Live <Icon size='xs' icon={FaExternalLinkAlt} color='neutral' /></Title>
-          </div>
-          <div className='flex'>
-            <Text>Support development of the site on Patreon so we can keep making cool stuff!</Text>
-          </div>
+        <Callout title='Support Pokéstats Live' icon={HeartIcon} color='pink'>Support development through <Bold>Patreon</Bold> <Icon size='xs' icon={FaExternalLinkAlt} color='pink' /> to help keep the site available - thank you!</Callout>
           </LinkOverlay>
-      </Card>
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />
       {/* <LeaderboardCard /> */}
