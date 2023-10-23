@@ -152,8 +152,8 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
             { onTheBubble, onTheBubbleMatchPoints, safe, safeMatchPoints },
           ]) => (
             <Flex key={Math.random()} className='mb-6 flex'>
-              <Text className='w-1/4'>Top {placementTier}</Text>
-              <div className='w-3/4'>
+              <Text className='w-1/6'>T{placementTier}</Text>
+              <div className='w-5/6'>
                 <div className='mb-2 flex flex-1 w-full text-center'>
                   {onTheBubble && onTheBubbleMatchPoints ? (
                     <>
