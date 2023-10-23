@@ -26,8 +26,14 @@ export default function Home({ tournaments }: { tournaments: Tournament[] }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const tournaments = await fetchTournaments({ prefetch: true });
+  const queryClient = new QueryClient();
+
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['champions'],
+  //   queryFn: () => fetchChampions(),
+  // });
 
   // const mostRecentFinishedTournament =
   //   getMostRecentFinishedTournament(tournaments);
@@ -40,6 +46,8 @@ export async function getServerSideProps() {
   return {
     props: {
       tournaments,
+      dehydratedState: dehydrate(queryClient),
     },
+    revalidate: 10,
   };
 }
