@@ -32,7 +32,7 @@ export const HomePage = (props: HomePageProps) => {
   const { header, subheader } = useColor();
 
   return (
-    <Stack>
+    <Stack spacing={4}>
         <LinkOverlay href='https://www.patreon.com/bePatron?u=97204202' isExternal>
         <Callout title='Support Pokéstats Live' icon={HeartIcon} color='pink'>Support development through <Bold>Patreon</Bold> <Icon size='xs' icon={FaExternalLinkAlt} color='pink' /> to help keep the site available - thank you!</Callout>
           </LinkOverlay>
