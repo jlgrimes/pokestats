@@ -49,3 +49,8 @@ export const useVgcTournaments = () => {
     queryFn: fetchVgcTournaments
   })
 }
+
+export const fetchVgcTournament = async (tournamentId: number): Promise<VgcTournament | null> => {
+  const res = await supabase.from('tournaments_vgc').select('*').eq('id', tournamentId).maybeSingle();
+  return res.data;
+}

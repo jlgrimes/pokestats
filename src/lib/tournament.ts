@@ -4,8 +4,6 @@ import { Player } from './fetch/fetchLiveResults';
 import { AgeDivision } from '../../types/age-division';
 
 export const shortenTournamentName = (tournament: Tournament) => {
-  const tournamentStartYear = getYear(parseISO(tournament.date.start));
-
   const nameSplit = tournament.name.split(' ');
   const numRegex = new RegExp(/^[0-9]*$/);
   return nameSplit.filter((phrase) => !(phrase === 'Pokémon' || phrase === 'TCG' || numRegex.test(phrase))).join(' ')
