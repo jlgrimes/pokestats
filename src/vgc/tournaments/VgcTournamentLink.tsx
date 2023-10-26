@@ -1,6 +1,6 @@
 import { LinkBox, LinkOverlay } from "@chakra-ui/react";
 import { VgcTournament } from "./useVgcTournaments";
-import { Card, Flex, Subtitle, Title } from "@tremor/react";
+import { Badge, Card, Flex, Subtitle, Title } from "@tremor/react";
 import NextLink from 'next/link';
 import { TournamentStatusBadges } from "../../components/TournamentList/TournamentStatusBadges";
 import { Tournament } from "../../../types/tournament";
@@ -17,11 +17,11 @@ export const VgcTournamentLink = (props: VgcTournamentLinkProps) => {
         <Flex>
           <div>
             <LinkOverlay as={NextLink} href={`/vgc/tournaments/${props.tournament.id}/masters`}>
-              <Title>{props.tournament.name}</Title>
+              <Title>{props.tournament.name} <Badge color='pink' size="xs">VGC</Badge></Title>
             </LinkOverlay>
             <div className='flex gap-2'>
               <Subtitle>{formatTournamentDate(props.tournament as unknown as Tournament)}</Subtitle>
-              <TournamentStatusBadges tournament={props.tournament as unknown as Tournament} />
+              <TournamentStatusBadges tournament={props.tournament as unknown as Tournament} hasVagueTime />
             </div>
           </div>
           {/* {countryCode ? <CountryFlag countryCode={countryCode} size={'sm'} /> : null} */}
