@@ -36,11 +36,12 @@ export const TournamentPageLayout = ({
   return (
     <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
       <Stack paddingTop={2} spacing={1}>
-        <h1 className="text-xl font-bold leading-snug text-slate-700">
+        <Ad slot='3745883635' height='50px' />
+        <h1 className="text-xl font-bold leading-snug text-slate-700 ml-1">
           {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
         </h1>
-        <Subtitle>Standings are unofficial and may be inaccurate.</Subtitle>
-        <Flex className=' gap-2'>
+        <Subtitle className='ml-1'>Standings are unofficial and may be inaccurate.</Subtitle>
+        <Flex className='gap-2'>
           <div>
             <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
           </div>
@@ -51,7 +52,6 @@ export const TournamentPageLayout = ({
             <Switch onChange={e => setShouldShowMatchPoints(e.currentTarget.checked)} />
           </div>
         </Flex>
-        <Ad slot='3745883635' height='50px' />
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}
