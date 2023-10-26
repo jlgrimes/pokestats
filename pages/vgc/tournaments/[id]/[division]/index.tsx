@@ -5,11 +5,13 @@ import { Ad } from "../../../../../src/components/Ad";
 import { VgcStandingList } from "../../../../../src/vgc/standings/VgcStandingList";
 import { fetchVgcTournaments } from "../../../../../src/vgc/tournaments/useVgcTournaments";
 import { AgeDivision } from "../../../../../types/age-division";
+import { AgeDivisionSelector } from "../../../../../src/components/Tournament/AgeDivisionSelector";
 
-export default function VgcStandings({ standings }: { standings: VgcStanding[] }) {
+export default function VgcStandings({ standings, tournamentId }: { standings: VgcStanding[], tournamentId: number }) {
   return (
     <div className="flex flex-col gap-4">
       <Ad key='3467044708' />
+      <AgeDivisionSelector urlConstructor={(division) => `/vgc/tournaments/${tournamentId}/${division}`} />
       <VgcStandingList standings={standings} />
     </div>
   );
@@ -19,7 +21,8 @@ export async function getStaticProps(ctx: GetStaticPropsContext<{ id: string, di
   if (!ctx.params?.id || !ctx.params?.division) {
     return {
       props: {
-        standings: []
+        standings: [],
+        tournamentId: -1
       }
     }
   }
@@ -30,6 +33,7 @@ export async function getStaticProps(ctx: GetStaticPropsContext<{ id: string, di
   return {
     props: {
       standings,
+      tournamentId: ctx.params.id,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 10,
