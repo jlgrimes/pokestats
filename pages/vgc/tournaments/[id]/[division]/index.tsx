@@ -34,7 +34,11 @@ export default function VgcStandings({ standings, tournament }: { standings: Vgc
           <Switch onChange={e => setShouldShowMatchPoints(e.currentTarget.checked)} />
         </div>
       </Flex>
-      <VgcStandingList standings={standings} shouldShowMatchPoints={shouldShowMatchPoints} />
+      {tournament.tournamentStatus === 'not-started' ? (
+        <Text className="mt-4">
+          Tournament has not started yet. Come back later!
+        </Text>
+      ) : <VgcStandingList standings={standings} shouldShowMatchPoints={shouldShowMatchPoints} />}
     </div>
   );
 }
