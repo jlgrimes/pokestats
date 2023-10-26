@@ -35,10 +35,10 @@ export const TournamentPageLayout = ({
   return (
     <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
       <Stack paddingTop={2} spacing={1}>
-        <PageTitle>
+        <h1 className="text-xl font-bold leading-snug text-slate-700">
           {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
-        </PageTitle>
-        <Subtitle className="text-center">Standings are unofficial and may be inaccurate.</Subtitle>
+        </h1>
+        <Subtitle>Standings are unofficial and may be inaccurate.</Subtitle>
         <Flex className=' gap-2'>
           <div>
             <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
