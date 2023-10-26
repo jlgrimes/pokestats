@@ -48,12 +48,6 @@ export const AppLogo = ({ smol, big, vgc }: { smol?: boolean; big?: boolean, vgc
             {process.env['NEXT_PUBLIC_ENV'] === 'staging' && (
               <Badge color='amber'>Beta</Badge>
             )}
-            {
-              big && vgc && <Badge color='pink'><Bold>VGC</Bold></Badge>
-            }
-            {
-              big && !vgc && <Badge color='slate'><Bold>TCG</Bold></Badge>
-            }
           </HStack>
         </LinkOverlay>
       </LinkBox>

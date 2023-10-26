@@ -12,6 +12,8 @@ import { RecentTournaments } from './RecentTournaments';
 import { useColor } from '../../hooks/useColor';
 import { GameSelector } from './GameSelector';
 import { SupportUsCallout } from './SupportUsCallout';
+import { Flex } from '@tremor/react';
+import { AppLogo } from '../Layout/AppBar/AppLogo';
 
 export interface HomePageProps {
   tournaments: Tournament[];
@@ -25,7 +27,10 @@ export const HomePage = (props: HomePageProps) => {
 
   return (
     <Stack spacing={4}>
-      <GameSelector />
+      <Flex className='px-2'>
+        <AppLogo big />
+        <GameSelector />
+      </Flex>
       <SupportUsCallout />
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />

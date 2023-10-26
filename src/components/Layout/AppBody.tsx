@@ -19,8 +19,7 @@ export const AppBody = ({ children }: { children: React.ReactNode }) => {
       height='calc(100% - 3rem)'
       className={colorMode}
     >
-      {(router.asPath === '/' || router.asPath === '/about') && <AppLogo big />}
-      {(router.asPath === '/vgc') && <AppLogo big vgc />}
+      {(router.asPath === '/about') && <AppLogo big />}
       {process.env['NEXT_PUBLIC_ENV'] == 'staging' && (
         <>
           <BetaBanner />

@@ -4,11 +4,16 @@ import { VgcTournamentList } from "../../src/vgc/tournaments/VgcTournamentList";
 import { Ad } from "../../src/components/Ad";
 import { GameSelector } from "../../src/components/Home/GameSelector";
 import { SupportUsCallout } from "../../src/components/Home/SupportUsCallout";
+import { Flex } from "@tremor/react";
+import { AppLogo } from "../../src/components/Layout/AppBar/AppLogo";
 
 export default function Home({ tournaments }: { tournaments: VgcTournament[] }) {
   return (
     <div className="flex flex-col gap-4">
-      <GameSelector />
+      <Flex className='px-2'>
+        <AppLogo big />
+        <GameSelector />
+      </Flex>
       <SupportUsCallout />
       <Ad key='9764859740' />
       <VgcTournamentList tournaments={tournaments} />
