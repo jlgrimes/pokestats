@@ -12,9 +12,7 @@ export const VgcStandingRow = (props: VgcStandingProps) => {
       <TableCell>{props.standing.placing}</TableCell>
       <TableCell>{props.standing.name}</TableCell>
       <TableCell>{formatRecord(props.standing.record)}</TableCell>
-      <TableCell>
-        <Bold className={'text-slate-400 text-sm'}>{(props.standing.resistances.opp * 100).toPrecision(3)}</Bold>
-      </TableCell>
+      <TableCell>{(props.standing.resistances.opp * 100).toPrecision(3)}</TableCell>
     </TableRow>
   )
 }

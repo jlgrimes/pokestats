@@ -16,7 +16,7 @@ export const VgcTournamentLink = (props: VgcTournamentLinkProps) => {
       <Card decoration={props.tournament.tournamentStatus === 'running' ? 'left' : undefined} className='flex flex-col gap-6 px-6 py-4'>
         <Flex>
           <div>
-            <LinkOverlay as={NextLink} href={`/vgc/tournaments/${props.tournament.id}`}>
+            <LinkOverlay as={NextLink} href={`/vgc/tournaments/${props.tournament.id}/masters`}>
               <Title>{props.tournament.name}</Title>
             </LinkOverlay>
             <div className='flex gap-2'>
