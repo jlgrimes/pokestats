@@ -8,6 +8,7 @@ import { getTournamentRoundSchema, shortenTournamentName } from "../lib/tourname
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { CombinedPlayerProfile } from "../../types/player";
 import { getStringifiedNames } from "../lib/query-helpers";
+import { isBefore, parseISO } from "date-fns";
 
 export const fixStoredDeck = (decklist: any) => {
   // if (decklist === '""') return {};
@@ -208,16 +209,21 @@ export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null 
   }
 
   const standingsRes = await query;
-  const standings = fixDatabaseStandings(standingsRes.data);
+  let standings = fixDatabaseStandings(standingsRes.data);
 
   if (params?.shouldLoadOpponentRounds) {
     // If name hasn't loaded yet, don't bother fetching.
     if (!player.name || !standings) return null;
-    const updatedStandings = await loadOpponentRounds(standings);
-    return updatedStandings;
+    standings = await loadOpponentRounds(standings);
   }
 
-  return standings;
+  return standings?.sort((a, b) => {
+    if (!a.tournament_date || !b.tournament_date) return 0;
+
+    if (isBefore(parseISO(a.tournament_date.start), parseISO(b.tournament_date.start))) return 1;
+    if (isBefore(parseISO(b.tournament_date.start), parseISO(a.tournament_date.start))) return -1;
+    return 0;
+  });
 }
 
 export const usePlayerStandings = (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams) => {
