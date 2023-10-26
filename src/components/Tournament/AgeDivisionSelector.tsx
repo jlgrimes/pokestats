@@ -1,6 +1,6 @@
 import { Tab, TabGroup, TabList } from "@tremor/react"
 import { useRouter } from "next/router"
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { AgeDivision } from "../../../types/age-division";
 
 interface AgeDivisionSelectorProps {
@@ -19,6 +19,10 @@ export const AgeDivisionSelector = (props: AgeDivisionSelectorProps) => {
   }, [path]);
 
   const [index, setIndex] = useState(getSelectedIndex());
+
+  useEffect(() => {
+    setIndex(getSelectedIndex());
+  }, [path]);
 
   const handleTabClick = useCallback((division: AgeDivision) => {
     if (division === 'masters' && index === 0) return;
