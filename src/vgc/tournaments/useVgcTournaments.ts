@@ -51,6 +51,6 @@ export const useVgcTournaments = () => {
 }
 
 export const fetchVgcTournament = async (tournamentId: number): Promise<VgcTournament | null> => {
-  const res = await supabase.from('tournaments_vgc').select('*').eq('id', tournamentId).maybeSingle();
-  return res.data;
+  const res = await supabase.from('tournaments_vgc').select('*').eq('id', tournamentId);
+  return res.data?.at(0) ?? null;
 }
