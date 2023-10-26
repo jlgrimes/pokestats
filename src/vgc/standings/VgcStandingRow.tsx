@@ -8,11 +8,11 @@ interface VgcStandingProps {
 
 export const VgcStandingRow = (props: VgcStandingProps) => {
   return (
-    <TableRow>
-      <TableCell>{props.standing.placing}</TableCell>
-      <TableCell>{props.standing.name}</TableCell>
-      <TableCell>{formatRecord(props.standing.record)}</TableCell>
-      <TableCell>{(props.standing.resistances.opp * 100).toPrecision(3)}</TableCell>
+    <TableRow className="h-10 align-middle">
+      <td>{props.standing.placing}</td>
+      <td>{props.standing.name}</td>
+      <td className="pr-2">{formatRecord(props.standing.record)}</td>
+      <td>{(props.standing.resistances.opp * 100).toPrecision(3)}</td>
     </TableRow>
   )
 }
