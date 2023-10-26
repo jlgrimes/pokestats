@@ -30,7 +30,7 @@ export interface VgcTournament {
   finalized_in_standings: boolean
 }
 
-export const fetchVgcTournaments = async (): Promise<VgcTournament[] | undefined> => {
+export const fetchVgcTournaments = async (): Promise<VgcTournament[]> => {
   const res = await supabase.from('tournaments_vgc').select('*');
 
   let tournaments = res.data ?? [];
@@ -40,7 +40,7 @@ export const fetchVgcTournaments = async (): Promise<VgcTournament[] | undefined
     if (isBefore(parseISO(a.date.start), parseISO(b.date.start))) return 1;
     if (isBefore(parseISO(b.date.start), parseISO(a.date.start))) return -1;
     return 0;
-  });
+  }) ?? [];
 }
 
 export const useVgcTournaments = () => {
