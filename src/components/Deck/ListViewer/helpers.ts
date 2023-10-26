@@ -1,18 +1,17 @@
 import { DeckCard, DeckList } from '../../../../types/tournament';
 
 export const getCardImageUrl = (
-  card: {
-    name: string;
-    number: string;
-    set: string;
-  },
+  card: DeckCard,
   codeToSetMap: Record<string, string> | undefined,
   options?: { highRes: boolean }
 ) => {
-  let set = codeToSetMap?.[card.set];
-  if (!set) {
+  if (!card.set || !card.number) {
     return '';
   }
+
+  let set = codeToSetMap?.[card.set];
+
+  if (!set) return '';
 
   if (card.number.includes('SWSH')) {
     set = 'swshp';
@@ -103,4 +102,4 @@ export const getCompressedList = (
 };
 
 export const getCardSlug = (card: DeckCard) =>
-  `${card.name.toLowerCase().split(' ').join('-')}-${card.set.toLowerCase()}`;
+  `${card.name.toLowerCase().split(' ').join('-')}-${card.set?.toLowerCase()}`;

@@ -20,7 +20,6 @@ import {
 } from '../../../../types/tournament';
 import { ordinalSuffixOf } from '../../../lib/strings';
 import { AppLogo } from '../../Layout/AppBar/AppLogo';
-import { CardViewerBody } from './CardViewer.tsx/CardViewerBody';
 import { ListView } from './ListView';
 
 interface ListViewerModalProps {
@@ -32,10 +31,8 @@ interface ListViewerModalProps {
 
 const ListModalBody = ({
   list,
-  handleCardClick,
 }: {
   list: DeckList;
-  handleCardClick: (card: DeckCard) => void;
 }) => {
   const [listGridHeight, setListGridHeight] = useState(0);
 
@@ -55,7 +52,6 @@ const ListModalBody = ({
       <ListView
         deckList={list}
         containerHeight={listGridHeight}
-        handleCardClick={handleCardClick}
       />
     </ModalBody>
   );
@@ -69,18 +65,7 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
   //   router.push(`/decks/${props.result.deck?.id}/${getCardSlug(card)}`);
   // }, []);
 
-  const handleCardClick = useCallback(
-    (card: DeckCard) => {
-      setSelectedCard(card);
-    },
-    [setSelectedCard]
-  );
-
-  const handleCardClear = useCallback(() => {
-    setSelectedCard(null);
-  }, [setSelectedCard]);
-
-  if (!props.result.deck?.list) return null;
+  if (!props.result.deck_archetype || !props.result.decklist) return null;
 
   return (
     <Modal
@@ -91,34 +76,22 @@ export const ListViewerModal = memo((props: ListViewerModalProps) => {
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        {!selectedCard && (
           <Stack
             direction='row'
             justifyContent='space-between'
             alignItems={'center'}
           >
             <Stack spacing={0} padding={3}>
-              <Heading size='md'>{props.result.deck.name ?? 'Other'}</Heading>
+              <Heading size='md'>{props.result.deck_archetype ?? 'Other'}</Heading>
               <Text>
                 {props.result.name} - {ordinalSuffixOf(props.result.placing)} @{' '}
                 {props.tournament.name}
               </Text>
             </Stack>
           </Stack>
-        )}
-        {selectedCard ? (
-          <CardViewerBody
-            card={selectedCard}
-            clearSelectedCard={handleCardClear}
-            tournament={props.tournament}
-            deck={props.result.deck}
-          />
-        ) : (
           <ListModalBody
-            list={props.result.deck.list}
-            handleCardClick={handleCardClick}
+            list={props.result.decklist}
           />
-        )}
         <Box paddingX={3}>
           <AppLogo smol />
         </Box>

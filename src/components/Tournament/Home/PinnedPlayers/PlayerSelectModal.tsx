@@ -12,14 +12,8 @@ import {
   UseDisclosureProps,
   useToast,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import { useCallback, useMemo, useState } from 'react';
 import { Tournament } from '../../../../../types/tournament';
-import {
-  addPinnedPlayer,
-  useAvailablePinnedPlayerNames,
-  usePinnedPlayers,
-} from '../../../../hooks/pinnedPlayers';
 
 interface PinPlayerModalProps {
   tournament: Tournament;

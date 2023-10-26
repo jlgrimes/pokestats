@@ -10,8 +10,6 @@ import {
 import { useSessionContext } from '@supabase/auth-helpers-react';
 import { useSession } from 'next-auth/react';
 import { CombinedPlayerProfile } from '../../../types/player';
-import { useFinalResults } from '../../hooks/finalResults';
-import { useUserMatchesLoggedInUser } from '../../hooks/user';
 import { ComponentLoader } from '../common/ComponentLoader';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { PlayerPerformanceList } from '../DataDisplay/PlayerPerformanceList';
@@ -19,6 +17,7 @@ import { FollowButton } from '../Social/FollowButton';
 import { ShareProfile } from '../Social/ShareProfile';
 import { Username } from './Username';
 import { UsernameEditable } from './UsernameEditable';
+import { usePlayerStandings } from '../../hooks/newStandings';
 
 export interface PlayerProfilePageProps {
   profile: CombinedPlayerProfile;
@@ -28,10 +27,7 @@ export interface PlayerProfilePageProps {
 export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
   const sessionContext = useSessionContext();
 
-  const { isLoading: finalResultsAreLoading } = useFinalResults({
-    playerName: props.profile.name,
-    additionalNames: props.profile.additional_names,
-  });
+  const { isLoading: finalResultsAreLoading } = usePlayerStandings(props.profile)
 
   if (finalResultsAreLoading) return <FullPageLoader />;
 

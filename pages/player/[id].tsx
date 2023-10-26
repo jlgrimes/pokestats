@@ -4,7 +4,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FullPageLoader } from '../../src/components/common/FullPageLoader';
 import { PlayerProfilePage } from '../../src/components/Profile/PlayerProfilePage';
-import { fetchFinalResults } from '../../src/hooks/finalResults/fetch';
 import { fetchTournamentMetadata } from '../../src/hooks/tournamentMetadata';
 import { fetchTournaments } from '../../src/hooks/tournaments';
 import {
@@ -13,6 +12,7 @@ import {
   useSmartPlayerProfiles,
   useUserMatchesLoggedInUser,
 } from '../../src/hooks/user';
+import { fetchPlayerStandings } from '../../src/hooks/newStandings';
 
 export default function Page({ username }: { username: string }) {
   const router = useRouter();
@@ -68,11 +68,6 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     queryFn: () => fetchTournaments({ prefetch: true }),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: ['all-tournament-metadata'],
-    queryFn: () => fetchTournamentMetadata(),
-  });
-
   const playerProfiles = await fetchPlayerProfile();
 
   await queryClient.setQueryData(['player-profiles'], () => playerProfiles);
@@ -81,24 +76,18 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     ({ username }) => username === params.id
   );
 
-  if (playerProfile?.name) {
-    await queryClient.prefetchQuery({
-      queryKey: [
-        'final-results',
-        {
-          playerName: playerProfile.name,
-          additionalNames: playerProfile.additional_names,
-          shouldExpandTournament: true
-        },
-      ],
-      queryFn: () =>
-        fetchFinalResults({
-          playerName: playerProfile.name,
-          additionalNames: playerProfile.additional_names,
-          shouldExpandTournament: true
-        }),
-    });
-  }
+  // if (playerProfile?.name) {
+  //   await queryClient.prefetchQuery({
+  //     queryKey: [
+  //       'player-standings',
+  //       playerProfile.id,
+  //       null,
+  //       true
+  //     ],
+  //     queryFn: () =>
+  //       fetchPlayerStandings(playerProfile)
+  //   });
+  // }
 
   return {
     props: {

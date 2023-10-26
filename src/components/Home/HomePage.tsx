@@ -1,13 +1,8 @@
 import {
-  Box,
-  Card,
-  Heading,
-  HStack,
-  Image,
+  Link,
   LinkBox,
   LinkOverlay,
   Stack,
-  Text,
 } from '@chakra-ui/react';
 import { Tournament } from '../../../types/tournament';
 import { getMostRecentFinishedTournament } from '../../hooks/tournaments';
@@ -22,6 +17,9 @@ import { useColor } from '../../hooks/useColor';
 import { TCGPLAYER_AFFILIATE_URL } from '../../lib/url';
 import { TopPlayersList } from '../TopPlayers/TopPlayersList';
 import { LeaderboardCard } from './LeaderboardCard';
+import { Bold, Button, Callout, Card, Flex, Icon, Text, Title } from '@tremor/react';
+import { ExternalLinkIcon, HeartIcon, LinkIcon } from '@heroicons/react/outline';
+import { FaExternalLinkAlt, FaPatreon } from 'react-icons/fa';
 
 export interface HomePageProps {
   tournaments: Tournament[];
@@ -34,35 +32,13 @@ export const HomePage = (props: HomePageProps) => {
   const { header, subheader } = useColor();
 
   return (
-    <Stack>
-      <Stack spacing={0} paddingBottom='2'>
-        <AppLogo big />
-        {/* <LinkBox>
-          <LinkOverlay href={TCGPLAYER_AFFILIATE_URL} isExternal>
-            <Card paddingY={2} paddingX={4} cursor='pointer'>
-              <HStack justifyContent='center'>
-                <Text>
-                  Buy your cards{' '}
-                  <Text color='blue.500' display='inline' fontWeight='bold'>
-                    here
-                  </Text>{' '}
-                  to support the site!
-                </Text>
-                <Image
-                  src='/TCGplayer-Primary-RGB_500px.png'
-                  width='100'
-                  height='50'
-                  alt='TCGplayer Affiliate Link'
-                />
-              </HStack>
-            </Card>
+    <Stack spacing={4}>
+        <LinkOverlay href='https://www.patreon.com/bePatron?u=97204202' isExternal>
+        <Callout title='Support Pokéstats Live' icon={HeartIcon} color='pink'>Support development through <Bold>Patreon</Bold> <Icon size='xs' icon={FaExternalLinkAlt} color='pink' /> to help keep the site available - thank you!</Callout>
           </LinkOverlay>
-        </LinkBox> */}
-        {/* <HomeIcons /> */}
-      </Stack>
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />
-      <LeaderboardCard />
+      {/* <LeaderboardCard /> */}
       <Ad slot='7147816871' />
       {/* <Adsense
         client='ca-pub-3066736963130742'
@@ -70,9 +46,6 @@ export const HomePage = (props: HomePageProps) => {
         style={{ display: 'block' }}
         format='auto'
       /> */}
-      {mostRecentFinishedTournament && (
-        <TopDecks tournament={mostRecentFinishedTournament} />
-      )}
       <Footer />
     </Stack>
   );

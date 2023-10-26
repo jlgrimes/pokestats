@@ -1,47 +1,49 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { TournamentHomeView } from '../../../src/components/Tournament/Home/TournamentHomeView';
-import { fetchFinalResults } from '../../../src/hooks/finalResults/fetch';
 import { fetchOneTournamentMetadata } from '../../../src/hooks/tournamentMetadata';
 import {
   fetchTournaments,
-  usePatchedTournaments,
 } from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { fetchPlayerProfile } from '../../../src/hooks/user';
+import { fetchPlayerStandings } from '../../../src/hooks/newStandings';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 interface TournamentPageProps {
   tournament: Tournament;
 }
 
 export default function TournamentPage(props: TournamentPageProps) {
-  const { data: patchedTournamentData } = usePatchedTournaments([
-    props.tournament,
-  ]);
-  const patchedTournament = patchedTournamentData
-    ? patchedTournamentData[0]
-    : props.tournament;
-
-  return <TournamentHomeView tournament={patchedTournament} />;
+  return <TournamentHomeView tournament={props.tournament} />;
 }
 
-export async function getStaticProps({ params }: { params: { id: string } }) {
+export async function getServerSideProps(ctx: GetServerSidePropsContext<{ id: string }>) {
   const queryClient = new QueryClient();
 
+  
   const [tournament] = await fetchTournaments({
-    tournamentId: params.id,
+    tournamentId: ctx.params?.id,
     prefetch: true,
   });
 
-  if (tournament.tournamentStatus === 'finished') {
+  // Create authenticated Supabase Client
+  const supabase = createServerSupabaseClient(ctx)
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  const smartProfs = await fetchPlayerProfile({ email: session?.user.email });
+
+  if (smartProfs) {
+    await queryClient.setQueryData(['smart-player-profiles', { email: session?.user.email }], () => smartProfs);
+    await queryClient.setQueryData(['smart-player-profiles', { name: session?.user.user_metadata.name }], () => smartProfs);
+
     await queryClient.prefetchQuery({
-      queryKey: [
-        'final-results',
-        {
-          tournamentId: tournament.id,
-          minimumPlacing: 8
-        },
-      ],
-      queryFn: () => fetchFinalResults({ tournamentId: tournament.id, minimumPlacing: 8 }),
-    });
+      queryKey: ['player-standings', smartProfs[0].id, tournament.id, true],
+      queryFn: () => fetchPlayerStandings(smartProfs[0], { tournament: tournament, shouldLoadOpponentRounds: true })
+    })
   }
 
   await queryClient.prefetchQuery({
@@ -54,26 +56,5 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
       tournament,
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 10,
-  };
-}
-
-export async function getStaticPaths() {
-  const tournaments = await fetchTournaments({
-    prefetch: true,
-    excludeUpcoming: true,
-  });
-  const paths = tournaments?.map(tournament => {
-    return {
-      params: {
-        id: tournament.id,
-        displayName: tournament.name,
-      },
-    };
-  });
-
-  return {
-    paths,
-    fallback: 'blocking',
   };
 }

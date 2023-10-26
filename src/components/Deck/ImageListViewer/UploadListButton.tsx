@@ -3,8 +3,8 @@ import { IconFileUpload } from '@tabler/icons-react';
 import { ChangeEvent, useRef } from 'react';
 import supabase from '../../../lib/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
-import { useFinalResults } from '../../../hooks/finalResults';
 import { useSessionPlayerProfile } from '../../../hooks/user';
+import { usePlayerStandings } from '../../../hooks/newStandings';
 
 interface UploadListButtonProps {
   placing: number;
@@ -15,10 +15,7 @@ export const UploadListButton = (props: UploadListButtonProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: profile } = useSessionPlayerProfile();
-  const { refetch } = useFinalResults({
-    playerName: profile?.name,
-    additionalNames: profile?.additional_names,
-  });
+  const { refetch } = usePlayerStandings(profile);
   const toast = useToast();
 
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {

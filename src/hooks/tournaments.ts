@@ -7,23 +7,12 @@ import {
   isWithinInterval,
   parseISO,
 } from 'date-fns';
-import { useState } from 'react';
-import { Tournament, TournamentStatus } from '../../types/tournament';
-import { tournamentHasArrivedButNotLive } from '../components/TournamentList/helpers';
-import {
-  getPatchedTournament,
-  getTournamentShouldBeFinished,
-  getTournamentShouldBeRunning,
-  isTournamentLongGone,
-  patchTournamentsClient,
-} from '../lib/patches';
+import { Tournament } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import {
-  HARDCODED_TOURNAMENT_ROUNDS,
-  ifTournamentIsDayOneWorlds,
-  reallyShortenTournamentName,
-  shortenTournamentName,
+  HARDCODED_TOURNAMENT_ROUNDS, shortenTournamentName,
 } from '../lib/tournament';
+import { AgeDivision } from '../../types/age-division';
 
 interface FetchTournamentsOptions {
   prefetch?: boolean;
@@ -43,92 +32,13 @@ export const getTournamentSubStatus = (tournament: Tournament) => {
   return afterDayOne ? 'after-day-one' : null;
 };
 
-export const fixTournamentStatus = (tournament: Tournament) => {
-  if (isTournamentLongGone(tournament)) return 'finished';
-
-  return tournament.tournamentStatus;
-}
-
-export const fetchPokedataTournaments = async (
-  options?: FetchTournamentsOptions
-) => {
-  const url = options?.prefetch
-    ? 'https://pokedata.ovh/standings/tournaments.json'
-    : '/api/tournaments';
-
-  const res: Response = await fetch(url);
-  let data: Tournament[] = await res.json();
-  data = data.map(tournament => ({
-    ...tournament,
-    name: shortenTournamentName(tournament),
-    tournamentStatus: fixTournamentStatus(tournament)
-  }));
-
-  if (options?.onlyFinished) {
-    data = data.filter(
-      tournament => tournament.tournamentStatus === 'finished'
-    );
-  }
-
-  data = data.filter(
-    tournament =>
-      tournament.date.start &&
-      isAfter(parseISO(tournament.date.start), parseISO('2022-05-09'))
-  );
-
-  if (options?.excludeUpcoming) {
-    data = data.filter(
-      tournament =>
-        tournament.tournamentStatus !== 'not-started' &&
-        // something's wrong with tournament 0000019 i guess
-        tournament.id !== '0000019'
-    );
-  }
-
-  if (options?.tournamentId) {
-    data = data.filter(tournament => tournament.id === options.tournamentId);
-  }
-
-  // Add "after day one" tournament status
-  data = data.map(tournament => {
-    return {
-      ...tournament,
-      tournamentStatus:
-        tournament.players.masters &&
-        tournament.players.masters > 0 &&
-        !tournament.roundNumbers.masters
-          ? 'not-started'
-          : tournament.tournamentStatus,
-      subStatus: getTournamentSubStatus(tournament),
-    };
-  });
-
-  let i = 0;
-  for await (const tournament of data) {
-    if (!isTournamentLongGone(tournament)) {
-      const newTournament = await getPatchedTournament(
-        tournament,
-        undefined,
-        options?.prefetch
-      );
-
-      if (newTournament) {
-        data[i] = newTournament;
-      }
-    }
-    i++;
-  }
-
-  return data.slice().reverse();
-};
-
 export const padTournamentId = (tournament: Tournament) => ({ ...tournament, id: String(tournament.id).padStart(7, '0') })
 
 export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   let query = supabase
-    .from('Tournaments')
+    .from('tournaments_new')
     .select(
-      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
+      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date),should_reveal_decks'
     )
     .order('date->end', { ascending: false });
 
@@ -151,16 +61,16 @@ export const fetchTournaments = async (options?: FetchTournamentsOptions) => {
   let tournaments = res.data.map(padTournamentId);
 
   tournaments = tournaments.filter((tournament, idx) => !tournaments.find((otherTournament, otherIdx) => otherTournament.rk9link === tournament.rk9link && idx < otherIdx))
-  tournaments = tournaments.map((tournament) => ({ ...tournament, tournamentStatus: tournament.id === '0000086' ? 'finished' : tournament.tournamentStatus}))
+  tournaments = tournaments.map((tournament) => ({ ...tournament, name: shortenTournamentName(tournament), tournamentStatus: tournament.id === '0000086' ? 'finished' : tournament.tournamentStatus}))
 
   return tournaments;
 };
 
 export const fetchSingleTournament = async (tournamentId: string) => {
   let query = supabase
-    .from('Tournaments')
+    .from('tournaments_new')
     .select(
-      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date)'
+      'id,name,date,tournamentStatus,players,roundNumbers,rk9link,winners,subStatus,format(id,format,rotation,start_date),should_reveal_decks'
     )
     .eq('id', parseInt(tournamentId))
 
@@ -178,45 +88,10 @@ export const useTournaments = (options?: FetchTournamentsOptions) => {
   });
 };
 
-export const getTournamentsThatNeedToBePatched = (
-  tournamentList: Tournament[]
-) =>
-  tournamentList.filter(tournament => {
-    if (getTournamentShouldBeFinished(tournament)) return false;
-
-    return isWithinInterval(new Date(), {
-      start: addDays(parseISO(tournament.date.start), -1),
-      end: addDays(parseISO(tournament.date.end), 1),
-    });
-  });
-
-export const usePatchedTournaments = (tournamentList: Tournament[]) => {
-  const results = useQueries({
-    queries: getTournamentsThatNeedToBePatched(tournamentList).map(
-      tournament => ({
-        queryKey: ['patched-tournament', tournament.id],
-        queryFn: () => {
-          return patchTournamentsClient(tournament);
-        },
-      })
-    ),
-  });
-
-  const tournamentsWithPatchesApplied = tournamentList.map(
-    tournament =>
-      results.find(
-        patchedTournament => tournament.id === patchedTournament.data?.id
-      )?.data ?? tournament
-  );
-
-  return {
-    data: tournamentsWithPatchesApplied,
-    isLoading: results.reduce((acc, curr) => acc || curr.isLoading, false),
-  };
-};
-
 export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>
   tournaments.find(
     ({ name, tournamentStatus }) =>
       tournamentStatus === 'finished' && !name.includes(' Cup')
   ) as Tournament;
+
+export const getShouldHideDecks = (tournament: Tournament, playerAgeDivision: AgeDivision) => !tournament.should_reveal_decks?.[playerAgeDivision.toLowerCase() as 'masters' | 'seniors' | 'juniors']

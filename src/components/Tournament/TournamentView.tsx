@@ -1,20 +1,21 @@
-import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Tournament } from '../../../types/tournament';
-import { useLiveTournamentResults } from '../../hooks/tournamentResults';
-import { Ad } from '../Ad';
-import { Banner } from '../common/Banner';
+import { AgeDivision } from '../../../types/age-division';
 import { FullPageLoader } from '../common/FullPageLoader';
 import { SorryText } from '../common/SorryText';
-import { StatsHeading } from '../common/StatsHeading';
 import { StandingsList } from '../DataDisplay/Standings/StandingsList';
 import { StandingsFilterContainer } from './Results/Filters/StandingsFilterContainer';
 import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';
+import { useStandings } from '../../hooks/newStandings';
+import { getShouldHideDecks } from '../../hooks/tournaments';
 
 export default function TournamentView({
   tournament,
+  ageDivision
 }: {
   tournament: Tournament;
+  ageDivision: AgeDivision
 }) {
   const [standingsFilters, setStandingsFilters] = useState<StandingsFilters>({
     justDay2: {
@@ -33,17 +34,16 @@ export default function TournamentView({
     supertypesVisible: []
   });
 
-  const { data: liveResults, isLoading } = useLiveTournamentResults(
-    tournament.id,
-    {
-      load: { allRoundData: true },
-      filters: standingsFilters,
-    }
-  );
+  const { data: liveResults, isLoading } = useStandings({
+    tournament,
+    ageDivision
+  });
+
+  const shouldHideDecks = getShouldHideDecks(tournament, ageDivision);
 
   if (isLoading) return <FullPageLoader />;
 
-  if (!isLoading && liveResults?.data.length === 0)
+  if (!isLoading && liveResults?.length === 0)
     return (
       <SorryText>
         {`Sorry, we're unable to retrieve standings right now. Please try again later.`}
@@ -57,17 +57,17 @@ export default function TournamentView({
           <Text>These standings are not final standings. RK9 is not currently updated, hang tight!</Text>
         </Banner>
       )} */}
-      <StandingsFilterContainer
+      {/* <StandingsFilterContainer
         tournament={tournament}
         standingsFilters={standingsFilters}
         setStandingsFilters={setStandingsFilters}
-        disabled={liveResults?.shouldHideDecks}
-      />
+        disabled={shouldHideDecks}
+      /> */}
       {liveResults && (
         <StandingsList
-          results={liveResults.data}
+          results={liveResults}
           tournament={tournament}
-          shouldHideDecks={liveResults.shouldHideDecks}
+          shouldHideDecks={shouldHideDecks}
         />
       )}
     </Stack>

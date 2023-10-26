@@ -13,7 +13,7 @@ export const useChampions = () => ({
       resistances: {},
       rounds: [],
       tournament_id: '2',
-      deck_list: {},
+      decklist: {},
       deck_archetype: {
         id: 1,
         name: 'Torterra',

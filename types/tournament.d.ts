@@ -3,14 +3,8 @@ import {
   DeckTypeSchema,
 } from '../src/hooks/deckArchetypes';
 import { FormatSchema } from '../src/hooks/formats/formats';
+import { AgeDivision } from './age-division';
 import { StoredPlayerProfile } from './player';
-
-export interface DeckCard {
-  count: number;
-  name: string;
-  number: string;
-  set: string;
-}
 
 export interface Deck {
   id: number;
@@ -51,30 +45,48 @@ export interface PlayerResistances {
   oppopp: number;
 }
 
-export type MatchResult = 'W' | 'L' | 'T';
+export type MatchResult = 'W' | 'L' | 'T' | '...';
 
 export interface PlayerRound {
   name: string;
   result: MatchResult;
-  opponent?: FinalResultsSchema;
+  opponent?: Standing;
+}
+
+export interface DeckCard {
+  name: string;
+  count: number;
+  number?: string;
+  set?: string;
 }
 
 export interface Standing {
   name: string;
+  region: string | null;
   profile?: StoredPlayerProfile;
   placing: number;
   record: PlayerRecord;
   resistances?: PlayerResistances;
-  currentMatchResult?: MatchResult;
+  currentMatchResult?: MatchResult | null;
   rounds?: PlayerRound[];
-  day2?: boolean;
   outOfDay2?: boolean;
-  currentOpponent?: Standing;
-  deck?: Deck | null;
+  currentOpponent?: PlayerRound | Standing | null;
+  decklist: DeckList | null;
   drop?: number | null;
-  tournamentId?: string;
   tournament?: Tournament | null;
   region?: string;
+  age_division: AgeDivision;
+
+  day_two: boolean | null;
+  deck_archetype: number | null;
+  defined_pokemon: string[] | null;
+  identifiable_cards: string[] | null;
+  supertype: number | null;
+  tournament_id: number | null;
+  tournament_name: string | null;
+  tournament_date: TournamentDate | null;
+  tournament_status: TournamentStatus | null;
+  tournament_round_number: number | null;
 }
 
 export interface MatchupResult extends Standing {
@@ -85,13 +97,15 @@ export type TournamentStatus = 'not-started' | 'running' | 'finished';
 
 export type TopCutStatus = null | 'finals' | 'top4' | 'top8';
 
+export type TournamentDate = {
+  start: string;
+  end: string;
+};
+
 export interface Tournament {
   id: string;
   name: string;
-  date: {
-    start: string;
-    end: string;
-  };
+  date: TournamentDate;
   tournamentStatus: TournamentStatus;
   topCutStatus?: TopCutStatus;
   hasStaleData?: boolean;
@@ -113,5 +127,10 @@ export interface Tournament {
     seniors: number | null;
     masters: number | null;
   };
-  format: FormatSchema;
+  format: FormatSchema | null;
+  should_reveal_decks: {
+    juniors: boolean;
+    seniors: boolean;
+    masters: boolean;
+  } | null;
 }

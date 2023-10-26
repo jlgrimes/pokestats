@@ -29,6 +29,11 @@ export const DARWIN_MOCK_TOURNAMENT: Tournament = {
     rotation: '',
     start_date: '',
   },
+  should_reveal_decks: {
+    juniors: false,
+    seniors: false,
+    masters: false,
+  },
 };
 
 export const SYDNEY_MOCK_TOURNAMENT = {
@@ -57,5 +62,10 @@ export const SYDNEY_MOCK_TOURNAMENT = {
     format: 'standard',
     rotation: '',
     start_date: '',
+  },
+  should_reveal_decks: {
+    juniors: true,
+    seniors: true,
+    masters: true,
   },
 };

@@ -1,5 +1,6 @@
 import { HStack, IconButton, useToast } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
+import { Flex } from '@tremor/react';
 import { useCallback } from 'react';
 import { FaHeartBroken } from 'react-icons/fa';
 import { Standing, Tournament } from '../../../../../types/tournament';
@@ -8,13 +9,11 @@ import {
   deletePinnedPlayer,
   usePinnedPlayers,
 } from '../../../../hooks/pinnedPlayers';
-import { usePlayerIsMeOrMyOpponent } from '../../../../hooks/tournamentResults';
 import { PlayerCard, PlayerCardSize } from '../PlayerCard/PlayerCard';
 
 interface PinnedPlayerCardProps {
   player: Standing;
   tournament: Tournament;
-  shouldHideDecks: boolean | undefined;
   isEditingPinned: boolean;
   isDeckLoading?: boolean;
   shouldHideOpponent?: boolean;
@@ -26,7 +25,7 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   const toast = useToast();
   const { refetch } = usePinnedPlayers();
   const { data: userIsAdmin } = useUserIsAdmin();
-  const isMeOrMyOpponent = usePlayerIsMeOrMyOpponent(props.player);
+  const isMeOrMyOpponent = false;
 
   const onUnpinPlayer = useCallback(async () => {
     if (!user?.email) {
@@ -50,21 +49,19 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
   }, [props.player.name, user?.email, toast, refetch]);
 
   return (
-    <HStack>
+    <>
       <PlayerCard
         canEditDecks={userIsAdmin}
         onUnpinPlayer={onUnpinPlayer}
         shouldHideOpponent={props.shouldHideOpponent}
         result={
           props.tournament.tournamentStatus === 'running'
-            ? props.player.currentMatchResult
+            ? props.player.currentMatchResult ?? undefined
             : undefined
         }
-        isPlayerMeOrMyOpponent={isMeOrMyOpponent}
         player={props.player}
         tournament={props.tournament}
         size={props.size}
-        shouldHideDecks={props.shouldHideDecks}
       />
       {props.isEditingPinned && (
         <IconButton
@@ -79,6 +76,6 @@ export const PinnedPlayerCard = (props: PinnedPlayerCardProps) => {
           }}
         />
       )}
-    </HStack>
+    </>
   );
 };

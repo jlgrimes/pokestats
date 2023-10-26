@@ -1,49 +1,37 @@
 import {
-  Card,
-  Stack,
-  Heading,
-  LinkOverlay,
   LinkBox,
-  Grid,
-  Box,
-  Flex,
-  useColorMode,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import NextLink from 'next/link';
 import { Standing, Tournament } from '../../../types/tournament';
-import { useCountryCode } from '../../hooks/tournamentMetadata';
-import { CommonCard } from '../common/CommonCard';
-import { CountryFlag } from '../Tournament/Home/CountryFlag';
 import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
-import { PinnedPlayerList } from '../Tournament/Home/PinnedPlayers/PinnedPlayerList';
-import { TopCutViewController } from '../Tournament/Home/TopCut/TopCutViewController';
-import { StreamLink } from '../Tournament/TournamentLinks';
 import { ChampionDisplay } from './ChampionDisplay';
-import { formatTournamentDate } from './helpers';
 import { TournamentInfo } from './TournamentInfo';
-import { TournamentStatusBadge } from './TournamentStatusBadge';
 import { useSessionPlayerProfile } from '../../hooks/user';
+import { Card, Flex, Grid } from '@tremor/react';
 
 export const TournamentCard = ({
   tournament,
   champion,
-  disableFollowing,
-  shouldHideStatus,
 }: {
   tournament: Tournament;
   champion?: Standing;
-  disableFollowing?: boolean;
-  shouldHideStatus?: boolean;
 }) => {
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
-  const countryCode = useCountryCode(tournament.id);
   const live = tournament.tournamentStatus === 'running';
 
   return (
     <LinkBox height='100%'>
-      <CommonCard>
-        <Stack spacing={4}>
+      <Card decoration={live ? 'left' : undefined} className='flex flex-col gap-6 px-6 py-4'>
+        <Flex>
+          <TournamentInfo tournament={tournament} />
+          {champion && <ChampionDisplay champion={champion} />}
+        </Flex>
+        {isAuthenticated && live && profile?.name && (
+          <PlayerTournamentView
+            tournament={tournament}
+            playerName={profile.name}
+          />
+        )}
+        {/* <Stack spacing={4}>
           <Grid gridTemplateColumns={'3.4fr 2fr'} alignItems='center' gap={2}>
             <Grid gridTemplateColumns={`3.4rem 4fr`} alignItems='center' rowGap={live ? 1 : 0}>
               {countryCode ? (
@@ -80,8 +68,8 @@ export const TournamentCard = ({
           {live && tournament.topCutStatus && !disableFollowing && (
             <TopCutViewController tournament={tournament} />
           )}
-        </Stack>
-      </CommonCard>
+        </Stack> */}
+      </Card>
     </LinkBox>
   );
 };

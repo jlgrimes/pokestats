@@ -27,7 +27,7 @@ export const ArchetypeCard = (props: ArchetypeCardProps) => {
           <Stack spacing={1}>
             <LinkOverlay
               as={NextLink}
-              href={getDeckHref(props.deck, props.deck.format?.id) as any}
+              href={getDeckHref(props.deck) as any}
             >
               <Heading size='sm'>{props.deck.name}</Heading>
             </LinkOverlay>

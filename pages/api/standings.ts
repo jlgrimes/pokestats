@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cropPlayerName, getPlayerRegion } from '../../src/lib/fetch/fetchLiveResults';
-import { getPokedataStandingsUrl } from '../../src/lib/url';
+import supabase from '../../src/lib/supabase/client';
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,8 +13,10 @@ export default async function handler(
 
     if (typeof tournamentId !== 'string') return res.status(500);
 
-    const response = await fetch(getPokedataStandingsUrl(tournamentId));
-    let data: Record<string, any>[] = await response.json();
+    const response = await supabase.from('new_standings').select('*');
+    const data = response.data;
+
+    if (!data) throw 'Data is null';
 
     data.forEach((player, idx) => {
       data[idx].region = getPlayerRegion(player.name)?.at(1);
@@ -28,6 +31,7 @@ export default async function handler(
 
     res.status(200).json(data);
   } catch (err) {
+    console.error(err)
     return res.status(500);
   } finally {
     res.end();

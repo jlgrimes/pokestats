@@ -1,13 +1,13 @@
 import { useDisclosure, UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import { Fragment, useState } from 'react';
-import { Deck, Tournament } from '../../../../types/tournament';
+import { Deck, Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { usePlayerDecks } from '../../../hooks/playerDecks';
-import { useLiveTournamentPlayers } from '../../../hooks/tournamentResults';
 import { ArchetypeSelectorModal } from '../../Deck/DeckInput/ArchetypeSelector/ArchetypeSelectorModal';
 import { handleDeckSubmit } from '../../Deck/DeckInput/helpers';
 import { PlayerSelectModal } from './PinnedPlayers/PlayerSelectModal';
+import { useStandings } from '../../../hooks/newStandings';
 
 interface ReportModalProps {
   tournament: Tournament;
@@ -20,11 +20,9 @@ export const ReportModal = (props: ReportModalProps) => {
   const { data: playerDecks, refetch } = usePlayerDecks(props.tournament.id, { shouldDisableFetch: !props.playerSelectModalControls.isOpen });
   const { data: userIsAdmin } = useUserIsAdmin();
 
-  const { data: playerNames } = useLiveTournamentPlayers(props.tournament.id);
+  const { data: playerNames } = useStandings({ tournament: props.tournament, ageDivision: 'masters' });
 
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
-  const [isStreamDeck, setIsStreamDeck] = useState(false);
-
   const archetypeModalControls = useDisclosure();
 
   const handlePlayerSelect = (name: string) => {
@@ -36,15 +34,12 @@ export const ReportModal = (props: ReportModalProps) => {
   };
 
   const handleDeckSelect = async (deck: Deck) => {
-    setIsStreamDeck(false);
     await handleDeckSubmit(
       deck,
-      playerDecks.find(playerDeck => playerDeck.name === selectedPlayer)
-        ?.deck ?? undefined,
-      selectedPlayer,
+      { name: selectedPlayer ?? '' , deck_archetype: playerDecks.find(playerDeck => playerDeck.name === selectedPlayer)
+        ?.deck_archetype ?? null } as Standing,
       user?.email,
       props.tournament,
-      isStreamDeck,
       userIsAdmin,
       toast
     );
@@ -59,7 +54,7 @@ export const ReportModal = (props: ReportModalProps) => {
           <PlayerSelectModal
             tournament={props.tournament}
             modalControls={props.playerSelectModalControls}
-            playerNames={playerNames ?? []}
+            playerNames={playerNames?.map(({ name }) => name) ?? []}
             handleSubmit={handlePlayerSelect}
           />
           <ArchetypeSelectorModal
@@ -68,8 +63,6 @@ export const ReportModal = (props: ReportModalProps) => {
             modalControls={archetypeModalControls}
             userIsAdmin={true}
             isListUp={false}
-            isStreamDeck={isStreamDeck}
-            toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
           />
         </Fragment>
       )}

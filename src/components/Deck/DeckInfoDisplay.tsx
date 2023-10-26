@@ -16,30 +16,25 @@ import { StandingsInfoMenu } from '../DataDisplay/Standings/StandingsInfoMenu';
 import DeckInput from './DeckInput/DeckInput';
 import { UploadListButton } from './ImageListViewer/UploadListButton';
 import { ListViewerOpenButton } from './ListViewer/ListViewerOpenButton';
+import { getShouldHideDecks } from '../../hooks/tournaments';
 
 export const DeckInfoDisplay = memo(
   ({
     player,
     tournament,
     enableEdits,
-    shouldShowAsText,
     disableList,
-    shouldHideDeck,
     shouldHideVerifiedIcon,
     shouldHideOpponentView,
     onUnpinPlayer,
     shouldHideMenu,
     shouldDisableDeckExtras,
-    isPlayerMeOrMyOpponent,
     isMe
   }: {
     player: Standing;
     tournament: Tournament;
     enableEdits: boolean;
-    isPlayerMeOrMyOpponent: boolean;
-    shouldShowAsText?: boolean;
     disableList?: boolean;
-    shouldHideDeck?: boolean;
     shouldHideVerifiedIcon?: boolean;
     shouldHideOpponentView?: boolean;
     onUnpinPlayer?: () => void;
@@ -51,50 +46,37 @@ export const DeckInfoDisplay = memo(
     const userIsLoggedInUser = useUserMatchesLoggedInUser(player.name);
 
     const shouldShowList =
-      player?.deck?.list || (player.deck?.listImagePath && !disableList);
-    const shouldShowSmallEditIcon = enableEdits && player.deck?.id;
+      player?.decklist && !disableList;
+    const shouldShowSmallEditIcon = enableEdits && player.deck_archetype;
 
     const ifShouldHideDeck = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
 
-      return !isPlayerMeOrMyOpponent && shouldHideDeck;
-    }, [shouldHideDeck, tournament.tournamentStatus, isPlayerMeOrMyOpponent]);
+      return getShouldHideDecks(tournament, player.age_division);
+    }, [player.age_division, tournament]);
 
     const ifShouldBlurSpecificAArchetype = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
       if (tournament.topCutStatus) return false;
 
-      return !isPlayerMeOrMyOpponent;
+      return true;
     }, [
       tournament.tournamentStatus,
-      isPlayerMeOrMyOpponent,
       tournament.topCutStatus,
     ]);
 
-    const shouldShowEditButton = shouldShowSmallEditIcon && !player.deck?.list;
+    const shouldShowEditButton = shouldShowSmallEditIcon && !player.decklist;
 
     return (
       <Grid
-        gridTemplateColumns={
-          userIsLoggedInUser && shouldShowEditButton
-            ? `auto 15px 50px`
-            : shouldDisableDeckExtras &&
-              !shouldShowList &&
-              !shouldShowSmallEditIcon
-            ? 'auto'
-            : shouldShowAsText
-            ? 'auto 25px'
-            : '80px 25px'
-        }
         columnGap={2}
         alignItems='center'
+        position={'relative'}
       >
         <DeckInput
+          standing={player}
           tournament={tournament}
-          playerName={player.name}
-          deck={player.deck ?? undefined}
           archetypeModal={archetypeModal}
-          shouldShowAsText={shouldShowAsText}
           shouldHideDeck={ifShouldHideDeck()}
           shouldHideSpecificArchetype={ifShouldBlurSpecificAArchetype()}
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}
@@ -113,10 +95,12 @@ export const DeckInfoDisplay = memo(
               e.stopPropagation();
               archetypeModal.onOpen();
             }}
+            position={'absolute'}
+            right='-2'
           />
         )}
 
-        {shouldShowList ? (
+        {/* {shouldShowList ? (
           <ListViewerOpenButton result={player} tournament={tournament} />
         ) : userIsLoggedInUser && tournament.tournamentStatus === 'finished' ? (
           <UploadListButton
@@ -124,8 +108,8 @@ export const DeckInfoDisplay = memo(
             tournamentId={tournament.id}
           />
         ) : (
-          <Box />
-        )}
+          <></>
+        )} */}
 
         {/* {!shouldHideMenu && (
           <StandingsInfoMenu

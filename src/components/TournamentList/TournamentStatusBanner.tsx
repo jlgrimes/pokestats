@@ -2,9 +2,6 @@ import {
   Badge,
   Box,
   Button,
-  ButtonProps,
-  Heading,
-  HeadingProps,
   HStack,
   Stack,
   Text,
@@ -20,10 +17,10 @@ import {
 import { StatsHeading } from '../common/StatsHeading';
 import { getLocalTime, isInSameTimeZone } from '../Tournament/Home/helpers';
 import {
-  formatTournamentDate,
   formatTournamentStatus,
   getTournamentStatusBadgeProps,
 } from './helpers';
+import { Bold, Callout, Flex } from '@tremor/react';
 
 interface TournamentStatusBannerProps {
   tournament: Tournament;
@@ -39,6 +36,19 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
     !isInSameTimeZone(props.location.utc_offset_minutes);
 
   if (props.tournament.tournamentStatus === 'finished') return <Box />;
+
+  return (
+    <Callout title={formatTournamentStatus(props.tournament, utcOffset)} color='purple'>
+      {shouldShowLocalTime && (
+        <HStack>
+          <Icon as={FaGlobeAmericas} />
+          <Text className='font-semibold'>{`${getLocalTime(
+            props.location!.utc_offset_minutes
+          )} local`}</Text>
+        </HStack>
+      )}
+    </Callout>
+  )
 
   return (
     <Button

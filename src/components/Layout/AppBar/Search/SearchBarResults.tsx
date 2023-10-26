@@ -1,13 +1,13 @@
 import { Stack } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useArchetypes, useSupertypes } from '../../../../hooks/deckArchetypes';
-import { useFinalResultsPlayers } from '../../../../hooks/finalResults/fetch';
 import { useTournaments } from '../../../../hooks/tournaments';
 import { useSmartPlayerProfiles } from '../../../../hooks/user';
 import { appSearchResultComparator } from './helpers';
 import { SearchResultSchema } from './search-types';
 import { getRelevantSearchResults } from './SearchBar';
 import { SearchResult } from './SearchResult';
+import { useAllPlayerNames } from '../../../../hooks/newStandings';
 
 interface SearchBarResultsProps {
   searchQuery: string;
@@ -15,7 +15,7 @@ interface SearchBarResultsProps {
 }
 
 export const SearchBarResults = (props: SearchBarResultsProps) => {
-  const { data: names } = useFinalResultsPlayers();
+  const { data: names } = useAllPlayerNames();
   const { data: playerProfiles } = useSmartPlayerProfiles();
   const { data: tournaments } = useTournaments();
   const { data: archetypes } = useArchetypes();
@@ -35,7 +35,7 @@ export const SearchBarResults = (props: SearchBarResultsProps) => {
     () =>
       names
         ?.map(
-          name =>
+          ({ name }) =>
             playerProfiles?.find(player => player.name === name) || {
               name,
               username: null,

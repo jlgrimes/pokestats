@@ -14,7 +14,7 @@ export interface FinalResultsSchema {
   resistances: PlayerResistances;
   rounds: PlayerRound[];
   tournament_id: string;
-  deck_list: DeckList | null;
+  decklist: DeckList | null;
   deck_archetype: Deck | null;
   uploaded_list_path: string | null;
   tournament: Tournament | null;

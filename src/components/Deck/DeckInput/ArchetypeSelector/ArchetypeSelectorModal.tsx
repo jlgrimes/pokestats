@@ -82,14 +82,6 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
           <Stack spacing={4}>
             {props.userIsAdmin && (
               <HStack spacing={4}>
-                {props.toggleIsStreamDeck && (
-                  <Checkbox
-                    isChecked={props.isStreamDeck}
-                    onChange={props.toggleIsStreamDeck}
-                  >
-                    On stream
-                  </Checkbox>
-                )}
                 <Button
                   onClick={addArchetypeModalControls.onOpen}
                   leftIcon={<FaDog />}

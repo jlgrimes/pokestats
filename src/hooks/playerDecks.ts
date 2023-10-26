@@ -62,21 +62,40 @@ export const usePlayerDecks = (
   const data = query.data ?? [];
   let playerDecks: Standing[];
 
-  if (options?.pairingPlayers) {
-    playerDecks = options.pairingPlayers.map(player => ({
-      ...player,
-      placing: -1,
-      deck: data.find(({ player_name }) => player_name === player.name)
-        ?.deck_archetype as Deck,
-    }));
-  } else {
-    playerDecks = data.map(player => ({
-      ...player,
-      placing: -1,
-      name: player.player_name,
-      record: { wins: -1, ties: -1, losses: -1 },
-    }));
-  }
+  // TODO: Bring back pairings
+  // if (options?.pairingPlayers) {
+  //   playerDecks = options.pairingPlayers.map(player => ({
+  //     ...player,
+  //     placing: -1,
+  //     deck_archetype: data.find(({ player_name }) => player_name === player.name)
+  //       ?.deck_archetype as Deck,
+  //   }));
+  // } else {
+  //   playerDecks = data.map(player => ({
+  //     ...player,
+  //     placing: -1,
+  //     name: player.player_name,
+  //     record: { wins: -1, ties: -1, losses: -1 },
+  //   }));
+  // }
+
+  playerDecks = data.map(player => ({
+    placing: -1,
+    name: player.player_name,
+    record: { wins: -1, ties: -1, losses: -1 },
+    decklist: null,
+    age_division: 'masters',
+    defined_pokemon: [],
+    identifiable_cards: [],
+    deck_archetype: player.deck_archetype.id,
+    supertype: player.deck_archetype.supertype,
+    tournament_id: parseInt(tournamentId),
+    tournament_name: null,
+    tournament_date: null,
+    day_two: null,
+    tournament_status: null,
+    tournament_round_number: 0
+  }));
 
   return {
     ...query,

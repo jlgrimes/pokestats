@@ -1,9 +1,10 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Deck, Standing, Tournament } from '../../types/tournament';
+import { Deck, Standing, Tournament, TournamentDate } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
 import { FormatSchema } from './formats/formats';
-import { useLiveTournamentResults } from './tournamentResults';
+import { useStandings } from './newStandings';
+import { usePlayerDecks } from './playerDecks';
 
 export const fetchDecks = async (): Promise<Deck[]> => {
   let query = supabase
@@ -53,6 +54,7 @@ export const convertDecksToArchetypes = (decks: Deck[]): DeckTypeSchema[] => {
 
     return {
       ...archetype,
+      tournament_id: parseInt(archetype.tournament_id ?? ''),
       type: 'archetype',
       cover_cards: archetype.identifiable_cards,
       supertype,
@@ -161,7 +163,12 @@ export interface DeckTypeSchema extends SupertypeSchema {
   count?: number;
   data?: Record<string, any>;
   format?: FormatSchema;
+  day_two_count?: number;
   hide_from_selection?: boolean | null;
+
+  tournament_id?: number | null;
+  tournament_name?: string | null;
+  tournament_date?: TournamentDate | null;
 }
 
 export const fetchSupertypes = async () => {
@@ -285,43 +292,39 @@ interface MostPopularArchetypesOptions {
 }
 
 export const useMostPopularArchetypes = (
-  tournament?: Tournament,
+  tournament: Tournament,
   options?: MostPopularArchetypesOptions
 ) => {
-  const { data: liveResults, isLoading: liveResultsIsLoading } =
-    useLiveTournamentResults(tournament?.id ?? '', {
-      load: { allRoundData: true },
-      shouldNotFetchData: options?.shouldNotFetchData
-    });
+  const { data: liveResults, isLoading: liveResultsIsLoading } = usePlayerDecks(tournament.id)
   const {
     data: archetypes,
     refetch,
     isLoading: archetypesIsLoading,
-  } = useArchetypes(tournament?.format, options?.shouldNotFetchData);
+  } = useArchetypes(tournament?.format ?? undefined, options?.shouldNotFetchData);
 
-  const playerDeckCounts = liveResults?.data?.reduce(
+  const playerDeckCounts = liveResults?.reduce(
     (
       acc: Record<string, { deck: DeckTypeSchema; count: number }>,
       player: Standing
     ) => {
-      if (player.deck && player.deck.id) {
+      if (player.deck_archetype && player.deck_archetype) {
         // Adds in supertype
         const playerDeck = archetypes?.find(
-          archetype => archetype.id === player.deck?.id
+          archetype => archetype.id === player.deck_archetype
         );
 
-        if (acc[player.deck.id]) {
+        if (acc[player.deck_archetype]) {
           return {
             ...acc,
-            [player.deck.id]: {
+            [player.deck_archetype]: {
               deck: playerDeck,
-              count: acc[player.deck.id].count + 1,
+              count: acc[player.deck_archetype].count + 1,
             },
           };
         }
         return {
           ...acc,
-          [player.deck.id]: {
+          [player.deck_archetype]: {
             deck: playerDeck,
             count: 1,
           },

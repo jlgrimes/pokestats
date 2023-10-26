@@ -1,4 +1,5 @@
 import { BadgeProps } from '@chakra-ui/react';
+import { CalloutProps } from '@tremor/react';
 import {
   differenceInDays,
   format,
@@ -11,7 +12,6 @@ import {
 } from 'date-fns';
 import { Tournament } from '../../../types/tournament';
 import { TournamentOrSet } from '../../hooks/sets';
-import { isTournamentLongGone } from '../../lib/patches';
 import { getRoundText } from '../Tournament/helpers';
 import {
   getRawTimeUntilTournament,
@@ -37,13 +37,14 @@ export const formatTournamentStatus = (
   if (tournament.tournamentStatus === 'not-started') {
     if (
       utcOffset
-        ? getRawTimeUntilTournament(tournament, utcOffset) < 0
-        : tournamentHasArrivedButNotLive(tournament)
+        && getRawTimeUntilTournament(tournament, utcOffset) < 0
     ) {
       return `About to Start`;
     }
     return `Live in ${getTimeUntilTournament(tournament, utcOffset)}`;
   }
+
+  return '';
 };
 
 export const getTournamentStatusBadgeProps = (
@@ -81,15 +82,53 @@ export const getTournamentStatusBadgeProps = (
   return {};
 };
 
-export const getTournamentRange = (tournament: Tournament) => {
-  if (tournament.name.includes('Regional')) {
-    return eachWeekendOfInterval({
-      start: parseISO(tournament.date.start),
-      end: parseISO(tournament.date.end),
-    });
+export const getTournamentStatusCalloutProps = (
+  tournament: Tournament
+): Partial<CalloutProps> => {
+  if (tournament.subStatus === 'after-day-one') {
+    return {
+      color: 'teal'
+    };
   }
 
-  return [parseISO(tournament.date.start), parseISO(tournament.date.end)];
+  if (tournament.tournamentStatus === 'running') {
+    return {
+      color: 'blue'
+    };
+  }
+
+  if (tournament.tournamentStatus === 'not-started') {
+    return {
+      color: 'violet'
+    };
+  }
+
+  if (tournament.tournamentStatus === 'finished') {
+    return {
+      color: 'slate'
+    };
+  }
+
+  return {};
+};
+
+export const getTournamentRange = (tournament: Tournament) => {
+  const startDate = parseISO(tournament.date.start);
+  const endDate = parseISO(tournament.date.end);
+
+  try {
+    if (tournament.name.includes('Regional')) {
+      return eachWeekendOfInterval({
+        start: startDate,
+        end: endDate,
+      });
+    }
+  } catch(e) {
+    // If the weekend thing doesn't work, just return whatever is in there.
+    return [startDate, endDate];
+  }
+
+  return [startDate, endDate];
 };
 
 export const formatTournamentDate = (
@@ -100,9 +139,9 @@ export const formatTournamentDate = (
 
   // I want to use ordinal numbers but these guys won't let me :(
   // https://atlassian.design/content/writing-guidelines/date-and-time-guideline
-  return `${format(startDate, 'MMM d')}${startDate.getMonth() !== endDate.getMonth() ? ' - ' : '-'}${format(
+  return `${format(startDate, 'MMMM d')}${startDate.getMonth() !== endDate.getMonth() ? ' - ' : '-'}${format(
     endDate,
-    `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM' : ''} d${', y'}`
+    `${startDate.getMonth() !== endDate.getMonth() ? 'MMMM ' : ''}d${', y'}`
   )}`;
 };
 
@@ -126,44 +165,4 @@ export const tournamentFallsOnCurrentDate = (tournament: Tournament) => {
     start: startDate,
     end: endOfDay(endDate),
   });
-};
-
-export const getTournaments = (
-  items: TournamentOrSet[],
-  mostRecent?: boolean
-) => {
-  const finishedTournaments = items.filter(
-    tournament => tournament.data.tournamentStatus === 'finished'
-  );
-  const almostStartedTournamentFilter = (tournament: TournamentOrSet) =>
-    tournament.data.date &&
-    tournamentHasArrivedButNotLive(tournament.data as unknown as Tournament);
-
-  const upcomingTournaments = items.filter(tournament => {
-    return (
-      tournament.data.tournamentStatus === 'not-started' &&
-      !tournamentHasArrivedButNotLive(tournament.data as unknown as Tournament)
-    );
-  });
-
-  const liveTournaments = items.filter(
-    tournament =>
-      tournament.data.tournamentStatus === 'running' &&
-      !isTournamentLongGone(tournament.data as Tournament)
-  );
-  const almostStartedTournaments = items
-    .filter(tournament => almostStartedTournamentFilter(tournament))
-    .reverse();
-
-  return {
-    highlightedTournamentsLength:
-      liveTournaments.length + almostStartedTournaments.length,
-    items: [
-      ...liveTournaments,
-      ...almostStartedTournaments,
-      ...(mostRecent ? [] : upcomingTournaments),
-      ...(mostRecent ? finishedTournaments.slice(0, 4) : finishedTournaments),
-      // ...upcomingTournaments,
-    ],
-  };
 };

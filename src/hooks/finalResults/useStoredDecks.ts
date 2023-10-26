@@ -2,9 +2,70 @@ import { useQuery } from '@tanstack/react-query';
 import { Deck } from '../../../types/tournament';
 import { getConversionRate } from '../stats';
 import { DeckTypeSchema } from '../deckArchetypes';
-import { fetchDecksWithLists } from './fetch';
 import { FinalResultsDeckSchema } from './final-results-schema';
 import { getDeckCounts } from './helpers';
+import supabase from '../../lib/supabase/client';
+import { AgeDivision } from '../../../types/age-division';
+import { capitalize } from '../../lib/strings';
+import { isAfter, isBefore, parseISO } from 'date-fns';
+
+const fetchMetaShare = async (tournamentId: string, ageDivision: AgeDivision): Promise<DeckTypeSchema[] | null | undefined> => {
+  const res = await supabase.from('meta_shares').select('*').eq('tournament_id', parseInt(tournamentId)).eq('age_division', capitalize(ageDivision)).order('count', { ascending: false });
+  return res.data?.map((share) => ({
+    id: share.deck_archetype,
+    name: share.name,
+    defined_pokemon: JSON.parse(share.defined_pokemon),
+    type: 'archetype',
+    count: share.count,
+    day_two_count: share.day_two_count
+  }));
+}
+
+export const useMetaShare = (tournamentId: string, ageDivision: AgeDivision) => {
+  return useQuery({
+    queryKey: ['meta-share', tournamentId, ageDivision],
+    queryFn: () => fetchMetaShare(tournamentId, ageDivision)
+  });
+}
+
+const fetchDeckMetaShare = async (ageDivision: AgeDivision): Promise<DeckTypeSchema[] | null | undefined> => {
+  const res = await supabase.from('deck_meta_shares').select('*').eq('age_division', capitalize(ageDivision)).order('tournament_id', { ascending: true });
+  const shares: DeckTypeSchema[] | undefined = res.data?.map((share) => ({
+    id: share.deck_archetype,
+    name: share.name,
+    defined_pokemon: JSON.parse(share.defined_pokemon),
+    type: 'archetype',
+    count: share.count,
+    day_two_count: share.day_two_count,
+    tournament_id: share.tournament_id,
+    tournament_name: share.tournament_name,
+    tournament_date: JSON.parse(share.tournament_date)
+  }));
+
+  return shares?.filter((share) => share.day_two_count && (share.day_two_count >= 5)).sort((a, b) => {
+    if (!a.tournament_date) return -1;
+    if (!b.tournament_date) return 1;
+
+    if (isBefore(parseISO(a.tournament_date.start), parseISO(b.tournament_date.start))) return -1;
+    if (isBefore(parseISO(b.tournament_date.start), parseISO(a.tournament_date.start))) return 1;
+
+    if (!a.tournament_id) return -1;
+    if (!b.tournament_id) return 1;
+
+    if (a.tournament_id < b.tournament_id) return -1;
+    if (a.tournament_id > b.tournament_id) return 1;
+
+    return 0;
+  });
+}
+
+export const useDeckMetaShare = (ageDivision: AgeDivision) => {
+  return useQuery({
+    queryKey: ['deck-meta-share', ageDivision],
+    queryFn: () => fetchDeckMetaShare(ageDivision)
+  });
+}
+
 
 export const useStoredDecks = (options?: {
   tournamentId?: string;
@@ -22,11 +83,12 @@ export const useStoredDecks = (options?: {
 
   const { data: decks, isLoading } = useQuery({
     queryKey: [
-      'decks-with-lists',
+      'stored-decks',
       options?.tournamentId,
       options?.shouldDrillDown,
     ],
-    queryFn: () => fetchDecksWithLists(options?.tournamentId),
+    // TODO: IMPLEMENT
+    queryFn: () => [{}] as unknown as FinalResultsDeckSchema[],
   });
 
   if (!decks)

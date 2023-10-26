@@ -7,6 +7,7 @@ import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditT
 import { CommonCard } from '../../common/CommonCard';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { ReportModal } from './ReportModal';
+import { AgeDivision } from '../../../../types/age-division';
 
 interface AdminTournamentPanelProps {
   tournament: Tournament;

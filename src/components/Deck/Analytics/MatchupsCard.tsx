@@ -8,7 +8,7 @@ import {
   useDeckResults,
 } from '../../../hooks/deckResults';
 import { DeckCompareColumnType } from '../../common/DeckCompare/DeckCompareSortToggles';
-import { DeckCompareTable } from '../../common/DeckCompare/DeckCompareTable';
+import { MatchupsBreakdownTable } from '../../common/DeckCompare/MatchupsBreakdownTable';
 import { FormatContext } from './DeckAnalyticsContainer';
 import { shouldHide } from './MetaGameShare/MetaGameShareList';
 
@@ -51,10 +51,10 @@ export const MatchupsCard = (props: MatchupsCardProps) => {
   ];
 
   return (
-    <DeckCompareTable
-      header={`${props.deck.name} matchups`}
-      subheader='Only reflects decks reported through pokestats.live or revealed through deck lists. Tie rates may include intentional draws.'
-      decks={data ?? []}
+    <MatchupsBreakdownTable
+      header={`Matchup Spread`}
+      subheader={props.deck.name}
+      decks={data.filter((matchup) => matchup.count > 50) ?? []}
       shouldDrillDown={shouldDrillDown}
       setShouldDrillDown={setShouldDrillDown}
       isLoading={isLoading}

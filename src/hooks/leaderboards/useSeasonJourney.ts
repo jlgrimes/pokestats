@@ -3,7 +3,7 @@ import { CombinedPlayerProfile } from "../../../types/player";
 import { Standing, Tournament } from "../../../types/tournament";
 import { seasonToReadableYear } from "../../components/Home/LeaderboardCard";
 import { filterOutBFLExtras, getPointsEarned } from "../../components/TopPlayers/helpers";
-import { useFinalResults } from "../finalResults";
+import { usePlayerStandings } from "../newStandings";
 
 export interface JourneyPoint {
   standing: Standing;
@@ -14,11 +14,7 @@ export interface JourneyPoint {
 export const useSeasonJourney = (user: CombinedPlayerProfile | undefined, season: number) => {
   const worldsSeasonYear = seasonToReadableYear(season);
 
-  const { data: tournamentPerformance, ...rest } = useFinalResults({
-    playerName: user?.name,
-    additionalNames: user?.additional_names,
-    shouldExpandTournament: true
-  });
+  const { data: tournamentPerformance, ...rest } = usePlayerStandings(user);
 
   const relevantStandings = tournamentPerformance?.slice().reverse().reduce((acc: JourneyPoint[], standing) => {
     const tournament = standing.tournament;

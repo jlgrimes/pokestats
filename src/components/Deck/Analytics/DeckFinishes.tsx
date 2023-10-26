@@ -9,93 +9,69 @@ import {
 import NextLink from 'next/link';
 import { Fragment, memo, useContext } from 'react';
 import { Deck, Tournament } from '../../../../types/tournament';
-import { useFinalResults } from '../../../hooks/finalResults';
 import { getFinalResultsDeckFilters } from '../../../hooks/finalResults/useCardCounts';
-import { useTournaments } from '../../../hooks/tournaments';
+import { getMostRecentFinishedTournament, useTournaments } from '../../../hooks/tournaments';
 import { StandingsRow } from '../../DataDisplay/Standings/StandingsRow';
 import { formatTournamentDate } from '../../TournamentList/helpers';
 import { FormatContext } from './DeckAnalyticsContainer';
+import { useDeckStandings } from '../../../hooks/newStandings';
+import { TournamentCard } from '../../TournamentList/TournamentCard';
+import { Table, TableBody, TableRow } from '@tremor/react';
 
 export const DeckFinishes = memo(
   ({ deck, onlyShowRecent }: { deck: Deck; onlyShowRecent?: boolean }) => {
-    const { colorMode } = useColorMode();
-
-    const format = useContext(FormatContext);
-    const filters = getFinalResultsDeckFilters(deck, format?.id);
-
-    const { data: deckStandings } = useFinalResults(filters);
     const { data: tournaments } = useTournaments();
+    const mostRecentFinished = tournaments ? getMostRecentFinishedTournament(tournaments) : null;
 
-    const mostRecentTournamentId = deckStandings?.find(
-      standing => standing.deck?.list
-    )?.tournamentId;
+    const { data: deckStandings } = useDeckStandings(deck, parseInt(mostRecentFinished?.id ?? ''), true);
+
+    if (!tournaments || !deckStandings || !mostRecentFinished) return null;
+
+    if (onlyShowRecent) {
+      return <>
+        <TournamentCard tournament={mostRecentFinished} />
+        <Table>
+          <TableBody>
+            {deckStandings.filter(standing => standing.tournament_id === parseInt(mostRecentFinished.id)).map((standing) => (
+              <TableRow key={'finish ' + standing.name}>
+                <StandingsRow
+                    result={standing}
+                    tournament={mostRecentFinished}
+                  />
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </>
+    }
 
     return (
-      <Stack spacing={1}>
-        {tournaments &&
-          deckStandings
-            ?.filter(standing =>
-              onlyShowRecent
-                ? standing.tournamentId === mostRecentTournamentId &&
-                  standing.deck?.list
-                : true
-            )
-            .slice(0, onlyShowRecent ? 10 : -1)
+      <>
+        {deckStandings?.slice(0, onlyShowRecent ? 10 : -1)
             .map((standing, idx) => {
               const tournament = tournaments.find(
-                ({ id }) => id === standing.tournamentId
+                ({ id }) => parseInt(id) === standing.tournament_id
               ) as Tournament;
 
               const shouldShowHeading =
                 idx === 0 ||
                 (!onlyShowRecent &&
-                  deckStandings[idx - 1].tournamentId !==
-                    standing.tournamentId);
+                  deckStandings[idx - 1].tournament !==
+                    standing.tournament_id);
 
               return (
-                <Fragment key={standing.name + standing.tournamentId}>
+                <Fragment key={standing.name + standing.tournament_id}>
                   {shouldShowHeading && (
-                    <Link
-                      gridColumn={'1/-1'}
-                      as={NextLink}
-                      href={`/tournaments/${standing.tournamentId}/standings`}
-                    >
-                      <Heading
-                        size='sm'
-                        color={colorMode === 'dark' ? 'gray.300' : 'gray.700'}
-                        paddingX={4}
-                        paddingTop={onlyShowRecent ? 0 : 3}
-                      >
-                        {tournament.name}
-                      </Heading>
-                      <Heading
-                        size='xs'
-                        color='gray.500'
-                        paddingX={4}
-                        paddingY={1}
-                      >
-                        {formatTournamentDate(tournament)}
-                      </Heading>
-                    </Link>
+                    <TournamentCard tournament={tournament} />
                   )}
                   <StandingsRow
-                    result={{
-                      ...standing,
-                      deck: {
-                        ...standing.deck,
-                        defined_pokemon:
-                          standing.deck?.defined_pokemon ??
-                          deck.defined_pokemon,
-                      } as Deck,
-                    }}
+                    result={standing}
                     tournament={tournament}
-                    isPlayerMeOrMyOpponent={false}
                   />
-                  <Divider gridColumn={'1/-1'} />
                 </Fragment>
               );
             })}
-      </Stack>
+      </>
     );
   }
 );

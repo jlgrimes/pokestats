@@ -1,55 +1,54 @@
 import { UseDisclosureProps, useToast } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import { memo, useEffect, useState } from 'react';
-import { Deck, Tournament } from '../../../../types/tournament';
+import { Deck, Standing, Tournament } from '../../../../types/tournament';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import ArchetypeSelector from './ArchetypeSelector/ArchetypeSelector';
 import { handleDeckSubmit } from './helpers';
 
 const DeckInput = memo(
   ({
-    playerName,
-    deck,
+    standing,
     tournament,
     archetypeModal,
-    shouldShowAsText,
     shouldHideDeck,
     shouldHideVerifiedIcon,
     shouldEnableEdits,
     shouldHideSpecificArchetype,
     shouldHideFakeDecks
   }: {
-    playerName: string;
-    deck: Deck | undefined;
+    standing: Standing;
     tournament: Tournament;
     archetypeModal: UseDisclosureProps;
-    shouldShowAsText?: boolean;
     shouldHideDeck?: boolean;
     shouldHideVerifiedIcon?: boolean;
     shouldEnableEdits: boolean;
     shouldHideSpecificArchetype?: boolean;
     shouldHideFakeDecks?: boolean
   }) => {
-    const deckId = deck?.id;
-
     const { data: userIsAdmin } = useUserIsAdmin();
     const user = useUser();
-    const [selectedDeck, setSelectedDeck] = useState<Deck | undefined>(deck);
-    const [isStreamDeck, setIsStreamDeck] = useState(deck?.on_stream);
+    const [selectedDeck, setSelectedDeck] = useState<Deck | null>({
+      id: standing.deck_archetype ?? -1,
+      name: 'Deck',
+      defined_pokemon: standing.defined_pokemon ?? []
+    });
     const toast = useToast();
 
     useEffect(() => {
-      setSelectedDeck(deck);
-    }, [deck]);
+      setSelectedDeck({
+        id: standing.deck_archetype ?? -1,
+        name: 'Deck',
+        defined_pokemon: standing.defined_pokemon ?? []
+      });
+    }, [standing.deck_archetype]);
 
     const handleArchetypeSelect = async (newValue: Deck) => {
       await handleDeckSubmit(
         newValue,
-        deck,
-        playerName,
+        standing,
         user?.email,
         tournament,
-        !!isStreamDeck,
         userIsAdmin,
         toast
       );
@@ -61,16 +60,12 @@ const DeckInput = memo(
         selectedArchetype={selectedDeck}
         onChange={handleArchetypeSelect}
         modalControls={archetypeModal}
-        shouldShowAsText={shouldShowAsText}
         tournament={tournament}
-        unownOverride={playerName === 'Isaiah Cheville' ? 'z' : undefined}
+        unownOverride={standing.name === 'Isaiah Cheville' ? 'z' : undefined}
         userIsAdmin={userIsAdmin}
-        deckIsVerified={deck?.verified}
         shouldHideDeck={shouldHideDeck}
         shouldHideSpecificArchetype={shouldHideSpecificArchetype}
-        isStreamDeck={!!isStreamDeck}
-        toggleIsStreamDeck={() => setIsStreamDeck(!isStreamDeck)}
-        isListUp={!!deck?.list}
+        isListUp={!!standing.decklist}
         shouldHideVerifiedIcon={shouldHideVerifiedIcon}
         shouldEnableEdits={shouldEnableEdits}
         shouldHideFakeDecks={shouldHideFakeDecks}

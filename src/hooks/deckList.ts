@@ -26,6 +26,13 @@ export const useCodeToSetMap = (): Record<string, string> => {
         }
       }
 
+      if (set.id === 'sv3') {
+        return {
+          ...acc,
+          OBF: 'sv3',
+        }
+      }
+
       // TODO: stupid fix for trainer gallery please actually change this
       if (acc[set.ptcgoCode]) {
         return acc;

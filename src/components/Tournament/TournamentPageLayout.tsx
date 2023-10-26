@@ -1,19 +1,20 @@
 import {
-  Badge,
-  Box,
-  Heading,
-  HStack,
   Stack,
-  Text,
   useColorMode,
+  Switch
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { capitalize } from '../../lib/strings';
 import { StatsHeading } from '../common/StatsHeading';
-import { TournamentStatusBadge } from '../TournamentList/TournamentStatusBadge';
+import { PageTitle } from '../common/new/PageTitle';
+import { Bold, Flex, Subtitle, Text } from '@tremor/react';
+import { AgeDivisionSelector } from './AgeDivisionSelector';
+import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
+import { shortenTournamentName } from '../../lib/tournament';
+import { Ad } from '../Ad';
 
 export const TournamentPageLayout = ({
   children,
@@ -24,6 +25,7 @@ export const TournamentPageLayout = ({
 }) => {
   useFixAutoHeight();
   const { colorMode } = useColorMode();
+  const { setShouldShowMatchPoints } = useContext(StandingsPageContext);
 
   const router = useRouter();
   const splitPath: string[] = router.route ? router.route.split('/') : [];
@@ -33,15 +35,23 @@ export const TournamentPageLayout = ({
 
   return (
     <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
-      <Stack paddingX={4} paddingTop={2} spacing={1}>
-        <StatsHeading
-          headingProps={{ color: colorMode === 'dark' ? 'gray.100' : 'gray.700'}}
-        >
-          {`${tournament.name} ${capitalize(slug as string)}`}
-        </StatsHeading>
-        <Text fontSize='sm'>
-          Standings are unofficial and may be inaccurate.
-        </Text>
+      <Stack paddingTop={2} spacing={1}>
+        <Ad slot='3745883635' height='50px' />
+        <h1 className="text-xl font-bold leading-snug text-slate-700 ml-1">
+          {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
+        </h1>
+        <Subtitle className='ml-1'>Standings are unofficial and may be inaccurate.</Subtitle>
+        <Flex className='gap-2'>
+          <div>
+            <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
+          </div>
+          <div className='flex gap-2'>
+            <Text className='text-xs'>
+              Match points
+            </Text>
+            <Switch onChange={e => setShouldShowMatchPoints(e.currentTarget.checked)} />
+          </div>
+        </Flex>
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}

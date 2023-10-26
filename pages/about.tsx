@@ -34,7 +34,6 @@ export default function HelpPage() {
 
   return (
     <Stack maxWidth={'container.md'}>
-      <AppLogo big />
       <Banner>
         <Box>
           {`Need help with anything not covered here? Contact us at `}

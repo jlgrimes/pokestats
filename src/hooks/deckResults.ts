@@ -79,17 +79,10 @@ export const fetchDeckResults = async (
 
   return (
     res.data?.map(row => ({
-      type: shouldDrilldown ? 'archetype' : 'supertype',
-      id: shouldDrilldown
-        ? row.opponent_deck.id
-        : row.opponent_deck.supertype?.id ?? row.opponent_deck.id,
-      name: shouldDrilldown
-        ? row.opponent_deck.name
-        : row.opponent_deck.supertype?.name ?? row.opponent_deck.name,
-      defined_pokemon: shouldDrilldown
-        ? row.opponent_deck.defined_pokemon
-        : row.opponent_deck.supertype?.defined_pokemon ??
-          row.opponent_deck.defined_pokemon,
+      type: 'archetype',
+      id: row.opponent_deck.id,
+      name: row.opponent_deck.name,
+      defined_pokemon: row.opponent_deck.defined_pokemon,
       data: {
         result: row.result,
       },

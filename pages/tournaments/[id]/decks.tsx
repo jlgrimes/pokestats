@@ -3,7 +3,6 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { MetaGameShareList } from '../../../src/components/Deck/Analytics/MetaGameShare/MetaGameShareList';
 import { TournamentPageLayout } from '../../../src/components/Tournament/TournamentPageLayout';
 import { fetchArchetypes } from '../../../src/hooks/deckArchetypes';
-import { fetchDecksWithLists } from '../../../src/hooks/finalResults/fetch';
 import { fetchTournaments } from '../../../src/hooks/tournaments';
 import { Tournament } from '../../../types/tournament';
 
@@ -20,10 +19,6 @@ export default function DecksPage({ tournament }: { tournament: Tournament }) {
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ['decks-with-lists'],
-    queryFn: () => fetchDecksWithLists(),
-  });
   await queryClient.prefetchQuery({
     queryKey: ['deck-archetypes'],
     queryFn: () => fetchArchetypes(),
@@ -47,15 +42,22 @@ export async function getStaticPaths() {
     prefetch: true,
     excludeUpcoming: true,
   });
-  const paths = tournaments?.map(tournament => ({
-    params: {
-      id: tournament.id,
-      displayName: tournament.name,
-    },
-  }));
+  const paths = tournaments?.map(tournament => {
+    return {
+      params: {
+        id: tournament.id,
+        displayName: tournament.name,
+      },
+    };
+  });
+
+  let pathsWithDivisions: any[] = [];
+  for (const division of ['masters', 'seniors', 'juniors']) {
+    pathsWithDivisions = [...pathsWithDivisions, ...paths.map((path) => ({ params: { ...path.params, division }}))]
+  }
 
   return {
-    paths,
+    paths: pathsWithDivisions,
     fallback: 'blocking',
   };
 }

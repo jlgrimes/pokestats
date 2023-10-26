@@ -1,10 +1,9 @@
 import { Box, Grid, Text } from '@chakra-ui/react';
-import { useCallback } from 'react';
 import { Tournament } from '../../../types/tournament';
-import { useChampions } from '../../hooks/finalResults';
-import { useTournamentRender } from '../../hooks/sets';
-import { getTournaments } from './helpers';
 import { TournamentCard } from './TournamentCard';
+import { useChampions } from '../../hooks/newStandings';
+import { isBefore, parseISO } from 'date-fns';
+import { TopDecks } from '../Home/TopDecks';
 
 export const TournamentList = ({
   tournaments,
@@ -14,49 +13,43 @@ export const TournamentList = ({
   mostRecent?: boolean;
 }) => {
   const { data: champions } = useChampions();
-  const items = useTournamentRender(tournaments, mostRecent);
-  const parsedItems = getTournaments(items, mostRecent);
+
+  const liveTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'running'));
+  const upcomingTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'not-started')).sort((a, b) => {
+    if (isBefore(parseISO(a.date.start), parseISO(b.date.start))) return -1;
+    if (isBefore(parseISO(b.date.start), parseISO(a.date.start))) return 1;
+    return 0;
+  });
+  const finishedTournaments = (tournaments.filter((tournament) => tournament.tournamentStatus === 'finished'));
 
   return (
-    <Grid gap={2} gridTemplateColumns='1fr 1fr'>
-      {parsedItems?.items.map((item: Record<string, any>, idx) => {
-        if (item.type === 'tournament') {
-          const tournamentId = (item.data as Tournament).id;
-          const isTournamentUpcoming =
-            (item.data as Tournament).tournamentStatus === 'not-started';
-          const isAboutToStart =
-            idx < parsedItems.highlightedTournamentsLength &&
-            isTournamentUpcoming;
-
-          return (
-            <Box
-              key={idx}
-              gridColumn={
-                // isTournamentUpcoming && !isAboutToStart ? 'auto' : '1/-1'
-                '1/-1'
-              }
-            >
-              <TournamentCard
-                tournament={item.data}
-                champion={champions ? champions[tournamentId] : undefined}
-              />
-            </Box>
-          );
-        }
-        return (
-          <Text
-            gridColumn={'1/-1'}
-            key={idx}
-            fontSize='sm'
-            color='gray.600'
-            padding='1rem 1.5rem'
-            as={'b'}
-            letterSpacing='0.05rem'
-          >
-            🎉 {item.data?.name} ({item.data?.ptcgoCode}) became legal
-          </Text>
-        );
-      })}
-    </Grid>
+    <>
+    {liveTournaments.map((tournament) => (
+      <div className='flex flex-col gap-2' key={`tournament-card-${tournament.id}`}>
+        <TournamentCard
+          tournament={tournament}
+          champion={undefined}
+        />
+        <TopDecks tournament={tournament} />
+      </div>
+    ))}
+    {upcomingTournaments.slice(0, 2).map((tournament) => (
+      <TournamentCard
+        key={`tournament-card-${tournament.id}`}
+        tournament={tournament}
+        champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
+      />
+    ))}
+    {
+      finishedTournaments.slice(0, mostRecent ? 3 : -1).map((tournament) => (
+        <div className='flex flex-col gap-2' key={`tournament-card-${tournament.id}`}>
+          <TournamentCard
+            tournament={tournament}
+            champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
+          />
+          <TopDecks tournament={tournament} />
+        </div>
+      ))
+    }</>
   );
 };

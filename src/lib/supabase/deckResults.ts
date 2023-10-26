@@ -65,7 +65,7 @@ export const loadDeckResults = async (
         opponent_deck: opponentResult.deck_archetype.id,
         result: opponent.result,
         deck_supertype: row.deck_archetype?.supertype ?? null,
-        format: tournament.format ?? null,
+        format: tournament.format?.id ?? null,
       });
     }
   }

@@ -1,7 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { FetchPairingsSchema } from '../../types/pairings';
-import { cropPlayerName } from '../../src/lib/fetch/fetchLiveResults';
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,7 +22,7 @@ export default async function handler(
         ...table,
         players: table.players.map(player => ({
           ...player,
-          name: cropPlayerName(player.name),
+          name: player.name,
         })),
       })),
     }));

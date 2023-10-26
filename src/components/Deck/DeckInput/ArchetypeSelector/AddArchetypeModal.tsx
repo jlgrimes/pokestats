@@ -71,7 +71,7 @@ export default function AddArchetypeModal(props: AddArchetypeModalProps) {
       pokemon2,
       identifiableCard1,
       identifiableCard2,
-      format: props.tournament.format?.id,
+      format: props.tournament.format?.id ?? -1,
     });
     props.handleArchetypeChange && props.handleArchetypeChange(name);
   };
