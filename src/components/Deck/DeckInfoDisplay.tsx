@@ -96,7 +96,7 @@ export const DeckInfoDisplay = memo(
               archetypeModal.onOpen();
             }}
             position={'absolute'}
-            right='0'
+            right='-2'
           />
         )}
 
