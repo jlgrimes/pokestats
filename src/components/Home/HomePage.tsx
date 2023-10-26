@@ -20,6 +20,7 @@ import { LeaderboardCard } from './LeaderboardCard';
 import { Bold, Button, Callout, Card, Flex, Icon, Text, Title } from '@tremor/react';
 import { ExternalLinkIcon, HeartIcon, LinkIcon } from '@heroicons/react/outline';
 import { FaExternalLinkAlt, FaPatreon } from 'react-icons/fa';
+import { GameSelector } from './GameSelector';
 
 export interface HomePageProps {
   tournaments: Tournament[];
@@ -33,9 +34,12 @@ export const HomePage = (props: HomePageProps) => {
 
   return (
     <Stack spacing={4}>
-        <LinkOverlay href='https://www.patreon.com/bePatron?u=97204202' isExternal>
+      <GameSelector />
+      <LinkBox>
+      <LinkOverlay href='https://www.patreon.com/bePatron?u=97204202' isExternal>
         <Callout title='Support Pokéstats Live' icon={HeartIcon} color='pink'>Support development through <Bold>Patreon</Bold> <Icon size='xs' icon={FaExternalLinkAlt} color='pink' /> to help keep the site available - thank you!</Callout>
           </LinkOverlay>
+      </LinkBox>
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />
       {/* <LeaderboardCard /> */}

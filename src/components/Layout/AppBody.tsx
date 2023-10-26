@@ -20,6 +20,7 @@ export const AppBody = ({ children }: { children: React.ReactNode }) => {
       className={colorMode}
     >
       {(router.asPath === '/' || router.asPath === '/about') && <AppLogo big />}
+      {(router.asPath === '/vgc') && <AppLogo big vgc />}
       {process.env['NEXT_PUBLIC_ENV'] == 'staging' && (
         <>
           <BetaBanner />

@@ -55,10 +55,10 @@ export const AppBar = () => {
           />
         }
         <HStack width='full' justifyContent='center'>
-          {router.route !== '/' && router.route !== '/about' && <AppLogo />}
+          {router.route !== '/' && router.route !== '/about' && router.route !== '/vgc' && <AppLogo />}
           <SearchBar
             shouldCollapsePlaceholder={
-              router.route !== '/' && router.route !== '/about'
+              router.route !== '/' && router.route !== '/about' && router.route !== '/vgc'
             }
           />
         </HStack>

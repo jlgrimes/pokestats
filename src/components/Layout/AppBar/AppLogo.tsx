@@ -9,9 +9,9 @@ import {
 import NextLink from 'next/link';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AdminBadge } from '../../common/AdminBadge';
-import { Badge } from '@tremor/react';
+import { Badge, Bold } from '@tremor/react';
 
-export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
+export const AppLogo = ({ smol, big, vgc }: { smol?: boolean; big?: boolean, vgc?: boolean }) => {
   const { colorMode } = useColorMode();
 
   const { data: userIsAdmin, isUserMocked } = useUserIsAdmin();
@@ -48,10 +48,13 @@ export const AppLogo = ({ smol, big }: { smol?: boolean; big?: boolean }) => {
             {process.env['NEXT_PUBLIC_ENV'] === 'staging' && (
               <Badge color='amber'>Beta</Badge>
             )}
+            {
+              vgc && <Badge color='pink'><Bold>VGC</Bold></Badge>
+            }
           </HStack>
         </LinkOverlay>
       </LinkBox>
-      {(userIsAdmin || isUserMocked) && <AdminBadge />}
+      {(userIsAdmin || isUserMocked) && !big && <AdminBadge />}
     </Stack>
   );
 };
