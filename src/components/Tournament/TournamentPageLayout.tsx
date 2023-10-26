@@ -40,7 +40,6 @@ export const TournamentPageLayout = ({
           {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
         </h1>
         <Subtitle>Standings are unofficial and may be inaccurate.</Subtitle>
-        <Ad slot='3745883635' height='50px' />
         <Flex className=' gap-2'>
           <div>
             <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
@@ -52,6 +51,7 @@ export const TournamentPageLayout = ({
             <Switch onChange={e => setShouldShowMatchPoints(e.currentTarget.checked)} />
           </div>
         </Flex>
+        <Ad slot='3745883635' height='50px' />
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}
