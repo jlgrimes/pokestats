@@ -36,6 +36,7 @@ import { Record } from '../../../Tournament/Results/ResultsList/Record';
 import { RecordIcon } from '../../../Tournament/Results/ResultsList/RecordIcon';
 import { useStandings } from '../../../../hooks/newStandings';
 import { cropPlayerName } from '../../../../lib/fetch/fetchLiveResults';
+import { formatRecord } from '../../../Tournament/Results/ResultsList/helpers';
 
 export const OpponentRoundListContent = ({
   tournament,
@@ -72,7 +73,7 @@ export const OpponentRoundListContent = ({
     <>
       <ModalHeader padding={'0.5rem 2rem'}>
         <HStack>
-          <Grid gridTemplateColumns={'2.5fr 1fr'} pr={4}>
+          <Grid gridTemplateColumns={'2fr 1fr'} pr={4}>
             <Stack spacing={0}>
               <Flex wrap='wrap' alignItems={'center'}>
                 <Text mr='2'>{player.name}</Text>
@@ -87,13 +88,7 @@ export const OpponentRoundListContent = ({
               </HStack>
             </Stack>
             <Stack spacing={0}>
-              <HStack alignItems='center'>
-                <HStack spacing={0}>
-                  <RecordIcon standing={player} tournament={tournament} />
-                  <Text fontSize='lg'>{ordinalSuffixOf(player.placing)}</Text>
-                </HStack>
-                <Record standing={player} normal />
-              </HStack>
+              <Text fontSize='lg'>{ordinalSuffixOf(player.placing) + ' ' + formatRecord(player.record)}</Text>
               <DeckInfoDisplay
                 tournament={tournament}
                 player={player}
