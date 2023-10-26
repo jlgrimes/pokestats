@@ -14,6 +14,7 @@ import { Bold, Flex, Subtitle, Text } from '@tremor/react';
 import { AgeDivisionSelector } from './AgeDivisionSelector';
 import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
 import { shortenTournamentName } from '../../lib/tournament';
+import { Ad } from '../Ad';
 
 export const TournamentPageLayout = ({
   children,
@@ -39,6 +40,7 @@ export const TournamentPageLayout = ({
           {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
         </h1>
         <Subtitle>Standings are unofficial and may be inaccurate.</Subtitle>
+        <Ad slot='3745883635' height='50px' />
         <Flex className=' gap-2'>
           <div>
             <AgeDivisionSelector urlConstructor={(division) => `/tournaments/${tournament.id}/${division}/${slug}`} />
