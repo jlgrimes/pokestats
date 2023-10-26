@@ -8,9 +8,13 @@ import { AgeDivision } from "../../../../../types/age-division";
 import { AgeDivisionSelector } from "../../../../../src/components/Tournament/AgeDivisionSelector";
 import { shortenTournamentName } from "../../../../../src/lib/tournament";
 import { Tournament } from "../../../../../types/tournament";
-import { Badge, Subtitle } from "@tremor/react";
+import { Badge, Flex, Subtitle, Text } from "@tremor/react";
+import { Switch } from "@chakra-ui/react";
+import { useState } from "react";
 
 export default function VgcStandings({ standings, tournament }: { standings: VgcStanding[], tournament: VgcTournament }) {
+  const [shouldShowMatchPoints, setShouldShowMatchPoints] = useState(false);
+
   return (
     <div className="flex flex-col">
       <Ad key='3467044708' height='50px' />
@@ -19,8 +23,18 @@ export default function VgcStandings({ standings, tournament }: { standings: Vgc
           <Badge className="ml-2" color='pink'>VGC</Badge>
       </h1>
       <Subtitle className="mt-2">Standings are unofficial and may be inaccurate.</Subtitle>
-      <AgeDivisionSelector urlConstructor={(division) => `/vgc/tournaments/${tournament.id}/${division}`} />
-      <VgcStandingList standings={standings} />
+      <Flex className='gap-2'>
+        <div>
+          <AgeDivisionSelector urlConstructor={(division) => `/vgc/tournaments/${tournament.id}/${division}`} />
+        </div>
+        <div className='flex gap-2'>
+          <Text className='text-xs'>
+            Match points
+          </Text>
+          <Switch onChange={e => setShouldShowMatchPoints(e.currentTarget.checked)} />
+        </div>
+      </Flex>
+      <VgcStandingList standings={standings} shouldShowMatchPoints={shouldShowMatchPoints} />
     </div>
   );
 }
