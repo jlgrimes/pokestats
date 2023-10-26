@@ -18,9 +18,8 @@ export interface VgcStanding {
 }
 
 export const fetchVgcStandings = async (tournamentId: number): Promise<VgcStanding[]> => {
-  const res = await supabase.from('standings_vgc').select('*').eq('tournament_id', tournamentId).order('placing', { ascending: true });
+  const res = await supabase.from('standings_vgc').select('*').eq('tournament_id', tournamentId).neq('placing', 0).order('placing', { ascending: true });
   let standings = res.data ?? [];
-  console.log(res)
 
   return standings.map((standing) => {
     const rounds: PlayerRound[] = Object.values(standing.rounds ?? {});
