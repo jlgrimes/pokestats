@@ -17,7 +17,7 @@ export const VgcTournamentLink = (props: VgcTournamentLinkProps) => {
         <Flex>
           <div>
             <LinkOverlay as={NextLink} href={`/vgc/tournaments/${props.tournament.id}/masters`}>
-              <Title>{props.tournament.name} <Badge color='pink' size="xs">VGC</Badge></Title>
+              <Title>{props.tournament.name}</Title>
             </LinkOverlay>
             <div className='flex gap-2'>
               <Subtitle>{formatTournamentDate(props.tournament as unknown as Tournament)}</Subtitle>

@@ -49,7 +49,10 @@ export const AppLogo = ({ smol, big, vgc }: { smol?: boolean; big?: boolean, vgc
               <Badge color='amber'>Beta</Badge>
             )}
             {
-              vgc && <Badge color='pink'><Bold>VGC</Bold></Badge>
+              big && vgc && <Badge color='pink'><Bold>VGC</Bold></Badge>
+            }
+            {
+              big && !vgc && <Badge color='slate'><Bold>TCG</Bold></Badge>
             }
           </HStack>
         </LinkOverlay>

@@ -1,4 +1,4 @@
-import { Tab, TabGroup, TabList } from "@tremor/react"
+import { Bold, Tab, TabGroup, TabList } from "@tremor/react"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useState } from "react";
 
@@ -23,11 +23,13 @@ export const GameSelector = () => {
 
 
   return (
-    <TabGroup className="my-2" index={index}>
-      <TabList variant="solid">
-        <Tab onClick={() => handleTabClick('/')}>TCG</Tab>
-        <Tab onClick={() => handleTabClick('/vgc')}>VGC</Tab>
-      </TabList>
-    </TabGroup>
+    <div className="flex justify-center">
+      <TabGroup className="w-auto" index={index}>
+        <TabList variant="solid">
+          <Tab onClick={() => handleTabClick('/')}><Bold className="tracking-wide">TCG</Bold></Tab>
+          <Tab onClick={() => handleTabClick('/vgc')}><Bold className="tracking-wide">VGC</Bold></Tab>
+        </TabList>
+      </TabGroup>
+    </div>
   )
 }
