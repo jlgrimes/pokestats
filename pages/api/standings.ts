@@ -24,7 +24,7 @@ export default async function handler(
 
       Object.entries(data[idx].rounds).forEach(([roundNumber, round]) => {
         data[idx].rounds[roundNumber].name = cropPlayerName(
-          (round as Record<string, any>).name
+          (round as Record<string, any>)?.name ?? ''
         );
       });
     });
