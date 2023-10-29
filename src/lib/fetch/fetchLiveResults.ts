@@ -147,5 +147,5 @@ export const getPlayerDeck = (
 export const getRoundsArray = (player?: Standing) =>
   Object.values(player?.rounds ?? {});
 
-export const cropPlayerName = (name: string) => name?.split('[')[0].trim();
+export const cropPlayerName = (name: string) => name?.split('[')[0].trim() ?? '';
 export const getPlayerRegion = (name: string) => name.match(/\[(.*?)\]/);
