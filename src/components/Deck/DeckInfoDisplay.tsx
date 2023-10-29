@@ -58,6 +58,7 @@ export const DeckInfoDisplay = memo(
     const ifShouldBlurSpecificAArchetype = useCallback(() => {
       if (tournament.tournamentStatus === 'finished') return false;
       if (tournament.topCutStatus) return false;
+      if (userIsLoggedInUser) return false;
 
       return true;
     }, [
