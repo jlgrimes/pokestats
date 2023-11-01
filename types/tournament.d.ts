@@ -87,6 +87,7 @@ export interface Standing {
   tournament_date: TournamentDate | null;
   tournament_status: TournamentStatus | null;
   tournament_round_number: number | null;
+  tournament_format: number | null;
 }
 
 export interface MatchupResult extends Standing {

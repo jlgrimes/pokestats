@@ -15,6 +15,7 @@ import { usePlayerStandings } from '../../hooks/newStandings';
 import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
 import { Callout, Card, Table, TableBody, TableRow } from '@tremor/react';
 import { padTournamentId } from '../../hooks/tournaments';
+import { useFormats } from '../../hooks/formats/formats';
 
 export const PlayerPerformanceList = ({
   user,
@@ -25,6 +26,7 @@ export const PlayerPerformanceList = ({
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user?.name);
   const { data: tournamentPerformance, isLoading } = usePlayerStandings(user, { shouldLoadOpponentRounds: true });
   const { data: userIsAdmin } = useUserIsAdmin();
+  const { data: formats } = useFormats();
 
   if (isLoading) return <FullPageLoader />;
 
@@ -39,6 +41,7 @@ export const PlayerPerformanceList = ({
         )}
       {tournamentPerformance?.map((performance: Standing) => {
         if (!performance.tournament_id) return null;
+        console.log(performance)
 
         const tournament = {
           id: String(performance.tournament_id).padStart(7, '0'),
@@ -49,7 +52,7 @@ export const PlayerPerformanceList = ({
           roundNumbers: { masters: null, seniors: null, juniors: null },
           rk9link: '',
           subStatus: null,
-          format: null,
+          format: formats?.find((format) => format.id === performance.tournament_format) ?? null,
           should_reveal_decks: {
             juniors: userMatchesLoggedInUser || performance.tournament_status === 'finished',
             seniors: userMatchesLoggedInUser || performance.tournament_status === 'finished',
