@@ -2,8 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Deck, Standing, Tournament, TournamentDate } from '../../types/tournament';
 import supabase from '../lib/supabase/client';
-import { FormatSchema } from './formats/formats';
-import { useStandings } from './newStandings';
+import { FormatSchema, useFormats } from './formats/formats';
 import { usePlayerDecks } from './playerDecks';
 
 export const fetchDecks = async (): Promise<Deck[]> => {
@@ -120,6 +119,13 @@ export const useDecks = (format?: FormatSchema, shouldNotFetchData?: boolean) =>
     queryFn: () => fetchDecks(),
     enabled: !shouldNotFetchData
   });
+
+  if (!format) {
+    return {
+      ...rest,
+      data: []
+    }
+  }
 
   if (data && format) {
     return {
