@@ -292,7 +292,7 @@ export const useFollowingStandings = (namesList: string[] | undefined, tournamen
 }
 
 export const fetchAllPlayerNames = async () => {
-  const names = await supabase.rpc('distinct_names').returns<{ name: string }[]>();
+  const names = await supabase.from('distinct_names').select('name');
   return names.data;
 }
 
