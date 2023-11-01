@@ -37,6 +37,7 @@ interface StandingsWithDecksReturnType {
   tournament_date: TournamentDate,
   tournament_status: TournamentStatus | null;
   tournament_round_number: number | null;
+  tournament_format: number | null;
 }
 
 const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => {
