@@ -28,6 +28,7 @@ import { ArchetypeSelectorProps } from './ArchetypeSelector';
 import { useTwitterLink } from '../../../../hooks/twitter';
 import AddArchetypeModal from './AddArchetypeModal';
 import { FaDog } from 'react-icons/fa';
+import { useUserIsAdmin } from '../../../../hooks/administrators';
 
 export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
   const [selectedArchetype, setSelectedArchetype] = useState<Deck | null>(null);
@@ -38,12 +39,12 @@ export const ArchetypeSelectorModal = memo((props: ArchetypeSelectorProps) => {
       shouldNotFetchData: !props.modalControls.isOpen
     });
   const addArchetypeModalControls = useDisclosure();
-  const myTwitter = useTwitterLink('jgrimesey');
+  const { data: isAdmin } = useUserIsAdmin();
 
   const filteredDecks: DeckTypeSchema[] = useMemo(
     () => [
       ...(mostPopularDecks?.filter(({ name, hide_from_selection }) => {
-        if (props.shouldHideFakeDecks && hide_from_selection) return false;
+        if (!isAdmin && hide_from_selection) return false;
 
         return (
           name.toLowerCase().includes(filterQuery.toLowerCase()) ||

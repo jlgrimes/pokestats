@@ -19,7 +19,6 @@ export interface ArchetypeSelectorProps {
   isListUp: boolean;
   shouldEnableEdits?: boolean;
   shouldHideSpecificArchetype?: boolean;
-  shouldHideFakeDecks?: boolean;
 }
 
 const ArchetypeSelector = memo((props: ArchetypeSelectorProps) => {

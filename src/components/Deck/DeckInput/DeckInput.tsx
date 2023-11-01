@@ -15,7 +15,6 @@ const DeckInput = memo(
     shouldHideVerifiedIcon,
     shouldEnableEdits,
     shouldHideSpecificArchetype,
-    shouldHideFakeDecks
   }: {
     standing: Standing;
     tournament: Tournament;
@@ -24,7 +23,6 @@ const DeckInput = memo(
     shouldHideVerifiedIcon?: boolean;
     shouldEnableEdits: boolean;
     shouldHideSpecificArchetype?: boolean;
-    shouldHideFakeDecks?: boolean
   }) => {
     const { data: userIsAdmin } = useUserIsAdmin();
     const user = useUser();
@@ -68,7 +66,6 @@ const DeckInput = memo(
         isListUp={!!standing.decklist}
         shouldHideVerifiedIcon={shouldHideVerifiedIcon}
         shouldEnableEdits={shouldEnableEdits}
-        shouldHideFakeDecks={shouldHideFakeDecks}
       />
     );
   }

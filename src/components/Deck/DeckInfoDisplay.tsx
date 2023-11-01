@@ -82,7 +82,6 @@ export const DeckInfoDisplay = memo(
           shouldHideSpecificArchetype={ifShouldBlurSpecificAArchetype()}
           shouldHideVerifiedIcon={shouldHideVerifiedIcon}
           shouldEnableEdits={enableEdits}
-          shouldHideFakeDecks={isMe}
         />
         {shouldShowEditButton && (
           <IconButton
