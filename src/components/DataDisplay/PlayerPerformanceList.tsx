@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
-import { useUserMatchesLoggedInUser } from '../../hooks/user';
+import { useUserMatchesLoggedInUser, useUserIsBanned } from '../../hooks/user';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import { Standing, Tournament } from '../../../types/tournament';
 import { CommonCard } from '../common/CommonCard';
@@ -21,6 +21,7 @@ export const PlayerPerformanceList = ({
 }: {
   user: CombinedPlayerProfile | null | undefined;
 }) => {
+  const banned = useUserIsBanned(user)
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user?.name);
   const { data: tournamentPerformance, isLoading } = usePlayerStandings(user, { shouldLoadOpponentRounds: true });
   const { data: userIsAdmin } = useUserIsAdmin();
@@ -67,7 +68,7 @@ export const PlayerPerformanceList = ({
                 <PlayerCard
                   player={performance}
                   tournament={tournament}
-                  canEditDecks={userMatchesLoggedInUser || userIsAdmin}
+                  canEditDecks={(userMatchesLoggedInUser || userIsAdmin) && !banned}
                 />
               </TableBody>
             </Table>

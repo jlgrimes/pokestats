@@ -5,6 +5,26 @@ import { getStringifiedNames } from '../lib/query-helpers';
 import supabase from '../lib/supabase/client';
 import { fetchAllPlayerNames } from './newStandings';
 
+const fetchBannedPlayers = async () => {
+  const res = await supabase.from('banned_players').select('player');
+  return res.data?.map(({ player }) => player);
+}
+
+export const useBannedPlayers = () => {
+  return useQuery({
+    queryKey: ['banned-players'],
+    queryFn: fetchBannedPlayers
+  });
+}
+
+export const useUserIsBanned = (user: CombinedPlayerProfile | null | undefined) => {
+  const { data } = useBannedPlayers();
+
+  if (!user?.id) return false;
+
+  return data?.includes(user.id) ?? false;
+}
+
 export const useUserMatchesLoggedInUser = (name: string | null | undefined) => {
   const user = useUser();
   const { data } = useSmartPlayerProfiles({

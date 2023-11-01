@@ -11,6 +11,7 @@ import { useCallback } from 'react';
 import { useColor } from '../../../hooks/useColor';
 import { PlayerCard } from '../Home/PlayerCard/PlayerCard';
 import { Table, TableBody } from '@tremor/react';
+import { useUserIsBanned } from '../../../hooks/user';
 
 export const PlayerMatchupStatus = ({
   tournament,
@@ -25,6 +26,7 @@ export const PlayerMatchupStatus = ({
   isLoggedInUser?: boolean;
   myStanding: Standing | null | undefined;
 }) => {
+  const userIsBanned = useUserIsBanned(user);
   const renderLoadingSkeleton = useCallback(
     () => <Skeleton height={63.9} />,
     []
@@ -38,7 +40,7 @@ export const PlayerMatchupStatus = ({
         <PlayerCard
           player={myStanding}
           tournament={tournament}
-          canEditDecks
+          canEditDecks={!userIsBanned}
           shouldHideOpponent
           shouldDisableOpponentModal
           isMe={!!isLoggedInUser}

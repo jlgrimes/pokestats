@@ -25,7 +25,7 @@ import {
   Tournament,
 } from '../../../../../types/tournament';
 import { useUserIsAdmin } from '../../../../hooks/administrators';
-import { useUserMatchesLoggedInUser } from '../../../../hooks/user';
+import { useUserMatchesLoggedInUser, useUserIsBanned } from '../../../../hooks/user';
 import { RoundsList } from '../../Rounds/RoundsList';
 import { useSmartPlayerProfiles } from '../../../../hooks/user';
 import { ordinalSuffixOf } from '../../../../lib/strings';
@@ -54,6 +54,7 @@ export const OpponentRoundListContent = ({
 
   const { data } = useSmartPlayerProfiles({ name: player.name });
   const playerProfile = data?.at(0);
+  const userIsBanned = useUserIsBanned(playerProfile);
 
   const opponents: { name: string; result: MatchResult }[] | undefined =
     player.rounds;
@@ -110,7 +111,7 @@ export const OpponentRoundListContent = ({
             }}
             tournament={tournament}
             shouldDisableOpponentModal
-            canEditDecks={userMatchesLoggedInUser}
+            canEditDecks={userMatchesLoggedInUser && !userIsBanned}
             userIsAdmin={userIsAdmin}
           />
         )}
