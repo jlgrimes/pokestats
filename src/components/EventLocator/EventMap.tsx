@@ -1,11 +1,21 @@
-import { GoogleApiWrapper } from 'google-maps-react';
+import { GoogleApiWrapper, IProvidedProps, InfoWindow, Map, Marker } from 'google-maps-react';
 import { Component } from 'react';
 
-const EventMap = () => {
+interface EventMapProps extends IProvidedProps {}
+
+const EventMap = (props: EventMapProps) => {
   return (
-    <div>
-      Events or something.
-    </div>
+    <Map
+      containerStyle={{
+        width: '100%',
+        height: '50%'
+      }}
+      google={props.google}
+      initialCenter={{
+        lat: 40.854885,
+        lng: -88.081807
+      }}
+    />
   )
 }
 
