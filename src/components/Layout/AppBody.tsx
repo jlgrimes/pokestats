@@ -13,7 +13,7 @@ export const AppBody = ({ children }: { children: React.ReactNode }) => {
   return (
     <Container
       id='app-layout-container'
-      maxW={router.asPath !== '/events' ? 'container.md' : 'full'}
+      maxW={'container.md'}
       paddingX={2}
       alignItems='center'
       height='calc(100% - 3rem)'

@@ -19,6 +19,7 @@ import {
   FaBars,
   FaInfo,
   FaRegCalendar,
+  FaRegCompass,
   FaRegListAlt,
   FaRegQuestionCircle,
   FaRegUser,
@@ -65,7 +66,7 @@ export const AppDrawerButton = ({
             <Grid
               paddingTop={'4.5rem'}
               templateColumns='0.6fr 1fr'
-              rowGap={'1.5rem'}
+              rowGap={'1rem'}
               alignItems={'center'}
             >
               <HStack justifyContent={'end'} paddingRight={10}>
@@ -81,6 +82,13 @@ export const AppDrawerButton = ({
 
               <Link as={NextLink} href='/decks' onClick={onClose}>
                 <Heading size='lg'>Decks</Heading>
+              </Link>
+
+              <HStack justifyContent={'end'} paddingRight={10}>
+                <Icon as={FaRegCompass} />
+              </HStack>
+              <Link as={NextLink} href='/events' onClick={onClose}>
+                <Heading size='lg'>Events</Heading>
               </Link>
 
               {userStatus !== 'logged-out' && (
@@ -114,7 +122,7 @@ export const AppDrawerButton = ({
                 <Heading size='lg'>About</Heading>
               </Link>
             </Grid>
-            <Stack padding='2rem 3.5rem' spacing={6}>
+            <Stack padding='1.5rem 3.5rem' spacing={6}>
               <Link as={NextLink} href={'/contact-us'} onClick={onClose}>
                 <Heading size='md'>Contact Us</Heading>
               </Link>
@@ -123,7 +131,7 @@ export const AppDrawerButton = ({
                 <Heading size='md'>Privacy Policy</Heading>
               </Link>
             </Stack>
-            <Stack spacing={4} padding='4.5rem 3.5rem'>
+            <Stack spacing={4} padding='3rem 3.5rem'>
               {userIsAdmin && (
                 <Stack>
                   <Heading size='lg'>Admin tools</Heading>
