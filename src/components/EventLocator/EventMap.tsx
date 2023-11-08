@@ -1,8 +1,9 @@
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Component, useEffect, useState } from 'react';
 import { EventMapProps, MapCenter } from './types';
 import { useEvents } from './useEvents';
 import { IMapProps } from 'google-maps-react';
+import { EventMarker } from './EventMarker';
 
 const debounce = (fn: Function, ms = 300) => {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -11,6 +12,7 @@ const debounce = (fn: Function, ms = 300) => {
     timeoutId = setTimeout(() => fn.apply(this, args), ms);
   };
 };
+
 
 export const EventMap = () => {
   const { isLoaded } = useJsApiLoader({
@@ -22,6 +24,7 @@ export const EventMap = () => {
     lat: 43.0859087,
     lng: -89.3723290
   });
+  const [openMarker, setOpenMarker] = useState<string | null>(null);
   const { data: events } = useEvents(center);
   console.log(events)
 
@@ -35,8 +38,7 @@ export const EventMap = () => {
       zoom={10}
     >
       {events?.map((event) => (
-      <Marker
-        position={{lat: event.address.latitude, lng: event.address.longitude}} />
+        <EventMarker event={event} openMarker={openMarker} setOpenMarker={setOpenMarker} />
       ))}
     </GoogleMap>
   ) : <></>
