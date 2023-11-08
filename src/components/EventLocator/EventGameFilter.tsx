@@ -10,7 +10,7 @@ export const EventGameFilter = (props: EventGameFilterProps) => {
   const gameList: EventGame[] = ['tcg', 'pgo'];
 
   return (
-    <TabGroup>
+    <TabGroup className="mt-2">
       <TabList variant="solid">
         {gameList.map((game) => (
           <Tab onClick={() => props.setGame(game)}><Bold className="text-sm">{game.toUpperCase()}</Bold></Tab>

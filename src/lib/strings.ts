@@ -1,4 +1,6 @@
-export const capitalize = (word: string) => word[0].toUpperCase() + word.slice(1, word.length);
+export const capitalize = (word: string) => word[0].toUpperCase() + word.slice(1, word.length).toLowerCase();
+
+export const capitalizeEveryPhrase = (word: string) => word.split(' ').map((phrase) => capitalize(phrase)).join(' ');
 
 export function ordinalSuffixOf(i: number) {
   var j = i % 10,
