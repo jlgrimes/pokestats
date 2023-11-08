@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { EventGame, MapCenter } from "./types";
-import { isAfter, parseISO } from "date-fns";
+import { isAfter, isSameDay, parseISO } from "date-fns";
 
 const fetchEvents = async (center: MapCenter, shouldShowLocals?: boolean): Promise<Record<any, any>[]> => {
   const res = await fetch(`/api/events/?lat=${center.lat}&lng=${center.lng}`);
@@ -13,6 +13,11 @@ const fetchEvents = async (center: MapCenter, shouldShowLocals?: boolean): Promi
     const aDate = parseISO(a.start_datetime);
     const bDate = parseISO(b.start_datetime);
     
+    if (isSameDay(aDate, bDate)) {
+      if (a.distance < b.distance) return -1;
+      return 1;
+    }
+
     if (isAfter(aDate, bDate)) return 1;
     return -1;
   });

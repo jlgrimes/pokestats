@@ -20,7 +20,7 @@ export const EventList = (props: EventListProps) => {
       {renderedEvents.map((event, idx) => (
         <>
           {(idx === 0 || getDate(parseISO(event.start_datetime)) !== getDate(parseISO(renderedEvents[idx - 1].start_datetime))) && (
-            <div className="pt-6">
+            <div className="pt-6 pl-2">
               <Subtitle>{format(parseISO(event.start_datetime), 'eeee MMM d, y')}</Subtitle>
             </div>
           )}

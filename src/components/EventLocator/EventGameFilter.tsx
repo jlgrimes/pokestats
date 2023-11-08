@@ -13,7 +13,7 @@ export const EventGameFilter = (props: EventGameFilterProps) => {
     <TabGroup className="mt-2">
       <TabList variant="solid">
         {gameList.map((game) => (
-          <Tab onClick={() => props.setGame(game)}><Bold className="text-sm">{game.toUpperCase()}</Bold></Tab>
+          <Tab onClick={() => props.setGame(game)}><Bold className="text-sm tracking-wide">{game.toUpperCase()}</Bold></Tab>
         ))}
       </TabList>
     </TabGroup>
