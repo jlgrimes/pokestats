@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { EventMap } from './EventMap';
 import { EventGame, MapCenter } from './types';
 import { EventList } from './EventList';
@@ -8,11 +8,20 @@ import { LocationSearch } from './LocationSearch';
 import { ComponentLoader } from '../common/ComponentLoader';
 import { Text } from '@tremor/react';
 import { Link } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
+import { EVENT_QUERY_COOKIE_KEY } from './constants';
 
 export const EventLocator = () => {
   const [center, setCenter] = useState<MapCenter | undefined>();
   const [filteredGame, setFilteredGame] = useState<EventGame>('tcg');
   const { data: events, isLoading } = useEvents(center, false, filteredGame);
+
+  useEffect(() => {
+    const cookie = Cookies.get(EVENT_QUERY_COOKIE_KEY);
+    if (cookie) {
+      setCenter(JSON.parse(cookie));
+    }
+  }, []);
 
   return (
     <div className='w-full h-full'>
