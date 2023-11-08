@@ -22,7 +22,7 @@ export const EventCard = (props: EventCardProps) => {
         </LinkOverlay>
         <div className="flex items-center">
           <Icon className="pl-0" icon={IconMapPin} size='sm' variant='simple' color='neutral' />
-          <Text>{`${props.event.distance.toFixed(0)} mi - ${capitalizeEveryPhrase(props.event.address.city)}, ${props.event.address.state}`}</Text>
+          <Text>{`${props.event.distance.toFixed(0)} mi - ${capitalizeEveryPhrase(props.event.address.city ?? props.event.address.name)}, ${props.event.address.state}`}</Text>
         </div>
       </Card>
     </LinkBox>
