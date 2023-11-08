@@ -1,12 +1,8 @@
-import { GoogleApiWrapper, IMapProps, IProvidedProps, InfoWindow, Map, Marker } from 'google-maps-react';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Component, useEffect, useState } from 'react';
-
-interface EventMapProps extends IProvidedProps {}
-
-interface MapCenter {
-  lng: number;
-  lat: number;
-}
+import { EventMapProps, MapCenter } from './types';
+import { useEvents } from './useEvents';
+import { IMapProps } from 'google-maps-react';
 
 const debounce = (fn: Function, ms = 300) => {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -16,33 +12,32 @@ const debounce = (fn: Function, ms = 300) => {
   };
 };
 
-const EventMap = (props: EventMapProps) => {
+export const EventMap = () => {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''
+  })
+
   const [center, setCenter] = useState<MapCenter>({
-    lat: 40.854885,
-    lng: -88.081807
+    lat: 43.0859087,
+    lng: -89.3723290
   });
+  const { data: events } = useEvents(center);
+  console.log(events)
 
-  useEffect(() => {
-    console.log(center)
-  }, [center]);
-
-  return (
-    <Map
-      onBoundsChanged={debounce((mapProps: IMapProps, map: any) => {
-        setCenter({ lng: map.center.lng(), lat: map.center.lat() });
-      }, 1000)}
-      containerStyle={{
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={{
         width: '100%',
         height: '50%'
       }}
-      google={props.google}
-      initialCenter={center}
-    />
-  )
+      center={center}
+      zoom={10}
+    >
+      {events?.map((event) => (
+      <Marker
+        position={{lat: event.address.latitude, lng: event.address.longitude}} />
+      ))}
+    </GoogleMap>
+  ) : <></>
 }
-
-export class MapContainer extends Component {}
- 
-export default GoogleApiWrapper({
-  apiKey: (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '')
-})(EventMap);

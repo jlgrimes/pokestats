@@ -1,4 +1,4 @@
-import EventMap from './EventMap';
+import { EventMap } from './EventMap';
 
 export const EventLocator = () => {
   return (
