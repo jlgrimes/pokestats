@@ -18,7 +18,7 @@ export const LocationSearch = (props: LocationSearchProps) => {
 
   return (
     <SearchSelect className="mt-2" icon={SearchIcon} placeholder="Search a location" onKeyUp={(evt) => getPlacePredictions({ input: (evt.target as HTMLInputElement).value })}>
-      {placePredictions.map((place) => <SearchSelectItem value={place.description} onClick={() => {
+      {placePredictions.map((place) => <SearchSelectItem key={place.description + '-search-result'} value={place.description} onClick={() => {
         placesService?.getDetails({ placeId: place.place_id}, (a) => {
           const location = a?.geometry?.location;
           props.setCenter({ lat: location?.lat(), lng: location?.lng() });

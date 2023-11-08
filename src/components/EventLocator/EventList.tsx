@@ -18,14 +18,14 @@ export const EventList = (props: EventListProps) => {
   return (
     <div>
       {renderedEvents.map((event, idx) => (
-        <>
+        <div key={'container-' + event.guid}>
           {(idx === 0 || getDate(parseISO(event.start_datetime)) !== getDate(parseISO(renderedEvents[idx - 1].start_datetime))) && (
-            <div className="pt-6 pl-2">
+            <div key={format(parseISO(event.start_datetime), 'eeee MMM d, y') + '-tournaments'} className="pt-6 pl-2">
               <Subtitle>{format(parseISO(event.start_datetime), 'eeee MMM d, y')}</Subtitle>
             </div>
           )}
-          <EventCard event={event} />
-        </>
+          <EventCard key={event.guid} event={event} />
+        </div>
       ))}
       {/* <Button variant='light' onClick={handleExpandEvents}>Show more</Button> */}
     </div>
