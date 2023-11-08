@@ -37,7 +37,7 @@ export const EventMap = (props: EventMapProps) => {
       zoom={10}
     >
       {props.events?.map((event) => (
-        <EventMarker event={event} openMarker={openMarker} setOpenMarker={setOpenMarker} />
+        <EventMarker key={'marker-' + event.guid} event={event} openMarker={openMarker} setOpenMarker={setOpenMarker} />
       ))}
     </GoogleMap>
   ) : <></>

@@ -33,7 +33,7 @@ export const EventLocator = () => {
       {!center && !isLoading && (
         <div className='px-4 py-8 flex flex-col gap-1'>
           <Text>Enter a location to find tournaments near you.</Text>
-          <Text>Refer to Pokemon's <Link href='https://events.pokemon.com/en-us/events' isExternal color='blue.500'>event locator</Link> for the most up-to-date information.</Text>
+          <Text>Refer to the <Link href='https://events.pokemon.com/en-us/events' isExternal color='blue.500'>official event locator</Link> for the most up-to-date information.</Text>
         </div>
       )}
     </div>
