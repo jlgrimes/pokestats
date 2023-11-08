@@ -27,14 +27,17 @@ const fetchEvents = async (center: MapCenter | undefined, shouldShowLocals?: boo
   return events;
 }
 
-export const useEvents = (center: MapCenter | undefined, shouldShowLocals?: boolean, filteredGame?: EventGame) => {
+export const useEvents = (center: MapCenter | undefined, shouldShowLocals?: boolean, filteredGame?: EventGame, maxDistance?: number) => {
   const { data, ...rest } =  useQuery({
     queryKey: ['events', center],
     queryFn: () => fetchEvents(center, shouldShowLocals)
   });
 
+  let transformedData = filteredGame ? data?.filter((event: Record<any, any>) => event.products.includes(filteredGame)) : data;
+  transformedData = maxDistance ? data?.filter((event: Record<any, any>) => event.distance < maxDistance) : transformedData;
+
   return {
     ...rest,
-    data: filteredGame ? data?.filter((event: Record<any, any>) => event.products.includes(filteredGame)) : data
+    data: transformedData
   }
 }

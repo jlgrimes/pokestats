@@ -6,20 +6,27 @@ import { EventGameFilter } from './EventGameFilter';
 import { useEvents } from './useEvents';
 import { LocationSearch } from './LocationSearch';
 import { ComponentLoader } from '../common/ComponentLoader';
-import { Text } from '@tremor/react';
+import { Flex, Text } from '@tremor/react';
 import { Link } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import { EVENT_QUERY_COOKIE_KEY } from './constants';
+import { EVENT_DISTANCE_SLIDER_COOKIE_KEY, EVENT_QUERY_COOKIE_KEY } from './constants';
+import { DistanceFilter } from './DistanceFilter';
 
 export const EventLocator = () => {
   const [center, setCenter] = useState<MapCenter | undefined>();
   const [filteredGame, setFilteredGame] = useState<EventGame>('tcg');
-  const { data: events, isLoading } = useEvents(center, false, filteredGame);
+  const [maxDistance, setMaxDistance] = useState<number>(250);
+  const { data: events, isLoading } = useEvents(center, false, filteredGame, maxDistance);
 
   useEffect(() => {
     const cookie = Cookies.get(EVENT_QUERY_COOKIE_KEY);
     if (cookie) {
       setCenter(JSON.parse(cookie));
+    }
+
+    const sliderCookies = Cookies.get(EVENT_DISTANCE_SLIDER_COOKIE_KEY);
+    if (sliderCookies) {
+      setMaxDistance(parseInt(sliderCookies));
     }
   }, []);
 
@@ -27,7 +34,10 @@ export const EventLocator = () => {
     <div className='w-full h-full'>
       <LocationSearch setCenter={setCenter} />
       {/* <EventMap events={events} center={center} /> */}
-      {center && <EventGameFilter game={filteredGame} setGame={setFilteredGame} />}
+      <Flex>
+        {center && <EventGameFilter game={filteredGame} setGame={setFilteredGame} />}
+        {center && <DistanceFilter maxDistance={maxDistance} setMaxDistance={setMaxDistance} />}
+      </Flex>
       {center && events && <EventList events={events} center={center} />}
       {isLoading && <ComponentLoader />}
       {!center && !isLoading && (
