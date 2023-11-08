@@ -94,7 +94,8 @@ export const usePlayerDecks = (
     tournament_date: null,
     day_two: null,
     tournament_status: null,
-    tournament_round_number: 0
+    tournament_round_number: 0,
+    tournament_format: null
   }));
 
   return {
