@@ -2,7 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { EventGame, MapCenter } from "./types";
 import { isAfter, isSameDay, parseISO } from "date-fns";
 
-const fetchEvents = async (center: MapCenter, shouldShowLocals?: boolean): Promise<Record<any, any>[]> => {
+const fetchEvents = async (center: MapCenter | undefined, shouldShowLocals?: boolean): Promise<Record<any, any>[]> => {
+  if (!center) return [];
+
   const res = await fetch(`/api/events/?lat=${center.lat}&lng=${center.lng}`);
   const data = await res.json();
   let events = data['activities'];
@@ -25,7 +27,7 @@ const fetchEvents = async (center: MapCenter, shouldShowLocals?: boolean): Promi
   return events;
 }
 
-export const useEvents = (center: MapCenter, shouldShowLocals?: boolean, filteredGame?: EventGame) => {
+export const useEvents = (center: MapCenter | undefined, shouldShowLocals?: boolean, filteredGame?: EventGame) => {
   const { data, ...rest } =  useQuery({
     queryKey: ['events', center],
     queryFn: () => fetchEvents(center, shouldShowLocals)
