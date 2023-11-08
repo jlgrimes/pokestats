@@ -6,19 +6,17 @@ import { Button } from "@tremor/react";
 
 interface EventListProps {
   center: MapCenter;
+  events: Record<any, any>[];
 }
 
 export const EventList = (props: EventListProps) => {
-  const [shownEvents, setShownEvents] = useState(10);
-  const [shouldShowLocals, setShouldShowLocals] = useState(false); // TODO: Add ablity to show leagues. Maybe. Or maybe not.
+  const [shownEvents, setShownEvents] = useState(25);
 
-  const { data: events } = useEvents(props.center, shouldShowLocals);
-
-  const handleExpandEvents = () => setShownEvents(shownEvents + 10);
+  const handleExpandEvents = () => setShownEvents(shownEvents + 25);
 
   return (
     <div>
-      {events?.map((event) => <EventCard event={event} />)}
+      {props.events?.slice(0, shownEvents).map((event) => <EventCard event={event} />)}
       <Button variant='light' onClick={handleExpandEvents}>Show more</Button>
     </div>
   )

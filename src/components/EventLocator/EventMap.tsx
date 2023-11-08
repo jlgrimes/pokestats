@@ -15,6 +15,7 @@ const debounce = (fn: Function, ms = 300) => {
 
 interface EventMapProps {
   center: MapCenter;
+  events: Record<any, any>[];
 }
 
 export const EventMap = (props: EventMapProps) => {
@@ -25,8 +26,7 @@ export const EventMap = (props: EventMapProps) => {
 
 
   const [openMarker, setOpenMarker] = useState<string | null>(null);
-  const { data: events } = useEvents(props.center);
-  
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={{
@@ -36,7 +36,7 @@ export const EventMap = (props: EventMapProps) => {
       center={props.center}
       zoom={10}
     >
-      {events?.map((event) => (
+      {props.events?.map((event) => (
         <EventMarker event={event} openMarker={openMarker} setOpenMarker={setOpenMarker} />
       ))}
     </GoogleMap>
