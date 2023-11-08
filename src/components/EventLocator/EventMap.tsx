@@ -1,40 +1,42 @@
-import { GoogleApiWrapper, IProvidedProps, InfoWindow, Map, Marker } from 'google-maps-react';
+import { GoogleApiWrapper, IMapProps, IProvidedProps, InfoWindow, Map, Marker } from 'google-maps-react';
 import { Component, useEffect, useState } from 'react';
 
 interface EventMapProps extends IProvidedProps {}
 
-interface Coords {
-  lo: number;
-  hi: number;
+interface MapCenter {
+  lng: number;
+  lat: number;
 }
 
-interface MapBounds {
-  lng: Coords;
-  lat: Coords;
-}
+const debounce = (fn: Function, ms = 300) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+  };
+};
 
 const EventMap = (props: EventMapProps) => {
-  const [bounds, setBounds] = useState<MapBounds>();
+  const [center, setCenter] = useState<MapCenter>({
+    lat: 40.854885,
+    lng: -88.081807
+  });
 
   useEffect(() => {
-    console.log(bounds)
-  }, [bounds]);
+    console.log(center)
+  }, [center]);
 
   return (
     <Map
-      onBoundsChanged={(mapProps, map, event) => {
-        const { Ga: lng, Ua: lat } = map.getBounds();
-        setBounds({ lng, lat });
-      }}
+      onBoundsChanged={debounce((mapProps: IMapProps, map: any) => {
+        setCenter({ lng: map.center.lng(), lat: map.center.lat() });
+      }, 1000)}
       containerStyle={{
         width: '100%',
         height: '50%'
       }}
       google={props.google}
-      initialCenter={{
-        lat: 40.854885,
-        lng: -88.081807
-      }}
+      initialCenter={center}
     />
   )
 }
