@@ -1,7 +1,11 @@
+import { Ad } from "../src/components/Ad";
 import { EventLocator } from "../src/components/EventLocator/EventLocator";
 
 export default function Events() {
   return (
-    <EventLocator />
+    <div>
+      <Ad slot="9823012563" height='50px' />
+      <EventLocator />
+    </div>
   );
 }
