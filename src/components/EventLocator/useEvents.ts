@@ -22,7 +22,7 @@ const fetchEvents = async (center: MapCenter, shouldShowLocals?: boolean): Promi
 
 export const useEvents = (center: MapCenter, shouldShowLocals?: boolean, filteredGame?: EventGame) => {
   const { data, ...rest } =  useQuery({
-    queryKey: ['events'],
+    queryKey: ['events', center],
     queryFn: () => fetchEvents(center, shouldShowLocals)
   });
 

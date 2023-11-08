@@ -4,6 +4,7 @@ import { EventGame, MapCenter } from './types';
 import { EventList } from './EventList';
 import { EventGameFilter } from './EventGameFilter';
 import { useEvents } from './useEvents';
+import { LocationSearch } from './LocationSearch';
 
 export const EventLocator = () => {
   const [center, setCenter] = useState<MapCenter>({
@@ -12,15 +13,13 @@ export const EventLocator = () => {
   });
   const [filteredGame, setFilteredGame] = useState<EventGame>('tcg');
   const { data: events } = useEvents(center, false, filteredGame);
-  console.log(events)
 
-  if (!events) return null;
-  
   return (
     <div className='w-full h-full'>
+      <LocationSearch setCenter={setCenter} />
       {/* <EventMap events={events} center={center} /> */}
       <EventGameFilter game={filteredGame} setGame={setFilteredGame} />
-      <EventList events={events} center={center} />
+      {events && <EventList events={events} center={center} />}
     </div>
   )
 }
