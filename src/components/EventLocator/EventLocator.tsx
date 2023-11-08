@@ -14,6 +14,7 @@ export const EventLocator = () => {
   });
   const [filteredGame, setFilteredGame] = useState<EventGame>('tcg');
   const { data: events, isLoading } = useEvents(center, false, filteredGame);
+  console.log(events)
 
   return (
     <div className='w-full h-full'>
