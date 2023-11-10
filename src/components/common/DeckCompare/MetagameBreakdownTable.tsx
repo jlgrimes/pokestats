@@ -14,6 +14,7 @@ import SpriteDisplay from '../SpriteDisplay/SpriteDisplay';
 import { getDeckHref } from './helpers';
 import { Tournament } from '../../../../types/tournament';
 import { ChartPieIcon } from '@heroicons/react/outline';
+import { trackEvent } from '../../../lib/track';
 
 export interface MetagameBreakdownTableProps<T>
   extends DeckCompareSortTogglesProps<T> {
@@ -84,7 +85,10 @@ export const MetagameBreakdownTable = <T extends string>(
         <Icon icon={ChartPieIcon} color='neutral' variant="solid" size="sm" />
       </Flex>
 
-      <Select className='mt-3' value={props.sortBy} onValueChange={(val) => props.setSort(val as T, 'desc')}>
+      <Select className='mt-3' value={props.sortBy} onValueChange={(val) => {
+        trackEvent('Metagame breakdown filter toggled', { value: val });
+        props.setSort(val as T, 'desc');
+      }}>
         <SelectItem value='played'>Day 1</SelectItem>
         <SelectItem value='day 2 played'>Day 2</SelectItem>
         <SelectItem value='day 2'>Day 2 Conversion</SelectItem>

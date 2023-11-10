@@ -15,6 +15,7 @@ import { AgeDivisionSelector } from './AgeDivisionSelector';
 import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
 import { shortenTournamentName } from '../../lib/tournament';
 import { Ad } from '../Ad';
+import { trackEvent } from '../../lib/track';
 
 export const TournamentPageLayout = ({
   children,
@@ -49,7 +50,10 @@ export const TournamentPageLayout = ({
             <Text className='text-xs'>
               Match points
             </Text>
-            <Switch onChange={e => setShouldShowMatchPoints(e.currentTarget.checked)} />
+            <Switch onChange={e => {
+              trackEvent('Show match points in standings toggled', { value: e.currentTarget.checked })
+              setShouldShowMatchPoints(e.currentTarget.checked);
+            }} />
           </div>
         </Flex>
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}

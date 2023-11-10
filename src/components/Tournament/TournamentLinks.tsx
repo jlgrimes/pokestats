@@ -15,6 +15,7 @@ import {
 import { useSessionPlayerProfile } from '../../hooks/user';
 import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import { getRK9TournamentUrl } from './helpers';
+import { trackEvent } from '../../lib/track';
 
 export const StreamIconLink = ({ tournament }: { tournament: Tournament }) => {
   const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament.id);
@@ -34,6 +35,7 @@ export const StreamIconLink = ({ tournament }: { tournament: Tournament }) => {
         target={streamLink ?? '_blank'}
         isLoading={streamLinkLoading}
         isDisabled={!streamLink}
+        onClick={() => trackEvent('Stream link clicked')}
       />
     </Box>
   );

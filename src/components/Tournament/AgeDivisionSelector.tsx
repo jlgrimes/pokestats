@@ -2,6 +2,7 @@ import { Tab, TabGroup, TabList } from "@tremor/react"
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { AgeDivision } from "../../../types/age-division";
+import { trackEvent } from "../../lib/track";
 
 interface AgeDivisionSelectorProps {
   urlConstructor?: (ageDivision: string) => string;
@@ -28,6 +29,8 @@ export const AgeDivisionSelector = (props: AgeDivisionSelectorProps) => {
     if (division === 'masters' && index === 0) return;
     if (division === 'seniors' && index === 1) return;
     if (division === 'juniors' && index === 2) return;
+
+    trackEvent('Age division tab selected', { division });
 
     if (props.urlConstructor) {
       router.push(props.urlConstructor(division));

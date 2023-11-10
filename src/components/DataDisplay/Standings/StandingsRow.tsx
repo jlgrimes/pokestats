@@ -12,6 +12,7 @@ import { Bold, Flex, Icon, Text } from '@tremor/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { MatchPoints } from '../../Tournament/Results/ResultsList/MatchPoints';
 import { FaRunning } from 'react-icons/fa';
+import { trackEvent } from '../../../lib/track';
 
 interface StandingsCellProps extends PropsWithChildren {
   className?: string;
@@ -75,7 +76,10 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
       )}
       <StandingsCell
         className={`align-middle whitespace-normal break-normal ${props.result.drop && props.result.drop > 0 ? 'text-red-600' : ''} ${!props.shouldDisableOpponentModal ? 'cursor-pointer' : ''}`}
-        onClick={onOpen}
+        onClick={() => {
+          trackEvent('Opponent round modal opened', { isMe: props.isMe });
+          onOpen();
+        }}
       >
         <Flex>
           <Text className={`dark:text-neutral-300 ${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>

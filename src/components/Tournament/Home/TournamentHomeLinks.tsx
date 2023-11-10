@@ -28,6 +28,7 @@ import { useUserIsAdmin } from '../../../hooks/administrators';
 import { OpenEditTournamentInfo } from '../../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 import AddArchetypeModal from '../../Deck/DeckInput/ArchetypeSelector/AddArchetypeModal';
 import { getRK9TournamentUrl } from '../helpers';
+import { trackEvent } from '../../../lib/track';
 
 interface TournamentHomeLinksProps {
   tournament: Tournament;
@@ -54,6 +55,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         as={NextLink}
         href={`${router.asPath}/masters/standings`}
         isDisabled={props.tournament.tournamentStatus === 'not-started'}
+        onClick={() => trackEvent('Standings link clicked')}
       >
         Standings
       </Button>
@@ -62,6 +64,7 @@ export const TournamentHomeLinks = (props: TournamentHomeLinksProps) => {
         as={NextLink}
         href={getRK9TournamentUrl(props.tournament.rk9link, 'pairings')}
         target='_blank'
+        onClick={() => trackEvent('RK9 pairings link clicked')}
       >
         <HStack spacing={1.5}>
           <Text>RK9 Pairings</Text>

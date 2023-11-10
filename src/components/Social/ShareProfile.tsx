@@ -1,6 +1,7 @@
 import { IconButton, useToast } from '@chakra-ui/react';
 import { FaCopy, FaShare, FaShareAlt, FaShareAltSquare } from 'react-icons/fa';
 import { useIsMobile } from '../../hooks/device';
+import { trackEvent } from '../../lib/track';
 
 interface ShareProfileProps {
   username: string;
@@ -12,6 +13,8 @@ export const ShareProfile = (props: ShareProfileProps) => {
 
   const handleClick = async () => {
     const url = `https://pokestats.live/player/${props.username}`;
+
+    trackEvent('Share profile button clicked');
 
     if (isMobile && !!navigator.share) {
       try {

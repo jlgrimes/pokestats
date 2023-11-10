@@ -8,6 +8,7 @@ import { PinnedPlayerCard } from './PinnedPlayerCard';
 import { PinPlayerModal } from './PinPlayerModal';
 import { useFollowingStandings, useStandings } from '../../../../hooks/newStandings';
 import { FullWidthCard } from '../../../common/new/FullWidthCard';
+import { trackEvent } from '../../../../lib/track';
 
 interface PinnedPlayerListProps {
   tournament: Tournament;
@@ -47,7 +48,10 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
           <Flex className='flex gap-8 px-5 pb-4'>
             <Button
               icon={UserAddIcon}
-              onClick={addPinPlayerModalControls.onOpen}
+              onClick={() => {
+                trackEvent('Follow player button clicked')
+                addPinPlayerModalControls.onOpen();
+              }}
               disabled={props.tournament.tournamentStatus === 'not-started'}
               variant='light'
             >
@@ -56,7 +60,10 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             {pinnedPlayers && pinnedPlayers.length > 0 && (
               <Button
                 icon={UserRemoveIcon}
-                onClick={editPinnedPlayers.onToggle}
+                onClick={() => {
+                  trackEvent('Edit following button clicked', { desiredState: !editPinnedPlayers.isOpen })
+                  editPinnedPlayers.onToggle();
+                }}
                 disabled={props.tournament.tournamentStatus === 'not-started'}
                 variant='light'
               >
@@ -102,7 +109,10 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
             )}
             <Button
               icon={UserAddIcon}
-              onClick={addPinPlayerModalControls.onOpen}
+              onClick={() => {
+                trackEvent('Follow player button clicked when zero following')
+                addPinPlayerModalControls.onOpen();
+              }}
               disabled={props.tournament.tournamentStatus === 'not-started'}
             >
               Follow player

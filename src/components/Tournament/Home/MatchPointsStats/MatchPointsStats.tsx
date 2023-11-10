@@ -12,6 +12,7 @@ import {
 import { Box, Switch } from '@chakra-ui/react';
 import { CalculatorIcon } from '@heroicons/react/outline';
 import { useCallback, useState } from 'react';
+import { trackEvent } from '../../../../lib/track';
 
 const humanizeMatchPoints = (
   points: number,
@@ -138,7 +139,10 @@ export const MatchPointsStats = (props: MatchPointsStatsProps) => {
           <Subtitle className='mb-4'>{props.tournament.name}</Subtitle>
         </div>
         <div className='flex gap-2 items-center'>
-          <Switch onChange={e => setShowRecords(!e.currentTarget.checked)} />
+          <Switch onChange={e => {
+            trackEvent('Show match points placement divisions toggled', { value: !e.currentTarget.checked });
+            setShowRecords(!e.currentTarget.checked);
+          }} />
           <Text className='text-xs'>
             Points
           </Text>

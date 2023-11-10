@@ -10,6 +10,7 @@ import NextLink from 'next/link';
 import { useUserIsAdmin } from '../../../hooks/administrators';
 import { AdminBadge } from '../../common/AdminBadge';
 import { Badge, Bold } from '@tremor/react';
+import { trackEvent } from '../../../lib/track';
 
 export const AppLogo = ({ smol, big, vgc }: { smol?: boolean; big?: boolean, vgc?: boolean }) => {
   const { colorMode } = useColorMode();
@@ -24,7 +25,7 @@ export const AppLogo = ({ smol, big, vgc }: { smol?: boolean; big?: boolean, vgc
       justifyContent={'center'}
     >
       <LinkBox>
-        <LinkOverlay href={`/`} as={NextLink}>
+        <LinkOverlay href={`/`} as={NextLink} onClick={() => trackEvent('App bar logo clicked')}>
           <HStack spacing={1} alignItems='baseline'>
             <Stack direction={'row'} alignItems='baseline' spacing={0}>
               <Heading
