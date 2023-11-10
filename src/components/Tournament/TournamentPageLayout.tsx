@@ -37,7 +37,7 @@ export const TournamentPageLayout = ({
     <Stack spacing={0} height='100%' overflow='hidden' id='tournament-page-layout'>
       <Stack paddingTop={2} spacing={1}>
         <Ad slot='3745883635' height='50px' />
-        <h1 className="text-xl font-bold leading-snug text-slate-700 ml-1">
+        <h1 className="text-xl font-bold leading-snug text-slate-700 dark:text-slate-300 ml-1">
           {`${shortenTournamentName(tournament)} ${capitalize(slug as string)}`}
         </h1>
         <Subtitle className='ml-1'>Standings are unofficial and may be inaccurate.</Subtitle>

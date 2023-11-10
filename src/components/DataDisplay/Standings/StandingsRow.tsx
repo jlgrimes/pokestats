@@ -26,7 +26,7 @@ export const StandingsCell = (props: StandingsCellProps) => {
     ...rest
   } = props;
 
-  return <td {...rest} className={'align-middle ' + className ?? ''}>{props.children}</td>;
+  return <td {...rest} className={'dark:text-neutral-300 align-middle ' + className ?? ''}>{props.children}</td>;
 }
 
 
@@ -58,7 +58,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
     <>
       {!props.shouldHideStanding && !props.isCurrentlyPlayingInTopCut && (
         <StandingsCell className='w-8'>
-          <Text className='text-right mr-2'>
+          <Text className='text-right mr-2 dark:text-neutral-300'>
             {/* <RecordIcon
               standing={props.result}
               tournament={props.tournament as Tournament}
@@ -78,7 +78,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         onClick={onOpen}
       >
         <Flex>
-          <Text className={`${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
+          <Text className={`dark:text-neutral-300 ${ifPlayerDay2(props.result, props.tournament) ? 'font-bold' : 'font-normal'}`}>
             {props.result.name}
           </Text>
           {props.result.drop && props.result.drop > 0 && <Icon icon={FaRunning} color='red' />}

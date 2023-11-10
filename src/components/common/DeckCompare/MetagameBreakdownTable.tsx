@@ -104,7 +104,7 @@ export const MetagameBreakdownTable = <T extends string>(
       ) : props.decks.length === 0 ? (
         <NoDataDisplay />
       ) : (
-          <BarList data={data} className='mt-2 [&>div>.tremor-BarList-labelWrapper]:h-10 [&>div>.tremor-BarList-labelWrapper]:after:content-["%"] [&>div>div>div]:items-center [&>div>div>div]:gap-4 [&>div>.tremor-BarList-bar]:h-10' />
+          <BarList data={data} className='mt-2 dark:[&>div>.tremor-BarList-bar]:bg-indigo-900 [&>div>.tremor-BarList-labelWrapper]:h-10 [&>div>.tremor-BarList-labelWrapper]:after:content-["%"] [&>div>div>div]:items-center [&>div>div>div]:gap-4 [&>div>.tremor-BarList-bar]:h-10' />
       )}
       <Subtitle className='mt-3'>{`Decks known: ${props.numKnown}/${props.tournament.players.masters}`}</Subtitle>
     </Card>

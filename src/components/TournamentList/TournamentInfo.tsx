@@ -17,7 +17,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
 
   return (
     <Flex>
-      <div>
+      <div className='flex flex-col gap-1'>
       <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`}>
         <Title>{props.tournament.name}</Title>
       </LinkOverlay>

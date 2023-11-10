@@ -27,7 +27,7 @@ export default function VgcStandings({ standings, tournament }: { standings: Vgc
   return (
     <div className="flex flex-col">
       <Ad key='3467044708' height='50px' />
-      <h1 className="text-xl font-bold leading-snug text-slate-700 ml-1">
+      <h1 className="text-xl font-bold leading-snug text-slate-700 dark:text-slate-300 ml-1">
           {`${shortenTournamentName(tournament)} Standings`}
           <Badge className="ml-2" color='pink'>VGC</Badge>
       </h1>
