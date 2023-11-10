@@ -19,6 +19,7 @@ import { StickyHeader } from '../../common/Layout/StickyHeader';
 import { SearchBar } from './Search/SearchBar';
 import supabase from '../../../lib/supabase/client';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { trackEvent } from '../../../lib/track';
 
 export const AppBar = () => {
   const {
@@ -75,6 +76,7 @@ export const AppBar = () => {
                         : `/profile`
                       : `/setup-profile`
                   }
+                  onClick={() => trackEvent('Profile icon clicked', { isUserProfileSetup: !!userProfile })}
                 >
                   <Stack direction={'row'} alignItems='end' spacing={-1.5}>
                     {!userProfile?.image ? (
@@ -101,14 +103,15 @@ export const AppBar = () => {
             <IconButton
               size={'sm'}
               variant='outline'
-              onClick={() =>
+              onClick={() => {
+                trackEvent('Sign in button clicked');
                 supabaseClient.auth.signInWithOAuth({
                   provider: 'google',
                   options: {
                     redirectTo: window.location.origin,
                   },
                 })
-              }
+              }}
               aria-label='log in'
               icon={<FaUser />}
             />

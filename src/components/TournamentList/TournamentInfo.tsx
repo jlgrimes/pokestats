@@ -6,8 +6,7 @@ import { formatTournamentDate } from './helpers';
 import { TournamentStatusBadges } from './TournamentStatusBadges';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
 import { useCountryCode } from '../../hooks/tournamentMetadata';
-import { StatusOnlineIcon } from '@heroicons/react/outline';
-import { track } from '@vercel/analytics/react';
+import { trackEvent } from '../../lib/track';
 
 interface TournamentInfoProps {
   tournament: Tournament;
@@ -19,7 +18,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
   return (
     <Flex>
       <div className='flex flex-col gap-1'>
-      <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`} onClick={() => track('Tournament card clicked', { tournament: props.tournament.name })}>
+      <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`} onClick={() => trackEvent('Tournament card clicked', { tournament: props.tournament.name })}>
         <Title>{props.tournament.name}</Title>
       </LinkOverlay>
         <div className='flex gap-2'>

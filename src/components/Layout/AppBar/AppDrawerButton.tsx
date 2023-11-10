@@ -30,6 +30,7 @@ import { AccountRequestLink } from '../AccountRequestsLink';
 import { LogInOutButton } from './LogInOutButton';
 import { IconCards } from '@tabler/icons-react';
 import { DarkModeToggle } from '../../DarkModeToggle/DarkModeToggle';
+import { trackEvent } from '../../../lib/track';
 
 export type UserStatus = 'logged-out' | 'not-setup' | 'setup';
 
@@ -50,7 +51,10 @@ export const AppDrawerButton = ({
         ref={btnRef.current}
         icon={<FaBars />}
         aria-label='Open drawer'
-        onClick={onOpen}
+        onClick={() => {
+          trackEvent('App drawer button clicked');
+          onOpen();
+        }}
         variant='ghost'
       />
       <Drawer
@@ -72,7 +76,10 @@ export const AppDrawerButton = ({
               <HStack justifyContent={'end'} paddingRight={10}>
                 <Icon as={FaRegCalendar} />
               </HStack>
-              <Link as={NextLink} href='/tournaments' onClick={onClose}>
+              <Link as={NextLink} href='/tournaments' onClick={() => {
+                trackEvent('Tournaments drawer link clicked');
+                onClose();
+              }}>
                 <Heading size='lg'>Tournaments</Heading>
               </Link>
 
@@ -80,14 +87,20 @@ export const AppDrawerButton = ({
                 <Icon as={IconCards} />
               </HStack>
 
-              <Link as={NextLink} href='/decks' onClick={onClose}>
+              <Link as={NextLink} href='/decks' onClick={() => {
+                trackEvent('Decks drawer link clicked');
+                onClose();
+              }}>
                 <Heading size='lg'>Decks</Heading>
               </Link>
 
               <HStack justifyContent={'end'} paddingRight={10}>
                 <Icon as={FaRegCompass} />
               </HStack>
-              <Link as={NextLink} href='/events' onClick={onClose}>
+              <Link as={NextLink} href='/events' onClick={() => {
+                trackEvent('Events drawer link clicked');
+                onClose();
+              }}>
                 <Heading size='lg'>Events</Heading>
               </Link>
 
@@ -118,16 +131,25 @@ export const AppDrawerButton = ({
                 <Icon as={FaInfo} />
               </HStack>
 
-              <Link as={NextLink} href={'/about'} onClick={onClose}>
+              <Link as={NextLink} href={'/about'} onClick={() => {
+                trackEvent('About drawer link clicked');
+                onClose();
+              }}>
                 <Heading size='lg'>About</Heading>
               </Link>
             </Grid>
             <Stack padding='1.5rem 3.5rem' spacing={6}>
-              <Link as={NextLink} href={'/contact-us'} onClick={onClose}>
+              <Link as={NextLink} href={'/contact-us'} onClick={() => {
+                trackEvent('Contact us drawer link clicked');
+                onClose();
+              }}>
                 <Heading size='md'>Contact Us</Heading>
               </Link>
 
-              <Link as={NextLink} href={'/privacy-policy'} onClick={onClose}>
+              <Link as={NextLink} href={'/privacy-policy'} onClick={() => {
+                trackEvent('Privacy policy drawer link clicked');
+                onClose();
+              }}>
                 <Heading size='md'>Privacy Policy</Heading>
               </Link>
             </Stack>

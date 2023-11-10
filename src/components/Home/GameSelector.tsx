@@ -1,7 +1,7 @@
 import { Bold, Tab, TabGroup, TabList } from "@tremor/react"
-import { track } from "@vercel/analytics/react";
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useState } from "react";
+import { trackEvent } from "../../lib/track";
 
 export const GameSelector = () => {
   const router = useRouter();
@@ -19,7 +19,7 @@ export const GameSelector = () => {
   }, [path]);
 
   const handleTabClick = useCallback((route: string) => {
-    track('Game selector tab clicked', { game: route === '/vgc' ? 'vgc' : 'tcg' });
+    trackEvent('Game selector tab clicked', { game: route === '/vgc' ? 'vgc' : 'tcg' });
     router.push(route)
   }, [index]);
 

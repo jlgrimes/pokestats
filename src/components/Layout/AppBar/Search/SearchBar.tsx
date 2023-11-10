@@ -25,7 +25,8 @@ import { normalizeName } from '../../../../hooks/user';
 import { trimQuery } from './helpers';
 import { SearchResultType } from './search-types';
 import { SearchBarResults } from './SearchBarResults';
-import { SearchResult } from './SearchResult';
+import { useRouter } from 'next/router';
+import { trackEvent } from '../../../../lib/track';
 
 interface SearchBarProps {
   shouldCollapsePlaceholder: boolean;
@@ -67,6 +68,7 @@ export function getRelevantSearchResults<T>(
 
 export const SearchBar = (props: SearchBarProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { asPath } = useRouter();
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -90,7 +92,10 @@ export const SearchBar = (props: SearchBarProps) => {
           leftIcon={<SearchIcon />}
           flexGrow={1}
           justifyContent='flex-start'
-          onClick={onOpen}
+          onClick={() => {
+            onOpen();
+            trackEvent('Search bar clicked', { location: asPath })
+          }}
           maxWidth={'30rem'}
         >
           <Text fontWeight='normal' color='gray'>
