@@ -47,7 +47,6 @@ export const TournamentList = ({
             tournament={tournament}
             champion={champions ? champions.find((standing) => standing.tournament_id === parseInt(tournament.id)) : undefined}
           />
-          <TopDecks tournament={tournament} />
         </div>
       ))
     }</>
