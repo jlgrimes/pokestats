@@ -14,6 +14,7 @@ import { useTwitterLink } from '../hooks/twitter';
 import { useColor } from '../hooks/useColor';
 import Image from 'next/image';
 import { TCGPLAYER_AFFILIATE_URL } from '../lib/url';
+import { track } from '@vercel/analytics/react';
 
 export const Footer = () => {
   const myTwitter = useTwitterLink('jgrimesey');
@@ -22,7 +23,7 @@ export const Footer = () => {
   return (
     <Stack padding={6} justifyContent={'center'} alignItems='center'>
       <HStack spacing={4}>
-        <Link href={TCGPLAYER_AFFILIATE_URL} isExternal>
+        <Link href={TCGPLAYER_AFFILIATE_URL} isExternal onClick={() => track('TCGPlayer affiliate link clicked')}>
           <Image
             src='/Powered-By-TCGplayer-Primary-Horizontal-RGB_500px.png'
             width='200'
