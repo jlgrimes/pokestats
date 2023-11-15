@@ -10,12 +10,13 @@ import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { capitalize } from '../../lib/strings';
 import { StatsHeading } from '../common/StatsHeading';
 import { PageTitle } from '../common/new/PageTitle';
-import { Bold, Flex, Subtitle, Text } from '@tremor/react';
+import { Bold, Flex, Subtitle, Text, TextInput } from '@tremor/react';
 import { AgeDivisionSelector } from './AgeDivisionSelector';
 import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
 import { shortenTournamentName } from '../../lib/tournament';
 import { Ad } from '../Ad';
 import { trackEvent } from '../../lib/track';
+import { SearchIcon } from '@heroicons/react/outline';
 
 export const TournamentPageLayout = ({
   children,
@@ -26,7 +27,7 @@ export const TournamentPageLayout = ({
 }) => {
   useFixAutoHeight();
   const { colorMode } = useColorMode();
-  const { setShouldShowMatchPoints } = useContext(StandingsPageContext);
+  const { setShouldShowMatchPoints, setNameFilter } = useContext(StandingsPageContext);
 
   const router = useRouter();
   const splitPath: string[] = router.route ? router.route.split('/') : [];
@@ -56,6 +57,7 @@ export const TournamentPageLayout = ({
             }} />
           </div>
         </Flex>
+        <TextInput icon={SearchIcon} placeholder='Search a player' onKeyUp={(e) => setNameFilter((e.target as HTMLInputElement).value)} />
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}

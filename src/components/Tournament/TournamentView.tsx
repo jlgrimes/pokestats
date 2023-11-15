@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Tournament } from '../../../types/tournament';
 import { AgeDivision } from '../../../types/age-division';
 import { FullPageLoader } from '../common/FullPageLoader';
@@ -9,6 +9,7 @@ import { StandingsFilterContainer } from './Results/Filters/StandingsFilterConta
 import { StandingsFilters } from './Results/Filters/StandingsFilterMenu';
 import { useStandings } from '../../hooks/newStandings';
 import { getShouldHideDecks } from '../../hooks/tournaments';
+import { StandingsPageContext } from '../../../pages/tournaments/[id]/[division]/standings';
 
 export default function TournamentView({
   tournament,
@@ -38,6 +39,7 @@ export default function TournamentView({
     tournament,
     ageDivision
   });
+  const { nameFilter } = useContext(StandingsPageContext);
 
   const shouldHideDecks = getShouldHideDecks(tournament, ageDivision);
 
@@ -65,7 +67,7 @@ export default function TournamentView({
       /> */}
       {liveResults && (
         <StandingsList
-          results={liveResults}
+          results={liveResults.filter(({ name }) => nameFilter.length === 0 || name.toLowerCase().includes(nameFilter.toLowerCase()))}
           tournament={tournament}
           shouldHideDecks={shouldHideDecks}
         />

@@ -12,7 +12,9 @@ import { createContext, useState } from 'react';
 
 export const StandingsPageContext = createContext({
   shouldShowMatchPoints: false,
-  setShouldShowMatchPoints: (should: boolean) => {}
+  setShouldShowMatchPoints: (should: boolean) => {},
+  nameFilter: '',
+  setNameFilter: (name: string) => {},
 });
 
 export default function TournamentPage({
@@ -23,8 +25,10 @@ export default function TournamentPage({
   ageDivision: AgeDivision;
 }) {
   const [shouldShowMatchPoints, setShouldShowMatchPoints] = useState(false);
+  const [nameFilter, setNameFilter] = useState('');
+
   return (
-    <StandingsPageContext.Provider value={{ shouldShowMatchPoints, setShouldShowMatchPoints }}>
+    <StandingsPageContext.Provider value={{ shouldShowMatchPoints, setShouldShowMatchPoints, nameFilter, setNameFilter }}>
       <TournamentPageLayout tournament={tournament}>
         <TournamentView tournament={tournament} ageDivision={ageDivision} />
       </TournamentPageLayout>
