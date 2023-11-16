@@ -57,7 +57,7 @@ export const TournamentPageLayout = ({
             }} />
           </div>
         </Flex>
-        <TextInput icon={SearchIcon} placeholder='Search a player' onKeyUp={(e) => setNameFilter((e.target as HTMLInputElement).value)} />
+        <TextInput icon={SearchIcon} placeholder='Search a player' onClick={() => trackEvent('Search player input clicked')} onKeyUp={(e) => setNameFilter((e.target as HTMLInputElement).value)} />
         {/* <TournamentStatusBadge tournament={tournament} size='md' /> */}
       </Stack>
       {children}
