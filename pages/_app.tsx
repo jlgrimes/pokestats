@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { AppLayout } from '../src/components/Layout/AppLayout';
 import { SessionProvider } from 'next-auth/react';
 import { Analytics } from '@vercel/analytics/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import Head from 'next/head';
@@ -20,6 +20,12 @@ export default function App({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
+      <script
+        async
+        src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3066736963130742'
+        crossOrigin='anonymous'
+      ></script>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       <AppLayout dehydratedState={pageProps.dehydratedState}>
         {/* <Head>
           <script
