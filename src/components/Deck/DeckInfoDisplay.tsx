@@ -89,7 +89,7 @@ export const DeckInfoDisplay = memo(
             aria-label='edit'
             variant={'unstyled'}
             size='sm'
-            color='pink.500'
+            color='gray.500'
             minWidth={0}
             onClick={e => {
               e.stopPropagation();
