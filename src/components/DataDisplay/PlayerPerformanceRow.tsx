@@ -36,7 +36,7 @@ export const PlayerPerformanceRow = (props: PlayerPerformanceRowProps) => {
           isMe={userMatchesLoggedInUser}
         />
       </StandingsCell>
-      <StandingsCell className='text-right pr-2'>
+      <StandingsCell className='text-right'>
         <Text className={props.performance.day_two ? 'font-bold' : ''}>
           {ordinalSuffixOf(props.performance.placing)}
         </Text>
