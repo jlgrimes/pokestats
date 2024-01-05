@@ -44,7 +44,7 @@ export const ShareProfile = (props: ShareProfileProps) => {
       colorScheme={'blue'}
       size='sm'
       aria-label='share profile'
-      icon={<FaShare />}
+      icon={<FaCopy />}
       onClick={handleClick}
     />
   );

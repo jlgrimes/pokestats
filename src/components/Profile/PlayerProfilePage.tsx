@@ -18,6 +18,7 @@ import { ShareProfile } from '../Social/ShareProfile';
 import { Username } from './Username';
 import { UsernameEditable } from './UsernameEditable';
 import { usePlayerStandings } from '../../hooks/newStandings';
+import { Flex } from '@tremor/react';
 
 export interface PlayerProfilePageProps {
   profile: CombinedPlayerProfile;
@@ -32,9 +33,9 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
   if (finalResultsAreLoading) return <FullPageLoader />;
 
   return (
-    <Stack>
-      <Stack spacing={0} alignItems='center'>
-        <Heading>{props.profile.preferred_name ?? props.profile.name}</Heading>
+    <div>
+      <Flex className='mt-2 flex-col'>
+        <Heading color='gray.800'>{props.profile.preferred_name ?? props.profile.name}</Heading>
         <HStack>
           {props.userIsLoggedInUser ? (
             <UsernameEditable
@@ -49,17 +50,14 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
           {sessionContext.isLoading && <ComponentLoader />}
           {!sessionContext.isLoading && (
             <>
-              {props.userIsLoggedInUser && props.profile.username && (
-                <ShareProfile username={props.profile.username} />
-              )}
               {!props.userIsLoggedInUser && props.profile.name && (
                 <FollowButton playerName={props.profile.name} />
               )}
             </>
           )}
         </HStack>
-      </Stack>
+      </Flex>
       <PlayerPerformanceList user={props.profile} />
-    </Stack>
+    </div>
   );
 };
