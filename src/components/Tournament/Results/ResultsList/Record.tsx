@@ -44,7 +44,7 @@ export const Record = ({
     }
 
     return (
-      <Bold>
+      <Bold className='whitespace-nowrap'>
         {formatRecord(standing.record)}
       </Bold>
     );

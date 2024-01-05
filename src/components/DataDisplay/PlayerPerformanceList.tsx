@@ -1,31 +1,25 @@
 import {
   Text,
   Stack,
+  useDisclosure,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import { CombinedPlayerProfile } from '../../../types/player';
 import { useUserMatchesLoggedInUser, useUserIsBanned } from '../../hooks/user';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import { Standing, Tournament } from '../../../types/tournament';
-import { CommonCard } from '../common/CommonCard';
-import { PlayerCard } from '../Tournament/Home/PlayerCard/PlayerCard';
 import { FullPageLoader } from '../common/FullPageLoader';
-import { TournamentInfo } from '../TournamentList/TournamentInfo';
 import { usePlayerStandings } from '../../hooks/newStandings';
-import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
-import { Callout, Card, Table, TableBody, TableRow } from '@tremor/react';
-import { padTournamentId } from '../../hooks/tournaments';
+import { Table, TableBody } from '@tremor/react';
 import { useFormats } from '../../hooks/formats/formats';
+import { PlayerPerformanceRow } from './PlayerPerformanceRow';
 
 export const PlayerPerformanceList = ({
   user,
 }: {
   user: CombinedPlayerProfile | null | undefined;
 }) => {
-  const banned = useUserIsBanned(user)
   const userMatchesLoggedInUser = useUserMatchesLoggedInUser(user?.name);
   const { data: tournamentPerformance, isLoading } = usePlayerStandings(user, { shouldLoadOpponentRounds: true });
-  const { data: userIsAdmin } = useUserIsAdmin();
   const { data: formats } = useFormats();
 
   if (isLoading) return <FullPageLoader />;
@@ -39,7 +33,9 @@ export const PlayerPerformanceList = ({
             <Text>{`If you've registered for an upcoming tournament, that tournament will show up once it has started.`}</Text>
           </Stack>
         )}
-      {tournamentPerformance?.map((performance: Standing) => {
+      <Table>
+        <TableBody>
+          {tournamentPerformance?.map((performance: Standing) => {
         if (!performance.tournament_id) return null;
         console.log(performance)
 
@@ -61,24 +57,16 @@ export const PlayerPerformanceList = ({
         } as Tournament;
 
         return (
-          <div key={`${performance.tournament_id}-${performance.name}`}>
-          <Card className='px-6 py-4 mb-2'>
-            <TournamentInfo tournament={tournament} />
-          </Card>
-          <Card className='p-2'>
-            <Table>
-              <TableBody>
-                <PlayerCard
-                  player={performance}
-                  tournament={tournament}
-                  canEditDecks={(userMatchesLoggedInUser || userIsAdmin) && !banned}
-                />
-              </TableBody>
-            </Table>
-           </Card>
-          </div>
+          <PlayerPerformanceRow
+            key={`${performance.tournament_id}-${performance.name}`}
+            performance={performance}
+            tournament={tournament}
+            user={user}
+          />
         );
       })}
+        </TableBody>
+      </Table>
     </div>
   );
 };
