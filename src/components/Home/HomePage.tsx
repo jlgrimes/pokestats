@@ -14,6 +14,7 @@ import { GameSelector } from './GameSelector';
 import { SupportUsCallout } from './SupportUsCallout';
 import { Flex } from '@tremor/react';
 import { AppLogo } from '../Layout/AppBar/AppLogo';
+import { useShouldRemoveAds } from '../../hooks/ads';
 
 export interface HomePageProps {
   tournaments: Tournament[];
@@ -24,6 +25,7 @@ export const HomePage = (props: HomePageProps) => {
     props.tournaments
   );
   const { header, subheader } = useColor();
+  const shouldRemoveAds = useShouldRemoveAds();
 
   return (
     <Stack spacing={4}>
@@ -31,7 +33,7 @@ export const HomePage = (props: HomePageProps) => {
         <AppLogo big />
         <GameSelector />
       </Flex>
-      <SupportUsCallout />
+      {!shouldRemoveAds && <SupportUsCallout />}
       <Ad />
       <RecentTournaments tournaments={props.tournaments} />
       {/* <LeaderboardCard /> */}

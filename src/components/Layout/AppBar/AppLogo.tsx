@@ -52,7 +52,7 @@ export const AppLogo = ({ smol, big, vgc }: { smol?: boolean; big?: boolean, vgc
           </HStack>
         </LinkOverlay>
       </LinkBox>
-      {(userIsAdmin || isUserMocked) && !big && <AdminBadge />}
+      {(userIsAdmin || isUserMocked) && <AdminBadge />}
     </Stack>
   );
 };
