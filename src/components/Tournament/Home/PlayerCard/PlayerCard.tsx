@@ -80,7 +80,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
       >
         {props.roundNumber && (
           <StandingsCell className='pl-2 w-10  text-right'>
-            <Bold className={`text-gray-500 dark:text-neutral-400 font-black text-lg text-right`}>
+            <Bold className={`font-black text-lg text-right`}>
               {props.roundNumber}
             </Bold>
           </StandingsCell>

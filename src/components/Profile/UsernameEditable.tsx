@@ -133,9 +133,6 @@ export const UsernameEditable = (props: UsernameEditableProps) => {
 
   return (
     <>
-      {props.profile.username ? (
-        <Username>{props.profile.username}</Username>
-      ) : null}
       {props.userIsLoggedInUser && !props.profile.username && (
         <Button
           size='sm'

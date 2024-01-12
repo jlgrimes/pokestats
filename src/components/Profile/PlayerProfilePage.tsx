@@ -37,15 +37,11 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
       <Flex className='mt-2 flex-col'>
         <Heading>{props.profile.preferred_name ?? props.profile.name}</Heading>
         <HStack>
-          {props.userIsLoggedInUser ? (
+          {props.userIsLoggedInUser && (
             <UsernameEditable
               profile={props.profile}
               userIsLoggedInUser={props.userIsLoggedInUser}
             />
-          ) : (
-            props.profile.username && (
-              <Username>{props.profile.username}</Username>
-            )
           )}
           {sessionContext.isLoading && <ComponentLoader />}
           {!sessionContext.isLoading && (
