@@ -16,7 +16,6 @@ import Head from 'next/head';
 import { userMockContext } from '../../contexts/MockUserContext';
 import { useFixAutoHeight } from '../../hooks/useFixAutoHeight';
 import { AppBody } from './AppBody';
-import { BetaBanner } from './BetaBanner';
 
 const theme = extendTheme({
   fonts: {
@@ -45,7 +44,6 @@ export const AppLayout = ({
 }) => {
   useFixAutoHeight();
   const [queryClient] = useState(() => new QueryClient(queryClientConfig));
-  const router = useRouter();
   const [shouldMockUser, setShouldMockUser] = useState(false);
 
   return (
