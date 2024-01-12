@@ -31,7 +31,7 @@ export const Footer = () => {
             alt='TCGplayer Affiliate Link'
           />
         </Link>
-        <Button
+        {/* <Button
           colorScheme='pink'
           as={NextLink}
           href='https://t.co/ruYHo54RjN'
@@ -40,7 +40,7 @@ export const Footer = () => {
           size='sm'
         >
           Donate
-        </Button>
+        </Button> */}
       </HStack>
       <Text fontSize={'sm'} color={subheader}>
         Made by Jared Grimes

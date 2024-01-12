@@ -1,11 +1,12 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { AppLayout } from '../src/components/Layout/AppLayout';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import { useEffect, useState } from 'react';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 export default function App({
   Component,
@@ -13,6 +14,7 @@ export default function App({
 }: AppProps) {
   // Create a new supabase browser client on every first render.
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+  const router = useRouter();
 
   return (
     <SessionContextProvider
@@ -39,7 +41,7 @@ export default function App({
           <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet" />
         </Head>
         <Component {...pageProps} />
-        <SpeedInsights />
+        <SpeedInsights route={router.pathname} />
       </AppLayout>
     </SessionContextProvider>
   );

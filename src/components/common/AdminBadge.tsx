@@ -8,7 +8,8 @@ export const AdminBadge = memo(() => {
   return (
     <Badge
       colorScheme={shouldMockUser ? 'blue' : 'pink'}
-      marginLeft={2}
+      marginLeft={-4}
+      zIndex={4}
       onClick={() => setShouldMockUser(!shouldMockUser)}
     >
       {shouldMockUser ? 'User' : 'God'}
