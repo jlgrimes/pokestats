@@ -35,7 +35,7 @@ export const PlayerProfilePage = (props: PlayerProfilePageProps) => {
   return (
     <div>
       <Flex className='mt-2 flex-col'>
-        <Heading color='gray.800'>{props.profile.preferred_name ?? props.profile.name}</Heading>
+        <Heading>{props.profile.preferred_name ?? props.profile.name}</Heading>
         <HStack>
           {props.userIsLoggedInUser ? (
             <UsernameEditable
