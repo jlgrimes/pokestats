@@ -10,7 +10,7 @@ export const SingleSprite = memo((props: SingleSpriteProps) => {
     return (
       <Image
         className='pixel-image'
-        src='https://archives.bulbagarden.net/media/upload/a/a5/SubstituteG5f.png'
+        src='/substitute.png'
         alt='Other'
         height='auto'
         width={props.big ? '80px' : '40px'}
