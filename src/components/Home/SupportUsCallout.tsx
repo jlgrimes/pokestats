@@ -8,7 +8,7 @@ export const SupportUsCallout = () => {
   return (
     <LinkBox>
     <LinkOverlay href='https://www.patreon.com/bePatron?u=97204202' isExternal onClick={() => trackEvent('Patreon Link clicked')}>
-      <Callout title='Support Pokéstats Live' icon={HeartIcon} color='pink' className="dark:bg-pink-900 dark:text-pink-200">Support development through <Bold>Patreon</Bold> <Icon size='xs' icon={FaExternalLinkAlt} color='pink' /> to help keep the site available - thank you!</Callout>
+      <Callout title='Support us to remove ads!' icon={HeartIcon} color='pink' className="dark:bg-pink-900 dark:text-pink-200">Remove all ads site-wide by supporting us on <Bold>Patreon</Bold> <Icon size='xs' icon={FaExternalLinkAlt} color='pink' /></Callout>
         </LinkOverlay>
     </LinkBox>
   )
