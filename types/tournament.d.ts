@@ -134,5 +134,5 @@ export interface Tournament {
     seniors: boolean;
     masters: boolean;
   } | null;
-  metadata: Record<string, string> | null
+  metadata: Record<string, string[]> | null
 }

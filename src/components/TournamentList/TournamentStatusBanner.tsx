@@ -28,7 +28,7 @@ interface TournamentStatusBannerProps {
 }
 
 export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
-  const utcOffset = useUtcOffset(props.tournament.id);
+  const utcOffset = useUtcOffset(props.tournament);
 
   const shouldShowLocalTime =
     props.tournament.tournamentStatus === 'running' &&

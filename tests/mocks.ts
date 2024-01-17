@@ -34,6 +34,7 @@ export const DARWIN_MOCK_TOURNAMENT: Tournament = {
     seniors: false,
     masters: false,
   },
+  metadata: {}
 };
 
 export const SYDNEY_MOCK_TOURNAMENT = {
@@ -68,4 +69,5 @@ export const SYDNEY_MOCK_TOURNAMENT = {
     seniors: true,
     masters: true,
   },
+  metadata: {}
 };

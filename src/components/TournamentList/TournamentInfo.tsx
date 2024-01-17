@@ -18,9 +18,15 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
   return (
     <Flex>
       <div className='flex flex-col gap-1'>
-      <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`} onClick={() => trackEvent('Tournament card clicked', { tournament: props.tournament.name })}>
-        <Title>{props.tournament.name}</Title>
-      </LinkOverlay>
+        {
+          props.tournament.tournamentStatus === 'not-started' ? (
+            <Title>{props.tournament.name}</Title>
+          ) : (
+            <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`} onClick={() => trackEvent('Tournament card clicked', { tournament: props.tournament.name })}>
+              <Title>{props.tournament.name}</Title>
+            </LinkOverlay>
+          )
+        }
         <div className='flex gap-2'>
           <Subtitle>{formatTournamentDate(props.tournament)}</Subtitle>
           <TournamentStatusBadges tournament={props.tournament} />

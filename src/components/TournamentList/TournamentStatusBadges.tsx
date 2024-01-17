@@ -13,7 +13,7 @@ interface TournamentStatusBadgesProps {
 }
 
 export const TournamentStatusBadges = (props: TournamentStatusBadgesProps) => {
-  const utcOffset = useUtcOffset(props.tournament.id);
+  const utcOffset = useUtcOffset(props.tournament);
 
   return props.tournament.tournamentStatus === 'not-started' ? (
         <Badge className="dark:bg-purple-900 dark:text-purple-300" color='purple'>{props.hasVagueTime ? 'Upcoming' : formatTournamentStatus(props.tournament, utcOffset)}</Badge>

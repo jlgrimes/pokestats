@@ -6,7 +6,8 @@ import { PlayerTournamentView } from '../Tournament/Home/PlayerTournamentView';
 import { ChampionDisplay } from './ChampionDisplay';
 import { TournamentInfo } from './TournamentInfo';
 import { useSessionPlayerProfile } from '../../hooks/user';
-import { Card, Flex, Grid } from '@tremor/react';
+import { Card, Flex } from '@tremor/react';
+import { UpcomingTournamentMetadata } from './UpcomingTournamentMetadata';
 
 export const TournamentCard = ({
   tournament,
@@ -17,6 +18,17 @@ export const TournamentCard = ({
 }) => {
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const live = tournament.tournamentStatus === 'running';
+
+  if (tournament.tournamentStatus === 'not-started') {
+    return (
+      <Card className='flex flex-col gap-4 px-6 py-4'>
+        <Flex>
+          <TournamentInfo tournament={tournament} />
+        </Flex>
+        <UpcomingTournamentMetadata tournament={tournament} />
+      </Card>
+    )
+  }
 
   return (
     <LinkBox height='100%'>
@@ -31,44 +43,6 @@ export const TournamentCard = ({
             playerName={profile.name}
           />
         )}
-        {/* <Stack spacing={4}>
-          <Grid gridTemplateColumns={'3.4fr 2fr'} alignItems='center' gap={2}>
-            <Grid gridTemplateColumns={`3.4rem 4fr`} alignItems='center' rowGap={live ? 1 : 0}>
-              {countryCode ? (
-                <Box>
-                  <CountryFlag countryCode={countryCode} size={'sm'} />
-                </Box>
-              ) : (
-                <Box></Box>
-              )}
-              <LinkOverlay as={NextLink} href={`/tournaments/${tournament.id}`}>
-                <TournamentInfo tournament={tournament} />
-              </LinkOverlay>
-              <Box />
-              {!(!live && shouldHideStatus) && (
-                <TournamentStatusBadge tournament={tournament} size={live ? 'sm' : 'xs'} />
-              )}
-            </Grid>
-            {champion && <ChampionDisplay champion={champion} />}
-            {live && !shouldHideStatus && (
-              <Flex justifyContent={'center'} alignItems={'center'}>
-                <StreamLink tournament={tournament} />
-              </Flex>
-            )}
-          </Grid>
-          {isAuthenticated && live && profile?.name && (
-            <PlayerTournamentView
-              tournament={tournament}
-              playerName={profile.name}
-            />
-          )}
-          {live && !tournament.topCutStatus && !disableFollowing && (
-            <PinnedPlayerList tournament={tournament} isCompact />
-          )}
-          {live && tournament.topCutStatus && !disableFollowing && (
-            <TopCutViewController tournament={tournament} />
-          )}
-        </Stack> */}
       </Card>
     </LinkBox>
   );
