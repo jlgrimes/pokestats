@@ -3,10 +3,7 @@ import { Tournament } from "../../../types/tournament"
 import { format, formatDistance, formatDistanceToNow, formatDistanceToNowStrict, formatDuration, intervalToDuration } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from '@chakra-ui/react';
-import { LocationMarkerIcon } from '@heroicons/react/outline';
-import { LocationWithIcon } from '../EventLocator/LocationWithIcon';
 import { IconInfoCircle, IconMapPin } from '@tabler/icons-react';
-import { UTCDate } from "@date-fns/utc";
 
 interface UpcomingTournamentMetadataProps {
   tournament: Tournament;
