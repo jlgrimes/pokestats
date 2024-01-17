@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import supabase from '../lib/supabase/client';
+import { Tournament } from '../../types/tournament';
 
 export const fetchTournamentMetadata = async () => {
   const res = await supabase
@@ -25,16 +26,16 @@ export const useAllTournamentMetadata = () => {
   });
 };
 
-export const useTournamentMetadata = (tournamentId: string) => {
+export const useTournamentMetadata = (tournament: Tournament) => {
   return useQuery({
-    queryKey: ['tournament-metadata', tournamentId],
-    queryFn: () => fetchOneTournamentMetadata(tournamentId)
+    queryKey: ['tournament-metadata', tournament.id],
+    queryFn: () => fetchOneTournamentMetadata(tournament.id)
   })
 };
 
-export const useStreamLink = (tournamentId: string) => {
+export const useStreamLink = (tournament: Tournament) => {
   const { data: tournamentMetadata, ...rest } =
-    useTournamentMetadata(tournamentId);
+    useTournamentMetadata(tournament);
   return {
     data: tournamentMetadata?.find(({ type }) => type === 'stream')?.data ?? null,
     ...rest,
@@ -51,9 +52,9 @@ export interface LocationDataSchema {
   utc_offset_minutes: number;
 }
 
-export const useLocation = (tournamentId: string) => {
+export const useLocation = (tournament: Tournament) => {
   const { data: tournamentMetadata, ...rest } =
-    useTournamentMetadata(tournamentId);
+    useTournamentMetadata(tournament);
 
   const dataStr: string | undefined = tournamentMetadata?.find(
     ({ type }) => type === 'location'
@@ -68,8 +69,8 @@ export const useLocation = (tournamentId: string) => {
   };
 };
 
-export const useCountryCode = (tournamentId: string) => {
-  const { data: location } = useLocation(tournamentId);
+export const useCountryCode = (tournament: Tournament) => {
+  const { data: location } = useLocation(tournament);
 
   const country = location?.address_components?.find(({ types }) =>
     types.includes('country')
@@ -78,8 +79,8 @@ export const useCountryCode = (tournamentId: string) => {
   return country;
 };
 
-export const useUtcOffset = (tournamentId: string) => {
-  const { data: location } = useLocation(tournamentId);
+export const useUtcOffset = (tournament: Tournament) => {
+  const { data: location } = useLocation(tournament);
 
   return location?.utc_offset_minutes;
 };

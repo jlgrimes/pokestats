@@ -40,8 +40,8 @@ export const EditTournamentInfoModal = ({
   tournament: Tournament;
 }) => {
   const toast = useToast();
-  const { data: streamLink, refetch } = useStreamLink(tournament.id);
-  const { data: location } = useLocation(tournament.id);
+  const { data: streamLink, refetch } = useStreamLink(tournament);
+  const { data: location } = useLocation(tournament);
 
   const [streamUrlEnabled, setStreamUrlEnabled] = useState(!!streamLink);
   const [streamUrl, setStreamUrl] = useState<string | undefined>(streamLink);

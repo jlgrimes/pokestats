@@ -13,7 +13,7 @@ interface TournamentInfoProps {
 }
 
 export const TournamentInfo = (props: TournamentInfoProps) => {
-  const countryCode = useCountryCode(props.tournament.id);
+  const countryCode = useCountryCode(props.tournament);
 
   return (
     <Flex>

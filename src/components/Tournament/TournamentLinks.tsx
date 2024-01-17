@@ -6,7 +6,6 @@ import { Tournament } from '../../../types/tournament';
 import { useUserIsAdmin } from '../../hooks/administrators';
 import {
   useStreamLink,
-  useTournamentMetadata,
 } from '../../hooks/tournamentMetadata';
 import {
   ID_MAP_UNREGISTERED,
@@ -18,9 +17,7 @@ import { getRK9TournamentUrl } from './helpers';
 import { trackEvent } from '../../lib/track';
 
 export const StreamIconLink = ({ tournament }: { tournament: Tournament }) => {
-  const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament.id);
-  const { data: streamInfo, isLoading: streamInfoLoading } =
-    useStreamInfo(streamLink);
+  const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament);
 
   return (
     <Box>
@@ -42,7 +39,7 @@ export const StreamIconLink = ({ tournament }: { tournament: Tournament }) => {
 };
 
 export const StreamLink = ({ tournament }: { tournament: Tournament }) => {
-  const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament.id);
+  const { data: streamLink, isLoading: streamLinkLoading } = useStreamLink(tournament);
   const { data: streamInfo, isLoading: streamInfoLoading } =
     useStreamInfo(streamLink);
 

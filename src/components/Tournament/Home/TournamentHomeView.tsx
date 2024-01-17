@@ -25,17 +25,15 @@ import { TopCutView } from './TopCut/TopCutView';
 import { MatchPointsStats } from './MatchPointsStats/MatchPointsStats';
 
 export interface TournamentHomeViewProps {
-  tournament: Tournament | null;
+  tournament: Tournament;
 }
 
 export const TournamentHomeView = (props: TournamentHomeViewProps) => {
   const { header, subheader } = useColor();
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const { data: userIsAdmin } = useUserIsAdmin();
-  const { data: location } = useLocation(props.tournament?.id ?? '');
-  const country = useCountryCode(props.tournament?.id ?? '');
-
-  if (!props.tournament) return null;
+  const { data: location } = useLocation(props.tournament);
+  const country = useCountryCode(props.tournament);
 
   return (
     <Stack spacing={4}>
