@@ -27,6 +27,7 @@ export const SearchResult = (props: SearchResultProps) => {
       <Box onClick={props.handleClose}>
         <TournamentCard
           tournament={props.result.data as Tournament}
+          isCompact
         />
       </Box>
     );

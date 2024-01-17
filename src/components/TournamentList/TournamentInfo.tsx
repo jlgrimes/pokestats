@@ -12,18 +12,27 @@ interface TournamentInfoProps {
   tournament: Tournament;
 }
 
-export const TournamentInfo = (props: TournamentInfoProps) => {
+const TournamentTitle = (props: TournamentInfoProps) => {
   const countryCode = useCountryCode(props.tournament);
 
   return (
-    <Flex>
+    <Flex className='gap-1'>
+      <Title>{props.tournament.name}</Title>
+      {countryCode ? <CountryFlag countryCode={countryCode} size={'xs'} /> : null}
+    </Flex>
+  );
+}
+
+export const TournamentInfo = (props: TournamentInfoProps) => {
+  return (
+    <div>
       <div className='flex flex-col gap-1'>
         {
           props.tournament.tournamentStatus === 'not-started' ? (
-            <Title>{props.tournament.name}</Title>
+            <TournamentTitle {...props} />
           ) : (
             <LinkOverlay as={NextLink} href={`/tournaments/${props.tournament.id}`} onClick={() => trackEvent('Tournament card clicked', { tournament: props.tournament.name })}>
-              <Title>{props.tournament.name}</Title>
+              <TournamentTitle {...props} />
             </LinkOverlay>
           )
         }
@@ -31,8 +40,7 @@ export const TournamentInfo = (props: TournamentInfoProps) => {
           <Subtitle>{formatTournamentDate(props.tournament)}</Subtitle>
           <TournamentStatusBadges tournament={props.tournament} />
         </div>
-      </div>
-      {countryCode ? <CountryFlag countryCode={countryCode} size={'sm'} /> : null}
-    </Flex>
+      </div>  
+    </div>
   )
 };

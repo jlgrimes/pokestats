@@ -12,19 +12,19 @@ import { UpcomingTournamentMetadata } from './UpcomingTournamentMetadata';
 export const TournamentCard = ({
   tournament,
   champion,
+  isCompact
 }: {
   tournament: Tournament;
   champion?: Standing;
+  isCompact?: boolean;
 }) => {
   const { data: profile, isAuthenticated } = useSessionPlayerProfile();
   const live = tournament.tournamentStatus === 'running';
 
-  if (tournament.tournamentStatus === 'not-started') {
+  if (tournament.tournamentStatus === 'not-started' && !isCompact) {
     return (
       <Card className='flex flex-col gap-4 px-6 py-4'>
-        <Flex>
-          <TournamentInfo tournament={tournament} />
-        </Flex>
+        <TournamentInfo tournament={tournament} />
         <UpcomingTournamentMetadata tournament={tournament} />
       </Card>
     )
@@ -33,11 +33,8 @@ export const TournamentCard = ({
   return (
     <LinkBox height='100%'>
       <Card decoration={live ? 'left' : undefined} className='flex flex-col gap-6 px-6 py-4'>
-        <Flex>
-          <TournamentInfo tournament={tournament} />
-          {champion && <ChampionDisplay champion={champion} />}
-        </Flex>
-        {isAuthenticated && live && profile?.name && (
+        <TournamentInfo tournament={tournament} />
+        {isAuthenticated && live && profile?.name && !isCompact && (
           <PlayerTournamentView
             tournament={tournament}
             playerName={profile.name}
