@@ -16,7 +16,7 @@ export const TournamentStatusBadges = (props: TournamentStatusBadgesProps) => {
   const utcOffset = useUtcOffset(props.tournament);
 
   return props.tournament.tournamentStatus === 'not-started' ? (
-        <Badge className="dark:bg-purple-900 dark:text-purple-300" color='purple'>{props.hasVagueTime ? 'Upcoming' : formatTournamentStatus(props.tournament, utcOffset)}</Badge>
+        <Badge className="dark:bg-gray-800 dark:text-gray-400" color='gray'>{props.hasVagueTime ? 'Upcoming' : formatTournamentStatus(props.tournament, utcOffset)}</Badge>
       ) : props.tournament.tournamentStatus === 'running' ? (
         <Badge size='xs' icon={StatusOnlineIcon}>Round {props.tournament.roundNumbers.masters}</Badge>
       ) : null

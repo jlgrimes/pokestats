@@ -23,7 +23,7 @@ export const TournamentCard = ({
 
   if (tournament.tournamentStatus === 'not-started' && !isCompact) {
     return (
-      <Card className='flex flex-col gap-4 px-6 py-4'>
+      <Card className='flex flex-col gap-3 px-6 py-4'>
         <TournamentInfo tournament={tournament} />
         <UpcomingTournamentMetadata tournament={tournament} />
       </Card>

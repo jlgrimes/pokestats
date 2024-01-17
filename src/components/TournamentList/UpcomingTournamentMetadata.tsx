@@ -1,11 +1,12 @@
-import { Bold, Card, Flex, Grid, Icon, Text } from '@tremor/react';
+import { Bold, Card, Flex, Grid, Icon, Subtitle, Text } from '@tremor/react';
 import { Tournament } from "../../../types/tournament"
-import { format, formatDistanceToNow, formatDistanceToNowStrict, formatDuration, intervalToDuration } from 'date-fns';
+import { format, formatDistance, formatDistanceToNow, formatDistanceToNowStrict, formatDuration, intervalToDuration } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from '@chakra-ui/react';
 import { LocationMarkerIcon } from '@heroicons/react/outline';
 import { LocationWithIcon } from '../EventLocator/LocationWithIcon';
-import { IconInfoCircle } from '@tabler/icons-react';
+import { IconInfoCircle, IconMapPin } from '@tabler/icons-react';
+import { UTCDate } from "@date-fns/utc";
 
 interface UpcomingTournamentMetadataProps {
   tournament: Tournament;
@@ -34,27 +35,29 @@ export const UpcomingTournamentMetadata = (props: UpcomingTournamentMetadataProp
   const listSubmissionClosesTime = props.tournament.metadata?.['List submission closes'];
   const roundOneStartTime = props.tournament.metadata?.['Tournament start'];
   const venue = props.tournament.metadata?.['Venue'];
+  const updatedAt = props.tournament.metadata?.['updated-at']
 
   return (
     <div className='flex flex-col'>
       {
         venue && (
-          <LocationWithIcon>
+          <div className="flex items-center gap-1">
+            <Icon className='py-1' icon={IconMapPin} size='sm' variant='simple' color='neutral' />
             <Link isExternal href={`https://www.google.com/maps/search/?api=1&query=${venue[0]}`}>
               <Text className='font-medium text-blue-600 dark:text-blue-500'>{venue[0]}</Text>
             </Link>
-          </LocationWithIcon>
+          </div>
         )
       }
       {tournamentOrganizer && (
-        <div className="flex items-center">
-          <Icon className="pl-0" icon={IconInfoCircle} size='sm' variant='simple' color='neutral' />
+        <div className="flex items-center gap-1">
+          <Icon className='py-1' icon={IconInfoCircle} size='sm' variant='simple' color='neutral' />
           <Link isExternal href={tournamentOrganizer}>
-              <Text className='font-medium text-blue-600 dark:text-blue-500'>{tournamentOrganizer?.replace('http://', '').replace('https://', '')}</Text>
+              <Text className='font-medium text-blue-600 dark:text-blue-500'>{tournamentOrganizer?.replace('http://', '').replace('https://', '').split('/')[0]}</Text>
             </Link>
         </div>
       )}
-      <div className='flex flex-col gap-1 mt-4'>
+      <div className='flex flex-col gap-2 mt-6'>
         {
           listSubmissionClosesTime && (
             <Flex>
@@ -72,6 +75,11 @@ export const UpcomingTournamentMetadata = (props: UpcomingTournamentMetadataProp
           )
         }
       </div>
+      {
+        updatedAt && (
+          <Subtitle className='text-sm mt-6'>Updated {formatDistance(Date.parse(updatedAt as unknown as string + 'Z'), Date.now(), { addSuffix: true })}</Subtitle>
+        )
+      }
     </div>
   )
 }
