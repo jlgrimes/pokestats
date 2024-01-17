@@ -35,7 +35,9 @@ export const HomePage = (props: HomePageProps) => {
       </Flex>
       {!shouldRemoveAds && <SupportUsCallout />}
       <Ad />
-      <RecentTournaments tournaments={props.tournaments} />
+      <Stack>
+        <RecentTournaments tournaments={props.tournaments} />
+      </Stack>
       {/* <LeaderboardCard /> */}
       <Ad slot='7147816871' />
       {/* <Adsense

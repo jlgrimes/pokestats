@@ -30,35 +30,47 @@ const useLiveCurrentTime = () => {
 }
 
 export const UpcomingTournamentMetadata = (props: UpcomingTournamentMetadataProps) => {
-  const currentDate = useLiveCurrentTime();
-  const listLockedDate = Date.parse(props.tournament.metadata?.['List submission closes'].join(' ') ?? '');
-  const tournamentStartDate = Date.parse(props.tournament.metadata?.['Tournament start'].slice(0, 2).join(' ') ?? '');
   const tournamentOrganizer = props.tournament.metadata?.['Event organizer'].find((str) => str.includes('http://') || str.includes('https://'));
+  const listSubmissionClosesTime = props.tournament.metadata?.['List submission closes'];
+  const roundOneStartTime = props.tournament.metadata?.['Tournament start'];
+  const venue = props.tournament.metadata?.['Venue'];
 
   return (
     <div className='flex flex-col'>
-      <Flex>
-        <LocationWithIcon>
-          <Link isExternal href={`https://www.google.com/maps/search/?api=1&query=${props.tournament.metadata?.['Venue'][0]}`}>
-            <Text className='font-medium text-blue-600 dark:text-blue-500'>{props.tournament.metadata?.['Venue'][0]}</Text>
-          </Link>
-        </LocationWithIcon>
-      </Flex>
-      <div className="flex items-center">
-        <Icon className="pl-0" icon={IconInfoCircle} size='sm' variant='simple' color='neutral' />
-        <Link isExternal href={tournamentOrganizer}>
-            <Text className='font-medium text-blue-600 dark:text-blue-500'>{tournamentOrganizer?.replace('http://', '').replace('https://', '')}</Text>
-          </Link>
-      </div>
+      {
+        venue && (
+          <LocationWithIcon>
+            <Link isExternal href={`https://www.google.com/maps/search/?api=1&query=${venue[0]}`}>
+              <Text className='font-medium text-blue-600 dark:text-blue-500'>{venue[0]}</Text>
+            </Link>
+          </LocationWithIcon>
+        )
+      }
+      {tournamentOrganizer && (
+        <div className="flex items-center">
+          <Icon className="pl-0" icon={IconInfoCircle} size='sm' variant='simple' color='neutral' />
+          <Link isExternal href={tournamentOrganizer}>
+              <Text className='font-medium text-blue-600 dark:text-blue-500'>{tournamentOrganizer?.replace('http://', '').replace('https://', '')}</Text>
+            </Link>
+        </div>
+      )}
       <div className='flex flex-col gap-1 mt-4'>
-        <Flex>
-          <Text>Lists due:</Text>
-          <Text>{props.tournament.metadata?.['List submission closes'].join(' ').split('(')[0]}</Text>
-        </Flex>
-        <Flex>
-          <Text>Round 1 start:</Text>
-          <Text>{props.tournament.metadata?.['Tournament start'].slice(0, 2).join(' ').split('(')[0]}</Text>
-        </Flex>
+        {
+          listSubmissionClosesTime && (
+            <Flex>
+              <Text>Lists due:</Text>
+              <Text>{listSubmissionClosesTime.join(' ').split('(')[0]}</Text>
+            </Flex>
+          )
+        }
+        {
+          roundOneStartTime && (
+            <Flex>
+              <Text>Round 1 start:</Text>
+              <Text>{roundOneStartTime.slice(0, 2).join(' ').split('(')[0]}</Text>
+            </Flex>
+          )
+        }
       </div>
     </div>
   )

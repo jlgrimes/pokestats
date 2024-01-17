@@ -26,7 +26,7 @@ const TournamentTitle = (props: TournamentInfoProps) => {
 export const TournamentInfo = (props: TournamentInfoProps) => {
   return (
     <div>
-      <div className='flex flex-col gap-1'>
+      <div className='flex flex-col'>
         {
           props.tournament.tournamentStatus === 'not-started' ? (
             <TournamentTitle {...props} />

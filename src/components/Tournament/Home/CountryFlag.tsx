@@ -19,7 +19,7 @@ export const CountryFlag = memo((props: CountryFlagProps) => {
   const url = `https://flagsapi.com/${fixCountryCode(props.countryCode)}/flat/64.png`;
 
   return (
-    <Box opacity={props.size === 'lg' ? '0.75' : '0.85'}>
+    <Box opacity={props.size === 'lg' ? '0.75' : '0.65'}>
       <NextImage
         priority
         crossOrigin='anonymous'
