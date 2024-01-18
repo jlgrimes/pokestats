@@ -1,30 +1,11 @@
-import { Bold, Card, Flex, Grid, Icon, Subtitle, Text } from '@tremor/react';
+import { Flex, Icon, Subtitle, Text } from '@tremor/react';
 import { Tournament } from "../../../types/tournament"
-import { format, formatDistance, formatDistanceToNow, formatDistanceToNowStrict, formatDuration, intervalToDuration } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { formatDistance } from 'date-fns';
 import { Link } from '@chakra-ui/react';
 import { IconInfoCircle, IconMapPin } from '@tabler/icons-react';
 
 interface UpcomingTournamentMetadataProps {
   tournament: Tournament;
-}
-
-const useLiveCurrentTime = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(
-    () => {
-      const intervalId = setInterval(() => {
-      
-        setTime(new Date());
-      }, 1000);
-      return () => {
-        clearInterval(intervalId)
-      }
-    } 
-  )
-
-  return time;
 }
 
 export const UpcomingTournamentMetadata = (props: UpcomingTournamentMetadataProps) => {
@@ -33,6 +14,7 @@ export const UpcomingTournamentMetadata = (props: UpcomingTournamentMetadataProp
   const roundOneStartTime = props.tournament.metadata?.['Tournament start'];
   const venue = props.tournament.metadata?.['Venue'];
   const updatedAt = props.tournament.metadata?.['updated-at']
+  const updatedAtDate = Date.parse(updatedAt as unknown as string + 'Z');
 
   return (
     <div className='flex flex-col'>
@@ -73,8 +55,8 @@ export const UpcomingTournamentMetadata = (props: UpcomingTournamentMetadataProp
         }
       </div>
       {
-        updatedAt && (
-          <Subtitle className='text-sm mt-6'>Updated {formatDistance(Date.parse(updatedAt as unknown as string + 'Z'), Date.now(), { addSuffix: true })}</Subtitle>
+        updatedAt && updatedAtDate && !isNaN(updatedAtDate) && (
+          <Subtitle className='text-sm mt-6'>Updated {formatDistance(updatedAtDate, Date.now(), { addSuffix: true })}</Subtitle>
         )
       }
     </div>
