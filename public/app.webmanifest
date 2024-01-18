@@ -1,0 +1,60 @@
+{
+    "name": "PokéStats Live",
+    "short_name": "PokéStats",
+    "display": "minimal-ui",
+    "background_color": "#121212",
+    "theme_color": "#c53030",
+    "icons": [
+        {
+            "src": "/pwa/pokestats-48.png",
+            "type": "image/png",
+            "sizes": "48x48",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/pwa/pokestats-96.png",
+            "type": "image/png",
+            "sizes": "96x96",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/pwa/pokestats-192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/pwa/pokestats-512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/pwa/pokestats-48.png",
+            "type": "image/png",
+            "sizes": "48x48",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/pokestats-96.png",
+            "type": "image/png",
+            "sizes": "96x96",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/pokestats-192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/pokestats-512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any"
+        }
+    ],
+    "id": "/?source=pwa",
+    "start_url": "/?source=pwa",
+    "scope": "/"
+}
