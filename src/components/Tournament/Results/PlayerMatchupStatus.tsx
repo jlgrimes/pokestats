@@ -40,7 +40,7 @@ export const PlayerMatchupStatus = ({
         <PlayerCard
           player={myStanding}
           tournament={tournament}
-          canEditDecks={!userIsBanned}
+          canEditDecks={tournament.tournamentStatus === 'finished'}
           shouldHideOpponent
           shouldDisableOpponentModal
           isMe={!!isLoggedInUser}
