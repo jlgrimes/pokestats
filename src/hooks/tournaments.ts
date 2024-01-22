@@ -94,4 +94,9 @@ export const getMostRecentFinishedTournament = (tournaments: Tournament[]) =>
       tournamentStatus === 'finished' && !name.includes(' Cup')
   ) as Tournament;
 
-export const getShouldHideDecks = (tournament: Tournament, playerAgeDivision: AgeDivision) => !tournament.should_reveal_decks?.[playerAgeDivision.toLowerCase() as 'masters' | 'seniors' | 'juniors']
+export const getShouldHideDecks = (tournament: Tournament, playerAgeDivision: AgeDivision) => {
+  // A horrible safeguard. Apparently deck hidden logic is broken and people see decks on standings. Adding this to make it stop.
+  if (tournament.roundNumbers.masters && tournament.roundNumbers.masters < 9) return true;
+
+  return !tournament.should_reveal_decks?.[playerAgeDivision.toLowerCase() as 'masters' | 'seniors' | 'juniors'];
+}
