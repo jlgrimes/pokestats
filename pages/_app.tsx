@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { AppLayout } from '../src/components/Layout/AppLayout';
+import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { useEffect, useState } from 'react';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
@@ -42,6 +43,7 @@ export default function App({
           <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet" />
         </Head>
         <Component {...pageProps} />
+        <Analytics />
         <SpeedInsights route={router.pathname} />
       </AppLayout>
     </SessionContextProvider>
