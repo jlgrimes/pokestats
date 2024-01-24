@@ -88,6 +88,7 @@ export interface Standing {
   tournament_status: TournamentStatus | null;
   tournament_round_number: number | null;
   tournament_format: number | null;
+  user_who_submitted: string | null
 }
 
 export interface MatchupResult extends Standing {

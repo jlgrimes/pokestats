@@ -38,6 +38,7 @@ interface StandingsWithDecksReturnType {
   tournament_status: TournamentStatus | null;
   tournament_round_number: number | null;
   tournament_format: number | null;
+  user_who_submitted: string | null;
 }
 
 const fixDatabaseStandings = (data: StandingsWithDecksReturnType[] | null): Standing[] | undefined => {
@@ -146,9 +147,10 @@ export const useTopCutStandings = (params: UseStandingsParams) => {
 interface UsePlayerStandingsParams {
   tournament?: Tournament;
   shouldLoadOpponentRounds?: boolean;
+  shouldFilterOutDecksNotReportedByMe?: boolean;
 }
 
-const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> => {
+const loadOpponentRounds = async (standings: Standing[], player?: CombinedPlayerProfile | null, shouldFilterOutDecksNotReportedByMe?: boolean): Promise<Standing[]> => {
   const opponentList = standings.reduce((acc: string[], curr: Standing) => {
     const opponentRounds = curr.rounds?.map((round) => round.name) ?? [];
     return [...acc, ...opponentRounds]
@@ -157,10 +159,11 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
   if (opponentList) {
     const stringifiedNames = getStringifiedNames(opponentList);
 
-    const opponentRes = await supabase.from('standings_with_decks').select('*')
+    let query = supabase.from('standings_with_decks').select('*')
       .eq('tournament_id', standings[0]?.tournament_id)
       .or(`name.in.(${stringifiedNames})`)
-      .returns<StandingsWithDecksReturnType[]>();
+
+    const opponentRes = await query.returns<StandingsWithDecksReturnType[]>();
     const opponents = fixDatabaseStandings(opponentRes.data);
 
     if (opponents) {
@@ -173,8 +176,11 @@ const loadOpponentRounds = async (standings: Standing[]): Promise<Standing[]> =>
             return round;
           }
 
+          const opponentDeck = (shouldFilterOutDecksNotReportedByMe && player?.email === opponent.user_who_submitted) ? null : opponent.deck_archetype;
+
           const opponentStanding: Standing = {
             ...opponent,
+            deck_archetype: opponentDeck,
             rounds: getRoundsArray(opponent as unknown as Standing),
             age_division: standing.age_division
           };
@@ -215,7 +221,7 @@ export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null 
   if (params?.shouldLoadOpponentRounds) {
     // If name hasn't loaded yet, don't bother fetching.
     if (!player.name || !standings) return null;
-    standings = await loadOpponentRounds(standings);
+    standings = await loadOpponentRounds(standings, player, params.shouldFilterOutDecksNotReportedByMe);
   }
 
   return standings?.sort((a, b) => {
@@ -229,7 +235,7 @@ export const fetchPlayerStandings = async (player: CombinedPlayerProfile | null 
 
 export const usePlayerStandings = (player: CombinedPlayerProfile | null | undefined, params?: UsePlayerStandingsParams) => {
   return useQuery({
-    queryKey: ['player-standings', player?.id, params?.tournament?.id, params?.shouldLoadOpponentRounds],
+    queryKey: ['player-standings', player?.id, params?.tournament?.id, params?.shouldLoadOpponentRounds, params?.shouldFilterOutDecksNotReportedByMe],
     queryFn: () => fetchPlayerStandings(player, params)
   });
 }
