@@ -20,7 +20,11 @@ export const Sprites = memo((props: SpritesProps) => {
       minWidth={props.squishWidth ? 0 : '4.6rem'}
     >
       <Stack direction={'row'} spacing={1} alignItems={'center'}>
-        {!props.pokemonNames || props.pokemonNames.length === 0 ? (
+        {props.hidden ? (
+          <Flex justifyContent={'center'} minWidth='2rem'>
+            <Icon as={FaRegEyeSlash} />
+          </Flex>
+        ) : (!props.pokemonNames || props.pokemonNames.length === 0) ? (
           <Flex justifyContent={'center'}>
             <Image
               height='30px'
@@ -29,10 +33,6 @@ export const Sprites = memo((props: SpritesProps) => {
               className='pixel-image'
               transform={'scale(1.5)'}
             />
-          </Flex>
-        ) : props.hidden ? (
-          <Flex justifyContent={'center'} minWidth='2rem'>
-            <Icon as={FaRegEyeSlash} />
           </Flex>
         ) : (
           names?.map((name, idx) => (
