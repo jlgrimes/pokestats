@@ -85,11 +85,11 @@ export const PlayerCard = (props: PlayerCardProps) => {
             </Bold>
           </StandingsCell>
         )}
-        {props.result && (
+        {props.result ? (
           <StandingsCell className='pr-0 w-8 text-center'>
             <ResultLetter result={props.result} />
           </StandingsCell>
-        )}
+        ) : <StandingsCell />}
         {props.result === null && (
           <StandingsCell className='pr-0 w-8 text-center'>
             <></>
