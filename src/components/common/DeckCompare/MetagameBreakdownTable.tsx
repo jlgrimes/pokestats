@@ -15,6 +15,7 @@ import { getDeckHref } from './helpers';
 import { Tournament } from '../../../../types/tournament';
 import { ChartPieIcon } from '@heroicons/react/outline';
 import { trackEvent } from '../../../lib/track';
+import { HomePageCard } from '../HomePageCard';
 
 export interface MetagameBreakdownTableProps<T>
   extends DeckCompareSortTogglesProps<T> {
@@ -76,24 +77,19 @@ export const MetagameBreakdownTable = <T extends string>(
     }, [props.isLoading]);
 
   return (
-    <Card>
-      <Flex>
-        <div>
-          <Title>{`Metagame Breakdown`}</Title>
-          <Subtitle>{props.tournament.name}</Subtitle>
-        </div>
-        <Icon icon={ChartPieIcon} color='neutral' variant="solid" size="sm" />
+    <HomePageCard>
+      <Flex className='align-middle'>
+        <Title>{`Metagame`}</Title>
+        <Select className='w-1/2' value={props.sortBy} onValueChange={(val) => {
+          trackEvent('Metagame breakdown filter toggled', { value: val });
+          props.setSort(val as T, 'desc');
+        }}>
+          <SelectItem value='played'>Day 1</SelectItem>
+          <SelectItem value='day 2 played'>Day 2</SelectItem>
+          <SelectItem value='day 2'>Day 2 Conversion</SelectItem>
+        </Select>
       </Flex>
-
-      <Select className='mt-3' value={props.sortBy} onValueChange={(val) => {
-        trackEvent('Metagame breakdown filter toggled', { value: val });
-        props.setSort(val as T, 'desc');
-      }}>
-        <SelectItem value='played'>Day 1</SelectItem>
-        <SelectItem value='day 2 played'>Day 2</SelectItem>
-        <SelectItem value='day 2'>Day 2 Conversion</SelectItem>
-      </Select>
-      <Flex className="mt-4">
+      <Flex className="mt-2">
         <Text>
           <Bold>Deck</Bold>
         </Text>
@@ -111,6 +107,6 @@ export const MetagameBreakdownTable = <T extends string>(
           <BarList data={data} className='mt-2 dark:[&>div>.tremor-BarList-bar]:bg-indigo-900 [&>div>.tremor-BarList-labelWrapper]:h-10 [&>div>.tremor-BarList-labelWrapper]:after:content-["%"] [&>div>div>div]:items-center [&>div>div>div]:gap-4 [&>div>.tremor-BarList-bar]:h-10' />
       )}
       <Subtitle className='mt-3'>{`Decks known: ${props.numKnown}/${props.tournament.players.masters}`}</Subtitle>
-    </Card>
+    </HomePageCard>
   );
 };

@@ -8,6 +8,7 @@ import { TournamentInfo } from './TournamentInfo';
 import { useSessionPlayerProfile } from '../../hooks/user';
 import { Card, Flex } from '@tremor/react';
 import { UpcomingTournamentMetadata } from './UpcomingTournamentMetadata';
+import { HomePageCard } from '../common/HomePageCard';
 
 export const TournamentCard = ({
   tournament,
@@ -23,10 +24,12 @@ export const TournamentCard = ({
 
   if (tournament.tournamentStatus === 'not-started' && !isCompact) {
     return (
-      <Card className='flex flex-col gap-3 px-6 py-4'>
-        <TournamentInfo tournament={tournament} />
-        <UpcomingTournamentMetadata tournament={tournament} />
-      </Card>
+      <HomePageCard>
+        <>
+          <TournamentInfo tournament={tournament} />
+          <UpcomingTournamentMetadata tournament={tournament} />
+        </>
+      </HomePageCard>
     )
   }
 
