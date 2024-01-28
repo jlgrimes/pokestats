@@ -19,7 +19,7 @@ export const Username = ({
   return (
     <Heading
       size={small ? 'md' : 'lg'}
-      color={isLink ? 'blue.600' : 'gray.500'}
+      className={isLink ? 'text-blue-600 dark:text-blue-500' : 'text-gray-500'}
       fontWeight='semibold'
     >
       {text}
