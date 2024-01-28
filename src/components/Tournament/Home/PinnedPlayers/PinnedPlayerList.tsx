@@ -45,7 +45,7 @@ export const PinnedPlayerList = (props: PinnedPlayerListProps) => {
   return (
     <FullWidthCard title='Following'>
         {!props.isCompact && pinnedPlayers && pinnedPlayers.length > 0 && (
-          <Flex className='flex gap-8 px-5 pb-4'>
+          <Flex className='flex gap-8 px-5 pb-4 mt-2'>
             <Button
               icon={UserAddIcon}
               onClick={() => {
