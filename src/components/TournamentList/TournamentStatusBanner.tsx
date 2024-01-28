@@ -38,7 +38,7 @@ export const TournamentStatusBanner = (props: TournamentStatusBannerProps) => {
   if (props.tournament.tournamentStatus === 'finished') return <Box />;
 
   return (
-    <Callout title={formatTournamentStatus(props.tournament, utcOffset)} color='blue'>
+    <Callout title={formatTournamentStatus(props.tournament, utcOffset)} color='blue' className='dark:bg-slate-800 dark:text-blue-400'>
       {shouldShowLocalTime && (
         <HStack>
           <Icon as={FaGlobeAmericas} />
