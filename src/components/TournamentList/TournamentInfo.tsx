@@ -7,6 +7,8 @@ import { TournamentStatusBadges } from './TournamentStatusBadges';
 import { CountryFlag } from '../Tournament/Home/CountryFlag';
 import { useCountryCode } from '../../hooks/tournamentMetadata';
 import { trackEvent } from '../../lib/track';
+import { useUserIsAdmin } from '../../hooks/administrators';
+import { OpenEditTournamentInfo } from '../Admin/EditTournamentInfo/OpenEditTournamentInfo';
 
 interface TournamentInfoProps {
   tournament: Tournament;
@@ -14,11 +16,13 @@ interface TournamentInfoProps {
 
 const TournamentTitle = (props: TournamentInfoProps) => {
   const countryCode = useCountryCode(props.tournament);
+  const { data: userIsAdmin } = useUserIsAdmin();
 
   return (
     <Flex className='gap-1'>
       <Title>{props.tournament.name}</Title>
       {countryCode ? <CountryFlag countryCode={countryCode} size={'xs'} /> : null}
+      {(!countryCode && userIsAdmin) && <OpenEditTournamentInfo tournament={props.tournament} />}
     </Flex>
   );
 }
