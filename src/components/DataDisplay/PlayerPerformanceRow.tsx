@@ -31,7 +31,7 @@ export const PlayerPerformanceRow = (props: PlayerPerformanceRowProps) => {
         <DeckInfoDisplay
           tournament={props.tournament}
           player={props.performance}
-          enableEdits={userMatchesLoggedInUser}
+          enableEdits={userMatchesLoggedInUser && props.tournament.tournamentStatus === 'finished'}
           disableList
           isMe={userMatchesLoggedInUser}
         />
