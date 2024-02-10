@@ -219,12 +219,6 @@ export default function HelpPage() {
               infrastructure and reliability.
             </Text>
             <Box>
-              Hadley Samarco for master-crafting the quality manager role,
-              catching a ton of bugs I thought only I caught, and withstanding
-              countless hours of hearing me rant about coding this site
-              <Icon as={FaHeart} color='red.500' boxSize={3} ml={1} />
-            </Box>
-            <Box>
               <Link
                 isExternal
                 href={jeremyTwitter}
