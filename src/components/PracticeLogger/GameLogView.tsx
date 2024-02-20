@@ -8,7 +8,7 @@ interface GameLogViewProps {
 export const GameLogView = (props: GameLogViewProps) => {
   console.log(props.gameLog)
   return (
-    <List>
+    <List className="p-4">
       {props.gameLog.log.map((action, idx) => (
         <ListItem key={`${props.gameLog.id}-log-action-${idx}`}>{action.message}</ListItem>
       ))}

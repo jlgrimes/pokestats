@@ -28,7 +28,9 @@ export interface GameLogAction {
 }
 
 export const parseGameLog = (rawGameLog: string): GameLogAction[] => {
-  return rawGameLog.split('\n').map((line) => {
-    return { message: line }
-  });
+  return rawGameLog.split('\n').reduce((acc: GameLogAction[], line: string) => {
+    if (line.length === 0) return acc;
+
+    return [...acc, { message: line }]
+  }, []);
 }
