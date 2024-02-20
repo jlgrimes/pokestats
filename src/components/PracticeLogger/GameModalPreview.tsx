@@ -12,7 +12,7 @@ export const GameModalPreview = (props: GameModalPreviewProps) => {
 
   return (
     <>
-      <Card onClick={onOpen} className="cursor-pointer">{props.gameLog.created_at}</Card>
+      <Card onClick={onOpen} className="cursor-pointer">{props.gameLog.date}</Card>
       <Modal
         isOpen={isOpen}
         onClose={onClose}

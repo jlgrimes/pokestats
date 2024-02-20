@@ -1,3 +1,4 @@
+import { List, ListItem } from "@tremor/react";
 import { GameLog } from "./useGameLogs"
 
 interface GameLogViewProps {
@@ -5,9 +6,12 @@ interface GameLogViewProps {
 }
 
 export const GameLogView = (props: GameLogViewProps) => {
+  console.log(props.gameLog)
   return (
-    <div>
-      {props.gameLog.raw_game_log}
-    </div>
+    <List>
+      {props.gameLog.log.map((action, idx) => (
+        <ListItem key={`${props.gameLog.id}-log-action-${idx}`}>{action.message}</ListItem>
+      ))}
+    </List>
   )
 }

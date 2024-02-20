@@ -22,3 +22,13 @@ export const uploadGameLog = async (userId: string, gameLog: string, toast: Crea
   });
   return gameLog;
 }
+
+export interface GameLogAction {
+  message: string;
+}
+
+export const parseGameLog = (rawGameLog: string): GameLogAction[] => {
+  return rawGameLog.split('\n').map((line) => {
+    return { message: line }
+  });
+}
