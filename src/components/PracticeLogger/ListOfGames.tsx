@@ -1,15 +1,13 @@
-import { Card } from "@tremor/react";
-import { useGameLogs } from "./useGameLogs"
+import { GameLog, useGameLogs } from "./useGameLogs"
+import { GameModalPreview } from "./GameModalPreview";
 
 export const ListOfGames = () => {
   const { data: gameLogs } = useGameLogs();
 
   return (
     <div>
-      {gameLogs?.map((game) => (
-        <Card key={game.id}>
-          {game.created_at}
-        </Card>
+      {gameLogs?.map((game: GameLog) => (
+        <GameModalPreview key={game.id} gameLog={game} />
       ))}
     </div>
   )
