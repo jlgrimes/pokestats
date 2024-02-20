@@ -1,10 +1,14 @@
 import { useSessionPlayerProfile } from "../../hooks/user"
 import { LogInOutButton } from "../Layout/AppBar/LogInOutButton";
+import { FullPageLoader } from "../common/FullPageLoader";
+import { ListOfGames } from "./ListOfGames";
 import { NewLogInput } from "./NewLogInput";
 import { PtcgLiveNameInput } from "./PtcgLiveNameInput";
 
 export const PracticeLogger = () => {
-  const { data: user, isAuthenticated } = useSessionPlayerProfile();
+  const { data: user, isLoading, isAuthenticated } = useSessionPlayerProfile();
+
+  if (isLoading) return <FullPageLoader />;
 
   if (!isAuthenticated) {
     return (
@@ -23,8 +27,9 @@ export const PracticeLogger = () => {
   }
 
   return (
-    <div className="mt-2">
+    <div className="mt-2 flex flex-col gap-8">
       <NewLogInput />
+      <ListOfGames />
     </div>
   )
 }
