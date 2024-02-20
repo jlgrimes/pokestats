@@ -175,7 +175,7 @@ export const fetchPlayerProfile = async (filters?: PlayerProfileFilters): Promis
 
   let query = supabase
     .from('Player Profiles')
-    .select('id,name,email,username,additional_names,preferred_name,play_pokemon_name');
+    .select('id,name,email,username,additional_names,preferred_name,play_pokemon_name,ptcg_live_name');
 
   if (filters?.email) {
     query = query.or(`email.eq.${filters.email}`)

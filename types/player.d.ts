@@ -25,6 +25,7 @@ export interface CombinedPlayerProfile {
   additional_names: string[] | null | undefined;
   preferred_name?: string | null | undefined;
   play_pokemon_name: string | null | undefined;
+  ptcg_live_name: string | null | undefined;
 }
 
 export interface PlayerTournamentPerformance {
