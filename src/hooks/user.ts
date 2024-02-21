@@ -235,6 +235,7 @@ export const useSessionPlayerProfile = () => {
   const data = profile.data && profile.data.length > 0
     ? {
         ...profile.data[0],
+        id: session?.user.id,
         image: session?.user.user_metadata.avatar_url,
       }
     : null;

@@ -1,5 +1,7 @@
 import { CreateToastFnReturn } from "@chakra-ui/react";
 import supabase from "../../lib/supabase/client"
+import { SupabaseGameLog } from "./useGameLogs";
+import { MatchResult } from "../../../types/tournament";
 
 export const uploadGameLog = async (userId: string, gameLog: string, toast: CreateToastFnReturn) => {
  const res = await supabase.from('Game Logs').insert({
@@ -33,4 +35,20 @@ export const parseGameLog = (rawGameLog: string): GameLogAction[] => {
 
     return [...acc, { message: line }]
   }, []);
+}
+
+const getGameResult = (screenName: string, lastAction: string): MatchResult => {
+  if (lastAction.includes(`${screenName} wins`)) return 'W';
+  return 'L';
+}
+
+export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string) => {
+  const gameLog = parseGameLog(data.raw_game_log);
+
+  return {
+    id: data.id,
+    date: data.created_at,
+    log: gameLog,
+    result: getGameResult(screenName, gameLog[gameLog.length - 1].message)
+  }
 }

@@ -6,7 +6,6 @@ interface GameLogViewProps {
 }
 
 export const GameLogView = (props: GameLogViewProps) => {
-  console.log(props.gameLog)
   return (
     <List className="p-4">
       {props.gameLog.log.map((action, idx) => (
