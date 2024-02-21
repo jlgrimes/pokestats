@@ -3,14 +3,16 @@ import { useSessionPlayerProfile } from "../../hooks/user"
 import { Button, Flex, Text, TextInput } from "@tremor/react";
 import { useState } from "react";
 import supabase from "../../lib/supabase/client";
+import { useUser } from "@supabase/auth-helpers-react";
 
 export const PtcgLiveNameInput = () => {
   const [screenNameInput, setScreenNameInput] = useState('');
   const { data: user, isLoading } = useSessionPlayerProfile();
+  const userSupa = useUser();
   const toast = useToast();
 
   const onNameSubmit = async () => {
-    const res = await supabase.from('Player Profiles').update({ ptcg_live_name: screenNameInput }).match({ id: user?.id });
+    const res = await supabase.from('Player Profiles').update({ ptcg_live_name: screenNameInput }).match({ id: userSupa?.id });
     if (res.error) {
       toast({
         status: 'error',
