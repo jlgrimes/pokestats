@@ -34,7 +34,7 @@ export const PtcgLiveNameInput = () => {
       <Text>What is your PTCG Live screen name? We only ask you this once.</Text>
       <Flex className="gap-4">
         <TextInput placeholder="PTCG Live screen name" onChange={(e) => setScreenNameInput(e.target.value)} />
-        <Button onClick={onNameSubmit}>Submit</Button>
+        <Button disabled={screenNameInput.length === 0} onClick={onNameSubmit}>Submit</Button>
       </Flex>
     </div>
   )

@@ -33,7 +33,7 @@ export const NewLogInput = () => {
           />
         </div>
         <div className="mt-6 flex justify-end">
-          <Button type="submit">
+          <Button type="submit" disabled={value.length < 20 || !value.includes('Turn #') || !value.includes('Setup') || !value.includes('\n')}>
             Import
           </Button>
         </div>
