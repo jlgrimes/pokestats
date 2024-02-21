@@ -3,6 +3,7 @@ import { GameLog } from "./useGameLogs";
 import { Card, Flex } from "@tremor/react";
 import { GameLogView } from "./GameLogView";
 import { ResultLetter } from "../Tournament/Home/PlayerCard/PlayerCard";
+import { formatDistanceToNow, parseISO } from "date-fns";
 
 interface GameModalPreviewProps {
   gameLog: GameLog;
@@ -13,9 +14,9 @@ export const GameModalPreview = (props: GameModalPreviewProps) => {
 
   return (
     <>
-      <Card onClick={onOpen} className="cursor-pointer">
+      <Card onClick={onOpen} className="cursor-pointer p-4">
         <Flex>
-          <p>{props.gameLog.date}</p>
+          <p>Game {formatDistanceToNow(parseISO(props.gameLog.date), { 'addSuffix': true })}</p>
           <ResultLetter result={props.gameLog.result} />
         </Flex>
       </Card>

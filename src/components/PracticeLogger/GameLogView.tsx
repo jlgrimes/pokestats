@@ -26,7 +26,7 @@ export const GameLogView = (props: GameLogViewProps) => {
                         </AccordionBody>
                       </Accordion>
                     ) : (
-                      <p className={action.type === 'turn-number' ? 'font-bold' : ''}>{action.message}</p>
+                      <p className={(action.type === 'turn-number' || action.type === 'setup') ? 'font-bold' : ''}>{action.message}</p>
                     )
                   }
                 </ListItem>

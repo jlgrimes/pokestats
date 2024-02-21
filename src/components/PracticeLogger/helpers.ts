@@ -32,7 +32,7 @@ export interface GameLogActionMechanic {
   type: GameLogActionMechanicType;
 }
 
-export type GameLogActionType = 'turn-number' | 'action';
+export type GameLogActionType = 'turn-number' | 'setup' | 'action';
 export type TurnType = 'my-turn' | 'opponent-turn' | 'nobodys-turn';
 
 export interface GameLogAction {
@@ -65,7 +65,7 @@ export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAct
       ]
     }
 
-    const type: GameLogActionType = line.toLowerCase().includes('turn #') ? 'turn-number' : 'action';
+    const type: GameLogActionType = line.toLowerCase().includes('turn #') ? 'turn-number' : line === 'Setup' ? 'setup' : 'action';
     return [...acc, { message: line, type }]
   }, []);
 }
