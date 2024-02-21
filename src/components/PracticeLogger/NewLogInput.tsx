@@ -3,10 +3,12 @@ import { useState } from "react";
 import { uploadGameLog } from "./helpers";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useToast } from "@chakra-ui/react";
+import { useSessionPlayerProfile } from "../../hooks/user";
 
 export const NewLogInput = () => {
   const [value, setValue] = useState('');
   const user = useUser();
+  const { data: playerProfile } = useSessionPlayerProfile();
   const toast = useToast();
 
   return (
@@ -15,7 +17,7 @@ export const NewLogInput = () => {
         onSubmit={async (e) => {
           e.preventDefault();
           if (user?.id) {
-            const res = await uploadGameLog(user.id, value, toast);
+            const res = await uploadGameLog(user.id, value, playerProfile?.ptcg_live_name, toast);
             if (res) setValue('');
           }
         }}

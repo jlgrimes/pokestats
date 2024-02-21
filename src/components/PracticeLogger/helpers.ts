@@ -3,7 +3,15 @@ import supabase from "../../lib/supabase/client"
 import { SupabaseGameLog } from "./useGameLogs";
 import { MatchResult } from "../../../types/tournament";
 
-export const uploadGameLog = async (userId: string, gameLog: string, toast: CreateToastFnReturn) => {
+export const uploadGameLog = async (userId: string, gameLog: string, screenName: string | null | undefined, toast: CreateToastFnReturn) => {
+  if (!screenName || !gameLog.includes(screenName)) {
+    toast({
+      status: 'error',
+      title: 'Make sure this game log is from a game you played',
+    });
+    return null;
+  }
+
  const res = await supabase.from('Game Logs').insert({
     user_id: userId,
     raw_game_log: gameLog
@@ -52,6 +60,17 @@ export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAct
     line = line.trim();
     if (line.length === 0) return acc;
 
+    line = line.replaceAll(`${screenName} wins`, 'You win');
+
+    if (line.toLowerCase().includes('turn #')) {
+      line = line.replaceAll(`${screenName}'s`, 'Your');
+    } else {
+      line = line.replaceAll(`${screenName}'s`, 'your');
+    }
+
+    line = line.replaceAll(`${screenName}`, 'you');
+    line = line[0].toUpperCase() + line.substring(1);
+
     if (line[0] === '-' || line[0] === '*' || line[0] === '•') {
       const type: GameLogActionMechanicType = line[0] === '-' ? 'description' : 'cards'
       const message = line.substring(2);
@@ -82,7 +101,7 @@ const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
     }
 
     if (curr.message.includes('Turn #')) {
-      const currWhoseTurn: TurnType = curr.message.includes(screenName) ? 'my-turn' : 'opponent-turn';
+      const currWhoseTurn: TurnType = curr.message.toLowerCase().includes('you') ? 'my-turn' : 'opponent-turn';
 
       return [
         ...acc,
@@ -104,7 +123,7 @@ const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
 }
 
 const getGameResult = (screenName: string, lastAction: string): MatchResult => {
-  if (lastAction.includes(`${screenName} wins`)) return 'W';
+  if (lastAction.includes(`You win`)) return 'W';
   return 'L';
 }
 
