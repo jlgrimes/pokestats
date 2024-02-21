@@ -43,7 +43,6 @@ export const parseGameLog = (rawGameLog: string): GameLogAction[] => {
     line = line.trim();
     if (line.length === 0) return acc;
 
-    console.log(line[0])
     if (line[0] === '-' || line[0] === '*' || line[0] === '•') {
       const type: GameLogActionMechanicType = line[0] === '-' ? 'description' : 'cards'
       const message = line.substring(2);
