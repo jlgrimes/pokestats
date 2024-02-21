@@ -1,7 +1,8 @@
 import { Modal, ModalCloseButton, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import { GameLog } from "./useGameLogs";
-import { Card } from "@tremor/react";
+import { Card, Flex } from "@tremor/react";
 import { GameLogView } from "./GameLogView";
+import { ResultLetter } from "../Tournament/Home/PlayerCard/PlayerCard";
 
 interface GameModalPreviewProps {
   gameLog: GameLog;
@@ -12,7 +13,12 @@ export const GameModalPreview = (props: GameModalPreviewProps) => {
 
   return (
     <>
-      <Card onClick={onOpen} className="cursor-pointer">{props.gameLog.date}</Card>
+      <Card onClick={onOpen} className="cursor-pointer">
+        <Flex>
+          <p>{props.gameLog.date}</p>
+          <ResultLetter result={props.gameLog.result} />
+        </Flex>
+      </Card>
       <Modal
         isOpen={isOpen}
         onClose={onClose}

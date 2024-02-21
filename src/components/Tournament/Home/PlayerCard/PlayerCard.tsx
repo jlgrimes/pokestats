@@ -51,7 +51,7 @@ export interface PlayerCardProps {
 export const inverseResult = (result?: MatchResult) =>
   !result ? undefined : result === 'W' ? 'L' : result === 'L' ? 'W' : 'T';
 
-const ResultLetter = ({ result }: { result?: MatchResult }) => {
+export const ResultLetter = ({ result }: { result?: MatchResult }) => {
   return (
     <Bold className={`text-${getResultItemPrimaryColor(result)} font-black`}>
       {result}
