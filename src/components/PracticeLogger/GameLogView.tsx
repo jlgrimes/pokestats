@@ -11,7 +11,7 @@ export const GameLogView = (props: GameLogViewProps) => {
     <div className="flex flex-col gap-4 p-4">
       {
         props.gameLog.log.map((turn, idx) => (
-          <Card key={`turn-${turn.whoseTurn}-${idx}`} className="p-0">
+          <Card key={`turn-${turn.whoseTurn}-${idx}`} className="p-0" decoration={(turn.whoseTurn === 'my-turn' || turn.whoseTurn === 'opponent-turn') ? 'left' : null} decorationColor={turn.whoseTurn === 'my-turn' ? 'blue' : 'red'}>
             <List className="p-4">
               {turn.actions.map((action, idx) => (
                 <ListItem key={`${props.gameLog.id}-log-action-${idx}`}>
