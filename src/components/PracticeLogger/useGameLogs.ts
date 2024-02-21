@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import supabase from "../../lib/supabase/client"
-import { GameLogAction, mapSupabaseGameLogData, parseGameLog } from "./helpers";
+import { GameLogAction, GameTurn, mapSupabaseGameLogData, parseGameLog } from "./helpers";
 import { useSessionPlayerProfile } from "../../hooks/user";
 import { MatchResult } from "../../../types/tournament";
 
@@ -13,7 +13,7 @@ export interface SupabaseGameLog {
 export interface GameLog {
   id: number;
   date: string;
-  log: GameLogAction[];
+  log: GameTurn[];
   result: MatchResult;
 }
 

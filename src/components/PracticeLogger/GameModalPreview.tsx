@@ -25,7 +25,6 @@ export const GameModalPreview = (props: GameModalPreviewProps) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalCloseButton />
           <GameLogView gameLog={props.gameLog} />
         </ModalContent>
       </Modal>

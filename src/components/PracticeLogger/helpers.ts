@@ -32,13 +32,22 @@ export interface GameLogActionMechanic {
   type: GameLogActionMechanicType;
 }
 
+export type GameLogActionType = 'turn-number' | 'action';
+export type TurnType = 'my-turn' | 'opponent-turn' | 'nobodys-turn';
+
 export interface GameLogAction {
   message: string;
   // Anything like Jared drew 3 cards off a supporter etc
   actionMechanics?: GameLogActionMechanic[]
+  type: GameLogActionType;
 }
 
-export const parseGameLog = (rawGameLog: string): GameLogAction[] => {
+export interface GameTurn {
+  whoseTurn: TurnType;
+  actions: GameLogAction[];
+}
+
+export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAction[] => {
   return rawGameLog.split('\n').reduce((acc: GameLogAction[], line: string) => {
     line = line.trim();
     if (line.length === 0) return acc;
@@ -56,7 +65,41 @@ export const parseGameLog = (rawGameLog: string): GameLogAction[] => {
       ]
     }
 
-    return [...acc, { message: line }]
+    const type: GameLogActionType = line.toLowerCase().includes('turn #') ? 'turn-number' : 'action';
+    return [...acc, { message: line, type }]
+  }, []);
+}
+
+const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
+  return gameLog.reduce((acc: GameTurn[], curr: GameLogAction) => {
+    if (acc.length === 0) {
+      return [
+        {
+          whoseTurn: 'nobodys-turn' as TurnType,
+          actions: [curr]
+        }
+      ]
+    }
+
+    if (curr.message.includes('Turn #')) {
+      const currWhoseTurn: TurnType = curr.message.includes(screenName) ? 'my-turn' : 'opponent-turn';
+
+      return [
+        ...acc,
+        {
+          whoseTurn: currWhoseTurn,
+          actions: [curr]
+        }
+      ]
+    }
+
+    return [
+      ...acc.slice(0, acc.length - 1),
+      {
+        ...acc[acc.length - 1],
+        actions: [...acc[acc.length - 1].actions, curr]
+      }
+    ]
   }, []);
 }
 
@@ -66,12 +109,12 @@ const getGameResult = (screenName: string, lastAction: string): MatchResult => {
 }
 
 export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string) => {
-  const gameLog = parseGameLog(data.raw_game_log);
+  const gameLog = parseGameLog(data.raw_game_log, screenName);
 
   return {
     id: data.id,
     date: data.created_at,
-    log: gameLog,
+    log: parseTurns(gameLog, screenName),
     result: getGameResult(screenName, gameLog[gameLog.length - 1].message)
   }
 }
