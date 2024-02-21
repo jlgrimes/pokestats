@@ -20,7 +20,7 @@ export interface GameLog {
 const fetchGameLogs = async (userId?: string, screenName?: string | null) => {
   if (!userId || !screenName) return null;
 
-  const res = await supabase.from('Game Logs').select('id,created_at,raw_game_log').eq('user_id', userId).returns<SupabaseGameLog[]>();
+  const res = await supabase.from('Game Logs').select('id,created_at,raw_game_log').eq('user_id', userId).order('created_at', { ascending: false }).returns<SupabaseGameLog[]>();
   return res.data?.map((log) => mapSupabaseGameLogData(log, screenName));
 }
 

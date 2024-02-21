@@ -5,7 +5,7 @@ export const ListOfGames = () => {
   const { data: gameLogs } = useGameLogs();
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {gameLogs?.map((game: GameLog) => (
         <GameModalPreview key={game.id} gameLog={game} />
       ))}
