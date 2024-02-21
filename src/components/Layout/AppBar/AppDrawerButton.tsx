@@ -18,10 +18,12 @@ import { useRef } from 'react';
 import {
   FaBars,
   FaInfo,
+  FaPencilAlt,
   FaRegCalendar,
   FaRegCompass,
   FaRegListAlt,
   FaRegQuestionCircle,
+  FaRegStickyNote,
   FaRegUser,
 } from 'react-icons/fa';
 import { CombinedPlayerProfile } from '../../../../types/player';
@@ -102,6 +104,16 @@ export const AppDrawerButton = ({
                 onClose();
               }}>
                 <Heading size='lg'>Events</Heading>
+              </Link>
+
+              <HStack justifyContent={'end'} paddingRight={10}>
+                <Icon as={FaRegStickyNote} />
+              </HStack>
+              <Link as={NextLink} href='/practice-log' onClick={() => {
+                trackEvent('Practice log drawer link clicked');
+                onClose();
+              }}>
+                <Heading size='lg'>Practice Log</Heading>
               </Link>
 
               {userStatus !== 'logged-out' && (

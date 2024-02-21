@@ -1,3 +1,4 @@
+import { Text } from "@tremor/react";
 import { useSessionPlayerProfile } from "../../hooks/user"
 import { LogInOutButton } from "../Layout/AppBar/LogInOutButton";
 import { FullPageLoader } from "../common/FullPageLoader";
@@ -12,9 +13,10 @@ export const PracticeLogger = () => {
 
   if (!isAuthenticated) {
     return (
-      <span>
-        Please <LogInOutButton /> first to use the practice logger!
-      </span>
+      <div className="flex flex-col gap-8 text-center">
+        <LogInOutButton />
+        <Text>Pokestats Live requires you to have a user account to use the practice logger.</Text>
+      </div>
     )
   }
 
