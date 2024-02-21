@@ -4,7 +4,7 @@ import { SupabaseGameLog } from "./useGameLogs";
 import { MatchResult } from "../../../types/tournament";
 
 export const uploadGameLog = async (userId: string, gameLog: string, screenName: string | null | undefined, toast: CreateToastFnReturn) => {
-  if (!screenName || !gameLog.includes(screenName)) {
+  if (!screenName || !gameLog.toLowerCase().includes(screenName.toLowerCase())) {
     toast({
       status: 'error',
       title: 'Make sure this game log is from a game you played',
