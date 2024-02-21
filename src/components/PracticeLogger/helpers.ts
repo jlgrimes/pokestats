@@ -25,13 +25,37 @@ export const uploadGameLog = async (userId: string, gameLog: string, toast: Crea
   return gameLog;
 }
 
+export type GameLogActionMechanicType = 'description' | 'cards';
+
+export interface GameLogActionMechanic {
+  message: string;
+  type: GameLogActionMechanicType;
+}
+
 export interface GameLogAction {
   message: string;
+  // Anything like Jared drew 3 cards off a supporter etc
+  actionMechanics?: GameLogActionMechanic[]
 }
 
 export const parseGameLog = (rawGameLog: string): GameLogAction[] => {
   return rawGameLog.split('\n').reduce((acc: GameLogAction[], line: string) => {
+    line = line.trim();
     if (line.length === 0) return acc;
+
+    console.log(line[0])
+    if (line[0] === '-' || line[0] === '*' || line[0] === '•') {
+      const type: GameLogActionMechanicType = line[0] === '-' ? 'description' : 'cards'
+      const message = line.substring(2);
+
+      return [
+        ...acc.slice(0, acc.length - 1),
+        {
+          ...acc[acc.length - 1],
+          actionMechanics: [...(acc[acc.length - 1].actionMechanics ?? []), { type, message }]
+        }
+      ]
+    }
 
     return [...acc, { message: line }]
   }, []);
