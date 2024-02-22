@@ -16,8 +16,8 @@ export interface GameLog {
   date: string;
   log: GameTurn[];
   result: MatchResult;
-  yourDeck?: Deck;
-  opponentDeck?: Deck;
+  yourDeck?: Deck | null;
+  opponentDeck?: Deck | null;
   opponentScreenName: string;
 }
 
