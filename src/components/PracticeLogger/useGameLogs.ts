@@ -16,6 +16,9 @@ export interface GameLog {
   date: string;
   log: GameTurn[];
   result: MatchResult;
+  yourDeck?: Deck;
+  opponentDeck?: Deck;
+  opponentScreenName: string;
 }
 
 const fetchGameLogs = async (userId?: string, screenName?: string | null, deckArchetypes?: Deck[]) => {

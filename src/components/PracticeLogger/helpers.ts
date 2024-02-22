@@ -127,6 +127,16 @@ const getGameResult = (screenName: string, lastAction: string): MatchResult => {
   return 'L';
 }
 
+const getOpponentScreenName = (gameLog: GameLogAction[]) => {
+  for (const line of gameLog) {
+    if (line.message.includes(' played') && !line.message.includes('You')) {
+      return line.message.split(' ')[0];
+    }
+  }
+
+  return '{}{}{}';
+}
+
 const getYourDeckArchetype = (gameLog: GameLogAction[], allDecks: Deck[]) => {
   const pokemonLinesInYourDeck = gameLog.reduce((acc: string[], curr) => {
     const match = curr.message.match(/[yY]our ([A-Za-z- ]*)/g);
@@ -142,14 +152,32 @@ const getYourDeckArchetype = (gameLog: GameLogAction[], allDecks: Deck[]) => {
   }
 }
 
+const getOpponentDeckArchetype = (gameLog: GameLogAction[], allDecks: Deck[]) => {
+  const opponentScreenName = getOpponentScreenName(gameLog);
+  const pokemonLinesInYourDeck = gameLog.reduce((acc: string[], curr) => {
+    if (curr.message.split(' ')[0] === opponentScreenName) return [...acc, curr.message];
+    return acc;
+  }, []);
+
+  for (const deck of allDecks) {
+    if (deck.name !== 'Other' && deck.identifiable_cards?.every((card) => pokemonLinesInYourDeck.some((line) => line.includes(card)))) {
+      return deck;
+    }
+  }
+}
+
 export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string, allDecks?: Deck[]) => {
   const gameLog = parseGameLog(data.raw_game_log, screenName);
   const yourDeck = allDecks ? getYourDeckArchetype(gameLog, allDecks) : null;
+  const opponentDeck = allDecks ? getOpponentDeckArchetype(gameLog, allDecks) : null;
 
   return {
     id: data.id,
     date: data.created_at,
     log: parseTurns(gameLog, screenName),
-    result: getGameResult(screenName, gameLog[gameLog.length - 1].message)
+    result: getGameResult(screenName, gameLog[gameLog.length - 1].message),
+    yourDeck,
+    opponentDeck,
+    opponentScreenName: getOpponentScreenName(gameLog)
   }
 }
