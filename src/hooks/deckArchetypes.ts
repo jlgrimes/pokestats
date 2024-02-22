@@ -140,6 +140,13 @@ export const useDecks = (format?: FormatSchema, shouldNotFetchData?: boolean) =>
   };
 };
 
+export const useAllDecks = () => {
+  return useQuery({
+    queryKey: ['deck-archetypes'],
+    queryFn: () => fetchDecks(),
+  });
+};
+
 export const useArchetypes = (format?: FormatSchema, shouldNotFetchData?: boolean) => {
   const decks = useDecks(format, shouldNotFetchData);
 

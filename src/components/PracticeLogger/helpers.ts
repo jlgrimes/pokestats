@@ -1,7 +1,7 @@
 import { CreateToastFnReturn } from "@chakra-ui/react";
 import supabase from "../../lib/supabase/client"
 import { SupabaseGameLog } from "./useGameLogs";
-import { MatchResult } from "../../../types/tournament";
+import { Deck, MatchResult } from "../../../types/tournament";
 
 export const uploadGameLog = async (userId: string, gameLog: string, screenName: string | null | undefined, toast: CreateToastFnReturn) => {
   if (!screenName || !gameLog.toLowerCase().includes(screenName.toLowerCase())) {
@@ -127,8 +127,24 @@ const getGameResult = (screenName: string, lastAction: string): MatchResult => {
   return 'L';
 }
 
-export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string) => {
+const getYourDeckArchetype = (gameLog: GameLogAction[], allDecks: Deck[]) => {
+  const pokemonLinesInYourDeck = gameLog.reduce((acc: string[], curr) => {
+    const match = curr.message.match(/[yY]our ([A-Za-z- ]*)/g);
+
+    if (match) return [...acc, match[0]];
+    return acc;
+  }, []);
+
+  for (const deck of allDecks) {
+    if (deck.name !== 'Other' && deck.identifiable_cards?.every((card) => pokemonLinesInYourDeck.some((line) => line.includes(card)))) {
+      return deck;
+    }
+  }
+}
+
+export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string, allDecks?: Deck[]) => {
   const gameLog = parseGameLog(data.raw_game_log, screenName);
+  const yourDeck = allDecks ? getYourDeckArchetype(gameLog, allDecks) : null;
 
   return {
     id: data.id,
