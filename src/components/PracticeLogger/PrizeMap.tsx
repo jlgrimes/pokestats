@@ -33,9 +33,9 @@ export const PrizeMap = (props: PrizeMapProps) => {
 
   return (
     <div>
-      <Text className="font-bold mx-6">Prizes taken over turns</Text>
+      <Text className="font-bold">Prizes taken over turns</Text>
       <LineChart
-        className="h-48"
+        className="h-48 mt-2"
         data={chartdata}
         index="turnNumber"
         yAxisWidth={30}

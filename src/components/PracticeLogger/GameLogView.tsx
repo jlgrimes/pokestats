@@ -10,7 +10,7 @@ interface GameLogViewProps {
 
 export const GameLogView = (props: GameLogViewProps) => {
   return (
-    <div className="flex flex-col gap-4 px-4 pb-4">
+    <div className="flex flex-col gap-4">
       {
         props.gameLog.log.map((turn, idx) => (
           <Card key={`turn-${turn.whoseTurn}-${idx}`} className="p-0" decoration={(turn.whoseTurn === 'my-turn' || turn.whoseTurn === 'opponent-turn') ? 'left' : null} decorationColor={turn.whoseTurn === 'my-turn' ? 'blue' : 'red'}>

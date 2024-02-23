@@ -1,4 +1,4 @@
-import { Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import { GameLog } from "./useGameLogs";
 import { Bold, Card, Flex, Text } from "@tremor/react";
 import { GameLogView } from "./GameLogView";
@@ -7,6 +7,7 @@ import { formatDistanceToNow, parseISO } from "date-fns";
 import SpriteDisplay from "../common/SpriteDisplay/SpriteDisplay";
 import { PrizeMap } from "./PrizeMap";
 import { useIsMobile } from "../../hooks/device";
+import { getTurnNumber } from "./helpers";
 
 interface GameModalPreviewProps {
   gameLog: GameLog;
@@ -51,10 +52,23 @@ export const GameModalPreview = (props: GameModalPreviewProps) => {
             </div>
           </ModalHeader>
           <ModalCloseButton />
-          <div className="flex flex-col gap-2">
-            <PrizeMap gameLog={props.gameLog} />
-            <GameLogView gameLog={props.gameLog} />
-          </div>
+          <ModalBody className="px-3">
+            <div className="flex flex-col gap-6">
+              <Card className="p-3">
+                <Flex className="items-center">
+                    <div className={`${props.gameLog.result === 'L' ? 'opacity-50' : ''}`}>
+                      <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.yourDeck?.defined_pokemon} />
+                    </div>
+                    <Text className="text-sm">You {props.gameLog.result === 'W' ? 'won' : 'lost'} on turn {getTurnNumber(props.gameLog.log[props.gameLog.log.length - 1])}</Text>
+                  <div className={`${props.gameLog.result === 'W' ? 'opacity-50' : ''}`}>
+                    <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.opponentDeck?.defined_pokemon} />
+                  </div>
+                </Flex>
+              </Card>
+              <PrizeMap gameLog={props.gameLog} />
+              <GameLogView gameLog={props.gameLog} />
+            </div>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
