@@ -53,6 +53,10 @@ export interface GameLogAction {
 export interface GameTurn {
   whoseTurn: TurnType;
   actions: GameLogAction[];
+  prizesTaken: {
+    you: number;
+    opp: number;
+  }
 }
 
 export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAction[] => {
@@ -95,7 +99,11 @@ const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
       return [
         {
           whoseTurn: 'nobodys-turn' as TurnType,
-          actions: [curr]
+          actions: [curr],
+          prizesTaken: {
+            you: 0,
+            opp: 0
+          }
         }
       ]
     }
@@ -107,16 +115,41 @@ const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
         ...acc,
         {
           whoseTurn: currWhoseTurn,
-          actions: [curr]
+          actions: [curr],
+          prizesTaken: {
+            you: 0,
+            opp: 0
+          }
         }
       ]
+    }
+
+    let prizesTaken = acc[acc.length - 1].prizesTaken;
+
+    if (curr.message.includes('took') && curr.message.includes('Prize card')) {
+      if (curr.message.includes('You')) {
+        if (curr.message.includes('a Prize card')) {
+          prizesTaken.you = 1;
+        } else {
+          const numPrizesTaken = curr.message.match(/You took ([0-9])/g)?.[0].split(' ')[1];
+          prizesTaken.you = parseInt(numPrizesTaken ?? '0');
+        }
+      } else {
+        if (curr.message.includes('a Prize card')) {
+          prizesTaken.opp = 1;
+        } else {
+          const numPrizesTaken = curr.message.match(/took ([0-9])/g)?.[0].split(' ')[1];
+          prizesTaken.opp = parseInt(numPrizesTaken ?? '0');
+        }
+      }
     }
 
     return [
       ...acc.slice(0, acc.length - 1),
       {
         ...acc[acc.length - 1],
-        actions: [...acc[acc.length - 1].actions, curr]
+        actions: [...acc[acc.length - 1].actions, curr],
+        prizesTaken
       }
     ]
   }, []);
@@ -170,6 +203,7 @@ export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string
   const gameLog = parseGameLog(data.raw_game_log, screenName);
   const yourDeck = allDecks ? getYourDeckArchetype(gameLog, allDecks) : null;
   const opponentDeck = allDecks ? getOpponentDeckArchetype(gameLog, allDecks) : null;
+  console.log(parseTurns(gameLog, screenName))
 
   return {
     id: data.id,
