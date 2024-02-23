@@ -16,7 +16,7 @@ export const GameLogView = (props: GameLogViewProps) => {
           <Card key={`turn-${turn.whoseTurn}-${idx}`} className="p-0" decoration={(turn.whoseTurn === 'my-turn' || turn.whoseTurn === 'opponent-turn') ? 'left' : null} decorationColor={turn.whoseTurn === 'my-turn' ? 'blue' : 'red'}>
             <List className="px-4 pt-2">
               {turn.actions.map((action, idx) => {
-                const messageTextClass = (action.type === 'turn-number' || action.type === 'setup' || action.message.includes('Knocked Out')) ? 'font-bold' : (action.message.includes('Prize card') || (action.message.includes('ended') && action.message.includes('turn'))) ? 'italic' : '';
+                const messageTextClass = (action.type === 'turn-number' || action.type === 'setup' || action.message.includes('Knocked Out')) ? 'font-bold' : '';
                 
                 return (
                   <ListItem key={`${props.gameLog.id}-log-action-${idx}`}>

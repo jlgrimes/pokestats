@@ -241,3 +241,7 @@ export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string
     opponentScreenName: getOpponentScreenName(gameLog)
   }
 }
+
+export const getTurnNumber = (gameTurn: GameTurn) => {
+  return parseInt(gameTurn.actions[0].message.match(/Turn # ([0-9])/g)?.[0].split('Turn # ')[1] ?? '0');
+}

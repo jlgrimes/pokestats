@@ -5,6 +5,8 @@ import { GameLogView } from "./GameLogView";
 import { ResultLetter } from "../Tournament/Home/PlayerCard/PlayerCard";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import SpriteDisplay from "../common/SpriteDisplay/SpriteDisplay";
+import { PrizeMap } from "./PrizeMap";
+import { useIsMobile } from "../../hooks/device";
 
 interface GameModalPreviewProps {
   gameLog: GameLog;
@@ -14,6 +16,7 @@ export const DateSinceGame = (props: GameModalPreviewProps) => <Text className="
 
 export const GameModalPreview = (props: GameModalPreviewProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -40,15 +43,18 @@ export const GameModalPreview = (props: GameModalPreviewProps) => {
         onClose={onClose}
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent margin={isMobile ? 'auto' : 0}>
           <ModalHeader>
-            <div className="flex flex-col gap-1">
-              <Text className="font-bold">Game against {props.gameLog.opponentScreenName}</Text>
+            <div className="flex flex-col">
+              <Bold>Game against {props.gameLog.opponentScreenName}</Bold>
               <DateSinceGame gameLog={props.gameLog} />
             </div>
           </ModalHeader>
           <ModalCloseButton />
-          <GameLogView gameLog={props.gameLog} />
+          <div className="flex flex-col gap-2">
+            <PrizeMap gameLog={props.gameLog} />
+            <GameLogView gameLog={props.gameLog} />
+          </div>
         </ModalContent>
       </Modal>
     </>
