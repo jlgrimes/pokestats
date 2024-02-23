@@ -216,6 +216,10 @@ const getOpponentDeckArchetype = (gameLog: GameLogAction[], allDecks: Deck[]) =>
   const opponentScreenName = getOpponentScreenName(gameLog);
   const pokemonLinesInYourDeck = gameLog.reduce((acc: string[], curr) => {
     if (curr.message.split(' ')[0] === opponentScreenName) return [...acc, curr.message];
+
+    const targetedAction = curr.actionMechanics?.find((action) => action.message.split(' ')[0] === opponentScreenName);
+    if (targetedAction) return [...acc, targetedAction.message];
+    
     return acc;
   }, []);
 
