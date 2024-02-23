@@ -15,24 +15,28 @@ export const GameLogView = (props: GameLogViewProps) => {
         props.gameLog.log.map((turn, idx) => (
           <Card key={`turn-${turn.whoseTurn}-${idx}`} className="p-0" decoration={(turn.whoseTurn === 'my-turn' || turn.whoseTurn === 'opponent-turn') ? 'left' : null} decorationColor={turn.whoseTurn === 'my-turn' ? 'blue' : 'red'}>
             <List className="p-4">
-              {turn.actions.map((action, idx) => (
-                <ListItem key={`${props.gameLog.id}-log-action-${idx}`}>
-                  {
-                    action.actionMechanics ? (
-                      <Accordion className="p-0 [&>button]:p-0 border-none w-full">
-                        <AccordionHeader className="text-left">{action.message}</AccordionHeader>
-                        <AccordionBody className="pl-4 pb-0">
-                          {action.actionMechanics?.map((mechanic, mechIdx) => (
-                            <p className="text-gray-500 text-sm" key={`${props.gameLog.id}-log-action-${idx}-${mechIdx}`}>{mechanic.message}</p>
-                          ))}
-                        </AccordionBody>
-                      </Accordion>
-                    ) : (
-                      <p className={(action.type === 'turn-number' || action.type === 'setup') ? 'font-bold' : ''}>{action.message}</p>
-                    )
-                  }
-                </ListItem>
-              ))}
+              {turn.actions.map((action, idx) => {
+                const messageTextClass = (action.type === 'turn-number' || action.type === 'setup' || action.message.includes('Knocked Out')) ? 'font-bold' : action.message.includes('Prize card') ? 'italic' : '';
+                
+                return (
+                  <ListItem key={`${props.gameLog.id}-log-action-${idx}`}>
+                    {
+                      action.actionMechanics ? (
+                        <Accordion className="p-0 [&>button]:p-0 border-none w-full">
+                          <AccordionHeader className={`text-left ${messageTextClass}`}><Text>{action.message}</Text></AccordionHeader>
+                          <AccordionBody className="pl-4 pb-0">
+                            {action.actionMechanics?.map((mechanic, mechIdx) => (
+                              <p className="text-gray-500 text-sm" key={`${props.gameLog.id}-log-action-${idx}-${mechIdx}`}>{mechanic.message}</p>
+                            ))}
+                          </AccordionBody>
+                        </Accordion>
+                      ) : (
+                        <p className={messageTextClass}>{action.message}</p>
+                      )
+                    }
+                  </ListItem>
+                )
+              })}
             </List>
             <div className="flex gap-2 justify-center px-4 pb-4 text-gray-500 items-center">
               <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.yourDeck?.defined_pokemon} />
