@@ -137,7 +137,7 @@ const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
 
     let prizesTaken = acc[acc.length - 1].prizesTaken;
 
-    if (curr.message.includes('took') && curr.message.includes('Prize card')) {
+    if (curr.message.includes('took') && curr.message.includes('Prize card') && !curr.message.includes('all of')) {
       if (curr.message.includes('You')) {
         if (curr.message.includes('a Prize card')) {
           prizesTaken.you = 1;

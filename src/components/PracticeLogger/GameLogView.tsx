@@ -34,11 +34,19 @@ export const GameLogView = (props: GameLogViewProps) => {
                 </ListItem>
               ))}
             </List>
-            <div className="flex gap-1 justify-center px-4 pb-4 text-gray-500 items-center">
+            <div className="flex gap-2 justify-center px-4 pb-4 text-gray-500 items-center">
               <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.yourDeck?.defined_pokemon} />
-              <Bold>{getCurrentNumPrizes(props.gameLog.log, idx).you}</Bold>
-              <div>-</div>
-              <Bold>{getCurrentNumPrizes(props.gameLog.log, idx).opp}</Bold>
+              <div className="flex flex-col">
+                  <div className="flex gap-1">
+                    <Bold>{getCurrentNumPrizes(props.gameLog.log, idx).you}</Bold>
+                    <div>-</div>
+                    <Bold>{getCurrentNumPrizes(props.gameLog.log, idx).opp}</Bold>
+                  </div>
+                  <div className="flex justify-between">
+                    <Text className={`text-xs ${turn.prizesTaken.you > 0 ? 'text-green-700 font-bold' : 'text-gray-400'}`}>+{turn.prizesTaken.you}</Text>
+                    <Text className={`text-xs ${turn.prizesTaken.opp > 0 ? 'text-red-700 font-bold' : 'text-gray-400'}`}>+{turn.prizesTaken.opp}</Text>
+                  </div>
+              </div>
               <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.opponentDeck?.defined_pokemon} />
             </div>
           </Card>
