@@ -66,6 +66,7 @@ export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAct
     line = line.trim();
     if (line.length === 0) return acc;
 
+    line = line.replaceAll(`${screenName} ended their turn`, 'You ended your turn')
     line = line.replaceAll(`${screenName} wins`, 'You win');
 
     if (line.toLowerCase().includes('turn #')) {
@@ -221,7 +222,6 @@ export const mapSupabaseGameLogData = (data: SupabaseGameLog, screenName: string
   const gameLog = parseGameLog(data.raw_game_log, screenName);
   const yourDeck = allDecks ? getYourDeckArchetype(gameLog, allDecks) : null;
   const opponentDeck = allDecks ? getOpponentDeckArchetype(gameLog, allDecks) : null;
-  console.log(parseTurns(gameLog, screenName))
 
   return {
     id: data.id,
