@@ -1,5 +1,7 @@
-import { Accordion, AccordionBody, AccordionHeader, AccordionList, Card, List, ListItem, Text } from "@tremor/react";
+import { Accordion, AccordionBody, AccordionHeader, AccordionList, Bold, Card, Flex, List, ListItem, Text } from "@tremor/react";
 import { GameLog } from "./useGameLogs"
+import { getCurrentNumPrizes } from "./helpers";
+import SpriteDisplay from "../common/SpriteDisplay/SpriteDisplay";
 
 interface GameLogViewProps {
   gameLog: GameLog;
@@ -32,6 +34,13 @@ export const GameLogView = (props: GameLogViewProps) => {
                 </ListItem>
               ))}
             </List>
+            <div className="flex gap-1 justify-center px-4 pb-4 text-gray-500 items-center">
+              <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.yourDeck?.defined_pokemon} />
+              <Bold>{getCurrentNumPrizes(props.gameLog.log, idx).you}</Bold>
+              <div>-</div>
+              <Bold>{getCurrentNumPrizes(props.gameLog.log, idx).opp}</Bold>
+              <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.opponentDeck?.defined_pokemon} />
+            </div>
           </Card>
         ))
       }

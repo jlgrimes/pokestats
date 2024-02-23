@@ -53,10 +53,12 @@ export interface GameLogAction {
 export interface GameTurn {
   whoseTurn: TurnType;
   actions: GameLogAction[];
-  prizesTaken: {
-    you: number;
-    opp: number;
-  }
+  prizesTaken: PlayerPrizeCount
+}
+
+export interface PlayerPrizeCount {
+  you: number;
+  opp: number;
 }
 
 export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAction[] => {
@@ -131,7 +133,7 @@ const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
         if (curr.message.includes('a Prize card')) {
           prizesTaken.you = 1;
         } else {
-          const numPrizesTaken = curr.message.match(/You took ([0-9])/g)?.[0].split(' ')[1];
+          const numPrizesTaken = curr.message.match(/took ([0-9])/g)?.[0].split(' ')[1];
           prizesTaken.you = parseInt(numPrizesTaken ?? '0');
         }
       } else {
@@ -153,6 +155,22 @@ const parseTurns = (gameLog: GameLogAction[], screenName: string) => {
       }
     ]
   }, []);
+}
+
+/**
+ * Gets the current number of prizes at a specific index in the game log.
+ * 
+ * @param gameLog - The game log in turns.
+ * @param gameLogIdx - The index that is specified that would like to have prizes checked.
+ * @returns - Number of prizes currently remaining for both players.
+ */
+export const getCurrentNumPrizes = (gameLog: GameTurn[], gameLogIdx: number): PlayerPrizeCount => {
+  return gameLog.slice(0, gameLogIdx + 1).reduce((acc: PlayerPrizeCount, curr: GameTurn) => {
+    return {
+      you: acc.you - curr.prizesTaken.you,
+      opp: acc.opp - curr.prizesTaken.opp
+    }
+  }, { you: 6, opp: 6 })
 }
 
 const getGameResult = (screenName: string, lastAction: string): MatchResult => {
