@@ -10,13 +10,13 @@ interface GameLogViewProps {
 
 export const GameLogView = (props: GameLogViewProps) => {
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4 px-4 pb-4">
       {
         props.gameLog.log.map((turn, idx) => (
           <Card key={`turn-${turn.whoseTurn}-${idx}`} className="p-0" decoration={(turn.whoseTurn === 'my-turn' || turn.whoseTurn === 'opponent-turn') ? 'left' : null} decorationColor={turn.whoseTurn === 'my-turn' ? 'blue' : 'red'}>
-            <List className="p-4">
+            <List className="px-4 pt-2">
               {turn.actions.map((action, idx) => {
-                const messageTextClass = (action.type === 'turn-number' || action.type === 'setup' || action.message.includes('Knocked Out')) ? 'font-bold' : action.message.includes('Prize card') ? 'italic' : '';
+                const messageTextClass = (action.type === 'turn-number' || action.type === 'setup' || action.message.includes('Knocked Out')) ? 'font-bold' : (action.message.includes('Prize card') || (action.message.includes('ended') && action.message.includes('turn'))) ? 'italic' : '';
                 
                 return (
                   <ListItem key={`${props.gameLog.id}-log-action-${idx}`}>
@@ -38,7 +38,7 @@ export const GameLogView = (props: GameLogViewProps) => {
                 )
               })}
             </List>
-            <div className="flex gap-2 justify-center px-4 pb-4 text-gray-500 items-center">
+            <div className="flex gap-2 justify-center px-4 pb-4 pt-2 text-gray-500 items-center">
               <SpriteDisplay shouldBlurSecondSprite squishWidth pokemonNames={props.gameLog.yourDeck?.defined_pokemon} />
               <div className="flex flex-col">
                   <div className="flex gap-1">
