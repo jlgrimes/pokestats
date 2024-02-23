@@ -47,7 +47,7 @@ export const GameLogView = (props: GameLogViewProps) => {
                     <Bold>{getCurrentNumPrizes(props.gameLog.log, idx).opp}</Bold>
                   </div>
                   <div className="flex justify-between">
-                    <Text className={`text-xs ${turn.prizesTaken.you > 0 ? 'text-green-700 font-bold' : 'text-gray-400'}`}>+{turn.prizesTaken.you}</Text>
+                    <Text className={`text-xs ${turn.prizesTaken.you > 0 ? 'text-blue-600 font-bold' : 'text-gray-400'}`}>+{turn.prizesTaken.you}</Text>
                     <Text className={`text-xs ${turn.prizesTaken.opp > 0 ? 'text-red-700 font-bold' : 'text-gray-400'}`}>+{turn.prizesTaken.opp}</Text>
                   </div>
               </div>

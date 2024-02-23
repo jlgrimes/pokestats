@@ -40,7 +40,7 @@ export const PrizeMap = (props: PrizeMapProps) => {
         index="turnNumber"
         yAxisWidth={30}
         categories={['You', 'Opponent']}
-        colors={['green', 'red']}
+        colors={['blue', 'red']}
         maxValue={6}
         showAnimation
         curveType='step'
