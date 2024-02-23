@@ -78,9 +78,17 @@ export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAct
     line = line.replaceAll(`${screenName}`, 'you');
     line = line[0].toUpperCase() + line.substring(1);
 
-    if (line[0] === '-' || line[0] === '*' || line[0] === '•') {
-      const type: GameLogActionMechanicType = line[0] === '-' ? 'description' : 'cards'
-      const message = line.substring(2);
+    const ifLineStartsWithDelimiter = line[0] === '-' || line[0] === '*' || line[0] === '•';
+    if (ifLineStartsWithDelimiter || line.includes('was added')) {
+      let type: GameLogActionMechanicType;
+
+      if (line[0] === '-') {
+        type = 'description'
+      } else {
+        type = 'cards'
+      }
+
+      const message = ifLineStartsWithDelimiter ? line.substring(2) : line;
 
       return [
         ...acc.slice(0, acc.length - 1),
