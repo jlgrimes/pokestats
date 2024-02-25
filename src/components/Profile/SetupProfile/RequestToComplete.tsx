@@ -62,9 +62,9 @@ export const RequestToComplete = ({
     setRequestSentStatus('sending');
 
     const unusedNames = await fetchUnusedPlayers();
-    const finalResultsName = unusedNames?.find(
+    const finalResultsName: string = unusedNames?.find(
       ({name}) => normalizeName(name) === normalizeName(fullNameVal)
-    );
+    )?.name;
 
     try {
       await supabase
