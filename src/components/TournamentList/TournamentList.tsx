@@ -30,7 +30,7 @@ export const TournamentList = ({
           tournament={tournament}
           champion={undefined}
         />
-        {tournament.should_reveal_decks && <TopDecks tournament={tournament} />}
+        {tournament.should_reveal_decks?.masters && <TopDecks tournament={tournament} />}
       </div>
     ))}
     {upcomingTournaments.slice(0, 2).map((tournament) => (
