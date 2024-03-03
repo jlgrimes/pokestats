@@ -54,6 +54,7 @@ export interface StandingsRowProps {
 
 export const StandingsRow = memo((props: StandingsRowProps) => {
   const { onOpen, isOpen, onClose } = useDisclosure();
+  const shouldShowResistance = !props.isCurrentlyPlayingInTopCut && props.result.resistances?.opp && !props.shouldHideResistance;
 
   return (
     <>
@@ -113,7 +114,7 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
         </Flex>
       </StandingsCell>
       {!props.isCurrentlyPlayingInTopCut && (
-        <StandingsCell className='text-right w-16'>
+        <StandingsCell className={`text-right w-16 ${!shouldShowResistance ? 'pr-2' : ''}`}>
           {props.shouldShowMatchPoints ? (
             <MatchPoints standing={props.result} />
           ) : (
@@ -121,9 +122,9 @@ export const StandingsRow = memo((props: StandingsRowProps) => {
           )}
         </StandingsCell>
       )}
-      {!props.isCurrentlyPlayingInTopCut && props.result.resistances?.opp && !props.shouldHideResistance && (
+      {shouldShowResistance && (
         <StandingsCell width={40} className='text-right pr-1'>
-          <Bold className={'text-slate-400 text-sm'}>{(props.result.resistances.opp * 100).toPrecision(3)}</Bold>
+          <Bold className={'text-slate-400 text-sm'}>{(props.result.resistances!.opp * 100).toPrecision(3)}</Bold>
         </StandingsCell>
       )}
       {!props.shouldDisableOpponentModal && (

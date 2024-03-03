@@ -90,7 +90,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
           <StandingsCell className='pr-0 w-8 text-center'>
             <ResultLetter result={result} />
           </StandingsCell>
-        ) : <StandingsCell />}
+        ) : <StandingsCell className={props.roundNumber ? 'w-8' : ''} />}
         <StandingsRow
           result={props.player}
           tournament={props.tournament}
