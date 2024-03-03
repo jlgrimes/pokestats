@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/outline";
 import { formatTournamentStatus } from "./helpers";
 import { useUtcOffset } from "../../hooks/tournamentMetadata";
+import { getRoundText } from "../Tournament/helpers";
 
 interface TournamentStatusBadgesProps {
   tournament: Tournament;
@@ -18,6 +19,6 @@ export const TournamentStatusBadges = (props: TournamentStatusBadgesProps) => {
   return props.tournament.tournamentStatus === 'not-started' ? (
         <Badge className="dark:bg-gray-800 dark:text-gray-400" color='gray'>{props.hasVagueTime ? 'Upcoming' : formatTournamentStatus(props.tournament, utcOffset)}</Badge>
       ) : props.tournament.tournamentStatus === 'running' ? (
-        <Badge size='xs' icon={StatusOnlineIcon}>Round {props.tournament.roundNumbers.masters}</Badge>
+        <Badge size='xs' icon={StatusOnlineIcon}>{getRoundText(props.tournament)}</Badge>
       ) : null
 }
