@@ -66,16 +66,33 @@ export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAct
     line = line.trim();
     if (line.length === 0) return acc;
 
-    line = line.replaceAll(`${screenName} ended their turn`, 'You ended your turn')
-    line = line.replaceAll(`${screenName} wins`, 'You win');
+    const screenNameRegex = new RegExp(screenName, 'gi');
 
-    if (line.toLowerCase().includes('turn #')) {
-      line = line.replaceAll(`${screenName}'s`, 'Your');
-    } else {
-      line = line.replaceAll(`${screenName}'s`, 'your');
+    let lineNew = '';
+    let match;
+    let matchCtr = 0;
+    let startIdx = 0;
+    let endIdx = 0;
+
+    while ((match = screenNameRegex.exec(line)) !== null) {
+      matchCtr += 1;
+      endIdx = match.index + screenName.length;
+
+      let replacementString = 'you';
+
+      if ((endIdx + 2 <= line.length) && (line.substring(endIdx, endIdx + 2)) == "'s") {
+        replacementString = 'your';
+        endIdx = endIdx + 2;
+      }
+
+      lineNew += line.substring(startIdx, match.index) + replacementString;
+      startIdx = endIdx;
     }
 
-    line = line.replaceAll(`${screenName}`, 'you');
+    if (matchCtr > 0) {
+      line = lineNew + line.substring(endIdx);
+    }
+
     line = line[0].toUpperCase() + line.substring(1);
 
     const ifLineStartsWithDelimiter = line[0] === '-' || line[0] === '*' || line[0] === '•';
