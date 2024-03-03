@@ -60,6 +60,7 @@ export const ResultLetter = ({ result }: { result?: MatchResult }) => {
 };
 
 export const PlayerCard = (props: PlayerCardProps) => {
+  const { result } = props;
   const { colorMode } = useColorMode();
 
   const isInTopCut =
@@ -74,7 +75,7 @@ export const PlayerCard = (props: PlayerCardProps) => {
     <>
       <TableRow
         className={`h-10 bg-${getResultItemBackgroundColor(
-          props.result,
+          result,
           colorMode
         )}`}
       >
@@ -85,16 +86,11 @@ export const PlayerCard = (props: PlayerCardProps) => {
             </Bold>
           </StandingsCell>
         )}
-        {props.result ? (
+        {result ? (
           <StandingsCell className='pr-0 w-8 text-center'>
-            <ResultLetter result={props.result} />
+            <ResultLetter result={result} />
           </StandingsCell>
         ) : <StandingsCell />}
-        {props.result === null && (
-          <StandingsCell className='pr-0 w-8 text-center'>
-            <></>
-          </StandingsCell>
-        )}
         <StandingsRow
           result={props.player}
           tournament={props.tournament}
