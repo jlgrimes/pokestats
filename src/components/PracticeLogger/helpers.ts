@@ -94,6 +94,8 @@ export const parseGameLog = (rawGameLog: string, screenName: string): GameLogAct
     }
 
     line = line[0].toUpperCase() + line.substring(1);
+    // Hard coding a clean up at the end for when the game says that "you wins"
+    line = line.replace('you wins', 'You win');
 
     const ifLineStartsWithDelimiter = line[0] === '-' || line[0] === '*' || line[0] === '•';
     if (ifLineStartsWithDelimiter || line.includes('was added')) {

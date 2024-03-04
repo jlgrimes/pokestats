@@ -21,5 +21,13 @@ describe('PracticeLogger helpers', () => {
         type: 'action'
       }])
     });
+
+    it('should correctly say "You win" when you won the game', () => {
+      const parsedLog = parseGameLog('test-USER drew for turn. test-User wins.', 'test-user');
+      expect(parsedLog).toEqual([{
+        message: 'You drew for turn. You win.',
+        type: 'action'
+      }])
+    });
   });
 })
