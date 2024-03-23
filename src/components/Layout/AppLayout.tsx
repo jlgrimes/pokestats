@@ -46,6 +46,8 @@ export const AppLayout = ({
   const [queryClient] = useState(() => new QueryClient(queryClientConfig));
   const [shouldMockUser, setShouldMockUser] = useState(false);
 
+  return <div>Site is down until further notice. We'll be back, hopefully.</div>
+  
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={dehydratedState}>
